@@ -65,6 +65,16 @@
       border-radius: 8px; padding: 10px 12px; font-size: 11px; color: #9aa3b0; max-width: 260px;
     }
     .net-hud b { color: #c5ccd6; display: block; margin-bottom: 4px; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .net-controls {
+      position: absolute; bottom: 10px; left: 10px; z-index: 2;
+      background: rgba(0,0,0,0.62); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px; padding: 10px 12px; font-size: 11px; color: #9aa3b0; width: 220px;
+    }
+    .net-controls .row {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 6px 0;
+    }
+    .net-controls .row span { flex: 0 0 7.2rem; }
+    .net-controls input[type="range"] { flex: 1; min-width: 0; accent-color: #4d8af0; }
     .net-legend {
       position: absolute; top: 10px; right: 10px; z-index: 2; max-height: calc(100% - 20px); overflow: auto;
       background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.08);
@@ -133,6 +143,12 @@
     <div class="net-wrap" id="netWrap">
       <canvas id="net"></canvas>
       <div class="net-hud" id="netHud"></div>
+      <div class="net-controls" id="netControls">
+        <b style="color:#c5ccd6;font-size:10px;letter-spacing:0.06em;text-transform:uppercase">Luminosité</b>
+        <div class="row"><span>Lumière liens</span><input id="linkLight" type="range" min="0" max="1" step="0.01" value="0.16"></div>
+        <div class="row"><span>Halo nœuds</span><input id="nodeGlow" type="range" min="0" max="1" step="0.01" value="0.28"></div>
+        <div class="row"><span>Filaments</span><input id="nStrands" type="range" min="1" max="3" step="1" value="1"></div>
+      </div>
       <div class="net-legend" id="netLegend"></div>
       <div id="tooltip"></div>
     </div>
@@ -335,6 +351,7 @@
     let cam = { x: 0, y: 0, k: 1 };
     let drag = null;
     let bound = false;
+    const P = { linkLight: 0.16, nodeGlow: 0.28, strands: 1 };
 
     function metaText(G) {
       const meta = G.meta || {};
@@ -429,7 +446,9 @@
         const w = edges[i].w || 1;
         if (w > maxW) maxW = w;
       }
-      const nStrands = edges.length > 85000 ? 2 : 3;
+      const nStrands = Math.max(1, Math.min(3, P.strands | 0));
+      const light = Math.max(0, Math.min(1, P.linkLight));
+      const glow = Math.max(0, Math.min(1, P.nodeGlow));
 
       ctx.save();
       ctx.globalCompositeOperation = "lighter";
@@ -449,7 +468,7 @@
         const wNorm = Math.pow((e.w || 1) / maxW, 0.45);
         const ca = lift(a.c || [140, 160, 190], 1.22);
         const cb = lift(b.c || [140, 160, 190], 1.22);
-        const alpha = 0.035 + 0.09 * wNorm;
+        const alpha = (0.018 + 0.055 * wNorm) * light;
         for (let s = 0; s < nStrands; s++) {
           const bulge = Math.min(48, len * (0.06 + 0.14 * hash(seed)));
           const sign = hash(seed + 3) > 0.5 ? 1 : -1;
@@ -477,9 +496,9 @@
         if (p.x < -r || p.x > W + r || p.y < -r || p.y > H + r) continue;
         const [cr0, cg0, cb0] = lift(n.c || [150, 160, 180], 1.18);
         const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
-        g.addColorStop(0, `rgba(${cr0},${cg0},${cb0},0.22)`);
-        g.addColorStop(0.18, `rgba(${cr0},${cg0},${cb0},0.07)`);
-        g.addColorStop(0.55, `rgba(${cr0},${cg0},${cb0},0.015)`);
+        g.addColorStop(0, `rgba(${cr0},${cg0},${cb0},${0.14 * glow})`);
+        g.addColorStop(0.18, `rgba(${cr0},${cg0},${cb0},${0.05 * glow})`);
+        g.addColorStop(0.55, `rgba(${cr0},${cg0},${cb0},${0.012 * glow})`);
         g.addColorStop(1, `rgba(${cr0},${cg0},${cb0},0)`);
         ctx.fillStyle = g;
         ctx.beginPath();
@@ -487,15 +506,15 @@
         ctx.fill();
         const cr = coreR(n);
         const halo = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, cr * 2.4);
-        halo.addColorStop(0, `rgba(${Math.min(255, cr0 + 70)},${Math.min(255, cg0 + 70)},${Math.min(255, cb0 + 70)},0.95)`);
-        halo.addColorStop(0.45, `rgba(${cr0},${cg0},${cb0},0.45)`);
+        halo.addColorStop(0, `rgba(${Math.min(255, cr0 + 70)},${Math.min(255, cg0 + 70)},${Math.min(255, cb0 + 70)},${0.72 * glow})`);
+        halo.addColorStop(0.45, `rgba(${cr0},${cg0},${cb0},${0.28 * glow})`);
         halo.addColorStop(1, `rgba(${cr0},${cg0},${cb0},0)`);
         ctx.fillStyle = halo;
         ctx.beginPath();
         ctx.arc(p.x, p.y, cr * 2.4, 0, Math.PI * 2);
         ctx.fill();
         if (n.mca && n.mca.length) {
-          ctx.strokeStyle = "rgba(232,197,106,0.75)";
+          ctx.strokeStyle = `rgba(232,197,106,${0.55 + 0.3 * glow})`;
           ctx.lineWidth = 1.05;
           ctx.beginPath();
           ctx.arc(p.x, p.y, cr + 1.6, 0, Math.PI * 2);
@@ -592,6 +611,17 @@
         cam.k *= factor; cam.x = mx - wx * cam.k; cam.y = my - wy * cam.k; draw();
       }, { passive: false });
       window.addEventListener("resize", resize);
+      const bindRange = (id, key, parse) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener("input", () => {
+          P[key] = parse(el.value);
+          draw();
+        });
+      };
+      bindRange("linkLight", "linkLight", Number);
+      bindRange("nodeGlow", "nodeGlow", Number);
+      bindRange("nStrands", "strands", (v) => parseInt(v, 10));
     }
 
     return {
