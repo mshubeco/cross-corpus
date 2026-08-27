@@ -366,15 +366,17 @@
 
     function fit(nodes) {
       if (!nodes.length) return;
+      const linked = nodes.filter((n) => degOf(n) > 0);
+      const use = linked.length > 30 ? linked : nodes;
       let minx = Infinity, maxx = -Infinity, miny = Infinity, maxy = -Infinity;
-      for (const n of nodes) {
+      for (const n of use) {
         minx = Math.min(minx, n.x); maxx = Math.max(maxx, n.x);
         miny = Math.min(miny, n.y); maxy = Math.max(maxy, n.y);
       }
-      const pad = 110;
+      const pad = 160;
       const sx = (W - 2 * pad) / Math.max(maxx - minx, 1e-6);
       const sy = (H - 2 * pad) / Math.max(maxy - miny, 1e-6);
-      cam.k = Math.min(sx, sy) * 0.62;
+      cam.k = Math.min(sx, sy) * 0.84;
       cam.x = W / 2 - cam.k * (minx + maxx) / 2;
       cam.y = H / 2 - cam.k * (miny + maxy) / 2;
     }
@@ -386,12 +388,13 @@
       return 0;
     }
     function nodeR(n) {
-      // r précalculé ∝ centralité de degré
-      return Math.max(1.4, Math.min(9.5, (n.r || 3) * 0.32));
+      // r = 10..560 (centralité de degré pondéré) ; rayon écran ∝ zoom
+      const wr = Math.max(10, Math.min(560, n.r || 10));
+      return Math.max(2.4, wr * cam.k);
     }
     function labelPx(n, degMax) {
-      const u = degMax > 0 ? Math.pow(degOf(n) / degMax, 0.45) : 0;
-      return Math.round(8 + 16 * u); // ~8 → 24 px
+      const u = degMax > 0 ? Math.pow(degOf(n) / degMax, 0.55) : 0;
+      return Math.round(9 + 28 * u);
     }
 
     function draw() {
