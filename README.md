@@ -2,16 +2,13 @@
 
 Site statique des HTML de travail (anciennement `http://localhost:8766/`).
 
-## GitHub Pages
+**Page d’accueil :** https://mshubeco.github.io/cross-corpus/connectome/
 
 Après push : **Settings → Pages → Deploy from branch `main` / root**.
 
-URL : https://mshubeco.github.io/cross-corpus/
-
 | Page | Chemin |
 |------|--------|
-| Accueil | `/` |
-| Connectomes | [`/connectome/`](https://mshubeco.github.io/cross-corpus/connectome/) |
+| Connectomes (accueil) | [`/connectome/`](https://mshubeco.github.io/cross-corpus/connectome/) |
 | Intersection 3 corpus santé | [`/analyses/health3_overlap.html`](https://mshubeco.github.io/cross-corpus/analyses/health3_overlap.html) |
 | Comptes MCA Track B | [`/analyses/comptes_selectionnes.html`](https://mshubeco.github.io/cross-corpus/analyses/comptes_selectionnes.html) |
 | Analyses corpus entier | [`/analyses/cross_corpus_analyses.html`](https://mshubeco.github.io/cross-corpus/analyses/cross_corpus_analyses.html) |

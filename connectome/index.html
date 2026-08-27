@@ -231,7 +231,7 @@
       </a>
       <a id="health3Link" class="subtab" href="../analyses/health3_overlap.html" target="_blank" rel="noopener noreferrer" title="Intersection des auteurs des 3 corpus santé">
         <span class="subtab-label">Intersection 3 corpus santé</span>
-        <span class="subtab-hint">réseau 3D · Hanta × Mpox</span>
+        <span class="subtab-hint">intersection ∩ union</span>
       </a>
     </div>
   </nav>
@@ -304,6 +304,24 @@ const graphCache = new Map();
 const selectedCache = new Map();
 let highlightSelected = false;
 let selectedHandles = new Set();
+
+function maxOf(arr, pick, fallback = 1) {
+  let m = fallback;
+  for (let i = 0; i < arr.length; i++) {
+    const v = pick(arr[i]);
+    if (v > m) m = v;
+  }
+  return m;
+}
+function minOf(arr, pick, fallback = 0) {
+  if (!arr.length) return fallback;
+  let m = pick(arr[0]);
+  for (let i = 1; i < arr.length; i++) {
+    const v = pick(arr[i]);
+    if (v < m) m = v;
+  }
+  return m;
+}
 
 const renderer = new THREE.WebGLRenderer({
   antialias: true,
@@ -595,12 +613,15 @@ function buildGraph(data) {
 
   const nodes = data.nodes;
   const edges = data.edges;
-  const maxW = Math.max(...edges.map((e) => e.w), 1);
+  const maxW = maxOf(edges, (e) => e.w || 0, 1);
 
-  // Auto-tune hair density for large graphs (GPU/RAM)
-  if (edges.length > 80_000) {
+  // Auto-tune hair density for large graphs (GPU/RAM + call-stack)
+  if (edges.length > 200_000) {
+    P.strands = 1;
+    P.segments = 6;
+  } else if (edges.length > 80_000) {
     P.strands = 2;
-    P.segments = 10;
+    P.segments = 8;
   } else if (edges.length > 30_000) {
     P.strands = 3;
     P.segments = 12;
@@ -668,7 +689,7 @@ function buildGraph(data) {
   const nPos = new Float32Array(n * 3);
   const nCol = new Float32Array(n * 3);
   const nSize = new Float32Array(n);
-  const maxDeg = Math.max(...nodes.map((x) => x.deg || 1), 1);
+  const maxDeg = maxOf(nodes, (x) => x.deg || 1, 1);
   for (let i = 0; i < n; i++) {
     const nd = nodes[i];
     nPos[i * 3] = nd.x;
@@ -785,8 +806,8 @@ function rebuildLabels() {
   if (!ranked.length) return;
 
   // Strong Gephi-like contrast: font ∝ viz:size^1.35 (range ~8px → ~52px)
-  const sMin = Math.min(...ranked.map((n) => n.gephiSize));
-  const sMax = Math.max(...ranked.map((n) => n.gephiSize));
+  const sMin = minOf(ranked, (n) => n.gephiSize, 1);
+  const sMax = maxOf(ranked, (n) => n.gephiSize, 1);
   const sSpan = Math.max(sMax - sMin, 1e-6);
 
   const ordered = [...ranked].sort((a, b) => a.gephiSize - b.gephiSize);
