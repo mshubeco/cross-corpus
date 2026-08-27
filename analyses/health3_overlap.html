@@ -44,7 +44,7 @@
     .badge { display: inline-block; font-size: 0.65rem; padding: 1px 6px; border-radius: 4px; background: #243044; color: #9ec1ff; margin-left: 4px; }
 
     .net-wrap {
-      position: relative; height: min(82vh, 880px); background: #0a0c10;
+      position: relative; height: min(82vh, 880px); background: #000;
       border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
     }
     .graph-tabs {
@@ -293,12 +293,12 @@
 
     const netCtl = createNetController();
     netCtl.setGraph("inter", G, {
-      hud: `<b>Intersection ∩3</b>Nœuds = auteurs dans Ebola + Hanta + Mpox<br/>Taille & labels = centralité de degré · Couleur = Louvain<br/>Contour doré = aussi MCA`,
+      hud: `<b>Intersection ∩3</b>Nœuds = auteurs dans Ebola + Hanta + Mpox<br/>Filaments additifs · cœurs sans superposition<br/>Taille = degré pondéré · couleur = Louvain · or = MCA`,
       legendMode: "communities",
     });
     if (Gu) {
       netCtl.setGraph("union", Gu, {
-        hud: `<b>Union 3 corpus</b>Tous les nœuds (hors isolats) · arêtes de poids ≥ 2<br/>Taille & labels = centralité de degré · <b>Couleur = présence corpus</b>`,
+        hud: `<b>Union 3 corpus</b>Tous les nœuds (hors isolats) · arêtes poids ≥ 2<br/>Filaments additifs · cœurs sans superposition<br/>Taille = degré · <b>couleur = présence corpus</b>`,
         legendMode: "presence",
       });
     } else {
@@ -370,13 +370,14 @@
       const use = linked.length > 30 ? linked : nodes;
       let minx = Infinity, maxx = -Infinity, miny = Infinity, maxy = -Infinity;
       for (const n of use) {
-        minx = Math.min(minx, n.x); maxx = Math.max(maxx, n.x);
-        miny = Math.min(miny, n.y); maxy = Math.max(maxy, n.y);
+        const rr = Math.max(10, Math.min(560, n.r || 10));
+        minx = Math.min(minx, n.x - rr); maxx = Math.max(maxx, n.x + rr);
+        miny = Math.min(miny, n.y - rr); maxy = Math.max(maxy, n.y + rr);
       }
-      const pad = 160;
+      const pad = 48;
       const sx = (W - 2 * pad) / Math.max(maxx - minx, 1e-6);
       const sy = (H - 2 * pad) / Math.max(maxy - miny, 1e-6);
-      cam.k = Math.min(sx, sy) * 0.84;
+      cam.k = Math.min(sx, sy) * 0.92;
       cam.x = W / 2 - cam.k * (minx + maxx) / 2;
       cam.y = H / 2 - cam.k * (miny + maxy) / 2;
     }
@@ -388,13 +389,26 @@
       return 0;
     }
     function nodeR(n) {
-      // r = 10..560 (centralité de degré pondéré) ; rayon écran ∝ zoom
       const wr = Math.max(10, Math.min(560, n.r || 10));
-      return Math.max(2.4, wr * cam.k);
+      return Math.max(2.2, wr * cam.k);
+    }
+    function coreR(n) {
+      return Math.max(1.05, Math.min(11, nodeR(n) * 0.13));
     }
     function labelPx(n, degMax) {
-      const u = degMax > 0 ? Math.pow(degOf(n) / degMax, 0.55) : 0;
-      return Math.round(9 + 28 * u);
+      const u = degMax > 0 ? Math.pow(degOf(n) / degMax, 0.5) : 0;
+      return Math.round(10 + 18 * u);
+    }
+    function hash(i) {
+      const x = Math.sin(i * 127.1 + 311.7) * 43758.5453;
+      return x - Math.floor(x);
+    }
+    function lift(rgb, mul) {
+      return [
+        Math.min(255, rgb[0] * mul),
+        Math.min(255, rgb[1] * mul),
+        Math.min(255, rgb[2] * mul),
+      ];
     }
 
     function draw() {
@@ -404,43 +418,96 @@
       const edges = G.edges || [];
       const degMax = nodes.reduce((m, n) => Math.max(m, degOf(n)), 0) || 1;
       ctx.clearRect(0, 0, W, H);
-      ctx.fillStyle = "#0a0c10";
+      ctx.fillStyle = "#000";
       ctx.fillRect(0, 0, W, H);
-      ctx.lineWidth = 0.65;
-      const eMax = edges.length > 80000 ? 50000 : edges.length;
-      const pad = 48;
+
+      const eCap = edges.length > 70000 ? 52000 : edges.length;
+      const pad = 64;
       const inView = (p) => p.x >= -pad && p.x <= W + pad && p.y >= -pad && p.y <= H + pad;
+      let maxW = 1;
+      for (let i = 0; i < edges.length; i++) {
+        const w = edges[i].w || 1;
+        if (w > maxW) maxW = w;
+      }
+      const nStrands = edges.length > 85000 ? 2 : 3;
+
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
       let drawnE = 0;
+      let seed = 1;
       for (const e of edges) {
-        if (drawnE >= eMax) break;
+        if (drawnE >= eCap) break;
         const a = nodes[e.s], b = nodes[e.t];
         if (!a || !b) continue;
         const pa = toScreen(a), pb = toScreen(b);
-        if (edges.length > 40000 && !inView(pa) && !inView(pb)) continue;
-        const alpha = Math.min(0.32, 0.04 + 0.07 * Math.log1p(e.w || 1));
-        ctx.strokeStyle = `rgba(140,160,190,${alpha})`;
-        ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y); ctx.stroke();
+        if (edges.length > 35000 && !inView(pa) && !inView(pb)) continue;
+        const dx = pb.x - pa.x, dy = pb.y - pa.y;
+        const len = Math.hypot(dx, dy) || 1;
+        const nx = -dy / len, ny = dx / len;
+        const wNorm = Math.pow((e.w || 1) / maxW, 0.45);
+        const ca = lift(a.c || [140, 160, 190], 1.22);
+        const cb = lift(b.c || [140, 160, 190], 1.22);
+        const alpha = 0.035 + 0.09 * wNorm;
+        for (let s = 0; s < nStrands; s++) {
+          const bulge = Math.min(48, len * (0.06 + 0.14 * hash(seed)));
+          const sign = hash(seed + 3) > 0.5 ? 1 : -1;
+          const off = (hash(seed + 7) - 0.5) * Math.min(12, len * 0.05);
+          const mx = (pa.x + pb.x) * 0.5 + nx * (bulge * sign + off);
+          const my = (pa.y + pb.y) * 0.5 + ny * (bulge * sign + off);
+          const cr = (ca[0] + cb[0]) * 0.5;
+          const cg = (ca[1] + cb[1]) * 0.5;
+          const cbv = (ca[2] + cb[2]) * 0.5;
+          ctx.strokeStyle = `rgba(${cr|0},${cg|0},${cbv|0},${alpha * (1 - s * 0.22)})`;
+          ctx.lineWidth = 0.28 + 0.55 * wNorm;
+          ctx.beginPath();
+          ctx.moveTo(pa.x, pa.y);
+          ctx.quadraticCurveTo(mx, my, pb.x, pb.y);
+          ctx.stroke();
+          seed++;
+        }
         drawnE++;
       }
-      // petits nœuds d'abord, hubs par-dessus
+
       const bySize = graphs[active].nodesBySize || [...nodes].sort((a, b) => degOf(a) - degOf(b));
       for (const n of bySize) {
         const p = toScreen(n);
         const r = nodeR(n);
         if (p.x < -r || p.x > W + r || p.y < -r || p.y > H + r) continue;
-        const [cr, cg, cb] = n.c || [150, 160, 180];
+        const [cr0, cg0, cb0] = lift(n.c || [150, 160, 180], 1.18);
+        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
+        g.addColorStop(0, `rgba(${cr0},${cg0},${cb0},0.22)`);
+        g.addColorStop(0.18, `rgba(${cr0},${cg0},${cb0},0.07)`);
+        g.addColorStop(0.55, `rgba(${cr0},${cg0},${cb0},0.015)`);
+        g.addColorStop(1, `rgba(${cr0},${cg0},${cb0},0)`);
+        ctx.fillStyle = g;
         ctx.beginPath();
-        ctx.fillStyle = `rgb(${cr},${cg},${cb})`;
         ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
         ctx.fill();
+        const cr = coreR(n);
+        const halo = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, cr * 2.4);
+        halo.addColorStop(0, `rgba(${Math.min(255, cr0 + 70)},${Math.min(255, cg0 + 70)},${Math.min(255, cb0 + 70)},0.95)`);
+        halo.addColorStop(0.45, `rgba(${cr0},${cg0},${cb0},0.45)`);
+        halo.addColorStop(1, `rgba(${cr0},${cg0},${cb0},0)`);
+        ctx.fillStyle = halo;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, cr * 2.4, 0, Math.PI * 2);
+        ctx.fill();
         if (n.mca && n.mca.length) {
-          ctx.strokeStyle = "#e8c56a"; ctx.lineWidth = 1.4; ctx.stroke();
+          ctx.strokeStyle = "rgba(232,197,106,0.75)";
+          ctx.lineWidth = 1.05;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, cr + 1.6, 0, Math.PI * 2);
+          ctx.stroke();
         }
       }
-      const topDesc = [...(graphs[active].topAsc || [])].sort((a, b) => degOf(b) - degOf(a));
+      ctx.restore();
+
       ctx.textAlign = "center";
       ctx.textBaseline = "bottom";
       const occupied = [];
+      const topDesc = [...(graphs[active].topAsc || [])].sort((a, b) => degOf(b) - degOf(a));
       for (const n of topDesc) {
         const p = toScreen(n);
         const px = labelPx(n, degMax);
@@ -448,14 +515,15 @@
         ctx.font = `600 ${px}px Segoe UI, sans-serif`;
         const tw = ctx.measureText(label).width;
         const th = px + 6;
-        const box = { x: p.x - tw / 2, y: p.y - nodeR(n) - 3 - th, w: tw, h: th };
+        const ly = p.y - coreR(n) * 2.6 - 3;
+        const box = { x: p.x - tw / 2, y: ly - th, w: tw, h: th };
         if (occupied.some(o => box.x < o.x + o.w && box.x + box.w > o.x && box.y < o.y + o.h && box.y + box.h > o.y)) continue;
         occupied.push(box);
-        const [cr, cg, cb] = n.c || [200, 200, 200];
-        ctx.fillStyle = `rgb(${cr},${cg},${cb})`;
-        ctx.shadowColor = "rgba(0,0,0,0.85)";
-        ctx.shadowBlur = 4;
-        ctx.fillText(label, p.x, p.y - nodeR(n) - 3);
+        const [cr, cg, cb] = lift(n.c || [220, 220, 230], 1.2);
+        ctx.shadowColor = "rgba(0,0,0,0.95)";
+        ctx.shadowBlur = 8;
+        ctx.fillStyle = `rgb(${cr|0},${cg|0},${cb|0})`;
+        ctx.fillText(label, p.x, ly);
         ctx.shadowBlur = 0;
       }
     }
@@ -533,7 +601,7 @@
           data,
           opts: opts || {},
           nodesBySize: [...nodes].sort((a, b) => degOf(a) - degOf(b)),
-          topAsc: [...nodes].sort((a, b) => degOf(b) - degOf(a)).slice(0, 32).sort((a, b) => degOf(a) - degOf(b)),
+          topAsc: [...nodes].sort((a, b) => degOf(b) - degOf(a)).slice(0, 22).sort((a, b) => degOf(a) - degOf(b)),
         };
       },
       show(key) {
