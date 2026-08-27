@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connectomes — cross_corpus</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #000; color: #ccc; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+    #c { position: fixed; inset: 0; }
+    canvas { display: block; width: 100%; height: 100%; }
+    #labels { position: fixed; inset: 0; pointer-events: none; z-index: 2; overflow: hidden; }
+    .label {
+      position: absolute; transform: translate(-50%, -130%);
+      color: #fff; letter-spacing: 0.015em;
+      text-shadow: 0 0 6px rgba(0,0,0,0.85), 0 1px 2px rgba(0,0,0,0.7);
+      white-space: nowrap; opacity: 0.95;
+      line-height: 1.05;
+      pointer-events: auto; cursor: pointer;
+    }
+    .label:hover { filter: brightness(1.15); }
+    #corpusNav {
+      position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 6;
+      display: flex; flex-direction: column; gap: 0;
+      max-width: min(720px, calc(100vw - 560px));
+      background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; overflow: hidden;
+    }
+    #tabs {
+      display: flex; gap: 4px; flex-wrap: wrap; justify-content: center;
+      padding: 6px;
+    }
+    .tab {
+      border: 0; background: transparent; color: #8b93a0; font: inherit; font-size: 12px;
+      padding: 7px 12px; border-radius: 7px; cursor: pointer; white-space: nowrap;
+    }
+    .tab:hover { color: #e8eef7; background: rgba(255,255,255,0.06); }
+    .tab.active { color: #fff; background: rgba(77,138,240,0.28); }
+    /* CTA: deep-link vers comptes coordonnés du corpus actif (nouvel onglet = graphe conservé) */
+    #subTabs {
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 8px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 7px 8px 8px;
+      background: rgba(0,0,0,0.32);
+    }
+    .subtab {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: #f0e6c8; font: inherit; font-size: 12.5px;
+      padding: 8px 16px; border-radius: 8px;
+      text-decoration: none; letter-spacing: 0.02em;
+      border: 1px solid rgba(201,178,122,0.55);
+      background: linear-gradient(180deg, rgba(201,178,122,0.28), rgba(201,178,122,0.12));
+      box-shadow: 0 0 0 1px rgba(201,178,122,0.12), 0 2px 10px rgba(0,0,0,0.35);
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+    .subtab:hover {
+      color: #fff8e8; background: linear-gradient(180deg, rgba(201,178,122,0.42), rgba(201,178,122,0.2));
+      border-color: rgba(232,210,140,0.85);
+    }
+    .subtab .subtab-label { color: #fff6d6; font-weight: 700; }
+    .subtab .subtab-hint { color: #b8a878; font-size: 11px; font-weight: 500; }
+    #hud {
+      position: fixed; top: 12px; left: 12px; z-index: 5;
+      background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px; padding: 12px 14px; width: 248px;
+      font-size: 11px; color: #8b93a0;
+    }
+    #hud b, #commPanel b {
+      color: #c5ccd6; font-weight: 600; display: block; margin-bottom: 6px;
+      font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    #commPanel {
+      position: fixed; top: 12px; right: 12px; z-index: 5;
+      background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px; padding: 12px 14px; width: min(320px, calc(100vw - 24px));
+      max-height: calc(100vh - 24px); overflow: hidden;
+      display: flex; flex-direction: column;
+      font-size: 11px; color: #8b93a0;
+    }
+    #commPanel .sub {
+      color: #6a7380; font-size: 10px; margin-bottom: 8px; line-height: 1.35;
+      flex-shrink: 0;
+    }
+    #commPanel > b { flex-shrink: 0; }
+    /* ~5 communautés visibles ; le reste via défilement vertical */
+    #commList {
+      overflow-y: auto;
+      max-height: min(248px, calc(100vh - 110px));
+      margin-right: -6px;
+      padding-right: 6px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.2) transparent;
+    }
+    #commList::-webkit-scrollbar { width: 6px; }
+    #commList::-webkit-scrollbar-track { background: transparent; }
+    #commList::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.18);
+      border-radius: 3px;
+    }
+    #commList::-webkit-scrollbar-thumb:hover {
+      background: rgba(255,255,255,0.28);
+    }
+    .comm-row {
+      display: grid; grid-template-columns: 10px 1fr; gap: 8px;
+      padding: 8px 0; border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .comm-row:first-of-type { border-top: 0; padding-top: 2px; }
+    .comm-swatch {
+      width: 10px; height: 10px; border-radius: 2px; margin-top: 3px;
+      box-shadow: 0 0 6px rgba(255,255,255,0.12);
+    }
+    .comm-head {
+      display: flex; justify-content: space-between; gap: 8px; align-items: baseline;
+      color: #c5ccd6; font-weight: 600; margin-bottom: 3px;
+    }
+    .comm-head .pct { color: #6a7380; font-weight: 500; font-variant-numeric: tabular-nums; }
+    .comm-accounts {
+      color: #9aa3b0; line-height: 1.45; word-break: break-word;
+    }
+    .comm-accounts .handle { color: inherit; }
+    .row { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+    .row span { width: 58px; flex-shrink: 0; }
+    .row input, .row select { flex: 1; accent-color: #8ab4ff; min-width: 0; }
+    .row select {
+      background: #111; color: #c5ccd6; border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 4px; padding: 3px 4px; font-size: 11px;
+    }
+    #exportBtn {
+      margin-top: 10px; width: 100%; padding: 8px 10px; border: 0; border-radius: 6px;
+      background: #1a4a7a; color: #e8eef7; font-size: 11px; font-weight: 600;
+      cursor: pointer; letter-spacing: 0.03em;
+    }
+    #exportBtn:hover { background: #2563a0; }
+    #exportBtn:disabled { opacity: 0.55; cursor: wait; }
+    #exportStatus { margin-top: 6px; font-size: 10px; color: #6a7380; line-height: 1.35; min-height: 1.2em; }
+    #loading { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; background: #000; color: #666; font-size: 13px; }
+    #loading.hidden { display: none; }
+    #tooltip {
+      position: fixed; z-index: 7; pointer-events: none; display: none;
+      background: rgba(10,12,16,0.92); border: 1px solid rgba(255,255,255,0.12);
+      color: #e8eef7; font-size: 12px; padding: 8px 10px; border-radius: 8px;
+      max-width: 280px; line-height: 1.35;
+    }
+    #tooltip .muted { color: #8b93a0; font-size: 11px; }
+    #tooltip .hint { color: #6a7380; font-size: 10px; margin-top: 5px; }
+    #tooltip .hint .mca { color: #c9b27a; }
+    .comm-accounts a.handle {
+      color: inherit; text-decoration: none; border-bottom: 1px dotted rgba(255,255,255,0.22);
+      cursor: pointer;
+    }
+    .comm-accounts a.handle:hover { color: #e8eef7; border-bottom-color: rgba(232,238,247,0.55); }
+    #hud .nav-hint {
+      margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.06);
+      color: #6a7380; font-size: 10px; line-height: 1.4;
+    }
+    .label.hl-selected {
+      color: #fff6d6 !important;
+      font-weight: 700 !important;
+      text-shadow: 0 0 12px rgba(255, 210, 80, 0.95), 0 0 4px rgba(0,0,0,0.9), 0 1px 2px rgba(0,0,0,0.85) !important;
+      z-index: 4 !important;
+      opacity: 1 !important;
+    }
+    /* Case « Voir les comptes coordonnés » — mise en avant */
+    .hl-toggle {
+      margin-top: 12px;
+      padding: 10px 10px 10px 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(201,178,122,0.55);
+      background: linear-gradient(180deg, rgba(201,178,122,0.22), rgba(201,178,122,0.08));
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .hl-toggle:hover {
+      border-color: rgba(232,210,140,0.85);
+      background: linear-gradient(180deg, rgba(201,178,122,0.32), rgba(201,178,122,0.12));
+    }
+    .hl-toggle:has(#hlSelected:checked) {
+      border-color: rgba(255,210,80,0.75);
+      box-shadow: 0 0 0 1px rgba(255,210,80,0.2), 0 0 14px rgba(255,210,80,0.12);
+      background: linear-gradient(180deg, rgba(255,210,80,0.22), rgba(201,178,122,0.1));
+    }
+    .hl-toggle input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      min-width: 18px;
+      margin: 1px 0 0;
+      flex: 0 0 auto;
+      accent-color: #e8c84a;
+      cursor: pointer;
+    }
+    .hl-toggle .hl-copy { flex: 1; min-width: 0; cursor: pointer; }
+    .hl-toggle .hl-title {
+      display: block;
+      color: #fff6d6;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: 0.01em;
+    }
+    .hl-toggle .hl-sub {
+      display: block;
+      margin-top: 3px;
+      color: #b8a878;
+      font-size: 10px;
+      line-height: 1.35;
+      font-weight: 500;
+    }
+  </style>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="loading">Chargement…</div>
+  <div id="c"></div>
+  <div id="labels"></div>
+  <nav id="corpusNav" aria-label="Navigation corpus">
+    <div id="tabs" role="tablist" aria-label="Corpus"></div>
+    <div id="subTabs">
+      <a id="comptesLink" class="subtab" href="../analyses/comptes_selectionnes.html" target="_blank" rel="noopener noreferrer" title="Ouvrir le tableau des comptes coordonnés (nouvel onglet)">
+        <span class="subtab-label">Tableau des comptes coordonnés</span>
+        <span class="subtab-hint" id="comptesLinkHint">—</span>
+      </a>
+      <a id="health3Link" class="subtab" href="../analyses/health3_overlap.html" target="_blank" rel="noopener noreferrer" title="Intersection des auteurs des 3 corpus santé">
+        <span class="subtab-label">Intersection 3 corpus santé</span>
+        <span class="subtab-hint">réseau 3D · Hanta × Mpox</span>
+      </a>
+    </div>
+  </nav>
+  <div id="tooltip"></div>
+  <aside id="hud">
+    <b>Connectome</b>
+    <div id="stats">—</div>
+    <div class="row"><span>Lumière liens</span><input id="linkLight" type="range" min="0" max="1" step="0.01" value="0.28"></div>
+    <div class="row"><span>Bloom</span><input id="bloom" type="range" min="0" max="2.2" step="0.01" value="0.38"></div>
+    <div class="row"><span>Opacité</span><input id="op" type="range" min="0" max="0.45" step="0.005" value="0.07"></div>
+    <div class="row"><span>Labels</span><input id="nLabels" type="range" min="0" max="80" step="1" value="40"></div>
+    <label class="hl-toggle" for="hlSelected">
+      <input id="hlSelected" type="checkbox" />
+      <span class="hl-copy">
+        <span class="hl-title">Voir les comptes coordonnés</span>
+        <span class="hl-sub">Cochez pour les surligner sur le graphe</span>
+      </span>
+    </label>
+    <div class="nav-hint">Clic nœud/label → profil X<br/>Alt+clic (compte coordonné) → fiche détaillée</div>
+    <div class="row"><span>Export</span>
+      <select id="exportSize">
+        <option value="3840x2160">4K · 3840×2160</option>
+        <option value="4096x4096" selected>Carré 4K</option>
+        <option value="5120x2880">5K · 5120×2880</option>
+        <option value="6144x6144">Carré 6K</option>
+        <option value="7680x4320">8K · 7680×4320</option>
+        <option value="8192x8192">Carré 8K</option>
+        <option value="screen">Écran actuel ×2</option>
+      </select>
+    </div>
+    <button type="button" id="exportBtn">Exporter PNG HQ</button>
+    <div id="exportStatus"></div>
+  </aside>
+  <aside id="commPanel">
+    <b>Communautés</b>
+    <div class="sub" id="commSub">—</div>
+    <div id="commList"></div>
+  </aside>
+
+  <script type="module">
+import * as THREE from 'three';
+import { MapControls } from 'three/addons/controls/MapControls.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+const wrap = document.getElementById('c');
+const labelsEl = document.getElementById('labels');
+const loading = document.getElementById('loading');
+
+const P = {
+  linkLight: 0.28,
+  bloom: 0.38,
+  radius: 0.08,
+  threshold: 0.22,
+  opacity: 0.07,
+  strands: 4,
+  segments: 18,
+  nLabels: 40,
+  exposure: 0.72,
+};
+
+const tip = document.getElementById('tooltip');
+const tabsEl = document.getElementById('tabs');
+const comptesLinkEl = document.getElementById('comptesLink');
+const comptesLinkHintEl = document.getElementById('comptesLinkHint');
+let currentCorpusId = null;
+const graphCache = new Map();
+const selectedCache = new Map();
+let highlightSelected = false;
+let selectedHandles = new Set();
+
+const renderer = new THREE.WebGLRenderer({
+  antialias: true,
+  powerPreference: 'high-performance',
+  alpha: false,
+  preserveDrawingBuffer: true,
+});
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = P.exposure;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+wrap.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x000000);
+
+const aspect = innerWidth / innerHeight;
+const frustum = 480;
+const camera = new THREE.OrthographicCamera(
+  -frustum * aspect, frustum * aspect, frustum, -frustum, -2000, 2000
+);
+camera.position.set(0, 0, 400);
+
+const controls = new MapControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.1;
+controls.enableRotate = false;
+controls.screenSpacePanning = true;
+controls.minZoom = 0.02;
+controls.maxZoom = 20;
+controls.target.set(0, 0, 0);
+
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+const bloomPass = new UnrealBloomPass(
+  new THREE.Vector2(innerWidth, innerHeight),
+  P.bloom, P.radius, P.threshold
+);
+composer.addPass(bloomPass);
+composer.addPass(new OutputPass());
+
+let lineMat = null;
+let lineGeo = null;
+let lineColorsBase = null;
+let graphData = null;
+let labelItems = [];
+
+function lift(rgb, mul = 1.15) {
+  // keep colors vivid but not neon-blown / white-core
+  return [
+    Math.min(1.05, (rgb[0] / 255) * mul),
+    Math.min(1.05, (rgb[1] / 255) * mul),
+    Math.min(1.05, (rgb[2] / 255) * mul),
+  ];
+}
+
+function rgbCss(rgb, alpha = 1) {
+  if (!rgb || rgb.length < 3) return alpha < 1 ? `rgba(200,200,200,${alpha})` : '#c8c8c8';
+  const r = Math.round(rgb[0]), g = Math.round(rgb[1]), b = Math.round(rgb[2]);
+  return alpha < 1 ? `rgba(${r},${g},${b},${alpha})` : `rgb(${r},${g},${b})`;
+}
+
+function normalizeHandle(raw) {
+  return String(raw || '').trim().replace(/^@+/, '').toLowerCase();
+}
+
+function displayHandle(raw) {
+  const h = String(raw || '').trim();
+  if (!h) return '';
+  return h.startsWith('@') ? h : `@${h}`;
+}
+
+function xProfileUrl(raw) {
+  const h = normalizeHandle(raw);
+  return h ? `https://x.com/${encodeURIComponent(h)}` : null;
+}
+
+/** Page comptes coordonnés pour un corpus (sans ancre user). */
+function comptesCorpusUrl(corpusId) {
+  if (!corpusId) return null;
+  const base = new URL('../analyses/comptes_selectionnes.html', import.meta.url);
+  base.searchParams.set('corpus', corpusId);
+  return base.href;
+}
+
+function comptesDeepLink(corpusId, raw) {
+  const h = normalizeHandle(raw);
+  if (!corpusId || !h) return null;
+  const base = new URL('../analyses/comptes_selectionnes.html', import.meta.url);
+  base.searchParams.set('corpus', corpusId);
+  base.searchParams.set('user', h);
+  return base.href;
+}
+
+function syncComptesSubTab(corp) {
+  if (!comptesLinkEl) return;
+  const id = corp?.id || currentCorpusId;
+  const url = comptesCorpusUrl(id);
+  if (url) comptesLinkEl.href = url;
+  if (comptesLinkHintEl) {
+    comptesLinkHintEl.textContent = corp?.label ? `· ${corp.label}` : (id ? `· ${id}` : '—');
+  }
+}
+
+function isMcaSelected(raw) {
+  const h = normalizeHandle(raw);
+  return !!(h && selectedHandles.has(h));
+}
+
+function openXProfile(raw) {
+  const url = xProfileUrl(raw);
+  if (url) window.open(url, '_blank', 'noopener,noreferrer');
+}
+
+function openComptesRow(raw) {
+  const url = comptesDeepLink(currentCorpusId, raw);
+  if (url) window.open(url, '_blank', 'noopener,noreferrer');
+}
+
+/** Navigate from a graph node: primary = X profile; Alt/Ctrl/Meta = MCA fiche. */
+function navigateFromNode(node, ev) {
+  if (!node?.l) return;
+  const secondary = !!(ev && (ev.altKey || ev.ctrlKey || ev.metaKey));
+  if (secondary && isMcaSelected(node.l)) {
+    openComptesRow(node.l);
+    return;
+  }
+  openXProfile(node.l);
+}
+
+function worldFromClient(clientX, clientY) {
+  const rect = renderer.domElement.getBoundingClientRect();
+  const ndcX = ((clientX - rect.left) / rect.width) * 2 - 1;
+  const ndcY = -(((clientY - rect.top) / rect.height) * 2 - 1);
+  return {
+    x: ndcX * (camera.right - camera.left) * 0.5 / camera.zoom + controls.target.x,
+    y: ndcY * (camera.top - camera.bottom) * 0.5 / camera.zoom + controls.target.y,
+  };
+}
+
+function hitTestNode(clientX, clientY) {
+  if (!graphData?.nodes?.length) return null;
+  const { x: worldX, y: worldY } = worldFromClient(clientX, clientY);
+  const hitR = 14 / camera.zoom;
+  let best = null;
+  let bestD = hitR * hitR;
+  for (const n of graphData.nodes) {
+    const dx = n.x - worldX;
+    const dy = n.y - worldY;
+    const d2 = dx * dx + dy * dy;
+    if (d2 < bestD) {
+      bestD = d2;
+      best = n;
+    }
+  }
+  return best;
+}
+
+/** Communautés cumulées jusqu'à ~90 % des nœuds (meta pipeline ou fallback client). */
+function communitiesCovering90(data, target = 0.9) {
+  if (data?.meta?.communities90?.length) {
+    return {
+      rows: data.meta.communities90,
+      coverage: data.meta.communities90CoveragePct
+        ?? data.meta.communities90.reduce((s, c) => s + (c.pct || 0), 0),
+    };
+  }
+  const nodes = data?.nodes || [];
+  const total = nodes.length || 1;
+  const byCom = new Map();
+  for (const n of nodes) {
+    const cid = n.com ?? -1;
+    if (!byCom.has(cid)) byCom.set(cid, []);
+    byCom.get(cid).push(n);
+  }
+  const ranked = [...byCom.entries()]
+    .map(([id, arr]) => {
+      arr.sort((a, b) => (b.deg || 0) - (a.deg || 0));
+      const rgb = arr[0]?.c || [154, 163, 181];
+      return {
+        id,
+        color: rgbCss(rgb),
+        n: arr.length,
+        pct: Math.round((1000 * arr.length) / total) / 10,
+        accounts: arr.slice(0, 8).map((n) => ({ l: n.l, deg: Math.round((n.deg || 0) * 10) / 10 })),
+      };
+    })
+    .sort((a, b) => b.n - a.n);
+  const rows = [];
+  let cum = 0;
+  for (const row of ranked) {
+    rows.push(row);
+    cum += row.n;
+    if (cum / total >= target) break;
+  }
+  return { rows, coverage: Math.round((1000 * cum) / total) / 10 };
+}
+
+function renderCommPanel(data) {
+  const list = document.getElementById('commList');
+  const sub = document.getElementById('commSub');
+  if (!list || !sub) return;
+  const { rows, coverage } = communitiesCovering90(data);
+  const scrollHint = rows.length > 5 ? ' · défiler pour les suivantes' : '';
+  sub.textContent = `${rows.length} communauté${rows.length > 1 ? 's' : ''} · ${coverage.toLocaleString('fr-FR')} % des nœuds du graphe · comptes par degré pondéré${scrollHint}`;
+  list.innerHTML = '';
+  for (const row of rows) {
+    const el = document.createElement('div');
+    el.className = 'comm-row';
+    const handles = (row.accounts || [])
+      .slice(0, 6)
+      .map((a) => {
+        const raw = String(a.l || '').replace(/^@/, '');
+        if (!raw) return '';
+        const h = `@${raw}`;
+        const href = xProfileUrl(raw);
+        return `<a class="handle" href="${href}" target="_blank" rel="noopener noreferrer" title="Ouvrir sur X">${h}</a>`;
+      })
+      .filter(Boolean)
+      .join(', ');
+    el.innerHTML = `
+      <div class="comm-swatch" style="background:${row.color}"></div>
+      <div>
+        <div class="comm-head"><span>C${row.id}</span><span class="pct">${row.pct}% · ${row.n.toLocaleString('fr-FR')}</span></div>
+        <div class="comm-accounts">${handles || '—'}</div>
+      </div>`;
+    list.appendChild(el);
+  }
+}
+
+function lerp3(a, b, t) {
+  return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+}
+
+function hash(i) {
+  const x = Math.sin(i * 127.1 + 311.7) * 43758.5453;
+  return x - Math.floor(x);
+}
+
+/** Quadratic bezier samples for one hair strand. */
+function strandPoints(ax, ay, bx, by, segs, seed) {
+  const dx = bx - ax, dy = by - ay;
+  const len = Math.hypot(dx, dy) || 1;
+  const bulge = Math.min(42, len * (0.05 + 0.12 * hash(seed)));
+  const sign = hash(seed + 3) > 0.5 ? 1 : -1;
+  const px = -dy / len, py = dx / len;
+  // lateral offset between strands (hair separation)
+  const off = (hash(seed + 7) - 0.5) * Math.min(10, len * 0.05);
+  const cx = (ax + bx) * 0.5 + px * bulge * sign + px * off;
+  const cy = (ay + by) * 0.5 + py * bulge * sign + py * off;
+  // tiny endpoint jitter so strands don't share the exact same tip
+  const j = Math.min(3.5, len * 0.012);
+  const ax2 = ax + px * (hash(seed + 11) - 0.5) * j;
+  const ay2 = ay + py * (hash(seed + 13) - 0.5) * j;
+  const bx2 = bx + px * (hash(seed + 17) - 0.5) * j;
+  const by2 = by + py * (hash(seed + 19) - 0.5) * j;
+
+  const pts = [];
+  for (let i = 0; i <= segs; i++) {
+    const t = i / segs;
+    const u = 1 - t;
+    pts.push(
+      u * u * ax2 + 2 * u * t * cx + t * t * bx2,
+      u * u * ay2 + 2 * u * t * cy + t * t * by2,
+      0
+    );
+  }
+  return pts;
+}
+
+/** Luminosité des liens : 0 = aucune lumière / liens invisibles, 1 = intensité max. */
+function applyLinkLight(level = P.linkLight) {
+  P.linkLight = Math.max(0, Math.min(1, level));
+  const slider = document.getElementById('linkLight');
+  if (slider && slider.value !== String(P.linkLight)) slider.value = String(P.linkLight);
+  if (!lineGeo || !lineColorsBase || !lineMat) return;
+  const col = lineGeo.attributes.color.array;
+  const k = P.linkLight;
+  for (let i = 0; i < lineColorsBase.length; i++) col[i] = lineColorsBase[i] * k;
+  lineGeo.attributes.color.needsUpdate = true;
+  lineMat.opacity = k * P.opacity;
+  lineMat.visible = k > 0.0005;
+}
+
+function buildGraph(data) {
+  graphData = data;
+  while (scene.children.length) scene.remove(scene.children[0]);
+
+  const nodes = data.nodes;
+  const edges = data.edges;
+  const maxW = Math.max(...edges.map((e) => e.w), 1);
+
+  // Auto-tune hair density for large graphs (GPU/RAM)
+  if (edges.length > 80_000) {
+    P.strands = 2;
+    P.segments = 10;
+  } else if (edges.length > 30_000) {
+    P.strands = 3;
+    P.segments = 12;
+  }
+
+  const positions = [];
+  const colors = [];
+  let seed = 1;
+
+  for (const e of edges) {
+    const a = nodes[e.s];
+    const b = nodes[e.t];
+    if (!a || !b) continue;
+
+    const ca = lift(a.c, 1.18);
+    const cb = lift(b.c, 1.18);
+    const wNorm = Math.pow(e.w / maxW, 0.45);
+    // faint individual hair — density creates brightness
+    const bright = 0.28 + 0.55 * wNorm;
+
+    for (let s = 0; s < P.strands; s++) {
+      // outer strands slightly dimmer
+      const strandBright = bright * (1 - s * 0.12);
+      const pts = strandPoints(a.x, a.y, b.x, b.y, P.segments, seed++);
+      const n = pts.length / 3;
+      for (let i = 0; i < n - 1; i++) {
+        const t0 = i / (n - 1);
+        const t1 = (i + 1) / (n - 1);
+        const c0 = lerp3(ca, cb, t0);
+        const c1 = lerp3(ca, cb, t1);
+        positions.push(
+          pts[i * 3], pts[i * 3 + 1], pts[i * 3 + 2],
+          pts[(i + 1) * 3], pts[(i + 1) * 3 + 1], pts[(i + 1) * 3 + 2]
+        );
+        colors.push(
+          c0[0] * strandBright, c0[1] * strandBright, c0[2] * strandBright,
+          c1[0] * strandBright, c1[1] * strandBright, c1[2] * strandBright
+        );
+      }
+    }
+  }
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+  lineGeo = geo;
+  lineColorsBase = new Float32Array(colors);
+
+  lineMat = new THREE.LineBasicMaterial({
+    vertexColors: true,
+    transparent: true,
+    opacity: 0,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    depthTest: false,
+  });
+
+  const lines = new THREE.LineSegments(geo, lineMat);
+  lines.frustumCulled = false;
+  scene.add(lines);
+  applyLinkLight(P.linkLight);
+
+  // microscopic hubs only (almost invisible — edges carry the look)
+  const n = nodes.length;
+  const nPos = new Float32Array(n * 3);
+  const nCol = new Float32Array(n * 3);
+  const nSize = new Float32Array(n);
+  const maxDeg = Math.max(...nodes.map((x) => x.deg || 1), 1);
+  for (let i = 0; i < n; i++) {
+    const nd = nodes[i];
+    nPos[i * 3] = nd.x;
+    nPos[i * 3 + 1] = nd.y;
+    nPos[i * 3 + 2] = 0.15;
+    const c = lift(nd.c, 1.1);
+    nCol[i * 3] = c[0];
+    nCol[i * 3 + 1] = c[1];
+    nCol[i * 3 + 2] = c[2];
+    nSize[i] = 0.4 + 2.2 * Math.sqrt((nd.deg || 1) / maxDeg);
+  }
+  const pGeo = new THREE.BufferGeometry();
+  pGeo.setAttribute('position', new THREE.BufferAttribute(nPos, 3));
+  pGeo.setAttribute('color', new THREE.BufferAttribute(nCol, 3));
+  pGeo.setAttribute('size', new THREE.BufferAttribute(nSize, 1));
+  const pMat = new THREE.ShaderMaterial({
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    uniforms: { uPR: { value: renderer.getPixelRatio() } },
+    vertexShader: `
+      attribute float size; attribute vec3 color;
+      varying vec3 vC;
+      uniform float uPR;
+      void main() {
+        vC = color;
+        vec4 mv = modelViewMatrix * vec4(position,1.0);
+        gl_PointSize = size * uPR;
+        gl_Position = projectionMatrix * mv;
+      }`,
+    fragmentShader: `
+      varying vec3 vC;
+      void main() {
+        float d = length(gl_PointCoord - 0.5);
+        float a = smoothstep(0.4, 0.0, d) * 0.35;
+        gl_FragColor = vec4(vC, a);
+        if (a < 0.01) discard;
+      }`,
+  });
+  const pts = new THREE.Points(pGeo, pMat);
+  pts.frustumCulled = false;
+  scene.add(pts);
+
+  document.getElementById('stats').textContent =
+    `${data.meta.n_nodes.toLocaleString('fr-FR')} nœuds · ${data.meta.n_edges.toLocaleString('fr-FR')} liens · ${P.strands}× hair`;
+  renderCommPanel(data);
+  rebuildLabels();
+}
+
+function rebuildLabels() {
+  labelsEl.innerHTML = '';
+  labelItems = [];
+  if (!graphData) return;
+
+  // Gephi Preview "Proportional size" → label size tracks viz:size (field `s`)
+  const scored = graphData.nodes.map((n, i) => ({
+    ...n,
+    i,
+    gephiSize: Math.max(n.s || 1, 1),
+  }));
+
+  const byCom = new Map();
+  for (const n of scored) {
+    const c = n.com ?? -1;
+    if (!byCom.has(c)) byCom.set(c, []);
+    byCom.get(c).push(n);
+  }
+
+  const comOrder = [...byCom.entries()]
+    .map(([com, arr]) => ({
+      com,
+      arr: arr.sort((a, b) => (b.gephiSize - a.gephiSize) || (b.deg - a.deg)),
+      mass: arr.reduce((s, n) => s + n.gephiSize * Math.log1p(n.deg || 1), 0),
+      size: arr.length,
+    }))
+    .sort((a, b) => b.mass - a.mass);
+
+  const budget = P.nLabels;
+  const picked = new Map();
+  const mainComs = comOrder.filter((c) => c.size >= 40).slice(0, 28);
+
+  for (const c of mainComs) {
+    if (c.arr[0]) picked.set(c.arr[0].i, c.arr[0]);
+  }
+
+  const totalMass = mainComs.reduce((s, c) => s + c.mass, 0) || 1;
+  for (const c of mainComs) {
+    const quota = Math.min(4, Math.max(1, Math.round(1 + (c.mass / totalMass) * 10)));
+    for (let k = 0; k < quota && k < c.arr.length; k++) {
+      if (picked.size >= budget) break;
+      picked.set(c.arr[k].i, c.arr[k]);
+    }
+    if (picked.size >= budget) break;
+  }
+
+  if (picked.size < budget) {
+    for (const n of [...scored].sort((a, b) => (b.gephiSize - a.gephiSize) || (b.deg - a.deg))) {
+      if (picked.size >= budget) break;
+      picked.set(n.i, n);
+    }
+  }
+
+  // Always surface MCA Track B selected accounts when highlight is on
+  if (highlightSelected && selectedHandles.size) {
+    for (const n of scored) {
+      const key = String(n.l || '').toLowerCase().replace(/^@/, '');
+      if (selectedHandles.has(key)) picked.set(n.i, n);
+    }
+  }
+
+  const ranked = [...picked.values()].sort(
+    (a, b) => (b.gephiSize - a.gephiSize) || (b.deg - a.deg)
+  );
+  if (!ranked.length) return;
+
+  // Strong Gephi-like contrast: font ∝ viz:size^1.35 (range ~8px → ~52px)
+  const sMin = Math.min(...ranked.map((n) => n.gephiSize));
+  const sMax = Math.max(...ranked.map((n) => n.gephiSize));
+  const sSpan = Math.max(sMax - sMin, 1e-6);
+
+  const ordered = [...ranked].sort((a, b) => a.gephiSize - b.gephiSize);
+
+  for (const node of ordered) {
+    const el = document.createElement('div');
+    el.className = 'label';
+    // Match Gephi labels (@handle)
+    const text = node.l.startsWith('@') ? node.l : `@${node.l}`;
+    const handleKey = String(node.l || '').toLowerCase().replace(/^@/, '');
+    const isSelected = highlightSelected && selectedHandles.has(handleKey);
+    if (isSelected) el.classList.add('hl-selected');
+    el.textContent = text;
+
+    // Normalize then power-curve amplify tops (like Gephi ranking spline feel)
+    const u = (node.gephiSize - sMin) / sSpan; // 0‥1
+    const t = Math.pow(u, 0.7); // keep mid visible, stretch top
+    // Also bake absolute size so s=6 >> s=2 even within set
+    const abs = Math.pow(node.gephiSize / sMax, 1.25);
+    const mix = 0.45 * t + 0.55 * abs;
+    let fontPx = Math.round(7 + 32 * mix); // ~7 → 39 (un peu plus petit)
+    if (isSelected) fontPx = Math.max(Math.round(fontPx * 1.4), 15);
+
+    el.style.fontSize = `${fontPx}px`;
+    el.style.fontWeight = isSelected ? '700' : mix > 0.7 ? '700' : mix > 0.4 ? '600' : '500';
+    el.style.zIndex = String(Math.round(10 + 90 * mix) + (isSelected ? 50 : 0));
+    el.style.opacity = isSelected ? '1' : '0.94';
+    // Couleur = communauté du nœud (pas blanc) ; highlight force une teinte claire
+    const labelColor = isSelected ? '#fff6d6' : rgbCss(node.c);
+    el.style.color = labelColor;
+    el.style.textShadow = isSelected
+      ? '0 0 12px rgba(255,210,80,0.95), 0 0 4px rgba(0,0,0,0.9), 0 1px 2px rgba(0,0,0,0.85)'
+      : '0 0 6px rgba(0,0,0,0.85), 0 1px 2px rgba(0,0,0,0.75)';
+    el.title = isSelected
+      ? `${text} — clic : profil X · Alt+clic : fiche MCA`
+      : `${text} — clic : profil X`;
+    el.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      navigateFromNode(node, ev);
+    });
+    labelsEl.appendChild(el);
+
+    labelItems.push({
+      el,
+      text,
+      x: node.x,
+      y: node.y,
+      pr: node.pr,
+      deg: node.deg || 0,
+      gephiSize: node.gephiSize,
+      fontPx,
+      t: mix,
+      boxW: Math.max(28, text.length * fontPx * 0.55 + 12),
+      boxH: fontPx * 1.35,
+      com: node.com,
+      color: labelColor,
+      rgb: node.c,
+      isSelected,
+      visible: false,
+      ox: 0,
+      oy: 0,
+    });
+  }
+
+  // Refine box sizes from real DOM metrics (better anti-overlap)
+  requestAnimationFrame(() => {
+    for (const it of labelItems) {
+      const r = it.el.getBoundingClientRect();
+      if (r.width > 0) {
+        it.boxW = r.width + 6;
+        it.boxH = r.height + 4;
+      }
+    }
+  });
+}
+
+function labelScreenBox(cx, cy, boxW, boxH, ox, oy) {
+  // CSS: left/top = node, then translate(-50%, -130%)
+  // label top-left ≈ (cx - boxW/2 + ox, cy - 1.3*boxH + oy)
+  const left = cx - boxW * 0.5 + ox;
+  const top = cy - boxH * 1.3 + oy;
+  return { left, top, right: left + boxW, bottom: top + boxH, w: boxW, h: boxH };
+}
+
+function boxesHit(a, b, pad = 6) {
+  return !(
+    a.right + pad <= b.left ||
+    a.left - pad >= b.right ||
+    a.bottom + pad <= b.top ||
+    a.top - pad >= b.bottom
+  );
+}
+
+function projectLabels() {
+  const w = innerWidth;
+  const h = innerHeight;
+  const z = camera.zoom || 1;
+
+  const bySize = [...labelItems].sort(
+    (a, b) => (b.gephiSize - a.gephiSize) || (b.deg - a.deg)
+  );
+
+  // Place selected (MCA) first when highlight is on, then largest hubs
+  let candidates;
+  if (highlightSelected) {
+    const selected = labelItems.filter((it) => it.isSelected);
+    const hubs = bySize.filter((it) => !it.isSelected);
+    const hubBudget = Math.max(
+      0,
+      Math.min(
+        hubs.length,
+        Math.ceil(hubs.length * Math.min(1, Math.max(0.3, (z - 0.3) / 2.2)))
+      )
+    );
+    // All coordinated accounts (same count as the linked table), then a zoom-scaled hub set
+    candidates = [...selected, ...hubs.slice(0, Math.max(hubBudget, Math.min(hubs.length, P.nLabels)))];
+  } else {
+    const maxShow = labelItems.length;
+    const revealN = Math.max(
+      4,
+      Math.min(maxShow, Math.ceil(maxShow * Math.min(1, Math.max(0.3, (z - 0.3) / 2.2))))
+    );
+    candidates = bySize.slice(0, revealN);
+  }
+
+  const placed = [];
+
+  for (const it of labelItems) {
+    it.visible = false;
+    it.el.style.display = 'none';
+  }
+
+  const offsets = (bw, bh) => [
+    [0, 0],
+    [0, -bh * 0.4],
+    [0, bh * 0.5],
+    [bw * 0.4, 0],
+    [-bw * 0.4, 0],
+    [bw * 0.3, -bh * 0.35],
+    [-bw * 0.3, -bh * 0.35],
+    [bw * 0.3, bh * 0.4],
+    [-bw * 0.3, bh * 0.4],
+  ];
+
+  const showAt = (it, cx, cy, ox, oy, box) => {
+    it.visible = true;
+    it.ox = ox;
+    it.oy = oy;
+    it.sx = cx + ox;
+    it.sy = cy + oy;
+    it.el.style.display = 'block';
+    it.el.style.left = `${it.sx}px`;
+    it.el.style.top = `${it.sy}px`;
+    placed.push({ box, it });
+  };
+
+  for (const it of candidates) {
+    const v = new THREE.Vector3(it.x, it.y, 0).project(camera);
+    if (v.z > 1) continue;
+    const cx = (v.x * 0.5 + 0.5) * w;
+    const cy = (-v.y * 0.5 + 0.5) * h;
+    // Coordinated accounts: keep labels even near the edge; hubs: soft margin cull
+    if (!it.isSelected && (cx < -80 || cx > w + 80 || cy < -80 || cy > h + 80)) continue;
+
+    let placedOk = false;
+    for (const [ox, oy] of offsets(it.boxW, it.boxH)) {
+      const box = labelScreenBox(cx, cy, it.boxW, it.boxH, ox, oy);
+      if (!it.isSelected) {
+        if (box.left < 2 || box.right > w - 2 || box.top < 2 || box.bottom > h - 2) continue;
+        if (placed.some((p) => boxesHit(box, p.box, 8))) continue;
+      } else {
+        // Prefer a free slot among selected, but never drop a coordinated label for overlap
+        if (placed.some((p) => !p.it.isSelected && boxesHit(box, p.box, 8))) continue;
+      }
+
+      showAt(it, cx, cy, ox, oy, box);
+      placedOk = true;
+      break;
+    }
+    if (!placedOk && it.isSelected) {
+      // Force-show: same count as the MCA table, even if labels overlap
+      const box = labelScreenBox(cx, cy, it.boxW, it.boxH, 0, 0);
+      showAt(it, cx, cy, 0, 0, box);
+    } else if (!placedOk) {
+      it.visible = false;
+      it.el.style.display = 'none';
+    }
+  }
+}
+
+function onResize() {
+  const a = innerWidth / innerHeight;
+  camera.left = -frustum * a;
+  camera.right = frustum * a;
+  camera.top = frustum;
+  camera.bottom = -frustum;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+  composer.setSize(innerWidth, innerHeight);
+  bloomPass.resolution.set(innerWidth, innerHeight);
+}
+addEventListener('resize', onResize);
+
+document.getElementById('linkLight').oninput = (e) => { applyLinkLight(+e.target.value); };
+document.getElementById('bloom').oninput = (e) => { bloomPass.strength = +e.target.value; P.bloom = +e.target.value; };
+document.getElementById('op').oninput = (e) => { P.opacity = +e.target.value; applyLinkLight(P.linkLight); };
+document.getElementById('nLabels').oninput = (e) => { P.nLabels = +e.target.value; rebuildLabels(); };
+document.getElementById('hlSelected').onchange = (e) => {
+  highlightSelected = !!e.target.checked;
+  rebuildLabels();
+};
+
+const exportBtn = document.getElementById('exportBtn');
+const exportStatus = document.getElementById('exportStatus');
+let exporting = false;
+
+function parseExportSize(val) {
+  if (val === 'screen') {
+    const pr = Math.min(devicePixelRatio, 2);
+    return {
+      w: Math.round(innerWidth * pr * 2),
+      h: Math.round(innerHeight * pr * 2),
+    };
+  }
+  const [w, h] = val.split('x').map(Number);
+  return { w, h };
+}
+
+function maxGpuSize() {
+  const gl = renderer.getContext();
+  const a = gl.getParameter(gl.MAX_RENDERBUFFER_SIZE) || 8192;
+  const b = gl.getParameter(gl.MAX_TEXTURE_SIZE) || 8192;
+  // leave headroom for bloom mip chain
+  return Math.min(a, b, 8192);
+}
+
+function drawLabelsOnCtx(ctx, w, h, scale) {
+  if (!labelItems.length) return;
+  const bySize = [...labelItems].sort(
+    (a, b) => (b.gephiSize - a.gephiSize) || (b.deg - a.deg)
+  );
+  const candidates = highlightSelected
+    ? [...labelItems.filter((it) => it.isSelected), ...bySize.filter((it) => !it.isSelected)]
+    : bySize;
+  const placed = [];
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+
+  const paint = (it, cx, cy, ox, oy, fontPx, text) => {
+    const weight = it.isSelected ? '700' : (it.t || 0) > 0.7 ? '700' : (it.t || 0) > 0.4 ? '600' : '500';
+    ctx.font = `${weight} ${fontPx}px "Helvetica Neue", Helvetica, Arial, sans-serif`;
+    ctx.globalAlpha = it.isSelected ? 1 : 0.94;
+    ctx.shadowColor = it.isSelected ? 'rgba(255,210,80,0.95)' : 'rgba(0,0,0,0.85)';
+    ctx.shadowBlur = it.isSelected ? 12 : 6;
+    ctx.fillStyle = it.color || rgbCss(it.rgb) || '#ffffff';
+    ctx.fillText(text, cx + ox, cy + oy - fontPx * 0.25);
+    ctx.shadowBlur = 0;
+  };
+
+  for (const it of candidates) {
+    const v = new THREE.Vector3(it.x, it.y, 0).project(camera);
+    if (v.z > 1) continue;
+    const cx = (v.x * 0.5 + 0.5) * w;
+    const cy = (-v.y * 0.5 + 0.5) * h;
+    const fontPx = Math.max(10, Math.round((it.fontPx || 12) * scale));
+    const text = it.text || it.el.textContent;
+    const boxW = Math.max(28, text.length * fontPx * 0.55 + 12);
+    const boxH = fontPx * 1.35;
+    const offs = [
+      [0, 0], [0, -boxH * 0.4], [0, boxH * 0.5],
+      [boxW * 0.4, 0], [-boxW * 0.4, 0],
+      [boxW * 0.3, -boxH * 0.35], [-boxW * 0.3, -boxH * 0.35],
+    ];
+
+    let painted = false;
+    for (const [ox, oy] of offs) {
+      const box = labelScreenBox(cx, cy, boxW, boxH, ox, oy);
+      if (!it.isSelected) {
+        if (box.left < 2 || box.right > w - 2 || box.top < 2 || box.bottom > h - 2) continue;
+        if (placed.some((p) => boxesHit(box, p, 8))) continue;
+      }
+      paint(it, cx, cy, ox, oy, fontPx, text);
+      placed.push(box);
+      painted = true;
+      break;
+    }
+    if (!painted && it.isSelected) {
+      paint(it, cx, cy, 0, 0, fontPx, text);
+    }
+  }
+  ctx.globalAlpha = 1;
+}
+
+/** Read WebGL default framebuffer → ImageData (Y-flipped for 2D canvas). */
+function readGlToImageData(w, h) {
+  const gl = renderer.getContext();
+  const bw = gl.drawingBufferWidth;
+  const bh = gl.drawingBufferHeight;
+  if (bw < 1 || bh < 1) throw new Error('drawingBuffer vide');
+
+  const pixels = new Uint8Array(bw * bh * 4);
+  // ensure pending GPU cmds flushed into default FB
+  renderer.getContext().finish?.();
+  gl.readPixels(0, 0, bw, bh, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+
+  // sanity: count non-black pixels
+  let lit = 0;
+  for (let i = 0; i < pixels.length; i += 16) {
+    if (pixels[i] > 2 || pixels[i + 1] > 2 || pixels[i + 2] > 2) lit++;
+  }
+  if (lit < 8) {
+    throw new Error('framebuffer quasi-noir (bloom/GPU?)');
+  }
+
+  const img = new ImageData(bw, bh);
+  // flip Y (GL origin = bottom-left)
+  const row = bw * 4;
+  for (let y = 0; y < bh; y++) {
+    const src = (bh - 1 - y) * row;
+    img.data.set(pixels.subarray(src, src + row), y * row);
+  }
+  return { img, bw, bh };
+}
+
+function applyExportCamera(prev, w, h) {
+  const halfW = ((prev.right - prev.left) * 0.5) / prev.zoom;
+  const halfH = ((prev.top - prev.bottom) * 0.5) / prev.zoom;
+  const exportAspect = w / h;
+  let expHalfW;
+  let expHalfH;
+  if (halfW / halfH > exportAspect) {
+    expHalfW = halfW;
+    expHalfH = halfW / exportAspect;
+  } else {
+    expHalfH = halfH;
+    expHalfW = halfH * exportAspect;
+  }
+  camera.left = -expHalfW;
+  camera.right = expHalfW;
+  camera.top = expHalfH;
+  camera.bottom = -expHalfH;
+  camera.zoom = 1;
+  camera.updateProjectionMatrix();
+}
+
+async function renderExportFrame(w, h, useBloom) {
+  renderer.setPixelRatio(1);
+  renderer.setSize(w, h, false);
+  renderer.setRenderTarget(null);
+  renderer.clear();
+
+  if (useBloom) {
+    composer.setSize(w, h);
+    bloomPass.resolution.set(w, h);
+    // force last pass onto default framebuffer
+    composer.renderToScreen = true;
+    composer.render();
+  } else {
+    renderer.render(scene, camera);
+  }
+
+  // double rAF so buffer is ready
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  return readGlToImageData(w, h);
+}
+
+async function exportPng() {
+  if (exporting || !graphData) return;
+  exporting = true;
+  exportBtn.disabled = true;
+
+  const { w: wantW, h: wantH } = parseExportSize(document.getElementById('exportSize').value);
+  const maxS = maxGpuSize();
+  let w = wantW;
+  let h = wantH;
+  // soft cap: bloom needs ~2–4× memory; stay safer on big graphs
+  const softCap = graphData.edges.length > 50_000 ? 4096 : 6144;
+  const cap = Math.min(maxS, softCap);
+  if (Math.max(w, h) > cap) {
+    const s = cap / Math.max(w, h);
+    w = Math.max(1, Math.floor(w * s));
+    h = Math.max(1, Math.floor(h * s));
+    exportStatus.textContent = `Plafond ${cap}px → ${w}×${h}…`;
+  } else {
+    exportStatus.textContent = `Rendu ${w}×${h}…`;
+  }
+
+  const prev = {
+    pr: renderer.getPixelRatio(),
+    cssW: innerWidth,
+    cssH: innerHeight,
+    left: camera.left,
+    right: camera.right,
+    top: camera.top,
+    bottom: camera.bottom,
+    zoom: camera.zoom,
+  };
+
+  try {
+    await new Promise((r) => requestAnimationFrame(r));
+    controls.update();
+    applyExportCamera(prev, w, h);
+
+    let frame;
+    try {
+      exportStatus.textContent = `Rendu bloom ${w}×${h}…`;
+      frame = await renderExportFrame(w, h, true);
+    } catch (e1) {
+      console.warn('export bloom failed, fallback sans bloom', e1);
+      exportStatus.textContent = `Fallback sans bloom ${w}×${h}…`;
+      // shrink further if needed
+      if (Math.max(w, h) > 4096) {
+        const s = 4096 / Math.max(w, h);
+        w = Math.floor(w * s);
+        h = Math.floor(h * s);
+        applyExportCamera(prev, w, h);
+      }
+      frame = await renderExportFrame(w, h, false);
+    }
+
+    const { img, bw, bh } = frame;
+    const out = document.createElement('canvas');
+    out.width = bw;
+    out.height = bh;
+    const ctx = out.getContext('2d');
+    ctx.putImageData(img, 0, 0);
+
+    const labelScale = Math.max(bw, bh) / 1400;
+    drawLabelsOnCtx(ctx, bw, bh, labelScale);
+
+    exportStatus.textContent = `Encodage PNG ${bw}×${bh}…`;
+    await new Promise((r) => requestAnimationFrame(r));
+
+    const blob = await new Promise((resolve, reject) => {
+      out.toBlob((b) => (b ? resolve(b) : reject(new Error('toBlob failed'))), 'image/png');
+    });
+
+    const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+    const name = `connectome_${bw}x${bh}_${stamp}.png`;
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = name;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+
+    const mb = (blob.size / (1024 * 1024)).toFixed(1);
+    exportStatus.textContent = `OK · ${name} · ${mb} Mo`;
+  } catch (err) {
+    console.error(err);
+    exportStatus.textContent = `Erreur: ${err.message || err}`;
+  } finally {
+    camera.left = prev.left;
+    camera.right = prev.right;
+    camera.top = prev.top;
+    camera.bottom = prev.bottom;
+    camera.zoom = prev.zoom;
+    camera.updateProjectionMatrix();
+    renderer.setRenderTarget(null);
+    renderer.setPixelRatio(prev.pr);
+    renderer.setSize(prev.cssW, prev.cssH, true);
+    composer.setSize(prev.cssW, prev.cssH);
+    bloomPass.resolution.set(prev.cssW, prev.cssH);
+    composer.renderToScreen = true;
+    exporting = false;
+    exportBtn.disabled = false;
+  }
+}
+
+exportBtn.addEventListener('click', () => { exportPng(); });
+
+(function loop() {
+  requestAnimationFrame(loop);
+  if (exporting) return;
+  controls.update();
+  composer.render();
+  projectLabels();
+})();
+
+async function loadCorpus(corp) {
+  currentCorpusId = corp.id;
+  loading.classList.remove('hidden');
+  loading.textContent = `Chargement · ${corp.label}…`;
+  [...tabsEl.querySelectorAll('.tab')].forEach((b) => {
+    b.classList.toggle('active', b.dataset.id === corp.id);
+  });
+  syncComptesSubTab(corp);
+  try {
+    let data = graphCache.get(corp.id);
+    if (!data) {
+      const url = new URL(corp.connectomeData || `./data/${corp.id}/graph.json`, import.meta.url);
+      url.searchParams.set("t", String(Date.now()));
+      const r = await fetch(url);
+      if (!r.ok) throw new Error(`${r.status} ${url}`);
+      data = await r.json();
+      graphCache.set(corp.id, data);
+    }
+    // reset hair density defaults before auto-tune in buildGraph
+    P.strands = 4;
+    P.segments = 18;
+    // Load MCA Track B selected handles for highlight
+    selectedHandles = new Set();
+    try {
+      let sel = selectedCache.get(corp.id);
+      if (!sel) {
+        const su = new URL(`../analyses/mca_track_b/${corp.id}_selected_handles.json`, import.meta.url);
+        const sr = await fetch(su);
+        if (sr.ok) {
+          sel = await sr.json();
+          selectedCache.set(corp.id, sel);
+        }
+      }
+      if (sel?.handles?.length) {
+        selectedHandles = new Set(sel.handles.map((h) => String(h).toLowerCase().replace(/^@/, '')));
+      }
+    } catch (_) { /* optional artifact */ }
+    buildGraph(data);
+    document.title = `Connectome — ${corp.label}`;
+    loading.classList.add('hidden');
+  } catch (err) {
+    loading.textContent = String(err);
+  }
+}
+
+function setupTooltip() {
+  let ptrDown = null;
+  let hoverNode = null;
+
+  renderer.domElement.style.cursor = 'grab';
+
+  renderer.domElement.addEventListener('pointerdown', (ev) => {
+    if (ev.button !== 0) return;
+    ptrDown = { x: ev.clientX, y: ev.clientY };
+    renderer.domElement.style.cursor = 'grabbing';
+  });
+
+  const endPtr = () => {
+    ptrDown = null;
+    renderer.domElement.style.cursor = hoverNode ? 'pointer' : 'grab';
+  };
+  renderer.domElement.addEventListener('pointerup', (ev) => {
+    if (!ptrDown || ev.button !== 0) {
+      endPtr();
+      return;
+    }
+    const dx = ev.clientX - ptrDown.x;
+    const dy = ev.clientY - ptrDown.y;
+    const moved = (dx * dx + dy * dy) > 36;
+    ptrDown = null;
+    renderer.domElement.style.cursor = hoverNode ? 'pointer' : 'grab';
+    if (moved) return;
+    const node = hitTestNode(ev.clientX, ev.clientY);
+    if (!node) return;
+    navigateFromNode(node, ev);
+  });
+  renderer.domElement.addEventListener('pointercancel', endPtr);
+
+  renderer.domElement.addEventListener('mousemove', (ev) => {
+    if (!graphData) return;
+    const best = hitTestNode(ev.clientX, ev.clientY);
+    hoverNode = best;
+    if (!ptrDown) renderer.domElement.style.cursor = best ? 'pointer' : 'grab';
+    if (!best) {
+      tip.style.display = 'none';
+      return;
+    }
+    const handle = displayHandle(best.l);
+    const mca = isMcaSelected(best.l);
+    const hint = mca
+      ? `<div class="hint">Clic → profil X · <span class="mca">Alt+clic → fiche MCA</span></div>`
+      : `<div class="hint">Clic → profil X</div>`;
+    tip.innerHTML =
+      `<strong>${handle}</strong>` +
+      `<div class="muted">comm. C${best.com} · deg ${Math.round(best.deg || 0)} · PR ${(best.pr || 0).toExponential(2)}</div>` +
+      (mca ? `<div class="muted" style="color:#c9b27a">MCA Track B · coordonné</div>` : '') +
+      hint;
+    tip.style.display = 'block';
+    tip.style.left = `${Math.min(ev.clientX + 14, innerWidth - 300)}px`;
+    tip.style.top = `${Math.min(ev.clientY + 14, innerHeight - 100)}px`;
+  });
+  renderer.domElement.addEventListener('mouseleave', () => {
+    tip.style.display = 'none';
+    hoverNode = null;
+    if (!ptrDown) renderer.domElement.style.cursor = 'grab';
+  });
+}
+
+async function boot() {
+  setupTooltip();
+  let corpora = [
+    { id: 'ebola', label: 'Ebola', connectomeData: './data/ebola/graph.json' },
+    { id: 'hantavirus', label: 'Hantavirus', connectomeData: './data/hantavirus/graph.json' },
+    { id: 'mpox', label: 'Mpox', connectomeData: './data/mpox/graph.json' },
+    { id: 'macron_nucleaire', label: 'Macron nucléaire', connectomeData: './data/macron_nucleaire/graph.json' },
+  ];
+  try {
+    const m = await fetch(new URL('./manifest.json', import.meta.url)).then((r) => r.json());
+    if (m.corpora?.length) corpora = m.corpora;
+    if (m.defaults?.linkLight != null) {
+      P.linkLight = m.defaults.linkLight;
+      document.getElementById('linkLight').value = String(P.linkLight);
+    }
+    if (m.defaults?.opacity != null) {
+      P.opacity = m.defaults.opacity;
+      document.getElementById('op').value = String(P.opacity);
+    }
+    applyLinkLight(P.linkLight);
+    if (m.defaults?.bloom != null) {
+      P.bloom = m.defaults.bloom;
+      document.getElementById('bloom').value = String(P.bloom);
+      bloomPass.strength = P.bloom;
+    }
+    if (m.defaults?.labels != null) {
+      P.nLabels = m.defaults.labels;
+      document.getElementById('nLabels').value = String(P.nLabels);
+    }
+  } catch (_) { /* fallback list */ }
+
+  tabsEl.innerHTML = '';
+  for (const corp of corpora) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'tab';
+    b.dataset.id = corp.id;
+    b.textContent = corp.label;
+    b.addEventListener('click', () => loadCorpus(corp));
+    tabsEl.appendChild(b);
+  }
+  // Deep-link: ?corpus=ebola (from comptes « Retour au graphe »)
+  const bootCorpus = new URLSearchParams(location.search).get('corpus');
+  const start = corpora.find((c) => c.id === bootCorpus) || corpora[0];
+  await loadCorpus(start);
+}
+
+boot();
+  </script>
+</body>
+</html>

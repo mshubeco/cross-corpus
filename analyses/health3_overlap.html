@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Intersection 3 corpus santé</title>
+  <style>
+    :root {
+      --bg: #0f1117; --surface: #181b24; --surface2: #1f2430; --border: #2a3142;
+      --text: #e8eaed; --muted: #9aa3b5; --accent: #4d8af0; --radius: 8px;
+      --font: "Segoe UI", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.45; }
+    .wrap { max-width: 1680px; margin: 0 auto; padding: 20px 24px 56px; }
+    h1 { font-size: 1.35rem; font-weight: 600; margin: 0 0 4px; }
+    h2 { font-size: 1.05rem; font-weight: 600; margin: 28px 0 10px; }
+    .subtitle { color: var(--muted); font-size: 0.85rem; margin: 0 0 12px; }
+    a.link { color: var(--accent); }
+    a { color: var(--accent); }
+    a.handle { text-decoration: none; }
+    a.handle:hover { text-decoration: underline; }
+    .kpi-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 18px; }
+    .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; min-width: 110px; }
+    .kpi .v { font-size: 1.2rem; font-weight: 600; }
+    .kpi .l { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+    .box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin-bottom: 14px; }
+    .viz-title { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+    .findings { margin: 0; padding-left: 1.1rem; color: var(--text); }
+    .findings li { margin-bottom: 6px; font-size: 0.9rem; }
+    .muted { color: var(--muted); font-size: 0.8rem; }
+    .err { color: #f0a0a0; }
+    .badge { display: inline-block; font-size: 0.65rem; padding: 1px 6px; border-radius: 4px; background: #243044; color: #9ec1ff; margin-left: 4px; }
+
+    .net-wrap {
+      position: relative; height: min(82vh, 880px); background: #0a0c10;
+      border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+    }
+    .graph-tabs {
+      display: flex; gap: 4px; margin: 0 0 10px; border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .gtab {
+      border: 0; background: none; color: var(--muted); font: inherit; font-size: 0.88rem;
+      padding: 10px 16px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
+    }
+    .gtab.active { color: var(--text); border-bottom-color: var(--accent); font-weight: 600; }
+    .gtab .hint { color: var(--muted); font-weight: 500; font-size: 0.78rem; }
+    #net { width: 100%; height: 100%; display: block; cursor: grab; }
+    #net.dragging { cursor: grabbing; }
+    .net-hud {
+      position: absolute; top: 10px; left: 10px; z-index: 2;
+      background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px; padding: 10px 12px; font-size: 11px; color: #9aa3b0; max-width: 260px;
+    }
+    .net-hud b { color: #c5ccd6; display: block; margin-bottom: 4px; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .net-legend {
+      position: absolute; top: 10px; right: 10px; z-index: 2; max-height: calc(100% - 20px); overflow: auto;
+      background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px; padding: 10px 12px; font-size: 11px; color: #9aa3b0; width: 200px;
+    }
+    .leg-row { display: flex; gap: 8px; align-items: flex-start; margin: 6px 0; }
+    .sw { width: 10px; height: 10px; border-radius: 2px; margin-top: 2px; flex-shrink: 0; }
+    #tooltip {
+      position: absolute; z-index: 3; pointer-events: none; display: none;
+      background: rgba(15,17,23,0.92); border: 1px solid var(--border); border-radius: 6px;
+      padding: 8px 10px; font-size: 12px; max-width: 260px;
+    }
+
+    .tools { margin: 8px 0 10px; }
+    .filter {
+      width: min(360px, 100%); padding: 8px 10px; border-radius: 6px;
+      border: 1px solid var(--border); background: #12151c; color: var(--text); font: inherit;
+    }
+    .table-wrap { overflow: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); max-height: 70vh; }
+    table.accounts { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+    table.accounts th, table.accounts td { padding: 7px 9px; border-bottom: 1px solid var(--border); vertical-align: top; text-align: left; }
+    table.accounts th { position: sticky; top: 0; background: #1c2130; color: var(--muted); font-weight: 600; z-index: 1; }
+    table.accounts td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+    table.accounts td.bio { max-width: 280px; color: #c5ccd6; }
+    table.accounts td.bio.empty { color: var(--muted); font-style: italic; }
+    table.accounts td.targets { max-width: 280px; color: var(--muted); }
+    table.accounts td.posts { max-width: 420px; font-size: 0.76rem; color: #c5ccd6; white-space: normal; word-break: break-word; }
+    table.accounts td.posts .post { margin: 0 0 6px; line-height: 1.35; }
+    table.accounts td.posts .post:last-child { margin-bottom: 0; }
+    table.accounts td.posts .eng { color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+    table.accounts td.posts a { color: var(--accent); text-decoration: none; }
+    table.accounts td.posts a:hover { text-decoration: underline; }
+    table.accounts tr.is-filtered-out { display: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Intersection 3 corpus santé</h1>
+    <p class="subtitle" id="def"></p>
+    <p class="subtitle">
+      <a class="link" href="../connectome/">Connectomes</a> ·
+      <a class="link" href="./comptes_selectionnes.html">MCA Track B</a> ·
+      <a class="link" href="./cross_corpus_analyses.html">Analyses corpus entier</a>
+    </p>
+
+    <div class="kpi-row" id="kpis"></div>
+
+    <div class="box">
+      <div class="viz-title">Constats</div>
+      <ul class="findings" id="findings"></ul>
+    </div>
+
+    <h2>Réseau d'interaction combiné (2D)</h2>
+    <div class="graph-tabs" role="tablist">
+      <button type="button" class="gtab active" data-g="inter" id="tabInter">
+        Intersection ∩3 <span class="hint">· auteurs dans les 3</span>
+      </button>
+      <button type="button" class="gtab" data-g="union" id="tabUnion">
+        Union 3 corpus <span class="hint">· couleur = présence</span>
+      </button>
+    </div>
+    <p class="muted" id="netMeta"></p>
+    <div class="net-wrap" id="netWrap">
+      <canvas id="net"></canvas>
+      <div class="net-hud" id="netHud"></div>
+      <div class="net-legend" id="netLegend"></div>
+      <div id="tooltip"></div>
+    </div>
+
+    <h2>Top comptes · centralité de degré</h2>
+    <p class="muted" id="tblMeta">Chargement…</p>
+    <div class="tools">
+      <input type="search" class="filter" id="tblFilter" placeholder="Filtrer un compte, bio, cible…" />
+    </div>
+    <div class="table-wrap">
+      <table class="accounts" id="tblTop">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Compte</th>
+            <th>Bio</th>
+            <th>Comm.</th>
+            <th>Force</th>
+            <th>Pubs</th>
+            <th>RT</th>
+            <th>% RT</th>
+            <th>Création</th>
+            <th>Ebola</th>
+            <th>Hanta</th>
+            <th>Mpox</th>
+            <th>Top 5 cibles</th>
+            <th>2 pubs non-RT</th>
+            <th>2 RT</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <h2>MCA Track B ∩ intersection santé</h2>
+    <div class="box" id="mcaBox"></div>
+  </div>
+
+  <script>
+  const BASE = "./health3_overlap";
+
+  function esc(s) {
+    return String(s ?? "").replace(/[&<>"']/g, c => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    }[c]));
+  }
+
+  function fmtNum(n) {
+    if (n == null || Number.isNaN(n)) return "—";
+    return Number(n).toLocaleString("fr-FR");
+  }
+
+  function fmtPct(p) {
+    if (p == null || Number.isNaN(p)) return "—";
+    return Number(p).toLocaleString("fr-FR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "\u00a0%";
+  }
+
+  function postsHtml(posts) {
+    if (!posts || !posts.length) return '<span class="muted">—</span>';
+    return posts.map(p => {
+      const eng = `<span class="eng">${fmtNum(p.engagement ?? 0)}</span>`;
+      const text = esc(p.text || "");
+      if (p.url) {
+        return `<div class="post"><a href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">${text}</a> ${eng}</div>`;
+      }
+      return `<div class="post">${text} ${eng}</div>`;
+    }).join("");
+  }
+
+  function renderAccounts(T) {
+    const rows = T.accounts || [];
+    document.getElementById("tblMeta").textContent =
+      `${fmtNum(T.n || rows.length)} comptes · centralité ${T.centrality || "degree"}` +
+      (T.generatedAt ? ` · ${String(T.generatedAt).slice(0, 19)}Z` : "");
+
+    const tbody = document.querySelector("#tblTop tbody");
+    tbody.innerHTML = rows.map(a => {
+      const handle = String(a.handle || "").toLowerCase();
+      const bio = (a.bio || "").trim();
+      const bioCell = bio
+        ? `<td class="bio">${esc(bio)}</td>`
+        : `<td class="bio empty">—</td>`;
+      const q = [
+        "@" + handle,
+        bio,
+        a.top_5_cibles || "",
+        ...(a.mca || []),
+      ].join(" ").toLowerCase();
+      const mcaBadge = (a.mca && a.mca.length)
+        ? `<span class="badge">MCA ${esc(a.mca.join(", "))}</span>`
+        : "";
+      return `<tr data-handle="${esc(handle)}" data-q="${esc(q)}">
+        <td class="num">${a.rank ?? ""}</td>
+        <td><strong><a class="handle" href="https://x.com/${esc(handle)}" target="_blank" rel="noopener noreferrer">@${esc(handle)}</a></strong>${a.verified ? '<span class="badge">vérif.</span>' : ""}${mcaBadge}</td>
+        ${bioCell}
+        <td class="num">C${a.comm ?? "—"}</td>
+        <td class="num">${fmtNum(a.force)}</td>
+        <td class="num">${fmtNum(a.pubs)}</td>
+        <td class="num">${fmtNum(a.rt)}</td>
+        <td class="num">${fmtPct(a.pct_rt)}</td>
+        <td class="num">${esc(a.created || "—")}</td>
+        <td class="num">${fmtNum(a.ebola)}</td>
+        <td class="num">${fmtNum(a.hantavirus)}</td>
+        <td class="num">${fmtNum(a.mpox)}</td>
+        <td class="targets">${esc(a.top_5_cibles || "—")}</td>
+        <td class="posts">${postsHtml(a.posts_non_rt)}</td>
+        <td class="posts">${postsHtml(a.posts_rt)}</td>
+      </tr>`;
+    }).join("");
+
+    const filter = document.getElementById("tblFilter");
+    filter.oninput = () => {
+      const q = filter.value.trim().toLowerCase();
+      tbody.querySelectorAll("tr").forEach(tr => {
+        const hay = tr.getAttribute("data-q") || "";
+        tr.classList.toggle("is-filtered-out", q && !hay.includes(q));
+      });
+    };
+  }
+
+  async function main() {
+    const bust = "v=" + Date.now();
+    const [S, G, Gu, T] = await Promise.all([
+      fetch(BASE + "/summary.json?" + bust).then(r => r.json()),
+      fetch(BASE + "/graph.json?" + bust).then(r => r.json()),
+      fetch(BASE + "/graph_union.json?" + bust).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(BASE + "/top_accounts.json?" + bust).then(r => r.ok ? r.json() : null).catch(() => null),
+    ]);
+
+    document.getElementById("def").textContent =
+      (S.definition || "") +
+      (S.generatedAt ? " · généré " + String(S.generatedAt).slice(0, 19) + "Z" : "") +
+      (S.refinedAt ? " · raffiné " + String(S.refinedAt).slice(0, 19) + "Z" : "");
+
+    const kpis = [
+      ["Comptes ∩ 3 santé", S.n_accounts],
+      ["Tweets (somme)", S.tweets_total_all],
+      ["Médiane tweets/compte", S.median_tweets != null ? Number(S.median_tweets).toFixed(0) : "—"],
+      ["Part RT moyenne", S.mean_rt_share != null ? (100 * S.mean_rt_share).toFixed(1) + "%" : "—"],
+      ["Arêtes graphe", S.graph?.n_edges],
+      ["LCC", S.graph?.largest_cc],
+      ["Communautés Louvain", S.graph?.n_communities],
+      ["Aussi en MCA", S.mca_track_b?.in_any_cohort],
+    ];
+    document.getElementById("kpis").innerHTML = kpis.map(([l, v]) =>
+      `<div class="kpi"><div class="v">${typeof v === "number" ? v.toLocaleString("fr-FR") : (v ?? "—")}</div><div class="l">${l}</div></div>`
+    ).join("");
+
+    document.getElementById("findings").innerHTML =
+      (S.findings || []).map(f => `<li>${esc(f)}</li>`).join("") || "<li class='muted'>Aucun constat.</li>";
+
+    const m = S.mca_track_b || {};
+    const by = m.by_corpus || {};
+    document.getElementById("mcaBox").innerHTML = `
+      <p class="muted">${fmtNum(m.in_any_cohort)} comptes de l’intersection sont aussi dans une cohorte MCA Track B santé
+      (Ebola ${by.ebola || 0}, Hanta ${by.hantavirus || 0}, Mpox ${by.mpox || 0}).</p>
+      <p style="font-size:0.8rem;word-break:break-word">${(m.handles_in_any || []).slice(0, 80).map(h => "@" + esc(h)).join(" · ")}${ (m.in_any_cohort || 0) > 80 ? " …" : ""}</p>`;
+
+    const netCtl = createNetController();
+    netCtl.setGraph("inter", G, {
+      hud: `<b>Intersection ∩3</b>Nœuds = auteurs dans Ebola + Hanta + Mpox<br/>Taille & labels = centralité de degré · Couleur = Louvain<br/>Contour doré = aussi MCA`,
+      legendMode: "communities",
+    });
+    if (Gu) {
+      netCtl.setGraph("union", Gu, {
+        hud: `<b>Union 3 corpus</b>Tous les nœuds (hors isolats) · arêtes de poids ≥ 2<br/>Taille & labels = centralité de degré · <b>Couleur = présence corpus</b>`,
+        legendMode: "presence",
+      });
+    } else {
+      const tu = document.getElementById("tabUnion");
+      if (tu) { tu.disabled = true; tu.title = "graph_union.json manquant"; }
+    }
+    netCtl.show("inter");
+
+    document.querySelectorAll(".gtab").forEach(btn => {
+      btn.addEventListener("click", () => {
+        if (btn.disabled) return;
+        document.querySelectorAll(".gtab").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        netCtl.show(btn.dataset.g);
+      });
+    });
+
+    if (T && T.accounts) {
+      renderAccounts(T);
+    } else {
+      document.getElementById("tblMeta").innerHTML =
+        '<span class="err">top_accounts.json manquant — lancer scripts/refine_health3_page.py</span>';
+    }
+  }
+
+  function createNetController() {
+    const canvas = document.getElementById("net");
+    const wrap = document.getElementById("netWrap");
+    const tip = document.getElementById("tooltip");
+    const ctx = canvas.getContext("2d");
+    const graphs = {};
+    let active = null;
+    let W, H, dpr;
+    let cam = { x: 0, y: 0, k: 1 };
+    let drag = null;
+    let bound = false;
+
+    function metaText(G) {
+      const meta = G.meta || {};
+      return `Graphe : ${meta.n_nodes_full ?? meta.n_authors_full ?? "?"} nœuds · ${meta.n_edges_full ?? "?"} arêtes` +
+        (meta.n_nodes_viz && meta.n_nodes_viz !== meta.n_nodes_full
+          ? ` · affichés ${meta.n_nodes_viz} nœuds · ${meta.n_edges_viz ?? "?"} arêtes`
+          : "") +
+        (meta.viz_rule ? ` (${meta.viz_rule})` : "") +
+        `. Molette = zoom, glisser = pan.`;
+    }
+
+    function renderLegend(G, mode) {
+      if (mode === "presence" && G.legend) {
+        document.getElementById("netLegend").innerHTML =
+          `<b style="color:#c5ccd6;font-size:10px;letter-spacing:0.06em;text-transform:uppercase">Présence corpus</b>` +
+          G.legend.map(c =>
+            `<div class="leg-row"><span class="sw" style="background:${c.color}"></span>
+             <span>${esc(c.label)} · ${(c.n_full ?? c.n_viz).toLocaleString("fr-FR")}</span></div>`
+          ).join("");
+        return;
+      }
+      document.getElementById("netLegend").innerHTML =
+        `<b style="color:#c5ccd6;font-size:10px;letter-spacing:0.06em;text-transform:uppercase">Communautés</b>` +
+        (G.communities || []).map(c =>
+          `<div class="leg-row"><span class="sw" style="background:${c.color}"></span>
+           <span>C${c.id} · ${c.n}<br/><span style="color:#6a7380">${(c.top||[]).slice(0,4).map(t=>"@"+t).join(" ")}</span></span></div>`
+        ).join("");
+    }
+
+    function fit(nodes) {
+      if (!nodes.length) return;
+      let minx = Infinity, maxx = -Infinity, miny = Infinity, maxy = -Infinity;
+      for (const n of nodes) {
+        minx = Math.min(minx, n.x); maxx = Math.max(maxx, n.x);
+        miny = Math.min(miny, n.y); maxy = Math.max(maxy, n.y);
+      }
+      const pad = 110;
+      const sx = (W - 2 * pad) / Math.max(maxx - minx, 1e-6);
+      const sy = (H - 2 * pad) / Math.max(maxy - miny, 1e-6);
+      cam.k = Math.min(sx, sy) * 0.62;
+      cam.x = W / 2 - cam.k * (minx + maxx) / 2;
+      cam.y = H / 2 - cam.k * (miny + maxy) / 2;
+    }
+
+    function toScreen(n) { return { x: n.x * cam.k + cam.x, y: n.y * cam.k + cam.y }; }
+    function degOf(n) {
+      if (n.deg != null) return n.deg;
+      if (n.s != null) return n.s;
+      return 0;
+    }
+    function nodeR(n) {
+      // r précalculé ∝ centralité de degré
+      return Math.max(1.4, Math.min(9.5, (n.r || 3) * 0.32));
+    }
+    function labelPx(n, degMax) {
+      const u = degMax > 0 ? Math.pow(degOf(n) / degMax, 0.45) : 0;
+      return Math.round(8 + 16 * u); // ~8 → 24 px
+    }
+
+    function draw() {
+      if (!active || !graphs[active]) return;
+      const G = graphs[active].data;
+      const nodes = G.nodes || [];
+      const edges = G.edges || [];
+      const degMax = nodes.reduce((m, n) => Math.max(m, degOf(n)), 0) || 1;
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = "#0a0c10";
+      ctx.fillRect(0, 0, W, H);
+      ctx.lineWidth = 0.65;
+      const eMax = edges.length > 80000 ? 50000 : edges.length;
+      const pad = 48;
+      const inView = (p) => p.x >= -pad && p.x <= W + pad && p.y >= -pad && p.y <= H + pad;
+      let drawnE = 0;
+      for (const e of edges) {
+        if (drawnE >= eMax) break;
+        const a = nodes[e.s], b = nodes[e.t];
+        if (!a || !b) continue;
+        const pa = toScreen(a), pb = toScreen(b);
+        if (edges.length > 40000 && !inView(pa) && !inView(pb)) continue;
+        const alpha = Math.min(0.32, 0.04 + 0.07 * Math.log1p(e.w || 1));
+        ctx.strokeStyle = `rgba(140,160,190,${alpha})`;
+        ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y); ctx.stroke();
+        drawnE++;
+      }
+      // petits nœuds d'abord, hubs par-dessus
+      const bySize = graphs[active].nodesBySize || [...nodes].sort((a, b) => degOf(a) - degOf(b));
+      for (const n of bySize) {
+        const p = toScreen(n);
+        const r = nodeR(n);
+        if (p.x < -r || p.x > W + r || p.y < -r || p.y > H + r) continue;
+        const [cr, cg, cb] = n.c || [150, 160, 180];
+        ctx.beginPath();
+        ctx.fillStyle = `rgb(${cr},${cg},${cb})`;
+        ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+        ctx.fill();
+        if (n.mca && n.mca.length) {
+          ctx.strokeStyle = "#e8c56a"; ctx.lineWidth = 1.4; ctx.stroke();
+        }
+      }
+      const topDesc = [...(graphs[active].topAsc || [])].sort((a, b) => degOf(b) - degOf(a));
+      ctx.textAlign = "center";
+      ctx.textBaseline = "bottom";
+      const occupied = [];
+      for (const n of topDesc) {
+        const p = toScreen(n);
+        const px = labelPx(n, degMax);
+        const label = "@" + n.id;
+        ctx.font = `600 ${px}px Segoe UI, sans-serif`;
+        const tw = ctx.measureText(label).width;
+        const th = px + 6;
+        const box = { x: p.x - tw / 2, y: p.y - nodeR(n) - 3 - th, w: tw, h: th };
+        if (occupied.some(o => box.x < o.x + o.w && box.x + box.w > o.x && box.y < o.y + o.h && box.y + box.h > o.y)) continue;
+        occupied.push(box);
+        const [cr, cg, cb] = n.c || [200, 200, 200];
+        ctx.fillStyle = `rgb(${cr},${cg},${cb})`;
+        ctx.shadowColor = "rgba(0,0,0,0.85)";
+        ctx.shadowBlur = 4;
+        ctx.fillText(label, p.x, p.y - nodeR(n) - 3);
+        ctx.shadowBlur = 0;
+      }
+    }
+
+    function hit(mx, my) {
+      const G = graphs[active]?.data;
+      if (!G) return null;
+      const nodes = G.nodes || [];
+      let best = null, bestD = 12;
+      for (const n of nodes) {
+        const p = toScreen(n);
+        const d = Math.hypot(p.x - mx, p.y - my);
+        if (d < bestD + nodeR(n)) { bestD = d; best = n; }
+      }
+      return best;
+    }
+
+    function resize() {
+      dpr = window.devicePixelRatio || 1;
+      W = wrap.clientWidth; H = wrap.clientHeight;
+      canvas.width = W * dpr; canvas.height = H * dpr;
+      canvas.style.width = W + "px"; canvas.style.height = H + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if (active && graphs[active]) fit(graphs[active].data.nodes || []);
+      draw();
+    }
+
+    function bindOnce() {
+      if (bound) return;
+      bound = true;
+      canvas.addEventListener("mousemove", (ev) => {
+        const rect = canvas.getBoundingClientRect();
+        const mx = ev.clientX - rect.left, my = ev.clientY - rect.top;
+        if (drag) {
+          cam.x += mx - drag.x; cam.y += my - drag.y;
+          drag = { x: mx, y: my }; draw(); return;
+        }
+        const n = hit(mx, my);
+        if (!n) { tip.style.display = "none"; return; }
+        tip.style.display = "block";
+        tip.style.left = (mx + 14) + "px"; tip.style.top = (my + 14) + "px";
+        const deg = n.deg != null ? n.deg : (n.s != null ? n.s : null);
+        const cent = n.cent != null ? n.cent : null;
+        const degLine = deg != null
+          ? `Degré ${Number(deg).toLocaleString("fr-FR")}${cent != null ? ` · C<sub>d</sub> ${cent.toExponential ? cent.toExponential(3) : cent}` : ""}`
+          : `force ${n.s ?? "—"}`;
+        const corps = (n.corps || []).join(" + ") || (n.sig || "");
+        tip.innerHTML = `<b>@${esc(n.id)}</b><br/>${degLine}<br/>` +
+          (corps ? `corpus : ${esc(corps)}<br/>` : "") +
+          (n.comm != null ? `C${n.comm}` : "") +
+          (n.mca && n.mca.length ? `<br/><span style="color:#e8c56a">MCA: ${esc(n.mca.join(", "))}</span>` : "");
+      });
+      canvas.addEventListener("mouseleave", () => { tip.style.display = "none"; drag = null; canvas.classList.remove("dragging"); });
+      canvas.addEventListener("mousedown", (ev) => {
+        const rect = canvas.getBoundingClientRect();
+        drag = { x: ev.clientX - rect.left, y: ev.clientY - rect.top };
+        canvas.classList.add("dragging");
+      });
+      window.addEventListener("mouseup", () => { drag = null; canvas.classList.remove("dragging"); });
+      canvas.addEventListener("wheel", (ev) => {
+        ev.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        const mx = ev.clientX - rect.left, my = ev.clientY - rect.top;
+        const factor = ev.deltaY < 0 ? 1.12 : 1 / 1.12;
+        const wx = (mx - cam.x) / cam.k, wy = (my - cam.y) / cam.k;
+        cam.k *= factor; cam.x = mx - wx * cam.k; cam.y = my - wy * cam.k; draw();
+      }, { passive: false });
+      window.addEventListener("resize", resize);
+    }
+
+    return {
+      setGraph(key, data, opts) {
+        const nodes = (data && data.nodes) || [];
+        graphs[key] = {
+          data,
+          opts: opts || {},
+          nodesBySize: [...nodes].sort((a, b) => degOf(a) - degOf(b)),
+          topAsc: [...nodes].sort((a, b) => degOf(b) - degOf(a)).slice(0, 32).sort((a, b) => degOf(a) - degOf(b)),
+        };
+      },
+      show(key) {
+        if (!graphs[key]) return;
+        active = key;
+        const { data, opts } = graphs[key];
+        document.getElementById("netMeta").textContent = metaText(data);
+        document.getElementById("netHud").innerHTML = opts.hud || "";
+        renderLegend(data, opts.legendMode || "communities");
+        bindOnce();
+        resize();
+      },
+    };
+  }
+
+  main().catch(err => {
+    document.body.insertAdjacentHTML("afterbegin",
+      `<p style="color:#f66;padding:12px">Erreur chargement — servir via HTTP depuis outputs/analyses/ (${esc(err)})</p>`);
+  });
+  </script>
+</body>
+</html>

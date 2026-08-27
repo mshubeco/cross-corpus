@@ -1,0 +1,142 @@
+{
+  "corpus": "macron_nucleaire",
+  "label": "Macron nucléaire · mars 2026",
+  "method": "MCA-MULTI-Serrano-TRACK-B-251",
+  "params": {
+    "seed": 20260624,
+    "top_pct": 1.0,
+    "exact_topk": true,
+    "corpus_pct": 100,
+    "max_accounts_per_object": 80,
+    "max_nodes_after_overlap": 20000,
+    "gamma": 1.0,
+    "omega": 0.1,
+    "flatten": "UNFL_sum",
+    "serrano_alpha": 0.05,
+    "deg2_fallback": false
+  },
+  "n_tweets": 475647,
+  "n_accounts": 154549,
+  "period_days": 3,
+  "selection": {
+    "top_pct": 1.0,
+    "exact_topk": true,
+    "corpus_pct": 100,
+    "RTW": {
+      "threshold": 1,
+      "n": 129441
+    },
+    "RPL": {
+      "threshold": 1,
+      "n": 8534
+    },
+    "original": {
+      "threshold": 1,
+      "n": 28231
+    },
+    "union_n": 153893
+  },
+  "layers": {
+    "RTW": {
+      "layer": "RTW",
+      "method": "cooccurrence_shared_objects",
+      "n_objects_used": 6066,
+      "n_objects_capped": 772,
+      "n_edges_before_filters": 2918811,
+      "n_nodes_before_filters": 45134,
+      "overlap_threshold": 2,
+      "n_edges_after_overlap": 264674,
+      "n_nodes_after_overlap": 12425,
+      "weight_threshold": 2.0,
+      "n_edges_after_weight": 264674,
+      "n_nodes_after_weight": 12425
+    },
+    "RPL": {
+      "layer": "RPL",
+      "method": "cooccurrence_shared_objects",
+      "n_objects_used": 1163,
+      "n_objects_capped": 8,
+      "n_edges_before_filters": 110878,
+      "n_nodes_before_filters": 6627,
+      "overlap_threshold": 1,
+      "n_edges_after_overlap": 110878,
+      "n_nodes_after_overlap": 6627,
+      "weight_threshold": 1.0,
+      "n_edges_after_weight": 110878,
+      "n_nodes_after_weight": 6627
+    },
+    "QTE": {
+      "layer": "QTE",
+      "method": "cooccurrence_shared_objects",
+      "n_objects_used": 273,
+      "n_objects_capped": 0,
+      "n_edges_before_filters": 7420,
+      "n_nodes_before_filters": 1018,
+      "overlap_threshold": 1,
+      "n_edges_after_overlap": 7420,
+      "n_nodes_after_overlap": 1018,
+      "weight_threshold": 1.0,
+      "n_edges_after_weight": 7420,
+      "n_nodes_after_weight": 1018
+    },
+    "MEN": {
+      "layer": "MEN",
+      "method": "cooccurrence_shared_objects",
+      "n_objects_used": 4990,
+      "n_objects_capped": 104,
+      "n_edges_before_filters": 603738,
+      "n_nodes_before_filters": 19423,
+      "overlap_threshold": 1,
+      "n_edges_after_overlap": 603738,
+      "n_nodes_after_overlap": 19423,
+      "weight_threshold": 1.0,
+      "n_edges_after_weight": 603738,
+      "n_nodes_after_weight": 19423
+    },
+    "URL": {
+      "layer": "URL",
+      "method": "cooccurrence_shared_objects",
+      "n_objects_used": 250,
+      "n_objects_capped": 4,
+      "n_edges_before_filters": 21531,
+      "n_nodes_before_filters": 1529,
+      "overlap_threshold": 1,
+      "n_edges_after_overlap": 21531,
+      "n_nodes_after_overlap": 1529,
+      "weight_threshold": 1.0,
+      "n_edges_after_weight": 21531,
+      "n_nodes_after_weight": 1529
+    }
+  },
+  "MONO": {
+    "n_communities": 169,
+    "n_nodes": 12425,
+    "n_edges": 264674
+  },
+  "MULTI": {
+    "n_communities": 584,
+    "n_nodes": 32511,
+    "n_edges": 1008241,
+    "gamma": 1.0,
+    "omega": 0.1,
+    "improvement": 1823656.5431798939
+  },
+  "C0": {
+    "community_id": 0,
+    "n": 3892
+  },
+  "serrano": {
+    "n_edges_flat": 73582,
+    "n_edges_bb": 1157,
+    "n_nodes_bb": 367,
+    "flat_edges_multilayer": 1480,
+    "n_bb_edges_multilayer": 170
+  },
+  "cohort_n": 367,
+  "csv": "outputs/analyses/mca_track_b/macron_nucleaire_cohort_UNFL_sum_serrano05.csv",
+  "handles_json": "outputs/analyses/mca_track_b/macron_nucleaire_selected_handles.json",
+  "bio_coverage": 218,
+  "missing_bio": 149,
+  "engagement_def": "like_count + retweet_count + reply_count + quote_count",
+  "pct_RT_def": "100 * (tweet_type == 'retweet') / publications du compte (CocktailFusion)"
+}

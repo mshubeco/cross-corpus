@@ -1,0 +1,1003 @@
+{
+  "generatedAt": "2026-08-26T08:18:32.644504+00:00",
+  "definition": "Auteurs (user_id) ayant publié au moins un tweet dans chacun des trois corpus santé : Ebola, Hantavirus, Mpox. Graphe = union des interactions (RT 1ʳᵉ mention, reply, mentions sur original/quote) induites sur ces comptes.",
+  "n_accounts": 5861,
+  "n_verified": 35,
+  "tweets_total_all": 246779,
+  "median_tweets": 27.0,
+  "mean_tweets": 42.10527213786043,
+  "mean_rt_share": 0.8786553694548828,
+  "per_corpus": {
+    "ebola": {
+      "label": "Ebola",
+      "color": "#73c000",
+      "tweets_sum": 15520,
+      "median_tweets": 1.0,
+      "mean_tweets": 2.6480122845930727,
+      "rt_share": 0.8338917525773196,
+      "active_ge1": 5861
+    },
+    "hantavirus": {
+      "label": "Hantavirus",
+      "color": "#ff8000",
+      "tweets_sum": 146248,
+      "median_tweets": 15.0,
+      "mean_tweets": 24.952738440539157,
+      "rt_share": 0.912436409386795,
+      "active_ge1": 5861
+    },
+    "mpox": {
+      "label": "Mpox",
+      "color": "#2563EB",
+      "tweets_sum": 85011,
+      "median_tweets": 7.0,
+      "mean_tweets": 14.504521412728204,
+      "rt_share": 0.9069414546352825,
+      "active_ge1": 5861
+    }
+  },
+  "graph": {
+    "n_nodes": 5861,
+    "n_edges": 71204,
+    "edge_events_by_corpus": {
+      "ebola": 12103,
+      "hantavirus": 81079,
+      "mpox": 51246
+    },
+    "tweet_type_counts_authors": {
+      "retweet": 223170,
+      "reply": 2021,
+      "quote": 1191,
+      "original": 20006
+    },
+    "n_isolates": 170,
+    "n_communities": 10,
+    "n_connected_components": 3,
+    "largest_cc": 5685,
+    "density": 0.00438758944456128,
+    "layout": {
+      "fa2_iterations": 15000,
+      "fa2_stable": null,
+      "layout_engine": "fa2_linear_nogravity",
+      "fa2_linlog": false,
+      "fa2_gravity": 0.55,
+      "fa2_scaling": 11.0,
+      "fa2_edge_weight_influence": 0.45,
+      "fa2_node_size": 16.0,
+      "fa2_adjust_sizes": true,
+      "fa2_dissuade_hubs": false,
+      "target_span": 3800.0,
+      "overlap_resolved": true
+    },
+    "centrality": "degree"
+  },
+  "mca_track_b": {
+    "in_any_cohort": 282,
+    "by_corpus": {
+      "ebola": 42,
+      "hantavirus": 199,
+      "mpox": 82
+    },
+    "handles_in_any": [
+      "19bobg63",
+      "62patriotes",
+      "8enoit",
+      "_lespatriotes",
+      "aajz17",
+      "abdsalamvito",
+      "alexand39740511",
+      "alexhcx7",
+      "alexia_lecourt",
+      "amabipbip",
+      "anafelidae",
+      "angiebarefeet",
+      "annadigoef",
+      "annastella1200",
+      "anne_agr22",
+      "anneameil",
+      "annebergeret",
+      "annelisebocquet",
+      "annerd1",
+      "antoniopuccine2",
+      "armance86",
+      "arrowcali55",
+      "audesmith5",
+      "aure84039940",
+      "b_scotto",
+      "baeschristian6",
+      "banounhelene",
+      "barouwhyte",
+      "basile061",
+      "benben_bo",
+      "benlar6022",
+      "berlandiers",
+      "bo_chart",
+      "bobrebelles",
+      "bonniebpb",
+      "bonnin75",
+      "boycott695",
+      "brain_stimulus",
+      "break08stephane",
+      "bricolix",
+      "brigandduroy",
+      "britt14251800",
+      "briw1494",
+      "brunooceanis",
+      "brunovito7",
+      "cabanesfrancois",
+      "capetlouis14",
+      "carchiteut16965",
+      "carlosj44479425",
+      "caroled87859768",
+      "carolinecomiti",
+      "castellaniavril",
+      "catheri63061731",
+      "catherinenorm",
+      "cathyp43597",
+      "caudaux25984",
+      "cclem64",
+      "chaanieannie",
+      "chaolin58413381",
+      "chapuisfred",
+      "chriss17031",
+      "christine_ch2_",
+      "christineclx",
+      "christo27533418",
+      "clem953",
+      "clepakson",
+      "cloutechristin2",
+      "cris6043",
+      "danydeedp_spi",
+      "danyjuin",
+      "davidyaute74",
+      "demesnil9",
+      "denceevi1",
+      "denis_minisini",
+      "derubrouck",
+      "diabolo7412",
+      "didierthibaut1",
+      "dr_housse_2",
+      "drdigit33210010",
+      "dsteimer",
+      "ecole_oubliee",
+      "eddreamer8",
+      "ednanewhouse",
+      "eliefortune1",
+      "elisa_greto",
+      "eloy_sauvan",
+      "entel671",
+      "epmd78",
+      "eric_diologeant",
+      "est97_4",
+      "fabio35590",
+      "fclerc972",
+      "felixtoupie2",
+      "flahault",
+      "flo0w0o",
+      "florencebaquet",
+      "fraisetagada89",
+      "francetrisser",
+      "francoi98365755",
+      "francoisdescam7",
+      "fredibern",
+      "frexitony",
+      "funkdrummerbass",
+      "gaillardthierr4",
+      "galam_france",
+      "galinette231",
+      "gaultbruno",
+      "geneveve2629",
+      "gerardayala",
+      "gerardbondeau",
+      "geronim81901247",
+      "ghjuvanandreani",
+      "gillesg64",
+      "giroudbeatrice",
+      "glycine2638",
+      "gmf09768505",
+      "gs59120785g",
+      "guetty353535",
+      "guillemontfran3",
+      "gurinjacquelin3",
+      "guy_crozet",
+      "hadjsev",
+      "hervemaure17121",
+      "hilloutrvl",
+      "hlneg423204",
+      "huguette_krain",
+      "immortellexiii",
+      "infoscachees",
+      "jacquel5444854",
+      "janedoo15",
+      "je67jean",
+      "jeancharlesgy",
+      "jeaninejoris",
+      "jeannemarie1309",
+      "johntchance5",
+      "jonatha60007393",
+      "jpsolari",
+      "jullian_claude",
+      "kanebacari",
+      "karineh441",
+      "labolleg",
+      "lafaitd",
+      "lafrancelibre44",
+      "laurepierre",
+      "lavignepascale",
+      "lepiezm79535",
+      "letempsdesbises",
+      "leviathan7419",
+      "liz131975",
+      "lizzieb64300014",
+      "louisedebor",
+      "louisfouch3",
+      "louvetou",
+      "lumineuse777",
+      "m99natacha",
+      "ma81096076",
+      "macron_cancer",
+      "marcelalann",
+      "mariebl7591",
+      "mariejponcet",
+      "mariesomar",
+      "marseille_jeff",
+      "martinemla",
+      "martineprzybyla",
+      "maubuisson61",
+      "mazenod10",
+      "mballapatrick_",
+      "mbrg32",
+      "mch1309",
+      "mcm67738662",
+      "medjadbailda",
+      "menuet_morgan",
+      "mfarrouch",
+      "mimip41",
+      "miss_tinguett",
+      "moi_soi727096",
+      "moreauchevrolet",
+      "moszykthom77713",
+      "moun292",
+      "mronchiato89552",
+      "mullerm04026092",
+      "mwag163480561",
+      "mwidcoq",
+      "mymyr81",
+      "myrmeg",
+      "nadinegerard5",
+      "nasticjim1",
+      "natalianausica",
+      "nauleaufrederic",
+      "neereenette",
+      "nezondetcorinne",
+      "nikita65417902",
+      "nikofa84",
+      "nitroba30704324",
+      "noj67",
+      "nojab69",
+      "nouveau_papy",
+      "odyille",
+      "olipopkeating",
+      "olivierfente"
+    ],
+    "n_handles_listed": 282
+  },
+  "profiles": {
+    "balanced_activity_cv_lt_0_5": 786,
+    "ebola_light_vs_others": 4506,
+    "creation_year_hist": {
+      "2016": 202,
+      "2017": 276,
+      "2018": 198,
+      "2019": 233,
+      "2020": 561,
+      "2021": 722,
+      "2022": 916,
+      "2023": 595,
+      "2024": 274,
+      "2025": 7
+    },
+    "tweets_hist": {
+      "bins": [
+        1,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        500,
+        1000,
+        10000
+      ],
+      "counts": [
+        0,
+        0,
+        460,
+        817,
+        1131,
+        1837,
+        1088,
+        431,
+        93,
+        4,
+        0
+      ]
+    },
+    "top_locations": [
+      {
+        "loc": "(vide)",
+        "n": 3344
+      },
+      {
+        "loc": "France",
+        "n": 262
+      },
+      {
+        "loc": "Paris, France",
+        "n": 101
+      },
+      {
+        "loc": "Paris",
+        "n": 50
+      },
+      {
+        "loc": "Ile-de-France, France",
+        "n": 45
+      },
+      {
+        "loc": "France ",
+        "n": 21
+      },
+      {
+        "loc": "Belgique",
+        "n": 20
+      },
+      {
+        "loc": "Marseille, France",
+        "n": 18
+      },
+      {
+        "loc": "Etats-Unis",
+        "n": 15
+      },
+      {
+        "loc": "Toulouse, France",
+        "n": 15
+      },
+      {
+        "loc": "République Démocratique Du Con",
+        "n": 14
+      },
+      {
+        "loc": "Suisse",
+        "n": 14
+      },
+      {
+        "loc": "france",
+        "n": 14
+      },
+      {
+        "loc": "Lyon, France",
+        "n": 13
+      },
+      {
+        "loc": "Bretagne, France",
+        "n": 13
+      }
+    ]
+  },
+  "top_activity": [
+    {
+      "handle": "bfmtv",
+      "tweets_total": 645,
+      "ebola_tweets": 26,
+      "hantavirus_tweets": 565,
+      "mpox_tweets": 54,
+      "rt_share": 0.007751937984496124,
+      "verified": true
+    },
+    {
+      "handle": "je67jean",
+      "tweets_total": 533,
+      "ebola_tweets": 14,
+      "hantavirus_tweets": 437,
+      "mpox_tweets": 82,
+      "rt_share": 0.6604127579737336,
+      "verified": false
+    },
+    {
+      "handle": "mcm67738662",
+      "tweets_total": 528,
+      "ebola_tweets": 21,
+      "hantavirus_tweets": 316,
+      "mpox_tweets": 191,
+      "rt_share": 1.0,
+      "verified": false
+    },
+    {
+      "handle": "cgtnfrancais",
+      "tweets_total": 509,
+      "ebola_tweets": 65,
+      "hantavirus_tweets": 272,
+      "mpox_tweets": 172,
+      "rt_share": 0.0,
+      "verified": false
+    },
+    {
+      "handle": "natalianausica",
+      "tweets_total": 457,
+      "ebola_tweets": 25,
+      "hantavirus_tweets": 229,
+      "mpox_tweets": 203,
+      "rt_share": 0.973741794310722,
+      "verified": false
+    },
+    {
+      "handle": "carlottamariot4",
+      "tweets_total": 385,
+      "ebola_tweets": 23,
+      "hantavirus_tweets": 239,
+      "mpox_tweets": 123,
+      "rt_share": 0.9974025974025974,
+      "verified": false
+    },
+    {
+      "handle": "nicolasberrod",
+      "tweets_total": 371,
+      "ebola_tweets": 22,
+      "hantavirus_tweets": 184,
+      "mpox_tweets": 165,
+      "rt_share": 0.0,
+      "verified": false
+    },
+    {
+      "handle": "cclem64",
+      "tweets_total": 365,
+      "ebola_tweets": 27,
+      "hantavirus_tweets": 214,
+      "mpox_tweets": 124,
+      "rt_share": 1.0,
+      "verified": false
+    },
+    {
+      "handle": "boycott695",
+      "tweets_total": 359,
+      "ebola_tweets": 17,
+      "hantavirus_tweets": 228,
+      "mpox_tweets": 114,
+      "rt_share": 1.0,
+      "verified": false
+    },
+    {
+      "handle": "guetty353535",
+      "tweets_total": 353,
+      "ebola_tweets": 23,
+      "hantavirus_tweets": 208,
+      "mpox_tweets": 122,
+      "rt_share": 1.0,
+      "verified": false
+    },
+    {
+      "handle": "nadinegerard5",
+      "tweets_total": 340,
+      "ebola_tweets": 12,
+      "hantavirus_tweets": 181,
+      "mpox_tweets": 147,
+      "rt_share": 1.0,
+      "verified": false
+    },
+    {
+      "handle": "menuet_morgan",
+      "tweets_total": 340,
+      "ebola_tweets": 9,
+      "hantavirus_tweets": 229,
+      "mpox_tweets": 102,
+      "rt_share": 1.0,
+      "verified": false
+    },
+    {
+      "handle": "carrionnat",
+      "tweets_total": 336,
+      "ebola_tweets": 11,
+      "hantavirus_tweets": 175,
+      "mpox_tweets": 150,
+      "rt_share": 1.0,
+      "verified": false
+    },
+    {
+      "handle": "mazenod10",
+      "tweets_total": 336,
+      "ebola_tweets": 8,
+      "hantavirus_tweets": 207,
+      "mpox_tweets": 121,
+      "rt_share": 1.0,
+      "verified": false
+    },
+    {
+      "handle": "bobrebelles",
+      "tweets_total": 332,
+      "ebola_tweets": 21,
+      "hantavirus_tweets": 241,
+      "mpox_tweets": 70,
+      "rt_share": 0.9969879518072289,
+      "verified": false
+    },
+    {
+      "handle": "sosdegaulle",
+      "tweets_total": 331,
+      "ebola_tweets": 33,
+      "hantavirus_tweets": 251,
+      "mpox_tweets": 47,
+      "rt_share": 0.9546827794561934,
+      "verified": false
+    },
+    {
+      "handle": "mpassy_jr",
+      "tweets_total": 320,
+      "ebola_tweets": 6,
+      "hantavirus_tweets": 79,
+      "mpox_tweets": 235,
+      "rt_share": 1.0,
+      "verified": false
+    },
+    {
+      "handle": "denis_minisini",
+      "tweets_total": 316,
+      "ebola_tweets": 11,
+      "hantavirus_tweets": 109,
+      "mpox_tweets": 196,
+      "rt_share": 1.0,
+      "verified": false
+    },
+    {
+      "handle": "francoi98365755",
+      "tweets_total": 308,
+      "ebola_tweets": 10,
+      "hantavirus_tweets": 218,
+      "mpox_tweets": 80,
+      "rt_share": 1.0,
+      "verified": false
+    },
+    {
+      "handle": "pretot_m",
+      "tweets_total": 304,
+      "ebola_tweets": 19,
+      "hantavirus_tweets": 206,
+      "mpox_tweets": 79,
+      "rt_share": 0.9868421052631579,
+      "verified": false
+    },
+    {
+      "handle": "nikofa84",
+      "tweets_total": 303,
+      "ebola_tweets": 10,
+      "hantavirus_tweets": 108,
+      "mpox_tweets": 185,
+      "rt_share": 1.0,
+      "verified": false
+    },
+    {
+      "handle": "franceinfo",
+      "tweets_total": 293,
+      "ebola_tweets": 18,
+      "hantavirus_tweets": 228,
+      "mpox_tweets": 47,
+      "rt_share": 0.013651877133105802,
+      "verified": false
+    },
+    {
+      "handle": "gaellem15",
+      "tweets_total": 292,
+      "ebola_tweets": 14,
+      "hantavirus_tweets": 130,
+      "mpox_tweets": 148,
+      "rt_share": 0.9897260273972602,
+      "verified": false
+    },
+    {
+      "handle": "nauleaufrederic",
+      "tweets_total": 291,
+      "ebola_tweets": 20,
+      "hantavirus_tweets": 220,
+      "mpox_tweets": 51,
+      "rt_share": 1.0,
+      "verified": false
+    },
+    {
+      "handle": "hadjsev",
+      "tweets_total": 282,
+      "ebola_tweets": 21,
+      "hantavirus_tweets": 204,
+      "mpox_tweets": 57,
+      "rt_share": 0.9893617021276596,
+      "verified": false
+    },
+    {
+      "handle": "teyssierjeanfr1",
+      "tweets_total": 282,
+      "ebola_tweets": 16,
+      "hantavirus_tweets": 179,
+      "mpox_tweets": 87,
+      "rt_share": 0.9680851063829787,
+      "verified": false
+    },
+    {
+      "handle": "jeaninejoris",
+      "tweets_total": 281,
+      "ebola_tweets": 18,
+      "hantavirus_tweets": 150,
+      "mpox_tweets": 113,
+      "rt_share": 1.0,
+      "verified": false
+    },
+    {
+      "handle": "nojab69",
+      "tweets_total": 281,
+      "ebola_tweets": 24,
+      "hantavirus_tweets": 189,
+      "mpox_tweets": 68,
+      "rt_share": 0.9857651245551602,
+      "verified": false
+    },
+    {
+      "handle": "yvespdb",
+      "tweets_total": 278,
+      "ebola_tweets": 6,
+      "hantavirus_tweets": 129,
+      "mpox_tweets": 143,
+      "rt_share": 0.935251798561151,
+      "verified": false
+    },
+    {
+      "handle": "cnews",
+      "tweets_total": 278,
+      "ebola_tweets": 21,
+      "hantavirus_tweets": 215,
+      "mpox_tweets": 42,
+      "rt_share": 0.0,
+      "verified": false
+    },
+    {
+      "handle": "lilieannesat",
+      "tweets_total": 275,
+      "ebola_tweets": 15,
+      "hantavirus_tweets": 187,
+      "mpox_tweets": 73,
+      "rt_share": 1.0,
+      "verified": false
+    },
+    {
+      "handle": "hervemaure17121",
+      "tweets_total": 272,
+      "ebola_tweets": 27,
+      "hantavirus_tweets": 177,
+      "mpox_tweets": 68,
+      "rt_share": 1.0,
+      "verified": false
+    },
+    {
+      "handle": "actualise1",
+      "tweets_total": 268,
+      "ebola_tweets": 5,
+      "hantavirus_tweets": 225,
+      "mpox_tweets": 38,
+      "rt_share": 0.9888059701492538,
+      "verified": false
+    },
+    {
+      "handle": "cloutechristin2",
+      "tweets_total": 265,
+      "ebola_tweets": 18,
+      "hantavirus_tweets": 136,
+      "mpox_tweets": 111,
+      "rt_share": 0.8830188679245283,
+      "verified": false
+    },
+    {
+      "handle": "nouveau_papy",
+      "tweets_total": 265,
+      "ebola_tweets": 5,
+      "hantavirus_tweets": 177,
+      "mpox_tweets": 83,
+      "rt_share": 0.9584905660377359,
+      "verified": false
+    },
+    {
+      "handle": "mbrg32",
+      "tweets_total": 260,
+      "ebola_tweets": 5,
+      "hantavirus_tweets": 110,
+      "mpox_tweets": 145,
+      "rt_share": 1.0,
+      "verified": false
+    },
+    {
+      "handle": "b_scotto",
+      "tweets_total": 258,
+      "ebola_tweets": 23,
+      "hantavirus_tweets": 125,
+      "mpox_tweets": 110,
+      "rt_share": 0.9457364341085271,
+      "verified": false
+    },
+    {
+      "handle": "chaanieannie",
+      "tweets_total": 257,
+      "ebola_tweets": 22,
+      "hantavirus_tweets": 172,
+      "mpox_tweets": 63,
+      "rt_share": 1.0,
+      "verified": false
+    },
+    {
+      "handle": "perrinc12",
+      "tweets_total": 256,
+      "ebola_tweets": 5,
+      "hantavirus_tweets": 57,
+      "mpox_tweets": 194,
+      "rt_share": 0.953125,
+      "verified": false
+    },
+    {
+      "handle": "peyresate",
+      "tweets_total": 255,
+      "ebola_tweets": 8,
+      "hantavirus_tweets": 100,
+      "mpox_tweets": 147,
+      "rt_share": 0.996078431372549,
+      "verified": false
+    }
+  ],
+  "top_degree": [
+    {
+      "handle": "f_philippot",
+      "strength": 15403.0,
+      "in": 15403.0,
+      "out": 0.0
+    },
+    {
+      "handle": "banounhelene",
+      "strength": 15246.0,
+      "in": 15192.0,
+      "out": 54.0
+    },
+    {
+      "handle": "louisfouch3",
+      "strength": 7824.0,
+      "in": 7764.0,
+      "out": 60.0
+    },
+    {
+      "handle": "resistance_sm",
+      "strength": 7267.0,
+      "in": 7253.0,
+      "out": 14.0
+    },
+    {
+      "handle": "silvano_trotta",
+      "strength": 7145.0,
+      "in": 7143.0,
+      "out": 2.0
+    },
+    {
+      "handle": "victorsinclair3",
+      "strength": 6571.0,
+      "in": 6568.0,
+      "out": 3.0
+    },
+    {
+      "handle": "caudehenrion",
+      "strength": 6473.0,
+      "in": 6473.0,
+      "out": 0.0
+    },
+    {
+      "handle": "camille_moscow",
+      "strength": 6237.0,
+      "in": 6236.0,
+      "out": 1.0
+    },
+    {
+      "handle": "martinz_uncut",
+      "strength": 5065.0,
+      "in": 5056.0,
+      "out": 9.0
+    },
+    {
+      "handle": "didiermaisto",
+      "strength": 3928.0,
+      "in": 3925.0,
+      "out": 3.0
+    },
+    {
+      "handle": "marseille_jeff",
+      "strength": 3547.0,
+      "in": 3522.0,
+      "out": 25.0
+    },
+    {
+      "handle": "myriampalomba",
+      "strength": 3434.0,
+      "in": 3431.0,
+      "out": 3.0
+    },
+    {
+      "handle": "alertesinfos",
+      "strength": 3389.0,
+      "in": 3389.0,
+      "out": 0.0
+    },
+    {
+      "handle": "tatiann69922625",
+      "strength": 3319.0,
+      "in": 3296.0,
+      "out": 23.0
+    },
+    {
+      "handle": "verity_france",
+      "strength": 2624.0,
+      "in": 2609.0,
+      "out": 15.0
+    },
+    {
+      "handle": "bfmtv",
+      "strength": 2579.0,
+      "in": 2579.0,
+      "out": 0.0
+    },
+    {
+      "handle": "virginieperez15",
+      "strength": 2391.0,
+      "in": 2384.0,
+      "out": 7.0
+    },
+    {
+      "handle": "fredgaulois",
+      "strength": 2351.0,
+      "in": 2349.0,
+      "out": 2.0
+    },
+    {
+      "handle": "gdams70",
+      "strength": 2290.0,
+      "in": 2287.0,
+      "out": 3.0
+    },
+    {
+      "handle": "nicolasberrod",
+      "strength": 2222.0,
+      "in": 2199.0,
+      "out": 23.0
+    },
+    {
+      "handle": "tocsin_media",
+      "strength": 2146.0,
+      "in": 2136.0,
+      "out": 10.0
+    },
+    {
+      "handle": "france_soir",
+      "strength": 1899.0,
+      "in": 1899.0,
+      "out": 0.0
+    },
+    {
+      "handle": "escalet83",
+      "strength": 1899.0,
+      "in": 1883.0,
+      "out": 16.0
+    },
+    {
+      "handle": "benoitm_mtl",
+      "strength": 1698.0,
+      "in": 1694.0,
+      "out": 4.0
+    },
+    {
+      "handle": "pinsollet",
+      "strength": 1670.0,
+      "in": 1620.0,
+      "out": 50.0
+    },
+    {
+      "handle": "alexsofamous",
+      "strength": 1622.0,
+      "in": 1622.0,
+      "out": 0.0
+    },
+    {
+      "handle": "aldosterone111",
+      "strength": 1567.0,
+      "in": 1564.0,
+      "out": 3.0
+    },
+    {
+      "handle": "cnews",
+      "strength": 1559.0,
+      "in": 1559.0,
+      "out": 0.0
+    },
+    {
+      "handle": "brain_stimulus",
+      "strength": 1537.0,
+      "in": 1534.0,
+      "out": 3.0
+    },
+    {
+      "handle": "cerfiafr",
+      "strength": 1522.0,
+      "in": 1522.0,
+      "out": 0.0
+    },
+    {
+      "handle": "corinnereverbel",
+      "strength": 1365.0,
+      "in": 1340.0,
+      "out": 25.0
+    },
+    {
+      "handle": "le_parisien",
+      "strength": 1270.0,
+      "in": 1260.0,
+      "out": 10.0
+    },
+    {
+      "handle": "chenuflorent",
+      "strength": 1215.0,
+      "in": 1211.0,
+      "out": 4.0
+    },
+    {
+      "handle": "agretdenis",
+      "strength": 1168.0,
+      "in": 1104.0,
+      "out": 64.0
+    },
+    {
+      "handle": "erikloridan",
+      "strength": 1105.0,
+      "in": 1097.0,
+      "out": 8.0
+    },
+    {
+      "handle": "franceinfo",
+      "strength": 1080.0,
+      "in": 1080.0,
+      "out": 0.0
+    },
+    {
+      "handle": "idrissaberkane",
+      "strength": 1014.0,
+      "in": 1007.0,
+      "out": 7.0
+    },
+    {
+      "handle": "jon_delorraine",
+      "strength": 937.0,
+      "in": 937.0,
+      "out": 0.0
+    },
+    {
+      "handle": "sabatierjeanma1",
+      "strength": 839.0,
+      "in": 831.0,
+      "out": 8.0
+    },
+    {
+      "handle": "annelisebocquet",
+      "strength": 801.0,
+      "in": 746.0,
+      "out": 55.0
+    }
+  ],
+  "findings": [
+    "5,861 comptes publient dans les trois corpus santé (sur ~262k auteurs uniques cross-corpus).",
+    "Graphe induit : 5,861 nœuds, 71,204 arêtes, LCC ≈ 5,685 (97.0 %), 170 isolats.",
+    "Part RT moyenne ≈ 87.9 % des publications de ces comptes.",
+    "282 de ces comptes figurent aussi dans une shortlist MCA Track B (santé).",
+    "786 comptes ont une activité relativement équilibrée (CV < 0,5) entre les trois corpus."
+  ],
+  "refinedAt": "2026-08-26T18:28:37.005935+00:00"
+}

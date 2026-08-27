@@ -1,0 +1,142 @@
+{
+  "corpus": "mpox",
+  "label": "Mpox · 2023–2026",
+  "method": "MCA-MULTI-Serrano-TRACK-B-251",
+  "params": {
+    "seed": 20260624,
+    "top_pct": 1.0,
+    "exact_topk": true,
+    "corpus_pct": 100,
+    "max_accounts_per_object": 80,
+    "max_nodes_after_overlap": 20000,
+    "gamma": 1.0,
+    "omega": 0.1,
+    "flatten": "UNFL_sum",
+    "serrano_alpha": 0.05,
+    "deg2_fallback": false
+  },
+  "n_tweets": 274510,
+  "n_accounts": 66916,
+  "period_days": 215,
+  "selection": {
+    "top_pct": 1.0,
+    "exact_topk": true,
+    "corpus_pct": 100,
+    "RTW": {
+      "threshold": 1,
+      "n": 55983
+    },
+    "RPL": {
+      "threshold": 1,
+      "n": 2126
+    },
+    "original": {
+      "threshold": 1,
+      "n": 14811
+    },
+    "union_n": 66740
+  },
+  "layers": {
+    "RTW": {
+      "layer": "RTW",
+      "method": "cooccurrence_shared_objects",
+      "n_objects_used": 5823,
+      "n_objects_capped": 381,
+      "n_edges_before_filters": 1459050,
+      "n_nodes_before_filters": 26113,
+      "overlap_threshold": 2,
+      "n_edges_after_overlap": 142331,
+      "n_nodes_after_overlap": 8131,
+      "weight_threshold": 2.0,
+      "n_edges_after_weight": 142331,
+      "n_nodes_after_weight": 8131
+    },
+    "RPL": {
+      "layer": "RPL",
+      "method": "cooccurrence_shared_objects",
+      "n_objects_used": 343,
+      "n_objects_capped": 0,
+      "n_edges_before_filters": 9144,
+      "n_nodes_before_filters": 1369,
+      "overlap_threshold": 1,
+      "n_edges_after_overlap": 9144,
+      "n_nodes_after_overlap": 1369,
+      "weight_threshold": 1.0,
+      "n_edges_after_weight": 9144,
+      "n_nodes_after_weight": 1369
+    },
+    "QTE": {
+      "layer": "QTE",
+      "method": "cooccurrence_shared_objects",
+      "n_objects_used": 118,
+      "n_objects_capped": 0,
+      "n_edges_before_filters": 1074,
+      "n_nodes_before_filters": 337,
+      "overlap_threshold": 1,
+      "n_edges_after_overlap": 1074,
+      "n_nodes_after_overlap": 337,
+      "weight_threshold": 1.0,
+      "n_edges_after_weight": 1074,
+      "n_nodes_after_weight": 337
+    },
+    "MEN": {
+      "layer": "MEN",
+      "method": "cooccurrence_shared_objects",
+      "n_objects_used": 2222,
+      "n_objects_capped": 32,
+      "n_edges_before_filters": 192403,
+      "n_nodes_before_filters": 6649,
+      "overlap_threshold": 1,
+      "n_edges_after_overlap": 192403,
+      "n_nodes_after_overlap": 6649,
+      "weight_threshold": 1.0,
+      "n_edges_after_weight": 192403,
+      "n_nodes_after_weight": 6649
+    },
+    "URL": {
+      "layer": "URL",
+      "method": "cooccurrence_shared_objects",
+      "n_objects_used": 564,
+      "n_objects_capped": 9,
+      "n_edges_before_filters": 60869,
+      "n_nodes_before_filters": 3177,
+      "overlap_threshold": 1,
+      "n_edges_after_overlap": 60869,
+      "n_nodes_after_overlap": 3177,
+      "weight_threshold": 1.0,
+      "n_edges_after_weight": 60869,
+      "n_nodes_after_weight": 3177
+    }
+  },
+  "MONO": {
+    "n_communities": 116,
+    "n_nodes": 8131,
+    "n_edges": 142331
+  },
+  "MULTI": {
+    "n_communities": 313,
+    "n_nodes": 15843,
+    "n_edges": 405821,
+    "gamma": 1.0,
+    "omega": 0.1,
+    "improvement": 753135.7108241809
+  },
+  "C0": {
+    "community_id": 0,
+    "n": 2604
+  },
+  "serrano": {
+    "n_edges_flat": 32472,
+    "n_edges_bb": 255,
+    "n_nodes_bb": 115,
+    "flat_edges_multilayer": 145,
+    "n_bb_edges_multilayer": 8
+  },
+  "cohort_n": 115,
+  "csv": "outputs/analyses/mca_track_b/mpox_cohort_UNFL_sum_serrano05.csv",
+  "handles_json": "outputs/analyses/mca_track_b/mpox_selected_handles.json",
+  "bio_coverage": 68,
+  "missing_bio": 47,
+  "engagement_def": "like_count + retweet_count + reply_count + quote_count",
+  "pct_RT_def": "100 * (tweet_type == 'retweet') / publications du compte (CocktailFusion)"
+}

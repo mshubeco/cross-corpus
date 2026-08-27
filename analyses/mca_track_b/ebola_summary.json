@@ -1,0 +1,142 @@
+{
+  "corpus": "ebola",
+  "label": "Ebola · mai 2026",
+  "method": "MCA-MULTI-Serrano-TRACK-B-251",
+  "params": {
+    "seed": 20260624,
+    "top_pct": 1.0,
+    "exact_topk": true,
+    "corpus_pct": 100,
+    "max_accounts_per_object": 80,
+    "max_nodes_after_overlap": 20000,
+    "gamma": 1.0,
+    "omega": 0.1,
+    "flatten": "UNFL_sum",
+    "serrano_alpha": 0.05,
+    "deg2_fallback": false
+  },
+  "n_tweets": 31719,
+  "n_accounts": 14677,
+  "period_days": 13,
+  "selection": {
+    "top_pct": 1.0,
+    "exact_topk": true,
+    "corpus_pct": 100,
+    "RTW": {
+      "threshold": 1,
+      "n": 11642
+    },
+    "RPL": {
+      "threshold": 1,
+      "n": 500
+    },
+    "original": {
+      "threshold": 1,
+      "n": 3246
+    },
+    "union_n": 14600
+  },
+  "layers": {
+    "RTW": {
+      "layer": "RTW",
+      "method": "cooccurrence_shared_objects",
+      "n_objects_used": 1036,
+      "n_objects_capped": 46,
+      "n_edges_before_filters": 218970,
+      "n_nodes_before_filters": 6045,
+      "overlap_threshold": 1,
+      "n_edges_after_overlap": 218970,
+      "n_nodes_after_overlap": 6045,
+      "weight_threshold": 1.0,
+      "n_edges_after_weight": 218970,
+      "n_nodes_after_weight": 6045
+    },
+    "RPL": {
+      "layer": "RPL",
+      "method": "cooccurrence_shared_objects",
+      "n_objects_used": 70,
+      "n_objects_capped": 0,
+      "n_edges_before_filters": 812,
+      "n_nodes_before_filters": 237,
+      "overlap_threshold": 1,
+      "n_edges_after_overlap": 812,
+      "n_nodes_after_overlap": 237,
+      "weight_threshold": 1.0,
+      "n_edges_after_weight": 812,
+      "n_nodes_after_weight": 237
+    },
+    "QTE": {
+      "layer": "QTE",
+      "method": "cooccurrence_shared_objects",
+      "n_objects_used": 25,
+      "n_objects_capped": 0,
+      "n_edges_before_filters": 99,
+      "n_nodes_before_filters": 59,
+      "overlap_threshold": 1,
+      "n_edges_after_overlap": 99,
+      "n_nodes_after_overlap": 59,
+      "weight_threshold": 1.0,
+      "n_edges_after_weight": 99,
+      "n_nodes_after_weight": 59
+    },
+    "MEN": {
+      "layer": "MEN",
+      "method": "cooccurrence_shared_objects",
+      "n_objects_used": 572,
+      "n_objects_capped": 3,
+      "n_edges_before_filters": 30746,
+      "n_nodes_before_filters": 1718,
+      "overlap_threshold": 1,
+      "n_edges_after_overlap": 30746,
+      "n_nodes_after_overlap": 1718,
+      "weight_threshold": 1.0,
+      "n_edges_after_weight": 30746,
+      "n_nodes_after_weight": 1718
+    },
+    "URL": {
+      "layer": "URL",
+      "method": "cooccurrence_shared_objects",
+      "n_objects_used": 89,
+      "n_objects_capped": 0,
+      "n_edges_before_filters": 1916,
+      "n_nodes_before_filters": 363,
+      "overlap_threshold": 1,
+      "n_edges_after_overlap": 1916,
+      "n_nodes_after_overlap": 363,
+      "weight_threshold": 1.0,
+      "n_edges_after_weight": 1916,
+      "n_nodes_after_weight": 363
+    }
+  },
+  "MONO": {
+    "n_communities": 94,
+    "n_nodes": 6045,
+    "n_edges": 218970
+  },
+  "MULTI": {
+    "n_communities": 172,
+    "n_nodes": 7730,
+    "n_edges": 252543,
+    "gamma": 1.0,
+    "omega": 0.1,
+    "improvement": 369296.11040125246
+  },
+  "C0": {
+    "community_id": 0,
+    "n": 1407
+  },
+  "serrano": {
+    "n_edges_flat": 30151,
+    "n_edges_bb": 134,
+    "n_nodes_bb": 62,
+    "flat_edges_multilayer": 13,
+    "n_bb_edges_multilayer": 0
+  },
+  "cohort_n": 62,
+  "csv": "outputs/analyses/mca_track_b/ebola_cohort_UNFL_sum_serrano05.csv",
+  "handles_json": "outputs/analyses/mca_track_b/ebola_selected_handles.json",
+  "bio_coverage": 42,
+  "missing_bio": 20,
+  "engagement_def": "like_count + retweet_count + reply_count + quote_count",
+  "pct_RT_def": "100 * (tweet_type == 'retweet') / publications du compte (CocktailFusion)"
+}

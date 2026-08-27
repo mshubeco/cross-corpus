@@ -1,0 +1,575 @@
+{
+  "method_id": "MCA-MULTI-Serrano-TRACK-B-251",
+  "source_spec": "C:\\Users\\th8992be\\Desktop\\HEAT\\03_analyses\\pipelines\\cib_p3\\docs\\MCA-MULTI-Serrano_TRACK_B_251_SPEC.md",
+  "generated_at": "2026-08-26T08:13:59.490460+00:00",
+  "corpora": {
+    "ebola": {
+      "corpus": "ebola",
+      "label": "Ebola · mai 2026",
+      "method": "MCA-MULTI-Serrano-TRACK-B-251",
+      "params": {
+        "seed": 20260624,
+        "top_pct": 1.0,
+        "exact_topk": true,
+        "corpus_pct": 100,
+        "max_accounts_per_object": 80,
+        "max_nodes_after_overlap": 20000,
+        "gamma": 1.0,
+        "omega": 0.1,
+        "flatten": "UNFL_sum",
+        "serrano_alpha": 0.05,
+        "deg2_fallback": false
+      },
+      "n_tweets": 31719,
+      "n_accounts": 14677,
+      "period_days": 13,
+      "selection": {
+        "top_pct": 1.0,
+        "exact_topk": true,
+        "corpus_pct": 100,
+        "RTW": {
+          "threshold": 1,
+          "n": 11642
+        },
+        "RPL": {
+          "threshold": 1,
+          "n": 500
+        },
+        "original": {
+          "threshold": 1,
+          "n": 3246
+        },
+        "union_n": 14600
+      },
+      "layers": {
+        "RTW": {
+          "layer": "RTW",
+          "method": "cooccurrence_shared_objects",
+          "n_objects_used": 1036,
+          "n_objects_capped": 46,
+          "n_edges_before_filters": 218970,
+          "n_nodes_before_filters": 6045,
+          "overlap_threshold": 1,
+          "n_edges_after_overlap": 218970,
+          "n_nodes_after_overlap": 6045,
+          "weight_threshold": 1.0,
+          "n_edges_after_weight": 218970,
+          "n_nodes_after_weight": 6045
+        },
+        "RPL": {
+          "layer": "RPL",
+          "method": "cooccurrence_shared_objects",
+          "n_objects_used": 70,
+          "n_objects_capped": 0,
+          "n_edges_before_filters": 812,
+          "n_nodes_before_filters": 237,
+          "overlap_threshold": 1,
+          "n_edges_after_overlap": 812,
+          "n_nodes_after_overlap": 237,
+          "weight_threshold": 1.0,
+          "n_edges_after_weight": 812,
+          "n_nodes_after_weight": 237
+        },
+        "QTE": {
+          "layer": "QTE",
+          "method": "cooccurrence_shared_objects",
+          "n_objects_used": 25,
+          "n_objects_capped": 0,
+          "n_edges_before_filters": 99,
+          "n_nodes_before_filters": 59,
+          "overlap_threshold": 1,
+          "n_edges_after_overlap": 99,
+          "n_nodes_after_overlap": 59,
+          "weight_threshold": 1.0,
+          "n_edges_after_weight": 99,
+          "n_nodes_after_weight": 59
+        },
+        "MEN": {
+          "layer": "MEN",
+          "method": "cooccurrence_shared_objects",
+          "n_objects_used": 572,
+          "n_objects_capped": 3,
+          "n_edges_before_filters": 30746,
+          "n_nodes_before_filters": 1718,
+          "overlap_threshold": 1,
+          "n_edges_after_overlap": 30746,
+          "n_nodes_after_overlap": 1718,
+          "weight_threshold": 1.0,
+          "n_edges_after_weight": 30746,
+          "n_nodes_after_weight": 1718
+        },
+        "URL": {
+          "layer": "URL",
+          "method": "cooccurrence_shared_objects",
+          "n_objects_used": 89,
+          "n_objects_capped": 0,
+          "n_edges_before_filters": 1916,
+          "n_nodes_before_filters": 363,
+          "overlap_threshold": 1,
+          "n_edges_after_overlap": 1916,
+          "n_nodes_after_overlap": 363,
+          "weight_threshold": 1.0,
+          "n_edges_after_weight": 1916,
+          "n_nodes_after_weight": 363
+        }
+      },
+      "MONO": {
+        "n_communities": 94,
+        "n_nodes": 6045,
+        "n_edges": 218970
+      },
+      "MULTI": {
+        "n_communities": 172,
+        "n_nodes": 7730,
+        "n_edges": 252543,
+        "gamma": 1.0,
+        "omega": 0.1,
+        "improvement": 369296.11040125246
+      },
+      "C0": {
+        "community_id": 0,
+        "n": 1407
+      },
+      "serrano": {
+        "n_edges_flat": 30151,
+        "n_edges_bb": 134,
+        "n_nodes_bb": 62,
+        "flat_edges_multilayer": 13,
+        "n_bb_edges_multilayer": 0
+      },
+      "cohort_n": 62,
+      "csv": "outputs/analyses/mca_track_b/ebola_cohort_UNFL_sum_serrano05.csv",
+      "handles_json": "outputs/analyses/mca_track_b/ebola_selected_handles.json",
+      "bio_coverage": 42,
+      "missing_bio": 20,
+      "engagement_def": "like_count + retweet_count + reply_count + quote_count",
+      "pct_RT_def": "100 * (tweet_type == 'retweet') / publications du compte (CocktailFusion)"
+    },
+    "hantavirus": {
+      "corpus": "hantavirus",
+      "label": "Hantavirus · mai 2026",
+      "method": "MCA-MULTI-Serrano-TRACK-B-251",
+      "params": {
+        "seed": 20260624,
+        "top_pct": 1.0,
+        "exact_topk": true,
+        "corpus_pct": 100,
+        "max_accounts_per_object": 80,
+        "max_nodes_after_overlap": 20000,
+        "gamma": 1.0,
+        "omega": 0.1,
+        "flatten": "UNFL_sum",
+        "serrano_alpha": 0.05,
+        "deg2_fallback": false
+      },
+      "n_tweets": 427069,
+      "n_accounts": 98413,
+      "period_days": 16,
+      "selection": {
+        "top_pct": 1.0,
+        "exact_topk": true,
+        "corpus_pct": 100,
+        "RTW": {
+          "threshold": 1,
+          "n": 87066
+        },
+        "RPL": {
+          "threshold": 1,
+          "n": 1914
+        },
+        "original": {
+          "threshold": 1,
+          "n": 15779
+        },
+        "union_n": 98230
+      },
+      "layers": {
+        "RTW": {
+          "layer": "RTW",
+          "method": "cooccurrence_shared_objects",
+          "n_objects_used": 5950,
+          "n_objects_capped": 565,
+          "n_edges_before_filters": 2137203,
+          "n_nodes_before_filters": 30005,
+          "overlap_threshold": 2,
+          "n_edges_after_overlap": 233936,
+          "n_nodes_after_overlap": 10219,
+          "weight_threshold": 2.0,
+          "n_edges_after_weight": 233936,
+          "n_nodes_after_weight": 10219
+        },
+        "RPL": {
+          "layer": "RPL",
+          "method": "cooccurrence_shared_objects",
+          "n_objects_used": 427,
+          "n_objects_capped": 0,
+          "n_edges_before_filters": 3360,
+          "n_nodes_before_filters": 1047,
+          "overlap_threshold": 1,
+          "n_edges_after_overlap": 3360,
+          "n_nodes_after_overlap": 1047,
+          "weight_threshold": 1.0,
+          "n_edges_after_weight": 3360,
+          "n_nodes_after_weight": 1047
+        },
+        "QTE": {
+          "layer": "QTE",
+          "method": "cooccurrence_shared_objects",
+          "n_objects_used": 242,
+          "n_objects_capped": 0,
+          "n_edges_before_filters": 1430,
+          "n_nodes_before_filters": 442,
+          "overlap_threshold": 1,
+          "n_edges_after_overlap": 1430,
+          "n_nodes_after_overlap": 442,
+          "weight_threshold": 1.0,
+          "n_edges_after_weight": 1430,
+          "n_nodes_after_weight": 442
+        },
+        "MEN": {
+          "layer": "MEN",
+          "method": "cooccurrence_shared_objects",
+          "n_objects_used": 2336,
+          "n_objects_capped": 28,
+          "n_edges_before_filters": 185794,
+          "n_nodes_before_filters": 6401,
+          "overlap_threshold": 1,
+          "n_edges_after_overlap": 185794,
+          "n_nodes_after_overlap": 6401,
+          "weight_threshold": 1.0,
+          "n_edges_after_weight": 185794,
+          "n_nodes_after_weight": 6401
+        },
+        "URL": {
+          "layer": "URL",
+          "method": "cooccurrence_shared_objects",
+          "n_objects_used": 343,
+          "n_objects_capped": 7,
+          "n_edges_before_filters": 42514,
+          "n_nodes_before_filters": 2084,
+          "overlap_threshold": 1,
+          "n_edges_after_overlap": 42514,
+          "n_nodes_after_overlap": 2084,
+          "weight_threshold": 1.0,
+          "n_edges_after_weight": 42514,
+          "n_nodes_after_weight": 2084
+        }
+      },
+      "MONO": {
+        "n_communities": 87,
+        "n_nodes": 10219,
+        "n_edges": 233936
+      },
+      "MULTI": {
+        "n_communities": 308,
+        "n_nodes": 16864,
+        "n_edges": 467034,
+        "gamma": 1.0,
+        "omega": 0.1,
+        "improvement": 934404.2254134285
+      },
+      "C0": {
+        "community_id": 0,
+        "n": 3728
+      },
+      "serrano": {
+        "n_edges_flat": 56714,
+        "n_edges_bb": 598,
+        "n_nodes_bb": 259,
+        "flat_edges_multilayer": 390,
+        "n_bb_edges_multilayer": 44
+      },
+      "cohort_n": 259,
+      "csv": "outputs/analyses/mca_track_b/hantavirus_cohort_UNFL_sum_serrano05.csv",
+      "handles_json": "outputs/analyses/mca_track_b/hantavirus_selected_handles.json",
+      "bio_coverage": 148,
+      "missing_bio": 111,
+      "engagement_def": "like_count + retweet_count + reply_count + quote_count",
+      "pct_RT_def": "100 * (tweet_type == 'retweet') / publications du compte (CocktailFusion)"
+    },
+    "mpox": {
+      "corpus": "mpox",
+      "label": "Mpox · 2023–2026",
+      "method": "MCA-MULTI-Serrano-TRACK-B-251",
+      "params": {
+        "seed": 20260624,
+        "top_pct": 1.0,
+        "exact_topk": true,
+        "corpus_pct": 100,
+        "max_accounts_per_object": 80,
+        "max_nodes_after_overlap": 20000,
+        "gamma": 1.0,
+        "omega": 0.1,
+        "flatten": "UNFL_sum",
+        "serrano_alpha": 0.05,
+        "deg2_fallback": false
+      },
+      "n_tweets": 274510,
+      "n_accounts": 66916,
+      "period_days": 215,
+      "selection": {
+        "top_pct": 1.0,
+        "exact_topk": true,
+        "corpus_pct": 100,
+        "RTW": {
+          "threshold": 1,
+          "n": 55983
+        },
+        "RPL": {
+          "threshold": 1,
+          "n": 2126
+        },
+        "original": {
+          "threshold": 1,
+          "n": 14811
+        },
+        "union_n": 66740
+      },
+      "layers": {
+        "RTW": {
+          "layer": "RTW",
+          "method": "cooccurrence_shared_objects",
+          "n_objects_used": 5823,
+          "n_objects_capped": 381,
+          "n_edges_before_filters": 1459050,
+          "n_nodes_before_filters": 26113,
+          "overlap_threshold": 2,
+          "n_edges_after_overlap": 142331,
+          "n_nodes_after_overlap": 8131,
+          "weight_threshold": 2.0,
+          "n_edges_after_weight": 142331,
+          "n_nodes_after_weight": 8131
+        },
+        "RPL": {
+          "layer": "RPL",
+          "method": "cooccurrence_shared_objects",
+          "n_objects_used": 343,
+          "n_objects_capped": 0,
+          "n_edges_before_filters": 9144,
+          "n_nodes_before_filters": 1369,
+          "overlap_threshold": 1,
+          "n_edges_after_overlap": 9144,
+          "n_nodes_after_overlap": 1369,
+          "weight_threshold": 1.0,
+          "n_edges_after_weight": 9144,
+          "n_nodes_after_weight": 1369
+        },
+        "QTE": {
+          "layer": "QTE",
+          "method": "cooccurrence_shared_objects",
+          "n_objects_used": 118,
+          "n_objects_capped": 0,
+          "n_edges_before_filters": 1074,
+          "n_nodes_before_filters": 337,
+          "overlap_threshold": 1,
+          "n_edges_after_overlap": 1074,
+          "n_nodes_after_overlap": 337,
+          "weight_threshold": 1.0,
+          "n_edges_after_weight": 1074,
+          "n_nodes_after_weight": 337
+        },
+        "MEN": {
+          "layer": "MEN",
+          "method": "cooccurrence_shared_objects",
+          "n_objects_used": 2222,
+          "n_objects_capped": 32,
+          "n_edges_before_filters": 192403,
+          "n_nodes_before_filters": 6649,
+          "overlap_threshold": 1,
+          "n_edges_after_overlap": 192403,
+          "n_nodes_after_overlap": 6649,
+          "weight_threshold": 1.0,
+          "n_edges_after_weight": 192403,
+          "n_nodes_after_weight": 6649
+        },
+        "URL": {
+          "layer": "URL",
+          "method": "cooccurrence_shared_objects",
+          "n_objects_used": 564,
+          "n_objects_capped": 9,
+          "n_edges_before_filters": 60869,
+          "n_nodes_before_filters": 3177,
+          "overlap_threshold": 1,
+          "n_edges_after_overlap": 60869,
+          "n_nodes_after_overlap": 3177,
+          "weight_threshold": 1.0,
+          "n_edges_after_weight": 60869,
+          "n_nodes_after_weight": 3177
+        }
+      },
+      "MONO": {
+        "n_communities": 116,
+        "n_nodes": 8131,
+        "n_edges": 142331
+      },
+      "MULTI": {
+        "n_communities": 313,
+        "n_nodes": 15843,
+        "n_edges": 405821,
+        "gamma": 1.0,
+        "omega": 0.1,
+        "improvement": 753135.7108241809
+      },
+      "C0": {
+        "community_id": 0,
+        "n": 2604
+      },
+      "serrano": {
+        "n_edges_flat": 32472,
+        "n_edges_bb": 255,
+        "n_nodes_bb": 115,
+        "flat_edges_multilayer": 145,
+        "n_bb_edges_multilayer": 8
+      },
+      "cohort_n": 115,
+      "csv": "outputs/analyses/mca_track_b/mpox_cohort_UNFL_sum_serrano05.csv",
+      "handles_json": "outputs/analyses/mca_track_b/mpox_selected_handles.json",
+      "bio_coverage": 68,
+      "missing_bio": 47,
+      "engagement_def": "like_count + retweet_count + reply_count + quote_count",
+      "pct_RT_def": "100 * (tweet_type == 'retweet') / publications du compte (CocktailFusion)"
+    },
+    "macron_nucleaire": {
+      "corpus": "macron_nucleaire",
+      "label": "Macron nucléaire · mars 2026",
+      "method": "MCA-MULTI-Serrano-TRACK-B-251",
+      "params": {
+        "seed": 20260624,
+        "top_pct": 1.0,
+        "exact_topk": true,
+        "corpus_pct": 100,
+        "max_accounts_per_object": 80,
+        "max_nodes_after_overlap": 20000,
+        "gamma": 1.0,
+        "omega": 0.1,
+        "flatten": "UNFL_sum",
+        "serrano_alpha": 0.05,
+        "deg2_fallback": false
+      },
+      "n_tweets": 475647,
+      "n_accounts": 154549,
+      "period_days": 3,
+      "selection": {
+        "top_pct": 1.0,
+        "exact_topk": true,
+        "corpus_pct": 100,
+        "RTW": {
+          "threshold": 1,
+          "n": 129441
+        },
+        "RPL": {
+          "threshold": 1,
+          "n": 8534
+        },
+        "original": {
+          "threshold": 1,
+          "n": 28231
+        },
+        "union_n": 153893
+      },
+      "layers": {
+        "RTW": {
+          "layer": "RTW",
+          "method": "cooccurrence_shared_objects",
+          "n_objects_used": 6066,
+          "n_objects_capped": 772,
+          "n_edges_before_filters": 2918811,
+          "n_nodes_before_filters": 45134,
+          "overlap_threshold": 2,
+          "n_edges_after_overlap": 264674,
+          "n_nodes_after_overlap": 12425,
+          "weight_threshold": 2.0,
+          "n_edges_after_weight": 264674,
+          "n_nodes_after_weight": 12425
+        },
+        "RPL": {
+          "layer": "RPL",
+          "method": "cooccurrence_shared_objects",
+          "n_objects_used": 1163,
+          "n_objects_capped": 8,
+          "n_edges_before_filters": 110878,
+          "n_nodes_before_filters": 6627,
+          "overlap_threshold": 1,
+          "n_edges_after_overlap": 110878,
+          "n_nodes_after_overlap": 6627,
+          "weight_threshold": 1.0,
+          "n_edges_after_weight": 110878,
+          "n_nodes_after_weight": 6627
+        },
+        "QTE": {
+          "layer": "QTE",
+          "method": "cooccurrence_shared_objects",
+          "n_objects_used": 273,
+          "n_objects_capped": 0,
+          "n_edges_before_filters": 7420,
+          "n_nodes_before_filters": 1018,
+          "overlap_threshold": 1,
+          "n_edges_after_overlap": 7420,
+          "n_nodes_after_overlap": 1018,
+          "weight_threshold": 1.0,
+          "n_edges_after_weight": 7420,
+          "n_nodes_after_weight": 1018
+        },
+        "MEN": {
+          "layer": "MEN",
+          "method": "cooccurrence_shared_objects",
+          "n_objects_used": 4990,
+          "n_objects_capped": 104,
+          "n_edges_before_filters": 603738,
+          "n_nodes_before_filters": 19423,
+          "overlap_threshold": 1,
+          "n_edges_after_overlap": 603738,
+          "n_nodes_after_overlap": 19423,
+          "weight_threshold": 1.0,
+          "n_edges_after_weight": 603738,
+          "n_nodes_after_weight": 19423
+        },
+        "URL": {
+          "layer": "URL",
+          "method": "cooccurrence_shared_objects",
+          "n_objects_used": 250,
+          "n_objects_capped": 4,
+          "n_edges_before_filters": 21531,
+          "n_nodes_before_filters": 1529,
+          "overlap_threshold": 1,
+          "n_edges_after_overlap": 21531,
+          "n_nodes_after_overlap": 1529,
+          "weight_threshold": 1.0,
+          "n_edges_after_weight": 21531,
+          "n_nodes_after_weight": 1529
+        }
+      },
+      "MONO": {
+        "n_communities": 169,
+        "n_nodes": 12425,
+        "n_edges": 264674
+      },
+      "MULTI": {
+        "n_communities": 584,
+        "n_nodes": 32511,
+        "n_edges": 1008241,
+        "gamma": 1.0,
+        "omega": 0.1,
+        "improvement": 1823656.5431798939
+      },
+      "C0": {
+        "community_id": 0,
+        "n": 3892
+      },
+      "serrano": {
+        "n_edges_flat": 73582,
+        "n_edges_bb": 1157,
+        "n_nodes_bb": 367,
+        "flat_edges_multilayer": 1480,
+        "n_bb_edges_multilayer": 170
+      },
+      "cohort_n": 367,
+      "csv": "outputs/analyses/mca_track_b/macron_nucleaire_cohort_UNFL_sum_serrano05.csv",
+      "handles_json": "outputs/analyses/mca_track_b/macron_nucleaire_selected_handles.json",
+      "bio_coverage": 218,
+      "missing_bio": 149,
+      "engagement_def": "like_count + retweet_count + reply_count + quote_count",
+      "pct_RT_def": "100 * (tweet_type == 'retweet') / publications du compte (CocktailFusion)"
+    }
+  }
+}
