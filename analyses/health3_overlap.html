@@ -135,10 +135,11 @@
       <canvas id="net"></canvas>
       <div class="net-hud" id="netHud"></div>
       <div class="net-controls" id="netControls">
-        <b style="color:#c5ccd6;font-size:10px;letter-spacing:0.06em;text-transform:uppercase">Luminosité</b>
-        <div class="row"><span>Lumière liens</span><input id="linkLight" type="range" min="0" max="1" step="0.01" value="0.60"></div>
-        <div class="row"><span>Halo nœuds</span><input id="nodeGlow" type="range" min="0" max="1" step="0.01" value="0.80"></div>
-        <div class="row"><span>Filaments</span><input id="nStrands" type="range" min="0" max="1" step="0.01" value="0.55"></div>
+        <b style="color:#c5ccd6;font-size:10px;letter-spacing:0.06em;text-transform:uppercase">Connectome</b>
+        <div class="row"><span>Lumière liens</span><input id="linkLight" type="range" min="0" max="1" step="0.01" value="0.28"></div>
+        <div class="row"><span>Bloom</span><input id="nodeGlow" type="range" min="0" max="2.2" step="0.01" value="0.38"></div>
+        <div class="row"><span>Opacité</span><input id="edgeOp" type="range" min="0" max="0.45" step="0.005" value="0.07"></div>
+        <div class="row"><span>Labels</span><input id="nLabels" type="range" min="0" max="80" step="1" value="40"></div>
       </div>
       <div class="net-legend" id="netLegend"></div>
       <div id="tooltip"></div>
@@ -278,12 +279,12 @@
 
     const netCtl = createNetController();
     netCtl.setGraph("inter", G, {
-      hud: `<b>Intersection ∩3</b>Nœuds = auteurs dans Ebola + Hanta + Mpox<br/>Filaments additifs · cœurs sans superposition<br/>Taille = degré pondéré · couleur = Louvain`,
+      hud: `<b>Intersection ∩3</b>Style connectome Ebola · filaments additifs<br/>Taille labels = degré · couleur = Louvain`,
       legendMode: "communities",
     });
     if (Gu) {
       netCtl.setGraph("union", Gu, {
-        hud: `<b>Union 3 corpus</b>Tous les nœuds (hors isolats) · arêtes poids ≥ 2<br/>Rendu simple · sans superposition · <b>taille et labels = centralité de degré</b><br/>Couleur = présence corpus`,
+        hud: `<b>Union 3 corpus</b>Style connectome Ebola · filaments additifs<br/>Taille labels = degré · couleur = présence corpus`,
         legendMode: "presence",
       });
     } else {
@@ -320,7 +321,98 @@
     let cam = { x: 0, y: 0, k: 1 };
     let drag = null;
     let bound = false;
-    const P = { linkLight: 0.60, nodeGlow: 0.80, strands: 0.55 };
+    const P = { linkLight: 0.28, nodeGlow: 0.38, edgeOp: 0.07, nLabels: 40 };
+    const FIT_PAD = 1.45;
+
+    function quantileSorted(arr, p) {
+      return arr[Math.max(0, Math.min(arr.length - 1, Math.floor(p * (arr.length - 1))))];
+    }
+
+    function coreBounds(nodes, lo = 0.05, hi = 0.95) {
+      const xs = nodes.map((n) => n.x).sort((a, b) => a - b);
+      const ys = nodes.map((n) => n.y).sort((a, b) => a - b);
+      return {
+        minX: quantileSorted(xs, lo),
+        maxX: quantileSorted(xs, hi),
+        minY: quantileSorted(ys, lo),
+        maxY: quantileSorted(ys, hi),
+      };
+    }
+
+    function strandCount(edges) {
+      const n = edges.length;
+      if (n > 200000) return 1;
+      if (n > 80000) return 2;
+      if (n > 30000) return 3;
+      return 4;
+    }
+
+    function pickLabelNodes(nodes, budget, mode) {
+      if (budget <= 0 || !nodes.length) return [];
+      const scored = nodes.map((n, i) => ({ ...n, i, gephiSize: Math.max(degOf(n), 1) }));
+      const picked = new Map();
+      if (mode === "communities") {
+        const byCom = new Map();
+        for (const n of scored) {
+          const c = n.comm ?? -1;
+          if (!byCom.has(c)) byCom.set(c, []);
+          byCom.get(c).push(n);
+        }
+        const comOrder = [...byCom.entries()]
+          .map(([com, arr]) => ({
+            com,
+            arr: arr.sort((a, b) => degOf(b) - degOf(a)),
+            mass: arr.reduce((s, n) => s + degOf(n) * Math.log1p(degOf(n)), 0),
+            size: arr.length,
+          }))
+          .sort((a, b) => b.mass - a.mass);
+        const mainComs = comOrder.filter((c) => c.size >= 20).slice(0, 24);
+        for (const c of mainComs) {
+          if (c.arr[0]) picked.set(c.arr[0].i, c.arr[0]);
+        }
+        const totalMass = mainComs.reduce((s, c) => s + c.mass, 0) || 1;
+        for (const c of mainComs) {
+          const quota = Math.min(4, Math.max(1, Math.round(1 + (c.mass / totalMass) * 10)));
+          for (let k = 0; k < quota && k < c.arr.length; k++) {
+            if (picked.size >= budget) break;
+            picked.set(c.arr[k].i, c.arr[k]);
+          }
+          if (picked.size >= budget) break;
+        }
+      }
+      if (picked.size < budget) {
+        for (const n of [...scored].sort((a, b) => degOf(b) - degOf(a))) {
+          if (picked.size >= budget) break;
+          picked.set(n.i, n);
+        }
+      }
+      return [...picked.values()].sort((a, b) => degOf(a) - degOf(b));
+    }
+
+    function refreshLabelSet(key) {
+      const g = graphs[key];
+      if (!g) return;
+      const nodes = g.data.nodes || [];
+      const mode = g.opts.legendMode === "presence" ? "degree" : "communities";
+      g.labelNodes = pickLabelNodes(nodes, P.nLabels, mode);
+    }
+
+    function fit(nodes) {
+      if (!nodes.length) return;
+      const linked = nodes.filter((n) => degOf(n) > 0);
+      const use = linked.length > 30 ? linked : nodes;
+      const b = coreBounds(use, 0.05, 0.95);
+      const cx = (b.minX + b.maxX) * 0.5;
+      const cy = (b.minY + b.maxY) * 0.5;
+      const halfW = Math.max((b.maxX - b.minX) * 0.5, 1) * FIT_PAD;
+      const halfH = Math.max((b.maxY - b.minY) * 0.5, 1) * FIT_PAD;
+      const pad = 48;
+      const sx = (W - 2 * pad) / (2 * halfW);
+      const sy = (H - 2 * pad) / (2 * halfH);
+      cam.k = Math.min(sx, sy);
+      cam.x = W / 2 - cam.k * cx;
+      cam.y = H / 2 - cam.k * cy;
+    }
 
     function metaText(G) {
       const meta = G.meta || {};
@@ -350,30 +442,6 @@
         ).join("");
     }
 
-    function fit(nodes) {
-      if (!nodes.length) return;
-      const linked = nodes.filter((n) => degOf(n) > 0);
-      const use = linked.length > 30 ? linked : nodes;
-      let minx = Infinity, maxx = -Infinity, miny = Infinity, maxy = -Infinity;
-      const simple = active === "union";
-      for (const n of use) {
-        if (simple) {
-          minx = Math.min(minx, n.x); maxx = Math.max(maxx, n.x);
-          miny = Math.min(miny, n.y); maxy = Math.max(maxy, n.y);
-        } else {
-          const rr = Math.max(10, Math.min(560, n.r || 10));
-          minx = Math.min(minx, n.x - rr); maxx = Math.max(maxx, n.x + rr);
-          miny = Math.min(miny, n.y - rr); maxy = Math.max(maxy, n.y + rr);
-        }
-      }
-      const pad = 48;
-      const sx = (W - 2 * pad) / Math.max(maxx - minx, 1e-6);
-      const sy = (H - 2 * pad) / Math.max(maxy - miny, 1e-6);
-      cam.k = Math.min(sx, sy) * 0.92;
-      cam.x = W / 2 - cam.k * (minx + maxx) / 2;
-      cam.y = H / 2 - cam.k * (miny + maxy) / 2;
-    }
-
     function toScreen(n) { return { x: n.x * cam.k + cam.x, y: n.y * cam.k + cam.y }; }
     function degOf(n) {
       if (n.deg != null) return n.deg;
@@ -383,22 +451,17 @@
     function degMaxOf() {
       return (graphs[active] && graphs[active].degMax) || 1;
     }
-    function nodeR(n) {
-      if (active === "union") {
-        const u = Math.pow(degOf(n) / degMaxOf(), 0.5);
-        return 1.7 + 13.5 * u;
-      }
-      const wr = Math.max(10, Math.min(560, n.r || 10));
-      return Math.max(2.2, wr * cam.k);
+    function hubR(n, degMax) {
+      const u = Math.sqrt(degOf(n) / degMax);
+      return 0.8 + 2.2 * u;
     }
-    function coreR(n) {
-      if (active === "union") return nodeR(n);
-      return Math.max(1.05, Math.min(11, nodeR(n) * 0.13));
-    }
-    function labelPx(n, degMax) {
-      const u = degMax > 0 ? Math.pow(degOf(n) / degMax, 0.5) : 0;
-      if (active === "union") return Math.round(8 + 11 * u);
-      return Math.round(10 + 18 * u);
+    function labelPx(n, degMax, ranked) {
+      const sizes = ranked.map((x) => degOf(x));
+      const sMin = Math.min(...sizes);
+      const sMax = Math.max(...sizes);
+      const u = (degOf(n) - sMin) / Math.max(sMax - sMin, 1e-6);
+      const t = Math.pow(Math.max(0, Math.min(1, u)), 0.7);
+      return Math.round(8 + 44 * t);
     }
     function hash(i) {
       const x = Math.sin(i * 127.1 + 311.7) * 43758.5453;
@@ -421,66 +484,16 @@
       return maxW;
     }
 
-    function drawUnion(nodes, edges, degMax) {
+    function drawConnectome(nodes, edges, degMax) {
       const light = Math.max(0, Math.min(1, P.linkLight));
-      const glow = Math.max(0, Math.min(1, P.nodeGlow));
-      const maxW = maxEdgeW(edges);
-      const eCap = Math.min(edges.length, 45000);
-      const pad = 48;
-      const inView = (p) => p.x >= -pad && p.x <= W + pad && p.y >= -pad && p.y <= H + pad;
-
-      ctx.save();
-      ctx.globalCompositeOperation = "source-over";
-      ctx.lineCap = "round";
-      let drawnE = 0;
-      for (const e of edges) {
-        if (drawnE >= eCap) break;
-        const a = nodes[e.s], b = nodes[e.t];
-        if (!a || !b) continue;
-        const pa = toScreen(a), pb = toScreen(b);
-        if (edges.length > 25000 && !inView(pa) && !inView(pb)) continue;
-        const wNorm = Math.pow((e.w || 1) / maxW, 0.4);
-        const ca = a.c || [140, 160, 190];
-        const cb = b.c || [140, 160, 190];
-        const cr = (ca[0] + cb[0]) * 0.5;
-        const cg = (ca[1] + cb[1]) * 0.5;
-        const cbv = (ca[2] + cb[2]) * 0.5;
-        ctx.strokeStyle = `rgba(${cr|0},${cg|0},${cbv|0},${(0.08 + 0.28 * wNorm) * light})`;
-        ctx.lineWidth = 0.35 + 1.15 * wNorm;
-        ctx.beginPath();
-        ctx.moveTo(pa.x, pa.y);
-        ctx.lineTo(pb.x, pb.y);
-        ctx.stroke();
-        drawnE++;
-      }
-
-      const bySize = graphs[active].nodesBySize || [...nodes].sort((a, b) => degOf(a) - degOf(b));
-      for (const n of bySize) {
-        const p = toScreen(n);
-        const r = nodeR(n);
-        if (p.x < -r || p.x > W + r || p.y < -r || p.y > H + r) continue;
-        const [cr0, cg0, cb0] = n.c || [150, 160, 180];
-        ctx.fillStyle = `rgba(${cr0},${cg0},${cb0},${0.55 + 0.4 * glow})`;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.strokeStyle = `rgba(${Math.min(255, cr0 + 40)},${Math.min(255, cg0 + 40)},${Math.min(255, cb0 + 40)},0.9)`;
-        ctx.lineWidth = 0.7;
-        ctx.stroke();
-      }
-      ctx.restore();
-      drawLabels(degMax, 1.15);
-    }
-
-    function drawInter(nodes, edges, degMax) {
+      const bloom = Math.max(0, Math.min(2.2, P.nodeGlow));
+      const op = Math.max(0, Math.min(0.45, P.edgeOp));
+      const nStrands = strandCount(edges);
       const eCap = edges.length > 70000 ? 52000 : edges.length;
       const pad = 64;
       const inView = (p) => p.x >= -pad && p.x <= W + pad && p.y >= -pad && p.y <= H + pad;
       const maxW = maxEdgeW(edges);
-      const filament = Math.max(0, Math.min(1, P.strands));
-      const nStrands = Math.max(1, Math.min(3, Math.round(1 + filament * 2)));
-      const light = Math.max(0, Math.min(1, P.linkLight));
-      const glow = Math.max(0, Math.min(1, P.nodeGlow));
+      const core = coreBounds(nodes, 0.05, 0.95);
 
       ctx.save();
       ctx.globalCompositeOperation = "lighter";
@@ -492,16 +505,19 @@
         if (drawnE >= eCap) break;
         const a = nodes[e.s], b = nodes[e.t];
         if (!a || !b) continue;
+        if (a.x < core.minX || a.x > core.maxX || a.y < core.minY || a.y > core.maxY) continue;
+        if (b.x < core.minX || b.x > core.maxX || b.y < core.minY || b.y > core.maxY) continue;
         const pa = toScreen(a), pb = toScreen(b);
-        if (edges.length > 35000 && !inView(pa) && !inView(pb)) continue;
+        if (edges.length > 25000 && !inView(pa) && !inView(pb)) continue;
         const dx = pb.x - pa.x, dy = pb.y - pa.y;
         const len = Math.hypot(dx, dy) || 1;
         const nx = -dy / len, ny = dx / len;
         const wNorm = Math.pow((e.w || 1) / maxW, 0.45);
-        const ca = lift(a.c || [140, 160, 190], 1.22);
-        const cb = lift(b.c || [140, 160, 190], 1.22);
-        const alpha = (0.018 + 0.055 * wNorm) * light * (0.35 + 1.2 * filament);
+        const ca = lift(a.c || [140, 160, 190], 1.18);
+        const cb = lift(b.c || [140, 160, 190], 1.18);
+        const bright = (0.28 + 0.55 * wNorm) * light * op;
         for (let s = 0; s < nStrands; s++) {
+          const strandBright = bright * (1 - s * 0.12);
           const bulge = Math.min(48, len * (0.06 + 0.14 * hash(seed)));
           const sign = hash(seed + 3) > 0.5 ? 1 : -1;
           const off = (hash(seed + 7) - 0.5) * Math.min(12, len * 0.05);
@@ -510,7 +526,7 @@
           const cr = (ca[0] + cb[0]) * 0.5;
           const cg = (ca[1] + cb[1]) * 0.5;
           const cbv = (ca[2] + cb[2]) * 0.5;
-          ctx.strokeStyle = `rgba(${cr|0},${cg|0},${cbv|0},${alpha * (1 - s * 0.22)})`;
+          ctx.strokeStyle = `rgba(${cr|0},${cg|0},${cbv|0},${strandBright})`;
           ctx.lineWidth = 0.28 + 0.55 * wNorm;
           ctx.beginPath();
           ctx.moveTo(pa.x, pa.y);
@@ -522,52 +538,49 @@
       }
 
       const bySize = graphs[active].nodesBySize || [...nodes].sort((a, b) => degOf(a) - degOf(b));
+      const glowK = Math.min(1, bloom / 0.38);
       for (const n of bySize) {
         const p = toScreen(n);
-        const r = nodeR(n);
-        if (p.x < -r || p.x > W + r || p.y < -r || p.y > H + r) continue;
-        const [cr0, cg0, cb0] = lift(n.c || [150, 160, 180], 1.18);
-        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
-        g.addColorStop(0, `rgba(${cr0},${cg0},${cb0},${0.14 * glow})`);
-        g.addColorStop(0.18, `rgba(${cr0},${cg0},${cb0},${0.05 * glow})`);
-        g.addColorStop(0.55, `rgba(${cr0},${cg0},${cb0},${0.012 * glow})`);
-        g.addColorStop(1, `rgba(${cr0},${cg0},${cb0},0)`);
-        ctx.fillStyle = g;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
-        ctx.fill();
-        const cr = coreR(n);
-        const halo = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, cr * 2.4);
-        halo.addColorStop(0, `rgba(${Math.min(255, cr0 + 70)},${Math.min(255, cg0 + 70)},${Math.min(255, cb0 + 70)},${0.72 * glow})`);
-        halo.addColorStop(0.45, `rgba(${cr0},${cg0},${cb0},${0.28 * glow})`);
+        const r = Math.max(2.5, hubR(n, degMax) * Math.min(1.8, cam.k * 0.04 + 0.35));
+        if (p.x < -r * 3 || p.x > W + r * 3 || p.y < -r * 3 || p.y > H + r * 3) continue;
+        const [cr0, cg0, cb0] = lift(n.c || [150, 160, 180], 1.1);
+        const halo = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 3.2);
+        halo.addColorStop(0, `rgba(${Math.min(255, cr0 + 60)},${Math.min(255, cg0 + 60)},${Math.min(255, cb0 + 60)},${0.35 * glowK})`);
+        halo.addColorStop(0.35, `rgba(${cr0},${cg0},${cb0},${0.12 * glowK})`);
         halo.addColorStop(1, `rgba(${cr0},${cg0},${cb0},0)`);
         ctx.fillStyle = halo;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, cr * 2.4, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, r * 3.2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = `rgba(${cr0},${cg0},${cb0},${0.25 + 0.35 * glowK})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
         ctx.fill();
       }
       ctx.restore();
-      drawLabels(degMax, 2.6);
+      drawLabels(degMax);
     }
 
-    function drawLabels(degMax, liftK) {
+    function drawLabels(degMax) {
+      const ranked = graphs[active].labelNodes || [];
+      if (!ranked.length) return;
       ctx.textAlign = "center";
       ctx.textBaseline = "bottom";
       const occupied = [];
-      const topDesc = [...(graphs[active].topAsc || [])].sort((a, b) => degOf(b) - degOf(a));
+      const topDesc = [...ranked].sort((a, b) => degOf(b) - degOf(a));
       for (const n of topDesc) {
         const p = toScreen(n);
-        const px = labelPx(n, degMax);
+        const px = labelPx(n, degMax, ranked);
         const label = "@" + n.id;
-        ctx.font = `600 ${px}px Segoe UI, sans-serif`;
+        ctx.font = `600 ${px}px "Helvetica Neue", Helvetica, Arial, sans-serif`;
         const tw = ctx.measureText(label).width;
         const th = px + 6;
-        const ly = p.y - nodeR(n) * liftK - 3;
+        const ly = p.y - hubR(n, degMax) * 2.4 - 4;
         const box = { x: p.x - tw / 2, y: ly - th, w: tw, h: th };
         if (occupied.some(o => box.x < o.x + o.w && box.x + box.w > o.x && box.y < o.y + o.h && box.y + box.h > o.y)) continue;
         occupied.push(box);
         const [cr, cg, cb] = lift(n.c || [220, 220, 230], 1.15);
-        ctx.shadowColor = "rgba(0,0,0,0.95)";
+        ctx.shadowColor = "rgba(0,0,0,0.85)";
         ctx.shadowBlur = 6;
         ctx.fillStyle = `rgb(${cr|0},${cg|0},${cb|0})`;
         ctx.fillText(label, p.x, ly);
@@ -584,19 +597,20 @@
       ctx.clearRect(0, 0, W, H);
       ctx.fillStyle = "#000";
       ctx.fillRect(0, 0, W, H);
-      if (active === "union") drawUnion(nodes, edges, degMax);
-      else drawInter(nodes, edges, degMax);
+      drawConnectome(nodes, edges, degMax);
     }
 
     function hit(mx, my) {
       const G = graphs[active]?.data;
       if (!G) return null;
       const nodes = G.nodes || [];
+      const degMax = graphs[active].degMax || 1;
       let best = null, bestD = 12;
       for (const n of nodes) {
         const p = toScreen(n);
         const d = Math.hypot(p.x - mx, p.y - my);
-        if (d < bestD + nodeR(n)) { bestD = d; best = n; }
+        const hr = hubR(n, degMax);
+        if (d < bestD + hr) { bestD = d; best = n; }
       }
       return best;
     }
@@ -607,7 +621,6 @@
       canvas.width = W * dpr; canvas.height = H * dpr;
       canvas.style.width = W + "px"; canvas.style.height = H + "px";
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      if (active && graphs[active]) fit(graphs[active].data.nodes || []);
       draw();
     }
 
@@ -662,20 +675,28 @@
       };
       bindRange("linkLight", "linkLight", Number);
       bindRange("nodeGlow", "nodeGlow", Number);
-      bindRange("nStrands", "strands", Number);
+      bindRange("edgeOp", "edgeOp", Number);
+      const labelsEl = document.getElementById("nLabels");
+      if (labelsEl) {
+        labelsEl.addEventListener("input", () => {
+          P.nLabels = +labelsEl.value;
+          if (active) refreshLabelSet(active);
+          draw();
+        });
+      }
     }
 
     return {
       setGraph(key, data, opts) {
         const nodes = (data && data.nodes) || [];
-        const nLabels = key === "union" ? 40 : 22;
         graphs[key] = {
           data,
           opts: opts || {},
           degMax: nodes.reduce((m, n) => Math.max(m, degOf(n)), 0) || 1,
           nodesBySize: [...nodes].sort((a, b) => degOf(a) - degOf(b)),
-          topAsc: [...nodes].sort((a, b) => degOf(b) - degOf(a)).slice(0, nLabels).sort((a, b) => degOf(a) - degOf(b)),
+          labelNodes: [],
         };
+        refreshLabelSet(key);
       },
       show(key) {
         if (!graphs[key]) return;
@@ -686,6 +707,8 @@
         renderLegend(data, opts.legendMode || "communities");
         bindOnce();
         resize();
+        fit(data.nodes || []);
+        draw();
       },
     };
   }
