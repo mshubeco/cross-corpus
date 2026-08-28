@@ -372,23 +372,43 @@ controls.maxZoom = 20;
 controls.target.set(0, 0, 0);
 
 /** Margin around bbox on load (higher = more dezoom). */
-const FIT_PADDING = 1.58;
+const FIT_PADDING = 1.45;
+
+function quantileSorted(arr, p) {
+  return arr[Math.max(0, Math.min(arr.length - 1, Math.floor(p * (arr.length - 1))))];
+}
+
+/** Robust core bbox — ignore outliers and fallback nodes placed far outside Gephi. */
+function coreBounds(nodes, lo = 0.05, hi = 0.95) {
+  const xs = nodes.map((n) => n.x).sort((a, b) => a - b);
+  const ys = nodes.map((n) => n.y).sort((a, b) => a - b);
+  return {
+    minX: quantileSorted(xs, lo),
+    maxX: quantileSorted(xs, hi),
+    minY: quantileSorted(ys, lo),
+    maxY: quantileSorted(ys, hi),
+  };
+}
+
+function inCoreBounds(n, b, pad = 0.06) {
+  const mx = (b.maxX - b.minX) * pad;
+  const my = (b.maxY - b.minY) * pad;
+  return (
+    n.x >= b.minX - mx && n.x <= b.maxX + mx
+    && n.y >= b.minY - my && n.y <= b.maxY + my
+  );
+}
 
 function fitGraphToView(nodes) {
   if (!nodes?.length) return;
-  const xs = nodes.map((n) => n.x).sort((a, b) => a - b);
-  const ys = nodes.map((n) => n.y).sort((a, b) => a - b);
-  const q = (arr, p) => arr[Math.max(0, Math.min(arr.length - 1, Math.floor(p * (arr.length - 1))))];
-  const minX = q(xs, 0.01);
-  const maxX = q(xs, 0.99);
-  const minY = q(ys, 0.01);
-  const maxY = q(ys, 0.99);
-  const cx = (minX + maxX) * 0.5;
-  const cy = (minY + maxY) * 0.5;
-  const halfW = Math.max((maxX - minX) * 0.5, 1) * FIT_PADDING;
-  const halfH = Math.max((maxY - minY) * 0.5, 1) * FIT_PADDING;
+  const b = coreBounds(nodes, 0.05, 0.95);
+  const cx = (b.minX + b.maxX) * 0.5;
+  const cy = (b.minY + b.maxY) * 0.5;
+  const halfW = Math.max((b.maxX - b.minX) * 0.5, 1) * FIT_PADDING;
+  const halfH = Math.max((b.maxY - b.minY) * 0.5, 1) * FIT_PADDING;
   const a = innerWidth / innerHeight;
   const zoom = Math.min((frustum * a) / halfW, frustum / halfH);
+  camera.position.set(cx, cy, 400);
   controls.target.set(cx, cy, 0);
   camera.zoom = Math.max(controls.minZoom, Math.min(controls.maxZoom, zoom));
   camera.updateProjectionMatrix();
@@ -708,11 +728,14 @@ function buildGraph(data) {
   const positions = [];
   const colors = [];
   let seed = 1;
+  const core = coreBounds(nodes, 0.05, 0.95);
 
   for (const e of edges) {
     const a = nodes[e.s];
     const b = nodes[e.t];
     if (!a || !b) continue;
+    // Skip long spokes to out-of-GEXF fallback nodes (they clip the viewport).
+    if (!inCoreBounds(a, core) || !inCoreBounds(b, core)) continue;
 
     const ca = lift(a.c, 1.18);
     const cb = lift(b.c, 1.18);
