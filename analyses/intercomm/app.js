@@ -126,26 +126,220 @@
     }), { responsive: true, displayModeBar: false });
   }
 
-  function plotSankey(el, sankey) {
-    if (!el || !sankey?.nodes?.length) return;
-    const nodes = sankey.nodes;
-    const idx = Object.fromEntries(nodes.map((n, i) => [n.id, i]));
-    const links = (sankey.links || []).filter((l) => idx[l.from] != null && idx[l.to] != null);
-    Plotly.newPlot(el, [{
-      type: "sankey", arrangement: "snap",
-      node: {
-        label: nodes.map((n) => `@${n.hub || n.id}`),
-        color: nodes.map((n) => n.color),
-        pad: 14, thickness: 16,
-      },
-      link: {
-        source: links.map((l) => idx[l.from]),
-        target: links.map((l) => idx[l.to]),
-        value: links.map((l) => l.weight),
-        color: links.map((l) => l.internal ? "rgba(154,163,181,0.28)" : "rgba(77,138,240,0.38)"),
-      },
-    }], plotlyLayout({ margin: { t: 12, b: 12, l: 12, r: 12 }, height: 440 }),
-    { responsive: true, displayModeBar: false });
+  function cidOf(n) { return Number(n.communityId ?? n.id); }
+
+  function buildSankeyLayout(ph) {
+    const links = ((ph.sankey || {}).links || []).map((l) => ({
+      ...l,
+      from: Number(l.from),
+      to: Number(l.to),
+      weight: l.weight || 0,
+      internal: l.internal != null ? l.internal : Number(l.from) === Number(l.to),
+    }));
+    const nodes = ph.nodes || [];
+    const order = [...nodes].sort((a, b) => {
+      const inA = links.filter((l) => l.to === cidOf(a)).reduce((s, l) => s + l.weight, 0);
+      const inB = links.filter((l) => l.to === cidOf(b)).reduce((s, l) => s + l.weight, 0);
+      return inB - inA;
+    });
+    const outTot = {}, inTot = {};
+    nodes.forEach((n) => { outTot[cidOf(n)] = 0; inTot[cidOf(n)] = 0; });
+    links.forEach((l) => { outTot[l.from] = (outTot[l.from] || 0) + l.weight; inTot[l.to] = (inTot[l.to] || 0) + l.weight; });
+    const flowSum = links.reduce((s, l) => s + l.weight, 0) || 1;
+    const innerH = 340, gap = 10, n = Math.max(order.length, 1);
+    const avail = innerH - gap * (n - 1);
+    const leftPos = {}, rightPos = {};
+    let y = 28;
+    for (const c of order) {
+      const h = Math.max(10, (outTot[cidOf(c)] / flowSum) * avail);
+      leftPos[cidOf(c)] = { y0: y, y1: y + h, outOff: 0 };
+      y += h + gap;
+    }
+    y = 28;
+    for (const c of order) {
+      const h = Math.max(10, (inTot[cidOf(c)] / flowSum) * avail);
+      rightPos[cidOf(c)] = { y0: y, y1: y + h, inOff: 0 };
+      y += h + gap;
+    }
+    const ribbons = [];
+    const bySrc = {};
+    links.forEach((l) => { (bySrc[l.from] = bySrc[l.from] || []).push(l); });
+    for (const c of order) {
+      const src = leftPos[cidOf(c)];
+      const nodeH = src.y1 - src.y0;
+      const srcTot = outTot[cidOf(c)] || 1;
+      for (const lk of (bySrc[cidOf(c)] || [])) {
+        const tgt = rightPos[lk.to];
+        if (!tgt) continue;
+        const tgtH = tgt.y1 - tgt.y0;
+        const tgtTot = inTot[lk.to] || 1;
+        const hSrc = nodeH * (lk.weight / srcTot);
+        const hTgt = tgtH * (lk.weight / tgtTot);
+        const sy0 = src.y0 + src.outOff; src.outOff += hSrc;
+        const ty0 = tgt.y0 + tgt.inOff; tgt.inOff += hTgt;
+        ribbons.push({ lk, sy0, sy1: sy0 + hSrc, ty0, ty1: ty0 + hTgt, color: c.color });
+      }
+    }
+    return { order, leftPos, rightPos, ribbons, height: y + 8 };
+  }
+
+  function renderSankey(svg, ph) {
+    if (!svg) return;
+    const s = ph.sankey || {};
+    const { order, leftPos, rightPos, ribbons, height } = buildSankeyLayout(ph);
+    const W = 860, H = Math.max(400, height + 12);
+    const LX = 168, RX = 678, LW = 16;
+    let html = `<text x="${LX + LW / 2}" y="16" text-anchor="middle" class="sankey-label">Source</text>
+      <text x="${RX + LW / 2}" y="16" text-anchor="middle" class="sankey-label">Cible</text>`;
+    ribbons.forEach((rb) => {
+      const x0 = LX + LW, x1 = RX;
+      const d = `M ${x0} ${rb.sy0} C ${x0 + 130} ${rb.sy0}, ${x1 - 130} ${rb.ty0}, ${x1} ${rb.ty0}
+                 L ${x1} ${rb.ty1} C ${x1 - 130} ${rb.ty1}, ${x0 + 130} ${rb.sy1}, ${x0} ${rb.sy1} Z`;
+      html += `<path d="${d}" fill="${esc(rb.color)}" fill-opacity="${rb.lk.internal ? 0.28 : 0.55}">
+        <title>@${esc(order.find((n) => cidOf(n) === rb.lk.from)?.hub || rb.lk.from)} → @${esc(order.find((n) => cidOf(n) === rb.lk.to)?.hub || rb.lk.to)} · ${fmt(rb.lk.weight)}${rb.lk.internal ? " (interne)" : ""}</title>
+      </path>`;
+    });
+    order.forEach((c) => {
+      const id = cidOf(c);
+      const lp = leftPos[id], rp = rightPos[id];
+      html += `<rect x="${LX}" y="${lp.y0}" width="${LW}" height="${Math.max(1, lp.y1 - lp.y0)}" fill="${esc(c.color)}" rx="2"/>
+        <rect x="${RX}" y="${rp.y0}" width="${LW}" height="${Math.max(1, rp.y1 - rp.y0)}" fill="${esc(c.color)}" rx="2"/>
+        <text x="${LX - 8}" y="${(lp.y0 + lp.y1) / 2 + 4}" text-anchor="end" class="sankey-node-label" fill="${esc(c.color)}">${esc(c.label || ("C" + id))} · @${esc(c.hub || "")}</text>
+        <text x="${RX + LW + 8}" y="${(rp.y0 + rp.y1) / 2 + 4}" class="sankey-node-label" fill="${esc(c.color)}">${esc(c.label || ("C" + id))} · @${esc(c.hub || "")}</text>`;
+    });
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    svg.innerHTML = html;
+    const meta = document.getElementById("sankey-meta");
+    if (meta) {
+      const nCross = (s.links || []).filter((l) => !l.internal && l.from !== l.to).length;
+      meta.textContent = `${fmt(s.total)} interactions · ${s.internalPct ?? "—"} % internes · ${nCross} flux croisés · gauche = émetteur, droite = récepteur`;
+    }
+  }
+
+  function treemapLayout(slices, x, y, w, h) {
+    const items = (slices || []).filter((s) => (s.count || s.value || 0) > 0);
+    if (!items.length || w <= 0 || h <= 0) return [];
+    const total = items.reduce((s, d) => s + (d.count || d.value || 0), 0);
+    if (items.length === 1) return [{ ...items[0], x, y, w, h }];
+    const mid = Math.ceil(items.length / 2);
+    const left = items.slice(0, mid);
+    const right = items.slice(mid);
+    const leftSum = left.reduce((s, d) => s + (d.count || d.value || 0), 0);
+    const ratio = leftSum / total;
+    if (w >= h) {
+      const lw = w * ratio;
+      return [...treemapLayout(left, x, y, lw, h), ...treemapLayout(right, x + lw, y, w - lw, h)];
+    }
+    const lh = h * ratio;
+    return [...treemapLayout(left, x, y, w, lh), ...treemapLayout(right, x, y + lh, w, h - lh)];
+  }
+
+  function treemapHtml(slices, title, total) {
+    const norm = (slices || []).map((s) => ({
+      ...s,
+      count: s.count ?? s.value ?? 0,
+      pct: s.pct ?? (total ? Math.round(1000 * (s.count ?? s.value ?? 0) / total) / 10 : 0),
+      internal: s.internal || String(s.label || "").includes("interne"),
+    })).filter((s) => s.count > 0);
+    if (!norm.length) {
+      return `<div class="treemap-wrap"><p class="treemap-title">${esc(title)}</p><p class="hint">Aucune interaction.</p></div>`;
+    }
+    const W = 280, H = 150, PAD = 1;
+    const rects = treemapLayout(norm, PAD, PAD, W - 2 * PAD, H - 2 * PAD);
+    const svgRects = rects.map((r) => {
+      const show = r.w > 34 && r.h > 16;
+      const short = String(r.label || "").replace(" · interne", "*");
+      const label = show ? `<text x="${r.x + r.w / 2}" y="${r.y + r.h / 2 - (r.h > 28 ? 4 : 0)}" text-anchor="middle" dominant-baseline="middle" fill="#fff" font-size="9" font-weight="600">${esc(short)}</text>` : "";
+      const pct = show && r.h > 28 ? `<text x="${r.x + r.w / 2}" y="${r.y + r.h / 2 + 9}" text-anchor="middle" fill="#e8eaed" font-size="8" opacity="0.9">${r.pct}%</text>` : "";
+      return `<g>
+        <rect x="${r.x}" y="${r.y}" width="${Math.max(0, r.w)}" height="${Math.max(0, r.h)}" fill="${esc(r.color)}" stroke="${r.internal ? "#fff" : "#0f1117"}" stroke-width="${r.internal ? 1.5 : 0.8}" opacity="0.92"/>
+        ${label}${pct}
+      </g>`;
+    }).join("");
+    const legend = norm.slice(0, 8).map((s) =>
+      `<li><span class="treemap-dot" style="background:${esc(s.color)}"></span>${esc(s.label)}${s.hub ? " @" + esc(s.hub) : ""} · ${s.pct}% (${fmt(s.count)})</li>`
+    ).join("");
+    return `<div class="treemap-wrap">
+      <p class="treemap-title">${esc(title)} · ${fmt(total)} interactions</p>
+      <svg class="treemap-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">${svgRects}</svg>
+      <ul class="treemap-legend">${legend}</ul>
+    </div>`;
+  }
+
+  function postCard(p) {
+    const isOwn = p.isOwnContent === true;
+    const target = p.target || p.author || "?";
+    const contentAuthor = p.contentAuthor || p.author || "?";
+    let tag = "mention", tagClass = "inbound", headline = `@${esc(contentAuthor)} → @${esc(target)}`;
+    if (isOwn) {
+      tag = p.type === "quote" ? "quote" : "tweet original";
+      tagClass = "own";
+      headline = `@${esc(target)}`;
+    } else if (p.type === "reply") { tag = "reply"; tagClass = "inbound"; }
+    else if (p.type === "quote") { tag = "quote"; tagClass = "inbound"; }
+    else if (p.type === "retweet") { tag = "RT"; tagClass = "retweet"; }
+    const eng = Number(p.engagement || 0);
+    const link = p.url || (p.tweetId ? `https://x.com/${encodeURIComponent(p.author || target)}/status/${encodeURIComponent(p.tweetId)}` : "");
+    return `<div class="post-card">
+      <div class="post-head">
+        <span class="type-tag ${tagClass}">${esc(tag)}</span>
+        ${headline}${eng ? " · " + fmt(eng) + " eng." : ""} · ${esc(p.date || "")}
+        ${link ? ` <a class="tweet-link" href="${esc(link)}" target="_blank" rel="noopener">ouvrir</a>` : ""}
+      </div>
+      <div class="post-text">${esc(p.text || "")}</div>
+    </div>`;
+  }
+
+  let PHASE = null;
+  let activeMetric = "inStrength";
+
+  function renderAccounts() {
+    const host = document.getElementById("accounts");
+    if (!host || !PHASE) return;
+    const isPr = activeMetric === "pagerank";
+    const hint = document.getElementById("metric-hint");
+    if (hint) {
+      hint.textContent = isPr
+        ? "Classement : top 5 comptes par PageRank · sous chaque compte : top 5 publications par eng. plateforme"
+        : "Classement : top 5 comptes par interactions entrantes (in-strength) · sous chaque compte : top 5 publications par eng. plateforme";
+    }
+    document.querySelectorAll("#metric-tabs .metric-tab").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.metric === activeMetric);
+    });
+    const ranks = PHASE.communityRankings || {};
+    host.innerHTML = (PHASE.nodes || []).map((n) => {
+      const block = ranks[String(cidOf(n))] || ranks[n.id] || {};
+      const data = block[activeMetric] || { accounts: [], commTotal: 0, othersSharePct: 0, giniReceivers: 0 };
+      const totalLbl = isPr ? Number(data.commTotal || 0).toFixed(4) : fmt(data.commTotal);
+      const metricLbl = isPr ? "Σ PR" : "Σ in-str";
+      const ov = block.interactionOverview || {};
+      const rows = (data.accounts || []).slice(0, 5).map((a) => {
+        const sn = a.screenName || a.screen_name;
+        const valLbl = isPr ? Number(a.metricValue || a.pagerank || 0).toFixed(4) : fmt(a.metricValue ?? a.inStrength);
+        const posts = (a.topPosts || a.posts || []).map(postCard).join("")
+          || '<p class="hint">Aucune publication dans le corpus pour ce compte.</p>';
+        return `<details class="acct-item">
+          <summary>
+            <span><a class="handle" href="${xUrl(sn)}" target="_blank" rel="noopener">@${esc(sn)}</a>
+              <span class="acct-pct">${esc(a.sharePct)}% · ${valLbl}</span></span>
+            <span class="acct-pct">in-str ${fmt(a.inStrength)} · PR ${a.pagerank ?? "—"}</span>
+          </summary>
+          <div class="acct-posts">${posts}</div>
+        </details>`;
+      }).join("");
+      return `<div class="viz-box comm-acct">
+        <div class="comm-head-row">
+          <span class="dot" style="background:${esc(n.color)}"></span>
+          ${esc(n.label)} · @${esc(n.hub)} — <span class="acct-pct">${metricLbl} ${totalLbl}</span>
+        </div>
+        <div class="comm-overview">
+          ${treemapHtml(ov.inboundBySource, "Entrantes · par communauté source", ov.inboundTotal || 0)}
+          ${treemapHtml(ov.outboundByTarget, "Sortantes · par communauté cible", ov.outboundTotal || 0)}
+        </div>
+        ${rows || "<p class='hint'>—</p>"}
+        <div class="comm-foot">Part hors top 5 : ${esc(data.othersSharePct)}% · Gini receveurs : ${esc(data.giniReceivers)}</div>
+      </div>`;
+    }).join("");
   }
 
   function rtDash(rtPct) {
@@ -260,19 +454,6 @@
     }).join("");
   }
 
-  function rankingsHtml(ph) {
-    const ranks = ph.communityRankings || {};
-    return Object.values(ranks).map((r) => {
-      const rows = (r.accounts || []).map((a) =>
-        `<div class="acct-row"><span><a class="handle" href="${xUrl(a.screen_name)}" target="_blank" rel="noopener">@${esc(a.screen_name)}</a></span><span>${fmt(a.inStrength)} <span style="color:var(--muted)">(${esc(a.pct)}%)</span></span></div>`
-      ).join("");
-      return `<div class="viz-box comm-acct">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;font-weight:600">
-          <span class="dot" style="background:${esc(r.color)}"></span>C${esc(r.communityId)} · @${esc(r.hub)}
-        </div>${rows || "<p class='hint'>—</p>"}</div>`;
-    }).join("");
-  }
-
   function pageHtml(pack) {
     const ph = pack.phase;
     const meta = ph.structureMeta || {};
@@ -294,9 +475,8 @@
         <ol>
           <li><strong>Donuts</strong> — part de chaque pôle (top affiché + Autres) en volume de publication, en in/out-strength, et en RT reçus.</li>
           <li><strong>Graphe circulaire</strong> — flèches = flux croisés (hors interne). Trait plein = RT ≥ 80 %, pointillé = RT ≤ 20 %.</li>
-          <li><strong>Sankey</strong> — matrice complète intra + inter des pôles affichés.</li>
-          <li><strong>Heatmaps</strong> — parts sortantes (somme ligne = 100 %) et entrantes (somme colonne = 100 %) sur le top 5.</li>
-          <li><strong>Top comptes</strong> — in-strength (interactions reçues) au sein de chaque communauté.</li>
+          <li><strong>Sankey</strong> — gauche = communauté <em>source</em> (émettrice), droite = communauté <em>cible</em> (réceptrice). Un ruban interne relie la même communauté des deux côtés.</li>
+          <li><strong>Top 5</strong> — comptes par in-strength (ou PageRank), avec treemaps des flux et publications.</li>
         </ol>
       </div>
       <div class="kpi-row">
@@ -354,9 +534,9 @@
             </div>
           </div>
           <div class="viz-box">
-            <div class="viz-title">Sankey · intra + inter</div>
-            <p class="hint">Total ${fmt((ph.sankey || {}).total)} · interne ${(ph.sankey || {}).internalPct ?? "—"} %</p>
-            <div id="sankey" style="min-height:440px"></div>
+            <div class="viz-title">Sankey · source → cible (intra + inter)</div>
+            <p class="hint" id="sankey-meta">Gauche = communauté émettrice · droite = communauté réceptrice · ruban interne = auto-flux</p>
+            <svg id="sankey" class="sankey-svg" viewBox="0 0 860 400" aria-label="Sankey source vers cible"></svg>
           </div>
         </div>
         <div class="side-box">
@@ -377,9 +557,22 @@
           <div class="heatmap-wrap">${heatmapTable(ph, "in")}</div>
         </div>
       </div>
-      <h2>Top comptes par communauté</h2>
-      <p class="hint">Classement par interactions entrantes (in-strength) · lien vers le profil X</p>
-      <div class="comm-grid">${rankingsHtml(ph)}</div>
+      <h2>Top 5 par communauté</h2>
+      <div class="howto-box">
+        <strong>Comment lire / utiliser ce bloc</strong>
+        <ol>
+          <li>Chaque carte = une communauté Louvain du top affiché (couleur + hub).</li>
+          <li>Les <strong>5 comptes</strong> sont le top 5 par <strong>interactions entrantes</strong> (in-strength). L’onglet PageRank reclasse selon la centralité.</li>
+          <li><strong>Ouvrir un compte</strong> pour voir jusqu’à <strong>5 publications</strong> classées par engagement plateforme (likes + RT + replies + quotes).</li>
+          <li>Les treemaps résument d’où viennent / où vont les flux de la communauté (source à gauche, cible à droite).</li>
+        </ol>
+      </div>
+      <div class="metric-tabs" id="metric-tabs">
+        <button type="button" class="metric-tab active" data-metric="inStrength">In-strength</button>
+        <button type="button" class="metric-tab" data-metric="pagerank">PageRank</button>
+      </div>
+      <p class="hint" id="metric-hint">Classement : top 5 comptes par interactions entrantes</p>
+      <div class="comm-grid" id="accounts"></div>
       <p class="subtitle" style="margin-top:28px">
         <a class="fwd-link" href="${esc(conn)}">Retour au connectome →</a>
       </p>
@@ -397,6 +590,7 @@
       if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
       const pack = await r.json();
       document.title = `Flux intercommunautaires — ${pack.corpus?.label || CORPUS}`;
+      PHASE = pack.phase;
       root.innerHTML = pageHtml(pack);
       const ph = pack.phase;
       const gd = ph.globalDistributions || {};
@@ -409,8 +603,15 @@
       plotEngagement(document.getElementById("eng"), ph);
       plotLikes(document.getElementById("likes"), ph);
       plotConcentration(document.getElementById("conc"), ph);
-      plotSankey(document.getElementById("sankey"), ph.sankey);
+      renderSankey(document.getElementById("sankey"), ph);
       renderCircular(document.getElementById("circ"), ph);
+      renderAccounts();
+      document.querySelectorAll("#metric-tabs .metric-tab").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          activeMetric = btn.dataset.metric;
+          renderAccounts();
+        });
+      });
     } catch (err) {
       root.innerHTML = `<p class="err">Chargement impossible — ${esc(err)}. Servir le dossier via HTTP.</p>`;
     }
