@@ -27,18 +27,13 @@
     }
     .back-link:hover { border-color: var(--accent); background: #1c2130; }
     .subtitle { color: var(--muted); font-size: 0.85rem; margin: 0 0 12px; }
+    .lead { color: var(--text); font-size: 0.95rem; max-width: 52rem; margin: 8px 0 16px; }
     a.link { color: var(--accent); }
     a { color: var(--accent); }
     a.handle { text-decoration: none; }
     a.handle:hover { text-decoration: underline; }
-    .kpi-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 18px; }
-    .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; min-width: 110px; }
-    .kpi .v { font-size: 1.2rem; font-weight: 600; }
-    .kpi .l { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
     .box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin-bottom: 14px; }
     .viz-title { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
-    .findings { margin: 0; padding-left: 1.1rem; color: var(--text); }
-    .findings li { margin-bottom: 6px; font-size: 0.9rem; }
     .muted { color: var(--muted); font-size: 0.8rem; }
     .err { color: #f0a0a0; }
     .badge { display: inline-block; font-size: 0.65rem; padding: 1px 6px; border-radius: 4px; background: #243044; color: #9ec1ff; margin-left: 4px; }
@@ -116,19 +111,15 @@
       <a class="back-link" href="../connectome/?corpus=ebola">← Retour au connectome Ebola</a>
       <h1>Intersection 3 corpus santé</h1>
     </div>
-    <p class="subtitle" id="def"></p>
+    <p class="lead">
+      Cette page sert à visualiser les comptes au croisement des 3 corpus de santé
+      (Ebola, Hantavirus, Mpox), afin d’identifier les comptes prépondérants.
+    </p>
     <p class="subtitle">
       <a class="link" href="../connectome/">Connectomes</a> ·
       <a class="link" href="./comptes_selectionnes.html">MCA Track B</a> ·
       <a class="link" href="./cross_corpus_analyses.html">Analyses corpus entier</a>
     </p>
-
-    <div class="kpi-row" id="kpis"></div>
-
-    <div class="box">
-      <div class="viz-title">Constats</div>
-      <ul class="findings" id="findings"></ul>
-    </div>
 
     <h2>Réseau d'interaction combiné (2D)</h2>
     <div class="graph-tabs" role="tablist">
@@ -277,28 +268,6 @@
       fetch(BASE + "/graph_union.json?" + bust).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(BASE + "/top_accounts.json?" + bust).then(r => r.ok ? r.json() : null).catch(() => null),
     ]);
-
-    document.getElementById("def").textContent =
-      (S.definition || "") +
-      (S.generatedAt ? " · généré " + String(S.generatedAt).slice(0, 19) + "Z" : "") +
-      (S.refinedAt ? " · raffiné " + String(S.refinedAt).slice(0, 19) + "Z" : "");
-
-    const kpis = [
-      ["Comptes ∩ 3 santé", S.n_accounts],
-      ["Tweets (somme)", S.tweets_total_all],
-      ["Médiane tweets/compte", S.median_tweets != null ? Number(S.median_tweets).toFixed(0) : "—"],
-      ["Part RT moyenne", S.mean_rt_share != null ? (100 * S.mean_rt_share).toFixed(1) + "%" : "—"],
-      ["Arêtes graphe", S.graph?.n_edges],
-      ["LCC", S.graph?.largest_cc],
-      ["Communautés Louvain", S.graph?.n_communities],
-      ["Aussi en MCA", S.mca_track_b?.in_any_cohort],
-    ];
-    document.getElementById("kpis").innerHTML = kpis.map(([l, v]) =>
-      `<div class="kpi"><div class="v">${typeof v === "number" ? v.toLocaleString("fr-FR") : (v ?? "—")}</div><div class="l">${l}</div></div>`
-    ).join("");
-
-    document.getElementById("findings").innerHTML =
-      (S.findings || []).map(f => `<li>${esc(f)}</li>`).join("") || "<li class='muted'>Aucun constat.</li>";
 
     const m = S.mca_track_b || {};
     const by = m.by_corpus || {};
