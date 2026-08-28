@@ -376,16 +376,13 @@ const FIT_PADDING = 1.58;
 
 function fitGraphToView(nodes) {
   if (!nodes?.length) return;
-  let minX = Infinity;
-  let maxX = -Infinity;
-  let minY = Infinity;
-  let maxY = -Infinity;
-  for (const n of nodes) {
-    if (n.x < minX) minX = n.x;
-    if (n.x > maxX) maxX = n.x;
-    if (n.y < minY) minY = n.y;
-    if (n.y > maxY) maxY = n.y;
-  }
+  const xs = nodes.map((n) => n.x).sort((a, b) => a - b);
+  const ys = nodes.map((n) => n.y).sort((a, b) => a - b);
+  const q = (arr, p) => arr[Math.max(0, Math.min(arr.length - 1, Math.floor(p * (arr.length - 1))))];
+  const minX = q(xs, 0.01);
+  const maxX = q(xs, 0.99);
+  const minY = q(ys, 0.01);
+  const maxY = q(ys, 0.99);
   const cx = (minX + maxX) * 0.5;
   const cy = (minY + maxY) * 0.5;
   const halfW = Math.max((maxX - minX) * 0.5, 1) * FIT_PADDING;
