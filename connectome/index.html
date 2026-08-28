@@ -367,9 +367,36 @@ controls.enableDamping = true;
 controls.dampingFactor = 0.1;
 controls.enableRotate = false;
 controls.screenSpacePanning = true;
-controls.minZoom = 0.02;
+controls.minZoom = 0.008;
 controls.maxZoom = 20;
 controls.target.set(0, 0, 0);
+
+/** Margin around bbox on load (higher = more dezoom). */
+const FIT_PADDING = 1.58;
+
+function fitGraphToView(nodes) {
+  if (!nodes?.length) return;
+  let minX = Infinity;
+  let maxX = -Infinity;
+  let minY = Infinity;
+  let maxY = -Infinity;
+  for (const n of nodes) {
+    if (n.x < minX) minX = n.x;
+    if (n.x > maxX) maxX = n.x;
+    if (n.y < minY) minY = n.y;
+    if (n.y > maxY) maxY = n.y;
+  }
+  const cx = (minX + maxX) * 0.5;
+  const cy = (minY + maxY) * 0.5;
+  const halfW = Math.max((maxX - minX) * 0.5, 1) * FIT_PADDING;
+  const halfH = Math.max((maxY - minY) * 0.5, 1) * FIT_PADDING;
+  const a = innerWidth / innerHeight;
+  const zoom = Math.min((frustum * a) / halfW, frustum / halfH);
+  controls.target.set(cx, cy, 0);
+  camera.zoom = Math.max(controls.minZoom, Math.min(controls.maxZoom, zoom));
+  camera.updateProjectionMatrix();
+  controls.update();
+}
 
 const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
@@ -789,6 +816,7 @@ function buildGraph(data) {
 
   document.getElementById('stats').textContent =
     `${data.meta.n_nodes.toLocaleString('fr-FR')} nœuds · ${data.meta.n_edges.toLocaleString('fr-FR')} liens · ${P.strands}× hair`;
+  fitGraphToView(nodes);
   renderCommPanel(data);
   rebuildLabels();
 }
