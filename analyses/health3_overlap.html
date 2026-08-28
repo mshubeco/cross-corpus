@@ -135,10 +135,9 @@
       <canvas id="net"></canvas>
       <div class="net-hud" id="netHud"></div>
       <div class="net-controls" id="netControls">
-        <b style="color:#c5ccd6;font-size:10px;letter-spacing:0.06em;text-transform:uppercase">Connectome</b>
-        <div class="row"><span>Lumière liens</span><input id="linkLight" type="range" min="0" max="1" step="0.01" value="0.55"></div>
-        <div class="row"><span>Bloom</span><input id="nodeGlow" type="range" min="0" max="2.2" step="0.01" value="0.28"></div>
-        <div class="row"><span>Opacité</span><input id="edgeOp" type="range" min="0" max="0.45" step="0.005" value="0.10"></div>
+        <b style="color:#c5ccd6;font-size:10px;letter-spacing:0.06em;text-transform:uppercase">Affichage</b>
+        <div class="row"><span>Lumière liens</span><input id="linkLight" type="range" min="0" max="1" step="0.01" value="0.65"></div>
+        <div class="row"><span>Opacité liens</span><input id="edgeOp" type="range" min="0" max="0.6" step="0.01" value="0.35"></div>
         <div class="row"><span>Labels</span><input id="nLabels" type="range" min="0" max="80" step="1" value="40"></div>
       </div>
       <div class="net-legend" id="netLegend"></div>
@@ -279,12 +278,12 @@
 
     const netCtl = createNetController();
     netCtl.setGraph("inter", G, {
-      hud: `<b>Intersection ∩3</b>Style connectome Ebola · filaments additifs<br/>Taille labels = degré · couleur = Louvain`,
+      hud: `<b>Intersection ∩3</b>Liens nets · couleur = Louvain<br/>Labels = degré`,
       legendMode: "communities",
     });
     if (Gu) {
       netCtl.setGraph("union", Gu, {
-        hud: `<b>Union 3 corpus</b>Style connectome Ebola · filaments additifs<br/>Taille labels = degré · couleur = présence corpus`,
+        hud: `<b>Union 3 corpus</b>Liens nets · couleur = présence corpus<br/>Labels = degré`,
         legendMode: "presence",
       });
     } else {
@@ -321,7 +320,7 @@
     let cam = { x: 0, y: 0, k: 1 };
     let drag = null;
     let bound = false;
-    const P = { linkLight: 0.55, nodeGlow: 0.28, edgeOp: 0.10, nLabels: 40 };
+    const P = { linkLight: 0.65, edgeOp: 0.35, nLabels: 40 };
     const FIT_PAD = 1.45;
 
     function quantileSorted(arr, p) {
@@ -337,17 +336,6 @@
         minY: quantileSorted(ys, lo),
         maxY: quantileSorted(ys, hi),
       };
-    }
-
-    function strandCount(edges) {
-      const n = edges.length;
-      if (n > 60000) return 1;
-      if (n > 25000) return 2;
-      return 3;
-    }
-
-    function edgeDensityScale(edges) {
-      return Math.min(1, 14000 / Math.max(edges.length, 1));
     }
 
     function pickLabelNodes(nodes, budget, mode) {
@@ -454,9 +442,8 @@
     function degMaxOf() {
       return (graphs[active] && graphs[active].degMax) || 1;
     }
-    function hubR(n, degMax) {
-      const u = Math.sqrt(degOf(n) / degMax);
-      return 0.8 + 2.2 * u;
+    function nodeDotR(n, degMax) {
+      return Math.max(1, 0.7 + 1.4 * Math.sqrt(degOf(n) / degMax));
     }
     function labelPx(n, degMax, ranked) {
       const sizes = ranked.map((x) => degOf(x));
@@ -465,17 +452,6 @@
       const u = (degOf(n) - sMin) / Math.max(sMax - sMin, 1e-6);
       const t = Math.pow(Math.max(0, Math.min(1, u)), 0.7);
       return Math.round(8 + 44 * t);
-    }
-    function hash(i) {
-      const x = Math.sin(i * 127.1 + 311.7) * 43758.5453;
-      return x - Math.floor(x);
-    }
-    function lift(rgb, mul) {
-      return [
-        Math.min(255, rgb[0] * mul),
-        Math.min(255, rgb[1] * mul),
-        Math.min(255, rgb[2] * mul),
-      ];
     }
 
     function maxEdgeW(edges) {
@@ -489,24 +465,19 @@
 
     function drawConnectome(nodes, edges, degMax) {
       const light = Math.max(0, Math.min(1, P.linkLight));
-      const bloom = Math.max(0, Math.min(2.2, P.nodeGlow));
-      const op = Math.max(0, Math.min(0.45, P.edgeOp));
-      const nStrands = strandCount(edges);
-      const density = edgeDensityScale(edges);
+      const op = Math.max(0, Math.min(0.6, P.edgeOp));
       const eCap = edges.length > 70000 ? 52000 : edges.length;
       const pad = 64;
       const inView = (p) => p.x >= -pad && p.x <= W + pad && p.y >= -pad && p.y <= H + pad;
       const maxW = maxEdgeW(edges);
       const core = coreBounds(nodes, 0.05, 0.95);
 
-      // Liens — additif, alpha pilotée par Lumière liens × Opacité
+      ctx.save();
+      ctx.globalCompositeOperation = "source-over";
+      ctx.lineCap = "round";
+
       if (light > 0.001) {
-        ctx.save();
-        ctx.globalCompositeOperation = "lighter";
-        ctx.lineCap = "round";
-        ctx.lineJoin = "round";
         let drawnE = 0;
-        let seed = 1;
         for (const e of edges) {
           if (drawnE >= eCap) break;
           const a = nodes[e.s], b = nodes[e.t];
@@ -515,56 +486,30 @@
           if (b.x < core.minX || b.x > core.maxX || b.y < core.minY || b.y > core.maxY) continue;
           const pa = toScreen(a), pb = toScreen(b);
           if (edges.length > 25000 && !inView(pa) && !inView(pb)) continue;
-          const dx = pb.x - pa.x, dy = pb.y - pa.y;
-          const len = Math.hypot(dx, dy) || 1;
-          const nx = -dy / len, ny = dx / len;
           const wNorm = Math.pow((e.w || 1) / maxW, 0.45);
-          const ca = lift(a.c || [140, 160, 190], 1.18);
-          const cb = lift(b.c || [140, 160, 190], 1.18);
-          const base = (0.28 + 0.55 * wNorm) * op * density;
-          for (let s = 0; s < nStrands; s++) {
-            const alpha = base * light * (1 - s * 0.12);
-            const bulge = Math.min(36, len * (0.05 + 0.10 * hash(seed)));
-            const sign = hash(seed + 3) > 0.5 ? 1 : -1;
-            const off = (hash(seed + 7) - 0.5) * Math.min(10, len * 0.04);
-            const mx = (pa.x + pb.x) * 0.5 + nx * (bulge * sign + off);
-            const my = (pa.y + pb.y) * 0.5 + ny * (bulge * sign + off);
-            const cr = (ca[0] + cb[0]) * 0.5;
-            const cg = (ca[1] + cb[1]) * 0.5;
-            const cbv = (ca[2] + cb[2]) * 0.5;
-            ctx.strokeStyle = `rgba(${cr|0},${cg|0},${cbv|0},${alpha})`;
-            ctx.lineWidth = 0.22 + 0.42 * wNorm;
-            ctx.beginPath();
-            ctx.moveTo(pa.x, pa.y);
-            ctx.quadraticCurveTo(mx, my, pb.x, pb.y);
-            ctx.stroke();
-            seed++;
-          }
+          const ca = a.c || [140, 160, 190];
+          const cb = b.c || [140, 160, 190];
+          const cr = ((ca[0] + cb[0]) * 0.5) | 0;
+          const cg = ((ca[1] + cb[1]) * 0.5) | 0;
+          const cbv = ((ca[2] + cb[2]) * 0.5) | 0;
+          const alpha = light * op * (0.12 + 0.55 * wNorm);
+          ctx.strokeStyle = `rgba(${cr},${cg},${cbv},${alpha})`;
+          ctx.lineWidth = 0.35 + 0.65 * wNorm;
+          ctx.beginPath();
+          ctx.moveTo(pa.x, pa.y);
+          ctx.lineTo(pb.x, pb.y);
+          ctx.stroke();
           drawnE++;
         }
-        ctx.restore();
       }
 
-      // Nœuds — source-over (évite le bloom blanc cumulatif)
-      ctx.save();
-      ctx.globalCompositeOperation = "source-over";
       const bySize = graphs[active].nodesBySize || [...nodes].sort((a, b) => degOf(a) - degOf(b));
-      const glowK = Math.min(1.2, bloom / 0.28);
       for (const n of bySize) {
         const p = toScreen(n);
-        const r = Math.max(1.6, hubR(n, degMax) * Math.min(1.4, cam.k * 0.03 + 0.28));
-        if (p.x < -r * 2 || p.x > W + r * 2 || p.y < -r * 2 || p.y > H + r * 2) continue;
-        const [cr0, cg0, cb0] = lift(n.c || [150, 160, 180], 1.08);
-        const haloR = r * 1.8;
-        const halo = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, haloR);
-        halo.addColorStop(0, `rgba(${Math.min(255, cr0 + 40)},${Math.min(255, cg0 + 40)},${Math.min(255, cb0 + 40)},${0.18 * glowK})`);
-        halo.addColorStop(0.5, `rgba(${cr0},${cg0},${cb0},${0.06 * glowK})`);
-        halo.addColorStop(1, `rgba(${cr0},${cg0},${cb0},0)`);
-        ctx.fillStyle = halo;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, haloR, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = `rgba(${cr0},${cg0},${cb0},${0.35 + 0.25 * glowK})`;
+        const r = nodeDotR(n, degMax);
+        if (p.x < -4 || p.x > W + 4 || p.y < -4 || p.y > H + 4) continue;
+        const [cr0, cg0, cb0] = n.c || [150, 160, 180];
+        ctx.fillStyle = `rgb(${cr0|0},${cg0|0},${cb0|0})`;
         ctx.beginPath();
         ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
         ctx.fill();
@@ -576,8 +521,11 @@
     function drawLabels(degMax) {
       const ranked = graphs[active].labelNodes || [];
       if (!ranked.length) return;
+      ctx.save();
+      ctx.globalCompositeOperation = "source-over";
       ctx.textAlign = "center";
       ctx.textBaseline = "bottom";
+      ctx.shadowBlur = 0;
       const occupied = [];
       const topDesc = [...ranked].sort((a, b) => degOf(b) - degOf(a));
       for (const n of topDesc) {
@@ -587,17 +535,18 @@
         ctx.font = `600 ${px}px "Helvetica Neue", Helvetica, Arial, sans-serif`;
         const tw = ctx.measureText(label).width;
         const th = px + 6;
-        const ly = p.y - hubR(n, degMax) * 2.4 - 4;
+        const ly = p.y - nodeDotR(n, degMax) - 4;
         const box = { x: p.x - tw / 2, y: ly - th, w: tw, h: th };
         if (occupied.some(o => box.x < o.x + o.w && box.x + box.w > o.x && box.y < o.y + o.h && box.y + box.h > o.y)) continue;
         occupied.push(box);
-        const [cr, cg, cb] = lift(n.c || [220, 220, 230], 1.15);
-        ctx.shadowColor = "rgba(0,0,0,0.85)";
-        ctx.shadowBlur = 6;
+        const [cr, cg, cb] = n.c || [220, 220, 230];
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "rgba(0,0,0,0.85)";
         ctx.fillStyle = `rgb(${cr|0},${cg|0},${cb|0})`;
+        ctx.strokeText(label, p.x, ly);
         ctx.fillText(label, p.x, ly);
-        ctx.shadowBlur = 0;
       }
+      ctx.restore();
     }
 
     function draw() {
@@ -621,7 +570,7 @@
       for (const n of nodes) {
         const p = toScreen(n);
         const d = Math.hypot(p.x - mx, p.y - my);
-        const hr = hubR(n, degMax);
+        const hr = nodeDotR(n, degMax);
         if (d < bestD + hr) { bestD = d; best = n; }
       }
       return best;
@@ -686,7 +635,6 @@
         });
       };
       bindRange("linkLight", "linkLight", Number);
-      bindRange("nodeGlow", "nodeGlow", Number);
       bindRange("edgeOp", "edgeOp", Number);
       const labelsEl = document.getElementById("nLabels");
       if (labelsEl) {
