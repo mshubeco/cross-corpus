@@ -22,7 +22,7 @@
     #corpusNav {
       position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 6;
       display: flex; flex-direction: column; gap: 0;
-      max-width: min(720px, calc(100vw - 560px));
+      max-width: min(920px, calc(100vw - 560px));
       background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.08);
       border-radius: 10px; overflow: hidden;
     }
@@ -59,6 +59,14 @@
     }
     .subtab .subtab-label { color: #fff6d6; font-weight: 700; }
     .subtab .subtab-hint { color: #b8a878; font-size: 11px; font-weight: 500; }
+    .comm-metrics { color: #8b93a0; font-weight: 500; font-variant-numeric: tabular-nums; font-size: 10.5px; }
+    .comm-metrics .pub { color: #c9b27a; }
+    .comm-pubbar {
+      margin-top: 5px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.08); overflow: hidden;
+    }
+    .comm-pubbar > i {
+      display: block; height: 100%; border-radius: 2px; background: #c9b27a; max-width: 100%;
+    }
     #hud {
       position: fixed; top: 12px; left: 12px; z-index: 5;
       background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.07);
@@ -233,6 +241,10 @@
         <span class="subtab-label">Intersection 3 corpus santé</span>
         <span class="subtab-hint">intersection ∩ union</span>
       </a>
+      <a id="intercommLink" class="subtab" href="../analyses/intercomm/ebola.html" title="Analyses intercommunautaires du corpus affiché">
+        <span class="subtab-label">Flux intercommunautaires</span>
+        <span class="subtab-hint" id="intercommLinkHint">analyses Louvain</span>
+      </a>
     </div>
   </nav>
   <div id="tooltip"></div>
@@ -299,9 +311,12 @@ const tip = document.getElementById('tooltip');
 const tabsEl = document.getElementById('tabs');
 const comptesLinkEl = document.getElementById('comptesLink');
 const comptesLinkHintEl = document.getElementById('comptesLinkHint');
+const intercommLinkEl = document.getElementById('intercommLink');
+const intercommLinkHintEl = document.getElementById('intercommLinkHint');
 let currentCorpusId = null;
 const graphCache = new Map();
 const selectedCache = new Map();
+const pubStatsCache = new Map();
 let highlightSelected = false;
 let selectedHandles = new Set();
 
@@ -417,6 +432,11 @@ function comptesDeepLink(corpusId, raw) {
   return base.href;
 }
 
+function intercommPageUrl(corpusId) {
+  if (!corpusId) return null;
+  return new URL(`../analyses/intercomm/${corpusId}.html`, import.meta.url).href;
+}
+
 function syncComptesSubTab(corp) {
   if (!comptesLinkEl) return;
   const id = corp?.id || currentCorpusId;
@@ -424,6 +444,13 @@ function syncComptesSubTab(corp) {
   if (url) comptesLinkEl.href = url;
   if (comptesLinkHintEl) {
     comptesLinkHintEl.textContent = corp?.label ? `· ${corp.label}` : (id ? `· ${id}` : '—');
+  }
+  if (intercommLinkEl) {
+    const iu = intercommPageUrl(id);
+    if (iu) intercommLinkEl.href = iu;
+  }
+  if (intercommLinkHintEl) {
+    intercommLinkHintEl.textContent = corp?.label ? `· ${corp.label}` : 'analyses Louvain';
   }
 }
 
@@ -526,8 +553,11 @@ function renderCommPanel(data) {
   const sub = document.getElementById('commSub');
   if (!list || !sub) return;
   const { rows, coverage } = communitiesCovering90(data);
+  const stats = data?.meta?.pubStats;
+  const byPub = new Map((stats?.communities || []).map((c) => [Number(c.id), c]));
   const scrollHint = rows.length > 5 ? ' · défiler pour les suivantes' : '';
-  sub.textContent = `${rows.length} communauté${rows.length > 1 ? 's' : ''} · ${coverage.toLocaleString('fr-FR')} % des nœuds du graphe · comptes par degré pondéré${scrollHint}`;
+  const pubHint = stats ? ' · part = volume de publication' : '';
+  sub.textContent = `${rows.length} communauté${rows.length > 1 ? 's' : ''} · ${coverage.toLocaleString('fr-FR')} % des nœuds · comptes par degré pondéré${pubHint}${scrollHint}`;
   list.innerHTML = '';
   for (const row of rows) {
     const el = document.createElement('div');
@@ -543,11 +573,20 @@ function renderCommPanel(data) {
       })
       .filter(Boolean)
       .join(', ');
+    const pub = byPub.get(Number(row.id)) || (row.pubPct != null ? row : null);
+    const pubPct = pub?.pubPct;
+    const pubBit = pubPct != null
+      ? ` · <span class="pub">${Number(pubPct).toLocaleString('fr-FR')} % pubs</span>`
+      : '';
+    const bar = pubPct != null
+      ? `<div class="comm-pubbar" title="Part du volume de publication du corpus"><i style="width:${Math.max(1, Math.min(100, pubPct))}%"></i></div>`
+      : '';
     el.innerHTML = `
       <div class="comm-swatch" style="background:${row.color}"></div>
       <div>
-        <div class="comm-head"><span>C${row.id}</span><span class="pct">${row.pct}% · ${row.n.toLocaleString('fr-FR')}</span></div>
+        <div class="comm-head"><span>C${row.id}</span><span class="comm-metrics">${row.pct}% nœuds${pubBit}</span></div>
         <div class="comm-accounts">${handles || '—'}</div>
+        ${bar}
       </div>`;
     list.appendChild(el);
   }
@@ -1306,6 +1345,22 @@ async function loadCorpus(corp) {
       data = await r.json();
       graphCache.set(corp.id, data);
     }
+    try {
+      let pubs = pubStatsCache.get(corp.id);
+      if (!pubs) {
+        const pu = new URL(`./data/${corp.id}/community_stats.json`, import.meta.url);
+        pu.searchParams.set("t", String(Date.now()));
+        const pr = await fetch(pu);
+        if (pr.ok) {
+          pubs = await pr.json();
+          pubStatsCache.set(corp.id, pubs);
+        }
+      }
+      if (pubs) {
+        data.meta = data.meta || {};
+        data.meta.pubStats = pubs;
+      }
+    } catch (_) { /* optional */ }
     // reset hair density defaults before auto-tune in buildGraph
     P.strands = 4;
     P.segments = 18;
