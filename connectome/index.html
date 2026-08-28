@@ -314,6 +314,7 @@ const comptesLinkHintEl = document.getElementById('comptesLinkHint');
 const intercommLinkEl = document.getElementById('intercommLink');
 const intercommLinkHintEl = document.getElementById('intercommLinkHint');
 let currentCorpusId = null;
+let corporaList = [];
 const graphCache = new Map();
 const selectedCache = new Map();
 const pubStatsCache = new Map();
@@ -435,6 +436,20 @@ function comptesDeepLink(corpusId, raw) {
 function intercommPageUrl(corpusId) {
   if (!corpusId) return null;
   return new URL(`../analyses/intercomm/${corpusId}.html`, import.meta.url).href;
+}
+
+function syncCorpusUrl(corpusId) {
+  if (!corpusId) return;
+  const url = new URL(location.href);
+  if (url.searchParams.get('corpus') === corpusId) return;
+  url.searchParams.set('corpus', corpusId);
+  history.replaceState({ corpus: corpusId }, '', url);
+}
+
+function resolveCorpus(corpusParam) {
+  const id = String(corpusParam || '').trim().toLowerCase();
+  if (!id) return null;
+  return corporaList.find((c) => c.id === id) || null;
 }
 
 function syncComptesSubTab(corp) {
@@ -1329,6 +1344,7 @@ exportBtn.addEventListener('click', () => { exportPng(); });
 
 async function loadCorpus(corp) {
   currentCorpusId = corp.id;
+  syncCorpusUrl(corp.id);
   loading.classList.remove('hidden');
   loading.textContent = `Chargement · ${corp.label}…`;
   [...tabsEl.querySelectorAll('.tab')].forEach((b) => {
@@ -1482,6 +1498,7 @@ async function boot() {
     }
   } catch (_) { /* fallback list */ }
 
+  corporaList = corpora;
   tabsEl.innerHTML = '';
   for (const corp of corpora) {
     const b = document.createElement('button');
@@ -1493,10 +1510,15 @@ async function boot() {
     tabsEl.appendChild(b);
   }
   // Deep-link: ?corpus=ebola (from comptes « Retour au graphe »)
-  const bootCorpus = new URLSearchParams(location.search).get('corpus');
-  const start = corpora.find((c) => c.id === bootCorpus) || corpora[0];
+  const start = resolveCorpus(new URLSearchParams(location.search).get('corpus')) || corpora[0];
   await loadCorpus(start);
 }
+
+window.addEventListener('popstate', () => {
+  if (!corporaList.length) return;
+  const corp = resolveCorpus(new URLSearchParams(location.search).get('corpus')) || corporaList[0];
+  if (corp.id !== currentCorpusId) loadCorpus(corp);
+});
 
 boot();
   </script>
