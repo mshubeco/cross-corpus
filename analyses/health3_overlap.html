@@ -314,7 +314,7 @@
     });
     if (Gu) {
       netCtl.setGraph("union", Gu, {
-        hud: `<b>Union 3 corpus</b>Tous les nœuds (hors isolats) · arêtes poids ≥ 2<br/>Filaments additifs · cœurs sans superposition<br/>Taille = degré · <b>couleur = présence corpus</b>`,
+        hud: `<b>Union 3 corpus</b>Tous les nœuds (hors isolats) · arêtes poids ≥ 2<br/>Rendu simple · sans superposition · <b>taille et labels = centralité de degré</b><br/>Couleur = présence corpus`,
         legendMode: "presence",
       });
     } else {
@@ -386,10 +386,16 @@
       const linked = nodes.filter((n) => degOf(n) > 0);
       const use = linked.length > 30 ? linked : nodes;
       let minx = Infinity, maxx = -Infinity, miny = Infinity, maxy = -Infinity;
+      const simple = active === "union";
       for (const n of use) {
-        const rr = Math.max(10, Math.min(560, n.r || 10));
-        minx = Math.min(minx, n.x - rr); maxx = Math.max(maxx, n.x + rr);
-        miny = Math.min(miny, n.y - rr); maxy = Math.max(maxy, n.y + rr);
+        if (simple) {
+          minx = Math.min(minx, n.x); maxx = Math.max(maxx, n.x);
+          miny = Math.min(miny, n.y); maxy = Math.max(maxy, n.y);
+        } else {
+          const rr = Math.max(10, Math.min(560, n.r || 10));
+          minx = Math.min(minx, n.x - rr); maxx = Math.max(maxx, n.x + rr);
+          miny = Math.min(miny, n.y - rr); maxy = Math.max(maxy, n.y + rr);
+        }
       }
       const pad = 48;
       const sx = (W - 2 * pad) / Math.max(maxx - minx, 1e-6);
@@ -405,15 +411,24 @@
       if (n.s != null) return n.s;
       return 0;
     }
+    function degMaxOf() {
+      return (graphs[active] && graphs[active].degMax) || 1;
+    }
     function nodeR(n) {
+      if (active === "union") {
+        const u = Math.pow(degOf(n) / degMaxOf(), 0.5);
+        return 1.7 + 13.5 * u;
+      }
       const wr = Math.max(10, Math.min(560, n.r || 10));
       return Math.max(2.2, wr * cam.k);
     }
     function coreR(n) {
+      if (active === "union") return nodeR(n);
       return Math.max(1.05, Math.min(11, nodeR(n) * 0.13));
     }
     function labelPx(n, degMax) {
       const u = degMax > 0 ? Math.pow(degOf(n) / degMax, 0.5) : 0;
+      if (active === "union") return Math.round(8 + 11 * u);
       return Math.round(10 + 18 * u);
     }
     function hash(i) {
@@ -428,24 +443,71 @@
       ];
     }
 
-    function draw() {
-      if (!active || !graphs[active]) return;
-      const G = graphs[active].data;
-      const nodes = G.nodes || [];
-      const edges = G.edges || [];
-      const degMax = nodes.reduce((m, n) => Math.max(m, degOf(n)), 0) || 1;
-      ctx.clearRect(0, 0, W, H);
-      ctx.fillStyle = "#000";
-      ctx.fillRect(0, 0, W, H);
-
-      const eCap = edges.length > 70000 ? 52000 : edges.length;
-      const pad = 64;
-      const inView = (p) => p.x >= -pad && p.x <= W + pad && p.y >= -pad && p.y <= H + pad;
+    function maxEdgeW(edges) {
       let maxW = 1;
       for (let i = 0; i < edges.length; i++) {
         const w = edges[i].w || 1;
         if (w > maxW) maxW = w;
       }
+      return maxW;
+    }
+
+    function drawUnion(nodes, edges, degMax) {
+      const light = Math.max(0, Math.min(1, P.linkLight));
+      const glow = Math.max(0, Math.min(1, P.nodeGlow));
+      const maxW = maxEdgeW(edges);
+      const eCap = Math.min(edges.length, 45000);
+      const pad = 48;
+      const inView = (p) => p.x >= -pad && p.x <= W + pad && p.y >= -pad && p.y <= H + pad;
+
+      ctx.save();
+      ctx.globalCompositeOperation = "source-over";
+      ctx.lineCap = "round";
+      let drawnE = 0;
+      for (const e of edges) {
+        if (drawnE >= eCap) break;
+        const a = nodes[e.s], b = nodes[e.t];
+        if (!a || !b) continue;
+        const pa = toScreen(a), pb = toScreen(b);
+        if (edges.length > 25000 && !inView(pa) && !inView(pb)) continue;
+        const wNorm = Math.pow((e.w || 1) / maxW, 0.4);
+        const ca = a.c || [140, 160, 190];
+        const cb = b.c || [140, 160, 190];
+        const cr = (ca[0] + cb[0]) * 0.5;
+        const cg = (ca[1] + cb[1]) * 0.5;
+        const cbv = (ca[2] + cb[2]) * 0.5;
+        ctx.strokeStyle = `rgba(${cr|0},${cg|0},${cbv|0},${(0.08 + 0.28 * wNorm) * light})`;
+        ctx.lineWidth = 0.35 + 1.15 * wNorm;
+        ctx.beginPath();
+        ctx.moveTo(pa.x, pa.y);
+        ctx.lineTo(pb.x, pb.y);
+        ctx.stroke();
+        drawnE++;
+      }
+
+      const bySize = graphs[active].nodesBySize || [...nodes].sort((a, b) => degOf(a) - degOf(b));
+      for (const n of bySize) {
+        const p = toScreen(n);
+        const r = nodeR(n);
+        if (p.x < -r || p.x > W + r || p.y < -r || p.y > H + r) continue;
+        const [cr0, cg0, cb0] = n.c || [150, 160, 180];
+        ctx.fillStyle = `rgba(${cr0},${cg0},${cb0},${0.55 + 0.4 * glow})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = `rgba(${Math.min(255, cr0 + 40)},${Math.min(255, cg0 + 40)},${Math.min(255, cb0 + 40)},0.9)`;
+        ctx.lineWidth = 0.7;
+        ctx.stroke();
+      }
+      ctx.restore();
+      drawLabels(degMax, 1.15);
+    }
+
+    function drawInter(nodes, edges, degMax) {
+      const eCap = edges.length > 70000 ? 52000 : edges.length;
+      const pad = 64;
+      const inView = (p) => p.x >= -pad && p.x <= W + pad && p.y >= -pad && p.y <= H + pad;
+      const maxW = maxEdgeW(edges);
       const filament = Math.max(0, Math.min(1, P.strands));
       const nStrands = Math.max(1, Math.min(3, Math.round(1 + filament * 2)));
       const light = Math.max(0, Math.min(1, P.linkLight));
@@ -516,7 +578,10 @@
         ctx.fill();
       }
       ctx.restore();
+      drawLabels(degMax, 2.6);
+    }
 
+    function drawLabels(degMax, liftK) {
       ctx.textAlign = "center";
       ctx.textBaseline = "bottom";
       const occupied = [];
@@ -528,17 +593,30 @@
         ctx.font = `600 ${px}px Segoe UI, sans-serif`;
         const tw = ctx.measureText(label).width;
         const th = px + 6;
-        const ly = p.y - coreR(n) * 2.6 - 3;
+        const ly = p.y - nodeR(n) * liftK - 3;
         const box = { x: p.x - tw / 2, y: ly - th, w: tw, h: th };
         if (occupied.some(o => box.x < o.x + o.w && box.x + box.w > o.x && box.y < o.y + o.h && box.y + box.h > o.y)) continue;
         occupied.push(box);
-        const [cr, cg, cb] = lift(n.c || [220, 220, 230], 1.2);
+        const [cr, cg, cb] = lift(n.c || [220, 220, 230], 1.15);
         ctx.shadowColor = "rgba(0,0,0,0.95)";
-        ctx.shadowBlur = 8;
+        ctx.shadowBlur = 6;
         ctx.fillStyle = `rgb(${cr|0},${cg|0},${cb|0})`;
         ctx.fillText(label, p.x, ly);
         ctx.shadowBlur = 0;
       }
+    }
+
+    function draw() {
+      if (!active || !graphs[active]) return;
+      const G = graphs[active].data;
+      const nodes = G.nodes || [];
+      const edges = G.edges || [];
+      const degMax = graphs[active].degMax || 1;
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = "#000";
+      ctx.fillRect(0, 0, W, H);
+      if (active === "union") drawUnion(nodes, edges, degMax);
+      else drawInter(nodes, edges, degMax);
     }
 
     function hit(mx, my) {
@@ -621,11 +699,13 @@
     return {
       setGraph(key, data, opts) {
         const nodes = (data && data.nodes) || [];
+        const nLabels = key === "union" ? 40 : 22;
         graphs[key] = {
           data,
           opts: opts || {},
+          degMax: nodes.reduce((m, n) => Math.max(m, degOf(n)), 0) || 1,
           nodesBySize: [...nodes].sort((a, b) => degOf(a) - degOf(b)),
-          topAsc: [...nodes].sort((a, b) => degOf(b) - degOf(a)).slice(0, 22).sort((a, b) => degOf(a) - degOf(b)),
+          topAsc: [...nodes].sort((a, b) => degOf(b) - degOf(a)).slice(0, nLabels).sort((a, b) => degOf(a) - degOf(b)),
         };
       },
       show(key) {
