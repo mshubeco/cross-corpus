@@ -283,7 +283,7 @@
     });
     if (Gu) {
       netCtl.setGraph("union", Gu, {
-        hud: `<b>Union 3 corpus</b>Liens nets · couleur = présence corpus<br/>Labels = degré`,
+        hud: `<b>Union 3 corpus</b>Toutes les arêtes (aucun plafond) · hors isolats vrais<br/>Couleur = présence corpus · labels = degré`,
         legendMode: "presence",
       });
     } else {
@@ -466,26 +466,20 @@
     function drawConnectome(nodes, edges, degMax) {
       const light = Math.max(0, Math.min(1, P.linkLight));
       const op = Math.max(0, Math.min(0.6, P.edgeOp));
-      const eCap = edges.length > 70000 ? 52000 : edges.length;
       const pad = 64;
       const inView = (p) => p.x >= -pad && p.x <= W + pad && p.y >= -pad && p.y <= H + pad;
       const maxW = maxEdgeW(edges);
-      const core = coreBounds(nodes, 0.05, 0.95);
 
       ctx.save();
       ctx.globalCompositeOperation = "source-over";
       ctx.lineCap = "round";
 
-      if (light > 0.001) {
-        let drawnE = 0;
+      if (light > 0.001 && !drag) {
         for (const e of edges) {
-          if (drawnE >= eCap) break;
           const a = nodes[e.s], b = nodes[e.t];
           if (!a || !b) continue;
-          if (a.x < core.minX || a.x > core.maxX || a.y < core.minY || a.y > core.maxY) continue;
-          if (b.x < core.minX || b.x > core.maxX || b.y < core.minY || b.y > core.maxY) continue;
           const pa = toScreen(a), pb = toScreen(b);
-          if (edges.length > 25000 && !inView(pa) && !inView(pb)) continue;
+          if (!inView(pa) && !inView(pb)) continue;
           const wNorm = Math.pow((e.w || 1) / maxW, 0.45);
           const ca = a.c || [140, 160, 190];
           const cb = b.c || [140, 160, 190];
@@ -499,7 +493,6 @@
           ctx.moveTo(pa.x, pa.y);
           ctx.lineTo(pb.x, pb.y);
           ctx.stroke();
-          drawnE++;
         }
       }
 
@@ -616,7 +609,12 @@
         drag = { x: ev.clientX - rect.left, y: ev.clientY - rect.top };
         canvas.classList.add("dragging");
       });
-      window.addEventListener("mouseup", () => { drag = null; canvas.classList.remove("dragging"); });
+      window.addEventListener("mouseup", () => {
+        const wasDrag = !!drag;
+        drag = null;
+        canvas.classList.remove("dragging");
+        if (wasDrag) draw();
+      });
       canvas.addEventListener("wheel", (ev) => {
         ev.preventDefault();
         const rect = canvas.getBoundingClientRect();
