@@ -36,7 +36,7 @@
     }
     .tab:hover { color: #e8eef7; background: rgba(255,255,255,0.06); }
     .tab.active { color: #fff; background: rgba(77,138,240,0.28); }
-    /* CTA: deep-link vers comptes coordonnés du corpus actif (nouvel onglet = graphe conservé) */
+    /* Sous-onglets : analyses liées (nouvel onglet = graphe conservé) */
     #subTabs {
       display: flex; justify-content: center; flex-wrap: wrap; gap: 8px;
       border-top: 1px solid rgba(255,255,255,0.1);
@@ -151,7 +151,6 @@
     }
     #tooltip .muted { color: #8b93a0; font-size: 11px; }
     #tooltip .hint { color: #6a7380; font-size: 10px; margin-top: 5px; }
-    #tooltip .hint .mca { color: #c9b27a; }
     .comm-accounts a.handle {
       color: inherit; text-decoration: none; border-bottom: 1px dotted rgba(255,255,255,0.22);
       cursor: pointer;
@@ -160,61 +159,6 @@
     #hud .nav-hint {
       margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.06);
       color: #6a7380; font-size: 10px; line-height: 1.4;
-    }
-    .label.hl-selected {
-      color: #fff6d6 !important;
-      font-weight: 700 !important;
-      text-shadow: 0 0 12px rgba(255, 210, 80, 0.95), 0 0 4px rgba(0,0,0,0.9), 0 1px 2px rgba(0,0,0,0.85) !important;
-      z-index: 4 !important;
-      opacity: 1 !important;
-    }
-    /* Case « Voir les comptes coordonnés » — mise en avant */
-    .hl-toggle {
-      margin-top: 12px;
-      padding: 10px 10px 10px 8px;
-      border-radius: 8px;
-      border: 1px solid rgba(201,178,122,0.55);
-      background: linear-gradient(180deg, rgba(201,178,122,0.22), rgba(201,178,122,0.08));
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      cursor: pointer;
-      user-select: none;
-    }
-    .hl-toggle:hover {
-      border-color: rgba(232,210,140,0.85);
-      background: linear-gradient(180deg, rgba(201,178,122,0.32), rgba(201,178,122,0.12));
-    }
-    .hl-toggle:has(#hlSelected:checked) {
-      border-color: rgba(255,210,80,0.75);
-      box-shadow: 0 0 0 1px rgba(255,210,80,0.2), 0 0 14px rgba(255,210,80,0.12);
-      background: linear-gradient(180deg, rgba(255,210,80,0.22), rgba(201,178,122,0.1));
-    }
-    .hl-toggle input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      min-width: 18px;
-      margin: 1px 0 0;
-      flex: 0 0 auto;
-      accent-color: #e8c84a;
-      cursor: pointer;
-    }
-    .hl-toggle .hl-copy { flex: 1; min-width: 0; cursor: pointer; }
-    .hl-toggle .hl-title {
-      display: block;
-      color: #fff6d6;
-      font-size: 12px;
-      font-weight: 700;
-      line-height: 1.25;
-      letter-spacing: 0.01em;
-    }
-    .hl-toggle .hl-sub {
-      display: block;
-      margin-top: 3px;
-      color: #b8a878;
-      font-size: 10px;
-      line-height: 1.35;
-      font-weight: 500;
     }
   </style>
   <script type="importmap">
@@ -233,10 +177,6 @@
   <nav id="corpusNav" aria-label="Navigation corpus">
     <div id="tabs" role="tablist" aria-label="Corpus"></div>
     <div id="subTabs">
-      <a id="comptesLink" class="subtab" href="../analyses/comptes_selectionnes.html" target="_blank" rel="noopener noreferrer" title="Ouvrir le tableau des comptes coordonnés (nouvel onglet)">
-        <span class="subtab-label">Tableau des comptes coordonnés</span>
-        <span class="subtab-hint" id="comptesLinkHint">—</span>
-      </a>
       <a id="health3Link" class="subtab" href="../analyses/health3_overlap.html" target="_blank" rel="noopener noreferrer" title="Intersection des auteurs des 3 corpus santé">
         <span class="subtab-label">Intersection 3 corpus santé</span>
         <span class="subtab-hint">intersection ∩ union</span>
@@ -255,14 +195,7 @@
     <div class="row"><span>Bloom</span><input id="bloom" type="range" min="0" max="2.2" step="0.01" value="0.38"></div>
     <div class="row"><span>Opacité</span><input id="op" type="range" min="0" max="0.45" step="0.005" value="0.07"></div>
     <div class="row"><span>Labels</span><input id="nLabels" type="range" min="0" max="80" step="1" value="40"></div>
-    <label class="hl-toggle" for="hlSelected">
-      <input id="hlSelected" type="checkbox" />
-      <span class="hl-copy">
-        <span class="hl-title">Voir les comptes coordonnés</span>
-        <span class="hl-sub">Cochez pour les surligner sur le graphe</span>
-      </span>
-    </label>
-    <div class="nav-hint">Clic nœud/label → profil X<br/>Alt+clic (compte coordonné) → fiche détaillée</div>
+    <div class="nav-hint">Clic nœud/label → profil X</div>
     <div class="row"><span>Export</span>
       <select id="exportSize">
         <option value="3840x2160">4K · 3840×2160</option>
@@ -309,17 +242,12 @@ const P = {
 
 const tip = document.getElementById('tooltip');
 const tabsEl = document.getElementById('tabs');
-const comptesLinkEl = document.getElementById('comptesLink');
-const comptesLinkHintEl = document.getElementById('comptesLinkHint');
 const intercommLinkEl = document.getElementById('intercommLink');
 const intercommLinkHintEl = document.getElementById('intercommLinkHint');
 let currentCorpusId = null;
 let corporaList = [];
 const graphCache = new Map();
-const selectedCache = new Map();
 const pubStatsCache = new Map();
-let highlightSelected = false;
-let selectedHandles = new Set();
 
 function maxOf(arr, pick, fallback = 1) {
   let m = fallback;
@@ -460,23 +388,6 @@ function xProfileUrl(raw) {
   return h ? `https://x.com/${encodeURIComponent(h)}` : null;
 }
 
-/** Page comptes coordonnés pour un corpus (sans ancre user). */
-function comptesCorpusUrl(corpusId) {
-  if (!corpusId) return null;
-  const base = new URL('../analyses/comptes_selectionnes.html', import.meta.url);
-  base.searchParams.set('corpus', corpusId);
-  return base.href;
-}
-
-function comptesDeepLink(corpusId, raw) {
-  const h = normalizeHandle(raw);
-  if (!corpusId || !h) return null;
-  const base = new URL('../analyses/comptes_selectionnes.html', import.meta.url);
-  base.searchParams.set('corpus', corpusId);
-  base.searchParams.set('user', h);
-  return base.href;
-}
-
 function intercommPageUrl(corpusId) {
   if (!corpusId) return null;
   return new URL(`../analyses/intercomm/${corpusId}.html`, import.meta.url).href;
@@ -496,14 +407,8 @@ function resolveCorpus(corpusParam) {
   return corporaList.find((c) => c.id === id) || null;
 }
 
-function syncComptesSubTab(corp) {
-  if (!comptesLinkEl) return;
+function syncCorpusSubTabs(corp) {
   const id = corp?.id || currentCorpusId;
-  const url = comptesCorpusUrl(id);
-  if (url) comptesLinkEl.href = url;
-  if (comptesLinkHintEl) {
-    comptesLinkHintEl.textContent = corp?.label ? `· ${corp.label}` : (id ? `· ${id}` : '—');
-  }
   if (intercommLinkEl) {
     const iu = intercommPageUrl(id);
     if (iu) intercommLinkEl.href = iu;
@@ -513,29 +418,13 @@ function syncComptesSubTab(corp) {
   }
 }
 
-function isMcaSelected(raw) {
-  const h = normalizeHandle(raw);
-  return !!(h && selectedHandles.has(h));
-}
-
 function openXProfile(raw) {
   const url = xProfileUrl(raw);
   if (url) window.open(url, '_blank', 'noopener,noreferrer');
 }
 
-function openComptesRow(raw) {
-  const url = comptesDeepLink(currentCorpusId, raw);
-  if (url) window.open(url, '_blank', 'noopener,noreferrer');
-}
-
-/** Navigate from a graph node: primary = X profile; Alt/Ctrl/Meta = MCA fiche. */
-function navigateFromNode(node, ev) {
+function navigateFromNode(node) {
   if (!node?.l) return;
-  const secondary = !!(ev && (ev.altKey || ev.ctrlKey || ev.metaKey));
-  if (secondary && isMcaSelected(node.l)) {
-    openComptesRow(node.l);
-    return;
-  }
   openXProfile(node.l);
 }
 
@@ -894,14 +783,6 @@ function rebuildLabels() {
     }
   }
 
-  // Always surface MCA Track B selected accounts when highlight is on
-  if (highlightSelected && selectedHandles.size) {
-    for (const n of scored) {
-      const key = String(n.l || '').toLowerCase().replace(/^@/, '');
-      if (selectedHandles.has(key)) picked.set(n.i, n);
-    }
-  }
-
   const ranked = [...picked.values()].sort(
     (a, b) => (b.gephiSize - a.gephiSize) || (b.deg - a.deg)
   );
@@ -919,9 +800,6 @@ function rebuildLabels() {
     el.className = 'label';
     // Match Gephi labels (@handle)
     const text = node.l.startsWith('@') ? node.l : `@${node.l}`;
-    const handleKey = String(node.l || '').toLowerCase().replace(/^@/, '');
-    const isSelected = highlightSelected && selectedHandles.has(handleKey);
-    if (isSelected) el.classList.add('hl-selected');
     el.textContent = text;
 
     // Normalize then power-curve amplify tops (like Gephi ranking spline feel)
@@ -930,26 +808,20 @@ function rebuildLabels() {
     // Also bake absolute size so s=6 >> s=2 even within set
     const abs = Math.pow(node.gephiSize / sMax, 1.25);
     const mix = 0.45 * t + 0.55 * abs;
-    let fontPx = Math.round(7 + 32 * mix); // ~7 → 39 (un peu plus petit)
-    if (isSelected) fontPx = Math.max(Math.round(fontPx * 1.4), 15);
+    const fontPx = Math.round(7 + 32 * mix); // ~7 → 39 (un peu plus petit)
 
     el.style.fontSize = `${fontPx}px`;
-    el.style.fontWeight = isSelected ? '700' : mix > 0.7 ? '700' : mix > 0.4 ? '600' : '500';
-    el.style.zIndex = String(Math.round(10 + 90 * mix) + (isSelected ? 50 : 0));
-    el.style.opacity = isSelected ? '1' : '0.94';
-    // Couleur = communauté du nœud (pas blanc) ; highlight force une teinte claire
-    const labelColor = isSelected ? '#fff6d6' : rgbCss(node.c);
+    el.style.fontWeight = mix > 0.7 ? '700' : mix > 0.4 ? '600' : '500';
+    el.style.zIndex = String(Math.round(10 + 90 * mix));
+    el.style.opacity = '0.94';
+    const labelColor = rgbCss(node.c);
     el.style.color = labelColor;
-    el.style.textShadow = isSelected
-      ? '0 0 12px rgba(255,210,80,0.95), 0 0 4px rgba(0,0,0,0.9), 0 1px 2px rgba(0,0,0,0.85)'
-      : '0 0 6px rgba(0,0,0,0.85), 0 1px 2px rgba(0,0,0,0.75)';
-    el.title = isSelected
-      ? `${text} — clic : profil X · Alt+clic : fiche MCA`
-      : `${text} — clic : profil X`;
+    el.style.textShadow = '0 0 6px rgba(0,0,0,0.85), 0 1px 2px rgba(0,0,0,0.75)';
+    el.title = `${text} — clic : profil X`;
     el.addEventListener('click', (ev) => {
       ev.preventDefault();
       ev.stopPropagation();
-      navigateFromNode(node, ev);
+      navigateFromNode(node);
     });
     labelsEl.appendChild(el);
 
@@ -968,7 +840,6 @@ function rebuildLabels() {
       com: node.com,
       color: labelColor,
       rgb: node.c,
-      isSelected,
       visible: false,
       ox: 0,
       oy: 0,
@@ -1013,28 +884,12 @@ function projectLabels() {
     (a, b) => (b.gephiSize - a.gephiSize) || (b.deg - a.deg)
   );
 
-  // Place selected (MCA) first when highlight is on, then largest hubs
-  let candidates;
-  if (highlightSelected) {
-    const selected = labelItems.filter((it) => it.isSelected);
-    const hubs = bySize.filter((it) => !it.isSelected);
-    const hubBudget = Math.max(
-      0,
-      Math.min(
-        hubs.length,
-        Math.ceil(hubs.length * Math.min(1, Math.max(0.3, (z - 0.3) / 2.2)))
-      )
-    );
-    // All coordinated accounts (same count as the linked table), then a zoom-scaled hub set
-    candidates = [...selected, ...hubs.slice(0, Math.max(hubBudget, Math.min(hubs.length, P.nLabels)))];
-  } else {
-    const maxShow = labelItems.length;
-    const revealN = Math.max(
-      4,
-      Math.min(maxShow, Math.ceil(maxShow * Math.min(1, Math.max(0.3, (z - 0.3) / 2.2))))
-    );
-    candidates = bySize.slice(0, revealN);
-  }
+  const maxShow = labelItems.length;
+  const revealN = Math.max(
+    4,
+    Math.min(maxShow, Math.ceil(maxShow * Math.min(1, Math.max(0.3, (z - 0.3) / 2.2))))
+  );
+  const candidates = bySize.slice(0, revealN);
 
   const placed = [];
 
@@ -1072,29 +927,19 @@ function projectLabels() {
     if (v.z > 1) continue;
     const cx = (v.x * 0.5 + 0.5) * w;
     const cy = (-v.y * 0.5 + 0.5) * h;
-    // Coordinated accounts: keep labels even near the edge; hubs: soft margin cull
-    if (!it.isSelected && (cx < -80 || cx > w + 80 || cy < -80 || cy > h + 80)) continue;
+    if (cx < -80 || cx > w + 80 || cy < -80 || cy > h + 80) continue;
 
     let placedOk = false;
     for (const [ox, oy] of offsets(it.boxW, it.boxH)) {
       const box = labelScreenBox(cx, cy, it.boxW, it.boxH, ox, oy);
-      if (!it.isSelected) {
-        if (box.left < 2 || box.right > w - 2 || box.top < 2 || box.bottom > h - 2) continue;
-        if (placed.some((p) => boxesHit(box, p.box, 8))) continue;
-      } else {
-        // Prefer a free slot among selected, but never drop a coordinated label for overlap
-        if (placed.some((p) => !p.it.isSelected && boxesHit(box, p.box, 8))) continue;
-      }
+      if (box.left < 2 || box.right > w - 2 || box.top < 2 || box.bottom > h - 2) continue;
+      if (placed.some((p) => boxesHit(box, p.box, 8))) continue;
 
       showAt(it, cx, cy, ox, oy, box);
       placedOk = true;
       break;
     }
-    if (!placedOk && it.isSelected) {
-      // Force-show: same count as the MCA table, even if labels overlap
-      const box = labelScreenBox(cx, cy, it.boxW, it.boxH, 0, 0);
-      showAt(it, cx, cy, 0, 0, box);
-    } else if (!placedOk) {
+    if (!placedOk) {
       it.visible = false;
       it.el.style.display = 'none';
     }
@@ -1118,10 +963,6 @@ document.getElementById('linkLight').oninput = (e) => { applyLinkLight(+e.target
 document.getElementById('bloom').oninput = (e) => { bloomPass.strength = +e.target.value; P.bloom = +e.target.value; };
 document.getElementById('op').oninput = (e) => { P.opacity = +e.target.value; applyLinkLight(P.linkLight); };
 document.getElementById('nLabels').oninput = (e) => { P.nLabels = +e.target.value; rebuildLabels(); };
-document.getElementById('hlSelected').onchange = (e) => {
-  highlightSelected = !!e.target.checked;
-  rebuildLabels();
-};
 
 const exportBtn = document.getElementById('exportBtn');
 const exportStatus = document.getElementById('exportStatus');
@@ -1152,19 +993,17 @@ function drawLabelsOnCtx(ctx, w, h, scale) {
   const bySize = [...labelItems].sort(
     (a, b) => (b.gephiSize - a.gephiSize) || (b.deg - a.deg)
   );
-  const candidates = highlightSelected
-    ? [...labelItems.filter((it) => it.isSelected), ...bySize.filter((it) => !it.isSelected)]
-    : bySize;
+  const candidates = bySize;
   const placed = [];
   ctx.textAlign = 'center';
   ctx.textBaseline = 'bottom';
 
   const paint = (it, cx, cy, ox, oy, fontPx, text) => {
-    const weight = it.isSelected ? '700' : (it.t || 0) > 0.7 ? '700' : (it.t || 0) > 0.4 ? '600' : '500';
+    const weight = (it.t || 0) > 0.7 ? '700' : (it.t || 0) > 0.4 ? '600' : '500';
     ctx.font = `${weight} ${fontPx}px "Helvetica Neue", Helvetica, Arial, sans-serif`;
-    ctx.globalAlpha = it.isSelected ? 1 : 0.94;
-    ctx.shadowColor = it.isSelected ? 'rgba(255,210,80,0.95)' : 'rgba(0,0,0,0.85)';
-    ctx.shadowBlur = it.isSelected ? 12 : 6;
+    ctx.globalAlpha = 0.94;
+    ctx.shadowColor = 'rgba(0,0,0,0.85)';
+    ctx.shadowBlur = 6;
     ctx.fillStyle = it.color || rgbCss(it.rgb) || '#ffffff';
     ctx.fillText(text, cx + ox, cy + oy - fontPx * 0.25);
     ctx.shadowBlur = 0;
@@ -1185,20 +1024,13 @@ function drawLabelsOnCtx(ctx, w, h, scale) {
       [boxW * 0.3, -boxH * 0.35], [-boxW * 0.3, -boxH * 0.35],
     ];
 
-    let painted = false;
     for (const [ox, oy] of offs) {
       const box = labelScreenBox(cx, cy, boxW, boxH, ox, oy);
-      if (!it.isSelected) {
-        if (box.left < 2 || box.right > w - 2 || box.top < 2 || box.bottom > h - 2) continue;
-        if (placed.some((p) => boxesHit(box, p, 8))) continue;
-      }
+      if (box.left < 2 || box.right > w - 2 || box.top < 2 || box.bottom > h - 2) continue;
+      if (placed.some((p) => boxesHit(box, p, 8))) continue;
       paint(it, cx, cy, ox, oy, fontPx, text);
       placed.push(box);
-      painted = true;
       break;
-    }
-    if (!painted && it.isSelected) {
-      paint(it, cx, cy, 0, 0, fontPx, text);
     }
   }
   ctx.globalAlpha = 1;
@@ -1398,7 +1230,7 @@ async function loadCorpus(corp) {
   [...tabsEl.querySelectorAll('.tab')].forEach((b) => {
     b.classList.toggle('active', b.dataset.id === corp.id);
   });
-  syncComptesSubTab(corp);
+  syncCorpusSubTabs(corp);
   try {
     let data = graphCache.get(corp.id);
     if (!data) {
@@ -1428,22 +1260,6 @@ async function loadCorpus(corp) {
     // reset hair density defaults before auto-tune in buildGraph
     P.strands = 4;
     P.segments = 18;
-    // Load MCA Track B selected handles for highlight
-    selectedHandles = new Set();
-    try {
-      let sel = selectedCache.get(corp.id);
-      if (!sel) {
-        const su = new URL(`../analyses/mca_track_b/${corp.id}_selected_handles.json`, import.meta.url);
-        const sr = await fetch(su);
-        if (sr.ok) {
-          sel = await sr.json();
-          selectedCache.set(corp.id, sel);
-        }
-      }
-      if (sel?.handles?.length) {
-        selectedHandles = new Set(sel.handles.map((h) => String(h).toLowerCase().replace(/^@/, '')));
-      }
-    } catch (_) { /* optional artifact */ }
     buildGraph(data);
     document.title = `Connectome — ${corp.label}`;
     loading.classList.add('hidden');
@@ -1481,7 +1297,7 @@ function setupTooltip() {
     if (moved) return;
     const node = hitTestNode(ev.clientX, ev.clientY);
     if (!node) return;
-    navigateFromNode(node, ev);
+    navigateFromNode(node);
   });
   renderer.domElement.addEventListener('pointercancel', endPtr);
 
@@ -1495,15 +1311,10 @@ function setupTooltip() {
       return;
     }
     const handle = displayHandle(best.l);
-    const mca = isMcaSelected(best.l);
-    const hint = mca
-      ? `<div class="hint">Clic → profil X · <span class="mca">Alt+clic → fiche MCA</span></div>`
-      : `<div class="hint">Clic → profil X</div>`;
     tip.innerHTML =
       `<strong>${handle}</strong>` +
       `<div class="muted">comm. C${best.com} · deg ${Math.round(best.deg || 0)} · PR ${(best.pr || 0).toExponential(2)}</div>` +
-      (mca ? `<div class="muted" style="color:#c9b27a">MCA Track B · coordonné</div>` : '') +
-      hint;
+      `<div class="hint">Clic → profil X</div>`;
     tip.style.display = 'block';
     tip.style.left = `${Math.min(ev.clientX + 14, innerWidth - 300)}px`;
     tip.style.top = `${Math.min(ev.clientY + 14, innerHeight - 100)}px`;
@@ -1557,7 +1368,7 @@ async function boot() {
     b.addEventListener('click', () => loadCorpus(corp));
     tabsEl.appendChild(b);
   }
-  // Deep-link: ?corpus=ebola (from comptes « Retour au graphe »)
+  // Deep-link: ?corpus=ebola
   const start = resolveCorpus(new URLSearchParams(location.search).get('corpus')) || corpora[0];
   await loadCorpus(start);
 }
