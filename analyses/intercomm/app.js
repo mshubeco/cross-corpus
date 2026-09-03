@@ -72,10 +72,15 @@
     });
     const media = daily.media;
     if (!stacked && media?.counts?.length) {
+      const raw = media.counts;
+      const peak = raw.reduce((m, v) => (v > m ? v : m), 0);
+      const yNorm = peak > 0 ? raw.map((v) => (100 * v) / peak) : raw.map(() => 0);
       const nAcc = media.nAccounts != null ? ` · ${media.nAccounts} comptes` : "";
       traces.push({
         x: daily.dates,
-        y: media.counts,
+        y: yNorm,
+        customdata: raw,
+        yaxis: "y2",
         name: media.label || "Médias traditionnels",
         type: "scatter",
         mode: "lines",
@@ -85,7 +90,7 @@
           dash: "dash",
         },
         fill: "none",
-        hovertemplate: `%{fullData.name}${nAcc}<br>%{x}<br>%{y:,} publications<extra></extra>`,
+        hovertemplate: `%{fullData.name}${nAcc}<br>%{x}<br>%{customdata:,} publications (%{y:.1f} % du pic)<extra></extra>`,
       });
     }
     return traces;
@@ -93,12 +98,29 @@
 
   function plotActivity(el, daily, mode) {
     if (!el || !daily?.series?.length) return;
-    Plotly.newPlot(el, activityTraces(daily, mode), plotlyLayout({
+    const hasMedia = mode === "lines" && daily.media?.counts?.length;
+    const mediaColor = (daily.media && daily.media.color) || "#f5d76e";
+    const layoutExtra = {
       height: 360, legend: { orientation: "h", y: 1.14 },
       hovermode: "x unified",
       xaxis: { gridcolor: "#2a3142" },
       yaxis: { gridcolor: "#2a3142", title: "publications" },
-    }), { responsive: true, displayModeBar: false });
+    };
+    if (hasMedia) {
+      layoutExtra.margin = { t: 28, b: 40, l: 52, r: 58 };
+      layoutExtra.yaxis2 = {
+        title: { text: "médias · % du pic", font: { color: mediaColor } },
+        overlaying: "y",
+        side: "right",
+        range: [0, 105],
+        showgrid: false,
+        zeroline: false,
+        tickfont: { color: mediaColor },
+        ticksuffix: " %",
+      };
+    }
+    Plotly.newPlot(el, activityTraces(daily, mode), plotlyLayout(layoutExtra),
+      { responsive: true, displayModeBar: false });
   }
 
   function bindActivityTabs(daily) {
@@ -107,7 +129,7 @@
     const noteStack = (daily && daily.note) || "Publications des auteurs du cluster";
     const media = daily && daily.media;
     const noteLines = media
-      ? `Courbes par communauté (sans empilement) · ligne pointillée or = médias traditionnels (${media.nAccounts || "?"} enseignes, ${fmt(media.total)} publications).`
+      ? `Courbes par communauté (axe gauche) · ligne or = médias traditionnels, normalisée sur son propre axe (100 % = pic médiatique ; ${media.nAccounts || "?"} enseignes, ${fmt(media.total)} publications).`
       : "Mêmes volumes quotidiens par communauté, en courbes superposées (sans empilement).";
     document.querySelectorAll("#activity-tabs .metric-tab").forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -527,7 +549,7 @@
         <strong>Comment lire cette page</strong>
         <ol>
           <li><strong>Donuts</strong> — part de chaque pôle (top affiché + Autres) en volume de publication, en in/out-strength, et en RT reçus.</li>
-          <li><strong>Activité temporelle</strong> — onglet <em>Aires empilées</em> (part du volume) ou <em>Courbes</em> (niveaux comparables, sans empilement, plus la ligne or des médias traditionnels).</li>
+          <li><strong>Activité temporelle</strong> — onglet <em>Aires empilées</em> (part du volume) ou <em>Courbes</em> (niveaux comparables, sans empilement). La ligne or des médias est normalisée (100 % = son pic) et lit l’axe de droite.</li>
           <li><strong>Graphe circulaire</strong> — flèches = flux croisés (hors interne). Trait plein = RT ≥ 80 %, pointillé = RT ≤ 20 %.</li>
           <li><strong>Sankey</strong> — gauche = communauté <em>source</em> (émettrice), droite = communauté <em>cible</em> (réceptrice). Un ruban interne relie la même communauté des deux côtés.</li>
           <li><strong>Top 5</strong> — comptes par in-strength (ou PageRank), avec treemaps des flux et publications.</li>
