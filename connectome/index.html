@@ -195,7 +195,7 @@
     <div class="row"><span>Bloom</span><input id="bloom" type="range" min="0" max="2.2" step="0.01" value="0.38"></div>
     <div class="row"><span>Opacité</span><input id="op" type="range" min="0" max="0.45" step="0.005" value="0.07"></div>
     <div class="row"><span>Labels</span><input id="nLabels" type="range" min="0" max="80" step="1" value="40"></div>
-    <div class="nav-hint">Clic nœud/label → profil X</div>
+    <div class="nav-hint">Clic nœud/label → profil X · zoom → plus de labels</div>
     <div class="row"><span>Export</span>
       <select id="exportSize">
         <option value="3840x2160">4K · 3840×2160</option>
@@ -301,6 +301,8 @@ controls.target.set(0, 0, 0);
 
 /** Margin around bbox on load (higher = more dezoom). */
 const FIT_PADDING = 1.45;
+/** Zoom at last fit — overview label budget is relative to this. */
+let fitZoom = 1;
 
 function quantileSorted(arr, p) {
   return arr[Math.max(0, Math.min(arr.length - 1, Math.floor(p * (arr.length - 1))))];
@@ -341,6 +343,8 @@ function fitGraphToView(nodes) {
   camera.zoom = Math.max(controls.minZoom, Math.min(controls.maxZoom, zoom));
   camera.updateProjectionMatrix();
   controls.update();
+  fitZoom = camera.zoom;
+  lastLabelCamKey = '';
 }
 
 const composer = new EffectComposer(renderer);
@@ -357,6 +361,132 @@ let lineGeo = null;
 let lineColorsBase = null;
 let graphData = null;
 let labelItems = [];
+let labelItemsBySize = [];
+const _proj = new THREE.Vector3();
+let lastLabelCamKey = '';
+
+/** Overview slider → max candidates kept for zoom-in local labels. */
+function labelPoolCap(nLabels, nNodes) {
+  if (nLabels <= 0 || nNodes <= 0) return 0;
+  return Math.min(nNodes, Math.max(nLabels * 16, 240), 1200);
+}
+
+/** How many labels to attempt at this zoom (overview at fit, full pool ~8×). */
+function labelRevealCount(zoom, fitZ, overviewN, poolN) {
+  if (overviewN <= 0 || poolN <= 0) return 0;
+  const rel = (zoom || 0) / Math.max(fitZ, 1e-6);
+  if (rel < 1) {
+    return Math.max(0, Math.min(poolN, Math.round(overviewN * Math.max(0.4, rel))));
+  }
+  const t = Math.max(0, Math.min(1, Math.log2(rel) / 3));
+  return Math.min(poolN, Math.round(overviewN + (poolN - overviewN) * t));
+}
+
+function overlapPadForZoom(zoom, fitZ) {
+  const rel = (zoom || 0) / Math.max(fitZ, 1e-6);
+  if (rel >= 5) return 3;
+  if (rel >= 2.2) return 5;
+  return 8;
+}
+
+function labelOffsetOptions(bw, bh) {
+  return [
+    [0, 0],
+    [0, -bh * 0.4],
+    [0, bh * 0.5],
+    [bw * 0.4, 0],
+    [-bw * 0.4, 0],
+    [bw * 0.3, -bh * 0.35],
+    [-bw * 0.3, -bh * 0.35],
+    [bw * 0.3, bh * 0.4],
+    [-bw * 0.3, bh * 0.4],
+  ];
+}
+
+function pickLabelPool(nodes, overviewN) {
+  const poolCap = labelPoolCap(overviewN, nodes.length);
+  if (poolCap <= 0) return [];
+
+  const scored = nodes.map((n, i) => ({
+    node: n,
+    i,
+    gephiSize: Math.max(n.s || 1, 1),
+    deg: n.deg || 0,
+    com: n.com ?? -1,
+  }));
+
+  const byCom = new Map();
+  for (const s of scored) {
+    if (!byCom.has(s.com)) byCom.set(s.com, []);
+    byCom.get(s.com).push(s);
+  }
+  const comOrder = [...byCom.values()]
+    .map((arr) => {
+      arr.sort((a, b) => (b.gephiSize - a.gephiSize) || (b.deg - a.deg));
+      return {
+        arr,
+        mass: arr.reduce((sum, n) => sum + n.gephiSize * Math.log1p(n.deg || 1), 0),
+        size: arr.length,
+      };
+    })
+    .sort((a, b) => b.mass - a.mass);
+
+  const picked = new Map();
+  const take = (s) => {
+    if (picked.size >= poolCap) return false;
+    picked.set(s.i, s);
+    return picked.size < poolCap;
+  };
+
+  const mainComs = comOrder.filter((c) => c.size >= 5).slice(0, 120);
+  for (const c of mainComs) {
+    if (c.arr[0] && !take(c.arr[0])) break;
+  }
+
+  const totalMass = mainComs.reduce((sum, c) => sum + c.mass, 0) || 1;
+  for (const c of mainComs) {
+    const quota = Math.min(40, Math.max(2, Math.round(2 + (c.mass / totalMass) * poolCap * 0.5)));
+    for (let k = 0; k < quota && k < c.arr.length; k++) {
+      if (!take(c.arr[k])) break;
+    }
+    if (picked.size >= poolCap) break;
+  }
+
+  if (picked.size < poolCap && nodes.length) {
+    const b = coreBounds(nodes, 0.04, 0.96);
+    const cols = 16;
+    const rows = 16;
+    const dx = (b.maxX - b.minX) || 1;
+    const dy = (b.maxY - b.minY) || 1;
+    const cells = Array.from({ length: cols * rows }, () => []);
+    for (const s of scored) {
+      const n = s.node;
+      if (!inCoreBounds(n, b, 0.1)) continue;
+      let cx = Math.floor(((n.x - b.minX) / dx) * cols);
+      let cy = Math.floor(((n.y - b.minY) / dy) * rows);
+      cx = Math.max(0, Math.min(cols - 1, cx));
+      cy = Math.max(0, Math.min(rows - 1, cy));
+      cells[cy * cols + cx].push(s);
+    }
+    for (const cell of cells) {
+      cell.sort((a, b) => (b.gephiSize - a.gephiSize) || (b.deg - a.deg));
+      const per = cell.length > 80 ? 4 : 2;
+      for (let k = 0; k < per && k < cell.length; k++) {
+        if (!take(cell[k])) break;
+      }
+      if (picked.size >= poolCap) break;
+    }
+  }
+
+  if (picked.size < poolCap) {
+    const glob = [...scored].sort((a, b) => (b.gephiSize - a.gephiSize) || (b.deg - a.deg));
+    for (const s of glob) {
+      if (!take(s)) break;
+    }
+  }
+
+  return [...picked.values()];
+}
 
 function lift(rgb, mul = 1.15) {
   // keep colors vivid but not neon-blown / white-core
@@ -733,87 +863,39 @@ function buildGraph(data) {
 function rebuildLabels() {
   labelsEl.innerHTML = '';
   labelItems = [];
+  labelItemsBySize = [];
+  lastLabelCamKey = '';
   if (!graphData) return;
 
-  // Gephi Preview "Proportional size" → label size tracks viz:size (field `s`)
-  const scored = graphData.nodes.map((n, i) => ({
-    ...n,
-    i,
-    gephiSize: Math.max(n.s || 1, 1),
-  }));
+  const pool = pickLabelPool(graphData.nodes, P.nLabels);
+  if (!pool.length) return;
 
-  const byCom = new Map();
-  for (const n of scored) {
-    const c = n.com ?? -1;
-    if (!byCom.has(c)) byCom.set(c, []);
-    byCom.get(c).push(n);
-  }
-
-  const comOrder = [...byCom.entries()]
-    .map(([com, arr]) => ({
-      com,
-      arr: arr.sort((a, b) => (b.gephiSize - a.gephiSize) || (b.deg - a.deg)),
-      mass: arr.reduce((s, n) => s + n.gephiSize * Math.log1p(n.deg || 1), 0),
-      size: arr.length,
-    }))
-    .sort((a, b) => b.mass - a.mass);
-
-  const budget = P.nLabels;
-  const picked = new Map();
-  const mainComs = comOrder.filter((c) => c.size >= 40).slice(0, 28);
-
-  for (const c of mainComs) {
-    if (c.arr[0]) picked.set(c.arr[0].i, c.arr[0]);
-  }
-
-  const totalMass = mainComs.reduce((s, c) => s + c.mass, 0) || 1;
-  for (const c of mainComs) {
-    const quota = Math.min(4, Math.max(1, Math.round(1 + (c.mass / totalMass) * 10)));
-    for (let k = 0; k < quota && k < c.arr.length; k++) {
-      if (picked.size >= budget) break;
-      picked.set(c.arr[k].i, c.arr[k]);
-    }
-    if (picked.size >= budget) break;
-  }
-
-  if (picked.size < budget) {
-    for (const n of [...scored].sort((a, b) => (b.gephiSize - a.gephiSize) || (b.deg - a.deg))) {
-      if (picked.size >= budget) break;
-      picked.set(n.i, n);
-    }
-  }
-
-  const ranked = [...picked.values()].sort(
-    (a, b) => (b.gephiSize - a.gephiSize) || (b.deg - a.deg)
-  );
-  if (!ranked.length) return;
-
-  // Strong Gephi-like contrast: font ∝ viz:size^1.35 (range ~8px → ~52px)
-  const sMin = minOf(ranked, (n) => n.gephiSize, 1);
-  const sMax = maxOf(ranked, (n) => n.gephiSize, 1);
+  // Strong Gephi-like contrast: font ∝ viz:size (range ~7px → ~39px)
+  const sMin = minOf(pool, (n) => n.gephiSize, 1);
+  const sMax = maxOf(pool, (n) => n.gephiSize, 1);
   const sSpan = Math.max(sMax - sMin, 1e-6);
 
-  const ordered = [...ranked].sort((a, b) => a.gephiSize - b.gephiSize);
+  const ordered = [...pool].sort((a, b) => a.gephiSize - b.gephiSize);
 
-  for (const node of ordered) {
+  for (const item of ordered) {
+    const node = item.node;
     const el = document.createElement('div');
     el.className = 'label';
-    // Match Gephi labels (@handle)
-    const text = node.l.startsWith('@') ? node.l : `@${node.l}`;
+    const raw = node.l || '';
+    const text = raw.startsWith('@') ? raw : `@${raw}`;
     el.textContent = text;
 
-    // Normalize then power-curve amplify tops (like Gephi ranking spline feel)
-    const u = (node.gephiSize - sMin) / sSpan; // 0‥1
-    const t = Math.pow(u, 0.7); // keep mid visible, stretch top
-    // Also bake absolute size so s=6 >> s=2 even within set
-    const abs = Math.pow(node.gephiSize / sMax, 1.25);
+    const u = (item.gephiSize - sMin) / sSpan;
+    const t = Math.pow(u, 0.7);
+    const abs = Math.pow(item.gephiSize / sMax, 1.25);
     const mix = 0.45 * t + 0.55 * abs;
-    const fontPx = Math.round(7 + 32 * mix); // ~7 → 39 (un peu plus petit)
+    const fontPx = Math.round(7 + 32 * mix);
 
     el.style.fontSize = `${fontPx}px`;
     el.style.fontWeight = mix > 0.7 ? '700' : mix > 0.4 ? '600' : '500';
     el.style.zIndex = String(Math.round(10 + 90 * mix));
     el.style.opacity = '0.94';
+    el.style.display = 'none';
     const labelColor = rgbCss(node.c);
     el.style.color = labelColor;
     el.style.textShadow = '0 0 6px rgba(0,0,0,0.85), 0 1px 2px rgba(0,0,0,0.75)';
@@ -831,13 +913,13 @@ function rebuildLabels() {
       x: node.x,
       y: node.y,
       pr: node.pr,
-      deg: node.deg || 0,
-      gephiSize: node.gephiSize,
+      deg: item.deg,
+      gephiSize: item.gephiSize,
       fontPx,
       t: mix,
       boxW: Math.max(28, text.length * fontPx * 0.55 + 12),
       boxH: fontPx * 1.35,
-      com: node.com,
+      com: item.com,
       color: labelColor,
       rgb: node.c,
       visible: false,
@@ -846,16 +928,9 @@ function rebuildLabels() {
     });
   }
 
-  // Refine box sizes from real DOM metrics (better anti-overlap)
-  requestAnimationFrame(() => {
-    for (const it of labelItems) {
-      const r = it.el.getBoundingClientRect();
-      if (r.width > 0) {
-        it.boxW = r.width + 6;
-        it.boxH = r.height + 4;
-      }
-    }
-  });
+  labelItemsBySize = [...labelItems].sort(
+    (a, b) => (b.gephiSize - a.gephiSize) || (b.deg - a.deg)
+  );
 }
 
 function labelScreenBox(cx, cy, boxW, boxH, ox, oy) {
@@ -875,71 +950,62 @@ function boxesHit(a, b, pad = 6) {
   );
 }
 
-function projectLabels() {
-  const w = innerWidth;
-  const h = innerHeight;
+function layoutVisibleLabels(w, h) {
   const z = camera.zoom || 1;
+  const budget = labelRevealCount(z, fitZoom, P.nLabels, labelItems.length);
+  if (budget <= 0 || !labelItemsBySize.length) return [];
 
-  const bySize = [...labelItems].sort(
-    (a, b) => (b.gephiSize - a.gephiSize) || (b.deg - a.deg)
-  );
-
-  const maxShow = labelItems.length;
-  const revealN = Math.max(
-    4,
-    Math.min(maxShow, Math.ceil(maxShow * Math.min(1, Math.max(0.3, (z - 0.3) / 2.2))))
-  );
-  const candidates = bySize.slice(0, revealN);
-
-  const placed = [];
-
-  for (const it of labelItems) {
-    it.visible = false;
-    it.el.style.display = 'none';
+  const hitPad = overlapPadForZoom(z, fitZoom);
+  const inView = [];
+  for (const it of labelItemsBySize) {
+    _proj.set(it.x, it.y, 0).project(camera);
+    if (_proj.z > 1) continue;
+    const cx = (_proj.x * 0.5 + 0.5) * w;
+    const cy = (-_proj.y * 0.5 + 0.5) * h;
+    if (cx < -80 || cx > w + 80 || cy < -80 || cy > h + 80) continue;
+    inView.push({ it, cx, cy });
   }
 
-  const offsets = (bw, bh) => [
-    [0, 0],
-    [0, -bh * 0.4],
-    [0, bh * 0.5],
-    [bw * 0.4, 0],
-    [-bw * 0.4, 0],
-    [bw * 0.3, -bh * 0.35],
-    [-bw * 0.3, -bh * 0.35],
-    [bw * 0.3, bh * 0.4],
-    [-bw * 0.3, bh * 0.4],
-  ];
-
-  const showAt = (it, cx, cy, ox, oy, box) => {
-    it.visible = true;
-    it.ox = ox;
-    it.oy = oy;
-    it.sx = cx + ox;
-    it.sy = cy + oy;
-    it.el.style.display = 'block';
-    it.el.style.left = `${it.sx}px`;
-    it.el.style.top = `${it.sy}px`;
-    placed.push({ box, it });
-  };
-
-  for (const it of candidates) {
-    const v = new THREE.Vector3(it.x, it.y, 0).project(camera);
-    if (v.z > 1) continue;
-    const cx = (v.x * 0.5 + 0.5) * w;
-    const cy = (-v.y * 0.5 + 0.5) * h;
-    if (cx < -80 || cx > w + 80 || cy < -80 || cy > h + 80) continue;
-
-    let placedOk = false;
-    for (const [ox, oy] of offsets(it.boxW, it.boxH)) {
+  const placed = [];
+  const boxes = [];
+  for (const { it, cx, cy } of inView) {
+    if (placed.length >= budget) break;
+    for (const [ox, oy] of labelOffsetOptions(it.boxW, it.boxH)) {
       const box = labelScreenBox(cx, cy, it.boxW, it.boxH, ox, oy);
-      if (box.left < 2 || box.right > w - 2 || box.top < 2 || box.bottom > h - 2) continue;
-      if (placed.some((p) => boxesHit(box, p.box, 8))) continue;
-
-      showAt(it, cx, cy, ox, oy, box);
-      placedOk = true;
+      if (box.right < 4 || box.left > w - 4 || box.bottom < 4 || box.top > h - 4) continue;
+      if (boxes.some((b) => boxesHit(box, b, hitPad))) continue;
+      placed.push({ it, cx, cy, ox, oy, box });
+      boxes.push(box);
       break;
     }
-    if (!placedOk) {
+  }
+  return placed;
+}
+
+function labelCamKey() {
+  return `${(camera.zoom || 0).toFixed(5)}|${camera.position.x.toFixed(2)}|${camera.position.y.toFixed(2)}|${innerWidth}|${innerHeight}|${P.nLabels}`;
+}
+
+function projectLabels() {
+  if (!labelItems.length) return;
+  const key = labelCamKey();
+  if (key === lastLabelCamKey) return;
+  lastLabelCamKey = key;
+
+  const placed = layoutVisibleLabels(innerWidth, innerHeight);
+  const shown = new Set(placed.map((p) => p.it));
+
+  for (const p of placed) {
+    const it = p.it;
+    it.visible = true;
+    it.ox = p.ox;
+    it.oy = p.oy;
+    it.el.style.display = 'block';
+    it.el.style.left = `${p.cx + p.ox}px`;
+    it.el.style.top = `${p.cy + p.oy}px`;
+  }
+  for (const it of labelItems) {
+    if (!shown.has(it) && it.visible) {
       it.visible = false;
       it.el.style.display = 'none';
     }
@@ -989,11 +1055,11 @@ function maxGpuSize() {
 }
 
 function drawLabelsOnCtx(ctx, w, h, scale) {
-  if (!labelItems.length) return;
-  const bySize = [...labelItems].sort(
-    (a, b) => (b.gephiSize - a.gephiSize) || (b.deg - a.deg)
-  );
-  const candidates = bySize;
+  if (!labelItemsBySize.length) return;
+  const z = camera.zoom || 1;
+  const budget = labelRevealCount(z, fitZoom, P.nLabels, labelItemsBySize.length);
+  if (budget <= 0) return;
+  const hitPad = overlapPadForZoom(z, fitZoom);
   const placed = [];
   ctx.textAlign = 'center';
   ctx.textBaseline = 'bottom';
@@ -1009,27 +1075,26 @@ function drawLabelsOnCtx(ctx, w, h, scale) {
     ctx.shadowBlur = 0;
   };
 
-  for (const it of candidates) {
-    const v = new THREE.Vector3(it.x, it.y, 0).project(camera);
-    if (v.z > 1) continue;
-    const cx = (v.x * 0.5 + 0.5) * w;
-    const cy = (-v.y * 0.5 + 0.5) * h;
+  let shown = 0;
+  for (const it of labelItemsBySize) {
+    if (shown >= budget) break;
+    _proj.set(it.x, it.y, 0).project(camera);
+    if (_proj.z > 1) continue;
+    const cx = (_proj.x * 0.5 + 0.5) * w;
+    const cy = (-_proj.y * 0.5 + 0.5) * h;
+    if (cx < -80 || cx > w + 80 || cy < -80 || cy > h + 80) continue;
     const fontPx = Math.max(10, Math.round((it.fontPx || 12) * scale));
     const text = it.text || it.el.textContent;
     const boxW = Math.max(28, text.length * fontPx * 0.55 + 12);
     const boxH = fontPx * 1.35;
-    const offs = [
-      [0, 0], [0, -boxH * 0.4], [0, boxH * 0.5],
-      [boxW * 0.4, 0], [-boxW * 0.4, 0],
-      [boxW * 0.3, -boxH * 0.35], [-boxW * 0.3, -boxH * 0.35],
-    ];
 
-    for (const [ox, oy] of offs) {
+    for (const [ox, oy] of labelOffsetOptions(boxW, boxH)) {
       const box = labelScreenBox(cx, cy, boxW, boxH, ox, oy);
-      if (box.left < 2 || box.right > w - 2 || box.top < 2 || box.bottom > h - 2) continue;
-      if (placed.some((p) => boxesHit(box, p, 8))) continue;
+      if (box.right < 4 || box.left > w - 4 || box.bottom < 4 || box.top > h - 4) continue;
+      if (placed.some((p) => boxesHit(box, p, hitPad))) continue;
       paint(it, cx, cy, ox, oy, fontPx, text);
       placed.push(box);
+      shown++;
       break;
     }
   }

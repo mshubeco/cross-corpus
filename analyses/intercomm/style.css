@@ -110,6 +110,7 @@ a.handle:hover, a.link:hover { text-decoration: underline; }
   background: var(--surface2); color: var(--muted); font: inherit; font-size: 0.75rem;
 }
 .metric-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.viz-box .metric-tabs { margin: 2px 0 8px; }
 .comm-foot { font-size: 0.72rem; color: var(--muted); margin-top: 6px; }
 .acct-pct { color: var(--muted); font-size: 0.72rem; margin-left: 4px; }
 details.acct-item { margin: 4px 0 6px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface2); }

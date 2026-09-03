@@ -54,20 +54,51 @@
     { responsive: true, displayModeBar: false });
   }
 
-  function plotActivity(el, daily) {
+  function activityTraces(daily, mode) {
+    const stacked = mode !== "lines";
+    return daily.series.map((s) => {
+      const t = {
+        x: daily.dates,
+        y: s.counts,
+        name: s.hub ? `@${s.hub}` : s.label,
+        type: "scatter",
+        mode: "lines",
+        line: { color: s.color, width: s.communityId === -1 ? 1.2 : 2.2 },
+        hovertemplate: "%{fullData.name}<br>%{x}<br>%{y:,} publications<extra></extra>",
+      };
+      if (stacked) t.stackgroup = "one";
+      else t.fill = "none";
+      return t;
+    });
+  }
+
+  function plotActivity(el, daily, mode) {
     if (!el || !daily?.series?.length) return;
-    const traces = daily.series.map((s) => ({
-      x: daily.dates, y: s.counts,
-      name: s.hub ? `@${s.hub}` : s.label,
-      type: "scatter", mode: "lines",
-      line: { color: s.color, width: s.communityId === -1 ? 1.2 : 2.2 },
-      stackgroup: "one",
-    }));
-    Plotly.newPlot(el, traces, plotlyLayout({
+    Plotly.newPlot(el, activityTraces(daily, mode), plotlyLayout({
       height: 360, legend: { orientation: "h", y: 1.14 },
+      hovermode: "x unified",
       xaxis: { gridcolor: "#2a3142" },
       yaxis: { gridcolor: "#2a3142", title: "publications" },
     }), { responsive: true, displayModeBar: false });
+  }
+
+  function bindActivityTabs(daily) {
+    const el = document.getElementById("activity");
+    const hint = document.getElementById("activity-hint");
+    const noteStack = (daily && daily.note) || "Publications des auteurs du cluster";
+    const noteLines = "Mêmes volumes quotidiens par communauté, en courbes superposées (sans empilement).";
+    document.querySelectorAll("#activity-tabs .metric-tab").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const mode = btn.dataset.activity === "lines" ? "lines" : "stack";
+        document.querySelectorAll("#activity-tabs .metric-tab").forEach((b) => {
+          const on = b === btn;
+          b.classList.toggle("active", on);
+          b.setAttribute("aria-selected", on ? "true" : "false");
+        });
+        if (hint) hint.textContent = mode === "lines" ? noteLines : noteStack;
+        plotActivity(el, daily, mode);
+      });
+    });
   }
 
   function plotEngagement(el, ph) {
@@ -474,6 +505,7 @@
         <strong>Comment lire cette page</strong>
         <ol>
           <li><strong>Donuts</strong> — part de chaque pôle (top affiché + Autres) en volume de publication, en in/out-strength, et en RT reçus.</li>
+          <li><strong>Activité temporelle</strong> — onglet <em>Aires empilées</em> (part du volume) ou <em>Courbes</em> (niveaux comparables, sans empilement).</li>
           <li><strong>Graphe circulaire</strong> — flèches = flux croisés (hors interne). Trait plein = RT ≥ 80 %, pointillé = RT ≤ 20 %.</li>
           <li><strong>Sankey</strong> — gauche = communauté <em>source</em> (émettrice), droite = communauté <em>cible</em> (réceptrice). Un ruban interne relie la même communauté des deux côtés.</li>
           <li><strong>Top 5</strong> — comptes par in-strength (ou PageRank), avec treemaps des flux et publications.</li>
@@ -502,7 +534,11 @@
       </div>
       <div class="viz-box">
         <div class="viz-title">Activité temporelle par communauté</div>
-        <p class="hint">${esc((ph.dailyActivity || {}).note || "Publications des auteurs du cluster")}</p>
+        <div class="metric-tabs" id="activity-tabs" role="tablist" aria-label="Mode du graphe d’activité">
+          <button type="button" class="metric-tab active" role="tab" aria-selected="true" data-activity="stack">Aires empilées</button>
+          <button type="button" class="metric-tab" role="tab" aria-selected="false" data-activity="lines">Courbes</button>
+        </div>
+        <p class="hint" id="activity-hint">${esc((ph.dailyActivity || {}).note || "Publications des auteurs du cluster")}</p>
         <div id="activity" class="activity-chart"></div>
       </div>
       <div class="heatmap-duo">
@@ -599,7 +635,8 @@
       plotDonut(document.getElementById("donut-out"), gd.outStrength, "Out-strength");
       plotDonut(document.getElementById("donut-rt"), gd.rtReceived, "RT reçus");
       plotVolume(document.getElementById("volume"), ph.volumeDaily);
-      plotActivity(document.getElementById("activity"), ph.dailyActivity);
+      plotActivity(document.getElementById("activity"), ph.dailyActivity, "stack");
+      bindActivityTabs(ph.dailyActivity);
       plotEngagement(document.getElementById("eng"), ph);
       plotLikes(document.getElementById("likes"), ph);
       plotConcentration(document.getElementById("conc"), ph);

@@ -318,6 +318,7 @@
     let active = null;
     let W, H, dpr;
     let cam = { x: 0, y: 0, k: 1 };
+    let fitK = 1;
     let drag = null;
     let bound = false;
     const P = { linkLight: 0.65, edgeOp: 0.35, nLabels: 40 };
@@ -338,10 +339,29 @@
       };
     }
 
+    function labelPoolCap(nLabels, nNodes) {
+      if (nLabels <= 0 || nNodes <= 0) return 0;
+      return Math.min(nNodes, Math.max(nLabels * 16, 180), 900);
+    }
+    function labelRevealCount(zoom, fitZ, overviewN, poolN) {
+      if (overviewN <= 0 || poolN <= 0) return 0;
+      const rel = (zoom || 0) / Math.max(fitZ, 1e-6);
+      if (rel < 1) {
+        return Math.max(0, Math.min(poolN, Math.round(overviewN * Math.max(0.4, rel))));
+      }
+      const t = Math.max(0, Math.min(1, Math.log2(rel) / 3));
+      return Math.min(poolN, Math.round(overviewN + (poolN - overviewN) * t));
+    }
+
     function pickLabelNodes(nodes, budget, mode) {
       if (budget <= 0 || !nodes.length) return [];
       const scored = nodes.map((n, i) => ({ ...n, i, gephiSize: Math.max(degOf(n), 1) }));
       const picked = new Map();
+      const take = (n) => {
+        if (picked.size >= budget) return false;
+        picked.set(n.i, n);
+        return picked.size < budget;
+      };
       if (mode === "communities") {
         const byCom = new Map();
         for (const n of scored) {
@@ -357,24 +377,44 @@
             size: arr.length,
           }))
           .sort((a, b) => b.mass - a.mass);
-        const mainComs = comOrder.filter((c) => c.size >= 20).slice(0, 24);
+        const mainComs = comOrder.filter((c) => c.size >= 8).slice(0, 80);
         for (const c of mainComs) {
-          if (c.arr[0]) picked.set(c.arr[0].i, c.arr[0]);
+          if (c.arr[0] && !take(c.arr[0])) break;
         }
         const totalMass = mainComs.reduce((s, c) => s + c.mass, 0) || 1;
         for (const c of mainComs) {
-          const quota = Math.min(4, Math.max(1, Math.round(1 + (c.mass / totalMass) * 10)));
+          const quota = Math.min(24, Math.max(2, Math.round(2 + (c.mass / totalMass) * budget * 0.5)));
           for (let k = 0; k < quota && k < c.arr.length; k++) {
-            if (picked.size >= budget) break;
-            picked.set(c.arr[k].i, c.arr[k]);
+            if (!take(c.arr[k])) break;
+          }
+          if (picked.size >= budget) break;
+        }
+      }
+      if (picked.size < budget) {
+        const b = coreBounds(nodes, 0.04, 0.96);
+        const cols = 14, rows = 14;
+        const dx = (b.maxX - b.minX) || 1;
+        const dy = (b.maxY - b.minY) || 1;
+        const cells = Array.from({ length: cols * rows }, () => []);
+        for (const n of scored) {
+          let cx = Math.floor(((n.x - b.minX) / dx) * cols);
+          let cy = Math.floor(((n.y - b.minY) / dy) * rows);
+          cx = Math.max(0, Math.min(cols - 1, cx));
+          cy = Math.max(0, Math.min(rows - 1, cy));
+          cells[cy * cols + cx].push(n);
+        }
+        for (const cell of cells) {
+          cell.sort((a, b) => degOf(b) - degOf(a));
+          const per = cell.length > 60 ? 3 : 2;
+          for (let k = 0; k < per && k < cell.length; k++) {
+            if (!take(cell[k])) break;
           }
           if (picked.size >= budget) break;
         }
       }
       if (picked.size < budget) {
         for (const n of [...scored].sort((a, b) => degOf(b) - degOf(a))) {
-          if (picked.size >= budget) break;
-          picked.set(n.i, n);
+          if (!take(n)) break;
         }
       }
       return [...picked.values()].sort((a, b) => degOf(a) - degOf(b));
@@ -385,7 +425,7 @@
       if (!g) return;
       const nodes = g.data.nodes || [];
       const mode = g.opts.legendMode === "presence" ? "degree" : "communities";
-      g.labelNodes = pickLabelNodes(nodes, P.nLabels, mode);
+      g.labelNodes = pickLabelNodes(nodes, labelPoolCap(P.nLabels, nodes.length), mode);
     }
 
     function fit(nodes) {
@@ -403,6 +443,7 @@
       cam.k = Math.min(sx, sy);
       cam.x = W / 2 - cam.k * cx;
       cam.y = H / 2 - cam.k * cy;
+      fitK = cam.k;
     }
 
     function metaText(G) {
@@ -514,15 +555,21 @@
     function drawLabels(degMax) {
       const ranked = graphs[active].labelNodes || [];
       if (!ranked.length) return;
+      const budget = labelRevealCount(cam.k, fitK, P.nLabels, ranked.length);
+      if (budget <= 0) return;
       ctx.save();
       ctx.globalCompositeOperation = "source-over";
       ctx.textAlign = "center";
       ctx.textBaseline = "bottom";
       ctx.shadowBlur = 0;
       const occupied = [];
+      const pad = cam.k / Math.max(fitK, 1e-6) >= 2.2 ? 2 : 4;
       const topDesc = [...ranked].sort((a, b) => degOf(b) - degOf(a));
+      let shown = 0;
       for (const n of topDesc) {
+        if (shown >= budget) break;
         const p = toScreen(n);
+        if (p.x < -40 || p.x > W + 40 || p.y < -40 || p.y > H + 40) continue;
         const px = labelPx(n, degMax, ranked);
         const label = "@" + n.id;
         ctx.font = `600 ${px}px "Helvetica Neue", Helvetica, Arial, sans-serif`;
@@ -530,8 +577,10 @@
         const th = px + 6;
         const ly = p.y - nodeDotR(n, degMax) - 4;
         const box = { x: p.x - tw / 2, y: ly - th, w: tw, h: th };
-        if (occupied.some(o => box.x < o.x + o.w && box.x + box.w > o.x && box.y < o.y + o.h && box.y + box.h > o.y)) continue;
+        if (box.x + box.w < 0 || box.x > W || box.y + box.h < 0 || box.y > H) continue;
+        if (occupied.some(o => box.x < o.x + o.w + pad && box.x + box.w + pad > o.x && box.y < o.y + o.h + pad && box.y + box.h + pad > o.y)) continue;
         occupied.push(box);
+        shown++;
         const [cr, cg, cb] = n.c || [220, 220, 230];
         ctx.lineWidth = 3;
         ctx.strokeStyle = "rgba(0,0,0,0.85)";
