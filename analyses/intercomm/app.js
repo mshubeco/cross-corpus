@@ -56,7 +56,7 @@
 
   function activityTraces(daily, mode) {
     const stacked = mode !== "lines";
-    return daily.series.map((s) => {
+    const traces = daily.series.map((s) => {
       const t = {
         x: daily.dates,
         y: s.counts,
@@ -70,6 +70,25 @@
       else t.fill = "none";
       return t;
     });
+    const media = daily.media;
+    if (!stacked && media?.counts?.length) {
+      const nAcc = media.nAccounts != null ? ` · ${media.nAccounts} comptes` : "";
+      traces.push({
+        x: daily.dates,
+        y: media.counts,
+        name: media.label || "Médias traditionnels",
+        type: "scatter",
+        mode: "lines",
+        line: {
+          color: media.color || "#f5d76e",
+          width: 3.4,
+          dash: "dash",
+        },
+        fill: "none",
+        hovertemplate: `%{fullData.name}${nAcc}<br>%{x}<br>%{y:,} publications<extra></extra>`,
+      });
+    }
+    return traces;
   }
 
   function plotActivity(el, daily, mode) {
@@ -86,7 +105,10 @@
     const el = document.getElementById("activity");
     const hint = document.getElementById("activity-hint");
     const noteStack = (daily && daily.note) || "Publications des auteurs du cluster";
-    const noteLines = "Mêmes volumes quotidiens par communauté, en courbes superposées (sans empilement).";
+    const media = daily && daily.media;
+    const noteLines = media
+      ? `Courbes par communauté (sans empilement) · ligne pointillée or = médias traditionnels (${media.nAccounts || "?"} enseignes, ${fmt(media.total)} publications).`
+      : "Mêmes volumes quotidiens par communauté, en courbes superposées (sans empilement).";
     document.querySelectorAll("#activity-tabs .metric-tab").forEach((btn) => {
       btn.addEventListener("click", () => {
         const mode = btn.dataset.activity === "lines" ? "lines" : "stack";
@@ -505,7 +527,7 @@
         <strong>Comment lire cette page</strong>
         <ol>
           <li><strong>Donuts</strong> — part de chaque pôle (top affiché + Autres) en volume de publication, en in/out-strength, et en RT reçus.</li>
-          <li><strong>Activité temporelle</strong> — onglet <em>Aires empilées</em> (part du volume) ou <em>Courbes</em> (niveaux comparables, sans empilement).</li>
+          <li><strong>Activité temporelle</strong> — onglet <em>Aires empilées</em> (part du volume) ou <em>Courbes</em> (niveaux comparables, sans empilement, plus la ligne or des médias traditionnels).</li>
           <li><strong>Graphe circulaire</strong> — flèches = flux croisés (hors interne). Trait plein = RT ≥ 80 %, pointillé = RT ≤ 20 %.</li>
           <li><strong>Sankey</strong> — gauche = communauté <em>source</em> (émettrice), droite = communauté <em>cible</em> (réceptrice). Un ruban interne relie la même communauté des deux côtés.</li>
           <li><strong>Top 5</strong> — comptes par in-strength (ou PageRank), avec treemaps des flux et publications.</li>
