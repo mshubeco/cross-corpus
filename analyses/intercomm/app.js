@@ -3,6 +3,7 @@
   const CORPUS = window.INTERCOMM_CORPUS;
   const CORPORA = [
     { id: "ebola", label: "Ebola" },
+    { id: "ebola_2_2026", label: "Ebola 2 · 2026" },
     { id: "hantavirus", label: "Hantavirus" },
     { id: "mpox", label: "Mpox" },
     { id: "macron_nucleaire", label: "Macron nucléaire" },
@@ -41,6 +42,28 @@
       showlegend: true,
       legend: { orientation: "h", y: -0.06, font: { size: 10 } },
       height: 310,
+    }), { responsive: true, displayModeBar: false });
+  }
+
+  function plotCommunityTreemap(el, metric) {
+    if (!el || !metric?.slices?.length) return;
+    const slices = metric.slices.filter((s) => s.value > 0);
+    Plotly.newPlot(el, [{
+      type: "treemap",
+      labels: slices.map((s) => (s.hub ? `@${s.hub}` : s.label)),
+      parents: slices.map(() => ""),
+      values: slices.map((s) => s.value),
+      marker: {
+        colors: slices.map((s) => s.color),
+        line: { color: "#0f1117", width: 1.5 },
+      },
+      textinfo: "label+percent root",
+      textfont: { size: 12, color: "#fff" },
+      hovertemplate: "%{label}<br>%{value:,} " + (metric.unit || "") + "<br>%{percentRoot}<extra></extra>",
+      tiling: { pad: 3 },
+    }], plotlyLayout({
+      height: 420,
+      margin: { t: 8, b: 8, l: 8, r: 8 },
     }), { responsive: true, displayModeBar: false });
   }
 
@@ -511,6 +534,22 @@
     return `<table class="heatmap-table"><thead><tr><th></th>${head}</tr></thead><tbody>${body}</tbody></table>`;
   }
 
+  function treemapSection(ph) {
+    const tms = ph.communityTreemaps;
+    const metrics = (tms && tms.metrics) || [];
+    if (!metrics.length) return "";
+    const cards = metrics.map((m) => `
+      <div class="viz-box">
+        <div class="viz-title">${esc(m.title)} · ${fmt(m.total)} ${esc(m.unit || "")}</div>
+        <p class="hint">${esc(m.definition || "")}</p>
+        <div id="treemap-${esc(m.id)}" class="community-treemap"></div>
+      </div>`).join("");
+    return `
+      <h2>Treemaps des communautés</h2>
+      <p class="hint">${esc(tms.note || "")}</p>
+      <div class="treemap-grid">${cards}</div>`;
+  }
+
   function flowsHtml(ph) {
     const edges = (ph.edges || []).slice(0, 30);
     if (!edges.length) return `<p class="hint">Aucun flux intercommunautaire (hors diagonale interne).</p>`;
@@ -549,6 +588,7 @@
         <strong>Comment lire cette page</strong>
         <ol>
           <li><strong>Donuts</strong> — part de chaque pôle (top affiché + Autres) en volume de publication, en in/out-strength, et en RT reçus.</li>
+          <li><strong>Treemaps</strong> — mêmes communautés, taille = volume, degré pondéré (in + out) ou engagement hors retweet. Le bloc Autres regroupe la longue traîne.</li>
           <li><strong>Activité temporelle</strong> — onglet <em>Aires empilées</em> (part du volume) ou <em>Courbes</em> (niveaux comparables, sans empilement). La ligne or des médias est normalisée (100 % = son pic) et lit l’axe de droite.</li>
           <li><strong>Graphe circulaire</strong> — flèches = flux croisés (hors interne). Trait plein = RT ≥ 80 %, pointillé = RT ≤ 20 %.</li>
           <li><strong>Sankey</strong> — gauche = communauté <em>source</em> (émettrice), droite = communauté <em>cible</em> (réceptrice). Un ruban interne relie la même communauté des deux côtés.</li>
@@ -572,6 +612,7 @@
         <div class="viz-box"><div id="donut-out"></div></div>
         <div class="viz-box"><div id="donut-rt"></div></div>
       </div>
+      ${treemapSection(ph)}
       <div class="viz-box">
         <div class="viz-title">Volume quotidien · corpus entier</div>
         <div id="volume" class="volume-full-chart"></div>
@@ -678,6 +719,9 @@
       plotDonut(document.getElementById("donut-in"), gd.inStrength, "In-strength");
       plotDonut(document.getElementById("donut-out"), gd.outStrength, "Out-strength");
       plotDonut(document.getElementById("donut-rt"), gd.rtReceived, "RT reçus");
+      ((ph.communityTreemaps || {}).metrics || []).forEach((m) => {
+        plotCommunityTreemap(document.getElementById(`treemap-${m.id}`), m);
+      });
       plotVolume(document.getElementById("volume"), ph.volumeDaily);
       plotActivity(document.getElementById("activity"), ph.dailyActivity, "stack");
       bindActivityTabs(ph.dailyActivity);

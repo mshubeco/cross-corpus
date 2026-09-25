@@ -32,6 +32,9 @@ h2 { font-size: 1.05rem; font-weight: 600; margin: 0 0 8px; }
 .main-grid { display: grid; grid-template-columns: minmax(480px, 48%) 1fr; gap: 16px; align-items: start; }
 @media (max-width: 1100px) { .main-grid { grid-template-columns: 1fr; } }
 .donut-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-bottom: 8px; }
+.treemap-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 8px; }
+@media (max-width: 1100px) { .treemap-grid { grid-template-columns: 1fr; } }
+.community-treemap { min-height: 420px; }
 .heatmap-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 @media (max-width: 900px) { .heatmap-duo { grid-template-columns: 1fr; } }
 .activity-chart { min-height: 320px; }
