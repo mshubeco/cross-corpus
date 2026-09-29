@@ -20,50 +20,58 @@
     }
     .label:hover { filter: brightness(1.15); }
     #corpusNav {
-      position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 6;
-      display: flex; flex-direction: column; gap: 0;
-      max-width: min(920px, calc(100vw - 560px));
-      background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 10px; overflow: hidden;
+      position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 6;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      width: max-content; max-width: calc(100vw - 600px);
+      background: transparent; border: 0; overflow: visible;
     }
     #tabs {
-      display: flex; gap: 4px; flex-wrap: wrap; justify-content: center;
-      padding: 6px;
+      display: flex; gap: 2px; flex-wrap: wrap; justify-content: center;
+      padding: 3px;
+      background: rgba(8,10,14,0.78);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 999px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
     }
     .tab {
-      border: 0; background: transparent; color: #8b93a0; font: inherit; font-size: 12px;
-      padding: 7px 12px; border-radius: 7px; cursor: pointer; white-space: nowrap;
+      border: 0; background: transparent; color: #b7c0cc; font: inherit; font-size: 12.5px; font-weight: 600;
+      padding: 7px 13px; border-radius: 999px; cursor: pointer; white-space: nowrap;
     }
-    .tab:hover { color: #e8eef7; background: rgba(255,255,255,0.06); }
-    .tab.active { color: #fff; background: rgba(77,138,240,0.28); }
+    .tab:hover { color: #fff; background: rgba(255,255,255,0.08); }
+    .tab.active { color: #fff; background: #2563eb; }
+    #navTools {
+      display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap;
+    }
     #graphMode {
-      display: flex; gap: 4px; flex-wrap: wrap; justify-content: center;
-      padding: 0 6px 6px;
+      display: inline-flex; gap: 0; padding: 2px;
+      background: rgba(8,10,14,0.62);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 999px;
     }
-    #graphMode .tab.active { background: rgba(115,192,0,0.28); }
-    /* Sous-onglets : analyses liées (nouvel onglet = graphe conservé) */
+    .mode {
+      border: 0; background: transparent; color: #8b93a0; font: inherit; font-size: 11px; font-weight: 600;
+      padding: 4px 10px; border-radius: 999px; cursor: pointer; white-space: nowrap;
+    }
+    .mode:hover { color: #e8eef7; }
+    .mode.active { color: #e7f6cf; background: rgba(115,192,0,0.28); }
     #subTabs {
-      display: flex; justify-content: center; flex-wrap: wrap; gap: 8px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      padding: 7px 8px 8px;
-      background: rgba(0,0,0,0.32);
+      display: flex; align-items: center; gap: 4px;
+      border: 0; padding: 0; background: transparent;
     }
     .subtab {
-      display: inline-flex; align-items: center; gap: 8px;
-      color: #f0e6c8; font: inherit; font-size: 12.5px;
-      padding: 8px 16px; border-radius: 8px;
-      text-decoration: none; letter-spacing: 0.02em;
-      border: 1px solid rgba(201,178,122,0.55);
-      background: linear-gradient(180deg, rgba(201,178,122,0.28), rgba(201,178,122,0.12));
-      box-shadow: 0 0 0 1px rgba(201,178,122,0.12), 0 2px 10px rgba(0,0,0,0.35);
-      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+      display: inline-flex; align-items: baseline; gap: 5px;
+      color: #c9b27a; font: inherit; font-size: 11px;
+      padding: 3px 6px; border-radius: 4px;
+      text-decoration: none; letter-spacing: 0;
+      border: 0; background: transparent; box-shadow: none;
     }
-    .subtab:hover {
-      color: #fff8e8; background: linear-gradient(180deg, rgba(201,178,122,0.42), rgba(201,178,122,0.2));
-      border-color: rgba(232,210,140,0.85);
+    .subtab:hover { color: #fff6d6; background: rgba(201,178,122,0.12); }
+    .subtab .subtab-label { color: inherit; font-weight: 600; }
+    .subtab .subtab-hint { color: #8d8164; font-size: 10px; font-weight: 500; }
+    .subtab + .subtab::before {
+      content: ""; width: 1px; height: 10px; background: rgba(255,255,255,0.16);
+      margin-right: 4px; align-self: center;
     }
-    .subtab .subtab-label { color: #fff6d6; font-weight: 700; }
-    .subtab .subtab-hint { color: #b8a878; font-size: 11px; font-weight: 500; }
     .comm-metrics { color: #8b93a0; font-weight: 500; font-variant-numeric: tabular-nums; font-size: 10.5px; }
     .comm-metrics .pub { color: #c9b27a; }
     .comm-pubbar {
@@ -181,9 +189,10 @@
   <div id="labels"></div>
   <nav id="corpusNav" aria-label="Navigation corpus">
     <div id="tabs" role="tablist" aria-label="Corpus"></div>
+    <div id="navTools">
     <div id="graphMode" role="tablist" aria-label="Interactions du graphe">
-      <button type="button" class="tab active" data-graph="all" id="graphModeAll">Toutes interactions</button>
-      <button type="button" class="tab" data-graph="rt" id="graphModeRt">RT</button>
+      <button type="button" class="mode active" data-graph="all" id="graphModeAll">Toutes interactions</button>
+      <button type="button" class="mode" data-graph="rt" id="graphModeRt">RT</button>
     </div>
     <div id="subTabs">
       <a id="health3Link" class="subtab" href="../analyses/health3_overlap.html" target="_blank" rel="noopener noreferrer" title="Intersection des auteurs des 3 corpus santé">
@@ -194,6 +203,7 @@
         <span class="subtab-label">Flux intercommunautaires</span>
         <span class="subtab-hint" id="intercommLinkHint">analyses Louvain</span>
       </a>
+    </div>
     </div>
   </nav>
   <div id="tooltip"></div>
@@ -543,7 +553,7 @@ function graphDataUrl(corp) {
 }
 
 function updateGraphModeButtons() {
-  document.querySelectorAll('#graphMode .tab').forEach((b) => {
+  document.querySelectorAll('#graphMode .mode').forEach((b) => {
     b.classList.toggle('active', b.dataset.graph === graphMode);
   });
 }
@@ -1488,7 +1498,7 @@ async function boot() {
   }
   // Deep-link: ?corpus=ebola&graph=rt
   updateGraphModeButtons();
-  document.querySelectorAll('#graphMode .tab').forEach((b) => {
+  document.querySelectorAll('#graphMode .mode').forEach((b) => {
     b.addEventListener('click', () => setGraphMode(b.dataset.graph));
   });
   const start = resolveCorpus(new URLSearchParams(location.search).get('corpus')) || corpora[0];
