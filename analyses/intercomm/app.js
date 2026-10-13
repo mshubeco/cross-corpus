@@ -716,14 +716,14 @@
       key: "e",
       unit: "eng. hors likes",
       score: (p) => (p.rt || 0) + (p.rp || 0) + (p.qt || 0),
-      hint: "Classement par retweets + réponses + citations reçus (likes exclus). La barre situe chaque publication par rapport au n° 1 du jour.",
+      hint: "Classement par retweets + réponses + citations reçus (likes exclus). Le total du jour et la part de chaque publication portent sur l’ensemble des publications hors RT de ce jour.",
       empty: "Aucune publication avec retweet, réponse ou citation ce jour.",
     },
     likes: {
       key: "l",
       unit: "likes",
       score: (p) => p.lk || 0,
-      hint: "Classement par likes reçus uniquement. La barre situe chaque publication par rapport au n° 1 du jour.",
+      hint: "Classement par likes reçus uniquement. Le total du jour et la part de chaque publication portent sur l’ensemble des publications hors RT de ce jour.",
       empty: "Aucune publication likée ce jour.",
     },
   };
@@ -752,6 +752,13 @@
   const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
   const frDay = (dt) => (dt.getUTCDate() === 1 ? "1er" : String(dt.getUTCDate()));
   const compact = (n) => DT_FMT.compact.format(n || 0);
+  const dayTotal = (day, mode) => Number((mode === "likes" ? day.lt : day.et) || 0);
+  const pctFr = (x) => {
+    if (!(x > 0)) return "0 %";
+    if (x < 0.1) return "< 0,1 %";
+    const n = x >= 10 ? Math.round(x) : Math.round(x * 10) / 10;
+    return `${String(n).replace(".", ",")} %`;
+  };
   const longDate = (d) => {
     const dt = utcDate(d);
     return `${DT_FMT.weekday.format(dt)} ${frDay(dt)} ${DT_FMT.month.format(dt)} ${dt.getUTCFullYear()}`;
@@ -843,10 +850,10 @@
     </blockquote>`;
   }
 
-  function dtPostHtml(p, rank, mode, top) {
+  function dtPostHtml(p, rank, mode, total) {
     const m = DT_MODES[mode];
     const score = m.score(p);
-    const pct = top > 0 ? Math.max(2, Math.round((100 * score) / top)) : 0;
+    const share = total > 0 ? (100 * score) / total : 0;
     const type = DT_TYPES[p.ty] || { label: p.ty, cls: "original" };
     const thread = p.ty === "reply" && p.re && p.re.toLowerCase() === String(p.a).toLowerCase();
     const node = DT.comm[p.c];
@@ -889,7 +896,10 @@
       <aside class="dt-score" aria-label="Engagement">
         <div class="dt-score-v">${fmt(score)}</div>
         <div class="dt-score-l">${esc(m.unit)}</div>
-        <div class="dt-bar" title="${pct} % du n° 1 du jour"><span style="width:${pct}%"></span></div>
+        <div class="dt-share" title="${fmt(score)} / ${fmt(total)} ${esc(m.unit)} du jour">
+          <div class="dt-share-v">${pctFr(share)}</div>
+          <div class="dt-share-l">${mode === "likes" ? "des likes du jour" : "de l’eng. du jour"}</div>
+        </div>
         ${mode === "likes" ? likesLine + breakdown : breakdown + likesLine}
         ${extra ? `<div class="dt-alt is-secondary">${extra}</div>` : ""}
       </aside>
@@ -899,11 +909,11 @@
   function dtDayHtml(day, mode) {
     const m = DT_MODES[mode];
     const list = (day[m.key] || []).map((i) => DT.data.posts[i]);
-    const top = list.length ? m.score(list[0]) : 0;
+    const total = dayTotal(day, mode);
     let body;
     if (!day.n) body = `<p class="dt-empty">Aucune publication collectée ce jour.</p>`;
     else if (!list.length) body = `<p class="dt-empty">${esc(m.empty)}</p>`;
-    else body = list.map((p, i) => dtPostHtml(p, i + 1, mode, top)).join("");
+    else body = list.map((p, i) => dtPostHtml(p, i + 1, mode, total)).join("");
     const few = list.length && list.length < DT.data.topK
       ? `<p class="dt-note">${list.length} publication${list.length > 1 ? "s" : ""} seulement avec un score non nul ce jour.</p>`
       : "";
@@ -913,7 +923,7 @@
         <div class="dt-day-meta">
           <span><b>${fmt(day.n)}</b> tweets</span>
           <span><b>${fmt(day.o)}</b> hors RT</span>
-          ${top ? `<span>n° 1 : <b>${fmt(top)}</b> ${esc(m.unit)}</span>` : ""}
+          ${total ? `<span>total : <b>${fmt(total)}</b> ${esc(m.unit)}</span>` : ""}
         </div>
       </header>
       <div class="dt-list">${body}</div>
@@ -932,13 +942,12 @@
       if (!day) {
         return `<div class="dt-tile is-out" aria-hidden="true"><span class="dt-tile-wd">${esc(wd)}</span><span class="dt-tile-d">${frDay(dt)} <small>${esc(DT_FMT.monthShort.format(dt))}</small></span><span class="dt-tile-n">hors corpus</span></div>`;
       }
-      const first = (day[m.key] || [])[0];
-      const top = first != null ? m.score(DT.data.posts[first]) : 0;
-      return `<button type="button" class="dt-tile${d === DT.currentDay ? " is-current" : ""}" data-dt-day="${esc(d)}" title="${esc(cap(longDate(d)))} · ${fmt(day.n)} tweets · n° 1 : ${fmt(top)} ${esc(m.unit)}">
+      const total = dayTotal(day, mode);
+      return `<button type="button" class="dt-tile${d === DT.currentDay ? " is-current" : ""}" data-dt-day="${esc(d)}" title="${esc(cap(longDate(d)))} · ${fmt(day.n)} tweets · ${fmt(total)} ${esc(m.unit)}">
         <span class="dt-tile-wd">${esc(wd)}</span>
         <span class="dt-tile-d">${frDay(dt)} <small>${esc(DT_FMT.monthShort.format(dt))}</small></span>
         <span class="dt-tile-n">${compact(day.n)} tweets</span>
-        <span class="dt-tile-top">n° 1 · ${compact(top)}</span>
+        <span class="dt-tile-top">${compact(total)} ${esc(mode === "likes" ? "likes" : "eng.")}</span>
         <span class="dt-tile-bar"><span style="width:${Math.round((100 * day.n) / maxN)}%"></span></span>
       </button>`;
     }).join("");
@@ -1171,7 +1180,7 @@
           <strong>Comment lire ce bloc</strong>
           <ol>
             <li>Chaque jour du corpus, les <strong>5 publications</strong> les plus engageantes, avec leur <strong>texte intégral</strong>, leur auteur, leur type (tweet original, réponse, citation) et le pôle Louvain de l’auteur.</li>
-            <li>Onglet <strong>Engagement hors likes</strong> : retweets + réponses + citations reçus. Onglet <strong>Likes</strong> : likes reçus uniquement.</li>
+            <li>Onglet <strong>Engagement hors likes</strong> : retweets + réponses + citations reçus. Onglet <strong>Likes</strong> : likes reçus uniquement. Le total du bandeau et la part de chaque publication portent sur <strong>toutes</strong> les publications hors RT du jour.</li>
             <li>Les jours sont présentés <strong>semaine par semaine</strong> (lundi → dimanche, jours UTC comme la courbe de volume) : flèches, liste des semaines ou frise hebdomadaire ; la bande des 7 jours mène directement à un jour.</li>
             <li>Les retweets sont exclus du classement : ils reprennent les compteurs du tweet d’origine et un texte tronqué. Compteurs plateforme relevés à la collecte.</li>
           </ol>

@@ -286,8 +286,9 @@ a.tweet-link:hover { text-decoration: underline; }
 }
 .dt-score-v { color: var(--dt-accent); font-size: 1.4rem; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
 .dt-score-l { color: var(--muted); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.06em; }
-.dt-bar { width: 100%; height: 5px; margin: 6px 0 4px; overflow: hidden; border-radius: 3px; background: var(--surface2); }
-.dt-bar > span { display: block; height: 100%; border-radius: 3px; background: var(--dt-accent); }
+.dt-share { margin: 8px 0 4px; }
+.dt-share-v { color: var(--text); font-size: 1.02rem; font-weight: 700; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.dt-share-l { color: var(--muted); font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.05em; }
 .dt-break { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 2px 10px; color: var(--muted); font-size: 0.74rem; font-variant-numeric: tabular-nums; }
 .dt-break b { color: var(--text); font-weight: 600; }
 .dt-alt { color: var(--text); font-size: 0.74rem; font-variant-numeric: tabular-nums; }
@@ -306,7 +307,8 @@ a.tweet-link:hover { text-decoration: underline; }
     grid-column: 2; flex-direction: row; flex-wrap: wrap; align-items: baseline; justify-content: flex-start; gap: 4px 12px;
     padding: 8px 0 0; border-left: 0; border-top: 1px solid var(--border); text-align: left;
   }
-  .dt-bar { order: 9; flex-basis: 100%; margin: 2px 0 0; }
+  .dt-share { order: 9; flex-basis: 100%; margin: 2px 0 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; }
+  .dt-share-l { text-transform: none; letter-spacing: 0; }
   .dt-break { justify-content: flex-start; }
   .dt-time { margin-left: 0; }
 }
