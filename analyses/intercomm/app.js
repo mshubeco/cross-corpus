@@ -674,22 +674,11 @@
       <div class="page-header">
         <a class="back-link" href="${esc(conn)}">← Connectome ${esc(corp.label || id)}</a>
         <h1>Flux intercommunautaires · ${esc(corp.label || id)}</h1>
+        <a class="fwd-link" href="#pole-profiles">Portrait des pôles ↓</a>
         <a class="fwd-link" href="#daily-top">Top 5 publications par jour ↓</a>
       </div>
       <p class="subtitle">${esc(ph.phaseLabel || "")} · ${esc(pack.source || "")}. Même partition Louvain que le connectome (seed 42). Les parts de publication mesurent les tweets dont l’auteur appartient à la communauté.</p>
       <div class="corpus-switch">${switcher}</div>
-      <div class="howto-box">
-        <strong>Comment lire cette page</strong>
-        <ol>
-          <li><strong>Donuts</strong> — part de chaque pôle (top affiché + Autres) en volume de publication, en in/out-strength, et en RT reçus.</li>
-          <li><strong>Treemaps</strong> — mêmes communautés, taille = volume, degré pondéré (in + out) ou engagement hors retweet. Le bloc Autres regroupe la longue traîne.</li>
-          <li><strong>Activité temporelle</strong> — <em>Aires empilées</em> = volume de publication ; <em>Courbes</em> = même volume, sans empilement, avec médias en overlay ; <em>Engagement</em> = likes + RT + réponses + citations des publications hors retweet, empilés par communauté, plus les deux types de médias (même échelle). Le survol donne la part du jour. La liste des enseignes est sous le graphe.</li>
-          <li><strong>Graphe circulaire</strong> — flèches = flux croisés (hors interne). Trait plein = RT ≥ 80 %, pointillé = RT ≤ 20 %.</li>
-          <li><strong>Sankey</strong> — gauche = communauté <em>source</em> (émettrice), droite = communauté <em>cible</em> (réceptrice). Un ruban interne relie la même communauté des deux côtés.</li>
-          <li><strong>Top 5</strong> — comptes par in-strength, PageRank ou likes, avec treemaps des flux. Sous chaque compte : ses 5 publications les plus engageantes (RT exclus).</li>
-          <li><strong>Top 5 publications par jour</strong> — en bas de page, semaine par semaine : texte intégral, auteur et type des publications les plus engageantes, onglets <em>Engagement hors likes</em> et <em>Likes</em>. Un clic sur une barre du volume quotidien y mène directement.</li>
-        </ol>
-      </div>
       <div class="kpi-row">
         <div class="kpi"><div class="v">${fmt(meta.n_tweets)}</div><div class="l">Tweets</div></div>
         <div class="kpi"><div class="v">${fmt(meta.n_users)}</div><div class="l">Utilisateurs</div></div>
@@ -776,6 +765,7 @@
           <div class="heatmap-wrap">${heatmapTable(ph, "in")}</div>
         </div>
       </div>
+      ${profilesSectionHtml()}
       <h2>Top 5 par communauté</h2>
       <div class="howto-box">
         <strong>Comment lire / utiliser ce bloc</strong>
@@ -798,6 +788,197 @@
         <a class="fwd-link" href="${esc(conn)}">Retour au connectome →</a>
       </p>
     `;
+  }
+
+  /* ---------- Portrait des pôles (fichier <corpus>_profiles.json) ---------- */
+  const PP_HINTS = {
+    created: "Chaque courbe = part des comptes datés créés cette année-là. ≤2010 regroupe les identifiants pré-snowflake (pas de millésime fiable). Les histogrammes du dessous reprennent la même série, un pôle par carte.",
+    cloud: "Taille = fréquence dans les publications hors retweet du pôle (pas une comparaison aux autres). Les @mentions et URLs sont retirées.",
+    terms: "Score z du log-odds pondéré (Monroe et al. 2008) : le terme est plus fréquent dans ce pôle que dans le reste du corpus. Seuil z ≥ 1,85 et au moins 8 occurrences.",
+    cooc: "Paires de mots dans le même tweet, restreintes au vocabulaire du pôle. L’épaisseur du trait suit le PMI. Un graphe vide indique un pôle trop relais, ou trop peu de publications originales.",
+  };
+  let PP = null;
+  let ppMode = "created";
+
+  function profilesSectionHtml() {
+    return `
+      <section class="pole-profiles" id="pole-profiles" aria-labelledby="pp-title">
+        <div class="pp-intro">
+          <h2 id="pp-title">Portrait des pôles</h2>
+          <p class="hint">Communautés principales uniquement (hors Autres). Dates reconstituées par snowflake Twitter — les CSV n’ont pas de <code>user_created_at</code>. Lexique = tweets originaux, réponses et citations des membres.</p>
+        </div>
+        <div class="metric-tabs" id="pp-tabs" role="tablist" aria-label="Vue du portrait des pôles">
+          <button type="button" class="metric-tab active" role="tab" aria-selected="true" data-pp="created">Dates de création</button>
+          <button type="button" class="metric-tab" role="tab" aria-selected="false" data-pp="cloud">Nuages de termes</button>
+          <button type="button" class="metric-tab" role="tab" aria-selected="false" data-pp="terms">Termes surreprésentés</button>
+          <button type="button" class="metric-tab" role="tab" aria-selected="false" data-pp="cooc">Co-occurrences</button>
+        </div>
+        <p class="hint" id="pp-hint"></p>
+        <div class="viz-box pp-overlay-box" id="pp-overlay-box" hidden>
+          <div class="viz-title">Part des comptes par année de création</div>
+          <div id="pp-overlay" class="pp-overlay-chart"></div>
+        </div>
+        <div class="pp-grid" id="pp-grid"><p class="hint">Chargement des profils…</p></div>
+      </section>`;
+  }
+
+  function ppHead(c) {
+    const med = c.medianYear != null ? String(c.medianYear) : "—";
+    const recent = String(c.pctRecent ?? "—").replace(".", ",");
+    return `<header class="pp-head">
+      <span class="dot" style="background:${esc(c.color)}"></span>
+      <div class="pp-head-txt">
+        <div class="pp-name">${esc(c.label)} · <a class="handle" href="${xUrl(c.hub)}" target="_blank" rel="noopener">@${esc(c.hub)}</a></div>
+        <div class="pp-meta">${fmt(c.nUsers)} comptes · médiane ${esc(med)} · ${esc(recent)} % nés 2024–26 · ${fmt(c.nOwnPubs)} pubs hors RT</div>
+      </div>
+    </header>`;
+  }
+
+  function sparkCreated(c, labels) {
+    const shares = c.createdShare || [];
+    const mx = Math.max(...shares, 0.8);
+    const w = 440, h = 132, l = 6, r = 6, t = 10, b = 28;
+    const iw = w - l - r, ih = h - t - b;
+    const n = labels.length || 1;
+    const bw = iw / n;
+    const bars = shares.map((sh, i) => {
+      const bh = (sh / mx) * ih;
+      const x = l + i * bw;
+      const y = t + ih - bh;
+      return `<rect x="${(x + 0.5).toFixed(1)}" y="${y.toFixed(1)}" width="${Math.max(bw - 1, 0.7).toFixed(1)}" height="${Math.max(bh, 0).toFixed(1)}" fill="${esc(c.color)}"/>`;
+    }).join("");
+    const ticks = labels.map((lab, i) => {
+      const y = 2010 + i;
+      if (y !== 2010 && y !== 2014 && y !== 2018 && y !== 2022 && y !== 2026) return "";
+      const x = l + i * bw + bw / 2;
+      return `<text x="${x.toFixed(1)}" y="${h - 8}" text-anchor="middle" fill="#9aa3b5" font-size="9">${esc(lab)}</text>`;
+    }).join("");
+    return `<svg viewBox="0 0 ${w} ${h}" class="pp-spark" aria-label="Création des comptes ${esc(c.label)}">${bars}${ticks}</svg>`;
+  }
+
+  function svgCloud(c) {
+    if (!c.cloud || !c.cloud.length) {
+      return `<p class="hint">Lexique trop mince — ${fmt(c.nOwnPubs)} publication(s) hors RT.</p>`;
+    }
+    const words = c.cloud.map((w) => {
+      const op = Math.min(1, 0.52 + (w.s / 36));
+      const wt = w.s >= 20 ? 650 : 500;
+      return `<text x="${w.x}" y="${w.y}" text-anchor="middle" dominant-baseline="middle" fill="${esc(c.color)}" font-size="${w.s}" font-weight="${wt}" opacity="${op.toFixed(2)}">${esc(w.t)}</text>`;
+    }).join("");
+    return `<svg viewBox="0 0 440 228" class="pp-cloud" role="img" aria-label="Nuage ${esc(c.label)}">${words}</svg>`;
+  }
+
+  function termsBars(c) {
+    if (!c.terms || !c.terms.length) {
+      return `<p class="hint">Aucun terme distinctif au seuil (souvent un pôle quasi exclusivement relais : ${fmt(c.nOwnPubs)} pubs hors RT).</p>`;
+    }
+    const mx = Math.max(...c.terms.map((t) => t.z), 1);
+    return `<div class="pp-terms">${c.terms.map((t) => {
+      const pct = 100 * t.z / mx;
+      return `<div class="pp-term" title="${esc(t.t)} · ${fmt(t.n)} occ. · z = ${String(t.z).replace(".", ",")}">
+        <span class="pp-term-t">${esc(t.t)}</span>
+        <span class="pp-term-bar"><i style="width:${pct.toFixed(1)}%;background:${esc(c.color)}"></i></span>
+        <span class="pp-term-z">${String(t.z).replace(".", ",")}</span>
+      </div>`;
+    }).join("")}</div>`;
+  }
+
+  function svgCooc(c) {
+    const g = c.cooc || {};
+    if (!g.nodes || !g.nodes.length || !g.edges || !g.edges.length) {
+      return `<p class="hint">Pas de réseau lexical propre — trop peu de publications originales, ou paires trop banales.</p>`;
+    }
+    const mx = Math.max(...g.edges.map((e) => e.pmi), 0.01);
+    const pos = Object.fromEntries(g.nodes.map((n) => [n.t, n]));
+    const cx = 130, cy = 130;
+    const edges = g.edges.map((e) => {
+      const a = pos[e.a], b = pos[e.b];
+      if (!a || !b) return "";
+      const w = 0.7 + 2.4 * (e.pmi / mx);
+      const op = 0.22 + 0.55 * (e.pmi / mx);
+      return `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="${esc(c.color)}" stroke-width="${w.toFixed(2)}" opacity="${op.toFixed(2)}"/>`;
+    }).join("");
+    const nodes = g.nodes.map((n) => {
+      const dx = n.x - cx, dy = n.y - cy;
+      const len = Math.hypot(dx, dy) || 1;
+      const lx = n.x + (dx / len) * (n.r + 13);
+      const ly = n.y + (dy / len) * (n.r + 13);
+      const anchor = n.x >= cx ? "start" : "end";
+      return `<circle cx="${n.x}" cy="${n.y}" r="${n.r}" fill="${esc(c.color)}" opacity="0.92"/>
+        <text x="${lx.toFixed(1)}" y="${(ly + 3).toFixed(1)}" text-anchor="${anchor}" fill="#e8eaed" font-size="10">${esc(n.t)}</text>`;
+    }).join("");
+    return `<svg viewBox="0 0 260 260" class="pp-cooc" role="img" aria-label="Co-occurrences ${esc(c.label)}">${edges}${nodes}</svg>`;
+  }
+
+  function plotCreatedOverlay(el, pack) {
+    if (!el || !pack?.communities?.length) return;
+    const traces = pack.communities.map((c) => ({
+      x: pack.yearLabels,
+      y: c.createdShare,
+      type: "scatter",
+      mode: "lines",
+      name: `${c.label} @${c.hub}`,
+      line: { color: c.color, width: 2.2, shape: "spline", smoothing: 0.6 },
+      hovertemplate: "%{x}<br>%{y:.1f} % des comptes datés<extra>" + c.label + "</extra>",
+    }));
+    Plotly.newPlot(el, traces, plotlyLayout({
+      height: 290,
+      yaxis: { title: "% des comptes datés", gridcolor: "#2a3142", rangemode: "tozero", ticksuffix: " %" },
+      xaxis: { gridcolor: "#2a3142", tickangle: -40 },
+      legend: { orientation: "h", y: -0.32, font: { size: 10 } },
+      margin: { t: 12, b: 78, l: 56, r: 14 },
+    }), { responsive: true, displayModeBar: false });
+  }
+
+  function renderProfiles() {
+    const grid = document.getElementById("pp-grid");
+    const hint = document.getElementById("pp-hint");
+    const box = document.getElementById("pp-overlay-box");
+    const overlay = document.getElementById("pp-overlay");
+    if (!grid || !PP) return;
+    if (hint) hint.textContent = PP_HINTS[ppMode] || "";
+    const showOverlay = ppMode === "created";
+    if (box) box.hidden = !showOverlay;
+    if (showOverlay && overlay) {
+      requestAnimationFrame(() => plotCreatedOverlay(overlay, PP));
+    } else if (overlay && window.Plotly) Plotly.purge(overlay);
+    const labels = PP.yearLabels || [];
+    grid.innerHTML = (PP.communities || []).map((c) => {
+      let body = "";
+      if (ppMode === "created") body = sparkCreated(c, labels);
+      else if (ppMode === "cloud") body = svgCloud(c);
+      else if (ppMode === "terms") body = termsBars(c);
+      else body = svgCooc(c);
+      return `<article class="pp-card" style="--pp:${esc(c.color)}">${ppHead(c)}<div class="pp-body">${body}</div></article>`;
+    }).join("");
+  }
+
+  function initProfiles() {
+    const grid = document.getElementById("pp-grid");
+    if (!grid) return;
+    fetch(`./${encodeURIComponent(CORPUS)}_profiles.json?t=${Date.now()}`)
+      .then((r) => {
+        if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+        return r.json();
+      })
+      .then((data) => {
+        PP = data;
+        document.querySelectorAll("#pp-tabs .metric-tab").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            ppMode = btn.dataset.pp;
+            document.querySelectorAll("#pp-tabs .metric-tab").forEach((b) => {
+              const on = b === btn;
+              b.classList.toggle("active", on);
+              b.setAttribute("aria-selected", on ? "true" : "false");
+            });
+            renderProfiles();
+          });
+        });
+        renderProfiles();
+      })
+      .catch((err) => {
+        grid.innerHTML = `<p class="hint">Profils indisponibles — ${esc(err)}.</p>`;
+      });
   }
 
   /* ---------- Top 5 publications par jour (fichier <corpus>_daily_top.json) ---------- */
@@ -1317,6 +1498,7 @@
         });
       });
       initDailyTop();
+      initProfiles();
     } catch (err) {
       root.innerHTML = `<p class="err">Chargement impossible — ${esc(err)}. Servir le dossier via HTTP.</p>`;
     }
