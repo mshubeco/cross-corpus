@@ -84,29 +84,44 @@
     ].filter((b) => b && Array.isArray(b.counts) && b.counts.length);
   }
 
-  function corpusDayCounts(daily) {
-    const vol = PHASE && PHASE.volumeDaily;
-    if (vol && vol.dates && vol.counts && vol.dates.length === (daily.dates || []).length) {
-      return vol.counts;
+  function seriesMetricValues(s, metric) {
+    const vals = metric === "engagement" ? s.engagement : s.counts;
+    return Array.isArray(vals) ? vals : [];
+  }
+
+  function mediaMetricValues(block, metric) {
+    const vals = metric === "engagement" ? block.engagement : block.counts;
+    return Array.isArray(vals) ? vals : [];
+  }
+
+  function dayDenom(daily, metric) {
+    if (metric !== "engagement") {
+      const vol = PHASE && PHASE.volumeDaily;
+      if (vol && vol.dates && vol.counts && vol.dates.length === (daily.dates || []).length) {
+        return vol.counts;
+      }
     }
     const n = (daily.dates || []).length;
     const out = Array(n).fill(0);
     (daily.series || []).forEach((s) => {
-      (s.counts || []).forEach((v, i) => { out[i] += Number(v) || 0; });
+      seriesMetricValues(s, metric).forEach((v, i) => { out[i] += Number(v) || 0; });
     });
     return out;
   }
 
-  function mediaOverlayTrace(daily, block, dash) {
-    const denom = corpusDayCounts(daily);
+  function mediaOverlayTrace(daily, block, dash, metric) {
+    const y = mediaMetricValues(block, metric);
+    if (!y.length) return null;
+    const denom = dayDenom(daily, metric);
     const nAcc = block.nAccounts != null ? ` · ${fmt(block.nAccounts)} comptes` : "";
-    const custom = (block.counts || []).map((v, i) => {
+    const unit = metric === "engagement" ? "engagement" : "publications";
+    const custom = y.map((v, i) => {
       const d = denom[i] || 0;
       return [v, d ? (100 * v) / d : 0];
     });
     return {
       x: daily.dates,
-      y: block.counts,
+      y,
       customdata: custom,
       name: block.label || "Médias",
       type: "scatter",
@@ -118,44 +133,61 @@
       },
       fill: "none",
       hovertemplate:
-        `%{fullData.name}${nAcc}<br>%{x}<br>%{customdata[0]:,} publications · %{customdata[1]:.2f} % du volume du jour<extra></extra>`,
+        `%{fullData.name}${nAcc}<br>%{x}<br>%{customdata[0]:,} ${unit} · %{customdata[1]:.2f} % du jour<extra></extra>`,
     };
   }
 
   function activityTraces(daily, mode) {
+    const metric = mode === "engagement" ? "engagement" : "publications";
     const stacked = mode !== "lines";
+    const unit = metric === "engagement" ? "engagement" : "publications";
+    const denom = dayDenom(daily, metric);
     const traces = daily.series.map((s) => {
+      const y = seriesMetricValues(s, metric);
+      const custom = y.map((v, i) => {
+        const d = denom[i] || 0;
+        return d ? (100 * v) / d : 0;
+      });
       const t = {
         x: daily.dates,
-        y: s.counts,
+        y,
+        customdata: custom,
         name: s.hub ? `@${s.hub}` : s.label,
         type: "scatter",
         mode: "lines",
         line: { color: s.color, width: s.communityId === -1 ? 1.2 : 2.2 },
-        hovertemplate: "%{fullData.name}<br>%{x}<br>%{y:,} publications<extra></extra>",
+        hovertemplate: `%{fullData.name}<br>%{x}<br>%{y:,} ${unit} · %{customdata:.1f} % du jour<extra></extra>`,
       };
       if (stacked) t.stackgroup = "one";
       else t.fill = "none";
       return t;
     });
-    if (!stacked) {
+    const showMedia = mode === "lines" || mode === "engagement";
+    if (showMedia) {
       const layers = mediaLayers(daily);
-      if (layers[0]) traces.push(mediaOverlayTrace(daily, layers[0], "dash"));
-      if (layers[1]) traces.push(mediaOverlayTrace(daily, layers[1], "dot"));
+      const dashes = ["dash", "dot"];
+      layers.forEach((block, i) => {
+        const tr = mediaOverlayTrace(daily, block, dashes[i] || "dash", metric);
+        if (tr) traces.push(tr);
+      });
     }
     return traces;
   }
 
   function plotActivity(el, daily, mode) {
     if (!el || !daily?.series?.length) return;
-    const hasMedia = mode === "lines" && mediaLayers(daily).length;
+    const metric = mode === "engagement" ? "engagement" : "publications";
+    const hasMedia = (mode === "lines" || mode === "engagement") && mediaLayers(daily).length;
     const layoutExtra = {
       height: hasMedia ? 400 : 360,
       legend: { orientation: "h", y: 1.16 },
       hovermode: "x unified",
       xaxis: { gridcolor: "#2a3142" },
-      yaxis: { gridcolor: "#2a3142", title: "publications" },
-      margin: { t: 28, b: 40, l: 52, r: 12 },
+      yaxis: {
+        gridcolor: "#2a3142",
+        title: metric === "engagement" ? "engagement (likes compris)" : "publications",
+      },
+      margin: { t: 28, b: 40, l: 58, r: 12 },
     };
     Plotly.newPlot(el, activityTraces(daily, mode), plotlyLayout(layoutExtra),
       { responsive: true, displayModeBar: false }).then(() => bindDayClick(el));
@@ -168,19 +200,24 @@
     const layers = mediaLayers(daily);
     const bits = layers.map((b) =>
       `${b.label} = ${fmt(b.nAccounts)} comptes, ${fmt(b.total)} pubs`
+        + (b.engagementTotal != null ? `, ${fmt(b.engagementTotal)} eng.` : "")
     );
     const noteLines = layers.length
       ? `Même échelle que les communautés (publications / jour). Lignes or pointillée = médias traditionnels, turquoise pointillée = médias numériques. Ce ne sont pas des clusters Louvain : ce sont des comptes d’enseigne, déjà inclus dans un pôle. ${bits.join(" · ")}.`
       : "Mêmes volumes quotidiens par communauté, en courbes superposées (sans empilement).";
+    const noteEng = (daily && daily.engagementNote)
+      ? `${daily.engagementNote} Aires = communautés. Lignes or / turquoise = médias traditionnels / numériques, même échelle (déjà inclus dans un pôle).`
+      : "Engagement reçu (likes + RT + réponses + citations) des publications hors retweet, par communauté et par type de médias.";
     document.querySelectorAll("#activity-tabs .metric-tab").forEach((btn) => {
       btn.addEventListener("click", () => {
-        const mode = btn.dataset.activity === "lines" ? "lines" : "stack";
+        const mode = btn.dataset.activity || "stack";
         document.querySelectorAll("#activity-tabs .metric-tab").forEach((b) => {
           const on = b === btn;
           b.classList.toggle("active", on);
           b.setAttribute("aria-selected", on ? "true" : "false");
         });
-        if (hint) hint.textContent = mode === "lines" ? noteLines : noteStack;
+        const hints = { stack: noteStack, lines: noteLines, engagement: noteEng };
+        if (hint) hint.textContent = hints[mode] || noteStack;
         plotActivity(el, daily, mode);
       });
     });
@@ -196,15 +233,18 @@
       const accounts = block.accounts || block.accountsSample || [];
       const pct = nTweets ? (100 * (block.total || 0) / nTweets) : null;
       const pctLbl = pct == null ? "" : ` · ${String(pct.toFixed(pct < 1 ? 2 : 1)).replace(".", ",")} % du corpus`;
+      const engLbl = block.engagementTotal != null ? ` · ${fmt(block.engagementTotal)} eng.` : "";
       const chips = accounts.map((a) =>
         `<li><a class="handle" href="${xUrl(a.l)}" target="_blank" rel="noopener">@${esc(a.l)}</a>`
-        + `<span class="media-n">${fmt(a.n)}</span>${a.name ? `<span class="media-name">${esc(a.name)}</span>` : ""}</li>`
+        + `<span class="media-n">${fmt(a.n)} pubs</span>`
+        + (a.eng != null ? `<span class="media-n">${fmt(a.eng)} eng.</span>` : "")
+        + `${a.name ? `<span class="media-name">${esc(a.name)}</span>` : ""}</li>`
       ).join("");
       return `<details class="media-card media-card-${kind}">
         <summary>
           <span class="media-swatch" style="background:${esc(block.color || "#f5d76e")}"></span>
           <span class="media-title">${esc(block.label || "")}</span>
-          <span class="media-kpis">${fmt(block.nAccounts)} comptes · ${fmt(block.total)} pubs${pctLbl}</span>
+          <span class="media-kpis">${fmt(block.nAccounts)} comptes · ${fmt(block.total)} pubs${engLbl}${pctLbl}</span>
         </summary>
         <p class="hint">${esc(block.definition || "")}</p>
         <ul class="media-chips">${chips || "<li>Aucun compte détecté dans ce corpus.</li>"}</ul>
@@ -643,7 +683,7 @@
         <ol>
           <li><strong>Donuts</strong> — part de chaque pôle (top affiché + Autres) en volume de publication, en in/out-strength, et en RT reçus.</li>
           <li><strong>Treemaps</strong> — mêmes communautés, taille = volume, degré pondéré (in + out) ou engagement hors retweet. Le bloc Autres regroupe la longue traîne.</li>
-          <li><strong>Activité temporelle</strong> — onglet <em>Aires empilées</em> (part du volume) ou <em>Courbes</em> (même échelle en publications / jour). En courbes : or = médias traditionnels, turquoise = médias numériques. 100 % n’est plus un pic interne : le survol donne le volume et la part du jour. La liste des comptes est sous le graphe.</li>
+          <li><strong>Activité temporelle</strong> — <em>Aires empilées</em> = volume de publication ; <em>Courbes</em> = même volume, sans empilement, avec médias en overlay ; <em>Engagement</em> = likes + RT + réponses + citations des publications hors retweet, empilés par communauté, plus les deux types de médias (même échelle). Le survol donne la part du jour. La liste des enseignes est sous le graphe.</li>
           <li><strong>Graphe circulaire</strong> — flèches = flux croisés (hors interne). Trait plein = RT ≥ 80 %, pointillé = RT ≤ 20 %.</li>
           <li><strong>Sankey</strong> — gauche = communauté <em>source</em> (émettrice), droite = communauté <em>cible</em> (réceptrice). Un ruban interne relie la même communauté des deux côtés.</li>
           <li><strong>Top 5</strong> — comptes par in-strength, PageRank ou likes, avec treemaps des flux. Sous chaque compte : ses 5 publications les plus engageantes (RT exclus).</li>
@@ -678,6 +718,7 @@
         <div class="metric-tabs" id="activity-tabs" role="tablist" aria-label="Mode du graphe d’activité">
           <button type="button" class="metric-tab active" role="tab" aria-selected="true" data-activity="stack">Aires empilées</button>
           <button type="button" class="metric-tab" role="tab" aria-selected="false" data-activity="lines">Courbes</button>
+          <button type="button" class="metric-tab" role="tab" aria-selected="false" data-activity="engagement">Engagement</button>
         </div>
         <p class="hint" id="activity-hint">${esc((ph.dailyActivity || {}).note || "Publications des auteurs du cluster")}</p>
         <div id="activity" class="activity-chart day-clickable"></div>
