@@ -77,6 +77,51 @@
     { responsive: true, displayModeBar: false }).then(() => bindDayClick(el));
   }
 
+  function mediaLayers(daily) {
+    return [
+      daily && daily.media,
+      daily && daily.mediaDigital,
+    ].filter((b) => b && Array.isArray(b.counts) && b.counts.length);
+  }
+
+  function corpusDayCounts(daily) {
+    const vol = PHASE && PHASE.volumeDaily;
+    if (vol && vol.dates && vol.counts && vol.dates.length === (daily.dates || []).length) {
+      return vol.counts;
+    }
+    const n = (daily.dates || []).length;
+    const out = Array(n).fill(0);
+    (daily.series || []).forEach((s) => {
+      (s.counts || []).forEach((v, i) => { out[i] += Number(v) || 0; });
+    });
+    return out;
+  }
+
+  function mediaOverlayTrace(daily, block, dash) {
+    const denom = corpusDayCounts(daily);
+    const nAcc = block.nAccounts != null ? ` · ${fmt(block.nAccounts)} comptes` : "";
+    const custom = (block.counts || []).map((v, i) => {
+      const d = denom[i] || 0;
+      return [v, d ? (100 * v) / d : 0];
+    });
+    return {
+      x: daily.dates,
+      y: block.counts,
+      customdata: custom,
+      name: block.label || "Médias",
+      type: "scatter",
+      mode: "lines",
+      line: {
+        color: block.color || "#f5d76e",
+        width: 3.2,
+        dash: dash || "dash",
+      },
+      fill: "none",
+      hovertemplate:
+        `%{fullData.name}${nAcc}<br>%{x}<br>%{customdata[0]:,} publications · %{customdata[1]:.2f} % du volume du jour<extra></extra>`,
+    };
+  }
+
   function activityTraces(daily, mode) {
     const stacked = mode !== "lines";
     const traces = daily.series.map((s) => {
@@ -93,55 +138,25 @@
       else t.fill = "none";
       return t;
     });
-    const media = daily.media;
-    if (!stacked && media?.counts?.length) {
-      const raw = media.counts;
-      const peak = raw.reduce((m, v) => (v > m ? v : m), 0);
-      const yNorm = peak > 0 ? raw.map((v) => (100 * v) / peak) : raw.map(() => 0);
-      const nAcc = media.nAccounts != null ? ` · ${media.nAccounts} comptes` : "";
-      traces.push({
-        x: daily.dates,
-        y: yNorm,
-        customdata: raw,
-        yaxis: "y2",
-        name: media.label || "Médias traditionnels",
-        type: "scatter",
-        mode: "lines",
-        line: {
-          color: media.color || "#f5d76e",
-          width: 3.4,
-          dash: "dash",
-        },
-        fill: "none",
-        hovertemplate: `%{fullData.name}${nAcc}<br>%{x}<br>%{customdata:,} publications (%{y:.1f} % du pic)<extra></extra>`,
-      });
+    if (!stacked) {
+      const layers = mediaLayers(daily);
+      if (layers[0]) traces.push(mediaOverlayTrace(daily, layers[0], "dash"));
+      if (layers[1]) traces.push(mediaOverlayTrace(daily, layers[1], "dot"));
     }
     return traces;
   }
 
   function plotActivity(el, daily, mode) {
     if (!el || !daily?.series?.length) return;
-    const hasMedia = mode === "lines" && daily.media?.counts?.length;
-    const mediaColor = (daily.media && daily.media.color) || "#f5d76e";
+    const hasMedia = mode === "lines" && mediaLayers(daily).length;
     const layoutExtra = {
-      height: 360, legend: { orientation: "h", y: 1.14 },
+      height: hasMedia ? 400 : 360,
+      legend: { orientation: "h", y: 1.16 },
       hovermode: "x unified",
       xaxis: { gridcolor: "#2a3142" },
       yaxis: { gridcolor: "#2a3142", title: "publications" },
+      margin: { t: 28, b: 40, l: 52, r: 12 },
     };
-    if (hasMedia) {
-      layoutExtra.margin = { t: 28, b: 40, l: 52, r: 58 };
-      layoutExtra.yaxis2 = {
-        title: { text: "médias · % du pic", font: { color: mediaColor } },
-        overlaying: "y",
-        side: "right",
-        range: [0, 105],
-        showgrid: false,
-        zeroline: false,
-        tickfont: { color: mediaColor },
-        ticksuffix: " %",
-      };
-    }
     Plotly.newPlot(el, activityTraces(daily, mode), plotlyLayout(layoutExtra),
       { responsive: true, displayModeBar: false }).then(() => bindDayClick(el));
   }
@@ -150,9 +165,12 @@
     const el = document.getElementById("activity");
     const hint = document.getElementById("activity-hint");
     const noteStack = (daily && daily.note) || "Publications des auteurs du cluster";
-    const media = daily && daily.media;
-    const noteLines = media
-      ? `Courbes par communauté (axe gauche) · ligne or = médias traditionnels, normalisée sur son propre axe (100 % = pic médiatique ; ${media.nAccounts || "?"} enseignes, ${fmt(media.total)} publications).`
+    const layers = mediaLayers(daily);
+    const bits = layers.map((b) =>
+      `${b.label} = ${fmt(b.nAccounts)} comptes, ${fmt(b.total)} pubs`
+    );
+    const noteLines = layers.length
+      ? `Même échelle que les communautés (publications / jour). Lignes or pointillée = médias traditionnels, turquoise pointillée = médias numériques. Ce ne sont pas des clusters Louvain : ce sont des comptes d’enseigne, déjà inclus dans un pôle. ${bits.join(" · ")}.`
       : "Mêmes volumes quotidiens par communauté, en courbes superposées (sans empilement).";
     document.querySelectorAll("#activity-tabs .metric-tab").forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -166,6 +184,36 @@
         plotActivity(el, daily, mode);
       });
     });
+  }
+
+  function mediaPanelHtml(daily, nTweets) {
+    const layers = [
+      { block: daily && daily.media, kind: "trad" },
+      { block: daily && daily.mediaDigital, kind: "digital" },
+    ].filter((x) => x.block);
+    if (!layers.length) return "";
+    const cards = layers.map(({ block, kind }) => {
+      const accounts = block.accounts || block.accountsSample || [];
+      const pct = nTweets ? (100 * (block.total || 0) / nTweets) : null;
+      const pctLbl = pct == null ? "" : ` · ${String(pct.toFixed(pct < 1 ? 2 : 1)).replace(".", ",")} % du corpus`;
+      const chips = accounts.map((a) =>
+        `<li><a class="handle" href="${xUrl(a.l)}" target="_blank" rel="noopener">@${esc(a.l)}</a>`
+        + `<span class="media-n">${fmt(a.n)}</span>${a.name ? `<span class="media-name">${esc(a.name)}</span>` : ""}</li>`
+      ).join("");
+      return `<details class="media-card media-card-${kind}">
+        <summary>
+          <span class="media-swatch" style="background:${esc(block.color || "#f5d76e")}"></span>
+          <span class="media-title">${esc(block.label || "")}</span>
+          <span class="media-kpis">${fmt(block.nAccounts)} comptes · ${fmt(block.total)} pubs${pctLbl}</span>
+        </summary>
+        <p class="hint">${esc(block.definition || "")}</p>
+        <ul class="media-chips">${chips || "<li>Aucun compte détecté dans ce corpus.</li>"}</ul>
+      </details>`;
+    }).join("");
+    return `<div class="media-panel" id="media-panel">
+      <p class="media-panel-lead">Les courbes médias (onglet <em>Courbes</em>) agrègent ces comptes d’enseigne, pas un pôle Louvain. Un tweet BFM ou Cerfia est déjà compté dans sa communauté ; la ligne mesure leur volume propre, sur la même échelle.</p>
+      <div class="media-grid">${cards}</div>
+    </div>`;
   }
 
   function plotEngagement(el, ph) {
@@ -595,7 +643,7 @@
         <ol>
           <li><strong>Donuts</strong> — part de chaque pôle (top affiché + Autres) en volume de publication, en in/out-strength, et en RT reçus.</li>
           <li><strong>Treemaps</strong> — mêmes communautés, taille = volume, degré pondéré (in + out) ou engagement hors retweet. Le bloc Autres regroupe la longue traîne.</li>
-          <li><strong>Activité temporelle</strong> — onglet <em>Aires empilées</em> (part du volume) ou <em>Courbes</em> (niveaux comparables, sans empilement). La ligne or des médias est normalisée (100 % = son pic) et lit l’axe de droite.</li>
+          <li><strong>Activité temporelle</strong> — onglet <em>Aires empilées</em> (part du volume) ou <em>Courbes</em> (même échelle en publications / jour). En courbes : or = médias traditionnels, turquoise = médias numériques. 100 % n’est plus un pic interne : le survol donne le volume et la part du jour. La liste des comptes est sous le graphe.</li>
           <li><strong>Graphe circulaire</strong> — flèches = flux croisés (hors interne). Trait plein = RT ≥ 80 %, pointillé = RT ≤ 20 %.</li>
           <li><strong>Sankey</strong> — gauche = communauté <em>source</em> (émettrice), droite = communauté <em>cible</em> (réceptrice). Un ruban interne relie la même communauté des deux côtés.</li>
           <li><strong>Top 5</strong> — comptes par in-strength, PageRank ou likes, avec treemaps des flux. Sous chaque compte : ses 5 publications les plus engageantes (RT exclus).</li>
@@ -633,6 +681,7 @@
         </div>
         <p class="hint" id="activity-hint">${esc((ph.dailyActivity || {}).note || "Publications des auteurs du cluster")}</p>
         <div id="activity" class="activity-chart day-clickable"></div>
+        ${mediaPanelHtml(ph.dailyActivity || {}, meta.n_tweets)}
       </div>
       <div class="heatmap-duo">
         <div class="viz-box">
