@@ -370,18 +370,19 @@
     const contentAuthor = p.contentAuthor || p.author || "?";
     let tag = "mention", tagClass = "inbound", headline = `@${esc(contentAuthor)} → @${esc(target)}`;
     if (isOwn) {
-      tag = p.type === "quote" ? "quote" : "tweet original";
+      tag = p.type === "quote" ? "quote" : p.type === "reply" ? "reply" : "tweet original";
       tagClass = "own";
       headline = `@${esc(target)}`;
     } else if (p.type === "reply") { tag = "reply"; tagClass = "inbound"; }
     else if (p.type === "quote") { tag = "quote"; tagClass = "inbound"; }
     else if (p.type === "retweet") { tag = "RT"; tagClass = "retweet"; }
     const eng = Number(p.engagement || 0);
+    const likesN = Number(p.likes || 0);
     const link = p.url || (p.tweetId ? `https://x.com/${encodeURIComponent(p.author || target)}/status/${encodeURIComponent(p.tweetId)}` : "");
     return `<div class="post-card">
       <div class="post-head">
         <span class="type-tag ${tagClass}">${esc(tag)}</span>
-        ${headline}${eng ? " · " + fmt(eng) + " eng." : ""} · ${esc(p.date || "")}
+        ${headline}${eng ? " · " + fmt(eng) + " eng." : ""}${likesN ? " · " + fmt(likesN) + " likes" : ""} · ${esc(p.date || "")}
         ${link ? ` <a class="tweet-link" href="${esc(link)}" target="_blank" rel="noopener">ouvrir</a>` : ""}
       </div>
       <div class="post-text">${esc(p.text || "")}</div>
@@ -391,16 +392,19 @@
   let PHASE = null;
   let activeMetric = "inStrength";
 
+  const METRIC_HINT = {
+    inStrength: "Classement : top 5 comptes par interactions entrantes (in-strength) · sous chaque compte : ses 5 publications les plus engageantes (RT exclus)",
+    pagerank: "Classement : top 5 comptes par PageRank · sous chaque compte : ses 5 publications les plus engageantes (RT exclus)",
+    likes: "Classement : top 5 comptes par likes reçus sur leurs publications hors RT · sous chaque compte : ses 5 publications les plus engageantes (RT exclus)",
+  };
+
   function renderAccounts() {
     const host = document.getElementById("accounts");
     if (!host || !PHASE) return;
     const isPr = activeMetric === "pagerank";
+    const isLikes = activeMetric === "likes";
     const hint = document.getElementById("metric-hint");
-    if (hint) {
-      hint.textContent = isPr
-        ? "Classement : top 5 comptes par PageRank · sous chaque compte : top 5 publications par eng. plateforme"
-        : "Classement : top 5 comptes par interactions entrantes (in-strength) · sous chaque compte : top 5 publications par eng. plateforme";
-    }
+    if (hint) hint.textContent = METRIC_HINT[activeMetric] || METRIC_HINT.inStrength;
     document.querySelectorAll("#metric-tabs .metric-tab").forEach((btn) => {
       btn.classList.toggle("active", btn.dataset.metric === activeMetric);
     });
@@ -409,18 +413,19 @@
       const block = ranks[String(cidOf(n))] || ranks[n.id] || {};
       const data = block[activeMetric] || { accounts: [], commTotal: 0, othersSharePct: 0, giniReceivers: 0 };
       const totalLbl = isPr ? Number(data.commTotal || 0).toFixed(4) : fmt(data.commTotal);
-      const metricLbl = isPr ? "Σ PR" : "Σ in-str";
+      const metricLbl = isPr ? "Σ PR" : isLikes ? "Σ likes" : "Σ in-str";
       const ov = block.interactionOverview || {};
       const rows = (data.accounts || []).slice(0, 5).map((a) => {
         const sn = a.screenName || a.screen_name;
-        const valLbl = isPr ? Number(a.metricValue || a.pagerank || 0).toFixed(4) : fmt(a.metricValue ?? a.inStrength);
+        const rawVal = isPr ? (a.metricValue ?? a.pagerank) : isLikes ? (a.metricValue ?? a.likes) : (a.metricValue ?? a.inStrength);
+        const valLbl = isPr ? Number(rawVal || 0).toFixed(4) : fmt(rawVal);
         const posts = (a.topPosts || a.posts || []).map(postCard).join("")
-          || '<p class="hint">Aucune publication dans le corpus pour ce compte.</p>';
+          || '<p class="hint">Aucune publication hors RT dans le corpus pour ce compte.</p>';
         return `<details class="acct-item">
           <summary>
             <span><a class="handle" href="${xUrl(sn)}" target="_blank" rel="noopener">@${esc(sn)}</a>
               <span class="acct-pct">${esc(a.sharePct)}% · ${valLbl}</span></span>
-            <span class="acct-pct">in-str ${fmt(a.inStrength)} · PR ${a.pagerank ?? "—"}</span>
+            <span class="acct-pct">in-str ${fmt(a.inStrength)} · PR ${a.pagerank ?? "—"} · likes ${fmt(a.likes)}</span>
           </summary>
           <div class="acct-posts">${posts}</div>
         </details>`;
@@ -593,7 +598,7 @@
           <li><strong>Activité temporelle</strong> — onglet <em>Aires empilées</em> (part du volume) ou <em>Courbes</em> (niveaux comparables, sans empilement). La ligne or des médias est normalisée (100 % = son pic) et lit l’axe de droite.</li>
           <li><strong>Graphe circulaire</strong> — flèches = flux croisés (hors interne). Trait plein = RT ≥ 80 %, pointillé = RT ≤ 20 %.</li>
           <li><strong>Sankey</strong> — gauche = communauté <em>source</em> (émettrice), droite = communauté <em>cible</em> (réceptrice). Un ruban interne relie la même communauté des deux côtés.</li>
-          <li><strong>Top 5</strong> — comptes par in-strength (ou PageRank), avec treemaps des flux et publications.</li>
+          <li><strong>Top 5</strong> — comptes par in-strength, PageRank ou likes, avec treemaps des flux. Sous chaque compte : ses 5 publications les plus engageantes (RT exclus).</li>
           <li><strong>Top 5 publications par jour</strong> — en bas de page, semaine par semaine : texte intégral, auteur et type des publications les plus engageantes, onglets <em>Engagement hors likes</em> et <em>Likes</em>. Un clic sur une barre du volume quotidien y mène directement.</li>
         </ol>
       </div>
@@ -686,14 +691,15 @@
         <strong>Comment lire / utiliser ce bloc</strong>
         <ol>
           <li>Chaque carte = une communauté Louvain du top affiché (couleur + hub).</li>
-          <li>Les <strong>5 comptes</strong> sont le top 5 par <strong>interactions entrantes</strong> (in-strength). L’onglet PageRank reclasse selon la centralité.</li>
-          <li><strong>Ouvrir un compte</strong> pour voir jusqu’à <strong>5 publications</strong> classées par engagement plateforme (likes + RT + replies + quotes).</li>
+          <li>Les <strong>5 comptes</strong> sont le top 5 par <strong>interactions entrantes</strong> (in-strength). L’onglet PageRank reclasse selon la centralité, l’onglet Likes selon la somme des likes reçus sur les publications hors RT du compte.</li>
+          <li><strong>Ouvrir un compte</strong> pour voir ses <strong>5 publications</strong> les plus engageantes (likes + RT + replies + quotes). Uniquement les publications du compte, retweets exclus.</li>
           <li>Les treemaps résument d’où viennent / où vont les flux de la communauté (source à gauche, cible à droite).</li>
         </ol>
       </div>
       <div class="metric-tabs" id="metric-tabs">
         <button type="button" class="metric-tab active" data-metric="inStrength">In-strength</button>
         <button type="button" class="metric-tab" data-metric="pagerank">PageRank</button>
+        <button type="button" class="metric-tab" data-metric="likes">Likes</button>
       </div>
       <p class="hint" id="metric-hint">Classement : top 5 comptes par interactions entrantes</p>
       <div class="comm-grid" id="accounts"></div>
