@@ -72,9 +72,9 @@
     Plotly.newPlot(el, [{
       x: vol.dates, y: vol.counts, type: "bar",
       marker: { color: "#4d8af0" },
-      hovertemplate: "%{x}<br>%{y:,} tweets<extra></extra>",
+      hovertemplate: "%{x}<br>%{y:,} tweets<br>clic : top 5 publications du jour<extra></extra>",
     }], plotlyLayout({ height: 280, yaxis: { gridcolor: "#2a3142", title: "tweets" }, xaxis: { gridcolor: "#2a3142" } }),
-    { responsive: true, displayModeBar: false });
+    { responsive: true, displayModeBar: false }).then(() => bindDayClick(el));
   }
 
   function activityTraces(daily, mode) {
@@ -143,7 +143,7 @@
       };
     }
     Plotly.newPlot(el, activityTraces(daily, mode), plotlyLayout(layoutExtra),
-      { responsive: true, displayModeBar: false });
+      { responsive: true, displayModeBar: false }).then(() => bindDayClick(el));
   }
 
   function bindActivityTabs(daily) {
@@ -581,6 +581,7 @@
       <div class="page-header">
         <a class="back-link" href="${esc(conn)}">← Connectome ${esc(corp.label || id)}</a>
         <h1>Flux intercommunautaires · ${esc(corp.label || id)}</h1>
+        <a class="fwd-link" href="#daily-top">Top 5 publications par jour ↓</a>
       </div>
       <p class="subtitle">${esc(ph.phaseLabel || "")} · ${esc(pack.source || "")}. Même partition Louvain que le connectome (seed 42). Les parts de publication mesurent les tweets dont l’auteur appartient à la communauté.</p>
       <div class="corpus-switch">${switcher}</div>
@@ -593,6 +594,7 @@
           <li><strong>Graphe circulaire</strong> — flèches = flux croisés (hors interne). Trait plein = RT ≥ 80 %, pointillé = RT ≤ 20 %.</li>
           <li><strong>Sankey</strong> — gauche = communauté <em>source</em> (émettrice), droite = communauté <em>cible</em> (réceptrice). Un ruban interne relie la même communauté des deux côtés.</li>
           <li><strong>Top 5</strong> — comptes par in-strength (ou PageRank), avec treemaps des flux et publications.</li>
+          <li><strong>Top 5 publications par jour</strong> — en bas de page, semaine par semaine : texte intégral, auteur et type des publications les plus engageantes, onglets <em>Engagement hors likes</em> et <em>Likes</em>. Un clic sur une barre du volume quotidien y mène directement.</li>
         </ol>
       </div>
       <div class="kpi-row">
@@ -615,7 +617,8 @@
       ${treemapSection(ph)}
       <div class="viz-box">
         <div class="viz-title">Volume quotidien · corpus entier</div>
-        <div id="volume" class="volume-full-chart"></div>
+        <p class="hint">Cliquer sur une barre pour ouvrir le top 5 publications de ce jour.</p>
+        <div id="volume" class="volume-full-chart day-clickable"></div>
       </div>
       <div class="viz-box">
         <div class="viz-title">Activité temporelle par communauté</div>
@@ -624,7 +627,7 @@
           <button type="button" class="metric-tab" role="tab" aria-selected="false" data-activity="lines">Courbes</button>
         </div>
         <p class="hint" id="activity-hint">${esc((ph.dailyActivity || {}).note || "Publications des auteurs du cluster")}</p>
-        <div id="activity" class="activity-chart"></div>
+        <div id="activity" class="activity-chart day-clickable"></div>
       </div>
       <div class="heatmap-duo">
         <div class="viz-box">
@@ -694,10 +697,481 @@
       </div>
       <p class="hint" id="metric-hint">Classement : top 5 comptes par interactions entrantes</p>
       <div class="comm-grid" id="accounts"></div>
+      ${dailyTopSectionHtml()}
       <p class="subtitle" style="margin-top:28px">
         <a class="fwd-link" href="${esc(conn)}">Retour au connectome →</a>
       </p>
     `;
+  }
+
+  /* ---------- Top 5 publications par jour (fichier <corpus>_daily_top.json) ---------- */
+  const DT_MODES = {
+    engagement: {
+      key: "e",
+      unit: "eng. hors likes",
+      score: (p) => (p.rt || 0) + (p.rp || 0) + (p.qt || 0),
+      hint: "Classement par retweets + réponses + citations reçus (likes exclus). La barre situe chaque publication par rapport au n° 1 du jour.",
+      empty: "Aucune publication avec retweet, réponse ou citation ce jour.",
+    },
+    likes: {
+      key: "l",
+      unit: "likes",
+      score: (p) => p.lk || 0,
+      hint: "Classement par likes reçus uniquement. La barre situe chaque publication par rapport au n° 1 du jour.",
+      empty: "Aucune publication likée ce jour.",
+    },
+  };
+  const DT_TYPES = {
+    original: { label: "Tweet original", cls: "original" },
+    reply: { label: "Réponse", cls: "reply" },
+    quote: { label: "Citation", cls: "quote" },
+  };
+  const DT_MEDIA = { photo: ["photo", "photos"], video: ["vidéo", "vidéos"], animated_gif: ["GIF", "GIF"] };
+  const DT_DAY_MS = 86400000;
+  const DT = {
+    data: null, mode: "engagement", week: 0, peakWeek: 0,
+    byDay: {}, weekOfDay: {}, comm: {}, pending: null, currentDay: null, spy: null,
+  };
+  const DT_FMT = {
+    weekday: new Intl.DateTimeFormat("fr-FR", { weekday: "long", timeZone: "UTC" }),
+    weekdayShort: new Intl.DateTimeFormat("fr-FR", { weekday: "short", timeZone: "UTC" }),
+    month: new Intl.DateTimeFormat("fr-FR", { month: "long", timeZone: "UTC" }),
+    monthShort: new Intl.DateTimeFormat("fr-FR", { month: "short", timeZone: "UTC" }),
+    compact: new Intl.NumberFormat("fr-FR", { notation: "compact", maximumFractionDigits: 1 }),
+  };
+  const DT_TOKEN = /(https?:\/\/\S+)|(^|[^\p{L}\p{N}_@#&])([@#])([\p{L}\p{N}_]+)/gu;
+
+  const utcDate = (d) => new Date(`${d}T00:00:00Z`);
+  const isoDay = (dt) => dt.toISOString().slice(0, 10);
+  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+  const frDay = (dt) => (dt.getUTCDate() === 1 ? "1er" : String(dt.getUTCDate()));
+  const compact = (n) => DT_FMT.compact.format(n || 0);
+  const longDate = (d) => {
+    const dt = utcDate(d);
+    return `${DT_FMT.weekday.format(dt)} ${frDay(dt)} ${DT_FMT.month.format(dt)} ${dt.getUTCFullYear()}`;
+  };
+  const shortDate = (d) => {
+    const dt = utcDate(d);
+    return `${frDay(dt)} ${DT_FMT.monthShort.format(dt)} ${dt.getUTCFullYear()}`;
+  };
+  const weekNo = (w) => Number(String(w.id).split("-W")[1]);
+  const weekDates = (w) => {
+    const start = utcDate(w.start).getTime();
+    return Array.from({ length: 7 }, (_, i) => isoDay(new Date(start + i * DT_DAY_MS)));
+  };
+  const weekVolume = (w) => weekDates(w).reduce((s, d) => s + ((DT.byDay[d] || {}).n || 0), 0);
+  const statusUrl = (handle, id) => `https://x.com/${encodeURIComponent(handle || "i")}/status/${encodeURIComponent(id)}`;
+
+  function weekRange(w) {
+    const s = utcDate(w.start), e = utcDate(w.end);
+    const sameYear = s.getUTCFullYear() === e.getUTCFullYear();
+    const sameMonth = sameYear && s.getUTCMonth() === e.getUTCMonth();
+    const left = frDay(s) + (sameMonth ? "" : ` ${DT_FMT.month.format(s)}`) + (sameYear ? "" : ` ${s.getUTCFullYear()}`);
+    return `du ${left} au ${frDay(e)} ${DT_FMT.month.format(e)} ${e.getUTCFullYear()}`;
+  }
+
+  function richText(raw) {
+    const text = String(raw || "").replace(/ {2,}/g, "\n");
+    let html = "", last = 0;
+    for (const m of text.matchAll(DT_TOKEN)) {
+      html += esc(text.slice(last, m.index));
+      if (m[1]) {
+        const url = m[1].replace(/[.,;:!?)\]»”"'…]+$/u, "");
+        html += `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(url)}</a>${esc(m[1].slice(url.length))}`;
+      } else {
+        const word = m[4];
+        const href = m[3] === "@" ? xUrl(word) : `https://x.com/hashtag/${encodeURIComponent(word)}`;
+        html += `${esc(m[2])}<a class="dt-tag" href="${esc(href)}" target="_blank" rel="noopener">${esc(m[3] + word)}</a>`;
+      }
+      last = m.index + m[0].length;
+    }
+    return html + esc(text.slice(last));
+  }
+
+  function dtTextBlock(raw) {
+    return `<div class="dt-text">${richText(raw)}</div>`;
+  }
+
+  function dtCommChip(cid) {
+    if (cid == null) return "";
+    const node = DT.comm[cid];
+    if (!node) {
+      return `<span class="dt-comm dt-comm--other" title="Communauté Louvain C${esc(cid)}, hors pôles affichés sur la page">autre communauté</span>`;
+    }
+    return `<span class="dt-comm" style="--comm:${esc(node.color)}" title="Pôle ${esc(node.label)} · hub @${esc(node.hub)}"><span class="dot" style="background:${esc(node.color)}"></span>${esc(node.label)} · @${esc(node.hub)}</span>`;
+  }
+
+  function dtMediaHtml(p) {
+    const items = p.m || [];
+    if (!items.length && !p.s) return "";
+    const thumbs = items.filter((m) => m.u).slice(0, 4).map((m) =>
+      `<a class="dt-thumb" href="${esc(m.u)}?name=large" target="_blank" rel="noopener" title="Ouvrir l’image"><img src="${esc(m.u)}?name=small" alt="Image jointe à la publication" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.remove()"></a>`
+    ).join("");
+    const counts = {};
+    items.forEach((m) => { counts[m.k] = (counts[m.k] || 0) + 1; });
+    const tags = Object.entries(counts).map(([k, n]) => {
+      const lbl = DT_MEDIA[k] || [k, k];
+      return `<span class="dt-media-tag">${n > 1 ? `${n} ` : ""}${esc(lbl[n > 1 ? 1 : 0])}</span>`;
+    }).join("");
+    const warn = p.s ? `<span class="dt-media-tag dt-media-tag--warn">média signalé sensible · non affiché</span>` : "";
+    return `<div class="dt-media">${thumbs}${tags}${warn}</div>`;
+  }
+
+  function dtQuotedHtml(p) {
+    if (p.ty !== "quote") return "";
+    const q = p.qd;
+    if (!q) {
+      return p.qId
+        ? `<div class="dt-quoted dt-quoted--missing">Cite une publication absente du corpus · <a href="${esc(statusUrl("i", p.qId))}" target="_blank" rel="noopener">ouvrir sur X</a></div>`
+        : "";
+    }
+    return `<blockquote class="dt-quoted">
+      <div class="dt-quoted-head">
+        <span class="dt-quoted-kicker">Publication citée</span>
+        <a class="dt-quoted-author" href="${esc(xUrl(q.a))}" target="_blank" rel="noopener">${esc(q.n || q.a)}</a>
+        <span class="dt-handle">@${esc(q.a)}</span>
+        <span>· ${esc(shortDate(q.d))}</span>
+        <a class="dt-open" href="${esc(statusUrl(q.a, q.id))}" target="_blank" rel="noopener">ouvrir</a>
+      </div>
+      ${dtTextBlock(q.x)}
+    </blockquote>`;
+  }
+
+  function dtPostHtml(p, rank, mode, top) {
+    const m = DT_MODES[mode];
+    const score = m.score(p);
+    const pct = top > 0 ? Math.max(2, Math.round((100 * score) / top)) : 0;
+    const type = DT_TYPES[p.ty] || { label: p.ty, cls: "original" };
+    const thread = p.ty === "reply" && p.re && p.re.toLowerCase() === String(p.a).toLowerCase();
+    const node = DT.comm[p.c];
+    const name = p.n || p.a;
+    const initial = (Array.from(name.replace(/^[^\p{L}\p{N}]+/u, ""))[0] || "?").toUpperCase();
+    const verified = p.v
+      ? `<svg class="dt-verified" viewBox="0 0 24 24" role="img" aria-label="Compte certifié"><title>Compte certifié</title><circle cx="12" cy="12" r="10"/><path d="M7.5 12.4l3 3 6-6.4"/></svg>`
+      : "";
+    const context = p.ty === "reply" && p.re
+      ? `<div class="dt-context">${thread ? "Suite d’un fil de" : "En réponse à"} <a href="${esc(xUrl(p.re))}" target="_blank" rel="noopener">@${esc(p.re)}</a>${p.reId ? ` · <a href="${esc(statusUrl(p.re, p.reId))}" target="_blank" rel="noopener">publication d’origine</a>` : ""}</div>`
+      : "";
+    const breakdown = `<div class="dt-break${mode === "likes" ? " is-secondary" : ""}">
+        <span title="Retweets">RT <b>${fmt(p.rt)}</b></span>
+        <span title="Réponses">Rép. <b>${fmt(p.rp)}</b></span>
+        <span title="Citations">Cit. <b>${fmt(p.qt)}</b></span>
+      </div>`;
+    const likesLine = `<div class="dt-alt${mode === "likes" ? "" : " is-secondary"}">${mode === "likes" ? `${fmt(DT_MODES.engagement.score(p))} eng. hors likes` : `${fmt(p.lk)} likes`}</div>`;
+    const extra = [p.bm ? `${fmt(p.bm)} signets` : "", p.im ? `${fmt(p.im)} impressions` : ""].filter(Boolean).join(" · ");
+    return `<article class="dt-post" style="--comm:${esc(node ? node.color : "#5b6477")}">
+      <div class="dt-rank dt-rank--${rank}" aria-label="Rang ${rank}">${rank}</div>
+      <div class="dt-main">
+        <header class="dt-head">
+          <a class="dt-author" href="${esc(xUrl(p.a))}" target="_blank" rel="noopener">
+            <span class="dt-avatar" aria-hidden="true">${esc(initial)}</span>
+            <span class="dt-id"><span class="dt-name">${esc(name)}</span><span class="dt-handle">@${esc(p.a)}</span></span>
+          </a>
+          ${verified}
+          <span class="dt-type dt-type--${type.cls}">${esc(thread ? "Réponse · fil" : type.label)}</span>
+          ${dtCommChip(p.c)}
+          <time class="dt-time" datetime="${esc(p.d)}T${esc(p.t)}Z">${esc(p.t)} UTC</time>
+        </header>
+        ${context}
+        ${dtTextBlock(p.x)}
+        ${dtQuotedHtml(p)}
+        ${dtMediaHtml(p)}
+        <footer class="dt-foot">
+          <a href="${esc(statusUrl(p.a, p.id))}" target="_blank" rel="noopener">Ouvrir sur X ↗</a>
+        </footer>
+      </div>
+      <aside class="dt-score" aria-label="Engagement">
+        <div class="dt-score-v">${fmt(score)}</div>
+        <div class="dt-score-l">${esc(m.unit)}</div>
+        <div class="dt-bar" title="${pct} % du n° 1 du jour"><span style="width:${pct}%"></span></div>
+        ${mode === "likes" ? likesLine + breakdown : breakdown + likesLine}
+        ${extra ? `<div class="dt-alt is-secondary">${extra}</div>` : ""}
+      </aside>
+    </article>`;
+  }
+
+  function dtDayHtml(day, mode) {
+    const m = DT_MODES[mode];
+    const list = (day[m.key] || []).map((i) => DT.data.posts[i]);
+    const top = list.length ? m.score(list[0]) : 0;
+    let body;
+    if (!day.n) body = `<p class="dt-empty">Aucune publication collectée ce jour.</p>`;
+    else if (!list.length) body = `<p class="dt-empty">${esc(m.empty)}</p>`;
+    else body = list.map((p, i) => dtPostHtml(p, i + 1, mode, top)).join("");
+    const few = list.length && list.length < DT.data.topK
+      ? `<p class="dt-note">${list.length} publication${list.length > 1 ? "s" : ""} seulement avec un score non nul ce jour.</p>`
+      : "";
+    return `<section class="dt-day" id="dt-day-${esc(day.d)}" data-day="${esc(day.d)}">
+      <header class="dt-day-head">
+        <h3 class="dt-day-title">${esc(cap(longDate(day.d)))}</h3>
+        <div class="dt-day-meta">
+          <span><b>${fmt(day.n)}</b> tweets</span>
+          <span><b>${fmt(day.o)}</b> hors RT</span>
+          ${top ? `<span>n° 1 : <b>${fmt(top)}</b> ${esc(m.unit)}</span>` : ""}
+        </div>
+      </header>
+      <div class="dt-list">${body}</div>
+      ${few}
+    </section>`;
+  }
+
+  function dtStripHtml(week, mode) {
+    const m = DT_MODES[mode];
+    const dates = weekDates(week);
+    const maxN = Math.max(1, ...dates.map((d) => (DT.byDay[d] || {}).n || 0));
+    const tiles = dates.map((d) => {
+      const day = DT.byDay[d];
+      const dt = utcDate(d);
+      const wd = DT_FMT.weekdayShort.format(dt).replace(".", "");
+      if (!day) {
+        return `<div class="dt-tile is-out" aria-hidden="true"><span class="dt-tile-wd">${esc(wd)}</span><span class="dt-tile-d">${frDay(dt)} <small>${esc(DT_FMT.monthShort.format(dt))}</small></span><span class="dt-tile-n">hors corpus</span></div>`;
+      }
+      const first = (day[m.key] || [])[0];
+      const top = first != null ? m.score(DT.data.posts[first]) : 0;
+      return `<button type="button" class="dt-tile${d === DT.currentDay ? " is-current" : ""}" data-dt-day="${esc(d)}" title="${esc(cap(longDate(d)))} · ${fmt(day.n)} tweets · n° 1 : ${fmt(top)} ${esc(m.unit)}">
+        <span class="dt-tile-wd">${esc(wd)}</span>
+        <span class="dt-tile-d">${frDay(dt)} <small>${esc(DT_FMT.monthShort.format(dt))}</small></span>
+        <span class="dt-tile-n">${compact(day.n)} tweets</span>
+        <span class="dt-tile-top">n° 1 · ${compact(top)}</span>
+        <span class="dt-tile-bar"><span style="width:${Math.round((100 * day.n) / maxN)}%"></span></span>
+      </button>`;
+    }).join("");
+    return `<div class="dt-strip" role="group" aria-label="Jours de la semaine">${tiles}</div>`;
+  }
+
+  function dtTimelineHtml() {
+    const weeks = DT.data.weeks;
+    if (weeks.length < 2) return "";
+    const vols = weeks.map(weekVolume);
+    const max = Math.max(1, ...vols);
+    const bars = weeks.map((w, i) => {
+      const cls = `dt-tl${i === DT.week ? " is-active" : ""}${i === DT.peakWeek ? " is-peak" : ""}`;
+      const label = `Semaine ${weekNo(w)} · ${weekRange(w)} · ${fmt(vols[i])} tweets${i === DT.peakWeek ? " · pic du corpus" : ""}`;
+      return `<button type="button" class="${cls}" data-dt-week="${i}" title="${esc(label)}" aria-label="${esc(label)}"${i === DT.week ? ' aria-current="true"' : ""}><span class="dt-tl-bar" style="height:${Math.max(8, Math.round((100 * vols[i]) / max))}%"></span></button>`;
+    }).join("");
+    return `<div class="dt-timeline-wrap">
+      <div class="dt-timeline-head"><span>Volume hebdomadaire · cliquer une semaine</span><span class="dt-legend-peak">pic du corpus</span></div>
+      <div class="dt-timeline">${bars}</div>
+      <div class="dt-tl-axis"><span>${esc(shortDate(weeks[0].start))}</span><span>${esc(shortDate(weeks[weeks.length - 1].end))}</span></div>
+    </div>`;
+  }
+
+  function dtNavHtml(where) {
+    const weeks = DT.data.weeks;
+    const w = weeks[DT.week];
+    const prev = DT.week > 0, next = DT.week < weeks.length - 1;
+    if (where === "bottom") {
+      return `<nav class="dt-bottom-nav" aria-label="Changer de semaine">
+        <button type="button" class="dt-nav-wide" data-dt-step="-1"${prev ? "" : " disabled"}>‹ Semaine précédente</button>
+        <span class="dt-nav-pos">Semaine ${weekNo(w)} · ${DT.week + 1} / ${weeks.length}</span>
+        <button type="button" class="dt-nav-wide" data-dt-step="1"${next ? "" : " disabled"}>Semaine suivante ›</button>
+      </nav>`;
+    }
+    const options = weeks.map((wk, i) =>
+      `<option value="${i}"${i === DT.week ? " selected" : ""}>S${weekNo(wk)} · ${esc(weekRange(wk))}${i === DT.peakWeek ? " · pic" : ""}</option>`
+    ).join("");
+    const peak = weeks.length > 1 && DT.week !== DT.peakWeek
+      ? `<button type="button" class="dt-chip" data-dt-week="${DT.peakWeek}">Aller à la semaine du pic</button>`
+      : "";
+    return `<div class="dt-nav">
+      <button type="button" class="dt-nav-btn" data-dt-step="-1" aria-label="Semaine précédente"${prev ? "" : " disabled"}>‹</button>
+      <div class="dt-nav-label">
+        <span class="dt-nav-week">Semaine ${weekNo(w)} <span class="dt-nav-pos">${DT.week + 1} / ${weeks.length}</span></span>
+        <span class="dt-nav-range">${esc(cap(weekRange(w)))}</span>
+      </div>
+      <button type="button" class="dt-nav-btn" data-dt-step="1" aria-label="Semaine suivante"${next ? "" : " disabled"}>›</button>
+      ${weeks.length > 1 ? `<select class="dt-select" data-dt-select aria-label="Choisir une semaine">${options}</select>` : ""}
+      ${peak}
+    </div>`;
+  }
+
+  function dtModesHtml() {
+    const tab = (id, label) => {
+      const on = DT.mode === id;
+      return `<button type="button" class="dt-mode${on ? " active" : ""}" role="tab" aria-selected="${on}" data-dt-mode="${id}">${label}</button>`;
+    };
+    return `<div class="dt-modes" role="tablist" aria-label="Critère de classement">
+      ${tab("engagement", "Engagement hors likes")}${tab("likes", "Likes")}
+    </div>`;
+  }
+
+  function renderDailyTop() {
+    const host = document.getElementById("dt-body");
+    if (!host || !DT.data) return;
+    const w = DT.data.weeks[DT.week];
+    const inWeek = weekDates(w).map((d) => DT.byDay[d]).filter(Boolean);
+    if (!inWeek.some((d) => d.d === DT.currentDay)) DT.currentDay = inWeek.length ? inWeek[0].d : null;
+    host.dataset.mode = DT.mode;
+    host.innerHTML = `
+      ${dtTimelineHtml()}
+      <div class="dt-sticky">
+        <div class="dt-toolbar">${dtModesHtml()}${dtNavHtml("top")}</div>
+        ${dtStripHtml(w, DT.mode)}
+      </div>
+      <p class="hint dt-mode-hint">${esc(DT_MODES[DT.mode].hint)}</p>
+      <div class="dt-days" id="dt-days">${inWeek.map((d) => dtDayHtml(d, DT.mode)).join("")}</div>
+      ${DT.data.weeks.length > 1 ? dtNavHtml("bottom") : ""}`;
+    dtObserveDays();
+  }
+
+  function dtMarkCurrent(day) {
+    DT.currentDay = day;
+    document.querySelectorAll("#dt-body .dt-tile[data-dt-day]").forEach((t) => {
+      t.classList.toggle("is-current", t.dataset.dtDay === day);
+    });
+  }
+
+  function dtObserveDays() {
+    if (DT.spy) DT.spy.disconnect();
+    if (!("IntersectionObserver" in window)) return;
+    DT.spy = new IntersectionObserver((entries) => {
+      const seen = entries.filter((e) => e.isIntersecting).map((e) => e.target.dataset.day);
+      if (seen.length) dtMarkCurrent(seen.sort()[0]);
+    }, { rootMargin: "-170px 0px -55% 0px" });
+    document.querySelectorAll("#dt-days .dt-day").forEach((el) => DT.spy.observe(el));
+  }
+
+  function dtWriteHash(day) {
+    if (!DT.data) return;
+    const params = new URLSearchParams();
+    if (day) params.set("jour", day);
+    else params.set("semaine", DT.data.weeks[DT.week].id);
+    if (DT.mode === "likes") params.set("tri", "likes");
+    history.replaceState(null, "", `#${params.toString()}`);
+  }
+
+  const dtScrolledIn = () => {
+    const sec = document.getElementById("daily-top");
+    return !!sec && sec.getBoundingClientRect().top < 0;
+  };
+
+  function dtScrollToDay(day, smooth) {
+    const el = document.getElementById(`dt-day-${day}`);
+    if (!el) return;
+    el.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
+    el.classList.remove("is-flash");
+    void el.offsetWidth;
+    el.classList.add("is-flash");
+  }
+
+  function dtSetWeek(idx) {
+    const n = DT.data.weeks.length;
+    const next = Math.max(0, Math.min(n - 1, idx));
+    if (next === DT.week) return;
+    const wasIn = dtScrolledIn();
+    DT.week = next;
+    DT.currentDay = null;
+    renderDailyTop();
+    dtWriteHash(null);
+    if (wasIn) document.getElementById("dt-body").scrollIntoView({ block: "start" });
+  }
+
+  function dtGoTo(day, smooth = true) {
+    if (!DT.data) {
+      DT.pending = day;
+      const sec = document.getElementById("daily-top");
+      if (sec) sec.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+    const wi = DT.weekOfDay[day];
+    if (wi == null) return;
+    if (wi !== DT.week || !document.getElementById(`dt-day-${day}`)) {
+      DT.week = wi;
+      DT.currentDay = day;
+      renderDailyTop();
+    }
+    dtMarkCurrent(day);
+    dtScrollToDay(day, smooth);
+    dtWriteHash(day);
+  }
+
+  function bindDailyTop() {
+    const section = document.getElementById("daily-top");
+    if (!section) return;
+    section.addEventListener("click", (ev) => {
+      const t = ev.target.closest("[data-dt-mode],[data-dt-step],[data-dt-week],[data-dt-day]");
+      if (!t || !DT.data) return;
+      if (t.dataset.dtMode) {
+        if (t.dataset.dtMode === DT.mode) return;
+        const keep = dtScrolledIn() ? DT.currentDay : null;
+        DT.mode = t.dataset.dtMode;
+        renderDailyTop();
+        if (keep) dtScrollToDay(keep, false);
+        dtWriteHash(keep);
+      } else if (t.dataset.dtStep) {
+        dtSetWeek(DT.week + Number(t.dataset.dtStep));
+      } else if (t.dataset.dtWeek != null) {
+        dtSetWeek(Number(t.dataset.dtWeek));
+      } else if (t.dataset.dtDay) {
+        dtGoTo(t.dataset.dtDay);
+      }
+    });
+    section.addEventListener("change", (ev) => {
+      if (ev.target.matches("[data-dt-select]")) dtSetWeek(Number(ev.target.value));
+    });
+  }
+
+  function bindDayClick(el) {
+    if (!el || typeof el.on !== "function") return;
+    el.on("plotly_click", (ev) => {
+      const x = ev && ev.points && ev.points[0] && ev.points[0].x;
+      if (x) dtGoTo(String(x).slice(0, 10));
+    });
+  }
+
+  async function initDailyTop() {
+    const host = document.getElementById("dt-body");
+    if (!host) return;
+    bindDailyTop();
+    try {
+      const r = await fetch(`./${encodeURIComponent(CORPUS)}_daily_top.json?t=${Date.now()}`);
+      if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+      const data = await r.json();
+      DT.data = data;
+      DT.byDay = Object.fromEntries((data.days || []).map((d) => [d.d, d]));
+      DT.comm = Object.fromEntries((PHASE.nodes || []).map((n) => [cidOf(n), n]));
+      DT.weekOfDay = {};
+      (data.weeks || []).forEach((w, i) => weekDates(w).forEach((d) => { DT.weekOfDay[d] = i; }));
+      const vols = (data.weeks || []).map(weekVolume);
+      DT.peakWeek = vols.indexOf(Math.max(...vols));
+      const meta = document.getElementById("dt-meta");
+      if (meta) {
+        const st = data.stats || {};
+        meta.textContent = `${fmt(st.nDays)} jours du ${shortDate(st.firstDay)} au ${shortDate(st.lastDay)} · ${fmt((data.weeks || []).length)} semaine${(data.weeks || []).length > 1 ? "s" : ""} · ${fmt(st.pool)} publications hors RT classées`;
+      }
+      const params = new URLSearchParams(location.hash.slice(1));
+      if (params.get("tri") === "likes") DT.mode = "likes";
+      const hashDay = params.get("jour");
+      const hashWeek = (data.weeks || []).findIndex((w) => w.id === params.get("semaine"));
+      const target = DT.pending || (DT.weekOfDay[hashDay] != null ? hashDay : null);
+      if (hashWeek >= 0) DT.week = hashWeek;
+      renderDailyTop();
+      if (target) dtGoTo(target, !!DT.pending);
+      else if (hashWeek >= 0 || location.hash === "#daily-top") document.getElementById("daily-top").scrollIntoView({ block: "start" });
+      DT.pending = null;
+    } catch (err) {
+      host.innerHTML = `<p class="err">Top publications par jour indisponible — ${esc(err)}.</p>`;
+    }
+  }
+
+  function dailyTopSectionHtml() {
+    return `
+      <section class="daily-top" id="daily-top" aria-labelledby="dt-title">
+        <div class="dt-header">
+          <h2 id="dt-title">Top 5 publications par jour</h2>
+          <p class="dt-meta" id="dt-meta"></p>
+        </div>
+        <div class="howto-box">
+          <strong>Comment lire ce bloc</strong>
+          <ol>
+            <li>Chaque jour du corpus, les <strong>5 publications</strong> les plus engageantes, avec leur <strong>texte intégral</strong>, leur auteur, leur type (tweet original, réponse, citation) et le pôle Louvain de l’auteur.</li>
+            <li>Onglet <strong>Engagement hors likes</strong> : retweets + réponses + citations reçus. Onglet <strong>Likes</strong> : likes reçus uniquement.</li>
+            <li>Les jours sont présentés <strong>semaine par semaine</strong> (lundi → dimanche, jours UTC comme la courbe de volume) : flèches, liste des semaines ou frise hebdomadaire ; la bande des 7 jours mène directement à un jour.</li>
+            <li>Les retweets sont exclus du classement : ils reprennent les compteurs du tweet d’origine et un texte tronqué. Compteurs plateforme relevés à la collecte.</li>
+          </ol>
+        </div>
+        <div class="dt-body" id="dt-body"><p class="hint">Chargement des publications…</p></div>
+      </section>`;
   }
 
   async function main() {
@@ -737,6 +1211,7 @@
           renderAccounts();
         });
       });
+      initDailyTop();
     } catch (err) {
       root.innerHTML = `<p class="err">Chargement impossible — ${esc(err)}. Servir le dossier via HTTP.</p>`;
     }
