@@ -383,7 +383,7 @@ a.tweet-link:hover { text-decoration: underline; }
   width: 100%;
   max-width: none;
   margin: 0;
-  overflow: hidden;
+  overflow: visible;
   padding: 0;
 }
 .pp-terms { display: flex; flex-direction: column; gap: 5px; }

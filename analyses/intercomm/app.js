@@ -796,10 +796,10 @@
     cloud: "Taille = fréquence dans les publications hors retweet du pôle (pas une comparaison aux autres). Les @mentions et URLs sont retirées.",
     terms: "Score z du log-odds pondéré (Monroe et al. 2008) : le terme est plus fréquent dans ce pôle que dans le reste du corpus. Seuil z ≥ 1,85 et au moins 8 occurrences.",
     cooc: `<div class="pp-note">
-        <p><strong>Quoi.</strong> Réseau des mots qui apparaissent <em>ensemble dans le même tweet</em> (hors RT) d’un membre du pôle. Un disque = un mot (taille ∝ fréquence dans le pôle). Un trait = une paire observée ; plus il est épais, plus l’association est spécifique.</p>
-        <p><strong>Méthode.</strong> Score = PMI (pointwise mutual information) : log P(a,b) / (P(a)P(b)), estimé sur les tweets du pôle. Une paire fréquente mais banale (deux mots très courants) est donc atténuée ; une paire rare mais liée ressort.</p>
-        <p><strong>Choix des mots.</strong> Uniquement le <em>top 55 termes</em> du pôle, après retrait des stopwords français, URLs et @mentions. On ne retient ensuite que les paires vues au moins 3 fois, avec PMI ≥ 0,55, et au plus 18 paires. Les nœuds affichés sont ceux qui appartiennent à ces paires — pas tout le lexique du pôle.</p>
-      </div>`,
+        <p><strong>Quoi.</strong> Overlay comparatif : <em>les mêmes 32 mots, aux mêmes positions</em> sur les six pôles. Cercle creux = mot du vocabulaire global absent ou quasi absent ici. Trait = collocation dans ce pôle (NPMI). On lit les cartes les unes contre les autres, pas comme six graphes indépendants.</p>
+        <p><strong>Méthode.</strong> Unité = <em>texte unique</em> (URLs et @ ôtés, 100 caractères), pas la ligne CSV : un titre YouTube recopié compte une fois. Score d’arête = NPMI (PMI normalisé, Bouma 2009), borné [−1, 1], seuil 0,12 et ≥ 3 textes uniques. Épaisseur des traits et taille des disques sont à <em>la même échelle</em> pour toutes les cartes (0 → 1 et part max du corpus).</p>
+        <p><strong>Choix des mots.</strong> Top 32 du corpus entier par fréquence documentaire (textes uniques), après stopwords. Pas de shortlist par pôle : on ne sélectionne pas les mots qui avantagent une communauté. Ce qui change d’une carte à l’autre : les liens qui s’allument, et le remplissage des disques (part des textes uniques du pôle).</p>
+      </div>`
     amp: "Deux classements par pôle. Gauche : comptes sources des retweets. Droite : comptes mentionnés ou destinataires de réponse dans les publications hors RT. Le % est la part dans ce classement du pôle.",
     geo: "Gauche : lieu Twitter de la publication (place) — souvent vide. Droite : user_location déclaré, un emplacement par compte (texte libre, non normalisé).",
     links: "Gauche : noms de domaine des liens externes. Droite : URL canoniques (sans x.com / twitter.com / t.co). Les raccourcisseurs (bit.ly, etc.) ne sont pas dépliés : unwound_url est vide dans ces exports.",
@@ -987,52 +987,65 @@
   }
 
   function svgCooc(c) {
+    const shared = PP.coocShared || {};
     const g = c.cooc || {};
-    if (!g.nodes || !g.nodes.length || !g.edges || !g.edges.length) {
-      return `<p class="hint">Pas de réseau lexical propre — trop peu de publications originales, ou paires trop banales.</p>`;
+    const vocab = shared.vocab || (g.nodes || []).map((n) => n.t);
+    if (!vocab.length) {
+      return `<p class="hint">Vocabulaire commun indisponible.</p>`;
     }
-    const W = 640, H = 640, cx = 320, cy = 320, font = 12;
-    const n = g.nodes.length;
-    const nodeR = 205;
-    const placed = g.nodes.map((node, i) => {
+    const byShare = Object.fromEntries((g.nodes || []).map((n) => [n.t, n]));
+    const maxShare = Math.max(Number(shared.maxShare) || 0, 0.08);
+    const W = 780, H = 780, cx = 390, cy = 390, font = 11;
+    const ring = 242;
+    const n = vocab.length;
+    const placed = vocab.map((t, i) => {
       const ang = (2 * Math.PI * i / n) - Math.PI / 2;
       const cos = Math.cos(ang), sin = Math.sin(ang);
-      const r = Math.min(node.r || 10, 13);
-      const x = cx + nodeR * cos;
-      const y = cy + nodeR * sin;
+      const rec = byShare[t] || { t, n: 0, share: 0 };
+      const share = Number(rec.share) || 0;
+      const used = share > 0.002;
+      const r = used ? 3.6 + 12.5 * Math.sqrt(share / maxShare) : 3.4;
+      const x = cx + ring * cos;
+      const y = cy + ring * sin;
       let anchor = "middle";
-      let lx = x;
-      let ly = y;
-      if (cos > 0.40) {
-        anchor = "start";
-        lx = x + r + 7;
-        ly = y + 4;
-      } else if (cos < -0.40) {
-        anchor = "end";
-        lx = x - r - 7;
-        ly = y + 4;
-      } else if (sin < 0) {
-        ly = y - r - 8;
-      } else {
-        ly = y + r + 14;
-      }
-      return { t: node.t, r, x, y, lx, ly, anchor };
+      let lx = x, ly = y;
+      if (cos > 0.32) { anchor = "start"; lx = x + r + 7; ly = y + 3; }
+      else if (cos < -0.32) { anchor = "end"; lx = x - r - 7; ly = y + 3; }
+      else if (sin < 0) ly = y - r - 8;
+      else ly = y + r + 13;
+      return { t, r, x, y, lx, ly, anchor, share, used, n: rec.n || 0 };
     });
     const byId = Object.fromEntries(placed.map((p) => [p.t, p]));
-    const mx = Math.max(...g.edges.map((e) => e.pmi), 0.01);
-    const edges = g.edges.map((e) => {
+    const nEd = (g.edges || []).length;
+    const nDocs = g.nDocs != null ? g.nDocs : c.nUniqueTexts;
+    const npmiMin = shared.npmiMin ?? 0.12;
+    const guide = `<circle cx="${cx}" cy="${cy}" r="${ring}" fill="none" stroke="#2a3142" stroke-width="1" stroke-dasharray="3 7" opacity="0.7"/>`;
+    const edges = (g.edges || []).map((e) => {
       const a = byId[e.a], b = byId[e.b];
       if (!a || !b) return "";
-      const w = 0.8 + 2.2 * (e.pmi / mx);
-      const op = 0.22 + 0.55 * (e.pmi / mx);
-      return `<line x1="${a.x.toFixed(1)}" y1="${a.y.toFixed(1)}" x2="${b.x.toFixed(1)}" y2="${b.y.toFixed(1)}" stroke="${esc(c.color)}" stroke-width="${w.toFixed(2)}" opacity="${op.toFixed(2)}"/>`;
+      const npmi = Math.max(0, Math.min(1, Number(e.npmi != null ? e.npmi : e.pmi) || 0));
+      const w = 0.55 + 3.6 * npmi;
+      const op = 0.16 + 0.74 * npmi;
+      const pct = ((e.n || 0) / Math.max(nDocs, 1) * 100).toFixed(1).replace(".", ",");
+      return `<line x1="${a.x.toFixed(1)}" y1="${a.y.toFixed(1)}" x2="${b.x.toFixed(1)}" y2="${b.y.toFixed(1)}" stroke="${esc(c.color)}" stroke-width="${w.toFixed(2)}" opacity="${op.toFixed(2)}" stroke-linecap="round">
+        <title>${esc(e.a)} · ${esc(e.b)} · NPMI ${String(npmi).replace(".", ",")} · ${fmt(e.n)} textes (${pct} %)</title>
+      </line>`;
     }).join("");
-    const nodes = placed.map((p) =>
-      `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${p.r}" fill="${esc(c.color)}" opacity="0.92"/>
-        <text x="${p.lx.toFixed(1)}" y="${p.ly.toFixed(1)}" text-anchor="${p.anchor}" dominant-baseline="middle" fill="#e8eaed" font-size="${font}" font-weight="550">${esc(p.t)}</text>`
-    ).join("");
-    return `<svg viewBox="0 0 ${W} ${H}" class="pp-cooc" role="img" aria-label="Co-occurrences ${esc(c.label)}">${edges}${nodes}</svg>
-      <p class="pp-cap">Disque = mot · trait = même tweet · épaisseur = PMI</p>`;
+    const nodes = placed.map((p) => {
+      const pct = (100 * p.share).toFixed(1).replace(".", ",");
+      const hole = !p.used;
+      const circ = hole
+        ? `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${p.r.toFixed(1)}" fill="none" stroke="#6a7382" stroke-width="1.2" opacity="0.55"/>`
+        : `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${p.r.toFixed(1)}" fill="${esc(c.color)}" opacity="0.92"/>`;
+      const tc = hole ? "#7a8494" : "#e8eaed";
+      return `<g>
+        ${circ}
+        <text x="${p.lx.toFixed(1)}" y="${p.ly.toFixed(1)}" text-anchor="${p.anchor}" dominant-baseline="middle" fill="${tc}" font-size="${font}" font-weight="${hole ? 400 : 600}">${esc(p.t)}</text>
+        <title>${esc(p.t)} · ${fmt(p.n)} / ${fmt(nDocs)} textes (${pct} %)</title>
+      </g>`;
+    }).join("");
+    return `<svg viewBox="0 0 ${W} ${H}" class="pp-cooc" role="img" aria-label="Co-occurrences overlay ${esc(c.label)}">${guide}${edges}${nodes}</svg>
+      <p class="pp-cap">${fmt(nDocs)} textes uniques · ${fmt(nEd)} arêtes NPMI ≥ ${String(npmiMin).replace(".", ",")} · disque = part des textes (échelle commune) · cercle creux = mot du vocabulaire global absent ici</p>`;
   }
 
   function plotCreatedOverlay(el, pack) {
