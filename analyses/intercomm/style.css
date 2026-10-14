@@ -345,6 +345,11 @@ a.tweet-link:hover { text-decoration: underline; }
 }
 
 .pole-profiles { margin: 8px 0 28px; scroll-margin-top: 12px; }
+.pp-note { margin: 0; font-size: 0.78rem; color: var(--muted); line-height: 1.5; max-width: 110ch; }
+.pp-note p { margin: 0 0 6px; }
+.pp-note p:last-child { margin-bottom: 0; }
+.pp-note strong { color: var(--text); font-weight: 600; }
+.pp-cap { margin: 6px 0 0; font-size: 0.68rem; color: var(--muted); text-align: center; }
 .pp-intro { margin-bottom: 10px; }
 .pp-intro .hint code { font-size: 0.72rem; color: var(--text); }
 .pp-overlay-box { margin-top: 4px; }
@@ -382,8 +387,17 @@ a.tweet-link:hover { text-decoration: underline; }
   padding: 0;
 }
 .pp-terms { display: flex; flex-direction: column; gap: 5px; }
-.pp-term { display: grid; grid-template-columns: minmax(88px, 0.46fr) minmax(0, 1fr) 40px; gap: 8px; align-items: center; }
+.pp-term { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(36px, 0.85fr) 40px; gap: 8px; align-items: center; }
 .pp-term-t { font-size: 0.78rem; font-weight: 600; overflow: visible; white-space: normal; line-height: 1.2; }
 .pp-term-bar { height: 7px; background: var(--surface2); border-radius: 99px; overflow: hidden; }
 .pp-term-bar i { display: block; height: 100%; border-radius: 99px; }
 .pp-term-z { font-size: 0.7rem; color: var(--muted); font-variant-numeric: tabular-nums; text-align: right; }
+.pp-duo { display: flex; flex-direction: column; gap: 16px; }
+.pp-pane { min-width: 0; }
+.pp-sub {
+  font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--muted); margin: 0 0 8px; font-weight: 600;
+}
+.pp-url { display: inline-block; max-width: 100%; overflow-wrap: anywhere; font-size: 0.72rem; }
+.pp-hash { font-weight: 600; }
+.pp-term-t .handle { font-weight: 600; }

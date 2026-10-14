@@ -795,7 +795,15 @@
     created: "Chaque courbe = part des comptes datés créés cette année-là. ≤2010 regroupe les identifiants pré-snowflake (pas de millésime fiable). Les histogrammes du dessous reprennent la même série, un pôle par carte.",
     cloud: "Taille = fréquence dans les publications hors retweet du pôle (pas une comparaison aux autres). Les @mentions et URLs sont retirées.",
     terms: "Score z du log-odds pondéré (Monroe et al. 2008) : le terme est plus fréquent dans ce pôle que dans le reste du corpus. Seuil z ≥ 1,85 et au moins 8 occurrences.",
-    cooc: "Paires de mots dans le même tweet, restreintes au vocabulaire du pôle. L’épaisseur du trait suit le PMI. Un graphe vide indique un pôle trop relais, ou trop peu de publications originales.",
+    cooc: `<div class="pp-note">
+        <p><strong>Quoi.</strong> Réseau des mots qui apparaissent <em>ensemble dans le même tweet</em> (hors RT) d’un membre du pôle. Un disque = un mot (taille ∝ fréquence dans le pôle). Un trait = une paire observée ; plus il est épais, plus l’association est spécifique.</p>
+        <p><strong>Méthode.</strong> Score = PMI (pointwise mutual information) : log P(a,b) / (P(a)P(b)), estimé sur les tweets du pôle. Une paire fréquente mais banale (deux mots très courants) est donc atténuée ; une paire rare mais liée ressort.</p>
+        <p><strong>Choix des mots.</strong> Uniquement le <em>top 55 termes</em> du pôle, après retrait des stopwords français, URLs et @mentions. On ne retient ensuite que les paires vues au moins 3 fois, avec PMI ≥ 0,55, et au plus 18 paires. Les nœuds affichés sont ceux qui appartiennent à ces paires — pas tout le lexique du pôle.</p>
+      </div>`,
+    amp: "Deux classements par pôle. Gauche : comptes sources des retweets. Droite : comptes mentionnés ou destinataires de réponse dans les publications hors RT. Le % est la part dans ce classement du pôle.",
+    geo: "Gauche : lieu Twitter de la publication (place) — souvent vide. Droite : user_location déclaré, un emplacement par compte (texte libre, non normalisé).",
+    links: "Gauche : noms de domaine des liens externes. Droite : URL canoniques (sans x.com / twitter.com / t.co). Les raccourcisseurs (bit.ly, etc.) ne sont pas dépliés : unwound_url est vide dans ces exports.",
+    hash: "Hashtags des publications hors RT, surreprésentés dans le pôle vs le reste du corpus (même log-odds que les termes, z ≥ 1,6 et n ≥ 5).",
   };
   let PP = null;
   let ppMode = "created";
@@ -812,6 +820,10 @@
           <button type="button" class="metric-tab" role="tab" aria-selected="false" data-pp="cloud">Nuages de termes</button>
           <button type="button" class="metric-tab" role="tab" aria-selected="false" data-pp="terms">Termes surreprésentés</button>
           <button type="button" class="metric-tab" role="tab" aria-selected="false" data-pp="cooc">Co-occurrences</button>
+          <button type="button" class="metric-tab" role="tab" aria-selected="false" data-pp="amp">Cibles d’amplification</button>
+          <button type="button" class="metric-tab" role="tab" aria-selected="false" data-pp="geo">Origine géographique</button>
+          <button type="button" class="metric-tab" role="tab" aria-selected="false" data-pp="links">Domaines & URL</button>
+          <button type="button" class="metric-tab" role="tab" aria-selected="false" data-pp="hash">Hashtags distinctifs</button>
         </div>
         <p class="hint" id="pp-hint"></p>
         <div class="viz-box pp-overlay-box" id="pp-overlay-box" hidden>
@@ -868,6 +880,97 @@
     return `<svg viewBox="-40 -32 520 292" class="pp-cloud" overflow="visible" role="img" aria-label="Nuage ${esc(c.label)}">${words}</svg>`;
   }
 
+  function rankRows(c, items, opts) {
+    const empty = opts.empty || "Rien à afficher.";
+    const scoreKey = opts.score || "n";
+    if (!items || !items.length) return `<p class="hint">${empty}</p>`;
+    const mx = Math.max(...items.map((it) => Number(it[scoreKey]) || 0), 0.001);
+    return `<div class="pp-terms">${items.map((it) => {
+      const pct = 100 * (Number(it[scoreKey]) || 0) / mx;
+      const lab = opts.label(it);
+      const sc = opts.format(it);
+      const title = opts.title ? opts.title(it) : "";
+      return `<div class="pp-term" title="${esc(title)}">
+        <span class="pp-term-t">${lab}</span>
+        <span class="pp-term-bar"><i style="width:${pct.toFixed(1)}%;background:${esc(c.color)}"></i></span>
+        <span class="pp-term-z">${sc}</span>
+      </div>`;
+    }).join("")}</div>`;
+  }
+
+  function handleLab(it) {
+    return `<a class="handle" href="${xUrl(it.t)}" target="_blank" rel="noopener">@${esc(it.t)}</a>`;
+  }
+
+  function shortUrl(u) {
+    return String(u || "").replace(/^https?:\/\//, "").replace(/^www\./, "");
+  }
+
+  function duo(titleA, htmlA, titleB, htmlB) {
+    return `<div class="pp-duo">
+      <div class="pp-pane"><div class="pp-sub">${titleA}</div>${htmlA}</div>
+      <div class="pp-pane"><div class="pp-sub">${titleB}</div>${htmlB}</div>
+    </div>`;
+  }
+
+  function ampHtml(c) {
+    const rt = rankRows(c, c.rtTargets, {
+      empty: `Aucun retweet identifié (${fmt(c.nRt)} RT).`,
+      label: handleLab,
+      format: (it) => `${fmt(it.n)}`,
+      title: (it) => `@${it.t} · ${it.n} RT · ${String(it.pct).replace(".", ",")} %`,
+    });
+    const men = rankRows(c, c.mentions, {
+      empty: "Aucune mention hors RT.",
+      label: handleLab,
+      format: (it) => `${fmt(it.n)}`,
+      title: (it) => `@${it.t} · ${it.n} mentions · ${String(it.pct).replace(".", ",")} %`,
+    });
+    return duo(`Top retweets · ${fmt(c.nRt)} RT`, rt, `Top mentions · ${fmt(c.nMentions)} hors RT`, men);
+  }
+
+  function geoHtml(c) {
+    const pubs = rankRows(c, c.geoPubs, {
+      empty: `Aucune publication géolocalisée (place Twitter) — ${fmt(c.nGeoPubs)} / ${fmt(c.nTweets)}.`,
+      label: (it) => esc(it.t),
+      format: (it) => `${fmt(it.n)}`,
+      title: (it) => `${it.t} · ${it.n} pubs · ${String(it.pct).replace(".", ",")} %`,
+    });
+    const aut = rankRows(c, c.geoAuthors, {
+      empty: "Aucun user_location déclaré.",
+      label: (it) => esc(it.t),
+      format: (it) => `${fmt(it.n)}`,
+      title: (it) => `${it.t} · ${it.n} comptes · ${String(it.pct).replace(".", ",")} %`,
+    });
+    return duo(`Publications · place (${fmt(c.nGeoPubs)})`, pubs, `Auteurs · user_location (${fmt(c.nGeoAuthors)})`, aut);
+  }
+
+  function linksHtml(c) {
+    const dom = rankRows(c, c.domains, {
+      empty: "Aucun domaine externe.",
+      label: (it) => esc(it.t),
+      format: (it) => `${fmt(it.n)}`,
+      title: (it) => `${it.t} · ${it.n} · ${String(it.pct).replace(".", ",")} %`,
+    });
+    const urls = rankRows(c, c.urls, {
+      empty: "Aucune URL externe.",
+      label: (it) => `<a class="handle pp-url" href="${esc(it.t)}" target="_blank" rel="noopener">${esc(shortUrl(it.t))}</a>`,
+      format: (it) => `${fmt(it.n)}`,
+      title: (it) => `${it.t} · ${it.n} · ${String(it.pct).replace(".", ",")} %`,
+    });
+    return duo("Top domaines", dom, "Top URL", urls);
+  }
+
+  function hashHtml(c) {
+    return rankRows(c, c.hashtags, {
+      empty: "Aucun hashtag distinctif au seuil.",
+      score: "z",
+      label: (it) => `<span class="pp-hash">#${esc(it.t)}</span>`,
+      format: (it) => String(it.z).replace(".", ","),
+      title: (it) => `#${it.t} · ${it.n} occ. · z = ${String(it.z).replace(".", ",")}`,
+    });
+  }
+
   function termsBars(c) {
     if (!c.terms || !c.terms.length) {
       return `<p class="hint">Aucun terme distinctif au seuil (souvent un pôle quasi exclusivement relais : ${fmt(c.nOwnPubs)} pubs hors RT).</p>`;
@@ -888,21 +991,32 @@
     if (!g.nodes || !g.nodes.length || !g.edges || !g.edges.length) {
       return `<p class="hint">Pas de réseau lexical propre — trop peu de publications originales, ou paires trop banales.</p>`;
     }
-    const W = 640, H = 640, cx = 320, cy = 320, font = 12.5;
+    const W = 640, H = 640, cx = 320, cy = 320, font = 12;
     const n = g.nodes.length;
-    const nodeR = 165;
-    const labelR = 248;
+    const nodeR = 205;
     const placed = g.nodes.map((node, i) => {
       const ang = (2 * Math.PI * i / n) - Math.PI / 2;
       const cos = Math.cos(ang), sin = Math.sin(ang);
-      return {
-        t: node.t,
-        r: Math.min(node.r || 10, 13),
-        x: cx + nodeR * cos,
-        y: cy + nodeR * sin,
-        lx: cx + labelR * cos,
-        ly: cy + labelR * sin,
-      };
+      const r = Math.min(node.r || 10, 13);
+      const x = cx + nodeR * cos;
+      const y = cy + nodeR * sin;
+      let anchor = "middle";
+      let lx = x;
+      let ly = y;
+      if (cos > 0.40) {
+        anchor = "start";
+        lx = x + r + 7;
+        ly = y + 4;
+      } else if (cos < -0.40) {
+        anchor = "end";
+        lx = x - r - 7;
+        ly = y + 4;
+      } else if (sin < 0) {
+        ly = y - r - 8;
+      } else {
+        ly = y + r + 14;
+      }
+      return { t: node.t, r, x, y, lx, ly, anchor };
     });
     const byId = Object.fromEntries(placed.map((p) => [p.t, p]));
     const mx = Math.max(...g.edges.map((e) => e.pmi), 0.01);
@@ -915,9 +1029,10 @@
     }).join("");
     const nodes = placed.map((p) =>
       `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${p.r}" fill="${esc(c.color)}" opacity="0.92"/>
-        <text x="${p.lx.toFixed(1)}" y="${p.ly.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" fill="#e8eaed" font-size="${font}" font-weight="550">${esc(p.t)}</text>`
+        <text x="${p.lx.toFixed(1)}" y="${p.ly.toFixed(1)}" text-anchor="${p.anchor}" dominant-baseline="middle" fill="#e8eaed" font-size="${font}" font-weight="550">${esc(p.t)}</text>`
     ).join("");
-    return `<svg viewBox="0 0 ${W} ${H}" class="pp-cooc" role="img" aria-label="Co-occurrences ${esc(c.label)}">${edges}${nodes}</svg>`;
+    return `<svg viewBox="0 0 ${W} ${H}" class="pp-cooc" role="img" aria-label="Co-occurrences ${esc(c.label)}">${edges}${nodes}</svg>
+      <p class="pp-cap">Disque = mot · trait = même tweet · épaisseur = PMI</p>`;
   }
 
   function plotCreatedOverlay(el, pack) {
@@ -946,7 +1061,7 @@
     const box = document.getElementById("pp-overlay-box");
     const overlay = document.getElementById("pp-overlay");
     if (!grid || !PP) return;
-    if (hint) hint.textContent = PP_HINTS[ppMode] || "";
+    if (hint) hint.innerHTML = PP_HINTS[ppMode] || "";
     const showOverlay = ppMode === "created";
     if (box) box.hidden = !showOverlay;
     if (showOverlay && overlay) {
@@ -958,6 +1073,11 @@
       if (ppMode === "created") body = sparkCreated(c, labels);
       else if (ppMode === "cloud") body = svgCloud(c);
       else if (ppMode === "terms") body = termsBars(c);
+      else if (ppMode === "cooc") body = svgCooc(c);
+      else if (ppMode === "amp") body = ampHtml(c);
+      else if (ppMode === "geo") body = geoHtml(c);
+      else if (ppMode === "links") body = linksHtml(c);
+      else if (ppMode === "hash") body = hashHtml(c);
       else body = svgCooc(c);
       return `<article class="pp-card" style="--pp:${esc(c.color)}">${ppHead(c)}<div class="pp-body">${body}</div></article>`;
     }).join("");
