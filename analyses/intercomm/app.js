@@ -865,7 +865,7 @@
       const wt = w.s >= 20 ? 650 : 500;
       return `<text x="${w.x}" y="${w.y}" text-anchor="middle" dominant-baseline="middle" fill="${esc(c.color)}" font-size="${w.s}" font-weight="${wt}" opacity="${op.toFixed(2)}">${esc(w.t)}</text>`;
     }).join("");
-    return `<svg viewBox="0 0 440 228" class="pp-cloud" role="img" aria-label="Nuage ${esc(c.label)}">${words}</svg>`;
+    return `<svg viewBox="-40 -32 520 292" class="pp-cloud" overflow="visible" role="img" aria-label="Nuage ${esc(c.label)}">${words}</svg>`;
   }
 
   function termsBars(c) {
@@ -888,26 +888,36 @@
     if (!g.nodes || !g.nodes.length || !g.edges || !g.edges.length) {
       return `<p class="hint">Pas de réseau lexical propre — trop peu de publications originales, ou paires trop banales.</p>`;
     }
+    const W = 640, H = 640, cx = 320, cy = 320, font = 12.5;
+    const n = g.nodes.length;
+    const nodeR = 165;
+    const labelR = 248;
+    const placed = g.nodes.map((node, i) => {
+      const ang = (2 * Math.PI * i / n) - Math.PI / 2;
+      const cos = Math.cos(ang), sin = Math.sin(ang);
+      return {
+        t: node.t,
+        r: Math.min(node.r || 10, 13),
+        x: cx + nodeR * cos,
+        y: cy + nodeR * sin,
+        lx: cx + labelR * cos,
+        ly: cy + labelR * sin,
+      };
+    });
+    const byId = Object.fromEntries(placed.map((p) => [p.t, p]));
     const mx = Math.max(...g.edges.map((e) => e.pmi), 0.01);
-    const pos = Object.fromEntries(g.nodes.map((n) => [n.t, n]));
-    const cx = 130, cy = 130;
     const edges = g.edges.map((e) => {
-      const a = pos[e.a], b = pos[e.b];
+      const a = byId[e.a], b = byId[e.b];
       if (!a || !b) return "";
-      const w = 0.7 + 2.4 * (e.pmi / mx);
+      const w = 0.8 + 2.2 * (e.pmi / mx);
       const op = 0.22 + 0.55 * (e.pmi / mx);
-      return `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="${esc(c.color)}" stroke-width="${w.toFixed(2)}" opacity="${op.toFixed(2)}"/>`;
+      return `<line x1="${a.x.toFixed(1)}" y1="${a.y.toFixed(1)}" x2="${b.x.toFixed(1)}" y2="${b.y.toFixed(1)}" stroke="${esc(c.color)}" stroke-width="${w.toFixed(2)}" opacity="${op.toFixed(2)}"/>`;
     }).join("");
-    const nodes = g.nodes.map((n) => {
-      const dx = n.x - cx, dy = n.y - cy;
-      const len = Math.hypot(dx, dy) || 1;
-      const lx = n.x + (dx / len) * (n.r + 13);
-      const ly = n.y + (dy / len) * (n.r + 13);
-      const anchor = n.x >= cx ? "start" : "end";
-      return `<circle cx="${n.x}" cy="${n.y}" r="${n.r}" fill="${esc(c.color)}" opacity="0.92"/>
-        <text x="${lx.toFixed(1)}" y="${(ly + 3).toFixed(1)}" text-anchor="${anchor}" fill="#e8eaed" font-size="10">${esc(n.t)}</text>`;
-    }).join("");
-    return `<svg viewBox="0 0 260 260" class="pp-cooc" role="img" aria-label="Co-occurrences ${esc(c.label)}">${edges}${nodes}</svg>`;
+    const nodes = placed.map((p) =>
+      `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${p.r}" fill="${esc(c.color)}" opacity="0.92"/>
+        <text x="${p.lx.toFixed(1)}" y="${p.ly.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" fill="#e8eaed" font-size="${font}" font-weight="550">${esc(p.t)}</text>`
+    ).join("");
+    return `<svg viewBox="0 0 ${W} ${H}" class="pp-cooc" role="img" aria-label="Co-occurrences ${esc(c.label)}">${edges}${nodes}</svg>`;
   }
 
   function plotCreatedOverlay(el, pack) {
