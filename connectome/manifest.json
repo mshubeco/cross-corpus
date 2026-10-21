@@ -30,6 +30,12 @@
       "label": "Macron nucléaire · mars 2026",
       "phaseLabel": "Corpus entier · Macron nucléaire 1–3 mars 2026",
       "connectomeData": "data/macron_nucleaire/graph.json"
+    },
+    {
+      "id": "hmpv",
+      "label": "HMPV · 2025",
+      "phaseLabel": "Corpus entier · HMPV PADMEN (FR+EN, 1 janv. – 30 juin 2025)",
+      "connectomeData": "data/hmpv/graph.json"
     }
   ],
   "defaults": {

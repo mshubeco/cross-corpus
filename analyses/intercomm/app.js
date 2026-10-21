@@ -7,6 +7,7 @@
     { id: "hantavirus", label: "Hantavirus" },
     { id: "mpox", label: "Mpox" },
     { id: "macron_nucleaire", label: "Macron nucléaire" },
+    { id: "hmpv", label: "HMPV · 2025" },
   ];
 
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({
