@@ -21,12 +21,12 @@
     .label:hover { filter: brightness(1.15); }
     #corpusNav {
       position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 12;
-      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      display: flex; flex-direction: column; align-items: center; gap: 5px;
       width: max-content; max-width: calc(100vw - 600px);
       background: transparent; border: 0; overflow: visible;
     }
     #tabs {
-      display: flex; gap: 2px; flex-wrap: wrap; justify-content: center;
+      display: flex; gap: 2px; flex-wrap: wrap; justify-content: center; align-items: center;
       padding: 3px;
       background: rgba(8,10,14,0.78);
       border: 1px solid rgba(255,255,255,0.14);
@@ -36,14 +36,21 @@
     .tab {
       border: 0; background: transparent; color: #b7c0cc; font: inherit; font-size: 12.5px; font-weight: 600;
       padding: 7px 13px; border-radius: 999px; cursor: pointer; white-space: nowrap;
+      text-decoration: none; display: inline-flex; align-items: center;
     }
     .tab:hover { color: #fff; background: rgba(255,255,255,0.08); }
     .tab.active { color: #fff; background: #2563eb; }
+    .tab.tab-ext {
+      color: #a8b0bc; font-weight: 550;
+      border-left: 1px solid rgba(255,255,255,0.12);
+      margin-left: 2px; padding-left: 12px; border-radius: 0 999px 999px 0;
+    }
+    .tab.tab-ext:hover { color: #e8eef7; background: rgba(255,255,255,0.06); }
     #navTools {
-      display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap;
+      display: flex; align-items: center; justify-content: center; gap: 0; flex-wrap: wrap;
     }
     #graphMode {
-      display: inline-flex; gap: 0; padding: 2px;
+      display: inline-flex; gap: 0; padding: 2px; align-items: center;
       background: rgba(8,10,14,0.62);
       border: 1px solid rgba(255,255,255,0.1);
       border-radius: 999px;
@@ -51,27 +58,16 @@
     .mode {
       border: 0; background: transparent; color: #8b93a0; font: inherit; font-size: 11px; font-weight: 600;
       padding: 4px 10px; border-radius: 999px; cursor: pointer; white-space: nowrap;
+      text-decoration: none; display: inline-flex; align-items: center;
     }
     .mode:hover { color: #e8eef7; }
     .mode.active { color: #e7f6cf; background: rgba(115,192,0,0.28); }
-    #subTabs {
-      display: flex; align-items: center; gap: 4px;
-      border: 0; padding: 0; background: transparent;
+    .mode.mode-link {
+      color: #9aa3b0; font-weight: 550;
+      border-left: 1px solid rgba(255,255,255,0.12);
+      margin-left: 1px; padding-left: 10px; border-radius: 0 999px 999px 0;
     }
-    .subtab {
-      display: inline-flex; align-items: baseline; gap: 5px;
-      color: #c9b27a; font: inherit; font-size: 11px;
-      padding: 3px 6px; border-radius: 4px;
-      text-decoration: none; letter-spacing: 0;
-      border: 0; background: transparent; box-shadow: none;
-    }
-    .subtab:hover { color: #fff6d6; background: rgba(201,178,122,0.12); }
-    .subtab .subtab-label { color: inherit; font-weight: 600; }
-    .subtab .subtab-hint { color: #8d8164; font-size: 10px; font-weight: 500; }
-    .subtab + .subtab::before {
-      content: ""; width: 1px; height: 10px; background: rgba(255,255,255,0.16);
-      margin-right: 4px; align-self: center;
-    }
+    .mode.mode-link:hover { color: #fff; background: rgba(255,255,255,0.06); }
     .comm-metrics { color: #8b93a0; font-weight: 500; font-variant-numeric: tabular-nums; font-size: 10.5px; }
     .comm-metrics .pub { color: #c9b27a; }
     .comm-pubbar {
@@ -188,26 +184,15 @@
   <div id="c"></div>
   <div id="labels"></div>
   <nav id="corpusNav" aria-label="Navigation corpus">
-    <div id="tabs" role="tablist" aria-label="Corpus"></div>
+    <div id="tabs" role="tablist" aria-label="Corpus">
+      <a id="health3Link" class="tab tab-ext" href="../analyses/health3_overlap.html" target="_blank" rel="noopener noreferrer" title="Intersection des auteurs des 3 corpus santé">∩ 3 santé</a>
+    </div>
     <div id="navTools">
-    <div id="graphMode" role="tablist" aria-label="Interactions du graphe">
-      <button type="button" class="mode active" data-graph="all" id="graphModeAll">Toutes interactions</button>
-      <button type="button" class="mode" data-graph="rt" id="graphModeRt">RT</button>
-    </div>
-    <div id="subTabs">
-      <a id="health3Link" class="subtab" href="../analyses/health3_overlap.html" target="_blank" rel="noopener noreferrer" title="Intersection des auteurs des 3 corpus santé">
-        <span class="subtab-label">Intersection 3 corpus santé</span>
-        <span class="subtab-hint">intersection ∩ union</span>
-      </a>
-      <a id="analysesLink" class="subtab" href="../analyses/ebola.html" title="Espace d’analyse du corpus affiché (redirige vers les flux intercommunautaires)">
-        <span class="subtab-label">Analyses corpus</span>
-        <span class="subtab-hint" id="analysesLinkHint">espace d’analyse</span>
-      </a>
-      <a id="intercommLink" class="subtab" href="../analyses/intercomm/ebola.html" title="Analyses intercommunautaires du corpus affiché">
-        <span class="subtab-label">Flux intercommunautaires</span>
-        <span class="subtab-hint" id="intercommLinkHint">analyses Louvain</span>
-      </a>
-    </div>
+      <div id="graphMode" role="tablist" aria-label="Interactions du graphe">
+        <button type="button" class="mode active" data-graph="all" id="graphModeAll">Toutes interactions</button>
+        <button type="button" class="mode" data-graph="rt" id="graphModeRt">RT</button>
+        <a id="analysesLink" class="mode mode-link" href="../analyses/ebola.html" title="Analyses du corpus affiché">Analyses</a>
+      </div>
     </div>
   </nav>
   <div id="tooltip"></div>
@@ -265,10 +250,7 @@ const P = {
 
 const tip = document.getElementById('tooltip');
 const tabsEl = document.getElementById('tabs');
-const intercommLinkEl = document.getElementById('intercommLink');
-const intercommLinkHintEl = document.getElementById('intercommLinkHint');
 const analysesLinkEl = document.getElementById('analysesLink');
-const analysesLinkHintEl = document.getElementById('analysesLinkHint');
 let currentCorpusId = null;
 let corporaList = [];
 let graphMode = new URLSearchParams(location.search).get('graph') === 'rt' ? 'rt' : 'all';
@@ -544,11 +526,6 @@ function xProfileUrl(raw) {
   return h ? `https://x.com/${encodeURIComponent(h)}` : null;
 }
 
-function intercommPageUrl(corpusId) {
-  if (!corpusId) return null;
-  return new URL(`../analyses/intercomm/${corpusId}.html`, import.meta.url).href;
-}
-
 function analysesPageUrl(corpusId) {
   if (!corpusId) return null;
   // Short redirect: /analyses/{id}.html → /analyses/intercomm/{id}.html
@@ -600,20 +577,11 @@ function resolveCorpus(corpusParam) {
 
 function syncCorpusSubTabs(corp) {
   const id = corp?.id || currentCorpusId;
-  if (analysesLinkEl) {
-    const au = analysesPageUrl(id);
-    if (au) analysesLinkEl.href = au;
-  }
-  if (analysesLinkHintEl) {
-    analysesLinkHintEl.textContent = corp?.label ? `· ${corp.label}` : 'espace d’analyse';
-  }
-  if (intercommLinkEl) {
-    const iu = intercommPageUrl(id);
-    if (iu) intercommLinkEl.href = iu;
-  }
-  if (intercommLinkHintEl) {
-    intercommLinkHintEl.textContent = corp?.label ? `· ${corp.label}` : 'analyses Louvain';
-  }
+  if (!analysesLinkEl || !id) return;
+  const au = analysesPageUrl(id);
+  if (au) analysesLinkEl.href = au;
+  const short = corp?.label ? String(corp.label).split('·')[0].trim() : id;
+  analysesLinkEl.title = `Analyses · ${short}`;
 }
 
 function openXProfile(raw) {
@@ -1511,7 +1479,8 @@ async function boot() {
   } catch (_) { /* fallback list */ }
 
   corporaList = corpora;
-  tabsEl.innerHTML = '';
+  const health3 = document.getElementById('health3Link');
+  tabsEl.querySelectorAll('button.tab').forEach((b) => b.remove());
   for (const corp of corpora) {
     const b = document.createElement('button');
     b.type = 'button';
@@ -1519,11 +1488,11 @@ async function boot() {
     b.dataset.id = corp.id;
     b.textContent = corp.label;
     b.addEventListener('click', () => loadCorpus(corp));
-    tabsEl.appendChild(b);
+    tabsEl.insertBefore(b, health3);
   }
   // Deep-link: ?corpus=ebola&graph=rt
   updateGraphModeButtons();
-  document.querySelectorAll('#graphMode .mode').forEach((b) => {
+  document.querySelectorAll('#graphMode button.mode[data-graph]').forEach((b) => {
     b.addEventListener('click', () => setGraphMode(b.dataset.graph));
   });
   const start = resolveCorpus(new URLSearchParams(location.search).get('corpus')) || corpora[0];
