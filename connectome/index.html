@@ -658,6 +658,17 @@ function labelOffsetOptions(bw, bh) {
   ];
 }
 
+/** Petits graphes : points trop fins vs labels Gephi (~7–39px). Harmonise l’échelle. */
+function graphVisualScale(nNodes) {
+  if (nNodes < 2500) {
+    return { nodeBoost: 5.5, pointAlpha: 0.72, labelMinPx: 8, labelMaxPx: 15 };
+  }
+  if (nNodes < 12000) {
+    return { nodeBoost: 2.2, pointAlpha: 0.5, labelMinPx: 7, labelMaxPx: 22 };
+  }
+  return { nodeBoost: 1.0, pointAlpha: 0.35, labelMinPx: 7, labelMaxPx: 39 };
+}
+
 function pickLabelPool(nodes, overviewN) {
   const poolCap = labelPoolCap(overviewN, nodes.length);
   if (poolCap <= 0) return [];
@@ -1093,8 +1104,9 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   scene.add(lines);
   applyLinkLight(P.linkLight);
 
-  // microscopic hubs only (almost invisible — edges carry the look)
+  // Hubs : taille / opacité adaptées à la densité du corpus (sinon illisibles sur petits graphes).
   const n = nodes.length;
+  const vis = graphVisualScale(n);
   const nPos = new Float32Array(n * 3);
   const nCol = new Float32Array(n * 3);
   const nSize = new Float32Array(n);
@@ -1108,7 +1120,7 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
     nCol[i * 3] = c[0];
     nCol[i * 3 + 1] = c[1];
     nCol[i * 3 + 2] = c[2];
-    nSize[i] = 0.4 + 2.2 * Math.sqrt((nd.deg || 1) / maxDeg);
+    nSize[i] = (0.4 + 2.2 * Math.sqrt((nd.deg || 1) / maxDeg)) * vis.nodeBoost;
   }
   const pGeo = new THREE.BufferGeometry();
   pGeo.setAttribute('position', new THREE.BufferAttribute(nPos, 3));
@@ -1118,7 +1130,10 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
     transparent: true,
     depthWrite: false,
     blending: THREE.AdditiveBlending,
-    uniforms: { uPR: { value: renderer.getPixelRatio() } },
+    uniforms: {
+      uPR: { value: renderer.getPixelRatio() },
+      uAlpha: { value: vis.pointAlpha },
+    },
     vertexShader: `
       attribute float size; attribute vec3 color;
       varying vec3 vC;
@@ -1131,9 +1146,10 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
       }`,
     fragmentShader: `
       varying vec3 vC;
+      uniform float uAlpha;
       void main() {
         float d = length(gl_PointCoord - 0.5);
-        float a = smoothstep(0.4, 0.0, d) * 0.35;
+        float a = smoothstep(0.45, 0.0, d) * uAlpha;
         gl_FragColor = vec4(vC, a);
         if (a < 0.01) discard;
       }`,
@@ -1161,10 +1177,12 @@ function rebuildLabels() {
   const pool = pickLabelPool(graphData.nodes, P.nLabels);
   if (!pool.length) return;
 
-  // Strong Gephi-like contrast: font ∝ viz:size (range ~7px → ~39px)
+  // Contraste type Gephi, plafonné selon la taille du graphe (évite labels géants / nœuds invisibles).
+  const vis = graphVisualScale(graphData.nodes.length);
   const sMin = minOf(pool, (n) => n.gephiSize, 1);
   const sMax = maxOf(pool, (n) => n.gephiSize, 1);
   const sSpan = Math.max(sMax - sMin, 1e-6);
+  const fontSpan = Math.max(vis.labelMaxPx - vis.labelMinPx, 1);
 
   const ordered = [...pool].sort((a, b) => a.gephiSize - b.gephiSize);
 
@@ -1180,7 +1198,7 @@ function rebuildLabels() {
     const t = Math.pow(u, 0.7);
     const abs = Math.pow(item.gephiSize / sMax, 1.25);
     const mix = 0.45 * t + 0.55 * abs;
-    const fontPx = Math.round(7 + 32 * mix);
+    const fontPx = Math.round(vis.labelMinPx + fontSpan * mix);
 
     el.style.fontSize = `${fontPx}px`;
     el.style.fontWeight = mix > 0.7 ? '700' : mix > 0.4 ? '600' : '500';
