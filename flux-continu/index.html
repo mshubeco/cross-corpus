@@ -32,8 +32,39 @@
     .stat-row b { color: #dfe5ee; }
     .birth { color: #4ade80; }
     .death { color: #f87171; }
-    #timeline { width: 100%; margin: 10px 0 6px; accent-color: #60a5fa; }
     .controls { display: flex; gap: 6px; margin-top: 8px; }
+    #scrubBar {
+      position: fixed; left: 50%; transform: translateX(-50%); bottom: 14px; z-index: 12;
+      width: min(920px, calc(100vw - 40px));
+      padding: 10px 14px 12px;
+      background: rgba(8,10,14,0.82); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px; box-shadow: 0 10px 36px rgba(0,0,0,0.45);
+      backdrop-filter: blur(8px);
+    }
+    #scrubBar .top {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 6px;
+    }
+    #scrubBar .when {
+      color: #e8eef7; font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
+      font-variant-numeric: tabular-nums;
+    }
+    #scrubBar .meta { color: #6a7380; font-size: 10.5px; margin-top: 1px; }
+    #volWrap { position: relative; width: 100%; height: 44px; margin-bottom: 2px; }
+    #volChart {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      display: block; border-radius: 6px; background: rgba(255,255,255,0.03);
+    }
+    #volCursor {
+      position: absolute; top: 0; bottom: 0; width: 1px;
+      background: rgba(232,238,247,0.75); pointer-events: none;
+      box-shadow: 0 0 6px rgba(37,99,235,0.55);
+    }
+    #volLegend {
+      position: absolute; left: 8px; top: 4px; z-index: 1;
+      font-size: 9.5px; color: #6a7380; pointer-events: none;
+    }
+    #volLegend strong { color: #9aa3b0; font-weight: 600; }
+    #scrub { width: 100%; accent-color: #2563eb; cursor: pointer; margin-top: 2px; }
     button {
       flex: 1; padding: 7px 8px; border: 0; border-radius: 6px; cursor: pointer;
       background: #1e3a5f; color: #e8eef7; font-size: 11px; font-weight: 600;
@@ -58,7 +89,7 @@
     }
     .track-share b { color: #dfe5ee; font-weight: 600; }
     #tracks {
-      position: fixed; top: 12px; right: 12px; z-index: 5; width: 260px; max-height: calc(100vh - 24px);
+      position: fixed; top: 12px; right: 12px; z-index: 5; width: 260px; max-height: calc(100vh - 160px);
       overflow: auto; background: rgba(8, 10, 14, 0.82); border: 1px solid rgba(255,255,255,0.08);
       border-radius: 12px; padding: 12px 14px; font-size: 10px; backdrop-filter: blur(8px);
     }
@@ -79,7 +110,7 @@
     }
     #loading.hidden { display: none; }
     #legend {
-      position: fixed; bottom: 12px; left: 12px; z-index: 5; font-size: 10px; color: #6b7585;
+      position: fixed; bottom: 118px; left: 12px; z-index: 5; font-size: 10px; color: #6b7585;
       background: rgba(8,10,14,0.7); padding: 8px 10px; border-radius: 8px; max-width: 420px; line-height: 1.4;
     }
     #corpusNav {
@@ -116,11 +147,11 @@
     <div class="stat-row"><span>Arêtes journalières</span><b id="sEdges">—</b></div>
     <div class="stat-row"><span class="birth">Entrée</span><b id="sBirths" class="birth">—</b></div>
     <div class="stat-row"><span class="death">Sortie</span><b id="sDeaths" class="death">—</b></div>
-    <input id="timeline" type="range" min="0" max="40" value="0" step="0.01" />
     <div class="controls">
       <button id="btnPrev" type="button">◀</button>
       <button id="btnPlay" type="button">▶ Play</button>
       <button id="btnNext" type="button">▶</button>
+      <button id="btnPeak" type="button">Pic</button>
     </div>
     <div class="row"><span>Vitesse</span><input id="speed" type="range" min="1" max="20" value="6" /></div>
     <div class="row"><span>Opacité</span><input id="opacity" type="range" min="0" max="1" step="0.01" value="0.2" /></div>
@@ -146,6 +177,20 @@
     <div id="trackList"></div>
   </aside>
   <div id="legend">Timeline · fenêtre 3j · composante principale · top 6 Louvain · FA2 · même critères que heat-flux-continu</div>
+  <div id="scrubBar" aria-label="Défilement temporel">
+    <div class="top">
+      <div>
+        <div class="when" id="scrubWhen">—</div>
+        <div class="meta" id="scrubMeta">Publications / jour · barre = volume du corpus</div>
+      </div>
+    </div>
+    <div id="volWrap" title="Volume de publications par jour">
+      <div id="volLegend">Publications / jour · <strong id="volNow">—</strong></div>
+      <canvas id="volChart" width="900" height="44"></canvas>
+      <div id="volCursor" style="left:0%"></div>
+    </div>
+    <input id="scrub" type="range" min="0" max="40" value="0" step="0.01" />
+  </div>
   <div id="labels"></div>
 
   <script type="module">
@@ -217,6 +262,9 @@ let nodeGlobalRgb = null;
 let globalCommCounts = null;
 let colorMode = 'global';
 let scopeMode = 'giant'; // 'giant' | 'all'
+let volumeByStep = [];
+let volumeMax = 1;
+let peakStep = 0;
 let highlightCohort251 = false;
 let cohort251Names = new Set();
 let cohort251Idx = new Set();
@@ -1361,7 +1409,8 @@ function updateHUD(visible) {
   const dayIdx = currentDayIndex();
   const f0 = frames[i0], f1 = frames[i1];
 
-  document.getElementById('dayLabel').textContent = manifest.days[dayIdx] || (f < 0.5 ? d0 : d1);
+  const dayTxt = manifest.days[dayIdx] || (f < 0.5 ? d0 : d1);
+  document.getElementById('dayLabel').textContent = dayTxt;
   document.getElementById('windowLabel').textContent = hasFrameLayouts
     ? `t = ${simTime.toFixed(2)} j · morph FA2 ${d0} → ${d1}`
     : `t = ${simTime.toFixed(2)} j · layout union (relancer compute_frame_layouts.py)`;
@@ -1375,9 +1424,74 @@ function updateHUD(visible) {
   document.getElementById('sBirths').textContent = entries.toLocaleString('fr-FR');
   document.getElementById('sDeaths').textContent = exits.toLocaleString('fr-FR');
 
+  const pubs = Math.round(volumeByStep[dayIdx] || 0);
+  const scrubWhen = document.getElementById('scrubWhen');
+  const scrubMeta = document.getElementById('scrubMeta');
+  if (scrubWhen) scrubWhen.textContent = dayTxt;
+  if (scrubMeta) {
+    scrubMeta.textContent = `${pubs.toLocaleString('fr-FR')} publications · ${dailyNodes.toLocaleString('fr-FR')} nœuds · ${dailyEdges.toLocaleString('fr-FR')} arêtes`;
+  }
+  updateVolumeCursor();
+
   const tracks = dayIdx === i0 ? f0.tracks : f1.tracks;
   if (colorMode === 'global') renderGlobalTracks();
   else renderTracks(tracks, f0.tracks, f1.tracks, f);
+}
+
+function initVolumeSeries() {
+  const fromManifest = manifest.volume_by_step;
+  if (Array.isArray(fromManifest) && fromManifest.length === (manifest.frames || []).length) {
+    volumeByStep = fromManifest.map((v) => Number(v) || 0);
+  } else {
+    volumeByStep = (manifest.frames || []).map((f) => Number(f.n_pubs) || Number(f.n_edges) || 0);
+  }
+  volumeMax = Math.max(1, Number(manifest.volume_max) || Math.max(...volumeByStep, 1));
+  peakStep = 0;
+  for (let i = 1; i < volumeByStep.length; i++) {
+    if (volumeByStep[i] > volumeByStep[peakStep]) peakStep = i;
+  }
+}
+
+function drawVolumeChart() {
+  const canvas = document.getElementById('volChart');
+  const wrapEl = document.getElementById('volWrap');
+  if (!canvas || !wrapEl || !volumeByStep.length) return;
+  const dpr = Math.min(devicePixelRatio || 1, 2);
+  const cssW = wrapEl.clientWidth || 900;
+  const cssH = 44;
+  canvas.width = Math.round(cssW * dpr);
+  canvas.height = Math.round(cssH * dpr);
+  canvas.style.width = `${cssW}px`;
+  canvas.style.height = `${cssH}px`;
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, cssW, cssH);
+  const n = volumeByStep.length;
+  const padT = 14;
+  const padB = 3;
+  const h = cssH - padT - padB;
+  const barW = cssW / Math.max(n, 1);
+  for (let i = 0; i < n; i++) {
+    const v = volumeByStep[i] / volumeMax;
+    if (v <= 0) continue;
+    const bh = Math.max(1, v * h);
+    const g = ctx.createLinearGradient(0, padT + h - bh, 0, padT + h);
+    g.addColorStop(0, 'rgba(115,192,0,0.85)');
+    g.addColorStop(1, 'rgba(37,99,235,0.35)');
+    ctx.fillStyle = g;
+    ctx.fillRect(i * barW, padT + h - bh, Math.max(barW * 0.92, 0.5), bh);
+  }
+  updateVolumeCursor();
+}
+
+function updateVolumeCursor() {
+  const cur = document.getElementById('volCursor');
+  const now = document.getElementById('volNow');
+  const n = Math.max((manifest?.frames || []).length - 1, 1);
+  if (cur) cur.style.left = `${(simTime / n) * 100}%`;
+  const s = Math.min(Math.floor(simTime), volumeByStep.length - 1);
+  const v = s >= 0 ? Math.round(volumeByStep[s] || 0) : 0;
+  if (now) now.textContent = `${v.toLocaleString('fr-FR')} ce jour`;
 }
 
 function getTopLouvainCids() {
@@ -1538,8 +1652,12 @@ function finalizeFrameLayouts() {
 }
 
 function setSimTime(t, fromSlider = false) {
-  simTime = clamp(t, 0, frames.length - 1);
-  if (fromSlider) document.getElementById('timeline').value = simTime;
+  simTime = clamp(t, 0, Math.max(0, frames.length - 1));
+  if (fromSlider) {
+    const scrub = document.getElementById('scrub');
+    if (scrub) scrub.value = simTime;
+  }
+  updateVolumeCursor();
 }
 
 function togglePlay() {
@@ -1606,7 +1724,9 @@ async function init() {
   document.title = title;
   const hudTitle = document.getElementById('hudTitle');
   if (hudTitle) hudTitle.textContent = `${(manifest.meta && manifest.meta.corpus_id) || currentCorpusId} · flux continu`;
-  document.getElementById('timeline').max = Math.max(0, (manifest.frames || []).length - 1);
+  const scrub = document.getElementById('scrub');
+  scrub.max = Math.max(0, (manifest.frames || []).length - 1);
+  initVolumeSeries();
 
   await preloadFrames();
 
@@ -1625,8 +1745,9 @@ async function init() {
   updatePositions(1);
   const visible = updateGraphics();
   updateHUD(visible);
+  drawVolumeChart();
 
-  document.getElementById('timeline').addEventListener('input', (e) => {
+  scrub.addEventListener('input', (e) => {
     playing = false;
     document.getElementById('btnPlay').textContent = '▶ Play';
     document.getElementById('btnPlay').classList.remove('active');
@@ -1637,13 +1758,25 @@ async function init() {
   document.getElementById('btnPlay').addEventListener('click', togglePlay);
   document.getElementById('btnPrev').addEventListener('click', () => {
     playing = false;
+    document.getElementById('btnPlay').textContent = '▶ Play';
+    document.getElementById('btnPlay').classList.remove('active');
     setSimTime(simTime - 0.5, true);
     lastEdgeKey = '';
     renderForCurrentTime();
   });
   document.getElementById('btnNext').addEventListener('click', () => {
     playing = false;
+    document.getElementById('btnPlay').textContent = '▶ Play';
+    document.getElementById('btnPlay').classList.remove('active');
     setSimTime(simTime + 0.5, true);
+    lastEdgeKey = '';
+    renderForCurrentTime();
+  });
+  document.getElementById('btnPeak').addEventListener('click', () => {
+    playing = false;
+    document.getElementById('btnPlay').textContent = '▶ Play';
+    document.getElementById('btnPlay').classList.remove('active');
+    setSimTime(peakStep, true);
     lastEdgeKey = '';
     renderForCurrentTime();
   });
@@ -1710,6 +1843,7 @@ window.addEventListener('resize', () => {
   camera.bottom = -frustum;
   camera.updateProjectionMatrix();
   renderer.setSize(innerWidth, innerHeight);
+  drawVolumeChart();
 });
 
 init().then(() => {
