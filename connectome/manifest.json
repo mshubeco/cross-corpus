@@ -36,6 +36,12 @@
       "label": "HMPV · 2025",
       "phaseLabel": "Corpus entier · HMPV PADMEN (FR+EN, 1 janv. – 30 juin 2025)",
       "connectomeData": "data/hmpv/graph.json"
+    },
+    {
+      "id": "hmpv_fr",
+      "label": "HMPV FR · 2025",
+      "phaseLabel": "Corpus entier · HMPV PADMEN (FR seul, 1 janv. – 30 juin 2025)",
+      "connectomeData": "data/hmpv_fr/graph.json"
     }
   ],
   "defaults": {
