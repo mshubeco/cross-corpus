@@ -1100,29 +1100,41 @@
     }).join("");
   }
 
-  function initProfiles() {
+  function bindProfileTabs() {
+    document.querySelectorAll("#pp-tabs .metric-tab").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        ppMode = btn.dataset.pp;
+        document.querySelectorAll("#pp-tabs .metric-tab").forEach((b) => {
+          const on = b === btn;
+          b.classList.toggle("active", on);
+          b.setAttribute("aria-selected", on ? "true" : "false");
+        });
+        renderProfiles();
+      });
+    });
+  }
+
+  function applyProfiles(data) {
     const grid = document.getElementById("pp-grid");
     if (!grid) return;
+    PP = data;
+    bindProfileTabs();
+    renderProfiles();
+  }
+
+  function initProfiles(preloaded) {
+    const grid = document.getElementById("pp-grid");
+    if (!grid) return;
+    if (preloaded) {
+      applyProfiles(preloaded);
+      return;
+    }
     fetch(`./${encodeURIComponent(CORPUS)}_profiles.json`)
       .then((r) => {
         if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
         return r.json();
       })
-      .then((data) => {
-        PP = data;
-        document.querySelectorAll("#pp-tabs .metric-tab").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            ppMode = btn.dataset.pp;
-            document.querySelectorAll("#pp-tabs .metric-tab").forEach((b) => {
-              const on = b === btn;
-              b.classList.toggle("active", on);
-              b.setAttribute("aria-selected", on ? "true" : "false");
-            });
-            renderProfiles();
-          });
-        });
-        renderProfiles();
-      })
+      .then(applyProfiles)
       .catch((err) => {
         grid.innerHTML = `<p class="hint">Profils indisponibles — ${esc(err)}.</p>`;
       });
@@ -1552,36 +1564,45 @@
     });
   }
 
-  async function initDailyTop() {
+  function applyDailyTop(data) {
+    const host = document.getElementById("dt-body");
+    if (!host || !data) return;
+    DT.data = data;
+    DT.byDay = Object.fromEntries((data.days || []).map((d) => [d.d, d]));
+    DT.comm = Object.fromEntries((PHASE.nodes || []).map((n) => [cidOf(n), n]));
+    DT.weekOfDay = {};
+    (data.weeks || []).forEach((w, i) => weekDates(w).forEach((d) => { DT.weekOfDay[d] = i; }));
+    const vols = (data.weeks || []).map(weekVolume);
+    DT.peakWeek = vols.length ? vols.indexOf(Math.max(...vols)) : 0;
+    const meta = document.getElementById("dt-meta");
+    if (meta) {
+      const st = data.stats || {};
+      meta.textContent = `${fmt(st.nDays)} jours du ${shortDate(st.firstDay)} au ${shortDate(st.lastDay)} · ${fmt((data.weeks || []).length)} semaine${(data.weeks || []).length > 1 ? "s" : ""} · ${fmt(st.pool)} publications hors RT classées`;
+    }
+    const params = new URLSearchParams(location.hash.slice(1));
+    if (params.get("tri") === "likes") DT.mode = "likes";
+    const hashDay = params.get("jour");
+    const hashWeek = (data.weeks || []).findIndex((w) => w.id === params.get("semaine"));
+    const target = DT.pending || (DT.weekOfDay[hashDay] != null ? hashDay : null);
+    if (hashWeek >= 0) DT.week = hashWeek;
+    renderDailyTop();
+    if (target) dtGoTo(target, !!DT.pending);
+    else if (hashWeek >= 0 || location.hash === "#daily-top") document.getElementById("daily-top").scrollIntoView({ block: "start" });
+    DT.pending = null;
+  }
+
+  async function initDailyTop(preloaded) {
     const host = document.getElementById("dt-body");
     if (!host) return;
     bindDailyTop();
     try {
-      const r = await fetch(`./${encodeURIComponent(CORPUS)}_daily_top.json`);
-      if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
-      const data = await r.json();
-      DT.data = data;
-      DT.byDay = Object.fromEntries((data.days || []).map((d) => [d.d, d]));
-      DT.comm = Object.fromEntries((PHASE.nodes || []).map((n) => [cidOf(n), n]));
-      DT.weekOfDay = {};
-      (data.weeks || []).forEach((w, i) => weekDates(w).forEach((d) => { DT.weekOfDay[d] = i; }));
-      const vols = (data.weeks || []).map(weekVolume);
-      DT.peakWeek = vols.indexOf(Math.max(...vols));
-      const meta = document.getElementById("dt-meta");
-      if (meta) {
-        const st = data.stats || {};
-        meta.textContent = `${fmt(st.nDays)} jours du ${shortDate(st.firstDay)} au ${shortDate(st.lastDay)} · ${fmt((data.weeks || []).length)} semaine${(data.weeks || []).length > 1 ? "s" : ""} · ${fmt(st.pool)} publications hors RT classées`;
+      let data = preloaded;
+      if (!data) {
+        const r = await fetch(`./${encodeURIComponent(CORPUS)}_daily_top.json`);
+        if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+        data = await r.json();
       }
-      const params = new URLSearchParams(location.hash.slice(1));
-      if (params.get("tri") === "likes") DT.mode = "likes";
-      const hashDay = params.get("jour");
-      const hashWeek = (data.weeks || []).findIndex((w) => w.id === params.get("semaine"));
-      const target = DT.pending || (DT.weekOfDay[hashDay] != null ? hashDay : null);
-      if (hashWeek >= 0) DT.week = hashWeek;
-      renderDailyTop();
-      if (target) dtGoTo(target, !!DT.pending);
-      else if (hashWeek >= 0 || location.hash === "#daily-top") document.getElementById("daily-top").scrollIntoView({ block: "start" });
-      DT.pending = null;
+      applyDailyTop(data);
     } catch (err) {
       host.innerHTML = `<p class="err">Top publications par jour indisponible — ${esc(err)}.</p>`;
     }
@@ -1607,6 +1628,17 @@
       </section>`;
   }
 
+  function tick() {
+    return new Promise((r) => requestAnimationFrame(() => setTimeout(r, 0)));
+  }
+
+  function fetchJsonQuiet(path) {
+    return fetch(path).then((r) => {
+      if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+      return r.json();
+    });
+  }
+
   async function main() {
     const root = document.getElementById("app");
     if (!CORPUS) {
@@ -1615,27 +1647,35 @@
     }
     try {
       root.innerHTML = "<p class='hint'>Téléchargement des analyses…</p>";
-      const r = await fetch(`./${encodeURIComponent(CORPUS)}.json`);
-      if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
-      const pack = await r.json();
+      // Prefetch heavy secondary payloads while the main pack downloads.
+      const profilesP = fetchJsonQuiet(`./${encodeURIComponent(CORPUS)}_profiles.json`).catch(() => null);
+      const dailyP = fetchJsonQuiet(`./${encodeURIComponent(CORPUS)}_daily_top.json`).catch(() => null);
+      const pack = await fetchJsonQuiet(`./${encodeURIComponent(CORPUS)}.json`);
       document.title = `Flux intercommunautaires — ${pack.corpus?.label || CORPUS}`;
       PHASE = pack.phase;
       root.innerHTML = pageHtml(pack);
       const ph = pack.phase;
       const gd = ph.globalDistributions || {};
+
+      // Light charts first (shell already visible).
       plotDonut(document.getElementById("donut-pub"), gd.publications, "Volume de publication");
       plotDonut(document.getElementById("donut-in"), gd.inStrength, "In-strength");
+      await tick();
       plotDonut(document.getElementById("donut-out"), gd.outStrength, "Out-strength");
       plotDonut(document.getElementById("donut-rt"), gd.rtReceived, "RT reçus");
+      await tick();
       ((ph.communityTreemaps || {}).metrics || []).forEach((m) => {
         plotCommunityTreemap(document.getElementById(`treemap-${m.id}`), m);
       });
       plotVolume(document.getElementById("volume"), ph.volumeDaily);
+      await tick();
       plotActivity(document.getElementById("activity"), ph.dailyActivity, "stack");
       bindActivityTabs(ph.dailyActivity);
+      await tick();
       plotEngagement(document.getElementById("eng"), ph);
       plotLikes(document.getElementById("likes"), ph);
       plotConcentration(document.getElementById("conc"), ph);
+      await tick();
       renderSankey(document.getElementById("sankey"), ph);
       renderCircular(document.getElementById("circ"), ph);
       renderAccounts();
@@ -1645,8 +1685,11 @@
           renderAccounts();
         });
       });
-      initDailyTop();
-      initProfiles();
+
+      // Section loaders already in HTML; hydrate when prefetch resolves.
+      const [profiles, daily] = await Promise.all([profilesP, dailyP]);
+      initProfiles(profiles || undefined);
+      initDailyTop(daily || undefined);
     } catch (err) {
       root.innerHTML = `<p class="err">Chargement impossible — ${esc(err)}. Servir le dossier via HTTP.</p>`;
     }
