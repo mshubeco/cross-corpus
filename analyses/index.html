@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Analyses — cross_corpus</title>
+  <style>
+    :root {
+      --bg: #0f1117; --surface: #181b24; --border: #2a3142;
+      --text: #e8eaed; --muted: #9aa3b5; --accent: #4d8af0;
+      --font: "Segoe UI", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.45; }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 28px 24px 48px; }
+    h1 { font-size: 1.35rem; font-weight: 600; margin: 0 0 6px; }
+    .sub { color: var(--muted); font-size: 0.88rem; margin: 0 0 22px; }
+    a { color: var(--accent); }
+    .grid { display: grid; gap: 10px; }
+    .card {
+      display: block; padding: 14px 16px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 8px; text-decoration: none; color: inherit;
+    }
+    .card:hover { border-color: #3d4660; }
+    .card b { display: block; font-size: 0.98rem; margin-bottom: 4px; }
+    .card span { color: var(--muted); font-size: 0.8rem; }
+    .meta { margin-top: 22px; font-size: 0.85rem; color: var(--muted); }
+    .meta a { margin-right: 12px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Espaces d’analyse · cross_corpus</h1>
+    <p class="sub">Une page d’analyses intercommunautaires par corpus (mêmes partitions Louvain que le connectome).</p>
+    <div class="grid" id="list"></div>
+    <p class="meta">
+      <a href="../connectome/">Connectomes</a>
+      <a href="./cross_corpus_analyses.html">Analyses corpus entier</a>
+      <a href="./health3_overlap.html">Intersection 3 santé</a>
+      <a href="./comptes_selectionnes.html">MCA Track B</a>
+    </p>
+  </div>
+  <script>
+    const CORPORA = [
+      { id: "ebola", label: "Ebola · mai 2026" },
+      { id: "ebola_2_2026", label: "Ebola 2 · 2026" },
+      { id: "hantavirus", label: "Hantavirus · mai 2026" },
+      { id: "mpox", label: "Mpox · 2023–2026" },
+      { id: "macron_nucleaire", label: "Macron nucléaire · mars 2026" },
+    ];
+    const list = document.getElementById("list");
+    for (const c of CORPORA) {
+      const a = document.createElement("a");
+      a.className = "card";
+      a.href = `./${encodeURIComponent(c.id)}.html`;
+      a.innerHTML = `<b>${c.label}</b><span>→ flux intercommunautaires · ./intercomm/${c.id}.html</span>`;
+      list.appendChild(a);
+    }
+    const q = new URLSearchParams(location.search).get("corpus");
+    if (q && CORPORA.some((c) => c.id === q)) {
+      location.replace(`./${encodeURIComponent(q)}.html` + location.hash);
+    }
+  </script>
+</body>
+</html>

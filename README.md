@@ -9,6 +9,9 @@ Après push : **Settings → Pages → Deploy from branch `main` / root**.
 | Page | Chemin |
 |------|--------|
 | Connectomes (accueil) | [`/connectome/`](https://mshubeco.github.io/cross-corpus/connectome/) |
+| Hub analyses (tous corpus) | [`/analyses/`](https://mshubeco.github.io/cross-corpus/analyses/) |
+| Redirection par corpus | [`/analyses/ebola.html`](https://mshubeco.github.io/cross-corpus/analyses/ebola.html) → `intercomm/ebola.html` (idem hantavirus, mpox, macron_nucleaire, ebola_2_2026) |
+| Flux intercommunautaires | [`/analyses/intercomm/`](https://mshubeco.github.io/cross-corpus/analyses/intercomm/ebola.html) |
 | Intersection 3 corpus santé | [`/analyses/health3_overlap.html`](https://mshubeco.github.io/cross-corpus/analyses/health3_overlap.html) |
 | Comptes MCA Track B | [`/analyses/comptes_selectionnes.html`](https://mshubeco.github.io/cross-corpus/analyses/comptes_selectionnes.html) |
 | Analyses corpus entier | [`/analyses/cross_corpus_analyses.html`](https://mshubeco.github.io/cross-corpus/analyses/cross_corpus_analyses.html) |

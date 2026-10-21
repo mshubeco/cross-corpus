@@ -667,6 +667,8 @@
     const corp = pack.corpus || {};
     const id = corp.id;
     const conn = `../../connectome/?corpus=${encodeURIComponent(id)}`;
+    const analysesHub = `../${encodeURIComponent(id)}.html`;
+    const analysesAll = `../cross_corpus_analyses.html?corpus=${encodeURIComponent(id)}`;
     const switcher = CORPORA.map((c) =>
       `<a href="./${c.id}.html"${c.id === id ? ' class="active"' : ""}>${esc(c.label)}</a>`
     ).join("");
@@ -674,6 +676,8 @@
       <div class="page-header">
         <a class="back-link" href="${esc(conn)}">← Connectome ${esc(corp.label || id)}</a>
         <h1>Flux intercommunautaires · ${esc(corp.label || id)}</h1>
+        <a class="fwd-link" href="${esc(analysesHub)}">Espace d’analyse</a>
+        <a class="fwd-link" href="${esc(analysesAll)}">Vue corpus entier</a>
         <a class="fwd-link" href="#pole-profiles">Portrait des pôles ↓</a>
         <a class="fwd-link" href="#daily-top">Top 5 publications par jour ↓</a>
       </div>
@@ -799,7 +803,7 @@
         <p><strong>Quoi.</strong> Overlay comparatif : <em>les mêmes 32 mots, aux mêmes positions</em> sur les six pôles. Cercle creux = mot du vocabulaire global absent ou quasi absent ici. Trait = collocation dans ce pôle (NPMI). On lit les cartes les unes contre les autres, pas comme six graphes indépendants.</p>
         <p><strong>Méthode.</strong> Unité = <em>texte unique</em> (URLs et @ ôtés, 100 caractères), pas la ligne CSV : un titre YouTube recopié compte une fois. Score d’arête = NPMI (PMI normalisé, Bouma 2009), borné [−1, 1], seuil 0,12 et ≥ 3 textes uniques. Épaisseur des traits et taille des disques sont à <em>la même échelle</em> pour toutes les cartes (0 → 1 et part max du corpus).</p>
         <p><strong>Choix des mots.</strong> Top 32 du corpus entier par fréquence documentaire (textes uniques), après stopwords. Pas de shortlist par pôle : on ne sélectionne pas les mots qui avantagent une communauté. Ce qui change d’une carte à l’autre : les liens qui s’allument, et le remplissage des disques (part des textes uniques du pôle).</p>
-      </div>`
+      </div>`,
     amp: "Deux classements par pôle. Gauche : comptes sources des retweets. Droite : comptes mentionnés ou destinataires de réponse dans les publications hors RT. Le % est la part dans ce classement du pôle.",
     geo: "Gauche : lieu Twitter de la publication (place) — souvent vide. Droite : user_location déclaré, un emplacement par compte (texte libre, non normalisé).",
     links: "Gauche : noms de domaine des liens externes. Droite : URL canoniques (sans x.com / twitter.com / t.co). Les raccourcisseurs (bit.ly, etc.) ne sont pas dépliés : unwound_url est vide dans ces exports.",
@@ -1099,7 +1103,7 @@
   function initProfiles() {
     const grid = document.getElementById("pp-grid");
     if (!grid) return;
-    fetch(`./${encodeURIComponent(CORPUS)}_profiles.json?t=${Date.now()}`)
+    fetch(`./${encodeURIComponent(CORPUS)}_profiles.json`)
       .then((r) => {
         if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
         return r.json();
@@ -1553,7 +1557,7 @@
     if (!host) return;
     bindDailyTop();
     try {
-      const r = await fetch(`./${encodeURIComponent(CORPUS)}_daily_top.json?t=${Date.now()}`);
+      const r = await fetch(`./${encodeURIComponent(CORPUS)}_daily_top.json`);
       if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
       const data = await r.json();
       DT.data = data;
@@ -1610,7 +1614,8 @@
       return;
     }
     try {
-      const r = await fetch(`./${encodeURIComponent(CORPUS)}.json?t=${Date.now()}`);
+      root.innerHTML = "<p class='hint'>Téléchargement des analyses…</p>";
+      const r = await fetch(`./${encodeURIComponent(CORPUS)}.json`);
       if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
       const pack = await r.json();
       document.title = `Flux intercommunautaires — ${pack.corpus?.label || CORPUS}`;

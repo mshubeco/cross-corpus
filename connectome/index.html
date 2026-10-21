@@ -20,7 +20,7 @@
     }
     .label:hover { filter: brightness(1.15); }
     #corpusNav {
-      position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 6;
+      position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 12;
       display: flex; flex-direction: column; align-items: center; gap: 6px;
       width: max-content; max-width: calc(100vw - 600px);
       background: transparent; border: 0; overflow: visible;
@@ -199,6 +199,10 @@
         <span class="subtab-label">Intersection 3 corpus santé</span>
         <span class="subtab-hint">intersection ∩ union</span>
       </a>
+      <a id="analysesLink" class="subtab" href="../analyses/ebola.html" title="Espace d’analyse du corpus affiché (redirige vers les flux intercommunautaires)">
+        <span class="subtab-label">Analyses corpus</span>
+        <span class="subtab-hint" id="analysesLinkHint">espace d’analyse</span>
+      </a>
       <a id="intercommLink" class="subtab" href="../analyses/intercomm/ebola.html" title="Analyses intercommunautaires du corpus affiché">
         <span class="subtab-label">Flux intercommunautaires</span>
         <span class="subtab-hint" id="intercommLinkHint">analyses Louvain</span>
@@ -263,6 +267,8 @@ const tip = document.getElementById('tooltip');
 const tabsEl = document.getElementById('tabs');
 const intercommLinkEl = document.getElementById('intercommLink');
 const intercommLinkHintEl = document.getElementById('intercommLinkHint');
+const analysesLinkEl = document.getElementById('analysesLink');
+const analysesLinkHintEl = document.getElementById('analysesLinkHint');
 let currentCorpusId = null;
 let corporaList = [];
 let graphMode = new URLSearchParams(location.search).get('graph') === 'rt' ? 'rt' : 'all';
@@ -543,6 +549,12 @@ function intercommPageUrl(corpusId) {
   return new URL(`../analyses/intercomm/${corpusId}.html`, import.meta.url).href;
 }
 
+function analysesPageUrl(corpusId) {
+  if (!corpusId) return null;
+  // Short redirect: /analyses/{id}.html → /analyses/intercomm/{id}.html
+  return new URL(`../analyses/${corpusId}.html`, import.meta.url).href;
+}
+
 function cacheKey(corpusId) {
   return `${corpusId}:${graphMode}`;
 }
@@ -588,6 +600,13 @@ function resolveCorpus(corpusParam) {
 
 function syncCorpusSubTabs(corp) {
   const id = corp?.id || currentCorpusId;
+  if (analysesLinkEl) {
+    const au = analysesPageUrl(id);
+    if (au) analysesLinkEl.href = au;
+  }
+  if (analysesLinkHintEl) {
+    analysesLinkHintEl.textContent = corp?.label ? `· ${corp.label}` : 'espace d’analyse';
+  }
   if (intercommLinkEl) {
     const iu = intercommPageUrl(id);
     if (iu) intercommLinkEl.href = iu;
@@ -1345,7 +1364,7 @@ async function loadCorpus(corp) {
   syncCorpusUrl(corp.id);
   loading.classList.remove('hidden');
   const modeBit = graphMode === 'rt' ? 'RT · ' : '';
-  loading.textContent = `Chargement · ${modeBit}${corp.label}…`;
+  loading.textContent = `Téléchargement · ${modeBit}${corp.label}…`;
   [...tabsEl.querySelectorAll('.tab')].forEach((b) => {
     b.classList.toggle('active', b.dataset.id === corp.id);
   });
@@ -1355,12 +1374,12 @@ async function loadCorpus(corp) {
     let data = graphCache.get(key);
     if (!data) {
       const url = new URL(graphDataUrl(corp), import.meta.url);
-      url.searchParams.set("t", String(Date.now()));
       const r = await fetch(url);
       if (!r.ok) {
         const what = graphMode === 'rt' ? 'Graphe RT' : 'Graphe';
         throw new Error(`${what} indisponible (${r.status})`);
       }
+      loading.textContent = `Lecture JSON · ${modeBit}${corp.label}…`;
       data = await r.json();
       graphCache.set(key, data);
     }
@@ -1369,7 +1388,6 @@ async function loadCorpus(corp) {
         let pubs = pubStatsCache.get(corp.id);
         if (!pubs) {
           const pu = new URL(`./data/${corp.id}/community_stats.json`, import.meta.url);
-          pu.searchParams.set("t", String(Date.now()));
           const pr = await fetch(pu);
           if (pr.ok) {
             pubs = await pr.json();
@@ -1382,6 +1400,13 @@ async function loadCorpus(corp) {
         }
       } catch (_) { /* optional */ }
     }
+    const nE = (data.edges || []).length;
+    const heavy = nE > 80_000;
+    loading.textContent = heavy
+      ? `Construction 3D · ${nE.toLocaleString('fr-FR')} liens (peut prendre 10–30 s)…`
+      : `Construction 3D · ${modeBit}${corp.label}…`;
+    // Yield so the loading text paints before the CPU-heavy hair build.
+    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
     // reset hair density defaults before auto-tune in buildGraph
     P.strands = 4;
     P.segments = 18;

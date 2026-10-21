@@ -63,7 +63,7 @@
   <div class="wrap">
     <h1>Analyses cross-corpus · corpus entier</h1>
     <p class="subtitle" id="src"></p>
-    <p class="subtitle"><a class="link" href="./health3_overlap.html">Intersection 3 corpus santé</a> · <a class="link" href="./comptes_selectionnes.html">Comptes coordonnés (MCA Track B)</a> · <a class="link" href="../connectome/index.html">Connectome</a></p>
+    <p class="subtitle"><a class="link" href="./">Espaces d’analyse</a> · <a class="link" href="./health3_overlap.html">Intersection 3 corpus santé</a> · <a class="link" href="./comptes_selectionnes.html">Comptes coordonnés (MCA Track B)</a> · <a class="link" id="connectomeNav" href="../connectome/">Connectome</a></p>
     <div class="tabs" id="tabs"></div>
     <div id="panels"></div>
   </div>
@@ -284,7 +284,8 @@
           <div class="kpi"><div class="v">${fmt((meta.connectome||{}).n_nodes)}</div><div class="l">Nœuds connectome</div></div>
         </div>
         <p class="hint">Louvain unique · seed 42 · top ${(ph.top6Order||[]).length} pôles ·
-          <a class="link" href="../connectome/index.html">ouvrir le connectome interactif</a>
+          <a class="link" href="../connectome/?corpus=${encodeURIComponent(pid)}">ouvrir le connectome interactif</a>
+          · <a class="link" href="./${encodeURIComponent(pid)}.html">espace d’analyse (flux)</a>
           (données <code>${esc(conn)}</code>)</p>
         <div class="viz-box">
           <div class="viz-title">Volume quotidien · corpus entier</div>
@@ -338,9 +339,19 @@
         </div>`;
     }
 
+    function syncCorpusUrl(id) {
+      const url = new URL(location.href);
+      if (url.searchParams.get("corpus") === id) return;
+      url.searchParams.set("corpus", id);
+      history.replaceState({ corpus: id }, "", url);
+      const nav = document.getElementById("connectomeNav");
+      if (nav) nav.href = `../connectome/?corpus=${encodeURIComponent(id)}`;
+    }
+
     function activate(id) {
       [...tabs.querySelectorAll(".tab")].forEach((t) => t.classList.toggle("active", t.dataset.id === id));
       [...panels.querySelectorAll(".panel")].forEach((p) => p.classList.toggle("active", p.dataset.id === id));
+      syncCorpusUrl(id);
       const ph = DATA[id];
       if (!ph || ph._plotted) return;
       ph._plotted = true;
@@ -386,7 +397,9 @@
       panels.appendChild(p);
     });
 
-    if (corpora[0]) activate(corpora[0].id);
+    const startId = new URLSearchParams(location.search).get("corpus");
+    const start = corpora.find((c) => c.id === startId) || corpora[0];
+    if (start) activate(start.id);
   </script>
 </body>
 </html>
