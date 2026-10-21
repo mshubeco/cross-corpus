@@ -254,6 +254,7 @@
         <button type="button" class="mode active" data-graph="all" id="graphModeAll">Toutes interactions</button>
         <button type="button" class="mode" data-graph="rt" id="graphModeRt">RT</button>
         <a id="analysesLink" class="mode mode-link" href="../analyses/ebola.html" title="Analyses du corpus affiché">Analyses</a>
+        <a id="fluxLink" class="mode mode-link" href="../flux-continu/?corpus=ebola" title="Flux continu (fenêtre 3j · FA2)">Flux continu</a>
       </div>
     </div>
   </nav>
@@ -826,11 +827,18 @@ function resolveCorpus(corpusParam) {
 
 function syncCorpusSubTabs(corp) {
   const id = corp?.id || currentCorpusId;
-  if (!analysesLinkEl || !id) return;
-  const au = analysesPageUrl(id);
-  if (au) analysesLinkEl.href = au;
+  if (!id) return;
   const short = corp?.label ? String(corp.label).split('·')[0].trim() : id;
-  analysesLinkEl.title = `Analyses · ${short}`;
+  if (analysesLinkEl) {
+    const au = analysesPageUrl(id);
+    if (au) analysesLinkEl.href = au;
+    analysesLinkEl.title = `Analyses · ${short}`;
+  }
+  const fluxLinkEl = document.getElementById('fluxLink');
+  if (fluxLinkEl) {
+    fluxLinkEl.href = `../flux-continu/?corpus=${encodeURIComponent(id)}`;
+    fluxLinkEl.title = `Flux continu · ${short}`;
+  }
 }
 
 function openXProfile(raw) {
