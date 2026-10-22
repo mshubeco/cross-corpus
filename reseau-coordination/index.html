@@ -263,10 +263,6 @@ let lastLabelCamKey = '';
 function shortLabel(lab) {
   return String(lab || '').split('·')[0].trim();
 }
-function xUrl(handle) {
-  const h = String(handle || '').replace(/^@/, '').trim();
-  return h ? `https://x.com/${encodeURIComponent(h)}` : null;
-}
 function lift(c, k = 1.15) {
   return [
     Math.min(1.05, (c[0] / 255) * k),
