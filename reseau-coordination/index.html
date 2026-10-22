@@ -41,6 +41,7 @@
       position: fixed; top: 12px; left: 12px; z-index: 5; width: 280px;
       background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.08);
       border-radius: 10px; padding: 12px 14px; font-size: 11px; color: #8b93a0;
+      max-height: calc(100vh - 24px); overflow: auto;
     }
     #hud b {
       color: #c5ccd6; font-weight: 600; display: block; margin-bottom: 4px;
@@ -56,13 +57,65 @@
     #stats { color: #c5ccd6; font-variant-numeric: tabular-nums; line-height: 1.55; }
     .row { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
     .row span { width: 64px; flex-shrink: 0; }
-    .row input { flex: 1; accent-color: #8ab4ff; min-width: 0; }
+    .row input, .row select { flex: 1; accent-color: #8ab4ff; min-width: 0; }
+    .row select {
+      background: #111; color: #c5ccd6; border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 4px; padding: 4px 6px; font-size: 11px;
+    }
+    .color-modes {
+      display: flex; gap: 4px; margin-top: 8px; padding: 2px;
+      background: rgba(255,255,255,0.04); border-radius: 8px;
+    }
+    .color-modes button {
+      flex: 1; border: 0; border-radius: 6px; padding: 6px 4px; cursor: pointer;
+      background: transparent; color: #8b93a0; font: inherit; font-size: 10.5px; font-weight: 600;
+    }
+    .color-modes button:hover { color: #e8eef7; background: rgba(255,255,255,0.06); }
+    .color-modes button.active { color: #fff; background: rgba(37,99,235,0.45); }
     a.hud-link {
       display: inline-flex; margin-bottom: 10px; padding: 6px 10px; border-radius: 7px;
       border: 1px solid rgba(255,255,255,0.12); background: rgba(37,99,235,0.14);
       color: #c5d4f0; text-decoration: none; font-size: 11px; font-weight: 600;
     }
     a.hud-link:hover { background: rgba(37,99,235,0.28); color: #fff; }
+    #commPanel {
+      position: fixed; top: 12px; right: 12px; z-index: 5;
+      width: min(340px, calc(100vw - 24px)); max-height: calc(100vh - 24px);
+      overflow: hidden; display: flex; flex-direction: column;
+      background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; padding: 12px 14px; font-size: 11px; color: #8b93a0;
+    }
+    #commPanel b {
+      color: #c5ccd6; font-weight: 600; display: block; margin-bottom: 4px;
+      font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; flex-shrink: 0;
+    }
+    #commPanel .sub {
+      color: #6a7380; font-size: 10px; line-height: 1.35; margin-bottom: 8px; flex-shrink: 0;
+    }
+    #commList {
+      overflow-y: auto; flex: 1; margin-right: -6px; padding-right: 6px;
+      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.2) transparent;
+    }
+    .comm-row {
+      display: grid; grid-template-columns: 10px 1fr; gap: 8px;
+      padding: 8px 0; border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .comm-row:first-of-type { border-top: 0; padding-top: 2px; }
+    .comm-swatch {
+      width: 10px; height: 10px; border-radius: 2px; margin-top: 3px;
+      box-shadow: 0 0 6px rgba(255,255,255,0.12);
+    }
+    .comm-head {
+      display: flex; justify-content: space-between; gap: 8px; align-items: baseline;
+      color: #c5ccd6; font-weight: 600; margin-bottom: 3px;
+    }
+    .comm-head .pct { color: #6a7380; font-weight: 500; font-variant-numeric: tabular-nums; }
+    .comm-brief { color: #9aa3b0; line-height: 1.45; margin-top: 3px; }
+    .comm-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+    .tag-chip {
+      border: 0; border-radius: 999px; padding: 2px 7px; font-size: 10px;
+      background: rgba(201,178,122,0.16); color: #c9b27a; cursor: default;
+    }
     #loading {
       position: fixed; inset: 0; z-index: 20; display: grid; place-items: center;
       background: #000; color: #9aa3b0; font-size: 12px;
@@ -104,13 +157,22 @@
     <b>Réseau de coordination</b>
     <div class="method">co-RT · Serrano α=0,05 (OR)</div>
     <div id="stats">—</div>
+    <div class="color-modes" role="tablist" aria-label="Couleurs Louvain">
+      <button type="button" class="active" data-color="coord" id="colorCoord">Louvain coordination</button>
+      <button type="button" data-color="base" id="colorBase">Louvain connectome</button>
+    </div>
     <div class="row"><span>Lumière</span><input id="linkLight" type="range" min="0" max="1" step="0.01" value="0.35"></div>
     <div class="row"><span>Opacité</span><input id="op" type="range" min="0" max="0.55" step="0.005" value="0.12"></div>
     <div class="row"><span>Labels</span><input id="nLabels" type="range" min="0" max="80" step="1" value="36"></div>
     <div class="note">
-      Backbone de disparité (Serrano et al. 2009). Signal de coordination d’amplification —
-      pas une preuve d’inauthenticité.
+      Backbone Serrano (2009). Couleurs = Louvain du graphe de coordination, ou Louvain du connectome d’origine.
+      Lecture discursive exploratoire — pas une preuve d’inauthenticité.
     </div>
+  </aside>
+  <aside id="commPanel">
+    <b>Clusters · lecture discursive</b>
+    <div class="sub" id="commSub">Hashtags / lexique distinctifs (G²) sur pubs hors RT des comptes du backbone.</div>
+    <div id="commList">Chargement…</div>
   </aside>
   <div id="tooltip"></div>
 
@@ -129,17 +191,22 @@ const tip = document.getElementById('tooltip');
 const nav = document.getElementById('corpusNav');
 const statsEl = document.getElementById('stats');
 const backEl = document.getElementById('backConnectome');
+const commListEl = document.getElementById('commList');
+const commSubEl = document.getElementById('commSub');
 
 const P = { linkLight: 0.35, opacity: 0.12, nLabels: 36, bloom: 0.42 };
+let colorMode = 'coord'; // coord | base
 
 let corpora = [];
 let currentId = null;
 let graph = null;
+let discourse = null;
 let nodes = [];
 let edges = [];
 let scene, camera, renderer, controls, composer, bloomPass;
 let lineMat, pointsMesh, lineGeo;
-let animId = 0;
+let lineColorsBase = null;
+let nodeColorsBase = null;
 
 function shortLabel(lab) {
   return String(lab || '').split('·')[0].trim();
@@ -152,6 +219,12 @@ function xUrl(handle) {
 
 function lift(c, k = 1.15) {
   return [(c[0] / 255) * k, (c[1] / 255) * k, (c[2] / 255) * k];
+}
+
+function nodeRgb(nd) {
+  if (colorMode === 'base' && nd.c_base) return nd.c_base;
+  if (nd.c_coord) return nd.c_coord;
+  return nd.c || [140, 140, 150];
 }
 
 function initThree() {
@@ -191,7 +264,7 @@ function initThree() {
   });
 
   function loop() {
-    animId = requestAnimationFrame(loop);
+    requestAnimationFrame(loop);
     controls.update();
     composer.render();
     updateLabels();
@@ -205,6 +278,8 @@ function clearScene() {
   lineGeo = null;
   lineMat = null;
   pointsMesh = null;
+  lineColorsBase = null;
+  nodeColorsBase = null;
 }
 
 function buildScene(data) {
@@ -218,8 +293,8 @@ function buildScene(data) {
     const a = nodes[e.s];
     const b = nodes[e.t];
     if (!a || !b) continue;
-    const ca = lift(a.c, 1.2);
-    const cb = lift(b.c, 1.2);
+    const ca = lift(nodeRgb(a), 1.2);
+    const cb = lift(nodeRgb(b), 1.2);
     const wNorm = Math.pow(e.w / maxW, 0.45);
     const bright = 0.35 + 0.55 * wNorm;
     positions.push(a.x, a.y, 0, b.x, b.y, 0);
@@ -230,7 +305,8 @@ function buildScene(data) {
   }
   lineGeo = new THREE.BufferGeometry();
   lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-  lineGeo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+  lineColorsBase = new Float32Array(colors);
+  lineGeo.setAttribute('color', new THREE.Float32BufferAttribute(lineColorsBase, 3));
   lineMat = new THREE.LineBasicMaterial({
     vertexColors: true, transparent: true, opacity: P.opacity,
     blending: THREE.AdditiveBlending, depthWrite: false,
@@ -249,10 +325,11 @@ function buildScene(data) {
     nPos[i * 3] = nd.x;
     nPos[i * 3 + 1] = nd.y;
     nPos[i * 3 + 2] = 0.2;
-    const c = lift(nd.c, 1.12);
+    const c = lift(nodeRgb(nd), 1.12);
     nCol[i * 3] = c[0]; nCol[i * 3 + 1] = c[1]; nCol[i * 3 + 2] = c[2];
     nSize[i] = 3.5 + 10 * Math.sqrt((nd.deg || 1) / maxDeg);
   }
+  nodeColorsBase = new Float32Array(nCol);
   const pGeo = new THREE.BufferGeometry();
   pGeo.setAttribute('position', new THREE.BufferAttribute(nPos, 3));
   pGeo.setAttribute('color', new THREE.BufferAttribute(nCol, 3));
@@ -293,11 +370,51 @@ function buildScene(data) {
   rebuildLabels();
 }
 
+function applyColorMode() {
+  if (!pointsMesh || !nodes.length) return;
+  const n = nodes.length;
+  const nCol = pointsMesh.geometry.attributes.color.array;
+  const maxW = Math.max(1, ...edges.map((e) => e.w || 1));
+  for (let i = 0; i < n; i++) {
+    const c = lift(nodeRgb(nodes[i]), 1.12);
+    nCol[i * 3] = c[0]; nCol[i * 3 + 1] = c[1]; nCol[i * 3 + 2] = c[2];
+  }
+  pointsMesh.geometry.attributes.color.needsUpdate = true;
+  nodeColorsBase = new Float32Array(nCol);
+
+  if (lineGeo && lineColorsBase) {
+    const colors = [];
+    for (const e of edges) {
+      const a = nodes[e.s];
+      const b = nodes[e.t];
+      if (!a || !b) continue;
+      const ca = lift(nodeRgb(a), 1.2);
+      const cb = lift(nodeRgb(b), 1.2);
+      const wNorm = Math.pow(e.w / maxW, 0.45);
+      const bright = 0.35 + 0.55 * wNorm;
+      colors.push(
+        ca[0] * bright, ca[1] * bright, ca[2] * bright,
+        cb[0] * bright, cb[1] * bright, cb[2] * bright
+      );
+    }
+    lineColorsBase = new Float32Array(colors);
+    lineGeo.setAttribute('color', new THREE.Float32BufferAttribute(lineColorsBase, 3));
+  }
+  renderDiscoursePanel();
+}
+
+function setColorMode(mode) {
+  colorMode = mode === 'base' ? 'base' : 'coord';
+  document.querySelectorAll('.color-modes button').forEach((b) => {
+    b.classList.toggle('active', b.dataset.color === colorMode);
+  });
+  applyColorMode();
+}
+
 function rebuildLabels() {
   labelsEl.innerHTML = '';
   const order = [...nodes.keys()].sort((a, b) => (nodes[b].deg || 0) - (nodes[a].deg || 0));
-  const take = order.slice(0, P.nLabels);
-  for (const i of take) {
+  for (const i of order.slice(0, P.nLabels)) {
     const nd = nodes[i];
     const el = document.createElement('div');
     el.className = 'label';
@@ -309,10 +426,8 @@ function rebuildLabels() {
 }
 
 function updateLabels() {
-  const kids = labelsEl.children;
-  for (const el of kids) {
-    const i = Number(el.dataset.i);
-    const nd = nodes[i];
+  for (const el of labelsEl.children) {
+    const nd = nodes[Number(el.dataset.i)];
     if (!nd) continue;
     const v = new THREE.Vector3(nd.x, nd.y, 0.2).project(camera);
     const x = (v.x * 0.5 + 0.5) * innerWidth;
@@ -356,10 +471,13 @@ function onPointerMove(ev) {
   const i = nearestNode(w.x, w.y);
   if (i < 0) { tip.style.display = 'none'; return; }
   const nd = nodes[i];
+  const comLabel = colorMode === 'base'
+    ? `Louvain connectome ${nd.com_base ?? '—'}`
+    : `Louvain coord ${nd.com ?? nd.com_coord ?? '—'}`;
   tip.style.display = 'block';
   tip.style.left = `${ev.clientX + 12}px`;
   tip.style.top = `${ev.clientY + 12}px`;
-  tip.textContent = `@${nd.l} · deg ${nd.deg}`;
+  tip.textContent = `@${nd.l} · deg ${nd.deg} · ${comLabel}`;
 }
 
 function onClick(ev) {
@@ -372,12 +490,62 @@ function onClick(ev) {
 
 function setStats(meta) {
   const pre = meta.n_edges_pre_serrano != null ? meta.n_edges_pre_serrano.toLocaleString('fr-FR') : '—';
+  const match = meta.n_base_matched != null
+    ? `<div>Match Louvain connectome · ${(meta.n_base_matched || 0).toLocaleString('fr-FR')}/${(meta.n_nodes || 0).toLocaleString('fr-FR')}</div>`
+    : '';
   statsEl.innerHTML = [
     `<div>${meta.title || currentId}</div>`,
     `<div>Nœuds backbone · <b style="color:#e8eef7">${(meta.n_nodes || 0).toLocaleString('fr-FR')}</b></div>`,
     `<div>Arêtes Serrano · <b style="color:#e8eef7">${(meta.n_edges || 0).toLocaleString('fr-FR')}</b></div>`,
     `<div>Arêtes pré-filtre · ${pre}</div>`,
+    match,
   ].join('');
+}
+
+function renderDiscoursePanel() {
+  if (colorMode === 'base') {
+    const tops = graph?.meta?.topCommunitiesBase || [];
+    commSubEl.textContent = 'Couleurs = Louvain du connectome d’origine (projection sur le backbone). Analyse discursive = clusters de coordination.';
+    if (!tops.length) {
+      commListEl.innerHTML = '<div class="comm-brief">Pas de mapping Louvain connectome.</div>';
+      return;
+    }
+    const total = tops.reduce((s, t) => s + (t.n || 0), 0) || 1;
+    commListEl.innerHTML = tops.map((t) => `
+      <div class="comm-row">
+        <div class="comm-swatch" style="background:${t.color}"></div>
+        <div>
+          <div class="comm-head"><span>Connectome C${t.id}</span><span class="pct">${t.n} · ${Math.round(100 * t.n / total)}%</span></div>
+          <div class="comm-brief">Hub backbone · @${t.hub || '—'}</div>
+        </div>
+      </div>`).join('');
+    return;
+  }
+
+  const coms = discourse?.communities || {};
+  const rows = Object.values(coms).sort((a, b) => (b.n_users || 0) - (a.n_users || 0));
+  commSubEl.textContent = 'Hashtags / lexique distinctifs (G²) sur pubs hors RT des comptes du backbone — clusters Louvain du réseau de coordination.';
+  if (!rows.length) {
+    commListEl.innerHTML = '<div class="comm-brief">Pas encore d’analyse discursive pour ce corpus.</div>';
+    return;
+  }
+  const total = rows.reduce((s, r) => s + (r.n_users || 0), 0) || 1;
+  commListEl.innerHTML = rows.map((r) => {
+    const tags = (r.key_hashtags || []).slice(0, 4)
+      .map((h) => `<span class="tag-chip">#${h.tag}</span>`).join('');
+    return `
+      <div class="comm-row">
+        <div class="comm-swatch" style="background:${r.color || '#888'}"></div>
+        <div>
+          <div class="comm-head">
+            <span>C${r.id} · @${r.hub || '—'}</span>
+            <span class="pct">${r.n_users} · ${Math.round(100 * r.n_users / total)}%</span>
+          </div>
+          <div class="comm-brief">${r.brief || r.qualif_short || '—'}</div>
+          ${tags ? `<div class="comm-tags">${tags}</div>` : ''}
+        </div>
+      </div>`;
+  }).join('');
 }
 
 function renderNav() {
@@ -418,16 +586,24 @@ async function loadCorpus(id) {
     const res = await fetch(corp.graph);
     if (!res.ok) throw new Error(`HTTP ${res.status} — lancez le pipeline build_corpus.py`);
     graph = await res.json();
+    discourse = null;
+    try {
+      const dr = await fetch(`data/${currentId}/discourse.json`);
+      if (dr.ok) discourse = await dr.json();
+    } catch (_) { /* optional */ }
+
     setStats(graph.meta || {});
     const nE = (graph.edges || []).length;
     const nN = (graph.nodes || []).length;
     if (!nN || !nE) {
       clearScene();
-      statsEl.innerHTML += `<div style="margin-top:8px;color:#c9b27a">Aucun backbone Serrano (0 arête après α=0,05). Corpus trop petit ou signal trop faible.</div>`;
+      commListEl.innerHTML = '';
+      statsEl.innerHTML += `<div style="margin-top:8px;color:#c9b27a">Aucun backbone Serrano (0 arête après α=0,05).</div>`;
       loading.classList.add('hidden');
       return;
     }
     buildScene(graph);
+    applyColorMode();
     loading.classList.add('hidden');
   } catch (err) {
     ldMsg.textContent = String(err.message || err);
@@ -445,6 +621,9 @@ document.getElementById('op').addEventListener('input', (e) => {
 document.getElementById('nLabels').addEventListener('input', (e) => {
   P.nLabels = Number(e.target.value);
   rebuildLabels();
+});
+document.querySelectorAll('.color-modes button').forEach((b) => {
+  b.addEventListener('click', () => setColorMode(b.dataset.color));
 });
 
 async function boot() {

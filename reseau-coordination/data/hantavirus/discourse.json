@@ -1,0 +1,342 @@
+{
+  "meta": {
+    "layer": "coordination_louvain",
+    "method": "G2 keyness hashtags/words on non-RT texts of backbone accounts",
+    "vocabulary": "lecture discursive exploratoire — pas une preuve d'inauthenticité",
+    "n_tweets_scanned": 961,
+    "n_communities": 10,
+    "corpus": "hantavirus",
+    "generatedAt": "2026-10-22T10:07:24.423729+00:00"
+  },
+  "communities": {
+    "0": {
+      "id": 0,
+      "hub": "joemondesi63736",
+      "n_users": 74,
+      "n_original_tweets": 421,
+      "color": "#73c000",
+      "key_hashtags": [
+        {
+          "tag": "confinement",
+          "g2": 92.21
+        },
+        {
+          "tag": "hantavirus",
+          "g2": 18.72
+        },
+        {
+          "tag": "france",
+          "g2": 7.8
+        },
+        {
+          "tag": "novacyt",
+          "g2": 2.86
+        },
+        {
+          "tag": "confination",
+          "g2": 2.29
+        }
+      ],
+      "key_words": [
+        {
+          "word": "flash",
+          "g2": 91.16
+        },
+        {
+          "word": "confinement",
+          "g2": 85.94
+        },
+        {
+          "word": "cas",
+          "g2": 57.56
+        },
+        {
+          "word": "ministre",
+          "g2": 44.92
+        },
+        {
+          "word": "masques",
+          "g2": 39.28
+        }
+      ],
+      "brief": "Cluster de coordination C0 (hub @joemondesi63736, 74 comptes). Hashtags distinctifs : #confinement · #hantavirus · #france. Lexique : flash, confinement, cas.",
+      "qualif_short": "#confinement · #hantavirus · #france"
+    },
+    "1": {
+      "id": 1,
+      "hub": "sylvieg01",
+      "n_users": 64,
+      "n_original_tweets": 344,
+      "color": "#ff8000",
+      "key_hashtags": [
+        {
+          "tag": "odysee",
+          "g2": 107.35
+        },
+        {
+          "tag": "viral",
+          "g2": 5.25
+        },
+        {
+          "tag": "àpartager",
+          "g2": 5.25
+        },
+        {
+          "tag": "presse",
+          "g2": 5.25
+        },
+        {
+          "tag": "tv",
+          "g2": 5.25
+        }
+      ],
+      "key_words": [
+        {
+          "word": "capitaine",
+          "g2": 111.24
+        },
+        {
+          "word": "groupe",
+          "g2": 79.59
+        },
+        {
+          "word": "debout",
+          "g2": 77.93
+        },
+        {
+          "word": "dossier",
+          "g2": 77.93
+        },
+        {
+          "word": "séquence",
+          "g2": 77.93
+        }
+      ],
+      "brief": "Cluster de coordination C1 (hub @sylvieg01, 64 comptes). Hashtags distinctifs : #odysee · #viral · #àpartager. Lexique : capitaine, groupe, debout.",
+      "qualif_short": "#odysee · #viral · #àpartager"
+    },
+    "2": {
+      "id": 2,
+      "hub": "basile061",
+      "n_users": 57,
+      "n_original_tweets": 92,
+      "color": "#2563eb",
+      "key_hashtags": [
+        {
+          "tag": "ornithologues",
+          "g2": 18.72
+        },
+        {
+          "tag": "épidémie",
+          "g2": 18.72
+        },
+        {
+          "tag": "grippeaviaire",
+          "g2": 18.72
+        },
+        {
+          "tag": "zoonose",
+          "g2": 18.72
+        },
+        {
+          "tag": "hantavirüs",
+          "g2": 12.41
+        }
+      ],
+      "key_words": [
+        {
+          "word": "nouvelles",
+          "g2": 18.13
+        },
+        {
+          "word": "transmission",
+          "g2": 16.4
+        },
+        {
+          "word": "idée",
+          "g2": 13.59
+        },
+        {
+          "word": "comprendre",
+          "g2": 13.34
+        },
+        {
+          "word": "andes",
+          "g2": 12.82
+        }
+      ],
+      "brief": "Cluster de coordination C2 (hub @basile061, 57 comptes). Hashtags distinctifs : #ornithologues · #épidémie · #grippeaviaire. Lexique : nouvelles, transmission, idée.",
+      "qualif_short": "#ornithologues · #épidémie · #grippeaviaire"
+    },
+    "3": {
+      "id": 3,
+      "hub": "aagentconnor",
+      "n_users": 27,
+      "n_original_tweets": 2,
+      "color": "#de81ff",
+      "key_hashtags": [],
+      "key_words": [
+        {
+          "word": "soutien",
+          "g2": 11.86
+        },
+        {
+          "word": "l'ont",
+          "g2": 11.86
+        },
+        {
+          "word": "d'homme",
+          "g2": 11.86
+        },
+        {
+          "word": "retrouve",
+          "g2": 11.86
+        },
+        {
+          "word": "reparti",
+          "g2": 9.1
+        }
+      ],
+      "brief": "Cluster de coordination C3 (hub @aagentconnor, 27 comptes). Hashtags distinctifs : lexique faible. Lexique : soutien, l'ont, d'homme.",
+      "qualif_short": "@aagentconnor"
+    },
+    "4": {
+      "id": 4,
+      "hub": "szych1",
+      "n_users": 8,
+      "n_original_tweets": 56,
+      "color": "#c4a574",
+      "key_hashtags": [
+        {
+          "tag": "philippot",
+          "g2": 19.82
+        },
+        {
+          "tag": "santé",
+          "g2": 14.99
+        },
+        {
+          "tag": "vaccins",
+          "g2": 14.82
+        },
+        {
+          "tag": "santépublique",
+          "g2": 14.82
+        },
+        {
+          "tag": "oms",
+          "g2": 14.82
+        }
+      ],
+      "key_words": [
+        {
+          "word": "regardez",
+          "g2": 26.94
+        },
+        {
+          "word": "vidéo",
+          "g2": 26.42
+        },
+        {
+          "word": "florian",
+          "g2": 21.85
+        },
+        {
+          "word": "questions",
+          "g2": 21.69
+        },
+        {
+          "word": "concrète",
+          "g2": 21.69
+        }
+      ],
+      "brief": "Cluster de coordination C4 (hub @szych1, 8 comptes). Hashtags distinctifs : #philippot · #santé · #vaccins. Lexique : regardez, vidéo, florian.",
+      "qualif_short": "#philippot · #santé · #vaccins"
+    },
+    "5": {
+      "id": 5,
+      "hub": "lavignepascale",
+      "n_users": 5,
+      "n_original_tweets": 0,
+      "color": "#ff497c",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C5 (hub @lavignepascale, 5 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@lavignepascale"
+    },
+    "6": {
+      "id": 6,
+      "hub": "arc_atlantique",
+      "n_users": 5,
+      "n_original_tweets": 0,
+      "color": "#00bd94",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C6 (hub @arc_atlantique, 5 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@arc_atlantique"
+    },
+    "7": {
+      "id": 7,
+      "hub": "faireensemblefr",
+      "n_users": 4,
+      "n_original_tweets": 0,
+      "color": "#b45309",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C7 (hub @faireensemblefr, 4 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@faireensemblefr"
+    },
+    "8": {
+      "id": 8,
+      "hub": "lumineuse777",
+      "n_users": 3,
+      "n_original_tweets": 44,
+      "color": "#00c1ff",
+      "key_hashtags": [
+        {
+          "tag": "hantavirus",
+          "g2": 25.08
+        },
+        {
+          "tag": "wefuckhantavirus",
+          "g2": 6.38
+        }
+      ],
+      "key_words": [
+        {
+          "word": "dessous",
+          "g2": 51.2
+        },
+        {
+          "word": "pcr",
+          "g2": 42.35
+        },
+        {
+          "word": "thread",
+          "g2": 39.8
+        },
+        {
+          "word": "bertoglio",
+          "g2": 39.8
+        },
+        {
+          "word": "vidéo",
+          "g2": 38.43
+        }
+      ],
+      "brief": "Cluster de coordination C8 (hub @lumineuse777, 3 comptes). Hashtags distinctifs : #hantavirus · #wefuckhantavirus. Lexique : dessous, pcr, thread.",
+      "qualif_short": "#hantavirus · #wefuckhantavirus"
+    },
+    "9": {
+      "id": 9,
+      "hub": "maria_andy2",
+      "n_users": 3,
+      "n_original_tweets": 0,
+      "color": "#eab308",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C9 (hub @maria_andy2, 3 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@maria_andy2"
+    }
+  }
+}

@@ -49,7 +49,7 @@
     },
     {
       "id": 5,
-      "hub": "l1999ari",
+      "hub": "ntihaboseo",
       "color": "#ff497c",
       "n": 9
     },
@@ -61,11 +61,136 @@
     },
     {
       "id": 7,
-      "hub": "drboureima",
+      "hub": "eugenkabambi",
       "color": "#b45309",
       "n": 5
+    },
+    {
+      "id": 8,
+      "hub": "menuet_morgan",
+      "color": "#00c1ff",
+      "n": 4
+    },
+    {
+      "id": 9,
+      "hub": "romymaryse1407",
+      "color": "#eab308",
+      "n": 3
     }
   ],
   "generatedAt": "2026-10-22T09:49:50.023346+00:00",
-  "elapsed_s": 1.7
+  "elapsed_s": 1.7,
+  "topCommunitiesCoord": [
+    {
+      "id": 0,
+      "hub": "bbddpp",
+      "color": "#73c000",
+      "n": 24
+    },
+    {
+      "id": 1,
+      "hub": "fabrice_pilorge",
+      "color": "#ff8000",
+      "n": 21
+    },
+    {
+      "id": 2,
+      "hub": "mpassy_jr",
+      "color": "#2563eb",
+      "n": 21
+    },
+    {
+      "id": 3,
+      "hub": "ramucho67",
+      "color": "#de81ff",
+      "n": 18
+    },
+    {
+      "id": 4,
+      "hub": "cergymack",
+      "color": "#c4a574",
+      "n": 13
+    },
+    {
+      "id": 5,
+      "hub": "ntihaboseo",
+      "color": "#ff497c",
+      "n": 9
+    },
+    {
+      "id": 6,
+      "hub": "frlecardonnel",
+      "color": "#00bd94",
+      "n": 6
+    },
+    {
+      "id": 7,
+      "hub": "eugenkabambi",
+      "color": "#b45309",
+      "n": 5
+    },
+    {
+      "id": 8,
+      "hub": "menuet_morgan",
+      "color": "#00c1ff",
+      "n": 4
+    },
+    {
+      "id": 9,
+      "hub": "romymaryse1407",
+      "color": "#eab308",
+      "n": 3
+    }
+  ],
+  "topCommunitiesBase": [
+    {
+      "id": 6,
+      "hub": "mpassy_jr",
+      "color": "#ff497c",
+      "n": 63
+    },
+    {
+      "id": 51,
+      "hub": "fabrice_pilorge",
+      "color": "#de81ff",
+      "n": 59
+    },
+    {
+      "id": 2,
+      "hub": "ramucho67",
+      "color": "#ff8000",
+      "n": 19
+    },
+    {
+      "id": 12,
+      "hub": "qode17kat",
+      "color": "#c4a574",
+      "n": 6
+    },
+    {
+      "id": 9,
+      "hub": "romymaryse1407",
+      "color": "#00bd94",
+      "n": 4
+    },
+    {
+      "id": 0,
+      "hub": "francoisdescam7",
+      "color": "#2563eb",
+      "n": 3
+    },
+    {
+      "id": 28,
+      "hub": "zenzen08000",
+      "color": "#00bd94",
+      "n": 2
+    }
+  ],
+  "colorModes": [
+    "coord",
+    "base"
+  ],
+  "defaultColorMode": "coord",
+  "n_base_matched": 156,
+  "enrichedAt": "2026-10-22T10:07:24.746056+00:00"
 }

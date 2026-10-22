@@ -64,8 +64,151 @@
       "hub": "watatsumilp",
       "color": "#b45309",
       "n": 22
+    },
+    {
+      "id": 8,
+      "hub": "ericanimes1",
+      "color": "#00c1ff",
+      "n": 13
+    },
+    {
+      "id": 9,
+      "hub": "brouard_anne",
+      "color": "#eab308",
+      "n": 9
     }
   ],
   "generatedAt": "2026-10-22T09:50:59.459361+00:00",
-  "elapsed_s": 27.4
+  "elapsed_s": 27.4,
+  "topCommunitiesCoord": [
+    {
+      "id": 0,
+      "hub": "terpmanr",
+      "color": "#73c000",
+      "n": 269
+    },
+    {
+      "id": 1,
+      "hub": "aimeczen",
+      "color": "#ff8000",
+      "n": 230
+    },
+    {
+      "id": 2,
+      "hub": "bbddpp",
+      "color": "#2563eb",
+      "n": 219
+    },
+    {
+      "id": 3,
+      "hub": "joemondesi63736",
+      "color": "#de81ff",
+      "n": 185
+    },
+    {
+      "id": 4,
+      "hub": "maguyconstant",
+      "color": "#c4a574",
+      "n": 132
+    },
+    {
+      "id": 5,
+      "hub": "meyer1739066269",
+      "color": "#ff497c",
+      "n": 57
+    },
+    {
+      "id": 6,
+      "hub": "kerhilliojazz68",
+      "color": "#00bd94",
+      "n": 25
+    },
+    {
+      "id": 7,
+      "hub": "watatsumilp",
+      "color": "#b45309",
+      "n": 22
+    },
+    {
+      "id": 8,
+      "hub": "ericanimes1",
+      "color": "#00c1ff",
+      "n": 13
+    },
+    {
+      "id": 9,
+      "hub": "brouard_anne",
+      "color": "#eab308",
+      "n": 9
+    }
+  ],
+  "topCommunitiesBase": [
+    {
+      "id": 546,
+      "hub": "joemondesi63736",
+      "color": "#d2d2d2",
+      "n": 408
+    },
+    {
+      "id": 14,
+      "hub": "aimeczen",
+      "color": "#de81ff",
+      "n": 302
+    },
+    {
+      "id": 229,
+      "hub": "bbddpp",
+      "color": "#ff8000",
+      "n": 270
+    },
+    {
+      "id": 0,
+      "hub": "maguyconstant",
+      "color": "#73c000",
+      "n": 212
+    },
+    {
+      "id": 10,
+      "hub": "samirdagadir",
+      "color": "#ff497c",
+      "n": 39
+    },
+    {
+      "id": 49,
+      "hub": "brouard_anne",
+      "color": "#5a5a5a",
+      "n": 19
+    },
+    {
+      "id": 88,
+      "hub": "rtslave_1997",
+      "color": "#5a5a5a",
+      "n": 5
+    },
+    {
+      "id": 406,
+      "hub": "araminthec76011",
+      "color": "#5a5a5a",
+      "n": 5
+    },
+    {
+      "id": 161,
+      "hub": "nnorskk",
+      "color": "#5a5a5a",
+      "n": 4
+    },
+    {
+      "id": 75,
+      "hub": "lulufombertasse",
+      "color": "#00bd94",
+      "n": 1
+    }
+  ],
+  "colorModes": [
+    "coord",
+    "base"
+  ],
+  "defaultColorMode": "coord",
+  "n_base_matched": 1265,
+  "enrichedAt": "2026-10-22T10:07:28.187001+00:00"
 }

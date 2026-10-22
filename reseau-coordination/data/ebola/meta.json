@@ -43,17 +43,82 @@
     },
     {
       "id": 4,
-      "hub": "emmyturatsinze",
+      "hub": "rwandan_pundit",
       "color": "#c4a574",
       "n": 2
     },
     {
       "id": 5,
-      "hub": "audrey_s36953",
+      "hub": "abdsalamvito",
       "color": "#ff497c",
       "n": 2
     }
   ],
   "generatedAt": "2026-10-22T09:49:38.707577+00:00",
-  "elapsed_s": 0.7
+  "elapsed_s": 0.7,
+  "topCommunitiesCoord": [
+    {
+      "id": 0,
+      "hub": "kangamarcel",
+      "color": "#73c000",
+      "n": 10
+    },
+    {
+      "id": 1,
+      "hub": "bosaystallone",
+      "color": "#ff8000",
+      "n": 8
+    },
+    {
+      "id": 2,
+      "hub": "barbara96913515",
+      "color": "#2563eb",
+      "n": 6
+    },
+    {
+      "id": 3,
+      "hub": "tshiminyih",
+      "color": "#de81ff",
+      "n": 5
+    },
+    {
+      "id": 4,
+      "hub": "rwandan_pundit",
+      "color": "#c4a574",
+      "n": 2
+    },
+    {
+      "id": 5,
+      "hub": "abdsalamvito",
+      "color": "#ff497c",
+      "n": 2
+    }
+  ],
+  "topCommunitiesBase": [
+    {
+      "id": 12,
+      "hub": "kangamarcel",
+      "color": "#de81ff",
+      "n": 25
+    },
+    {
+      "id": 11,
+      "hub": "barbara96913515",
+      "color": "#2563eb",
+      "n": 7
+    },
+    {
+      "id": 33,
+      "hub": "emmyturatsinze",
+      "color": "#73c000",
+      "n": 1
+    }
+  ],
+  "colorModes": [
+    "coord",
+    "base"
+  ],
+  "defaultColorMode": "coord",
+  "n_base_matched": 33,
+  "enrichedAt": "2026-10-22T10:07:23.533039+00:00"
 }

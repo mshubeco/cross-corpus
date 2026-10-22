@@ -1,0 +1,401 @@
+{
+  "meta": {
+    "layer": "coordination_louvain",
+    "method": "G2 keyness hashtags/words on non-RT texts of backbone accounts",
+    "vocabulary": "lecture discursive exploratoire — pas une preuve d'inauthenticité",
+    "n_tweets_scanned": 775,
+    "n_communities": 10,
+    "corpus": "mpox",
+    "generatedAt": "2026-10-22T10:07:24.852681+00:00"
+  },
+  "communities": {
+    "0": {
+      "id": 0,
+      "hub": "bbddpp",
+      "n_users": 24,
+      "n_original_tweets": 89,
+      "color": "#73c000",
+      "key_hashtags": [
+        {
+          "tag": "cjr",
+          "g2": 22.14
+        },
+        {
+          "tag": "covid",
+          "g2": 14.62
+        },
+        {
+          "tag": "covidgate",
+          "g2": 7.25
+        },
+        {
+          "tag": "rentree",
+          "g2": 7.25
+        },
+        {
+          "tag": "planair",
+          "g2": 7.25
+        }
+      ],
+      "key_words": [
+        {
+          "word": "transmission",
+          "g2": 70.92
+        },
+        {
+          "word": "covid",
+          "g2": 62.58
+        },
+        {
+          "word": "aérosols",
+          "g2": 58.94
+        },
+        {
+          "word": "aérienne",
+          "g2": 54.73
+        },
+        {
+          "word": "voie",
+          "g2": 37.21
+        }
+      ],
+      "brief": "Cluster de coordination C0 (hub @bbddpp, 24 comptes). Hashtags distinctifs : #cjr · #covid · #covidgate. Lexique : transmission, covid, aérosols.",
+      "qualif_short": "#cjr · #covid · #covidgate"
+    },
+    "1": {
+      "id": 1,
+      "hub": "fabrice_pilorge",
+      "n_users": 21,
+      "n_original_tweets": 181,
+      "color": "#ff8000",
+      "key_hashtags": [
+        {
+          "tag": "mpox",
+          "g2": 39.08
+        },
+        {
+          "tag": "vaccination",
+          "g2": 31.03
+        },
+        {
+          "tag": "hsh",
+          "g2": 8.33
+        },
+        {
+          "tag": "trans",
+          "g2": 8.33
+        },
+        {
+          "tag": "mpox2024",
+          "g2": 6.98
+        }
+      ],
+      "key_words": [
+        {
+          "word": "france",
+          "g2": 45.45
+        },
+        {
+          "word": "clade",
+          "g2": 28.23
+        },
+        {
+          "word": "rappel",
+          "g2": 25.05
+        },
+        {
+          "word": "remaides",
+          "g2": 24.68
+        },
+        {
+          "word": "lieux",
+          "g2": 23.87
+        }
+      ],
+      "brief": "Cluster de coordination C1 (hub @fabrice_pilorge, 21 comptes). Hashtags distinctifs : #mpox · #vaccination · #hsh. Lexique : france, clade, rappel.",
+      "qualif_short": "#mpox · #vaccination · #hsh"
+    },
+    "2": {
+      "id": 2,
+      "hub": "mpassy_jr",
+      "n_users": 21,
+      "n_original_tweets": 18,
+      "color": "#2563eb",
+      "key_hashtags": [
+        {
+          "tag": "monkeypox",
+          "g2": 21.6
+        },
+        {
+          "tag": "oxfam",
+          "g2": 10.7
+        },
+        {
+          "tag": "rdcongo",
+          "g2": 10.7
+        },
+        {
+          "tag": "variole",
+          "g2": 7.02
+        },
+        {
+          "tag": "mpox2024",
+          "g2": 5.48
+        }
+      ],
+      "key_words": [
+        {
+          "word": "croix-rouge",
+          "g2": 17.01
+        },
+        {
+          "word": "répond",
+          "g2": 17.01
+        },
+        {
+          "word": "alarmants",
+          "g2": 17.01
+        },
+        {
+          "word": "touchait",
+          "g2": 17.01
+        },
+        {
+          "word": "urgente",
+          "g2": 13.22
+        }
+      ],
+      "brief": "Cluster de coordination C2 (hub @mpassy_jr, 21 comptes). Hashtags distinctifs : #monkeypox · #oxfam · #rdcongo. Lexique : croix-rouge, répond, alarmants.",
+      "qualif_short": "#monkeypox · #oxfam · #rdcongo"
+    },
+    "3": {
+      "id": 3,
+      "hub": "ramucho67",
+      "n_users": 18,
+      "n_original_tweets": 57,
+      "color": "#de81ff",
+      "key_hashtags": [
+        {
+          "tag": "onnelacherien",
+          "g2": 10.91
+        },
+        {
+          "tag": "nioublinipardon",
+          "g2": 8.14
+        }
+      ],
+      "key_words": [
+        {
+          "word": "clades",
+          "g2": 36.22
+        },
+        {
+          "word": "monkeypox",
+          "g2": 22.65
+        },
+        {
+          "word": "iib",
+          "g2": 20.69
+        },
+        {
+          "word": "clade",
+          "g2": 16.07
+        },
+        {
+          "word": "vaccinal",
+          "g2": 15.51
+        }
+      ],
+      "brief": "Cluster de coordination C3 (hub @ramucho67, 18 comptes). Hashtags distinctifs : #onnelacherien · #nioublinipardon. Lexique : clades, monkeypox, iib.",
+      "qualif_short": "#onnelacherien · #nioublinipardon"
+    },
+    "4": {
+      "id": 4,
+      "hub": "cergymack",
+      "n_users": 13,
+      "n_original_tweets": 21,
+      "color": "#c4a574",
+      "key_hashtags": [
+        {
+          "tag": "afrique",
+          "g2": 42.38
+        },
+        {
+          "tag": "unionafricaine",
+          "g2": 20.67
+        },
+        {
+          "tag": "rwanda",
+          "g2": 4.08
+        },
+        {
+          "tag": "rdc",
+          "g2": 0.01
+        }
+      ],
+      "key_words": [
+        {
+          "word": "côte",
+          "g2": 21.34
+        },
+        {
+          "word": "sahel",
+          "g2": 21.34
+        },
+        {
+          "word": "turcs",
+          "g2": 21.34
+        },
+        {
+          "word": "l'africa",
+          "g2": 14.22
+        },
+        {
+          "word": "mercenaires",
+          "g2": 14.22
+        }
+      ],
+      "brief": "Cluster de coordination C4 (hub @cergymack, 13 comptes). Hashtags distinctifs : #afrique · #unionafricaine · #rwanda. Lexique : côte, sahel, turcs.",
+      "qualif_short": "#afrique · #unionafricaine · #rwanda"
+    },
+    "5": {
+      "id": 5,
+      "hub": "ntihaboseo",
+      "n_users": 9,
+      "n_original_tweets": 0,
+      "color": "#ff497c",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C5 (hub @ntihaboseo, 9 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@ntihaboseo"
+    },
+    "6": {
+      "id": 6,
+      "hub": "frlecardonnel",
+      "n_users": 6,
+      "n_original_tweets": 3,
+      "color": "#00bd94",
+      "key_hashtags": [],
+      "key_words": [
+        {
+          "word": "d'efficacité",
+          "g2": 11.08
+        },
+        {
+          "word": "existant",
+          "g2": 11.08
+        },
+        {
+          "word": "massives",
+          "g2": 11.08
+        },
+        {
+          "word": "subir",
+          "g2": 11.08
+        },
+        {
+          "word": "l'expérience",
+          "g2": 11.08
+        }
+      ],
+      "brief": "Cluster de coordination C6 (hub @frlecardonnel, 6 comptes). Hashtags distinctifs : lexique faible. Lexique : d'efficacité, existant, massives.",
+      "qualif_short": "@frlecardonnel"
+    },
+    "7": {
+      "id": 7,
+      "hub": "eugenkabambi",
+      "n_users": 5,
+      "n_original_tweets": 138,
+      "color": "#b45309",
+      "key_hashtags": [
+        {
+          "tag": "viralfactsafrique",
+          "g2": 18.22
+        },
+        {
+          "tag": "rdc",
+          "g2": 15.63
+        },
+        {
+          "tag": "mpox",
+          "g2": 13.03
+        },
+        {
+          "tag": "variolesimienne",
+          "g2": 10.06
+        },
+        {
+          "tag": "sécuritésanitaire",
+          "g2": 6.02
+        }
+      ],
+      "key_words": [
+        {
+          "word": "appui",
+          "g2": 52.46
+        },
+        {
+          "word": "riposte",
+          "g2": 47.04
+        },
+        {
+          "word": "amp",
+          "g2": 36.61
+        },
+        {
+          "word": "soins",
+          "g2": 28.79
+        },
+        {
+          "word": "patients",
+          "g2": 27.75
+        }
+      ],
+      "brief": "Cluster de coordination C7 (hub @eugenkabambi, 5 comptes). Hashtags distinctifs : #viralfactsafrique · #rdc · #mpox. Lexique : appui, riposte, amp.",
+      "qualif_short": "#viralfactsafrique · #rdc · #mpox"
+    },
+    "8": {
+      "id": 8,
+      "hub": "menuet_morgan",
+      "n_users": 4,
+      "n_original_tweets": 0,
+      "color": "#00c1ff",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C8 (hub @menuet_morgan, 4 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@menuet_morgan"
+    },
+    "9": {
+      "id": 9,
+      "hub": "romymaryse1407",
+      "n_users": 3,
+      "n_original_tweets": 3,
+      "color": "#eab308",
+      "key_hashtags": [],
+      "key_words": [
+        {
+          "word": "urgent",
+          "g2": 17.29
+        },
+        {
+          "word": "fermer",
+          "g2": 11.97
+        },
+        {
+          "word": "tué",
+          "g2": 9.2
+        },
+        {
+          "word": "tard",
+          "g2": 8.16
+        },
+        {
+          "word": "frontières",
+          "g2": 7.48
+        }
+      ],
+      "brief": "Cluster de coordination C9 (hub @romymaryse1407, 3 comptes). Hashtags distinctifs : lexique faible. Lexique : urgent, fermer, tué.",
+      "qualif_short": "@romymaryse1407"
+    }
+  }
+}

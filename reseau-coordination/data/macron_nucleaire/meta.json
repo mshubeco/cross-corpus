@@ -49,13 +49,13 @@
     },
     {
       "id": 5,
-      "hub": "protestmusica",
+      "hub": "masprotestmusic",
       "color": "#ff497c",
       "n": 3
     },
     {
       "id": 6,
-      "hub": "la26701lagadec",
+      "hub": "philipbayonne",
       "color": "#00bd94",
       "n": 2
     },
@@ -64,8 +64,127 @@
       "hub": "cath_rn95",
       "color": "#b45309",
       "n": 2
+    },
+    {
+      "id": 8,
+      "hub": "szych1",
+      "color": "#00c1ff",
+      "n": 2
+    },
+    {
+      "id": 9,
+      "hub": "joceteodor",
+      "color": "#eab308",
+      "n": 2
     }
   ],
   "generatedAt": "2026-10-22T09:49:54.318201+00:00",
-  "elapsed_s": 4.2
+  "elapsed_s": 4.2,
+  "topCommunitiesCoord": [
+    {
+      "id": 0,
+      "hub": "pp75018_philou",
+      "color": "#73c000",
+      "n": 114
+    },
+    {
+      "id": 1,
+      "hub": "m75sylvie",
+      "color": "#ff8000",
+      "n": 55
+    },
+    {
+      "id": 2,
+      "hub": "talmoor56",
+      "color": "#2563eb",
+      "n": 48
+    },
+    {
+      "id": 3,
+      "hub": "soizicquem",
+      "color": "#de81ff",
+      "n": 27
+    },
+    {
+      "id": 4,
+      "hub": "aimeczen",
+      "color": "#c4a574",
+      "n": 13
+    },
+    {
+      "id": 5,
+      "hub": "masprotestmusic",
+      "color": "#ff497c",
+      "n": 3
+    },
+    {
+      "id": 6,
+      "hub": "philipbayonne",
+      "color": "#00bd94",
+      "n": 2
+    },
+    {
+      "id": 7,
+      "hub": "cath_rn95",
+      "color": "#b45309",
+      "n": 2
+    },
+    {
+      "id": 8,
+      "hub": "szych1",
+      "color": "#00c1ff",
+      "n": 2
+    },
+    {
+      "id": 9,
+      "hub": "joceteodor",
+      "color": "#eab308",
+      "n": 2
+    }
+  ],
+  "topCommunitiesBase": [
+    {
+      "id": 1,
+      "hub": "pp75018_philou",
+      "color": "#ff497c",
+      "n": 161
+    },
+    {
+      "id": 6,
+      "hub": "m75sylvie",
+      "color": "#73c000",
+      "n": 95
+    },
+    {
+      "id": 48,
+      "hub": "aimeczen",
+      "color": "#de81ff",
+      "n": 10
+    },
+    {
+      "id": 0,
+      "hub": "esperonslaie",
+      "color": "#2563eb",
+      "n": 3
+    },
+    {
+      "id": 9,
+      "hub": "actualise1",
+      "color": "#ff8000",
+      "n": 2
+    },
+    {
+      "id": 102,
+      "hub": "bierunz",
+      "color": "#de81ff",
+      "n": 1
+    }
+  ],
+  "colorModes": [
+    "coord",
+    "base"
+  ],
+  "defaultColorMode": "coord",
+  "n_base_matched": 272,
+  "enrichedAt": "2026-10-22T10:07:25.554738+00:00"
 }

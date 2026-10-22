@@ -55,7 +55,7 @@
     },
     {
       "id": 6,
-      "hub": "idee_kenkyu",
+      "hub": "arc_atlantique",
       "color": "#00bd94",
       "n": 5
     },
@@ -64,8 +64,121 @@
       "hub": "faireensemblefr",
       "color": "#b45309",
       "n": 4
+    },
+    {
+      "id": 8,
+      "hub": "lumineuse777",
+      "color": "#00c1ff",
+      "n": 3
+    },
+    {
+      "id": 9,
+      "hub": "maria_andy2",
+      "color": "#eab308",
+      "n": 3
     }
   ],
   "generatedAt": "2026-10-22T09:49:48.210204+00:00",
-  "elapsed_s": 6.8
+  "elapsed_s": 6.8,
+  "topCommunitiesCoord": [
+    {
+      "id": 0,
+      "hub": "joemondesi63736",
+      "color": "#73c000",
+      "n": 74
+    },
+    {
+      "id": 1,
+      "hub": "sylvieg01",
+      "color": "#ff8000",
+      "n": 64
+    },
+    {
+      "id": 2,
+      "hub": "basile061",
+      "color": "#2563eb",
+      "n": 57
+    },
+    {
+      "id": 3,
+      "hub": "aagentconnor",
+      "color": "#de81ff",
+      "n": 27
+    },
+    {
+      "id": 4,
+      "hub": "szych1",
+      "color": "#c4a574",
+      "n": 8
+    },
+    {
+      "id": 5,
+      "hub": "lavignepascale",
+      "color": "#ff497c",
+      "n": 5
+    },
+    {
+      "id": 6,
+      "hub": "arc_atlantique",
+      "color": "#00bd94",
+      "n": 5
+    },
+    {
+      "id": 7,
+      "hub": "faireensemblefr",
+      "color": "#b45309",
+      "n": 4
+    },
+    {
+      "id": 8,
+      "hub": "lumineuse777",
+      "color": "#00c1ff",
+      "n": 3
+    },
+    {
+      "id": 9,
+      "hub": "maria_andy2",
+      "color": "#eab308",
+      "n": 3
+    }
+  ],
+  "topCommunitiesBase": [
+    {
+      "id": 9,
+      "hub": "joemondesi63736",
+      "color": "#c4a574",
+      "n": 146
+    },
+    {
+      "id": 5,
+      "hub": "sylvieg01",
+      "color": "#de81ff",
+      "n": 64
+    },
+    {
+      "id": 8,
+      "hub": "aagentconnor",
+      "color": "#73c000",
+      "n": 30
+    },
+    {
+      "id": 4,
+      "hub": "szych1",
+      "color": "#ff8000",
+      "n": 21
+    },
+    {
+      "id": 17,
+      "hub": "j24690_jkd",
+      "color": "#b45309",
+      "n": 1
+    }
+  ],
+  "colorModes": [
+    "coord",
+    "base"
+  ],
+  "defaultColorMode": "coord",
+  "n_base_matched": 262,
+  "enrichedAt": "2026-10-22T10:07:24.301035+00:00"
 }

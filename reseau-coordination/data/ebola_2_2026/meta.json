@@ -25,7 +25,7 @@
     },
     {
       "id": 1,
-      "hub": "victorkalala24",
+      "hub": "mytouchrecords",
       "color": "#ff8000",
       "n": 55
     },
@@ -37,7 +37,7 @@
     },
     {
       "id": 3,
-      "hub": "nkashamael26354",
+      "hub": "lohickkasonga",
       "color": "#de81ff",
       "n": 14
     },
@@ -64,8 +64,133 @@
       "hub": "kandasanza",
       "color": "#b45309",
       "n": 3
+    },
+    {
+      "id": 8,
+      "hub": "panafri96135534",
+      "color": "#00c1ff",
+      "n": 3
+    },
+    {
+      "id": 9,
+      "hub": "franckngonga",
+      "color": "#eab308",
+      "n": 2
     }
   ],
   "generatedAt": "2026-10-22T09:49:41.303103+00:00",
-  "elapsed_s": 2.6
+  "elapsed_s": 2.6,
+  "topCommunitiesCoord": [
+    {
+      "id": 0,
+      "hub": "dhego_malobi",
+      "color": "#73c000",
+      "n": 113
+    },
+    {
+      "id": 1,
+      "hub": "mytouchrecords",
+      "color": "#ff8000",
+      "n": 55
+    },
+    {
+      "id": 2,
+      "hub": "congo__6",
+      "color": "#2563eb",
+      "n": 40
+    },
+    {
+      "id": 3,
+      "hub": "lohickkasonga",
+      "color": "#de81ff",
+      "n": 14
+    },
+    {
+      "id": 4,
+      "hub": "joemondesi63736",
+      "color": "#c4a574",
+      "n": 12
+    },
+    {
+      "id": 5,
+      "hub": "alexand39740511",
+      "color": "#ff497c",
+      "n": 9
+    },
+    {
+      "id": 6,
+      "hub": "steveboshibashi",
+      "color": "#00bd94",
+      "n": 3
+    },
+    {
+      "id": 7,
+      "hub": "kandasanza",
+      "color": "#b45309",
+      "n": 3
+    },
+    {
+      "id": 8,
+      "hub": "panafri96135534",
+      "color": "#00c1ff",
+      "n": 3
+    },
+    {
+      "id": 9,
+      "hub": "franckngonga",
+      "color": "#eab308",
+      "n": 2
+    }
+  ],
+  "topCommunitiesBase": [
+    {
+      "id": 11,
+      "hub": "dhego_malobi",
+      "color": "#2563eb",
+      "n": 120
+    },
+    {
+      "id": 26,
+      "hub": "congo__6",
+      "color": "#ff8000",
+      "n": 63
+    },
+    {
+      "id": 6,
+      "hub": "victorkalala24",
+      "color": "#c4a574",
+      "n": 35
+    },
+    {
+      "id": 16,
+      "hub": "joemondesi63736",
+      "color": "#de81ff",
+      "n": 20
+    },
+    {
+      "id": 54,
+      "hub": "emmyturatsinze",
+      "color": "#00c1ff",
+      "n": 14
+    },
+    {
+      "id": 12,
+      "hub": "alexand39740511",
+      "color": "#73c000",
+      "n": 11
+    },
+    {
+      "id": 35,
+      "hub": "kandasanza",
+      "color": "#9aa3b5",
+      "n": 3
+    }
+  ],
+  "colorModes": [
+    "coord",
+    "base"
+  ],
+  "defaultColorMode": "coord",
+  "n_base_matched": 266,
+  "enrichedAt": "2026-10-22T10:07:23.723774+00:00"
 }

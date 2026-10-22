@@ -25,17 +25,58 @@
     },
     {
       "id": 1,
-      "hub": "maividrohi",
+      "hub": "devendarmalodi2",
       "color": "#ff8000",
       "n": 3
     },
     {
       "id": 2,
-      "hub": "williansmera",
+      "hub": "williansmerz",
       "color": "#2563eb",
       "n": 2
     }
   ],
   "generatedAt": "2026-10-22T09:50:31.972753+00:00",
-  "elapsed_s": 1.4
+  "elapsed_s": 1.4,
+  "topCommunitiesCoord": [
+    {
+      "id": 0,
+      "hub": "usmedicalnews11",
+      "color": "#73c000",
+      "n": 5
+    },
+    {
+      "id": 1,
+      "hub": "devendarmalodi2",
+      "color": "#ff8000",
+      "n": 3
+    },
+    {
+      "id": 2,
+      "hub": "williansmerz",
+      "color": "#2563eb",
+      "n": 2
+    }
+  ],
+  "topCommunitiesBase": [
+    {
+      "id": 3,
+      "hub": "usmedicalnews11",
+      "color": "#ff8000",
+      "n": 7
+    },
+    {
+      "id": 61,
+      "hub": "devendarmalodi2",
+      "color": "#3b82f6",
+      "n": 3
+    }
+  ],
+  "colorModes": [
+    "coord",
+    "base"
+  ],
+  "defaultColorMode": "coord",
+  "n_base_matched": 10,
+  "enrichedAt": "2026-10-22T10:07:25.951657+00:00"
 }

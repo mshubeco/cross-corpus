@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "layer": "coordination_louvain",
+    "method": "G2 keyness hashtags/words on non-RT texts of backbone accounts",
+    "vocabulary": "lecture discursive exploratoire — pas une preuve d'inauthenticité",
+    "n_tweets_scanned": 1,
+    "n_communities": 3,
+    "corpus": "hmpv",
+    "generatedAt": "2026-10-22T10:07:26.011727+00:00"
+  },
+  "communities": {
+    "0": {
+      "id": 0,
+      "hub": "usmedicalnews11",
+      "n_users": 5,
+      "n_original_tweets": 0,
+      "color": "#73c000",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C0 (hub @usmedicalnews11, 5 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@usmedicalnews11"
+    },
+    "1": {
+      "id": 1,
+      "hub": "devendarmalodi2",
+      "n_users": 3,
+      "n_original_tweets": 0,
+      "color": "#ff8000",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C1 (hub @devendarmalodi2, 3 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@devendarmalodi2"
+    },
+    "2": {
+      "id": 2,
+      "hub": "williansmerz",
+      "n_users": 2,
+      "n_original_tweets": 0,
+      "color": "#2563eb",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C2 (hub @williansmerz, 2 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@williansmerz"
+    }
+  }
+}

@@ -1,0 +1,527 @@
+{
+  "meta": {
+    "layer": "coordination_louvain",
+    "method": "G2 keyness hashtags/words on non-RT texts of backbone accounts",
+    "vocabulary": "lecture discursive exploratoire — pas une preuve d'inauthenticité",
+    "n_tweets_scanned": 13026,
+    "n_communities": 10,
+    "corpus": "canicule",
+    "generatedAt": "2026-10-22T10:07:29.115366+00:00"
+  },
+  "communities": {
+    "0": {
+      "id": 0,
+      "hub": "terpmanr",
+      "n_users": 269,
+      "n_original_tweets": 3662,
+      "color": "#73c000",
+      "key_hashtags": [
+        {
+          "tag": "canicule",
+          "g2": 133.2
+        },
+        {
+          "tag": "weather",
+          "g2": 17.62
+        },
+        {
+          "tag": "iledefrance",
+          "g2": 11.98
+        },
+        {
+          "tag": "idf",
+          "g2": 11.98
+        },
+        {
+          "tag": "journalistes",
+          "g2": 8.8
+        }
+      ],
+      "key_words": [
+        {
+          "word": "records",
+          "g2": 218.0
+        },
+        {
+          "word": "vigilance",
+          "g2": 160.28
+        },
+        {
+          "word": "mai",
+          "g2": 150.3
+        },
+        {
+          "word": "vague",
+          "g2": 129.0
+        },
+        {
+          "word": "record",
+          "g2": 105.67
+        }
+      ],
+      "brief": "Cluster de coordination C0 (hub @terpmanr, 269 comptes). Hashtags distinctifs : #canicule · #weather · #iledefrance. Lexique : records, vigilance, mai.",
+      "qualif_short": "#canicule · #weather · #iledefrance"
+    },
+    "1": {
+      "id": 1,
+      "hub": "aimeczen",
+      "n_users": 230,
+      "n_original_tweets": 1211,
+      "color": "#ff8000",
+      "key_hashtags": [
+        {
+          "tag": "pedocriminalite",
+          "g2": 31.09
+        },
+        {
+          "tag": "fondsvert",
+          "g2": 31.09
+        },
+        {
+          "tag": "tours",
+          "g2": 25.29
+        },
+        {
+          "tag": "écoles",
+          "g2": 22.18
+        },
+        {
+          "tag": "école",
+          "g2": 22.18
+        }
+      ],
+      "key_words": [
+        {
+          "word": "enfants",
+          "g2": 511.49
+        },
+        {
+          "word": "gén",
+          "g2": 490.78
+        },
+        {
+          "word": "cide",
+          "g2": 490.78
+        },
+        {
+          "word": "ouais",
+          "g2": 421.34
+        },
+        {
+          "word": "etes",
+          "g2": 408.46
+        }
+      ],
+      "brief": "Cluster de coordination C1 (hub @aimeczen, 230 comptes). Hashtags distinctifs : #pedocriminalite · #fondsvert · #tours. Lexique : enfants, gén, cide.",
+      "qualif_short": "#pedocriminalite · #fondsvert · #tours"
+    },
+    "2": {
+      "id": 2,
+      "hub": "bbddpp",
+      "n_users": 219,
+      "n_original_tweets": 3989,
+      "color": "#2563eb",
+      "key_hashtags": [
+        {
+          "tag": "saccageparis",
+          "g2": 21.05
+        },
+        {
+          "tag": "périscolaire",
+          "g2": 12.95
+        },
+        {
+          "tag": "annehidalgo",
+          "g2": 12.95
+        },
+        {
+          "tag": "barbut",
+          "g2": 12.88
+        },
+        {
+          "tag": "clim",
+          "g2": 10.63
+        }
+      ],
+      "key_words": [
+        {
+          "word": "clim",
+          "g2": 911.01
+        },
+        {
+          "word": "chauffage",
+          "g2": 185.18
+        },
+        {
+          "word": "l'isolation",
+          "g2": 156.84
+        },
+        {
+          "word": "c'est",
+          "g2": 107.46
+        },
+        {
+          "word": "climatisation",
+          "g2": 104.76
+        }
+      ],
+      "brief": "Cluster de coordination C2 (hub @bbddpp, 219 comptes). Hashtags distinctifs : #saccageparis · #périscolaire · #annehidalgo. Lexique : clim, chauffage, l'isolation.",
+      "qualif_short": "#saccageparis · #périscolaire · #annehidalgo"
+    },
+    "3": {
+      "id": 3,
+      "hub": "joemondesi63736",
+      "n_users": 185,
+      "n_original_tweets": 1429,
+      "color": "#de81ff",
+      "key_hashtags": [
+        {
+          "tag": "vigilancerouge",
+          "g2": 41.86
+        },
+        {
+          "tag": "yvelines",
+          "g2": 38.75
+        },
+        {
+          "tag": "chaleur",
+          "g2": 18.74
+        },
+        {
+          "tag": "urgenceclimatique",
+          "g2": 17.56
+        },
+        {
+          "tag": "orleans",
+          "g2": 17.56
+        }
+      ],
+      "key_words": [
+        {
+          "word": "vigilance",
+          "g2": 85.37
+        },
+        {
+          "word": "canicule",
+          "g2": 60.79
+        },
+        {
+          "word": "amp",
+          "g2": 59.77
+        },
+        {
+          "word": "rouge",
+          "g2": 51.87
+        },
+        {
+          "word": "départements",
+          "g2": 30.68
+        }
+      ],
+      "brief": "Cluster de coordination C3 (hub @joemondesi63736, 185 comptes). Hashtags distinctifs : #vigilancerouge · #yvelines · #chaleur. Lexique : vigilance, canicule, amp.",
+      "qualif_short": "#vigilancerouge · #yvelines · #chaleur"
+    },
+    "4": {
+      "id": 4,
+      "hub": "maguyconstant",
+      "n_users": 132,
+      "n_original_tweets": 1059,
+      "color": "#c4a574",
+      "key_hashtags": [
+        {
+          "tag": "bretagne",
+          "g2": 253.59
+        },
+        {
+          "tag": "meteo",
+          "g2": 81.66
+        },
+        {
+          "tag": "records",
+          "g2": 60.99
+        },
+        {
+          "tag": "observations",
+          "g2": 21.65
+        },
+        {
+          "tag": "prévisions",
+          "g2": 12.98
+        }
+      ],
+      "key_words": [
+        {
+          "word": "doivent",
+          "g2": 893.76
+        },
+        {
+          "word": "d'état",
+          "g2": 881.08
+        },
+        {
+          "word": "crime",
+          "g2": 856.31
+        },
+        {
+          "word": "scandales",
+          "g2": 735.08
+        },
+        {
+          "word": "tyran",
+          "g2": 735.08
+        }
+      ],
+      "brief": "Cluster de coordination C4 (hub @maguyconstant, 132 comptes). Hashtags distinctifs : #bretagne · #meteo · #records. Lexique : doivent, d'état, crime.",
+      "qualif_short": "#bretagne · #meteo · #records"
+    },
+    "5": {
+      "id": 5,
+      "hub": "meyer1739066269",
+      "n_users": 57,
+      "n_original_tweets": 409,
+      "color": "#ff497c",
+      "key_hashtags": [
+        {
+          "tag": "célafotamacron",
+          "g2": 28.03
+        },
+        {
+          "tag": "rn",
+          "g2": 14.81
+        },
+        {
+          "tag": "lafauteamacron",
+          "g2": 9.27
+        },
+        {
+          "tag": "chouprésident",
+          "g2": 9.27
+        },
+        {
+          "tag": "bardella",
+          "g2": 9.27
+        }
+      ],
+      "key_words": [
+        {
+          "word": "claude",
+          "g2": 51.03
+        },
+        {
+          "word": "mobile",
+          "g2": 47.5
+        },
+        {
+          "word": "vis",
+          "g2": 36.88
+        },
+        {
+          "word": "suis",
+          "g2": 34.52
+        },
+        {
+          "word": "bonne",
+          "g2": 34.52
+        }
+      ],
+      "brief": "Cluster de coordination C5 (hub @meyer1739066269, 57 comptes). Hashtags distinctifs : #célafotamacron · #rn · #lafauteamacron. Lexique : claude, mobile, vis.",
+      "qualif_short": "#célafotamacron · #rn · #lafauteamacron"
+    },
+    "6": {
+      "id": 6,
+      "hub": "kerhilliojazz68",
+      "n_users": 25,
+      "n_original_tweets": 219,
+      "color": "#00bd94",
+      "key_hashtags": [
+        {
+          "tag": "hellfest",
+          "g2": 26.22
+        },
+        {
+          "tag": "clisson",
+          "g2": 17.42
+        },
+        {
+          "tag": "marinelepen",
+          "g2": 17.42
+        },
+        {
+          "tag": "macronie",
+          "g2": 13.63
+        },
+        {
+          "tag": "musiques",
+          "g2": 8.68
+        }
+      ],
+      "key_words": [
+        {
+          "word": "canicule",
+          "g2": 149.1
+        },
+        {
+          "word": "île-de-france",
+          "g2": 37.05
+        },
+        {
+          "word": "jusqu",
+          "g2": 35.36
+        },
+        {
+          "word": "cartes",
+          "g2": 31.38
+        },
+        {
+          "word": "suivez",
+          "g2": 28.97
+        }
+      ],
+      "brief": "Cluster de coordination C6 (hub @kerhilliojazz68, 25 comptes). Hashtags distinctifs : #hellfest · #clisson · #marinelepen. Lexique : canicule, île-de-france, jusqu.",
+      "qualif_short": "#hellfest · #clisson · #marinelepen"
+    },
+    "7": {
+      "id": 7,
+      "hub": "watatsumilp",
+      "n_users": 22,
+      "n_original_tweets": 245,
+      "color": "#b45309",
+      "key_hashtags": [
+        {
+          "tag": "écologie",
+          "g2": 97.47
+        },
+        {
+          "tag": "urgent",
+          "g2": 26.86
+        },
+        {
+          "tag": "climat",
+          "g2": 22.17
+        },
+        {
+          "tag": "climatique",
+          "g2": 12.06
+        },
+        {
+          "tag": "thermique",
+          "g2": 7.9
+        }
+      ],
+      "key_words": [
+        {
+          "word": "élèves",
+          "g2": 34.33
+        },
+        {
+          "word": "salle",
+          "g2": 21.82
+        },
+        {
+          "word": "classe",
+          "g2": 19.99
+        },
+        {
+          "word": "salles",
+          "g2": 18.98
+        },
+        {
+          "word": "établissements",
+          "g2": 16.75
+        }
+      ],
+      "brief": "Cluster de coordination C7 (hub @watatsumilp, 22 comptes). Hashtags distinctifs : #écologie · #urgent · #climat. Lexique : élèves, salle, classe.",
+      "qualif_short": "#écologie · #urgent · #climat"
+    },
+    "8": {
+      "id": 8,
+      "hub": "ericanimes1",
+      "n_users": 13,
+      "n_original_tweets": 140,
+      "color": "#00c1ff",
+      "key_hashtags": [
+        {
+          "tag": "communiqué",
+          "g2": 23.05
+        },
+        {
+          "tag": "cnh2026",
+          "g2": 23.05
+        },
+        {
+          "tag": "fièvre",
+          "g2": 18.59
+        },
+        {
+          "tag": "monparcourshandicap",
+          "g2": 15.33
+        },
+        {
+          "tag": "handicap",
+          "g2": 15.33
+        }
+      ],
+      "key_words": [
+        {
+          "word": "handicap",
+          "g2": 48.65
+        },
+        {
+          "word": "premiers",
+          "g2": 45.91
+        },
+        {
+          "word": "d'informations",
+          "g2": 43.15
+        },
+        {
+          "word": "informations",
+          "g2": 43.0
+        },
+        {
+          "word": "votre",
+          "g2": 42.13
+        }
+      ],
+      "brief": "Cluster de coordination C8 (hub @ericanimes1, 13 comptes). Hashtags distinctifs : #communiqué · #cnh2026 · #fièvre. Lexique : handicap, premiers, d'informations.",
+      "qualif_short": "#communiqué · #cnh2026 · #fièvre"
+    },
+    "9": {
+      "id": 9,
+      "hub": "brouard_anne",
+      "n_users": 9,
+      "n_original_tweets": 52,
+      "color": "#eab308",
+      "key_hashtags": [
+        {
+          "tag": "mca",
+          "g2": 97.49
+        }
+      ],
+      "key_words": [
+        {
+          "word": "signez",
+          "g2": 93.98
+        },
+        {
+          "word": "pétition",
+          "g2": 92.79
+        },
+        {
+          "word": "partagez",
+          "g2": 68.61
+        },
+        {
+          "word": "réseaux",
+          "g2": 37.56
+        },
+        {
+          "word": "sociaux",
+          "g2": 37.12
+        }
+      ],
+      "brief": "Cluster de coordination C9 (hub @brouard_anne, 9 comptes). Hashtags distinctifs : #mca. Lexique : signez, pétition, partagez.",
+      "qualif_short": "#mca"
+    }
+  }
+}

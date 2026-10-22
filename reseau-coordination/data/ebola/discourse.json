@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "layer": "coordination_louvain",
+    "method": "G2 keyness hashtags/words on non-RT texts of backbone accounts",
+    "vocabulary": "lecture discursive exploratoire — pas une preuve d'inauthenticité",
+    "n_tweets_scanned": 4,
+    "n_communities": 6,
+    "corpus": "ebola",
+    "generatedAt": "2026-10-22T10:07:23.577991+00:00"
+  },
+  "communities": {
+    "0": {
+      "id": 0,
+      "hub": "kangamarcel",
+      "n_users": 10,
+      "n_original_tweets": 2,
+      "color": "#73c000",
+      "key_hashtags": [],
+      "key_words": [
+        {
+          "word": "ebola",
+          "g2": 0.32
+        },
+        {
+          "word": "rdc",
+          "g2": 0.32
+        },
+        {
+          "word": "risque",
+          "g2": 0.1
+        },
+        {
+          "word": "coupe",
+          "g2": 0.1
+        },
+        {
+          "word": "monde",
+          "g2": 0.1
+        }
+      ],
+      "brief": "Cluster de coordination C0 (hub @kangamarcel, 10 comptes). Hashtags distinctifs : lexique faible. Lexique : ebola, rdc, risque.",
+      "qualif_short": "@kangamarcel"
+    },
+    "1": {
+      "id": 1,
+      "hub": "bosaystallone",
+      "n_users": 8,
+      "n_original_tweets": 0,
+      "color": "#ff8000",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C1 (hub @bosaystallone, 8 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@bosaystallone"
+    },
+    "2": {
+      "id": 2,
+      "hub": "barbara96913515",
+      "n_users": 6,
+      "n_original_tweets": 2,
+      "color": "#2563eb",
+      "key_hashtags": [],
+      "key_words": [
+        {
+          "word": "caca",
+          "g2": 8.04
+        }
+      ],
+      "brief": "Cluster de coordination C2 (hub @barbara96913515, 6 comptes). Hashtags distinctifs : lexique faible. Lexique : caca.",
+      "qualif_short": "@barbara96913515"
+    },
+    "3": {
+      "id": 3,
+      "hub": "tshiminyih",
+      "n_users": 5,
+      "n_original_tweets": 0,
+      "color": "#de81ff",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C3 (hub @tshiminyih, 5 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@tshiminyih"
+    },
+    "4": {
+      "id": 4,
+      "hub": "rwandan_pundit",
+      "n_users": 2,
+      "n_original_tweets": 0,
+      "color": "#c4a574",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C4 (hub @rwandan_pundit, 2 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@rwandan_pundit"
+    },
+    "5": {
+      "id": 5,
+      "hub": "abdsalamvito",
+      "n_users": 2,
+      "n_original_tweets": 0,
+      "color": "#ff497c",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C5 (hub @abdsalamvito, 2 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@abdsalamvito"
+    }
+  }
+}

@@ -1,0 +1,380 @@
+{
+  "meta": {
+    "layer": "coordination_louvain",
+    "method": "G2 keyness hashtags/words on non-RT texts of backbone accounts",
+    "vocabulary": "lecture discursive exploratoire — pas une preuve d'inauthenticité",
+    "n_tweets_scanned": 693,
+    "n_communities": 10,
+    "corpus": "macron_nucleaire",
+    "generatedAt": "2026-10-22T10:07:25.682816+00:00"
+  },
+  "communities": {
+    "0": {
+      "id": 0,
+      "hub": "pp75018_philou",
+      "n_users": 114,
+      "n_original_tweets": 204,
+      "color": "#73c000",
+      "key_hashtags": [
+        {
+          "tag": "taem",
+          "g2": 25.37
+        },
+        {
+          "tag": "france",
+          "g2": 6.91
+        },
+        {
+          "tag": "aveclepresident",
+          "g2": 4.55
+        },
+        {
+          "tag": "europe",
+          "g2": 4.55
+        },
+        {
+          "tag": "brigitte1edame",
+          "g2": 2.25
+        }
+      ],
+      "key_words": [
+        {
+          "word": "merci",
+          "g2": 312.24
+        },
+        {
+          "word": "soutien",
+          "g2": 158.69
+        },
+        {
+          "word": "vie",
+          "g2": 158.69
+        },
+        {
+          "word": "faîtes",
+          "g2": 156.5
+        },
+        {
+          "word": "fidélité",
+          "g2": 156.5
+        }
+      ],
+      "brief": "Cluster de coordination C0 (hub @pp75018_philou, 114 comptes). Hashtags distinctifs : #taem · #france · #aveclepresident. Lexique : merci, soutien, vie.",
+      "qualif_short": "#taem · #france · #aveclepresident"
+    },
+    "1": {
+      "id": 1,
+      "hub": "m75sylvie",
+      "n_users": 55,
+      "n_original_tweets": 198,
+      "color": "#ff8000",
+      "key_hashtags": [
+        {
+          "tag": "lecornu",
+          "g2": 6.23
+        },
+        {
+          "tag": "macron",
+          "g2": 3.18
+        },
+        {
+          "tag": "iran",
+          "g2": 2.57
+        }
+      ],
+      "key_words": [
+        {
+          "word": "dehors",
+          "g2": 194.51
+        },
+        {
+          "word": "doivent",
+          "g2": 160.06
+        },
+        {
+          "word": "généraux",
+          "g2": 157.47
+        },
+        {
+          "word": "renverser",
+          "g2": 157.47
+        },
+        {
+          "word": "partir",
+          "g2": 154.87
+        }
+      ],
+      "brief": "Cluster de coordination C1 (hub @m75sylvie, 55 comptes). Hashtags distinctifs : #lecornu · #macron · #iran. Lexique : dehors, doivent, généraux.",
+      "qualif_short": "#lecornu · #macron · #iran"
+    },
+    "2": {
+      "id": 2,
+      "hub": "talmoor56",
+      "n_users": 48,
+      "n_original_tweets": 129,
+      "color": "#2563eb",
+      "key_hashtags": [
+        {
+          "tag": "rtlsoir",
+          "g2": 7.98
+        },
+        {
+          "tag": "questionspol",
+          "g2": 2.59
+        },
+        {
+          "tag": "les4v",
+          "g2": 2.59
+        },
+        {
+          "tag": "nucléaire",
+          "g2": 2.59
+        },
+        {
+          "tag": "lcpol",
+          "g2": 2.59
+        }
+      ],
+      "key_words": [
+        {
+          "word": "dissuasion",
+          "g2": 77.71
+        },
+        {
+          "word": "nucléaire",
+          "g2": 66.71
+        },
+        {
+          "word": "française",
+          "g2": 34.98
+        },
+        {
+          "word": "avancée",
+          "g2": 27.71
+        },
+        {
+          "word": "annonce",
+          "g2": 27.17
+        }
+      ],
+      "brief": "Cluster de coordination C2 (hub @talmoor56, 48 comptes). Hashtags distinctifs : #rtlsoir · #questionspol · #les4v. Lexique : dissuasion, nucléaire, française.",
+      "qualif_short": "#rtlsoir · #questionspol · #les4v"
+    },
+    "3": {
+      "id": 3,
+      "hub": "soizicquem",
+      "n_users": 27,
+      "n_original_tweets": 92,
+      "color": "#de81ff",
+      "key_hashtags": [
+        {
+          "tag": "lr",
+          "g2": 27.88
+        },
+        {
+          "tag": "sarahknafo",
+          "g2": 7.17
+        },
+        {
+          "tag": "sarahpourparis",
+          "g2": 3.52
+        },
+        {
+          "tag": "ericzemmour",
+          "g2": 3.52
+        },
+        {
+          "tag": "unevilleheureuse",
+          "g2": 3.52
+        }
+      ],
+      "key_words": [
+        {
+          "word": "paris",
+          "g2": 134.09
+        },
+        {
+          "word": "dati",
+          "g2": 65.08
+        },
+        {
+          "word": "candidate",
+          "g2": 55.06
+        },
+        {
+          "word": "avis",
+          "g2": 41.27
+        },
+        {
+          "word": "elysée",
+          "g2": 41.27
+        }
+      ],
+      "brief": "Cluster de coordination C3 (hub @soizicquem, 27 comptes). Hashtags distinctifs : #lr · #sarahknafo · #sarahpourparis. Lexique : paris, dati, candidate.",
+      "qualif_short": "#lr · #sarahknafo · #sarahpourparis"
+    },
+    "4": {
+      "id": 4,
+      "hub": "aimeczen",
+      "n_users": 13,
+      "n_original_tweets": 9,
+      "color": "#c4a574",
+      "key_hashtags": [
+        {
+          "tag": "barrot",
+          "g2": 4.45
+        },
+        {
+          "tag": "braunpivet",
+          "g2": 4.45
+        },
+        {
+          "tag": "bergé",
+          "g2": 4.45
+        },
+        {
+          "tag": "yadan",
+          "g2": 4.45
+        },
+        {
+          "tag": "macrondestitution",
+          "g2": 4.45
+        }
+      ],
+      "key_words": [
+        {
+          "word": "etc",
+          "g2": 19.25
+        },
+        {
+          "word": "petite",
+          "g2": 15.44
+        },
+        {
+          "word": "pourquoi",
+          "g2": 10.35
+        },
+        {
+          "word": "joug",
+          "g2": 9.61
+        },
+        {
+          "word": "ramasse",
+          "g2": 9.61
+        }
+      ],
+      "brief": "Cluster de coordination C4 (hub @aimeczen, 13 comptes). Hashtags distinctifs : #barrot · #braunpivet · #bergé. Lexique : etc, petite, pourquoi.",
+      "qualif_short": "#barrot · #braunpivet · #bergé"
+    },
+    "5": {
+      "id": 5,
+      "hub": "masprotestmusic",
+      "n_users": 3,
+      "n_original_tweets": 0,
+      "color": "#ff497c",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C5 (hub @masprotestmusic, 3 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@masprotestmusic"
+    },
+    "6": {
+      "id": 6,
+      "hub": "philipbayonne",
+      "n_users": 2,
+      "n_original_tweets": 6,
+      "color": "#00bd94",
+      "key_hashtags": [],
+      "key_words": [
+        {
+          "word": "démocratie",
+          "g2": 22.62
+        },
+        {
+          "word": "demission",
+          "g2": 11.28
+        },
+        {
+          "word": "d'irresponsabilite",
+          "g2": 11.28
+        },
+        {
+          "word": "referendum",
+          "g2": 11.28
+        },
+        {
+          "word": "présence",
+          "g2": 11.28
+        }
+      ],
+      "brief": "Cluster de coordination C6 (hub @philipbayonne, 2 comptes). Hashtags distinctifs : lexique faible. Lexique : démocratie, demission, d'irresponsabilite.",
+      "qualif_short": "@philipbayonne"
+    },
+    "7": {
+      "id": 7,
+      "hub": "cath_rn95",
+      "n_users": 2,
+      "n_original_tweets": 11,
+      "color": "#b45309",
+      "key_hashtags": [
+        {
+          "tag": "rn",
+          "g2": 6.91
+        },
+        {
+          "tag": "knafo",
+          "g2": 6.91
+        },
+        {
+          "tag": "macron",
+          "g2": 0.76
+        }
+      ],
+      "key_words": [
+        {
+          "word": "canari",
+          "g2": 26.59
+        },
+        {
+          "word": "bcp",
+          "g2": 17.71
+        },
+        {
+          "word": "promo",
+          "g2": 17.71
+        },
+        {
+          "word": "système",
+          "g2": 17.71
+        },
+        {
+          "word": "alliance",
+          "g2": 13.91
+        }
+      ],
+      "brief": "Cluster de coordination C7 (hub @cath_rn95, 2 comptes). Hashtags distinctifs : #rn · #knafo · #macron. Lexique : canari, bcp, promo.",
+      "qualif_short": "#rn · #knafo · #macron"
+    },
+    "8": {
+      "id": 8,
+      "hub": "szych1",
+      "n_users": 2,
+      "n_original_tweets": 0,
+      "color": "#00c1ff",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C8 (hub @szych1, 2 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@szych1"
+    },
+    "9": {
+      "id": 9,
+      "hub": "joceteodor",
+      "n_users": 2,
+      "n_original_tweets": 0,
+      "color": "#eab308",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C9 (hub @joceteodor, 2 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@joceteodor"
+    }
+  }
+}

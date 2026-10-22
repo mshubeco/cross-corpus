@@ -18,12 +18,19 @@ URL : `https://mshubeco.github.io/cross-corpus/reseau-coordination/?corpus=<id>`
 
 Vocabulaire affiché : *coordination d’amplification / backbone* — **pas** une preuve d’inauthenticité.
 
+## Couleurs & discours
+
+- **Louvain coordination** : partition Louvain sur le backbone Serrano (défaut)
+- **Louvain connectome** : couleurs du Louvain du connectome d’origine (projection par `screen_name`)
+- **Panel droit** : analyse discursive brève des clusters de coordination (hashtags / lexique G² sur pubs hors RT)
+
 ## Pipeline
 
 `Desktop/cross_corpus/pipelines/coordination_cort_serrano/`
 
 ```bat
 py -3.13 scripts/build_corpus.py --all
+py -3.13 scripts/enrich_colors_discourse.py
 ```
 
-Chaque corpus produit `data/<id>/graph.json`, `meta.json`, `protocol.json`.
+Chaque corpus produit `data/<id>/graph.json`, `meta.json`, `protocol.json`, `discourse.json`.

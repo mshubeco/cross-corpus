@@ -1,0 +1,411 @@
+{
+  "meta": {
+    "layer": "coordination_louvain",
+    "method": "G2 keyness hashtags/words on non-RT texts of backbone accounts",
+    "vocabulary": "lecture discursive exploratoire — pas une preuve d'inauthenticité",
+    "n_tweets_scanned": 2192,
+    "n_communities": 10,
+    "corpus": "ebola_2_2026",
+    "generatedAt": "2026-10-22T10:07:23.891291+00:00"
+  },
+  "communities": {
+    "0": {
+      "id": 0,
+      "hub": "dhego_malobi",
+      "n_users": 113,
+      "n_original_tweets": 611,
+      "color": "#73c000",
+      "key_hashtags": [
+        {
+          "tag": "bundibugyo",
+          "g2": 221.11
+        },
+        {
+          "tag": "ebola",
+          "g2": 117.61
+        },
+        {
+          "tag": "ituri",
+          "g2": 104.25
+        },
+        {
+          "tag": "pci",
+          "g2": 67.37
+        },
+        {
+          "tag": "intarayagatandatu",
+          "g2": 55.96
+        }
+      ],
+      "key_words": [
+        {
+          "word": "axes",
+          "g2": 944.83
+        },
+        {
+          "word": "iga",
+          "g2": 944.83
+        },
+        {
+          "word": "alliance",
+          "g2": 903.87
+        },
+        {
+          "word": "l'asbl",
+          "g2": 878.04
+        },
+        {
+          "word": "barriere-nizi-kilo-mungbwalu",
+          "g2": 823.44
+        }
+      ],
+      "brief": "Cluster de coordination C0 (hub @dhego_malobi, 113 comptes). Hashtags distinctifs : #bundibugyo · #ebola · #ituri. Lexique : axes, iga, alliance.",
+      "qualif_short": "#bundibugyo · #ebola · #ituri"
+    },
+    "1": {
+      "id": 1,
+      "hub": "mytouchrecords",
+      "n_users": 55,
+      "n_original_tweets": 419,
+      "color": "#ff8000",
+      "key_hashtags": [
+        {
+          "tag": "ensemble",
+          "g2": 40.64
+        },
+        {
+          "tag": "vaincre",
+          "g2": 33.84
+        },
+        {
+          "tag": "vaincreebolaensemble",
+          "g2": 30.45
+        },
+        {
+          "tag": "nord_kivu",
+          "g2": 24.35
+        },
+        {
+          "tag": "bunia",
+          "g2": 23.47
+        }
+      ],
+      "key_words": [
+        {
+          "word": "amp",
+          "g2": 517.82
+        },
+        {
+          "word": "oms",
+          "g2": 67.29
+        },
+        {
+          "word": "soutien",
+          "g2": 55.03
+        },
+        {
+          "word": "partenaires",
+          "g2": 41.11
+        },
+        {
+          "word": "renforcer",
+          "g2": 34.4
+        }
+      ],
+      "brief": "Cluster de coordination C1 (hub @mytouchrecords, 55 comptes). Hashtags distinctifs : #ensemble · #vaincre · #vaincreebolaensemble. Lexique : amp, oms, soutien.",
+      "qualif_short": "#ensemble · #vaincre · #vaincreebolaensemble"
+    },
+    "2": {
+      "id": 2,
+      "hub": "congo__6",
+      "n_users": 40,
+      "n_original_tweets": 840,
+      "color": "#2563eb",
+      "key_hashtags": [
+        {
+          "tag": "rdc",
+          "g2": 193.86
+        },
+        {
+          "tag": "santépublique",
+          "g2": 105.97
+        },
+        {
+          "tag": "lemusonge",
+          "g2": 48.04
+        },
+        {
+          "tag": "santépubliquerdc",
+          "g2": 36.46
+        },
+        {
+          "tag": "prévention",
+          "g2": 33.14
+        }
+      ],
+      "key_words": [
+        {
+          "word": "situation",
+          "g2": 241.43
+        },
+        {
+          "word": "rapport",
+          "g2": 197.54
+        },
+        {
+          "word": "provinces",
+          "g2": 99.27
+        },
+        {
+          "word": "sud-kivu",
+          "g2": 81.56
+        },
+        {
+          "word": "ministre",
+          "g2": 69.83
+        }
+      ],
+      "brief": "Cluster de coordination C2 (hub @congo__6, 40 comptes). Hashtags distinctifs : #rdc · #santépublique · #lemusonge. Lexique : situation, rapport, provinces.",
+      "qualif_short": "#rdc · #santépublique · #lemusonge"
+    },
+    "3": {
+      "id": 3,
+      "hub": "lohickkasonga",
+      "n_users": 14,
+      "n_original_tweets": 7,
+      "color": "#de81ff",
+      "key_hashtags": [
+        {
+          "tag": "rdc",
+          "g2": 1.33
+        },
+        {
+          "tag": "ebola",
+          "g2": 0.33
+        }
+      ],
+      "key_words": [
+        {
+          "word": "sud-africain",
+          "g2": 19.7
+        },
+        {
+          "word": "cyril",
+          "g2": 15.9
+        },
+        {
+          "word": "ramaphosa",
+          "g2": 15.9
+        },
+        {
+          "word": "homologue",
+          "g2": 15.16
+        },
+        {
+          "word": "inrb",
+          "g2": 12.75
+        }
+      ],
+      "brief": "Cluster de coordination C3 (hub @lohickkasonga, 14 comptes). Hashtags distinctifs : #rdc · #ebola. Lexique : sud-africain, cyril, ramaphosa.",
+      "qualif_short": "#rdc · #ebola"
+    },
+    "4": {
+      "id": 4,
+      "hub": "joemondesi63736",
+      "n_users": 12,
+      "n_original_tweets": 3,
+      "color": "#c4a574",
+      "key_hashtags": [],
+      "key_words": [
+        {
+          "word": "conséquence",
+          "g2": 25.26
+        },
+        {
+          "word": "éprise",
+          "g2": 14.52
+        },
+        {
+          "word": "mauvaises",
+          "g2": 14.52
+        },
+        {
+          "word": "petits",
+          "g2": 14.52
+        },
+        {
+          "word": "arrangements",
+          "g2": 14.52
+        }
+      ],
+      "brief": "Cluster de coordination C4 (hub @joemondesi63736, 12 comptes). Hashtags distinctifs : lexique faible. Lexique : conséquence, éprise, mauvaises.",
+      "qualif_short": "@joemondesi63736"
+    },
+    "5": {
+      "id": 5,
+      "hub": "alexand39740511",
+      "n_users": 9,
+      "n_original_tweets": 2,
+      "color": "#ff497c",
+      "key_hashtags": [],
+      "key_words": [
+        {
+          "word": "louper",
+          "g2": 16.96
+        },
+        {
+          "word": "cache",
+          "g2": 14.19
+        },
+        {
+          "word": "déclenchée",
+          "g2": 14.19
+        },
+        {
+          "word": "hantavirus",
+          "g2": 13.15
+        },
+        {
+          "word": "coup",
+          "g2": 12.47
+        }
+      ],
+      "brief": "Cluster de coordination C5 (hub @alexand39740511, 9 comptes). Hashtags distinctifs : lexique faible. Lexique : louper, cache, déclenchée.",
+      "qualif_short": "@alexand39740511"
+    },
+    "6": {
+      "id": 6,
+      "hub": "steveboshibashi",
+      "n_users": 3,
+      "n_original_tweets": 26,
+      "color": "#00bd94",
+      "key_hashtags": [
+        {
+          "tag": "ebola",
+          "g2": 24.92
+        },
+        {
+          "tag": "france24",
+          "g2": 10.91
+        },
+        {
+          "tag": "drc",
+          "g2": 4.48
+        }
+      ],
+      "key_words": [
+        {
+          "word": "rdc",
+          "g2": 25.15
+        },
+        {
+          "word": "l'est",
+          "g2": 16.03
+        },
+        {
+          "word": "court",
+          "g2": 13.78
+        },
+        {
+          "word": "congo",
+          "g2": 13.73
+        },
+        {
+          "word": "actuelle",
+          "g2": 12.63
+        }
+      ],
+      "brief": "Cluster de coordination C6 (hub @steveboshibashi, 3 comptes). Hashtags distinctifs : #ebola · #france24 · #drc. Lexique : rdc, l'est, court.",
+      "qualif_short": "#ebola · #france24 · #drc"
+    },
+    "7": {
+      "id": 7,
+      "hub": "kandasanza",
+      "n_users": 3,
+      "n_original_tweets": 5,
+      "color": "#b45309",
+      "key_hashtags": [
+        {
+          "tag": "ebolatujikinge",
+          "g2": 40.64
+        },
+        {
+          "tag": "stopebola",
+          "g2": 16.91
+        }
+      ],
+      "key_words": [
+        {
+          "word": "protégeons",
+          "g2": 31.98
+        },
+        {
+          "word": "stigmatisation",
+          "g2": 18.67
+        },
+        {
+          "word": "nos",
+          "g2": 14.32
+        },
+        {
+          "word": "informons",
+          "g2": 13.81
+        },
+        {
+          "word": "apportons",
+          "g2": 13.81
+        }
+      ],
+      "brief": "Cluster de coordination C7 (hub @kandasanza, 3 comptes). Hashtags distinctifs : #ebolatujikinge · #stopebola. Lexique : protégeons, stigmatisation, nos.",
+      "qualif_short": "#ebolatujikinge · #stopebola"
+    },
+    "8": {
+      "id": 8,
+      "hub": "panafri96135534",
+      "n_users": 3,
+      "n_original_tweets": 0,
+      "color": "#00c1ff",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C8 (hub @panafri96135534, 3 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@panafri96135534"
+    },
+    "9": {
+      "id": 9,
+      "hub": "franckngonga",
+      "n_users": 2,
+      "n_original_tweets": 1,
+      "color": "#eab308",
+      "key_hashtags": [
+        {
+          "tag": "rdc",
+          "g2": 3.77
+        }
+      ],
+      "key_words": [
+        {
+          "word": "compromettent",
+          "g2": 16.41
+        },
+        {
+          "word": "récente",
+          "g2": 12.59
+        },
+        {
+          "word": "dépit",
+          "g2": 11.91
+        },
+        {
+          "word": "lacunes",
+          "g2": 11.41
+        },
+        {
+          "word": "constate",
+          "g2": 10.67
+        }
+      ],
+      "brief": "Cluster de coordination C9 (hub @franckngonga, 2 comptes). Hashtags distinctifs : #rdc. Lexique : compromettent, récente, dépit.",
+      "qualif_short": "#rdc"
+    }
+  }
+}
