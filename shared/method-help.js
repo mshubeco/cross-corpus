@@ -121,6 +121,36 @@ const TOPICS = {
     `,
   },
 
+  connectome_lemma: {
+    kicker: 'Connectome · mode Lemme',
+    title: 'Lemmes distinctifs — méthode & filtre',
+    html: `
+      <h3>Objet</h3>
+      <p>Même logique que le mode <strong>#</strong>, appliquée aux <strong>formes lexicales</strong> (tokens hors stop-words)
+      qui caractérisent un pôle Louvain — pour visualiser où se positionnent les principaux lemmes du réseau.</p>
+
+      <h3>Keyness (score z)</h3>
+      <p>Fréquence du terme <em>dans</em> le pôle vs <em>hors</em> pôle : log-odds pondéré puis
+      <strong>z = δ / σ</strong> (Monroe et al. 2008). Les profils intercomm ou un calcul CSV direct
+      fournissent les listes <code>key_words</code> par communauté.</p>
+      <div class="mh-formula">z = δ / σ &nbsp;·&nbsp; δ = log-odds pondéré (pôle vs reste)</div>
+
+      <h3>Effectif «&nbsp;comptes&nbsp;»</h3>
+      <p>Comptes du <strong>graphe</strong> ayant publié hors RT au moins un message contenant la forme
+      (tokenisation simple, sans lemmatiseur morphologique complet).</p>
+
+      <h3>Filtre d’affichage</h3>
+      <ul>
+        <li>Identique au mode # : nœuds ambre, liens fort / halo selon les extrémités matchées.</li>
+        <li>Fiche bas-droite : co-occurrents (même message) + parts par communauté (couleurs Louvain).</li>
+      </ul>
+
+      <div class="mh-caveat"><strong>Limites.</strong> Ce sont des <em>formes graphiques</em> distinctives, pas forcément des lemmes
+        morphologiques (ex. pluriels / conjugaisons peuvent rester séparés). Le score décrit un contraste relatif,
+        pas une thématique certifiée.</div>
+    `,
+  },
+
   flux: {
     kicker: 'Flux continu',
     title: 'Réseau dynamique — fenêtre glissante 3 jours',

@@ -168,6 +168,9 @@ def main() -> None:
     tag_accounts: dict[str, set[str]] = defaultdict(set)
     tag_comm_accounts: dict[str, dict[int, set[str]]] = defaultdict(lambda: defaultdict(set))
     cooccur: dict[str, Counter] = defaultdict(Counter)
+    word_accounts: dict[str, set[str]] = defaultdict(set)
+    word_comm_accounts: dict[str, dict[int, set[str]]] = defaultdict(lambda: defaultdict(set))
+    word_cooccur: dict[str, Counter] = defaultdict(Counter)
     N_COOC = 15
 
     print(f"Streaming {CSV.name}…", flush=True)
@@ -198,9 +201,19 @@ def main() -> None:
                     for tb in tag_list[a_i + 1 :]:
                         cooccur[ta][tb] += 1
                         cooccur[tb][ta] += 1
-            for w in tokens(text):
+            toks = tokens(text)
+            uniq = list(dict.fromkeys(toks))
+            for w in uniq:
                 tok_c[cid][w] += 1
                 n_tok_c[cid] += 1
+                word_accounts[w].add(sn)
+                word_comm_accounts[w][cid].add(sn)
+            wpair = uniq[:12]
+            if len(wpair) >= 2:
+                for a_i, wa in enumerate(wpair):
+                    for wb in wpair[a_i + 1 :]:
+                        word_cooccur[wa][wb] += 1
+                        word_cooccur[wb][wa] += 1
             # keep a few samples (prefer tagged)
             if len(samples[cid]) < N_SAMPLES + 8:
                 tag0 = tags[0] if tags else ""
@@ -224,6 +237,7 @@ def main() -> None:
 
     communities_out: dict[str, dict] = {}
     tag_communities: dict[str, set[int]] = defaultdict(set)
+    word_communities: dict[str, set[int]] = defaultdict(set)
 
     for cid in focus_ids:
         rest_ht = max(n_ht_all - int(n_ht_c[cid]), 1)
@@ -275,6 +289,8 @@ def main() -> None:
 
         for h in key_hashtags:
             tag_communities[h["tag"]].add(cid)
+        for w in key_words:
+            word_communities[w["word"]].add(cid)
 
         just = (
             f"C{cid} · hub @{hub}. Lexique distinctif (z log-odds vs autres pôles connectome) : "
@@ -335,9 +351,40 @@ def main() -> None:
         for t in sorted(keep_store)
     }
     tag_comm_n = {t: row for t, row in tag_comm_n.items() if row}
+    keep_words = set(word_communities.keys())
+    word_partner_need: set[str] = set()
+    word_cooccur_out: dict[str, list[dict]] = {}
+    for w in sorted(keep_words):
+        top = []
+        for other, n in (word_cooccur.get(w) or Counter()).most_common(N_COOC * 2):
+            if other == w or n < 2:
+                continue
+            top.append({"word": other, "n": int(n)})
+            if other not in keep_words:
+                word_partner_need.add(other)
+            if len(top) >= N_COOC:
+                break
+        if top:
+            word_cooccur_out[w] = top
+    keep_words_store = keep_words | word_partner_need
+    word_accounts = {w: sns for w, sns in word_accounts.items() if w in keep_words_store}
+    word_comm_n = {
+        w: {
+            str(cid): len(sns)
+            for cid, sns in sorted(
+                (word_comm_accounts.get(w) or {}).items(),
+                key=lambda kv: (-len(kv[1]), kv[0]),
+            )
+            if sns
+        }
+        for w in sorted(keep_words_store)
+    }
+    word_comm_n = {w: row for w, row in word_comm_n.items() if row}
     TAG_CAP = 15000
     stored = {t: sorted(sns)[:TAG_CAP] for t, sns in sorted(tag_accounts.items()) if sns}
     counts = {t: len(sns) for t, sns in tag_accounts.items() if sns}
+    word_stored = {w: sorted(sns)[:TAG_CAP] for w, sns in sorted(word_accounts.items()) if sns}
+    word_counts = {w: len(sns) for w, sns in word_accounts.items() if sns}
 
     payload = {
         "meta": {
@@ -364,6 +411,13 @@ def main() -> None:
         },
         "tag_cooccur": tag_cooccur,
         "tag_comm_n": tag_comm_n,
+        "word_accounts": word_stored,
+        "word_n_accounts": word_counts,
+        "word_communities": {
+            w: sorted(ids) for w, ids in sorted(word_communities.items()) if ids
+        },
+        "word_cooccur": word_cooccur_out,
+        "word_comm_n": word_comm_n,
     }
     OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"Wrote {OUT}", flush=True)

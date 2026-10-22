@@ -7,24 +7,18 @@
     "tag_accounts_def": "Comptes du graphe ayant publié hors RT au moins un message portant le hashtag (champ hashtag + # dans le texte).",
     "tag_cooccur_def": "Co-occurrence message (hors RT) : autres # dans le même message.",
     "tag_comm_n_def": "Comptes distincts du graphe ayant utilisé le #, par communauté Louvain.",
+    "word_accounts_def": "Comptes du graphe ayant publié hors RT au moins un message contenant la forme lexicale (token hors stop-words).",
     "limit": "Label opérationnel fondé sur lexique distinctif (z) / structure / échantillons — pas une appartenance partisane des comptes ordinaires."
   },
   "communities": {
     "1": {
       "id": "1",
-      "qualif": "chine",
-      "qualif_short": "chine",
-      "justification": "C1 · hub @75secondes. Lexique distinctif (z log-odds CSV vs autres pôles) : chine. 1 pubs hors RT.",
+      "qualif": "pôle @75secondes",
+      "qualif_short": "pôle @75secondes",
+      "justification": "C1 · hub @75secondes. Lexique distinctif (z log-odds CSV vs autres pôles) : —. 1 pubs hors RT.",
       "key_hashtags": [],
-      "key_words": [
-        {
-          "word": "chine",
-          "g2": 0.0
-        }
-      ],
-      "themes": {
-        "chine": 1.0
-      },
+      "key_words": [],
+      "themes": {},
       "samples": [
         {
           "sn": "75secondes",
@@ -40,8 +34,8 @@
     },
     "2": {
       "id": "2",
-      "qualif": "épidémie / hmpv",
-      "qualif_short": "épidémie / hmpv",
+      "qualif": "hmpv",
+      "qualif_short": "hmpv",
       "justification": "C2 · hub @francenews24. Lexique distinctif (z log-odds CSV vs autres pôles) : #chine. 2 pubs hors RT.",
       "key_hashtags": [
         {
@@ -51,22 +45,12 @@
       ],
       "key_words": [
         {
-          "word": "épidémie",
-          "g2": 0.0
-        },
-        {
           "word": "hmpv",
-          "g2": 0.0
-        },
-        {
-          "word": "enfants",
           "g2": 0.0
         }
       ],
       "themes": {
-        "épidémie": 1.0,
-        "hmpv": 1.0,
-        "enfants": 1.0
+        "hmpv": 1.0
       },
       "samples": [
         {
@@ -83,11 +67,15 @@
     },
     "5": {
       "id": "5",
-      "qualif": "métapneumovirus / humain",
-      "qualif_short": "métapneumovirus / humain",
-      "justification": "C5 · hub @tatiann69922625. Lexique distinctif (z log-odds CSV vs autres pôles) : métapneumovirus, humain, chine, hmpv. 4 pubs hors RT.",
+      "qualif": "hmpv / métapneumovirus",
+      "qualif_short": "hmpv / métapneumovirus",
+      "justification": "C5 · hub @tatiann69922625. Lexique distinctif (z log-odds CSV vs autres pôles) : hmpv, métapneumovirus, humain, chine. 4 pubs hors RT.",
       "key_hashtags": [],
       "key_words": [
+        {
+          "word": "hmpv",
+          "g2": 0.0
+        },
         {
           "word": "métapneumovirus",
           "g2": 0.0
@@ -101,15 +89,7 @@
           "g2": 0.0
         },
         {
-          "word": "hmpv",
-          "g2": 0.0
-        },
-        {
           "word": "état",
-          "g2": 0.0
-        },
-        {
-          "word": "virus",
           "g2": 0.0
         },
         {
@@ -119,13 +99,17 @@
         {
           "word": "données",
           "g2": 0.0
+        },
+        {
+          "word": "taux",
+          "g2": 0.0
         }
       ],
       "themes": {
+        "hmpv": 1.0,
         "métapneumovirus": 1.0,
         "humain": 1.0,
         "chine": 1.0,
-        "hmpv": 1.0,
         "état": 1.0
       },
       "samples": [
@@ -161,9 +145,9 @@
     },
     "7": {
       "id": "7",
-      "qualif": "virus",
-      "qualif_short": "virus",
-      "justification": "C7 · hub @france24_fr. Lexique distinctif (z log-odds CSV vs autres pôles) : #chinavirus, #xofluza, #antiviral, #baloxavir. 21 pubs hors RT.",
+      "qualif": "hmpv / virus",
+      "qualif_short": "hmpv / virus",
+      "justification": "C7 · hub @france24_fr. Lexique distinctif (z log-odds CSV vs autres pôles) : #chinavirus, #xofluza, #baloxavir, #antiviral. 21 pubs hors RT.",
       "key_hashtags": [
         {
           "tag": "chinavirus",
@@ -174,19 +158,19 @@
           "g2": 1.54
         },
         {
-          "tag": "antiviral",
-          "g2": 1.54
-        },
-        {
           "tag": "baloxavir",
           "g2": 1.54
         },
         {
-          "tag": "téléchargement",
+          "tag": "antiviral",
           "g2": 1.54
         },
         {
           "tag": "europe",
+          "g2": 1.54
+        },
+        {
+          "tag": "téléchargement",
           "g2": 1.54
         },
         {
@@ -196,12 +180,44 @@
       ],
       "key_words": [
         {
+          "word": "hmpv",
+          "g2": 0.0
+        },
+        {
           "word": "virus",
-          "g2": 2.18
+          "g2": 0.0
+        },
+        {
+          "word": "chine",
+          "g2": 0.0
+        },
+        {
+          "word": "propage",
+          "g2": 0.0
+        },
+        {
+          "word": "cas",
+          "g2": 0.0
+        },
+        {
+          "word": "faut",
+          "g2": 0.0
+        },
+        {
+          "word": "craindre",
+          "g2": 0.0
+        },
+        {
+          "word": "respiratoire",
+          "g2": 0.0
         }
       ],
       "themes": {
-        "virus": 100.0
+        "hmpv": 1.0,
+        "virus": 1.0,
+        "chine": 1.0,
+        "propage": 1.0,
+        "cas": 1.0
       },
       "samples": [
         {
@@ -242,8 +258,8 @@
     },
     "4": {
       "id": "4",
-      "qualif": "chine",
-      "qualif_short": "chine",
+      "qualif": "chine / virus",
+      "qualif_short": "chine / virus",
       "justification": "C4 · hub @eclairelutin. Lexique distinctif (z log-odds CSV vs autres pôles) : #chine. 7 pubs hors RT.",
       "key_hashtags": [
         {
@@ -254,11 +270,43 @@
       "key_words": [
         {
           "word": "chine",
-          "g2": 3.01
+          "g2": 0.0
+        },
+        {
+          "word": "virus",
+          "g2": 0.0
+        },
+        {
+          "word": "hmpv",
+          "g2": 0.0
+        },
+        {
+          "word": "épidémie",
+          "g2": 0.0
+        },
+        {
+          "word": "covid",
+          "g2": 0.0
+        },
+        {
+          "word": "hôpitaux",
+          "g2": 0.0
+        },
+        {
+          "word": "enregistrée",
+          "g2": 0.0
+        },
+        {
+          "word": "métapneumovirus",
+          "g2": 0.0
         }
       ],
       "themes": {
-        "chine": 100.0
+        "chine": 1.0,
+        "virus": 1.0,
+        "hmpv": 1.0,
+        "épidémie": 1.0,
+        "covid": 1.0
       },
       "samples": [
         {
@@ -277,7 +325,7 @@
       "id": "10",
       "qualif": "hmpv / chine",
       "qualif_short": "hmpv / chine",
-      "justification": "C10 · hub @le_parisien. Lexique distinctif (z log-odds CSV vs autres pôles) : hmpv, chine, augmentation, cas. 11 pubs hors RT.",
+      "justification": "C10 · hub @le_parisien. Lexique distinctif (z log-odds CSV vs autres pôles) : hmpv, chine, panique, sanitaire. 11 pubs hors RT.",
       "key_hashtags": [],
       "key_words": [
         {
@@ -286,14 +334,6 @@
         },
         {
           "word": "chine",
-          "g2": 0.0
-        },
-        {
-          "word": "augmentation",
-          "g2": 0.0
-        },
-        {
-          "word": "cas",
           "g2": 0.0
         },
         {
@@ -311,14 +351,22 @@
         {
           "word": "virus",
           "g2": 0.0
+        },
+        {
+          "word": "cinq",
+          "g2": 0.0
+        },
+        {
+          "word": "ans",
+          "g2": 0.0
         }
       ],
       "themes": {
         "hmpv": 1.0,
         "chine": 1.0,
-        "augmentation": 1.0,
-        "cas": 1.0,
-        "panique": 1.0
+        "panique": 1.0,
+        "sanitaire": 1.0,
+        "connu": 1.0
       },
       "samples": [
         {
@@ -361,7 +409,7 @@
       "id": "3",
       "qualif": "mpvh / métapneumovirus",
       "qualif_short": "mpvh / métapneumovirus",
-      "justification": "C3 · hub @kasprzykremi. Lexique distinctif (z log-odds CSV vs autres pôles) : mpvh, métapneumovirus, humain, virus. 2 pubs hors RT.",
+      "justification": "C3 · hub @kasprzykremi. Lexique distinctif (z log-odds CSV vs autres pôles) : mpvh, métapneumovirus, humain. 2 pubs hors RT.",
       "key_hashtags": [],
       "key_words": [
         {
@@ -375,17 +423,12 @@
         {
           "word": "humain",
           "g2": 0.0
-        },
-        {
-          "word": "virus",
-          "g2": 0.0
         }
       ],
       "themes": {
         "mpvh": 1.0,
         "métapneumovirus": 1.0,
-        "humain": 1.0,
-        "virus": 1.0
+        "humain": 1.0
       },
       "samples": [
         {
@@ -408,8 +451,8 @@
     },
     "8": {
       "id": "8",
-      "qualif": "populations",
-      "qualif_short": "populations",
+      "qualif": "hmpv / virus",
+      "qualif_short": "hmpv / virus",
       "justification": "C8 · hub @asianews_fr. Lexique distinctif (z log-odds CSV vs autres pôles) : #chine, #hmpv. 6 pubs hors RT.",
       "key_hashtags": [
         {
@@ -423,12 +466,44 @@
       ],
       "key_words": [
         {
+          "word": "hmpv",
+          "g2": 0.0
+        },
+        {
+          "word": "virus",
+          "g2": 0.0
+        },
+        {
+          "word": "inutile",
+          "g2": 0.0
+        },
+        {
+          "word": "paniquer",
+          "g2": 0.0
+        },
+        {
           "word": "populations",
-          "g2": 3.41
+          "g2": 0.0
+        },
+        {
+          "word": "recommençons",
+          "g2": 0.0
+        },
+        {
+          "word": "pandémies",
+          "g2": 0.0
+        },
+        {
+          "word": "appauvri",
+          "g2": 0.0
         }
       ],
       "themes": {
-        "populations": 100.0
+        "hmpv": 1.0,
+        "virus": 1.0,
+        "inutile": 1.0,
+        "paniquer": 1.0,
+        "populations": 1.0
       },
       "samples": [
         {
@@ -463,7 +538,7 @@
       "key_words": [
         {
           "word": "cas",
-          "g2": 2.58
+          "g2": 2.69
         }
       ],
       "themes": {
@@ -519,11 +594,11 @@
           "g2": 0.0
         },
         {
-          "word": "québec",
+          "word": "virale",
           "g2": 0.0
         },
         {
-          "word": "virale",
+          "word": "mystérieuse",
           "g2": 0.0
         }
       ],
@@ -536,34 +611,10 @@
       },
       "samples": [
         {
-          "sn": "gengis9999",
-          "text": "La Chine est de nouveau confrontée à une nouvelle épidémie virale mystérieuse et mortelle, baptisée HMPV (métapneumovirus humain) Les médias sociaux sont inondés de vidéos d’hôpitaux surpeuplés. https://t.co/5LzgrZOjlA",
-          "at": "2025-01-05",
-          "tag": ""
-        },
-        {
-          "sn": "jeanbarbeau2",
-          "text": "Des informations fiables et utiles sur le HMPV venant de @NGrandvaux . Voir clair sur ce genre de rumeur. 👇👇👇 https://t.co/uSHFRf5mcN",
-          "at": "2025-01-07",
-          "tag": ""
-        },
-        {
-          "sn": "ngrandvaux",
-          "text": "5️⃣ Le HMPV n’est pas anodin, mais il n’y a aucune raison de comparer cette épidémie en Chine à l’émergence du SARS-CoV-2. ⚠️ Cependant, cela soulève une question importante : Devons-nous prendre des mesures pour limiter la propagation des virus respiratoires ?",
-          "at": "2025-01-07",
-          "tag": ""
-        },
-        {
-          "sn": "ngrandvaux",
-          "text": "3️⃣ Le HMPV est suivi par la vigie des virus respiratoires @INSPQ au Québec et au Canada. 📊 Pour les données au Québec: 🔗https://t.co/yc2sFD6drn (Prenez le temps de parcourir les différentes pages, car les analyses sont classées par milieux : cliniques/hôpitaux).",
-          "at": "2025-01-07",
-          "tag": ""
-        },
-        {
           "sn": "ngrandvaux",
           "text": "Petit thread sur l’éclosion virale signalée en Chine. 1️⃣L’éclosion est due au #metapneumovirus humain (#HMPV ), qui n’est PAS un nouveau virus. 👉 Identifié en 2001 (mais circulant probablement bien avant). 🔗 Référence : https://t.co/bi1GNDEl2A",
           "at": "2025-01-07",
-          "tag": "hmpv"
+          "tag": "metapneumovirus"
         }
       ],
       "n_users": 22,
@@ -573,16 +624,16 @@
     },
     "0": {
       "id": "0",
-      "qualif": "chine / hmpv",
-      "qualif_short": "chine / hmpv",
-      "justification": "C0 · hub @aixematrice. Lexique distinctif (z log-odds CSV vs autres pôles) : #pandémie, #épidémie, #covid_19, #breaking. 6 pubs hors RT.",
+      "qualif": "hmpv / chine",
+      "qualif_short": "hmpv / chine",
+      "justification": "C0 · hub @aixematrice. Lexique distinctif (z log-odds CSV vs autres pôles) : #épidémie, #pandémie, #covid_19, #breaking. 6 pubs hors RT.",
       "key_hashtags": [
         {
-          "tag": "pandémie",
+          "tag": "épidémie",
           "g2": 2.48
         },
         {
-          "tag": "épidémie",
+          "tag": "pandémie",
           "g2": 2.48
         },
         {
@@ -608,11 +659,11 @@
       ],
       "key_words": [
         {
-          "word": "chine",
+          "word": "hmpv",
           "g2": 0.0
         },
         {
-          "word": "hmpv",
+          "word": "chine",
           "g2": 0.0
         },
         {
@@ -628,21 +679,21 @@
           "g2": 0.0
         },
         {
-          "word": "virus",
-          "g2": 0.0
-        },
-        {
           "word": "premiers",
           "g2": 0.0
         },
         {
           "word": "état",
           "g2": 0.0
+        },
+        {
+          "word": "urgence",
+          "g2": 0.0
         }
       ],
       "themes": {
-        "chine": 1.0,
         "hmpv": 1.0,
+        "chine": 1.0,
         "cas": 1.0,
         "épidémie": 1.0,
         "covid": 1.0
@@ -658,13 +709,13 @@
           "sn": "aixematrice",
           "text": "Un petit réveil en musique et avec humour ! Passer une bonne semaine ! Est-ce la maladie X de L #oms ? 🔴‼️ Et c’est reparti ? #BREAKING , 🚨 Après 5 ans de la #pandémie de #COVID_19, la #Chine fait face à une nouvelle #épidémie d’un #virus appelé #HMPV (Human https://t.co/flhV46fy",
           "at": "2025-01-06",
-          "tag": "covid_19"
+          "tag": "breaking"
         },
         {
           "sn": "aixematrice",
           "text": "🔴‼️ Et c’est reparti ? #BREAKING , 🚨 Après 5 ans de la #pandémie de #COVID_19, la #Chine fait face à une nouvelle #épidémie d’un #virus appelé #HMPV (Human Metapneumovirus), une infection respiratoire. Les hôpitaux sont saturés de cas de ce virus ! Et ça arrive ? Y a personne htt",
           "at": "2025-01-06",
-          "tag": "covid_19"
+          "tag": "épidémie"
         }
       ],
       "n_users": 22,
@@ -769,8 +820,8 @@
     },
     "23": {
       "id": "23",
-      "qualif": "virus / chine",
-      "qualif_short": "virus / chine",
+      "qualif": "chine / virus",
+      "qualif_short": "chine / virus",
       "justification": "C23 · hub @bvoltaire. Lexique distinctif (z log-odds CSV vs autres pôles) : #chine, #virus. 1 pubs hors RT.",
       "key_hashtags": [
         {
@@ -782,20 +833,8 @@
           "g2": 0.0
         }
       ],
-      "key_words": [
-        {
-          "word": "virus",
-          "g2": 0.0
-        },
-        {
-          "word": "chine",
-          "g2": 0.0
-        }
-      ],
-      "themes": {
-        "virus": 1.0,
-        "chine": 1.0
-      },
+      "key_words": [],
+      "themes": {},
       "samples": [
         {
           "sn": "bvoltaire",
@@ -2171,6 +2210,7923 @@
     },
     "𝐇𝐌𝐏𝐕": {
       "176": 1
+    }
+  },
+  "word_accounts": {
+    "adorent": [
+      "degeneral__"
+    ],
+    "alerte": [
+      "chenuflorent",
+      "drpierreeddyht",
+      "florentziac",
+      "francersistanc1",
+      "globalvar_fr",
+      "hassahmed93",
+      "neveuxbertrand",
+      "nicolasmortel",
+      "proguinee",
+      "ysssineyass"
+    ],
+    "amené": [
+      "janyabadi"
+    ],
+    "annonce": [
+      "olivierrimmel"
+    ],
+    "ans": [
+      "93_7_motivation",
+      "aixematrice",
+      "alapic974",
+      "alme_yda",
+      "annelaurebeaud2",
+      "badara_mbaye_",
+      "bnc_2012",
+      "brutofficiel",
+      "chat8890",
+      "chetteyous68942",
+      "chineambmaroc",
+      "designche1",
+      "djipylensmedia",
+      "etresouverain62",
+      "flahault",
+      "foucotak509",
+      "france24_fr",
+      "franceinfo",
+      "georasia",
+      "globalvar_fr",
+      "hespressfr",
+      "independante_fm",
+      "ingenieur243",
+      "inv3stir",
+      "jeanvige",
+      "jules4895985087",
+      "knanouro",
+      "le_parisien",
+      "lirehaiti",
+      "lourau20e",
+      "managerstn",
+      "mickaellaffont",
+      "ndaokals",
+      "redkiraz",
+      "remed_fey",
+      "soupedesques",
+      "tessier_x",
+      "torreseryc",
+      "woit_geopolitic",
+      "ysssineyass"
+    ],
+    "appauvri": [
+      "janyabadi"
+    ],
+    "appelé": [
+      "7infoci",
+      "aixematrice",
+      "alme_yda",
+      "annelaurebeaud2",
+      "badara_mbaye_",
+      "bnc_2012",
+      "citizenbamba",
+      "djipylensmedia",
+      "foucotak509",
+      "independante_fm",
+      "ingenieur243",
+      "jules4895985087",
+      "lirehaiti",
+      "ndaokals",
+      "remed_fey"
+    ],
+    "augmentation": [
+      "100xcentobio",
+      "7infoci",
+      "abdelka11473079",
+      "alainfrnews",
+      "annelaurebeaud2",
+      "citizenbamba",
+      "coldoct",
+      "designche1",
+      "florentziac",
+      "france24_fr",
+      "globalvar_fr",
+      "hespressfr",
+      "infolinfo",
+      "inv3stir",
+      "le_parisien",
+      "neveuxbertrand",
+      "nicolasberrod",
+      "redkiraz",
+      "son2baby"
+    ],
+    "augmentent": [
+      "1966forever",
+      "canaltraduction",
+      "f24videos",
+      "florentziac",
+      "gavi_fr",
+      "irisnews_",
+      "leparisiensante",
+      "sans_louise",
+      "sylvaintekris"
+    ],
+    "aviaire": [
+      "annelaurebeaud2",
+      "bigdanbud",
+      "medscapefrance",
+      "mohhaafcb",
+      "onuinfo",
+      "schmerchris"
+    ],
+    "avis": [
+      "calamyjane",
+      "levif",
+      "twist1961"
+    ],
+    "cas": [
+      "100xcentobio",
+      "1966forever",
+      "abdelka11473079",
+      "actuenvif",
+      "aixematrice",
+      "alainfrnews",
+      "alme_yda",
+      "annelaurebeaud2",
+      "asm2boucliers",
+      "badara_mbaye_",
+      "bnc_2012",
+      "c_a_g0101",
+      "calamyjane",
+      "cgtnfrancais",
+      "citizenbamba",
+      "cmq_org",
+      "coldoct",
+      "defimediainfo",
+      "designche1",
+      "dimitribeghin",
+      "djipylensmedia",
+      "etresouverain62",
+      "extinctionrush",
+      "f24videos",
+      "flahault",
+      "flangloi",
+      "florentziac",
+      "foucotak509",
+      "france24_fr",
+      "franceafrique23",
+      "francersistanc1",
+      "gavi_fr",
+      "globalvar_fr",
+      "grevepaysbasque",
+      "hassahmed93",
+      "hibaabdelli",
+      "independante_fm",
+      "infolinfo",
+      "ingenieur243",
+      "inter_lignes",
+      "inv3stir",
+      "irisnews_",
+      "kasprzykremi",
+      "kcharlemag85405",
+      "kuna__fr",
+      "le_parisien",
+      "lecanape2",
+      "leparisiensante",
+      "lepoint",
+      "les2aa",
+      "marochebdo",
+      "messirhamid",
+      "montesqieu1949",
+      "ndaokals",
+      "olivierrimmel",
+      "pjlepine01",
+      "quicklyactunews",
+      "redkiraz",
+      "remed_fey",
+      "reveil_algerie",
+      "sans_louise",
+      "sghc_french",
+      "son2baby",
+      "soupedesques",
+      "sylvaintekris",
+      "tatiann69922625",
+      "tuniscopecom",
+      "vwazilenwes",
+      "woit_geopolitic",
+      "ysssineyass"
+    ],
+    "chine": [
+      "100xcentobio",
+      "1966forever",
+      "75secondes",
+      "7infoci",
+      "93_7_motivation",
+      "_nonpossumus",
+      "abdelka11473079",
+      "actuenvif",
+      "actusante_100",
+      "actusante_net",
+      "adresansoso",
+      "aesinfos",
+      "aixematrice",
+      "alainfrnews",
+      "alapic974",
+      "alertes_info",
+      "alme_yda",
+      "annelaurebeaud2",
+      "antoinetv_",
+      "archippenzimba",
+      "arztdiego",
+      "asianews_fr",
+      "badara_mbaye_",
+      "belidemagazine",
+      "belleemmerdeuse",
+      "bernadette7432",
+      "bigdanbud",
+      "bnc_2012",
+      "brutofficiel",
+      "bvoltaire",
+      "byterin1",
+      "c_a_g0101",
+      "calamyjane",
+      "canaltraduction",
+      "carolinelessar8",
+      "cartesdumonde",
+      "cdjerbal",
+      "cesarwazen",
+      "chantalpecher4",
+      "chat8890",
+      "chenuflorent",
+      "chetteyous68942",
+      "chineambmaroc",
+      "chrislabaule",
+      "christophechay",
+      "citizenbamba",
+      "coldoct",
+      "colonelbigboss",
+      "criver777",
+      "cryptonomistfra",
+      "dabultac",
+      "damienb51574501",
+      "dav214840",
+      "decarnols",
+      "defimediainfo",
+      "designche1",
+      "destinationsant",
+      "dimitribeghin",
+      "djipylensmedia",
+      "doctissimo",
+      "drkayumba",
+      "dutout_pas",
+      "dystoman",
+      "ebalemozindo",
+      "eclairelutin",
+      "ecousszz",
+      "etresouverain62",
+      "f24videos",
+      "fab20674300",
+      "flahault",
+      "flangloi",
+      "florentziac",
+      "foucotak509",
+      "france24_fr",
+      "franceafrique23",
+      "franceinfo",
+      "francenews24",
+      "francersistanc1",
+      "francois_59_",
+      "frdouchain",
+      "freedomradiofr",
+      "fsaintilma_",
+      "gaby_chami",
+      "gaillar41755926",
+      "gavi_fr",
+      "gengis9999",
+      "georasia",
+      "georgsamel",
+      "globalvar_fr",
+      "gustave213",
+      "hadejakeita",
+      "haldol",
+      "hassahmed93",
+      "hertweck4",
+      "hespressfr",
+      "hibaabdelli",
+      "hypnosisa61",
+      "icgeopolitics",
+      "independante_fm",
+      "infointoxf24",
+      "ingenieur243",
+      "inv3stir",
+      "irisnews_",
+      "jack_gelos",
+      "jeanvige",
+      "joeltarnawski",
+      "jrmeferran85965",
+      "judsonpierre",
+      "jules4895985087",
+      "julesjuliocesar",
+      "julienm__",
+      "jyves94",
+      "kasprzykremi",
+      "kcharlemag85405",
+      "kenandogan1",
+      "kero_on_x",
+      "kiddodig",
+      "kleensamsonite",
+      "knanouro",
+      "krieger66362259",
+      "laboussolei",
+      "laroulotte173",
+      "laurentopsomer",
+      "le_liberaal",
+      "le_parisien",
+      "lecanape2",
+      "ledauphine",
+      "lefebvreelodie6",
+      "lehuffpost",
+      "lemedia100filtr",
+      "leparisiensante",
+      "leparrain_",
+      "lepoint",
+      "lesoir",
+      "lexpressmaurice",
+      "libe",
+      "limportant_fr",
+      "lirehaiti",
+      "lntribune",
+      "lorientlejour",
+      "loubestal17",
+      "lourau20e",
+      "luckylu32431232",
+      "maliactu",
+      "marcgozlan",
+      "marcotte56",
+      "margottonm68143",
+      "marielauredupon",
+      "mariemarys06",
+      "marochebdo",
+      "mayumbiarcel",
+      "medi1tvafrique",
+      "medscapefrance",
+      "michaeldouayia",
+      "mickaellaffont",
+      "midilibre",
+      "mohhaafcb",
+      "montesqieu1949",
+      "mycow_eu",
+      "ndaokals",
+      "neveuxbertrand",
+      "ngrandvaux",
+      "ngwaditenplar",
+      "nicolasberrod",
+      "nkazumba24880",
+      "nomdidiou501075",
+      "olivcim",
+      "olivier40121476",
+      "onuinfo",
+      "partoutatis77",
+      "peter_pan95",
+      "phoenixpho71063",
+      "pjlepine01",
+      "proguinee",
+      "psginna",
+      "quang_phamqg",
+      "redkiraz",
+      "remed_fey",
+      "replik_cd_media",
+      "rikardrene",
+      "rtgglobin",
+      "rttr73818881",
+      "russo15091576",
+      "sadraquejean",
+      "samuelmuaku",
+      "sans_louise",
+      "saraart4",
+      "schmerchris",
+      "seriatimfr",
+      "sghc_french",
+      "shoyoo772",
+      "silvano_trotta",
+      "son2baby",
+      "soupedesques",
+      "sudinfo_be",
+      "sylvainebe54733",
+      "sylvaintekris",
+      "tannheimvs",
+      "tboulboulva",
+      "tekiano",
+      "tessier_x",
+      "thaivisafra",
+      "ticheck_org",
+      "torreseryc",
+      "trustmyscience",
+      "usernamedias_",
+      "vegasapologies",
+      "vigicovid",
+      "vwazilenwes",
+      "walawpress",
+      "watsonactu",
+      "wmaarifa",
+      "woit_geopolitic",
+      "y_dms_debah",
+      "ysssineyass",
+      "zewala3",
+      "zwhaendel48"
+    ],
+    "chinois": [
+      "aixematrice",
+      "annelaurebeaud2",
+      "c_a_g0101",
+      "chineambmaroc",
+      "colonelbigboss",
+      "dav214840",
+      "francersistanc1",
+      "irisnews_",
+      "jack_gelos",
+      "jeanvige",
+      "nkazumba24880",
+      "olivierjean16",
+      "pjlepine01",
+      "redkiraz",
+      "torreseryc",
+      "truffertw",
+      "usernamedias_",
+      "zwhaendel48"
+    ],
+    "cinq": [
+      "93_7_motivation",
+      "alapic974",
+      "brutofficiel",
+      "chetteyous68942",
+      "designche1",
+      "etresouverain62",
+      "france24_fr",
+      "franceinfo",
+      "georasia",
+      "hespressfr",
+      "inv3stir",
+      "knanouro",
+      "le_parisien",
+      "lourau20e",
+      "ysssineyass"
+    ],
+    "confrontée": [
+      "actuenvif",
+      "antoinetv_",
+      "archippenzimba",
+      "asianews_fr",
+      "byterin1",
+      "cartesdumonde",
+      "dimitribeghin",
+      "dutout_pas",
+      "etresouverain62",
+      "gengis9999",
+      "icgeopolitics",
+      "kleensamsonite",
+      "le_liberaal",
+      "mayumbiarcel",
+      "ngwaditenplar",
+      "rikardrene",
+      "sadraquejean",
+      "tessier_x",
+      "torreseryc",
+      "usernamedias_"
+    ],
+    "connaît": [
+      "alertes_info",
+      "dystoman",
+      "eclairelutin",
+      "globalvar_fr",
+      "gustave213",
+      "hadejakeita",
+      "julesjuliocesar",
+      "lehuffpost",
+      "tannheimvs"
+    ],
+    "connu": [
+      "degeneral__",
+      "dystoman",
+      "globalvar_fr",
+      "kasprzykremi",
+      "lupolynesia",
+      "sadraquejean",
+      "tessier_x"
+    ],
+    "covid": [
+      "75secondes",
+      "93_7_motivation",
+      "actuenvif",
+      "aixematrice",
+      "alainb5",
+      "alapic974",
+      "alhks67",
+      "alme_yda",
+      "annelaurebeaud2",
+      "antoinetv_",
+      "aponiaanalytics",
+      "archippenzimba",
+      "badara_mbaye_",
+      "bamarakoli",
+      "belleemmerdeuse",
+      "bigdanbud",
+      "bnc_2012",
+      "brutofficiel",
+      "byterin1",
+      "calamyjane",
+      "cestassezcible",
+      "chat8890",
+      "chenuflorent",
+      "chetteyous68942",
+      "chrislabaule",
+      "comefindme88x",
+      "cryptonomistfra",
+      "decarnols",
+      "designche1",
+      "dimitribeghin",
+      "djipylensmedia",
+      "ebalemozindo",
+      "etresouverain62",
+      "flangloi",
+      "foucotak509",
+      "franceinfo",
+      "francersistanc1",
+      "fred59kdo",
+      "freedomradiofr",
+      "gavi_fr",
+      "georasia",
+      "herodote1789",
+      "hespressfr",
+      "i3ct3r",
+      "icgeopolitics",
+      "independante_fm",
+      "ingenieur243",
+      "inv3stir",
+      "irisnews_",
+      "jack_gelos",
+      "jeanvige",
+      "jindependant",
+      "jrmeferran85965",
+      "jules4895985087",
+      "julesjuliocesar",
+      "kero_on_x",
+      "kleensamsonite",
+      "knanouro",
+      "le_parisien",
+      "lemedia100filtr",
+      "leonnymedia",
+      "liberta_parita",
+      "libertesagesse",
+      "lirehaiti",
+      "loubestal17",
+      "lupolynesia",
+      "marielauredupon",
+      "mathieu31359682",
+      "mayumbiarcel",
+      "medecin2famille",
+      "michaeldouayia",
+      "myadstweets",
+      "ndaokals",
+      "neveuxbertrand",
+      "ngwaditenplar",
+      "panda31808732",
+      "partoutatis77",
+      "peter_pan95",
+      "pika1846",
+      "punekarnews",
+      "redkiraz",
+      "remed_fey",
+      "rikardrene",
+      "robin_des_lois",
+      "ruibvic",
+      "sadraquejean",
+      "samuelmuaku",
+      "saraart4",
+      "sefluctuat",
+      "sghc_french",
+      "silvano_trotta",
+      "simarongongomba",
+      "slee1150",
+      "soupedesques",
+      "sudinfo_be",
+      "tboulboulva",
+      "tessier_x",
+      "torreseryc",
+      "vijayku77120064",
+      "vishvaschikara",
+      "woit_geopolitic",
+      "zwhaendel48"
+    ],
+    "craindre": [
+      "cesarwazen",
+      "gaby_chami",
+      "hadejakeita",
+      "khatorimoh44349",
+      "lorientlejour"
+    ],
+    "crise": [
+      "asianews_fr",
+      "c_a_g0101",
+      "hadejakeita",
+      "le_liberaal",
+      "replik_cd_media",
+      "tessier_x",
+      "vegasapologies"
+    ],
+    "créer": [
+      "aulnaycap",
+      "bnc_2012",
+      "degeneral__"
+    ],
+    "crématoriums": [
+      "chenuflorent",
+      "eclairelutin",
+      "marielauredupon",
+      "peter_pan95",
+      "saraart4",
+      "silvano_trotta",
+      "tessier_x",
+      "torreseryc"
+    ],
+    "devrions": [
+      "olivierrimmel"
+    ],
+    "données": [
+      "flangloi",
+      "ngrandvaux",
+      "tatiann69922625"
+    ],
+    "débordés": [
+      "93_7_motivation",
+      "extinctionrush",
+      "rtgglobin",
+      "tessier_x",
+      "vwazilenwes"
+    ],
+    "déclare": [
+      "75secondes",
+      "alapic974",
+      "chenuflorent",
+      "cryptonomistfra",
+      "ebalemozindo",
+      "francersistanc1",
+      "freedomradiofr",
+      "jyves94",
+      "loubestal17",
+      "marielauredupon",
+      "peter_pan95",
+      "saraart4",
+      "silvano_trotta",
+      "ysssineyass"
+    ],
+    "enregistrée": [
+      "_nonpossumus",
+      "bernadette7432",
+      "chantalpecher4",
+      "chat8890",
+      "criver777",
+      "ecousszz",
+      "gaillar41755926",
+      "hertweck4",
+      "hypnosisa61",
+      "joeltarnawski",
+      "krieger66362259",
+      "laroulotte173",
+      "luckylu32431232",
+      "margottonm68143",
+      "mariemarys06",
+      "rttr73818881"
+    ],
+    "epidémie": [
+      "chat8890",
+      "medscapefrance",
+      "watsonactu"
+    ],
+    "face": [
+      "93_7_motivation",
+      "actusante_100",
+      "actusante_net",
+      "afropages",
+      "aixematrice",
+      "alme_yda",
+      "badara_mbaye_",
+      "bnc_2012",
+      "cdjerbal",
+      "chat8890",
+      "chetteyous68942",
+      "citizenbamba",
+      "djipylensmedia",
+      "drkayumba",
+      "drpierreeddyht",
+      "flahault",
+      "florentziac",
+      "foucotak509",
+      "globalvar_fr",
+      "independante_fm",
+      "ingenieur243",
+      "jeanvige",
+      "jules4895985087",
+      "lirehaiti",
+      "montesqieu1949",
+      "ndaokals",
+      "nicolasmortel",
+      "olivierrimmel",
+      "remed_fey",
+      "replik_cd_media",
+      "samuelmuaku",
+      "son2baby",
+      "tessier_x",
+      "ticheck_org",
+      "woit_geopolitic",
+      "ysssineyass"
+    ],
+    "faut": [
+      "__tiya_",
+      "alertes_info",
+      "businessnews_tn",
+      "cesarwazen",
+      "chat8890",
+      "chrislabaule",
+      "christophechay",
+      "defimediainfo",
+      "destinationsant",
+      "dimitribeghin",
+      "f24videos",
+      "fsaintilma_",
+      "gaby_chami",
+      "gustave213",
+      "hibaabdelli",
+      "i3ct3r",
+      "infolinfo",
+      "irisnews_",
+      "kasprzykremi",
+      "kcharlemag85405",
+      "khatorimoh44349",
+      "ledauphine",
+      "lehuffpost",
+      "lepoint",
+      "lesoir",
+      "lorientlejour",
+      "midilibre",
+      "mohhaafcb",
+      "pjlepine01",
+      "tannheimvs",
+      "torreseryc",
+      "vegasapologies"
+    ],
+    "flambée": [
+      "alapic974",
+      "hibaabdelli",
+      "kcharlemag85405",
+      "lepoint",
+      "medscapefrance",
+      "nicolasberrod",
+      "pjlepine01",
+      "tatiann69922625"
+    ],
+    "flash": [
+      "archippenzimba",
+      "ngwaditenplar"
+    ],
+    "france": [
+      "adolfdummkopf",
+      "adresansoso",
+      "aixematrice",
+      "bandalungwa243",
+      "benomar_adil74",
+      "fouragebernard",
+      "hassahmed93",
+      "ines_el_",
+      "jrmeferran85965",
+      "lome_actu",
+      "ndaokals",
+      "olivierrimmel",
+      "torreseryc"
+    ],
+    "grippe": [
+      "75secondes",
+      "93_7_motivation",
+      "___eog___",
+      "actuenvif",
+      "alapic974",
+      "annelaurebeaud2",
+      "asm2boucliers",
+      "astropierre",
+      "bigdanbud",
+      "brutofficiel",
+      "bullebulle6",
+      "byterin1",
+      "cestassezcible",
+      "chenuflorent",
+      "christophechay",
+      "destinationsant",
+      "dimitribeghin",
+      "drkayumba",
+      "dutout_pas",
+      "dystoman",
+      "ebalemozindo",
+      "etresouverain62",
+      "extinctionrush",
+      "fibladi",
+      "flangloi",
+      "globalintel_",
+      "herodote1789",
+      "hespressfr",
+      "i3ct3r",
+      "julesjuliocesar",
+      "kravnnaz",
+      "lefebvreelodie6",
+      "loubestal17",
+      "lupolynesia",
+      "marielauredupon",
+      "medecin2famille",
+      "medscapefrance",
+      "midilibre",
+      "mohhaafcb",
+      "nicolasberrod",
+      "onuinfo",
+      "peter_pan95",
+      "pika1846",
+      "redkiraz",
+      "revolutionpacif",
+      "robin_des_lois",
+      "sadraquejean",
+      "samuelmuaku",
+      "sans_louise",
+      "saraart4",
+      "schmerchris",
+      "silvano_trotta",
+      "sudinfo_be",
+      "tatiann69922625",
+      "tboulboulva",
+      "tessier_x",
+      "torreseryc",
+      "usernamedias_",
+      "vegasapologies"
+    ],
+    "hmpv": [
+      "100xcentobio",
+      "1966forever",
+      "75secondes",
+      "7infoci",
+      "93_7_motivation",
+      "___eog___",
+      "__tiya_",
+      "aanand_krishnaa",
+      "abdelka11473079",
+      "actuenvif",
+      "actusante_100",
+      "actusante_net",
+      "adolfdummkopf",
+      "adresansoso",
+      "aesinfos",
+      "africanmanager",
+      "afropages",
+      "aixematrice",
+      "alainfrnews",
+      "alapic974",
+      "alertes_info",
+      "alhks67",
+      "alme_yda",
+      "amalegafrancois",
+      "andreabox0",
+      "annelaurebeaud2",
+      "annielepage18",
+      "anti_macroniste",
+      "antoinetv_",
+      "aponiaanalytics",
+      "archippenzimba",
+      "artistehaki",
+      "arumugam_94",
+      "arvindkuma63460",
+      "arztdiego",
+      "asianews_fr",
+      "aulnaycap",
+      "awrasmedia",
+      "badara_mbaye_",
+      "bagaidr",
+      "bamarakoli",
+      "bandalungwa243",
+      "belidemagazine",
+      "belleemmerdeuse",
+      "benjamin_leduc_",
+      "benomar_adil74",
+      "bewafaladki1",
+      "bigdanbud",
+      "binesh_bharat",
+      "bnc_2012",
+      "bouaange63937",
+      "brutofficiel",
+      "bullebulle6",
+      "businessnews_tn",
+      "bvoltaire",
+      "byterin1",
+      "c_a_g0101",
+      "calamyjane",
+      "canaltraduction",
+      "carolinelessar8",
+      "catherinekat4",
+      "cavousf5",
+      "cdjerbal",
+      "cesarwazen",
+      "cestassezcible",
+      "chat8890",
+      "chenuflorent",
+      "chetteyous68942",
+      "chineambmaroc",
+      "chrislabaule",
+      "citizenbamba",
+      "coldoct",
+      "comefindme88x",
+      "cryptonomistfra",
+      "dav214840",
+      "decarnols",
+      "defimediainfo",
+      "degeneral__",
+      "designche1",
+      "destinationsant",
+      "dieuson1",
+      "digitalradioone",
+      "dimitribeghin",
+      "dizoxr2",
+      "djipylensmedia",
+      "djwsam14869",
+      "doctissimo",
+      "doctors_guild",
+      "dommajeur",
+      "dragonstartrump",
+      "drkayumba",
+      "drpierreeddyht",
+      "dutout_pas",
+      "dvnemk",
+      "dystoman",
+      "ebalemozindo",
+      "eclairelutin",
+      "economiste_magh",
+      "eddie_poker",
+      "etresouverain62",
+      "extinctionrush",
+      "f24videos",
+      "fibladi",
+      "flangloi",
+      "florentziac",
+      "foucotak509",
+      "fouragebernard",
+      "frajmovies",
+      "france24_fr",
+      "franceinfo",
+      "francenews24",
+      "francersistanc1",
+      "francois_59_",
+      "fred59kdo",
+      "freedomradiofr",
+      "frite_du",
+      "fsaintilma_",
+      "gaby_chami",
+      "ganjeetmeena",
+      "gengis9999",
+      "georasia",
+      "georgsamel",
+      "gfrancefrance",
+      "globalintel_",
+      "globalvar_fr",
+      "grevepaysbasque",
+      "gustave213",
+      "hassahmed93",
+      "herodote1789",
+      "hespressfr",
+      "hmpv284646",
+      "i3ct3r",
+      "iamyogeshk",
+      "icgeopolitics",
+      "independante_fm",
+      "infointoxf24",
+      "infokapitalis",
+      "infolinfo",
+      "ingenieur243",
+      "inter_lignes",
+      "interferonei",
+      "inv3stir",
+      "irisnews_",
+      "ishrtweets",
+      "jack_gelos",
+      "janyabadi",
+      "jeanbarbeau2",
+      "jeanvige",
+      "jindependant",
+      "joeltarnawski",
+      "joepunto_",
+      "josdyyossi",
+      "jossjossjoss001",
+      "jrmeferran85965",
+      "judsonpierre",
+      "jules4895985087",
+      "julesjuliocesar",
+      "julienm__",
+      "jyves94",
+      "kasprzykremi",
+      "kenandogan1",
+      "kero_on_x",
+      "khatorimoh44349",
+      "khurapati69",
+      "kiddodig",
+      "kleensamsonite",
+      "knanouro",
+      "knizakenzaa",
+      "kuna__fr",
+      "laboussolei",
+      "laurentopsomer",
+      "le_liberaal",
+      "le_parisien",
+      "lecanape2",
+      "lefebvreelodie6",
+      "lefouparolier",
+      "lehuffpost",
+      "lematinpointma",
+      "lemedia100filtr",
+      "leonnymedia",
+      "leparisiensante",
+      "leparrain_",
+      "les2aa",
+      "lesoir",
+      "levif",
+      "lexpressmaurice",
+      "liberta_parita",
+      "limportant_fr",
+      "lirehaiti",
+      "lntribune",
+      "lome_actu",
+      "lorientlejour",
+      "loubestal17",
+      "lourau20e",
+      "madamecity1",
+      "maghrebactuinfo",
+      "maliactu",
+      "malkoomx00",
+      "managerstn",
+      "marcgozlan",
+      "marchaas57",
+      "marielauredupon",
+      "marochebdo",
+      "mathieu31359682",
+      "mayumbiarcel",
+      "medecin2famille",
+      "medi1tvafrique",
+      "medias24",
+      "medscapefrance",
+      "memesmafia_",
+      "messirhamid",
+      "michaeldouayia",
+      "mickaellaffont",
+      "mohhaafcb",
+      "montesqieu1949",
+      "mrhinduyou",
+      "msn_quebec",
+      "myadstweets",
+      "nathanp120710",
+      "nax_offi",
+      "ndaokals",
+      "neveuxbertrand",
+      "ngrandvaux",
+      "ngwaditenplar",
+      "nicolasmortel",
+      "nkazumba24880",
+      "nomdidiou501075",
+      "olivcim",
+      "oliver_x44",
+      "olivier40121476",
+      "olivierjean16",
+      "olivierrimmel",
+      "orphee45",
+      "partoutatis77",
+      "peter_pan95",
+      "philkayinga",
+      "poupettemytho",
+      "prashan97478515",
+      "proguinee",
+      "psginna",
+      "punekarnews",
+      "quang_phamqg",
+      "queeriosity__",
+      "quicklyactunews",
+      "quitin30days",
+      "ravipolara",
+      "redkiraz",
+      "remed_fey",
+      "replik_cd_media",
+      "reveil_algerie",
+      "revolutionpacif",
+      "rikardrene",
+      "robin_des_lois",
+      "rochinel17",
+      "rtgglobin",
+      "russo15091576",
+      "sadraquejean",
+      "sam_chouchou",
+      "samuelmuaku",
+      "sans_louise",
+      "saraart4",
+      "schmerchris",
+      "seriatimfr",
+      "serumgroup",
+      "sghc_french",
+      "shoyoo772",
+      "shubham__45_",
+      "silvano_trotta",
+      "simarongongomba",
+      "slee1150",
+      "son2baby",
+      "stauguste69023",
+      "stellanwofia",
+      "stockho07541997",
+      "sudinfo_be",
+      "sumitg71",
+      "sureshkbn",
+      "sylvaintekris",
+      "syrka6x",
+      "tannheimvs",
+      "tatiann69922625",
+      "tboulboulva",
+      "tekiano",
+      "tessier_x",
+      "thecongorx",
+      "ticheck_org",
+      "timelinelatest",
+      "torreseryc",
+      "truffertw",
+      "tuniscopecom",
+      "tunisialphanews",
+      "twist1961",
+      "usernamedias_",
+      "var_actu",
+      "verif_tf1lci",
+      "vermajeetu1996",
+      "vijayku77120064",
+      "vinz_crt",
+      "vishvaschikara",
+      "vwazilenwes",
+      "walawpress",
+      "watsonactu",
+      "webdo_tn",
+      "wmaarifa",
+      "woit_geopolitic",
+      "wurby_jika",
+      "y_dms_debah",
+      "ysssineyass",
+      "zewala3",
+      "zwhaendel48"
+    ],
+    "hong": [
+      "aixematrice",
+      "francersistanc1"
+    ],
+    "humain": [
+      "100xcentobio",
+      "1966forever",
+      "7infoci",
+      "abdelka11473079",
+      "actuenvif",
+      "actusante_100",
+      "actusante_net",
+      "aesinfos",
+      "aixematrice",
+      "alainb5",
+      "alainfrnews",
+      "alapic974",
+      "amalegafrancois",
+      "anti_macroniste",
+      "antoinetv_",
+      "archippenzimba",
+      "asianews_fr",
+      "byterin1",
+      "calamyjane",
+      "cgtnfrancais",
+      "chat8890",
+      "christophechay",
+      "cmq_org",
+      "coldoct",
+      "colonelbigboss",
+      "dabultac",
+      "damienb51574501",
+      "decarnols",
+      "defimediainfo",
+      "destinationsant",
+      "dimitribeghin",
+      "doctissimo",
+      "dystoman",
+      "egfoxdesign",
+      "etresouverain62",
+      "fab20674300",
+      "fauxrejeandtb",
+      "flahault",
+      "flangloi",
+      "fra_romel",
+      "franceafrique23",
+      "francenews24",
+      "francersistanc1",
+      "gavi_fr",
+      "gengis9999",
+      "georgsamel",
+      "hadejakeita",
+      "haldol",
+      "herodote1789",
+      "hespressfr",
+      "hibaabdelli",
+      "icgeopolitics",
+      "infointoxf24",
+      "inv3stir",
+      "jack_gelos",
+      "julesjuliocesar",
+      "julienm__",
+      "jyves94",
+      "kasprzykremi",
+      "kcharlemag85405",
+      "kero_on_x",
+      "kiddodig",
+      "kleensamsonite",
+      "laboussolei",
+      "lecanape2",
+      "ledauphine",
+      "lehuffpost",
+      "leparisiensante",
+      "lepoint",
+      "lexpressmaurice",
+      "libe",
+      "limportant_fr",
+      "lourau20e",
+      "maliactu",
+      "malkoomx00",
+      "mayumbiarcel",
+      "medscapefrance",
+      "messirhamid",
+      "mickaellaffont",
+      "midilibre",
+      "montesqieu1949",
+      "mycow_eu",
+      "ngrandvaux",
+      "ngwaditenplar",
+      "nicolasberrod",
+      "nkazumba24880",
+      "nomdidiou501075",
+      "olivier40121476",
+      "omsrdcongo",
+      "onugeneve",
+      "onuinfo",
+      "pjlepine01",
+      "quang_phamqg",
+      "redkiraz",
+      "rikardrene",
+      "rtgglobin",
+      "sadraquejean",
+      "samuelmuaku",
+      "sans_louise",
+      "schmerchris",
+      "son2baby",
+      "sylvainebe54733",
+      "sylvaintekris",
+      "tatiann69922625",
+      "tboulboulva",
+      "tessier_x",
+      "thaivisafra",
+      "trustmyscience",
+      "univadisfr",
+      "vegasapologies",
+      "vwazilenwes",
+      "ysssineyass",
+      "zwhaendel48"
+    ],
+    "human": [
+      "aixematrice",
+      "alme_yda",
+      "andreabox0",
+      "artistehaki",
+      "badara_mbaye_",
+      "belleemmerdeuse",
+      "bnc_2012",
+      "c_a_g0101",
+      "catherinekat4",
+      "chetteyous68942",
+      "citizenbamba",
+      "djipylensmedia",
+      "drkayumba",
+      "foucotak509",
+      "francersistanc1",
+      "globalintel_",
+      "independante_fm",
+      "ingenieur243",
+      "irisnews_",
+      "jules4895985087",
+      "lefouparolier",
+      "lemedia100filtr",
+      "lirehaiti",
+      "michaeldouayia",
+      "ndaokals",
+      "olivierrimmel",
+      "partoutatis77",
+      "remed_fey"
+    ],
+    "hôpitaux": [
+      "93_7_motivation",
+      "aesinfos",
+      "aixematrice",
+      "alme_yda",
+      "badara_mbaye_",
+      "bnc_2012",
+      "chat8890",
+      "chenuflorent",
+      "citizenbamba",
+      "dav214840",
+      "djipylensmedia",
+      "eclairelutin",
+      "extinctionrush",
+      "flahault",
+      "foucotak509",
+      "francenews24",
+      "francersistanc1",
+      "frdouchain",
+      "freedomradiofr",
+      "gengis9999",
+      "independante_fm",
+      "ingenieur243",
+      "jack_gelos",
+      "joeltarnawski",
+      "lemedia100filtr",
+      "maliactu",
+      "marielauredupon",
+      "michaeldouayia",
+      "ndaokals",
+      "ngrandvaux",
+      "partoutatis77",
+      "peter_pan95",
+      "redkiraz",
+      "remed_fey",
+      "replik_cd_media",
+      "rtgglobin",
+      "sadraquejean",
+      "saraart4",
+      "silvano_trotta",
+      "son2baby",
+      "sudinfo_be",
+      "tessier_x",
+      "torreseryc",
+      "var_actu",
+      "vwazilenwes",
+      "ysssineyass"
+    ],
+    "inde": [
+      "actuenvif",
+      "aixematrice",
+      "annelaurebeaud2",
+      "etresouverain62",
+      "les2aa",
+      "lexpressmaurice",
+      "neveuxbertrand",
+      "redkiraz",
+      "sghc_french"
+    ],
+    "infection": [
+      "actusante_100",
+      "actusante_net",
+      "aixematrice",
+      "alme_yda",
+      "anti_macroniste",
+      "badara_mbaye_",
+      "bnc_2012",
+      "cgtnfrancais",
+      "chat8890",
+      "chetteyous68942",
+      "citizenbamba",
+      "djipylensmedia",
+      "foucotak509",
+      "independante_fm",
+      "infointoxf24",
+      "ingenieur243",
+      "julienm__",
+      "lirehaiti",
+      "managerstn",
+      "ndaokals",
+      "neveuxbertrand",
+      "olivierrimmel",
+      "redkiraz",
+      "remed_fey",
+      "sefluctuat",
+      "soupedesques"
+    ],
+    "infections": [
+      "7infoci",
+      "aesinfos",
+      "annelaurebeaud2",
+      "asianews_fr",
+      "brutofficiel",
+      "canaltraduction",
+      "chineambmaroc",
+      "flangloi",
+      "globalvar_fr",
+      "hespressfr",
+      "irisnews_",
+      "kasprzykremi",
+      "lesoir",
+      "libertesagesse",
+      "neveuxbertrand",
+      "nicolasberrod",
+      "nicolasmortel",
+      "olivierrimmel",
+      "omsrdcongo",
+      "panda31808732",
+      "quang_phamqg",
+      "redkiraz",
+      "tatiann69922625"
+    ],
+    "informateur": [
+      "gaillar41755926",
+      "hypnosisa61"
+    ],
+    "inquiète": [
+      "aesinfos",
+      "alainfrnews",
+      "annelaurebeaud2",
+      "citizenbamba",
+      "designche1",
+      "france24_fr",
+      "haldol",
+      "irisnews_",
+      "knanouro",
+      "le_parisien",
+      "lntribune"
+    ],
+    "inquiéter": [
+      "alertes_info",
+      "businessnews_tn",
+      "christophechay",
+      "damienb51574501",
+      "defimediainfo",
+      "destinationsant",
+      "dieuson1",
+      "doctissimo",
+      "f24videos",
+      "fsaintilma_",
+      "gustave213",
+      "hibaabdelli",
+      "kcharlemag85405",
+      "ledauphine",
+      "lehuffpost",
+      "lepoint",
+      "lesoir",
+      "medscapefrance",
+      "midilibre",
+      "pjlepine01",
+      "tannheimvs",
+      "thaivisafra",
+      "vegasapologies"
+    ],
+    "inutile": [
+      "degeneral__",
+      "janyabadi"
+    ],
+    "justifie": [
+      "levif",
+      "twist1961"
+    ],
+    "kong": [
+      "aixematrice",
+      "francersistanc1"
+    ],
+    "laethem": [
+      "levif",
+      "twist1961"
+    ],
+    "maladies": [
+      "93_7_motivation",
+      "abdelka11473079",
+      "belidemagazine",
+      "calamyjane",
+      "eclairelutin",
+      "franceafrique23",
+      "joeltarnawski",
+      "lecanape2",
+      "rtgglobin",
+      "tatiann69922625",
+      "var_actu",
+      "vwazilenwes"
+    ],
+    "marc": [
+      "levif",
+      "twist1961"
+    ],
+    "metapneumovirus": [
+      "aixematrice",
+      "alme_yda",
+      "andreabox0",
+      "annemarie_bp",
+      "artistehaki",
+      "asm2boucliers",
+      "astropierre",
+      "badara_mbaye_",
+      "belleemmerdeuse",
+      "bnc_2012",
+      "c_a_g0101",
+      "catherinekat4",
+      "cestassezcible",
+      "chetteyous68942",
+      "citizenbamba",
+      "defimediainfo",
+      "diedsuddenlyfr",
+      "djipylensmedia",
+      "drkayumba",
+      "foucotak509",
+      "fra_romel",
+      "franceafrique23",
+      "francersistanc1",
+      "frdouchain",
+      "globalintel_",
+      "herodote1789",
+      "hommedelanatio",
+      "independante_fm",
+      "ines_el_",
+      "ingenieur243",
+      "irisnews_",
+      "jules4895985087",
+      "kero_on_x",
+      "kravnnaz",
+      "laboussolei",
+      "lemedia100filtr",
+      "libertesagesse",
+      "lirehaiti",
+      "lupolynesia",
+      "lvnaaa_0",
+      "marcotte56",
+      "medecin2famille",
+      "michaeldouayia",
+      "ndaokals",
+      "ngrandvaux",
+      "nicolasberrod",
+      "olivierrimmel",
+      "onuinfo",
+      "partoutatis77",
+      "phoenixpho71063",
+      "pika1846",
+      "pressecitron",
+      "remed_fey",
+      "ruibvic",
+      "sphyntus",
+      "the88stevend",
+      "vigicovid"
+    ],
+    "mettent": [
+      "annelaurebeaud2",
+      "chenuflorent",
+      "schmerchris"
+    ],
+    "mondiale": [
+      "afropages",
+      "jindependant",
+      "levif",
+      "neveuxbertrand",
+      "queeriosity__",
+      "tboulboulva",
+      "torreseryc",
+      "twist1961"
+    ],
+    "mortel": [
+      "alapic974",
+      "chat8890",
+      "pjlepine01",
+      "redkiraz",
+      "soupedesques",
+      "tessier_x",
+      "y_dms_debah"
+    ],
+    "mortelle": [
+      "chetteyous68942",
+      "gengis9999"
+    ],
+    "mpvh": [
+      "christophechay",
+      "cmq_org",
+      "defimediainfo",
+      "destinationsant",
+      "egfoxdesign",
+      "gavi_fr",
+      "haldol",
+      "kasprzykremi",
+      "ledauphine",
+      "midilibre",
+      "tatiann69922625",
+      "vegasapologies"
+    ],
+    "multiples": [
+      "75secondes",
+      "alapic974",
+      "chenuflorent",
+      "cryptonomistfra",
+      "ebalemozindo",
+      "jyves94",
+      "loubestal17",
+      "marielauredupon",
+      "silvano_trotta"
+    ],
+    "mycoplasma": [
+      "75secondes",
+      "alapic974",
+      "chenuflorent",
+      "cryptonomistfra",
+      "ebalemozindo",
+      "jyves94",
+      "loubestal17",
+      "marielauredupon",
+      "mathieu31359682",
+      "redkiraz",
+      "silvano_trotta",
+      "tessier_x",
+      "torreseryc"
+    ],
+    "mystérieuse": [
+      "gengis9999",
+      "haldol",
+      "laboussolei",
+      "redkiraz"
+    ],
+    "médias": [
+      "benjamin_leduc_",
+      "bigdanbud",
+      "chineambmaroc",
+      "degeneral__",
+      "gengis9999",
+      "joeltarnawski",
+      "nkazumba24880",
+      "olivierjean16",
+      "rtgglobin",
+      "torreseryc",
+      "truffertw",
+      "usernamedias_",
+      "vwazilenwes"
+    ],
+    "métapneumovirus": [
+      "100xcentobio",
+      "1966forever",
+      "_nonpossumus",
+      "abdelka11473079",
+      "actuenvif",
+      "actusante_100",
+      "actusante_net",
+      "aesinfos",
+      "afropages",
+      "aixematrice",
+      "alainb5",
+      "alainfrnews",
+      "alapic974",
+      "amalegafrancois",
+      "anti_macroniste",
+      "antoinetv_",
+      "archippenzimba",
+      "asianews_fr",
+      "bernadette7432",
+      "byterin1",
+      "c_a_g0101",
+      "calamyjane",
+      "cartesdumonde",
+      "cgtnfrancais",
+      "chantalpecher4",
+      "chat8890",
+      "christophechay",
+      "cmq_org",
+      "coldoct",
+      "colonelbigboss",
+      "criver777",
+      "dabultac",
+      "damienb51574501",
+      "decarnols",
+      "defimediainfo",
+      "destinationsant",
+      "dimitribeghin",
+      "doctissimo",
+      "dystoman",
+      "ecousszz",
+      "egfoxdesign",
+      "etresouverain62",
+      "fab20674300",
+      "fauxrejeandtb",
+      "flahault",
+      "flangloi",
+      "francenews24",
+      "francersistanc1",
+      "gaillar41755926",
+      "gavi_fr",
+      "gengis9999",
+      "georgsamel",
+      "hadejakeita",
+      "haldol",
+      "herodote1789",
+      "hertweck4",
+      "hespressfr",
+      "hibaabdelli",
+      "hypnosisa61",
+      "icgeopolitics",
+      "infointoxf24",
+      "inv3stir",
+      "jack_gelos",
+      "joeltarnawski",
+      "judsonpierre",
+      "julesjuliocesar",
+      "julienm__",
+      "jyves94",
+      "kasprzykremi",
+      "kcharlemag85405",
+      "kiddodig",
+      "kleensamsonite",
+      "krieger66362259",
+      "laroulotte173",
+      "lecanape2",
+      "ledauphine",
+      "lefouparolier",
+      "lehuffpost",
+      "leparisiensante",
+      "lepoint",
+      "lexpressmaurice",
+      "libe",
+      "limportant_fr",
+      "lourau20e",
+      "luckylu32431232",
+      "maliactu",
+      "malkoomx00",
+      "margottonm68143",
+      "mariemarys06",
+      "mayumbiarcel",
+      "medscapefrance",
+      "messirhamid",
+      "mickaellaffont",
+      "midilibre",
+      "montesqieu1949",
+      "mycow_eu",
+      "neveuxbertrand",
+      "ngwaditenplar",
+      "nicolasberrod",
+      "nkazumba24880",
+      "nomdidiou501075",
+      "olivier40121476",
+      "omsrdcongo",
+      "onugeneve",
+      "onuinfo",
+      "panda31808732",
+      "pjlepine01",
+      "quang_phamqg",
+      "redkiraz",
+      "rikardrene",
+      "rtgglobin",
+      "rttr73818881",
+      "sadraquejean",
+      "samuelmuaku",
+      "sans_louise",
+      "sefluctuat",
+      "son2baby",
+      "soupedesques",
+      "sylvainebe54733",
+      "sylvaintekris",
+      "tatiann69922625",
+      "tboulboulva",
+      "tessier_x",
+      "thaivisafra",
+      "trustmyscience",
+      "univadisfr",
+      "vegasapologies",
+      "vwazilenwes",
+      "ysssineyass",
+      "zwhaendel48"
+    ],
+    "non": [
+      "alapic974",
+      "annelaurebeaud2",
+      "benomar_adil74",
+      "c_a_g0101",
+      "cestassezcible",
+      "degeneral__",
+      "dizoxr2",
+      "dommajeur",
+      "fouragebernard",
+      "gavi_fr",
+      "libertesagesse",
+      "lupolynesia",
+      "medecin2famille",
+      "panda31808732",
+      "redkiraz",
+      "sans_louise",
+      "tatiann69922625",
+      "verif_tf1lci",
+      "zewala3"
+    ],
+    "nord": [
+      "alertes_info",
+      "annelaurebeaud2",
+      "cartesdumonde",
+      "citizenbamba",
+      "coldoct",
+      "designche1",
+      "france24_fr",
+      "globalvar_fr",
+      "gustave213",
+      "inv3stir",
+      "le_parisien",
+      "nicolasberrod",
+      "omsrdcongo",
+      "russo15091576",
+      "tannheimvs",
+      "tatiann69922625"
+    ],
+    "nouveau": [
+      "7infoci",
+      "aesinfos",
+      "aixematrice",
+      "alainfrnews",
+      "alapic974",
+      "annelaurebeaud2",
+      "arztdiego",
+      "benjamin_leduc_",
+      "bigdanbud",
+      "c_a_g0101",
+      "calamyjane",
+      "chat8890",
+      "chineambmaroc",
+      "decarnols",
+      "degeneral__",
+      "doctissimo",
+      "drkayumba",
+      "franceafrique23",
+      "francois_59_",
+      "gavi_fr",
+      "gengis9999",
+      "georasia",
+      "globalvar_fr",
+      "grevepaysbasque",
+      "haldol",
+      "hespressfr",
+      "infolinfo",
+      "irisnews_",
+      "jack_gelos",
+      "jeanvige",
+      "jindependant",
+      "joeltarnawski",
+      "judsonpierre",
+      "kasprzykremi",
+      "kero_on_x",
+      "khatorimoh44349",
+      "laurentopsomer",
+      "leparrain_",
+      "lome_actu",
+      "lourau20e",
+      "madamecity1",
+      "maliactu",
+      "managerstn",
+      "ngrandvaux",
+      "nkazumba24880",
+      "onugeneve",
+      "pjlepine01",
+      "proguinee",
+      "sadraquejean",
+      "simarongongomba",
+      "soupedesques",
+      "torreseryc",
+      "truffertw",
+      "verif_tf1lci",
+      "y_dms_debah"
+    ],
+    "nouvelle": [
+      "actuenvif",
+      "aixematrice",
+      "alapic974",
+      "alme_yda",
+      "andreabox0",
+      "antoinetv_",
+      "archippenzimba",
+      "asianews_fr",
+      "aulnaycap",
+      "badara_mbaye_",
+      "bnc_2012",
+      "bvoltaire",
+      "byterin1",
+      "cartesdumonde",
+      "cdjerbal",
+      "chat8890",
+      "chetteyous68942",
+      "citizenbamba",
+      "dav214840",
+      "dimitribeghin",
+      "djipylensmedia",
+      "dutout_pas",
+      "dystoman",
+      "etresouverain62",
+      "foucotak509",
+      "frdouchain",
+      "gavi_fr",
+      "gengis9999",
+      "georgsamel",
+      "gfrancefrance",
+      "hadejakeita",
+      "hassahmed93",
+      "icgeopolitics",
+      "independante_fm",
+      "ingenieur243",
+      "jules4895985087",
+      "julesjuliocesar",
+      "kiddodig",
+      "kleensamsonite",
+      "laboussolei",
+      "le_liberaal",
+      "lemedia100filtr",
+      "lexpressmaurice",
+      "limportant_fr",
+      "lirehaiti",
+      "lourau20e",
+      "mayumbiarcel",
+      "michaeldouayia",
+      "mickaellaffont",
+      "mohhaafcb",
+      "ndaokals",
+      "ngwaditenplar",
+      "oliver_x44",
+      "orphee45",
+      "queeriosity__",
+      "remed_fey",
+      "replik_cd_media",
+      "rikardrene",
+      "samuelmuaku",
+      "schmerchris",
+      "son2baby",
+      "soupedesques",
+      "tboulboulva",
+      "tessier_x",
+      "the88stevend",
+      "ticheck_org",
+      "torreseryc",
+      "usernamedias_",
+      "woit_geopolitic",
+      "ysssineyass",
+      "zwhaendel48"
+    ],
+    "origine": [
+      "7infoci",
+      "calamyjane",
+      "christophechay",
+      "eclairelutin",
+      "jack_gelos",
+      "midilibre"
+    ],
+    "pandémie": [
+      "afropages",
+      "aixematrice",
+      "alapic974",
+      "alme_yda",
+      "andreabox0",
+      "annelaurebeaud2",
+      "aulnaycap",
+      "badara_mbaye_",
+      "bnc_2012",
+      "brutofficiel",
+      "bvoltaire",
+      "chat8890",
+      "djipylensmedia",
+      "etresouverain62",
+      "flahault",
+      "foucotak509",
+      "georasia",
+      "georgsamel",
+      "gfrancefrance",
+      "independante_fm",
+      "ingenieur243",
+      "jules4895985087",
+      "kiddodig",
+      "le_parisien",
+      "limportant_fr",
+      "lirehaiti",
+      "lourau20e",
+      "maghrebactuinfo",
+      "mickaellaffont",
+      "ndaokals",
+      "olivierrimmel",
+      "orphee45",
+      "remed_fey",
+      "the88stevend",
+      "ysssineyass",
+      "zwhaendel48"
+    ],
+    "pandémies": [
+      "janyabadi",
+      "vigicovid"
+    ],
+    "panique": [
+      "degeneral__",
+      "georasia",
+      "judsonpierre",
+      "kasprzykremi",
+      "levif",
+      "maghrebactuinfo",
+      "pressecitron",
+      "tatiann69922625",
+      "twist1961"
+    ],
+    "paniquer": [
+      "janyabadi"
+    ],
+    "pays": [
+      "alapic974",
+      "asianews_fr",
+      "comefindme88x",
+      "drpierreeddyht",
+      "francenews24",
+      "grevepaysbasque",
+      "hadejakeita",
+      "ines_el_",
+      "jack_gelos",
+      "le_liberaal",
+      "le_parisien",
+      "lourau20e",
+      "olivierrimmel",
+      "redkiraz",
+      "robin_des_lois",
+      "soupedesques",
+      "ticheck_org",
+      "vigicovid"
+    ],
+    "peur": [
+      "defimediainfo",
+      "degeneral__",
+      "georasia",
+      "lematinpointma",
+      "robin_des_lois"
+    ],
+    "pic": [
+      "alertes_info",
+      "c_a_g0101",
+      "gustave213",
+      "lehuffpost",
+      "tannheimvs"
+    ],
+    "pneumoniae": [
+      "75secondes",
+      "alapic974",
+      "chenuflorent",
+      "cryptonomistfra",
+      "ebalemozindo",
+      "jyves94",
+      "loubestal17",
+      "marielauredupon",
+      "mathieu31359682",
+      "silvano_trotta",
+      "tessier_x",
+      "torreseryc"
+    ],
+    "pneumonie": [
+      "canaltraduction",
+      "christophechay",
+      "eclairelutin",
+      "globalvar_fr",
+      "midilibre",
+      "peter_pan95",
+      "reveil_algerie",
+      "vwazilenwes"
+    ],
+    "populations": [
+      "janyabadi",
+      "jindependant"
+    ],
+    "premier": [
+      "actuenvif",
+      "annelaurebeaud2",
+      "cgtnfrancais",
+      "cmq_org",
+      "etresouverain62",
+      "les2aa",
+      "redkiraz"
+    ],
+    "premiers": [
+      "aixematrice",
+      "annelaurebeaud2",
+      "francersistanc1",
+      "olivierrimmel"
+    ],
+    "propage": [
+      "alapic974",
+      "annelaurebeaud2",
+      "antoinetv_",
+      "asianews_fr",
+      "cesarwazen",
+      "dav214840",
+      "dutout_pas",
+      "etresouverain62",
+      "gaby_chami",
+      "hassahmed93",
+      "joeltarnawski",
+      "julesjuliocesar",
+      "le_liberaal",
+      "lexpressmaurice",
+      "lorientlejour",
+      "lourau20e",
+      "mayumbiarcel",
+      "mickaellaffont",
+      "nkazumba24880",
+      "rikardrene",
+      "samuelmuaku",
+      "sghc_french",
+      "soupedesques",
+      "tboulboulva",
+      "tekiano",
+      "tessier_x",
+      "torreseryc",
+      "usernamedias_"
+    ],
+    "propageant": [
+      "actuenvif",
+      "archippenzimba",
+      "byterin1",
+      "etresouverain62",
+      "icgeopolitics",
+      "kleensamsonite",
+      "ngwaditenplar",
+      "tessier_x"
+    ],
+    "provoquant": [
+      "actuenvif",
+      "antoinetv_",
+      "archippenzimba",
+      "byterin1",
+      "dimitribeghin",
+      "etresouverain62",
+      "globalintel_",
+      "icgeopolitics",
+      "kleensamsonite",
+      "lemedia100filtr",
+      "mayumbiarcel",
+      "michaeldouayia",
+      "ngwaditenplar",
+      "rikardrene",
+      "sadraquejean",
+      "tessier_x",
+      "ysssineyass"
+    ],
+    "provoque": [
+      "aesinfos",
+      "alainb5",
+      "anti_macroniste",
+      "asianews_fr",
+      "canaltraduction",
+      "cmq_org",
+      "dystoman",
+      "julesjuliocesar",
+      "kasprzykremi",
+      "lexpressmaurice",
+      "onugeneve",
+      "samuelmuaku",
+      "sudinfo_be",
+      "vwazilenwes"
+    ],
+    "rapidement": [
+      "75secondes",
+      "actuenvif",
+      "alapic974",
+      "antoinetv_",
+      "archippenzimba",
+      "asianews_fr",
+      "byterin1",
+      "ebalemozindo",
+      "etresouverain62",
+      "hassahmed93",
+      "icgeopolitics",
+      "julesjuliocesar",
+      "jyves94",
+      "kleensamsonite",
+      "le_liberaal",
+      "lexpressmaurice",
+      "lourau20e",
+      "marielauredupon",
+      "mayumbiarcel",
+      "mickaellaffont",
+      "ngwaditenplar",
+      "peter_pan95",
+      "rikardrene",
+      "samuelmuaku",
+      "saraart4",
+      "silvano_trotta",
+      "tboulboulva",
+      "tessier_x"
+    ],
+    "rappelle": [
+      "c_a_g0101",
+      "chineambmaroc",
+      "extinctionrush",
+      "frdouchain",
+      "maghrebactuinfo",
+      "redkiraz"
+    ],
+    "recommençons": [
+      "janyabadi"
+    ],
+    "respiratoire": [
+      "7infoci",
+      "africanmanager",
+      "aixematrice",
+      "alainfrnews",
+      "alme_yda",
+      "annelaurebeaud2",
+      "anti_macroniste",
+      "asianews_fr",
+      "asm2boucliers",
+      "aulnaycap",
+      "badara_mbaye_",
+      "bnc_2012",
+      "bvoltaire",
+      "calamyjane",
+      "carolinelessar8",
+      "cartesdumonde",
+      "citizenbamba",
+      "degeneral__",
+      "destinationsant",
+      "djipylensmedia",
+      "djwsam14869",
+      "dystoman",
+      "foucotak509",
+      "france24_fr",
+      "francois_59_",
+      "gavi_fr",
+      "georasia",
+      "gfrancefrance",
+      "globalintel_",
+      "herodote1789",
+      "independante_fm",
+      "infointoxf24",
+      "ingenieur243",
+      "jack_gelos",
+      "jyves94",
+      "kenandogan1",
+      "khatorimoh44349",
+      "kiddodig",
+      "lemedia100filtr",
+      "lexpressmaurice",
+      "lirehaiti",
+      "marcgozlan",
+      "marochebdo",
+      "medecin2famille",
+      "michaeldouayia",
+      "ndaokals",
+      "nkazumba24880",
+      "olivcim",
+      "orphee45",
+      "psginna",
+      "quang_phamqg",
+      "redkiraz",
+      "remed_fey",
+      "sefluctuat",
+      "seriatimfr",
+      "tekiano",
+      "ysssineyass"
+    ],
+    "respiratoires": [
+      "93_7_motivation",
+      "abdelka11473079",
+      "actusante_100",
+      "actusante_net",
+      "belidemagazine",
+      "c_a_g0101",
+      "calamyjane",
+      "chineambmaroc",
+      "eclairelutin",
+      "franceafrique23",
+      "hespressfr",
+      "irisnews_",
+      "joeltarnawski",
+      "kasprzykremi",
+      "lecanape2",
+      "lemedia100filtr",
+      "libertesagesse",
+      "lntribune",
+      "michaeldouayia",
+      "neveuxbertrand",
+      "ngrandvaux",
+      "nicolasberrod",
+      "nicolasmortel",
+      "omsrdcongo",
+      "onugeneve",
+      "panda31808732",
+      "rtgglobin",
+      "russo15091576",
+      "sefluctuat",
+      "tatiann69922625",
+      "var_actu",
+      "vwazilenwes"
+    ],
+    "rhinovirus": [
+      "93_7_motivation",
+      "asm2boucliers",
+      "astropierre",
+      "c_a_g0101",
+      "flangloi",
+      "hespressfr",
+      "libertesagesse",
+      "nicolasberrod",
+      "nomdidiou501075",
+      "panda31808732",
+      "pika1846",
+      "redkiraz",
+      "sefluctuat"
+    ],
+    "rien": [
+      "bigdanbud",
+      "c_a_g0101",
+      "degeneral__",
+      "extinctionrush",
+      "kasprzykremi",
+      "stockho07541997"
+    ],
+    "récession": [
+      "janyabadi"
+    ],
+    "réseaux": [
+      "belidemagazine",
+      "calamyjane",
+      "carolinelessar8",
+      "france24_fr",
+      "jack_gelos",
+      "kenandogan1",
+      "knanouro",
+      "leonnymedia",
+      "libe",
+      "maliactu",
+      "marcgozlan",
+      "marochebdo",
+      "mycow_eu",
+      "psginna",
+      "schmerchris",
+      "seriatimfr",
+      "tessier_x"
+    ],
+    "sanitaire": [
+      "aixematrice",
+      "asianews_fr",
+      "defimediainfo",
+      "degeneral__",
+      "franceinfo",
+      "francersistanc1",
+      "hadejakeita",
+      "le_liberaal",
+      "mathieu31359682",
+      "replik_cd_media",
+      "tatiann69922625",
+      "tboulboulva",
+      "torreseryc"
+    ],
+    "sanitaires": [
+      "100xcentobio",
+      "citizenbamba",
+      "designche1",
+      "drpierreeddyht",
+      "france24_fr",
+      "globalvar_fr",
+      "hadejakeita",
+      "hespressfr",
+      "julienm__",
+      "le_parisien",
+      "lexpressmaurice",
+      "queeriosity__",
+      "vegasapologies"
+    ],
+    "santé": [
+      "africanmanager",
+      "afropages",
+      "alapic974",
+      "awrasmedia",
+      "bvoltaire",
+      "chat8890",
+      "defimediainfo",
+      "digitalradioone",
+      "doctissimo",
+      "drpierreeddyht",
+      "ebalemozindo",
+      "fibladi",
+      "gfrancefrance",
+      "hibaabdelli",
+      "inter_lignes",
+      "jindependant",
+      "kcharlemag85405",
+      "kiddodig",
+      "ledauphine",
+      "lexpressmaurice",
+      "lorientlejour",
+      "ndaokals",
+      "nicolasmortel",
+      "queeriosity__",
+      "redkiraz",
+      "reveil_algerie",
+      "soupedesques",
+      "tboulboulva",
+      "thecongorx",
+      "torreseryc",
+      "vegasapologies"
+    ],
+    "serait": [
+      "asianews_fr",
+      "bigdanbud",
+      "c_a_g0101",
+      "comefindme88x",
+      "georgsamel",
+      "kiddodig",
+      "le_liberaal",
+      "limportant_fr",
+      "redkiraz",
+      "tessier_x",
+      "zwhaendel48"
+    ],
+    "signalés": [
+      "aixematrice",
+      "francersistanc1"
+    ],
+    "sociaux": [
+      "belidemagazine",
+      "calamyjane",
+      "carolinelessar8",
+      "decarnols",
+      "france24_fr",
+      "gengis9999",
+      "jack_gelos",
+      "kenandogan1",
+      "knanouro",
+      "leonnymedia",
+      "libe",
+      "maliactu",
+      "marcgozlan",
+      "marochebdo",
+      "mycow_eu",
+      "psginna",
+      "schmerchris",
+      "seriatimfr",
+      "tessier_x"
+    ],
+    "submerge": [
+      "aesinfos",
+      "chenuflorent",
+      "eclairelutin",
+      "freedomradiofr",
+      "marielauredupon",
+      "peter_pan95",
+      "redkiraz",
+      "saraart4",
+      "silvano_trotta"
+    ],
+    "symptômes": [
+      "actuenvif",
+      "actusante_100",
+      "actusante_net",
+      "alapic974",
+      "alme_yda",
+      "anti_macroniste",
+      "antoinetv_",
+      "archippenzimba",
+      "badara_mbaye_",
+      "byterin1",
+      "chat8890",
+      "chetteyous68942",
+      "citizenbamba",
+      "cmq_org",
+      "dimitribeghin",
+      "djipylensmedia",
+      "drkayumba",
+      "dutout_pas",
+      "dystoman",
+      "etresouverain62",
+      "foucotak509",
+      "globalintel_",
+      "haldol",
+      "hassahmed93",
+      "icgeopolitics",
+      "independante_fm",
+      "ingenieur243",
+      "jack_gelos",
+      "jules4895985087",
+      "julesjuliocesar",
+      "kasprzykremi",
+      "kleensamsonite",
+      "lirehaiti",
+      "malkoomx00",
+      "managerstn",
+      "mayumbiarcel",
+      "medecin2famille",
+      "ngwaditenplar",
+      "onugeneve",
+      "redkiraz",
+      "rikardrene",
+      "sadraquejean",
+      "samuelmuaku",
+      "sans_louise",
+      "sudinfo_be",
+      "tboulboulva",
+      "tessier_x",
+      "thecongorx",
+      "usernamedias_",
+      "vwazilenwes"
+    ],
+    "sévit": [
+      "destinationsant",
+      "ledauphine",
+      "vegasapologies"
+    ],
+    "taux": [
+      "tatiann69922625",
+      "vwazilenwes"
+    ],
+    "tranchés": [
+      "levif",
+      "twist1961"
+    ],
+    "urgence": [
+      "75secondes",
+      "aixematrice",
+      "alapic974",
+      "asianews_fr",
+      "chenuflorent",
+      "cryptonomistfra",
+      "dav214840",
+      "ebalemozindo",
+      "franceinfo",
+      "francersistanc1",
+      "freedomradiofr",
+      "globalvar_fr",
+      "jeanvige",
+      "jyves94",
+      "loubestal17",
+      "marielauredupon",
+      "peter_pan95",
+      "saraart4",
+      "silvano_trotta",
+      "tessier_x",
+      "torreseryc",
+      "truffertw",
+      "vegasapologies",
+      "ysssineyass"
+    ],
+    "van": [
+      "levif",
+      "twist1961"
+    ],
+    "virale": [
+      "chat8890",
+      "chetteyous68942",
+      "gengis9999",
+      "ngrandvaux",
+      "redkiraz",
+      "torreseryc",
+      "watsonactu"
+    ],
+    "virus": [
+      "1966forever",
+      "75secondes",
+      "7infoci",
+      "_nonpossumus",
+      "actuenvif",
+      "actusante_100",
+      "actusante_net",
+      "aesinfos",
+      "africanmanager",
+      "afropages",
+      "aixematrice",
+      "alainfrnews",
+      "alapic974",
+      "alertes_info",
+      "alme_yda",
+      "annelaurebeaud2",
+      "anti_macroniste",
+      "antoinetv_",
+      "archippenzimba",
+      "arztdiego",
+      "asianews_fr",
+      "asm2boucliers",
+      "astropierre",
+      "aulnaycap",
+      "awrasmedia",
+      "badara_mbaye_",
+      "bamarakoli",
+      "bandalungwa243",
+      "benomar_adil74",
+      "bigdanbud",
+      "bnc_2012",
+      "brutofficiel",
+      "bullebulle6",
+      "businessnews_tn",
+      "bvoltaire",
+      "byterin1",
+      "c_a_g0101",
+      "calamyjane",
+      "carolinelessar8",
+      "catherinekat4",
+      "cavousf5",
+      "cesarwazen",
+      "cestassezcible",
+      "chat8890",
+      "chenuflorent",
+      "chineambmaroc",
+      "chrislabaule",
+      "christophechay",
+      "citizenbamba",
+      "cmq_org",
+      "colonelbigboss",
+      "cryptonomistfra",
+      "dav214840",
+      "decarnols",
+      "defimediainfo",
+      "degeneral__",
+      "designche1",
+      "destinationsant",
+      "digitalradioone",
+      "djipylensmedia",
+      "djwsam14869",
+      "doctissimo",
+      "drkayumba",
+      "dutout_pas",
+      "dvnemk",
+      "dystoman",
+      "ebalemozindo",
+      "eclairelutin",
+      "economiste_magh",
+      "eddie_poker",
+      "etresouverain62",
+      "f24videos",
+      "fab20674300",
+      "fauxrejeandtb",
+      "fibladi",
+      "flangloi",
+      "florentziac",
+      "foucotak509",
+      "fouragebernard",
+      "france24_fr",
+      "franceafrique23",
+      "francois_59_",
+      "gaby_chami",
+      "gavi_fr",
+      "georasia",
+      "gfrancefrance",
+      "globalintel_",
+      "globalvar_fr",
+      "gustave213",
+      "haldol",
+      "hassahmed93",
+      "herodote1789",
+      "hommedelanatio",
+      "icgeopolitics",
+      "independante_fm",
+      "infointoxf24",
+      "infokapitalis",
+      "ingenieur243",
+      "inter_lignes",
+      "inv3stir",
+      "irisnews_",
+      "jack_gelos",
+      "janyabadi",
+      "jeanvige",
+      "jindependant",
+      "jrmeferran85965",
+      "judsonpierre",
+      "jules4895985087",
+      "jyves94",
+      "kasprzykremi",
+      "kenandogan1",
+      "kero_on_x",
+      "khatorimoh44349",
+      "kiddodig",
+      "kleensamsonite",
+      "knanouro",
+      "kuna__fr",
+      "laboussolei",
+      "laroulotte173",
+      "laurentopsomer",
+      "lefebvreelodie6",
+      "lefouparolier",
+      "lehuffpost",
+      "lematinpointma",
+      "lemedia100filtr",
+      "leonnymedia",
+      "leparisiensante",
+      "leparrain_",
+      "les2aa",
+      "lesoir",
+      "levif",
+      "lexpressmaurice",
+      "libe",
+      "libertesagesse",
+      "lirehaiti",
+      "lntribune",
+      "lome_actu",
+      "lorientlejour",
+      "loubestal17",
+      "lourau20e",
+      "maghrebactuinfo",
+      "maliactu",
+      "malkoomx00",
+      "managerstn",
+      "marcgozlan",
+      "marchaas57",
+      "marielauredupon",
+      "marochebdo",
+      "mathieu31359682",
+      "mayumbiarcel",
+      "medecin2famille",
+      "medias24",
+      "medscapefrance",
+      "messirhamid",
+      "michaeldouayia",
+      "mickaellaffont",
+      "midilibre",
+      "montesqieu1949",
+      "msn_quebec",
+      "mycow_eu",
+      "nathanp120710",
+      "nax_offi",
+      "ndaokals",
+      "neveuxbertrand",
+      "ngrandvaux",
+      "ngwaditenplar",
+      "nicolasmortel",
+      "nkazumba24880",
+      "olivcim",
+      "olivier40121476",
+      "olivierjean16",
+      "onugeneve",
+      "onuinfo",
+      "orphee45",
+      "panda31808732",
+      "peter_pan95",
+      "phoenixpho71063",
+      "pjlepine01",
+      "proguinee",
+      "psginna",
+      "punekarnews",
+      "quang_phamqg",
+      "quicklyactunews",
+      "redkiraz",
+      "remed_fey",
+      "reveil_algerie",
+      "rikardrene",
+      "russo15091576",
+      "sadraquejean",
+      "samuelmuaku",
+      "sans_louise",
+      "saraart4",
+      "schmerchris",
+      "sefluctuat",
+      "seriatimfr",
+      "shoyoo772",
+      "silvano_trotta",
+      "simarongongomba",
+      "son2baby",
+      "soupedesques",
+      "stauguste69023",
+      "sudinfo_be",
+      "sylvainebe54733",
+      "sylvaintekris",
+      "tannheimvs",
+      "tekiano",
+      "tessier_x",
+      "thecongorx",
+      "ticheck_org",
+      "torreseryc",
+      "truffertw",
+      "tuniscopecom",
+      "tunisialphanews",
+      "twist1961",
+      "usernamedias_",
+      "verif_tf1lci",
+      "vigicovid",
+      "vwazilenwes",
+      "walawpress",
+      "webdo_tn",
+      "wmaarifa",
+      "woit_geopolitic",
+      "wurby_jika",
+      "y_dms_debah",
+      "ysssineyass"
+    ],
+    "vraiment": [
+      "hibaabdelli",
+      "kcharlemag85405",
+      "lepoint",
+      "pjlepine01"
+    ],
+    "vrs": [
+      "asm2boucliers",
+      "astropierre",
+      "cestassezcible",
+      "flahault",
+      "herodote1789",
+      "jyves94",
+      "libertesagesse",
+      "lupolynesia",
+      "nicolasberrod",
+      "panda31808732",
+      "pika1846",
+      "redkiraz",
+      "sefluctuat",
+      "tatiann69922625"
+    ],
+    "yves": [
+      "levif",
+      "twist1961"
+    ],
+    "épidémie": [
+      "_nonpossumus",
+      "abdelka11473079",
+      "actuenvif",
+      "actusante_100",
+      "actusante_net",
+      "adresansoso",
+      "aixematrice",
+      "alapic974",
+      "alme_yda",
+      "annelaurebeaud2",
+      "antoinetv_",
+      "archippenzimba",
+      "artistehaki",
+      "asianews_fr",
+      "badara_mbaye_",
+      "bernadette7432",
+      "bnc_2012",
+      "bvoltaire",
+      "byterin1",
+      "c_a_g0101",
+      "cartesdumonde",
+      "cdjerbal",
+      "chantalpecher4",
+      "chat8890",
+      "chenuflorent",
+      "citizenbamba",
+      "criver777",
+      "cryptonomistfra",
+      "damienb51574501",
+      "dav214840",
+      "dimitribeghin",
+      "djipylensmedia",
+      "djwsam14869",
+      "doctissimo",
+      "dutout_pas",
+      "dystoman",
+      "eclairelutin",
+      "ecousszz",
+      "etresouverain62",
+      "foucotak509",
+      "franceinfo",
+      "francenews24",
+      "francersistanc1",
+      "francois_59_",
+      "frdouchain",
+      "freedomradiofr",
+      "gaillar41755926",
+      "gengis9999",
+      "hadejakeita",
+      "haldol",
+      "hertweck4",
+      "hypnosisa61",
+      "icgeopolitics",
+      "independante_fm",
+      "ines_el_",
+      "ingenieur243",
+      "jules4895985087",
+      "julesjuliocesar",
+      "jyves94",
+      "kleensamsonite",
+      "krieger66362259",
+      "laroulotte173",
+      "le_liberaal",
+      "lemedia100filtr",
+      "lirehaiti",
+      "lourau20e",
+      "luckylu32431232",
+      "margottonm68143",
+      "marielauredupon",
+      "mariemarys06",
+      "mayumbiarcel",
+      "medias24",
+      "michaeldouayia",
+      "mickaellaffont",
+      "ndaokals",
+      "neveuxbertrand",
+      "ngrandvaux",
+      "ngwaditenplar",
+      "nkazumba24880",
+      "peter_pan95",
+      "redkiraz",
+      "remed_fey",
+      "rikardrene",
+      "rtgglobin",
+      "rttr73818881",
+      "samuelmuaku",
+      "saraart4",
+      "schmerchris",
+      "silvano_trotta",
+      "son2baby",
+      "soupedesques",
+      "tessier_x",
+      "thaivisafra",
+      "ticheck_org",
+      "usernamedias_",
+      "var_actu",
+      "vwazilenwes",
+      "woit_geopolitic",
+      "ysssineyass"
+    ],
+    "état": [
+      "75secondes",
+      "aixematrice",
+      "alapic974",
+      "brutofficiel",
+      "carolinelessar8",
+      "chenuflorent",
+      "cryptonomistfra",
+      "ebalemozindo",
+      "florentziac",
+      "franceinfo",
+      "francersistanc1",
+      "freedomradiofr",
+      "globalvar_fr",
+      "jeanvige",
+      "julienm__",
+      "jyves94",
+      "loubestal17",
+      "marielauredupon",
+      "mathieu31359682",
+      "medecin2famille",
+      "nkazumba24880",
+      "peter_pan95",
+      "redkiraz",
+      "rtgglobin",
+      "saraart4",
+      "silvano_trotta",
+      "tessier_x",
+      "vwazilenwes",
+      "ysssineyass"
+    ],
+    "été": [
+      "_nonpossumus",
+      "adolfdummkopf",
+      "aixematrice",
+      "alainfrnews",
+      "annelaurebeaud2",
+      "asianews_fr",
+      "bernadette7432",
+      "cgtnfrancais",
+      "chantalpecher4",
+      "chat8890",
+      "criver777",
+      "ecousszz",
+      "etresouverain62",
+      "francersistanc1",
+      "gaillar41755926",
+      "hertweck4",
+      "hypnosisa61",
+      "inv3stir",
+      "joeltarnawski",
+      "krieger66362259",
+      "laroulotte173",
+      "luckylu32431232",
+      "margottonm68143",
+      "mariemarys06",
+      "messirhamid",
+      "redkiraz",
+      "reveil_algerie",
+      "rttr73818881",
+      "tessier_x",
+      "ticheck_org",
+      "vinz_crt",
+      "woit_geopolitic"
+    ]
+  },
+  "word_n_accounts": {
+    "adorent": 1,
+    "alerte": 10,
+    "amené": 1,
+    "annonce": 1,
+    "ans": 40,
+    "appauvri": 1,
+    "appelé": 15,
+    "augmentation": 19,
+    "augmentent": 9,
+    "aviaire": 6,
+    "avis": 3,
+    "cas": 70,
+    "chine": 217,
+    "chinois": 18,
+    "cinq": 15,
+    "confrontée": 20,
+    "connaît": 9,
+    "connu": 7,
+    "covid": 102,
+    "craindre": 5,
+    "crise": 7,
+    "créer": 3,
+    "crématoriums": 8,
+    "devrions": 1,
+    "données": 3,
+    "débordés": 5,
+    "déclare": 14,
+    "enregistrée": 16,
+    "epidémie": 3,
+    "face": 36,
+    "faut": 32,
+    "flambée": 8,
+    "flash": 2,
+    "france": 13,
+    "grippe": 59,
+    "hmpv": 310,
+    "hong": 2,
+    "humain": 113,
+    "human": 28,
+    "hôpitaux": 46,
+    "inde": 9,
+    "infection": 26,
+    "infections": 23,
+    "informateur": 2,
+    "inquiète": 11,
+    "inquiéter": 23,
+    "inutile": 2,
+    "justifie": 2,
+    "kong": 2,
+    "laethem": 2,
+    "maladies": 12,
+    "marc": 2,
+    "metapneumovirus": 57,
+    "mettent": 3,
+    "mondiale": 8,
+    "mortel": 7,
+    "mortelle": 2,
+    "mpvh": 12,
+    "multiples": 9,
+    "mycoplasma": 13,
+    "mystérieuse": 4,
+    "médias": 13,
+    "métapneumovirus": 130,
+    "non": 19,
+    "nord": 16,
+    "nouveau": 55,
+    "nouvelle": 71,
+    "origine": 6,
+    "pandémie": 36,
+    "pandémies": 2,
+    "panique": 9,
+    "paniquer": 1,
+    "pays": 18,
+    "peur": 5,
+    "pic": 5,
+    "pneumoniae": 12,
+    "pneumonie": 8,
+    "populations": 2,
+    "premier": 7,
+    "premiers": 4,
+    "propage": 28,
+    "propageant": 8,
+    "provoquant": 17,
+    "provoque": 14,
+    "rapidement": 28,
+    "rappelle": 6,
+    "recommençons": 1,
+    "respiratoire": 57,
+    "respiratoires": 32,
+    "rhinovirus": 13,
+    "rien": 6,
+    "récession": 1,
+    "réseaux": 17,
+    "sanitaire": 13,
+    "sanitaires": 13,
+    "santé": 31,
+    "serait": 11,
+    "signalés": 2,
+    "sociaux": 19,
+    "submerge": 9,
+    "symptômes": 50,
+    "sévit": 3,
+    "taux": 2,
+    "tranchés": 2,
+    "urgence": 24,
+    "van": 2,
+    "virale": 7,
+    "virus": 225,
+    "vraiment": 4,
+    "vrs": 14,
+    "yves": 2,
+    "épidémie": 99,
+    "état": 29,
+    "été": 32
+  },
+  "word_communities": {
+    "ans": [
+      10
+    ],
+    "appauvri": [
+      8
+    ],
+    "cas": [
+      0,
+      7,
+      9
+    ],
+    "chine": [
+      0,
+      4,
+      5,
+      7,
+      10,
+      11,
+      13
+    ],
+    "cinq": [
+      10
+    ],
+    "connu": [
+      10
+    ],
+    "covid": [
+      0,
+      4
+    ],
+    "craindre": [
+      7
+    ],
+    "données": [
+      5
+    ],
+    "enregistrée": [
+      4
+    ],
+    "faut": [
+      7
+    ],
+    "grippe": [
+      5
+    ],
+    "hmpv": [
+      0,
+      2,
+      4,
+      5,
+      7,
+      8,
+      10,
+      11,
+      13
+    ],
+    "humain": [
+      3,
+      5,
+      11,
+      13
+    ],
+    "hôpitaux": [
+      4
+    ],
+    "inutile": [
+      8
+    ],
+    "mpvh": [
+      3
+    ],
+    "mystérieuse": [
+      13
+    ],
+    "métapneumovirus": [
+      3,
+      4,
+      5,
+      11
+    ],
+    "nouveau": [
+      13
+    ],
+    "nouvelle": [
+      11
+    ],
+    "pandémies": [
+      8
+    ],
+    "panique": [
+      10
+    ],
+    "paniquer": [
+      8
+    ],
+    "populations": [
+      8
+    ],
+    "premiers": [
+      0
+    ],
+    "propage": [
+      7
+    ],
+    "rapidement": [
+      11
+    ],
+    "recommençons": [
+      8
+    ],
+    "respiratoire": [
+      7
+    ],
+    "sanitaire": [
+      10
+    ],
+    "taux": [
+      5
+    ],
+    "urgence": [
+      0
+    ],
+    "virale": [
+      13
+    ],
+    "virus": [
+      4,
+      7,
+      8,
+      10,
+      11,
+      13
+    ],
+    "épidémie": [
+      0,
+      4,
+      11,
+      13
+    ],
+    "état": [
+      0,
+      5
+    ]
+  },
+  "word_cooccur": {
+    "ans": [
+      {
+        "word": "chine",
+        "n": 29
+      },
+      {
+        "word": "covid",
+        "n": 25
+      },
+      {
+        "word": "hmpv",
+        "n": 25
+      },
+      {
+        "word": "virus",
+        "n": 21
+      },
+      {
+        "word": "face",
+        "n": 17
+      },
+      {
+        "word": "nouvelle",
+        "n": 17
+      },
+      {
+        "word": "pandémie",
+        "n": 17
+      },
+      {
+        "word": "épidémie",
+        "n": 16
+      },
+      {
+        "word": "appelé",
+        "n": 12
+      },
+      {
+        "word": "cinq",
+        "n": 11
+      },
+      {
+        "word": "human",
+        "n": 10
+      },
+      {
+        "word": "metapneumovirus",
+        "n": 10
+      },
+      {
+        "word": "nouveau",
+        "n": 6
+      },
+      {
+        "word": "augmentation",
+        "n": 5
+      },
+      {
+        "word": "cas",
+        "n": 5
+      }
+    ],
+    "appauvri": [
+      {
+        "word": "inutile",
+        "n": 4
+      },
+      {
+        "word": "paniquer",
+        "n": 4
+      },
+      {
+        "word": "populations",
+        "n": 4
+      },
+      {
+        "word": "virus",
+        "n": 4
+      },
+      {
+        "word": "hmpv",
+        "n": 4
+      },
+      {
+        "word": "recommençons",
+        "n": 4
+      },
+      {
+        "word": "pandémies",
+        "n": 4
+      },
+      {
+        "word": "amené",
+        "n": 4
+      },
+      {
+        "word": "récession",
+        "n": 4
+      }
+    ],
+    "cas": [
+      {
+        "word": "hmpv",
+        "n": 53
+      },
+      {
+        "word": "chine",
+        "n": 36
+      },
+      {
+        "word": "métapneumovirus",
+        "n": 34
+      },
+      {
+        "word": "humain",
+        "n": 32
+      },
+      {
+        "word": "virus",
+        "n": 31
+      },
+      {
+        "word": "augmentation",
+        "n": 15
+      },
+      {
+        "word": "augmentent",
+        "n": 10
+      },
+      {
+        "word": "été",
+        "n": 9
+      },
+      {
+        "word": "faut",
+        "n": 8
+      },
+      {
+        "word": "santé",
+        "n": 8
+      },
+      {
+        "word": "inde",
+        "n": 7
+      },
+      {
+        "word": "premier",
+        "n": 7
+      },
+      {
+        "word": "nord",
+        "n": 7
+      },
+      {
+        "word": "premiers",
+        "n": 6
+      },
+      {
+        "word": "inquiéter",
+        "n": 6
+      }
+    ],
+    "chine": [
+      {
+        "word": "hmpv",
+        "n": 161
+      },
+      {
+        "word": "virus",
+        "n": 147
+      },
+      {
+        "word": "métapneumovirus",
+        "n": 106
+      },
+      {
+        "word": "épidémie",
+        "n": 95
+      },
+      {
+        "word": "humain",
+        "n": 84
+      },
+      {
+        "word": "nouvelle",
+        "n": 64
+      },
+      {
+        "word": "covid",
+        "n": 45
+      },
+      {
+        "word": "nouveau",
+        "n": 36
+      },
+      {
+        "word": "cas",
+        "n": 36
+      },
+      {
+        "word": "ans",
+        "n": 29
+      },
+      {
+        "word": "face",
+        "n": 27
+      },
+      {
+        "word": "respiratoire",
+        "n": 26
+      },
+      {
+        "word": "metapneumovirus",
+        "n": 26
+      },
+      {
+        "word": "propage",
+        "n": 23
+      },
+      {
+        "word": "été",
+        "n": 23
+      }
+    ],
+    "cinq": [
+      {
+        "word": "chine",
+        "n": 12
+      },
+      {
+        "word": "ans",
+        "n": 11
+      },
+      {
+        "word": "covid",
+        "n": 10
+      },
+      {
+        "word": "hmpv",
+        "n": 9
+      },
+      {
+        "word": "augmentation",
+        "n": 6
+      },
+      {
+        "word": "cas",
+        "n": 5
+      },
+      {
+        "word": "inquiète",
+        "n": 5
+      },
+      {
+        "word": "nord",
+        "n": 5
+      },
+      {
+        "word": "pandémie",
+        "n": 4
+      },
+      {
+        "word": "sanitaires",
+        "n": 3
+      },
+      {
+        "word": "nouvelle",
+        "n": 2
+      },
+      {
+        "word": "épidémie",
+        "n": 2
+      },
+      {
+        "word": "métapneumovirus",
+        "n": 2
+      },
+      {
+        "word": "humain",
+        "n": 2
+      },
+      {
+        "word": "nouveau",
+        "n": 2
+      }
+    ],
+    "connu": [
+      {
+        "word": "hmpv",
+        "n": 6
+      },
+      {
+        "word": "virus",
+        "n": 4
+      },
+      {
+        "word": "panique",
+        "n": 4
+      },
+      {
+        "word": "nouveau",
+        "n": 3
+      },
+      {
+        "word": "sanitaire",
+        "n": 3
+      },
+      {
+        "word": "inutile",
+        "n": 3
+      },
+      {
+        "word": "chine",
+        "n": 2
+      },
+      {
+        "word": "métapneumovirus",
+        "n": 2
+      },
+      {
+        "word": "humain",
+        "n": 2
+      },
+      {
+        "word": "respiratoire",
+        "n": 2
+      },
+      {
+        "word": "non",
+        "n": 2
+      },
+      {
+        "word": "médias",
+        "n": 2
+      },
+      {
+        "word": "adorent",
+        "n": 2
+      },
+      {
+        "word": "créer",
+        "n": 2
+      },
+      {
+        "word": "rien",
+        "n": 2
+      }
+    ],
+    "covid": [
+      {
+        "word": "hmpv",
+        "n": 48
+      },
+      {
+        "word": "chine",
+        "n": 45
+      },
+      {
+        "word": "virus",
+        "n": 37
+      },
+      {
+        "word": "ans",
+        "n": 25
+      },
+      {
+        "word": "nouvelle",
+        "n": 21
+      },
+      {
+        "word": "épidémie",
+        "n": 21
+      },
+      {
+        "word": "metapneumovirus",
+        "n": 20
+      },
+      {
+        "word": "pandémie",
+        "n": 17
+      },
+      {
+        "word": "face",
+        "n": 16
+      },
+      {
+        "word": "human",
+        "n": 15
+      },
+      {
+        "word": "appelé",
+        "n": 12
+      },
+      {
+        "word": "grippe",
+        "n": 10
+      },
+      {
+        "word": "cinq",
+        "n": 10
+      },
+      {
+        "word": "métapneumovirus",
+        "n": 9
+      },
+      {
+        "word": "nouveau",
+        "n": 9
+      }
+    ],
+    "craindre": [
+      {
+        "word": "faut",
+        "n": 5
+      },
+      {
+        "word": "hmpv",
+        "n": 5
+      },
+      {
+        "word": "virus",
+        "n": 5
+      },
+      {
+        "word": "chine",
+        "n": 5
+      },
+      {
+        "word": "propage",
+        "n": 4
+      }
+    ],
+    "données": [
+      {
+        "word": "hmpv",
+        "n": 3
+      },
+      {
+        "word": "métapneumovirus",
+        "n": 2
+      },
+      {
+        "word": "humain",
+        "n": 2
+      },
+      {
+        "word": "cas",
+        "n": 2
+      }
+    ],
+    "enregistrée": [
+      {
+        "word": "épidémie",
+        "n": 16
+      },
+      {
+        "word": "été",
+        "n": 16
+      },
+      {
+        "word": "chine",
+        "n": 16
+      },
+      {
+        "word": "métapneumovirus",
+        "n": 16
+      },
+      {
+        "word": "informateur",
+        "n": 3
+      },
+      {
+        "word": "virus",
+        "n": 2
+      }
+    ],
+    "faut": [
+      {
+        "word": "chine",
+        "n": 22
+      },
+      {
+        "word": "virus",
+        "n": 19
+      },
+      {
+        "word": "hmpv",
+        "n": 18
+      },
+      {
+        "word": "inquiéter",
+        "n": 18
+      },
+      {
+        "word": "métapneumovirus",
+        "n": 13
+      },
+      {
+        "word": "humain",
+        "n": 13
+      },
+      {
+        "word": "cas",
+        "n": 8
+      },
+      {
+        "word": "vraiment",
+        "n": 6
+      },
+      {
+        "word": "grippe",
+        "n": 5
+      },
+      {
+        "word": "craindre",
+        "n": 5
+      },
+      {
+        "word": "flambée",
+        "n": 5
+      },
+      {
+        "word": "connaît",
+        "n": 4
+      },
+      {
+        "word": "pic",
+        "n": 4
+      },
+      {
+        "word": "mpvh",
+        "n": 4
+      },
+      {
+        "word": "propage",
+        "n": 4
+      }
+    ],
+    "grippe": [
+      {
+        "word": "virus",
+        "n": 23
+      },
+      {
+        "word": "hmpv",
+        "n": 23
+      },
+      {
+        "word": "chine",
+        "n": 15
+      },
+      {
+        "word": "covid",
+        "n": 10
+      },
+      {
+        "word": "metapneumovirus",
+        "n": 9
+      },
+      {
+        "word": "métapneumovirus",
+        "n": 9
+      },
+      {
+        "word": "vrs",
+        "n": 8
+      },
+      {
+        "word": "symptômes",
+        "n": 7
+      },
+      {
+        "word": "aviaire",
+        "n": 7
+      },
+      {
+        "word": "rhinovirus",
+        "n": 6
+      },
+      {
+        "word": "confrontée",
+        "n": 5
+      },
+      {
+        "word": "nouvelle",
+        "n": 5
+      },
+      {
+        "word": "respiratoire",
+        "n": 5
+      },
+      {
+        "word": "faut",
+        "n": 5
+      },
+      {
+        "word": "humain",
+        "n": 5
+      }
+    ],
+    "hmpv": [
+      {
+        "word": "virus",
+        "n": 200
+      },
+      {
+        "word": "chine",
+        "n": 161
+      },
+      {
+        "word": "métapneumovirus",
+        "n": 67
+      },
+      {
+        "word": "épidémie",
+        "n": 65
+      },
+      {
+        "word": "humain",
+        "n": 63
+      },
+      {
+        "word": "nouvelle",
+        "n": 57
+      },
+      {
+        "word": "cas",
+        "n": 53
+      },
+      {
+        "word": "covid",
+        "n": 48
+      },
+      {
+        "word": "nouveau",
+        "n": 44
+      },
+      {
+        "word": "respiratoire",
+        "n": 38
+      },
+      {
+        "word": "metapneumovirus",
+        "n": 29
+      },
+      {
+        "word": "face",
+        "n": 28
+      },
+      {
+        "word": "human",
+        "n": 28
+      },
+      {
+        "word": "symptômes",
+        "n": 27
+      },
+      {
+        "word": "pandémie",
+        "n": 26
+      }
+    ],
+    "humain": [
+      {
+        "word": "métapneumovirus",
+        "n": 120
+      },
+      {
+        "word": "chine",
+        "n": 84
+      },
+      {
+        "word": "hmpv",
+        "n": 63
+      },
+      {
+        "word": "virus",
+        "n": 62
+      },
+      {
+        "word": "cas",
+        "n": 32
+      },
+      {
+        "word": "épidémie",
+        "n": 28
+      },
+      {
+        "word": "nouvelle",
+        "n": 26
+      },
+      {
+        "word": "inquiéter",
+        "n": 15
+      },
+      {
+        "word": "confrontée",
+        "n": 14
+      },
+      {
+        "word": "rapidement",
+        "n": 13
+      },
+      {
+        "word": "nouveau",
+        "n": 13
+      },
+      {
+        "word": "faut",
+        "n": 13
+      },
+      {
+        "word": "mpvh",
+        "n": 13
+      },
+      {
+        "word": "symptômes",
+        "n": 12
+      },
+      {
+        "word": "propage",
+        "n": 10
+      }
+    ],
+    "hôpitaux": [
+      {
+        "word": "chine",
+        "n": 18
+      },
+      {
+        "word": "hmpv",
+        "n": 14
+      },
+      {
+        "word": "virus",
+        "n": 12
+      },
+      {
+        "word": "épidémie",
+        "n": 12
+      },
+      {
+        "word": "submerge",
+        "n": 7
+      },
+      {
+        "word": "état",
+        "n": 6
+      },
+      {
+        "word": "nouvelle",
+        "n": 6
+      },
+      {
+        "word": "crématoriums",
+        "n": 5
+      },
+      {
+        "word": "déclare",
+        "n": 4
+      },
+      {
+        "word": "urgence",
+        "n": 4
+      },
+      {
+        "word": "débordés",
+        "n": 4
+      },
+      {
+        "word": "maladies",
+        "n": 4
+      },
+      {
+        "word": "respiratoires",
+        "n": 4
+      },
+      {
+        "word": "propage",
+        "n": 3
+      },
+      {
+        "word": "rappelle",
+        "n": 3
+      }
+    ],
+    "inutile": [
+      {
+        "word": "hmpv",
+        "n": 7
+      },
+      {
+        "word": "virus",
+        "n": 5
+      },
+      {
+        "word": "paniquer",
+        "n": 4
+      },
+      {
+        "word": "populations",
+        "n": 4
+      },
+      {
+        "word": "recommençons",
+        "n": 4
+      },
+      {
+        "word": "pandémies",
+        "n": 4
+      },
+      {
+        "word": "appauvri",
+        "n": 4
+      },
+      {
+        "word": "amené",
+        "n": 4
+      },
+      {
+        "word": "récession",
+        "n": 4
+      },
+      {
+        "word": "panique",
+        "n": 3
+      },
+      {
+        "word": "connu",
+        "n": 3
+      },
+      {
+        "word": "rien",
+        "n": 2
+      },
+      {
+        "word": "nouveau",
+        "n": 2
+      },
+      {
+        "word": "peur",
+        "n": 2
+      },
+      {
+        "word": "sanitaire",
+        "n": 2
+      }
+    ],
+    "mpvh": [
+      {
+        "word": "métapneumovirus",
+        "n": 13
+      },
+      {
+        "word": "humain",
+        "n": 13
+      },
+      {
+        "word": "chine",
+        "n": 8
+      },
+      {
+        "word": "virus",
+        "n": 5
+      },
+      {
+        "word": "grippe",
+        "n": 4
+      },
+      {
+        "word": "faut",
+        "n": 4
+      },
+      {
+        "word": "hmpv",
+        "n": 3
+      },
+      {
+        "word": "inquiéter",
+        "n": 3
+      },
+      {
+        "word": "provoque",
+        "n": 2
+      },
+      {
+        "word": "infections",
+        "n": 2
+      },
+      {
+        "word": "respiratoires",
+        "n": 2
+      },
+      {
+        "word": "sévit",
+        "n": 2
+      },
+      {
+        "word": "nouveau",
+        "n": 2
+      },
+      {
+        "word": "pneumonie",
+        "n": 2
+      },
+      {
+        "word": "origine",
+        "n": 2
+      }
+    ],
+    "mystérieuse": [
+      {
+        "word": "chine",
+        "n": 4
+      },
+      {
+        "word": "épidémie",
+        "n": 3
+      },
+      {
+        "word": "humain",
+        "n": 3
+      },
+      {
+        "word": "virale",
+        "n": 2
+      },
+      {
+        "word": "nouveau",
+        "n": 2
+      },
+      {
+        "word": "nouvelle",
+        "n": 2
+      },
+      {
+        "word": "hmpv",
+        "n": 2
+      },
+      {
+        "word": "métapneumovirus",
+        "n": 2
+      },
+      {
+        "word": "virus",
+        "n": 2
+      }
+    ],
+    "métapneumovirus": [
+      {
+        "word": "humain",
+        "n": 120
+      },
+      {
+        "word": "chine",
+        "n": 106
+      },
+      {
+        "word": "virus",
+        "n": 70
+      },
+      {
+        "word": "hmpv",
+        "n": 67
+      },
+      {
+        "word": "épidémie",
+        "n": 47
+      },
+      {
+        "word": "cas",
+        "n": 34
+      },
+      {
+        "word": "nouvelle",
+        "n": 29
+      },
+      {
+        "word": "été",
+        "n": 24
+      },
+      {
+        "word": "nouveau",
+        "n": 16
+      },
+      {
+        "word": "enregistrée",
+        "n": 16
+      },
+      {
+        "word": "confrontée",
+        "n": 15
+      },
+      {
+        "word": "inquiéter",
+        "n": 15
+      },
+      {
+        "word": "rapidement",
+        "n": 13
+      },
+      {
+        "word": "faut",
+        "n": 13
+      },
+      {
+        "word": "mpvh",
+        "n": 13
+      }
+    ],
+    "nouveau": [
+      {
+        "word": "virus",
+        "n": 47
+      },
+      {
+        "word": "hmpv",
+        "n": 44
+      },
+      {
+        "word": "chine",
+        "n": 36
+      },
+      {
+        "word": "métapneumovirus",
+        "n": 16
+      },
+      {
+        "word": "humain",
+        "n": 13
+      },
+      {
+        "word": "covid",
+        "n": 9
+      },
+      {
+        "word": "épidémie",
+        "n": 7
+      },
+      {
+        "word": "chinois",
+        "n": 7
+      },
+      {
+        "word": "respiratoire",
+        "n": 7
+      },
+      {
+        "word": "ans",
+        "n": 6
+      },
+      {
+        "word": "mortel",
+        "n": 6
+      },
+      {
+        "word": "nouvelle",
+        "n": 5
+      },
+      {
+        "word": "pays",
+        "n": 5
+      },
+      {
+        "word": "médias",
+        "n": 5
+      },
+      {
+        "word": "symptômes",
+        "n": 5
+      }
+    ],
+    "nouvelle": [
+      {
+        "word": "chine",
+        "n": 64
+      },
+      {
+        "word": "hmpv",
+        "n": 57
+      },
+      {
+        "word": "épidémie",
+        "n": 52
+      },
+      {
+        "word": "virus",
+        "n": 46
+      },
+      {
+        "word": "métapneumovirus",
+        "n": 29
+      },
+      {
+        "word": "humain",
+        "n": 26
+      },
+      {
+        "word": "pandémie",
+        "n": 24
+      },
+      {
+        "word": "face",
+        "n": 23
+      },
+      {
+        "word": "covid",
+        "n": 21
+      },
+      {
+        "word": "confrontée",
+        "n": 19
+      },
+      {
+        "word": "ans",
+        "n": 17
+      },
+      {
+        "word": "rapidement",
+        "n": 16
+      },
+      {
+        "word": "metapneumovirus",
+        "n": 16
+      },
+      {
+        "word": "propage",
+        "n": 15
+      },
+      {
+        "word": "appelé",
+        "n": 13
+      }
+    ],
+    "pandémies": [
+      {
+        "word": "inutile",
+        "n": 4
+      },
+      {
+        "word": "paniquer",
+        "n": 4
+      },
+      {
+        "word": "populations",
+        "n": 4
+      },
+      {
+        "word": "virus",
+        "n": 4
+      },
+      {
+        "word": "hmpv",
+        "n": 4
+      },
+      {
+        "word": "recommençons",
+        "n": 4
+      },
+      {
+        "word": "appauvri",
+        "n": 4
+      },
+      {
+        "word": "amené",
+        "n": 4
+      },
+      {
+        "word": "récession",
+        "n": 4
+      }
+    ],
+    "panique": [
+      {
+        "word": "hmpv",
+        "n": 8
+      },
+      {
+        "word": "virus",
+        "n": 6
+      },
+      {
+        "word": "connu",
+        "n": 4
+      },
+      {
+        "word": "nouveau",
+        "n": 3
+      },
+      {
+        "word": "sanitaire",
+        "n": 3
+      },
+      {
+        "word": "inutile",
+        "n": 3
+      },
+      {
+        "word": "métapneumovirus",
+        "n": 2
+      },
+      {
+        "word": "justifie",
+        "n": 2
+      },
+      {
+        "word": "mondiale",
+        "n": 2
+      },
+      {
+        "word": "avis",
+        "n": 2
+      },
+      {
+        "word": "tranchés",
+        "n": 2
+      },
+      {
+        "word": "yves",
+        "n": 2
+      },
+      {
+        "word": "van",
+        "n": 2
+      },
+      {
+        "word": "laethem",
+        "n": 2
+      },
+      {
+        "word": "marc",
+        "n": 2
+      }
+    ],
+    "paniquer": [
+      {
+        "word": "inutile",
+        "n": 4
+      },
+      {
+        "word": "populations",
+        "n": 4
+      },
+      {
+        "word": "virus",
+        "n": 4
+      },
+      {
+        "word": "hmpv",
+        "n": 4
+      },
+      {
+        "word": "recommençons",
+        "n": 4
+      },
+      {
+        "word": "pandémies",
+        "n": 4
+      },
+      {
+        "word": "appauvri",
+        "n": 4
+      },
+      {
+        "word": "amené",
+        "n": 4
+      },
+      {
+        "word": "récession",
+        "n": 4
+      }
+    ],
+    "populations": [
+      {
+        "word": "inutile",
+        "n": 4
+      },
+      {
+        "word": "paniquer",
+        "n": 4
+      },
+      {
+        "word": "virus",
+        "n": 4
+      },
+      {
+        "word": "hmpv",
+        "n": 4
+      },
+      {
+        "word": "recommençons",
+        "n": 4
+      },
+      {
+        "word": "pandémies",
+        "n": 4
+      },
+      {
+        "word": "appauvri",
+        "n": 4
+      },
+      {
+        "word": "amené",
+        "n": 4
+      },
+      {
+        "word": "récession",
+        "n": 4
+      }
+    ],
+    "premiers": [
+      {
+        "word": "cas",
+        "n": 6
+      },
+      {
+        "word": "hmpv",
+        "n": 6
+      },
+      {
+        "word": "france",
+        "n": 3
+      },
+      {
+        "word": "chine",
+        "n": 2
+      },
+      {
+        "word": "métapneumovirus",
+        "n": 2
+      },
+      {
+        "word": "humain",
+        "n": 2
+      },
+      {
+        "word": "chinois",
+        "n": 2
+      },
+      {
+        "word": "été",
+        "n": 2
+      },
+      {
+        "word": "signalés",
+        "n": 2
+      },
+      {
+        "word": "hong",
+        "n": 2
+      },
+      {
+        "word": "kong",
+        "n": 2
+      },
+      {
+        "word": "devrions",
+        "n": 2
+      },
+      {
+        "word": "annonce",
+        "n": 2
+      },
+      {
+        "word": "human",
+        "n": 2
+      },
+      {
+        "word": "metapneumovirus",
+        "n": 2
+      }
+    ],
+    "propage": [
+      {
+        "word": "chine",
+        "n": 23
+      },
+      {
+        "word": "hmpv",
+        "n": 23
+      },
+      {
+        "word": "virus",
+        "n": 18
+      },
+      {
+        "word": "nouvelle",
+        "n": 15
+      },
+      {
+        "word": "épidémie",
+        "n": 12
+      },
+      {
+        "word": "métapneumovirus",
+        "n": 12
+      },
+      {
+        "word": "rapidement",
+        "n": 11
+      },
+      {
+        "word": "humain",
+        "n": 10
+      },
+      {
+        "word": "confrontée",
+        "n": 8
+      },
+      {
+        "word": "symptômes",
+        "n": 7
+      },
+      {
+        "word": "sanitaire",
+        "n": 4
+      },
+      {
+        "word": "nouveau",
+        "n": 4
+      },
+      {
+        "word": "faut",
+        "n": 4
+      },
+      {
+        "word": "craindre",
+        "n": 4
+      },
+      {
+        "word": "hôpitaux",
+        "n": 3
+      }
+    ],
+    "rapidement": [
+      {
+        "word": "chine",
+        "n": 17
+      },
+      {
+        "word": "nouvelle",
+        "n": 16
+      },
+      {
+        "word": "hmpv",
+        "n": 16
+      },
+      {
+        "word": "épidémie",
+        "n": 14
+      },
+      {
+        "word": "métapneumovirus",
+        "n": 13
+      },
+      {
+        "word": "humain",
+        "n": 13
+      },
+      {
+        "word": "confrontée",
+        "n": 12
+      },
+      {
+        "word": "virus",
+        "n": 12
+      },
+      {
+        "word": "propage",
+        "n": 11
+      },
+      {
+        "word": "provoquant",
+        "n": 10
+      },
+      {
+        "word": "propageant",
+        "n": 7
+      },
+      {
+        "word": "symptômes",
+        "n": 7
+      },
+      {
+        "word": "sanitaire",
+        "n": 3
+      },
+      {
+        "word": "flash",
+        "n": 2
+      },
+      {
+        "word": "serait",
+        "n": 2
+      }
+    ],
+    "recommençons": [
+      {
+        "word": "inutile",
+        "n": 4
+      },
+      {
+        "word": "paniquer",
+        "n": 4
+      },
+      {
+        "word": "populations",
+        "n": 4
+      },
+      {
+        "word": "virus",
+        "n": 4
+      },
+      {
+        "word": "hmpv",
+        "n": 4
+      },
+      {
+        "word": "pandémies",
+        "n": 4
+      },
+      {
+        "word": "appauvri",
+        "n": 4
+      },
+      {
+        "word": "amené",
+        "n": 4
+      },
+      {
+        "word": "récession",
+        "n": 4
+      }
+    ],
+    "respiratoire": [
+      {
+        "word": "virus",
+        "n": 46
+      },
+      {
+        "word": "hmpv",
+        "n": 38
+      },
+      {
+        "word": "chine",
+        "n": 26
+      },
+      {
+        "word": "métapneumovirus",
+        "n": 11
+      },
+      {
+        "word": "épidémie",
+        "n": 11
+      },
+      {
+        "word": "nouvelle",
+        "n": 10
+      },
+      {
+        "word": "humain",
+        "n": 9
+      },
+      {
+        "word": "metapneumovirus",
+        "n": 7
+      },
+      {
+        "word": "nouveau",
+        "n": 7
+      },
+      {
+        "word": "réseaux",
+        "n": 7
+      },
+      {
+        "word": "sociaux",
+        "n": 6
+      },
+      {
+        "word": "human",
+        "n": 5
+      },
+      {
+        "word": "grippe",
+        "n": 5
+      },
+      {
+        "word": "covid",
+        "n": 5
+      },
+      {
+        "word": "cas",
+        "n": 5
+      }
+    ],
+    "sanitaire": [
+      {
+        "word": "hmpv",
+        "n": 10
+      },
+      {
+        "word": "chine",
+        "n": 9
+      },
+      {
+        "word": "nouvelle",
+        "n": 7
+      },
+      {
+        "word": "crise",
+        "n": 5
+      },
+      {
+        "word": "virus",
+        "n": 4
+      },
+      {
+        "word": "propage",
+        "n": 4
+      },
+      {
+        "word": "épidémie",
+        "n": 4
+      },
+      {
+        "word": "métapneumovirus",
+        "n": 3
+      },
+      {
+        "word": "humain",
+        "n": 3
+      },
+      {
+        "word": "rapidement",
+        "n": 3
+      },
+      {
+        "word": "panique",
+        "n": 3
+      },
+      {
+        "word": "connu",
+        "n": 3
+      },
+      {
+        "word": "urgence",
+        "n": 2
+      },
+      {
+        "word": "nouveau",
+        "n": 2
+      },
+      {
+        "word": "serait",
+        "n": 2
+      }
+    ],
+    "urgence": [
+      {
+        "word": "chine",
+        "n": 17
+      },
+      {
+        "word": "état",
+        "n": 15
+      },
+      {
+        "word": "virus",
+        "n": 14
+      },
+      {
+        "word": "déclare",
+        "n": 13
+      },
+      {
+        "word": "épidémie",
+        "n": 9
+      },
+      {
+        "word": "multiples",
+        "n": 7
+      },
+      {
+        "word": "submerge",
+        "n": 6
+      },
+      {
+        "word": "hmpv",
+        "n": 6
+      },
+      {
+        "word": "hôpitaux",
+        "n": 4
+      },
+      {
+        "word": "mycoplasma",
+        "n": 4
+      },
+      {
+        "word": "pneumoniae",
+        "n": 4
+      },
+      {
+        "word": "covid",
+        "n": 4
+      },
+      {
+        "word": "crématoriums",
+        "n": 3
+      },
+      {
+        "word": "alerte",
+        "n": 2
+      },
+      {
+        "word": "mettent",
+        "n": 2
+      }
+    ],
+    "virale": [
+      {
+        "word": "chine",
+        "n": 7
+      },
+      {
+        "word": "hmpv",
+        "n": 4
+      },
+      {
+        "word": "épidémie",
+        "n": 3
+      },
+      {
+        "word": "nouvelle",
+        "n": 3
+      },
+      {
+        "word": "mystérieuse",
+        "n": 2
+      },
+      {
+        "word": "nouveau",
+        "n": 2
+      },
+      {
+        "word": "mortelle",
+        "n": 2
+      },
+      {
+        "word": "humain",
+        "n": 2
+      },
+      {
+        "word": "ans",
+        "n": 2
+      },
+      {
+        "word": "covid",
+        "n": 2
+      },
+      {
+        "word": "face",
+        "n": 2
+      },
+      {
+        "word": "infection",
+        "n": 2
+      },
+      {
+        "word": "epidémie",
+        "n": 2
+      },
+      {
+        "word": "virus",
+        "n": 2
+      }
+    ],
+    "virus": [
+      {
+        "word": "hmpv",
+        "n": 200
+      },
+      {
+        "word": "chine",
+        "n": 147
+      },
+      {
+        "word": "métapneumovirus",
+        "n": 70
+      },
+      {
+        "word": "humain",
+        "n": 62
+      },
+      {
+        "word": "épidémie",
+        "n": 59
+      },
+      {
+        "word": "nouveau",
+        "n": 47
+      },
+      {
+        "word": "respiratoire",
+        "n": 46
+      },
+      {
+        "word": "nouvelle",
+        "n": 46
+      },
+      {
+        "word": "covid",
+        "n": 37
+      },
+      {
+        "word": "cas",
+        "n": 31
+      },
+      {
+        "word": "metapneumovirus",
+        "n": 26
+      },
+      {
+        "word": "grippe",
+        "n": 23
+      },
+      {
+        "word": "face",
+        "n": 22
+      },
+      {
+        "word": "symptômes",
+        "n": 21
+      },
+      {
+        "word": "ans",
+        "n": 21
+      }
+    ],
+    "épidémie": [
+      {
+        "word": "chine",
+        "n": 95
+      },
+      {
+        "word": "hmpv",
+        "n": 65
+      },
+      {
+        "word": "virus",
+        "n": 59
+      },
+      {
+        "word": "nouvelle",
+        "n": 52
+      },
+      {
+        "word": "métapneumovirus",
+        "n": 47
+      },
+      {
+        "word": "humain",
+        "n": 28
+      },
+      {
+        "word": "covid",
+        "n": 21
+      },
+      {
+        "word": "face",
+        "n": 19
+      },
+      {
+        "word": "confrontée",
+        "n": 19
+      },
+      {
+        "word": "pandémie",
+        "n": 17
+      },
+      {
+        "word": "metapneumovirus",
+        "n": 17
+      },
+      {
+        "word": "été",
+        "n": 17
+      },
+      {
+        "word": "ans",
+        "n": 16
+      },
+      {
+        "word": "enregistrée",
+        "n": 16
+      },
+      {
+        "word": "human",
+        "n": 15
+      }
+    ],
+    "état": [
+      {
+        "word": "chine",
+        "n": 18
+      },
+      {
+        "word": "virus",
+        "n": 17
+      },
+      {
+        "word": "urgence",
+        "n": 15
+      },
+      {
+        "word": "déclare",
+        "n": 13
+      },
+      {
+        "word": "épidémie",
+        "n": 10
+      },
+      {
+        "word": "multiples",
+        "n": 7
+      },
+      {
+        "word": "hmpv",
+        "n": 7
+      },
+      {
+        "word": "submerge",
+        "n": 6
+      },
+      {
+        "word": "hôpitaux",
+        "n": 6
+      },
+      {
+        "word": "covid",
+        "n": 5
+      },
+      {
+        "word": "alerte",
+        "n": 4
+      },
+      {
+        "word": "mycoplasma",
+        "n": 4
+      },
+      {
+        "word": "pneumoniae",
+        "n": 4
+      },
+      {
+        "word": "grippe",
+        "n": 4
+      },
+      {
+        "word": "crématoriums",
+        "n": 3
+      }
+    ]
+  },
+  "word_comm_n": {
+    "adorent": {
+      "10": 1
+    },
+    "alerte": {
+      "0": 1,
+      "101": 1,
+      "118": 1,
+      "174": 1,
+      "192": 1,
+      "196": 1,
+      "223": 1,
+      "239": 1,
+      "264": 1,
+      "284": 1
+    },
+    "amené": {
+      "8": 1
+    },
+    "annonce": {
+      "28": 1
+    },
+    "ans": {
+      "10": 2,
+      "7": 2,
+      "0": 1,
+      "103": 1,
+      "107": 1,
+      "11": 1,
+      "112": 1,
+      "139": 1,
+      "142": 1,
+      "150": 1,
+      "155": 1,
+      "173": 1,
+      "19": 1,
+      "192": 1,
+      "193": 1,
+      "195": 1,
+      "204": 1,
+      "210": 1,
+      "248": 1,
+      "262": 1,
+      "264": 1,
+      "270": 1,
+      "276": 1,
+      "292": 1,
+      "299": 1,
+      "304": 1,
+      "318": 1,
+      "325": 1,
+      "326": 1,
+      "327": 1,
+      "33": 1,
+      "330": 1,
+      "332": 1,
+      "4": 1,
+      "46": 1,
+      "54": 1,
+      "66": 1,
+      "9": 1
+    },
+    "appauvri": {
+      "8": 1
+    },
+    "appelé": {
+      "0": 1,
+      "139": 1,
+      "142": 1,
+      "149": 1,
+      "150": 1,
+      "226": 1,
+      "276": 1,
+      "299": 1,
+      "318": 1,
+      "325": 1,
+      "326": 1,
+      "33": 1,
+      "330": 1,
+      "66": 1,
+      "7": 1
+    },
+    "augmentation": {
+      "10": 2,
+      "7": 2,
+      "101": 1,
+      "106": 1,
+      "118": 1,
+      "149": 1,
+      "169": 1,
+      "173": 1,
+      "192": 1,
+      "195": 1,
+      "226": 1,
+      "256": 1,
+      "270": 1,
+      "290": 1,
+      "320": 1,
+      "69": 1,
+      "9": 1
+    },
+    "augmentent": {
+      "101": 1,
+      "220": 1,
+      "237": 1,
+      "251": 1,
+      "277": 1,
+      "335": 1,
+      "341": 1,
+      "345": 1,
+      "94": 1
+    },
+    "aviaire": {
+      "27": 1,
+      "37": 1,
+      "43": 1,
+      "7": 1,
+      "81": 1,
+      "85": 1
+    },
+    "avis": {
+      "187": 1,
+      "310": 1,
+      "55": 1
+    },
+    "cas": {
+      "31": 4,
+      "0": 2,
+      "7": 2,
+      "9": 2,
+      "10": 1,
+      "101": 1,
+      "103": 1,
+      "106": 1,
+      "107": 1,
+      "113": 1,
+      "116": 1,
+      "124": 1,
+      "138": 1,
+      "142": 1,
+      "145": 1,
+      "150": 1,
+      "169": 1,
+      "172": 1,
+      "173": 1,
+      "180": 1,
+      "189": 1,
+      "192": 1,
+      "194": 1,
+      "196": 1,
+      "197": 1,
+      "203": 1,
+      "204": 1,
+      "220": 1,
+      "226": 1,
+      "237": 1,
+      "238": 1,
+      "251": 1,
+      "256": 1,
+      "264": 1,
+      "270": 1,
+      "276": 1,
+      "277": 1,
+      "28": 1,
+      "290": 1,
+      "295": 1,
+      "299": 1,
+      "3": 1,
+      "313": 1,
+      "314": 1,
+      "318": 1,
+      "320": 1,
+      "325": 1,
+      "33": 1,
+      "330": 1,
+      "336": 1,
+      "338": 1,
+      "340": 1,
+      "341": 1,
+      "345": 1,
+      "41": 1,
+      "5": 1,
+      "54": 1,
+      "55": 1,
+      "66": 1,
+      "68": 1,
+      "69": 1,
+      "78": 1,
+      "94": 1,
+      "99": 1
+    },
+    "chine": {
+      "25": 9,
+      "7": 7,
+      "10": 5,
+      "31": 4,
+      "12": 3,
+      "13": 3,
+      "18": 3,
+      "4": 3,
+      "0": 2,
+      "101": 2,
+      "11": 2,
+      "113": 2,
+      "5": 2,
+      "50": 2,
+      "58": 2,
+      "88": 2,
+      "9": 2,
+      "1": 1,
+      "103": 1,
+      "106": 1,
+      "107": 1,
+      "108": 1,
+      "112": 1,
+      "114": 1,
+      "118": 1,
+      "131": 1,
+      "132": 1,
+      "133": 1,
+      "139": 1,
+      "14": 1,
+      "141": 1,
+      "142": 1,
+      "144": 1,
+      "146": 1,
+      "147": 1,
+      "149": 1,
+      "150": 1,
+      "151": 1,
+      "153": 1,
+      "155": 1,
+      "156": 1,
+      "161": 1,
+      "169": 1,
+      "171": 1,
+      "172": 1,
+      "173": 1,
+      "178": 1,
+      "179": 1,
+      "180": 1,
+      "182": 1,
+      "184": 1,
+      "186": 1,
+      "19": 1,
+      "191": 1,
+      "192": 1,
+      "193": 1,
+      "195": 1,
+      "196": 1,
+      "197": 1,
+      "199": 1,
+      "2": 1,
+      "20": 1,
+      "202": 1,
+      "204": 1,
+      "207": 1,
+      "210": 1,
+      "215": 1,
+      "219": 1,
+      "220": 1,
+      "222": 1,
+      "224": 1,
+      "226": 1,
+      "228": 1,
+      "23": 1,
+      "232": 1,
+      "237": 1,
+      "239": 1,
+      "240": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "251": 1,
+      "254": 1,
+      "256": 1,
+      "260": 1,
+      "262": 1,
+      "263": 1,
+      "264": 1,
+      "265": 1,
+      "266": 1,
+      "267": 1,
+      "268": 1,
+      "269": 1,
+      "27": 1,
+      "270": 1,
+      "271": 1,
+      "276": 1,
+      "277": 1,
+      "280": 1,
+      "281": 1,
+      "282": 1,
+      "284": 1,
+      "285": 1,
+      "288": 1,
+      "289": 1,
+      "29": 1,
+      "290": 1,
+      "291": 1,
+      "292": 1,
+      "294": 1,
+      "296": 1,
+      "298": 1,
+      "299": 1,
+      "3": 1,
+      "30": 1,
+      "303": 1,
+      "304": 1,
+      "306": 1,
+      "307": 1,
+      "308": 1,
+      "313": 1,
+      "314": 1,
+      "315": 1,
+      "318": 1,
+      "322": 1,
+      "325": 1,
+      "326": 1,
+      "327": 1,
+      "328": 1,
+      "33": 1,
+      "330": 1,
+      "333": 1,
+      "335": 1,
+      "336": 1,
+      "337": 1,
+      "34": 1,
+      "340": 1,
+      "341": 1,
+      "342": 1,
+      "343": 1,
+      "344": 1,
+      "345": 1,
+      "35": 1,
+      "36": 1,
+      "37": 1,
+      "38": 1,
+      "40": 1,
+      "41": 1,
+      "42": 1,
+      "43": 1,
+      "44": 1,
+      "46": 1,
+      "47": 1,
+      "48": 1,
+      "49": 1,
+      "51": 1,
+      "54": 1,
+      "55": 1,
+      "56": 1,
+      "57": 1,
+      "6": 1,
+      "64": 1,
+      "65": 1,
+      "66": 1,
+      "67": 1,
+      "69": 1,
+      "71": 1,
+      "72": 1,
+      "73": 1,
+      "74": 1,
+      "76": 1,
+      "78": 1,
+      "8": 1,
+      "81": 1,
+      "85": 1,
+      "93": 1,
+      "94": 1,
+      "95": 1,
+      "97": 1
+    },
+    "chinois": {
+      "0": 2,
+      "9": 2,
+      "12": 1,
+      "132": 1,
+      "155": 1,
+      "232": 1,
+      "242": 1,
+      "262": 1,
+      "268": 1,
+      "308": 1,
+      "31": 1,
+      "46": 1,
+      "56": 1,
+      "63": 1,
+      "7": 1,
+      "94": 1
+    },
+    "cinq": {
+      "10": 2,
+      "107": 1,
+      "112": 1,
+      "173": 1,
+      "19": 1,
+      "193": 1,
+      "195": 1,
+      "210": 1,
+      "264": 1,
+      "270": 1,
+      "292": 1,
+      "304": 1,
+      "327": 1,
+      "7": 1
+    },
+    "confrontée": {
+      "50": 2,
+      "107": 1,
+      "11": 1,
+      "13": 1,
+      "151": 1,
+      "180": 1,
+      "232": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "294": 1,
+      "303": 1,
+      "336": 1,
+      "344": 1,
+      "40": 1,
+      "46": 1,
+      "47": 1,
+      "65": 1,
+      "8": 1
+    },
+    "connaît": {
+      "18": 3,
+      "146": 1,
+      "192": 1,
+      "20": 1,
+      "222": 1,
+      "4": 1,
+      "71": 1
+    },
+    "connu": {
+      "10": 1,
+      "146": 1,
+      "192": 1,
+      "245": 1,
+      "248": 1,
+      "294": 1,
+      "3": 1
+    },
+    "covid": {
+      "0": 2,
+      "10": 2,
+      "4": 2,
+      "50": 2,
+      "7": 2,
+      "1": 1,
+      "101": 1,
+      "102": 1,
+      "105": 1,
+      "107": 1,
+      "11": 1,
+      "112": 1,
+      "115": 1,
+      "118": 1,
+      "12": 1,
+      "128": 1,
+      "139": 1,
+      "141": 1,
+      "142": 1,
+      "147": 1,
+      "15": 1,
+      "150": 1,
+      "155": 1,
+      "157": 1,
+      "166": 1,
+      "167": 1,
+      "171": 1,
+      "172": 1,
+      "173": 1,
+      "178": 1,
+      "179": 1,
+      "180": 1,
+      "185": 1,
+      "19": 1,
+      "195": 1,
+      "204": 1,
+      "209": 1,
+      "21": 1,
+      "210": 1,
+      "218": 1,
+      "22": 1,
+      "221": 1,
+      "236": 1,
+      "237": 1,
+      "239": 1,
+      "245": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "249": 1,
+      "259": 1,
+      "260": 1,
+      "270": 1,
+      "276": 1,
+      "287": 1,
+      "292": 1,
+      "294": 1,
+      "299": 1,
+      "30": 1,
+      "303": 1,
+      "304": 1,
+      "306": 1,
+      "308": 1,
+      "313": 1,
+      "317": 1,
+      "318": 1,
+      "321": 1,
+      "325": 1,
+      "326": 1,
+      "327": 1,
+      "33": 1,
+      "330": 1,
+      "333": 1,
+      "336": 1,
+      "342": 1,
+      "38": 1,
+      "40": 1,
+      "43": 1,
+      "46": 1,
+      "47": 1,
+      "48": 1,
+      "5": 1,
+      "52": 1,
+      "54": 1,
+      "55": 1,
+      "64": 1,
+      "65": 1,
+      "66": 1,
+      "67": 1,
+      "71": 1,
+      "74": 1,
+      "80": 1,
+      "83": 1,
+      "9": 1,
+      "90": 1,
+      "94": 1,
+      "95": 1
+    },
+    "craindre": {
+      "7": 3,
+      "121": 1,
+      "222": 1
+    },
+    "crise": {
+      "114": 1,
+      "222": 1,
+      "248": 1,
+      "266": 1,
+      "344": 1,
+      "8": 1,
+      "9": 1
+    },
+    "créer": {
+      "10": 1,
+      "181": 1,
+      "299": 1
+    },
+    "crématoriums": {
+      "101": 1,
+      "239": 1,
+      "248": 1,
+      "260": 1,
+      "306": 1,
+      "4": 1,
+      "46": 1,
+      "5": 1
+    },
+    "devrions": {
+      "28": 1
+    },
+    "données": {
+      "13": 1,
+      "313": 1,
+      "5": 1
+    },
+    "débordés": {
+      "210": 1,
+      "215": 1,
+      "248": 1,
+      "314": 1,
+      "99": 1
+    },
+    "déclare": {
+      "0": 1,
+      "1": 1,
+      "101": 1,
+      "147": 1,
+      "161": 1,
+      "179": 1,
+      "239": 1,
+      "260": 1,
+      "264": 1,
+      "304": 1,
+      "306": 1,
+      "333": 1,
+      "4": 1,
+      "5": 1
+    },
+    "enregistrée": {
+      "25": 9,
+      "131": 1,
+      "14": 1,
+      "207": 1,
+      "271": 1,
+      "328": 1,
+      "343": 1,
+      "4": 1
+    },
+    "epidémie": {
+      "296": 1,
+      "4": 1,
+      "81": 1
+    },
+    "face": {
+      "113": 2,
+      "0": 1,
+      "101": 1,
+      "103": 1,
+      "106": 1,
+      "139": 1,
+      "142": 1,
+      "150": 1,
+      "155": 1,
+      "174": 1,
+      "186": 1,
+      "192": 1,
+      "210": 1,
+      "223": 1,
+      "226": 1,
+      "248": 1,
+      "264": 1,
+      "266": 1,
+      "269": 1,
+      "276": 1,
+      "28": 1,
+      "292": 1,
+      "299": 1,
+      "318": 1,
+      "325": 1,
+      "326": 1,
+      "33": 1,
+      "330": 1,
+      "339": 1,
+      "4": 1,
+      "51": 1,
+      "54": 1,
+      "66": 1,
+      "67": 1,
+      "93": 1
+    },
+    "faut": {
+      "31": 4,
+      "18": 3,
+      "7": 3,
+      "58": 2,
+      "114": 1,
+      "121": 1,
+      "178": 1,
+      "180": 1,
+      "20": 1,
+      "228": 1,
+      "265": 1,
+      "277": 1,
+      "286": 1,
+      "291": 1,
+      "3": 1,
+      "319": 1,
+      "320": 1,
+      "37": 1,
+      "4": 1,
+      "41": 1,
+      "46": 1,
+      "83": 1,
+      "88": 1,
+      "94": 1
+    },
+    "flambée": {
+      "31": 4,
+      "10": 1,
+      "304": 1,
+      "5": 1,
+      "81": 1
+    },
+    "flash": {
+      "246": 1,
+      "303": 1
+    },
+    "france": {
+      "0": 1,
+      "122": 1,
+      "177": 1,
+      "196": 1,
+      "21": 1,
+      "212": 1,
+      "230": 1,
+      "28": 1,
+      "325": 1,
+      "334": 1,
+      "46": 1,
+      "6": 1,
+      "74": 1
+    },
+    "grippe": {
+      "5": 2,
+      "58": 2,
+      "1": 1,
+      "10": 1,
+      "101": 1,
+      "104": 1,
+      "105": 1,
+      "107": 1,
+      "108": 1,
+      "114": 1,
+      "116": 1,
+      "146": 1,
+      "15": 1,
+      "151": 1,
+      "176": 1,
+      "180": 1,
+      "185": 1,
+      "19": 1,
+      "195": 1,
+      "210": 1,
+      "211": 1,
+      "22": 1,
+      "232": 1,
+      "239": 1,
+      "244": 1,
+      "245": 1,
+      "247": 1,
+      "248": 1,
+      "260": 1,
+      "269": 1,
+      "27": 1,
+      "291": 1,
+      "294": 1,
+      "304": 1,
+      "306": 1,
+      "313": 1,
+      "333": 1,
+      "336": 1,
+      "342": 1,
+      "345": 1,
+      "37": 1,
+      "4": 1,
+      "43": 1,
+      "46": 1,
+      "47": 1,
+      "59": 1,
+      "67": 1,
+      "7": 1,
+      "71": 1,
+      "81": 1,
+      "82": 1,
+      "83": 1,
+      "85": 1,
+      "87": 1,
+      "9": 1,
+      "95": 1,
+      "99": 1
+    },
+    "hmpv": {
+      "7": 6,
+      "10": 5,
+      "12": 4,
+      "13": 3,
+      "18": 3,
+      "4": 3,
+      "5": 3,
+      "9": 3,
+      "0": 2,
+      "101": 2,
+      "11": 2,
+      "113": 2,
+      "2": 2,
+      "50": 2,
+      "59": 2,
+      "63": 2,
+      "8": 2,
+      "88": 2,
+      "95": 2,
+      "1": 1,
+      "100": 1,
+      "102": 1,
+      "105": 1,
+      "106": 1,
+      "107": 1,
+      "108": 1,
+      "109": 1,
+      "110": 1,
+      "111": 1,
+      "112": 1,
+      "117": 1,
+      "118": 1,
+      "119": 1,
+      "120": 1,
+      "121": 1,
+      "122": 1,
+      "123": 1,
+      "124": 1,
+      "127": 1,
+      "128": 1,
+      "129": 1,
+      "130": 1,
+      "132": 1,
+      "136": 1,
+      "137": 1,
+      "138": 1,
+      "139": 1,
+      "141": 1,
+      "142": 1,
+      "143": 1,
+      "144": 1,
+      "145": 1,
+      "146": 1,
+      "147": 1,
+      "149": 1,
+      "15": 1,
+      "150": 1,
+      "151": 1,
+      "155": 1,
+      "157": 1,
+      "158": 1,
+      "160": 1,
+      "161": 1,
+      "162": 1,
+      "163": 1,
+      "164": 1,
+      "165": 1,
+      "166": 1,
+      "167": 1,
+      "168": 1,
+      "169": 1,
+      "17": 1,
+      "170": 1,
+      "171": 1,
+      "172": 1,
+      "173": 1,
+      "174": 1,
+      "175": 1,
+      "176": 1,
+      "177": 1,
+      "178": 1,
+      "179": 1,
+      "180": 1,
+      "181": 1,
+      "182": 1,
+      "183": 1,
+      "184": 1,
+      "185": 1,
+      "186": 1,
+      "187": 1,
+      "188": 1,
+      "189": 1,
+      "19": 1,
+      "191": 1,
+      "192": 1,
+      "193": 1,
+      "195": 1,
+      "196": 1,
+      "199": 1,
+      "20": 1,
+      "200": 1,
+      "201": 1,
+      "202": 1,
+      "203": 1,
+      "205": 1,
+      "206": 1,
+      "207": 1,
+      "208": 1,
+      "210": 1,
+      "211": 1,
+      "212": 1,
+      "214": 1,
+      "215": 1,
+      "217": 1,
+      "219": 1,
+      "220": 1,
+      "221": 1,
+      "223": 1,
+      "225": 1,
+      "226": 1,
+      "229": 1,
+      "23": 1,
+      "230": 1,
+      "231": 1,
+      "232": 1,
+      "233": 1,
+      "234": 1,
+      "235": 1,
+      "236": 1,
+      "238": 1,
+      "239": 1,
+      "24": 1,
+      "240": 1,
+      "241": 1,
+      "242": 1,
+      "243": 1,
+      "244": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "249": 1,
+      "251": 1,
+      "254": 1,
+      "255": 1,
+      "256": 1,
+      "257": 1,
+      "258": 1,
+      "259": 1,
+      "260": 1,
+      "262": 1,
+      "263": 1,
+      "264": 1,
+      "265": 1,
+      "266": 1,
+      "267": 1,
+      "268": 1,
+      "269": 1,
+      "270": 1,
+      "272": 1,
+      "273": 1,
+      "275": 1,
+      "276": 1,
+      "277": 1,
+      "28": 1,
+      "280": 1,
+      "283": 1,
+      "284": 1,
+      "285": 1,
+      "286": 1,
+      "287": 1,
+      "289": 1,
+      "29": 1,
+      "290": 1,
+      "291": 1,
+      "292": 1,
+      "293": 1,
+      "294": 1,
+      "295": 1,
+      "296": 1,
+      "297": 1,
+      "298": 1,
+      "299": 1,
+      "3": 1,
+      "30": 1,
+      "300": 1,
+      "303": 1,
+      "304": 1,
+      "305": 1,
+      "306": 1,
+      "307": 1,
+      "308": 1,
+      "309": 1,
+      "310": 1,
+      "311": 1,
+      "312": 1,
+      "313": 1,
+      "314": 1,
+      "316": 1,
+      "317": 1,
+      "318": 1,
+      "319": 1,
+      "32": 1,
+      "320": 1,
+      "321": 1,
+      "322": 1,
+      "323": 1,
+      "325": 1,
+      "326": 1,
+      "327": 1,
+      "33": 1,
+      "330": 1,
+      "331": 1,
+      "332": 1,
+      "333": 1,
+      "334": 1,
+      "335": 1,
+      "336": 1,
+      "339": 1,
+      "34": 1,
+      "340": 1,
+      "341": 1,
+      "342": 1,
+      "344": 1,
+      "345": 1,
+      "346": 1,
+      "348": 1,
+      "35": 1,
+      "36": 1,
+      "37": 1,
+      "38": 1,
+      "40": 1,
+      "41": 1,
+      "42": 1,
+      "43": 1,
+      "44": 1,
+      "45": 1,
+      "46": 1,
+      "47": 1,
+      "48": 1,
+      "49": 1,
+      "51": 1,
+      "52": 1,
+      "53": 1,
+      "54": 1,
+      "55": 1,
+      "6": 1,
+      "60": 1,
+      "61": 1,
+      "62": 1,
+      "64": 1,
+      "65": 1,
+      "66": 1,
+      "67": 1,
+      "68": 1,
+      "69": 1,
+      "71": 1,
+      "72": 1,
+      "73": 1,
+      "74": 1,
+      "76": 1,
+      "78": 1,
+      "81": 1,
+      "83": 1,
+      "84": 1,
+      "85": 1,
+      "86": 1,
+      "87": 1,
+      "89": 1,
+      "90": 1,
+      "91": 1,
+      "92": 1,
+      "93": 1,
+      "94": 1,
+      "96": 1,
+      "97": 1,
+      "98": 1,
+      "99": 1
+    },
+    "hong": {
+      "0": 2
+    },
+    "humain": {
+      "31": 4,
+      "12": 3,
+      "13": 3,
+      "0": 2,
+      "11": 2,
+      "113": 2,
+      "5": 2,
+      "50": 2,
+      "58": 2,
+      "10": 1,
+      "103": 1,
+      "106": 1,
+      "107": 1,
+      "114": 1,
+      "132": 1,
+      "134": 1,
+      "146": 1,
+      "149": 1,
+      "156": 1,
+      "161": 1,
+      "169": 1,
+      "173": 1,
+      "18": 1,
+      "180": 1,
+      "186": 1,
+      "189": 1,
+      "193": 1,
+      "194": 1,
+      "195": 1,
+      "197": 1,
+      "2": 1,
+      "209": 1,
+      "215": 1,
+      "217": 1,
+      "219": 1,
+      "220": 1,
+      "222": 1,
+      "224": 1,
+      "227": 1,
+      "228": 1,
+      "237": 1,
+      "243": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "251": 1,
+      "252": 1,
+      "256": 1,
+      "258": 1,
+      "26": 1,
+      "263": 1,
+      "264": 1,
+      "27": 1,
+      "281": 1,
+      "282": 1,
+      "288": 1,
+      "289": 1,
+      "290": 1,
+      "291": 1,
+      "294": 1,
+      "298": 1,
+      "3": 1,
+      "303": 1,
+      "304": 1,
+      "308": 1,
+      "313": 1,
+      "314": 1,
+      "315": 1,
+      "329": 1,
+      "336": 1,
+      "338": 1,
+      "34": 1,
+      "341": 1,
+      "342": 1,
+      "345": 1,
+      "36": 1,
+      "38": 1,
+      "4": 1,
+      "40": 1,
+      "41": 1,
+      "42": 1,
+      "47": 1,
+      "55": 1,
+      "56": 1,
+      "57": 1,
+      "64": 1,
+      "65": 1,
+      "67": 1,
+      "69": 1,
+      "7": 1,
+      "71": 1,
+      "72": 1,
+      "73": 1,
+      "76": 1,
+      "78": 1,
+      "79": 1,
+      "8": 1,
+      "81": 1,
+      "85": 1,
+      "9": 1
+    },
+    "human": {
+      "0": 2,
+      "12": 1,
+      "139": 1,
+      "141": 1,
+      "142": 1,
+      "150": 1,
+      "171": 1,
+      "176": 1,
+      "226": 1,
+      "24": 1,
+      "269": 1,
+      "276": 1,
+      "28": 1,
+      "292": 1,
+      "299": 1,
+      "30": 1,
+      "318": 1,
+      "325": 1,
+      "326": 1,
+      "33": 1,
+      "330": 1,
+      "346": 1,
+      "348": 1,
+      "48": 1,
+      "66": 1,
+      "9": 1,
+      "94": 1
+    },
+    "hôpitaux": {
+      "0": 2,
+      "13": 2,
+      "4": 2,
+      "101": 1,
+      "103": 1,
+      "106": 1,
+      "142": 1,
+      "147": 1,
+      "150": 1,
+      "153": 1,
+      "170": 1,
+      "171": 1,
+      "2": 1,
+      "207": 1,
+      "210": 1,
+      "215": 1,
+      "226": 1,
+      "239": 1,
+      "248": 1,
+      "260": 1,
+      "264": 1,
+      "266": 1,
+      "268": 1,
+      "276": 1,
+      "294": 1,
+      "299": 1,
+      "30": 1,
+      "306": 1,
+      "308": 1,
+      "314": 1,
+      "318": 1,
+      "325": 1,
+      "33": 1,
+      "330": 1,
+      "36": 1,
+      "46": 1,
+      "48": 1,
+      "5": 1,
+      "66": 1,
+      "72": 1,
+      "9": 1,
+      "95": 1,
+      "99": 1
+    },
+    "inde": {
+      "0": 1,
+      "107": 1,
+      "118": 1,
+      "172": 1,
+      "336": 1,
+      "42": 1,
+      "68": 1,
+      "7": 1,
+      "9": 1
+    },
+    "infection": {
+      "0": 1,
+      "113": 1,
+      "115": 1,
+      "118": 1,
+      "142": 1,
+      "150": 1,
+      "186": 1,
+      "204": 1,
+      "226": 1,
+      "243": 1,
+      "276": 1,
+      "28": 1,
+      "292": 1,
+      "299": 1,
+      "318": 1,
+      "325": 1,
+      "326": 1,
+      "33": 1,
+      "330": 1,
+      "332": 1,
+      "338": 1,
+      "34": 1,
+      "4": 1,
+      "5": 1,
+      "66": 1,
+      "9": 1
+    },
+    "infections": {
+      "10": 1,
+      "118": 1,
+      "149": 1,
+      "19": 1,
+      "192": 1,
+      "195": 1,
+      "21": 1,
+      "218": 1,
+      "223": 1,
+      "262": 1,
+      "28": 1,
+      "298": 1,
+      "3": 1,
+      "313": 1,
+      "335": 1,
+      "36": 1,
+      "5": 1,
+      "7": 1,
+      "79": 1,
+      "8": 1,
+      "88": 1,
+      "9": 1,
+      "94": 1
+    },
+    "informateur": {
+      "131": 1,
+      "328": 1
+    },
+    "inquiète": {
+      "7": 2,
+      "10": 1,
+      "112": 1,
+      "13": 1,
+      "226": 1,
+      "270": 1,
+      "322": 1,
+      "36": 1,
+      "69": 1,
+      "94": 1
+    },
+    "inquiéter": {
+      "31": 4,
+      "18": 3,
+      "58": 2,
+      "110": 1,
+      "114": 1,
+      "156": 1,
+      "20": 1,
+      "228": 1,
+      "265": 1,
+      "277": 1,
+      "291": 1,
+      "315": 1,
+      "319": 1,
+      "41": 1,
+      "76": 1,
+      "81": 1,
+      "88": 1
+    },
+    "inutile": {
+      "10": 1,
+      "8": 1
+    },
+    "justifie": {
+      "187": 1,
+      "310": 1
+    },
+    "kong": {
+      "0": 2
+    },
+    "laethem": {
+      "187": 1,
+      "310": 1
+    },
+    "maladies": {
+      "169": 1,
+      "170": 1,
+      "184": 1,
+      "197": 1,
+      "207": 1,
+      "210": 1,
+      "215": 1,
+      "314": 1,
+      "4": 1,
+      "5": 1,
+      "55": 1,
+      "78": 1
+    },
+    "marc": {
+      "187": 1,
+      "310": 1
+    },
+    "metapneumovirus": {
+      "0": 2,
+      "21": 2,
+      "10": 1,
+      "104": 1,
+      "105": 1,
+      "11": 1,
+      "116": 1,
+      "12": 1,
+      "126": 1,
+      "13": 1,
+      "133": 1,
+      "134": 1,
+      "139": 1,
+      "141": 1,
+      "142": 1,
+      "15": 1,
+      "150": 1,
+      "153": 1,
+      "16": 1,
+      "171": 1,
+      "176": 1,
+      "197": 1,
+      "216": 1,
+      "22": 1,
+      "226": 1,
+      "24": 1,
+      "245": 1,
+      "269": 1,
+      "27": 1,
+      "276": 1,
+      "279": 1,
+      "28": 1,
+      "292": 1,
+      "299": 1,
+      "30": 1,
+      "318": 1,
+      "324": 1,
+      "325": 1,
+      "326": 1,
+      "33": 1,
+      "330": 1,
+      "337": 1,
+      "347": 1,
+      "348": 1,
+      "41": 1,
+      "47": 1,
+      "48": 1,
+      "64": 1,
+      "66": 1,
+      "7": 1,
+      "73": 1,
+      "80": 1,
+      "82": 1,
+      "9": 1,
+      "94": 1
+    },
+    "mettent": {
+      "239": 1,
+      "7": 1,
+      "85": 1
+    },
+    "mondiale": {
+      "118": 1,
+      "128": 1,
+      "187": 1,
+      "310": 1,
+      "339": 1,
+      "342": 1,
+      "46": 1,
+      "59": 1
+    },
+    "mortel": {
+      "204": 1,
+      "248": 1,
+      "280": 1,
+      "304": 1,
+      "31": 1,
+      "4": 1,
+      "9": 1
+    },
+    "mortelle": {
+      "13": 1,
+      "292": 1
+    },
+    "mpvh": {
+      "58": 2,
+      "114": 1,
+      "13": 1,
+      "194": 1,
+      "227": 1,
+      "228": 1,
+      "237": 1,
+      "291": 1,
+      "3": 1,
+      "41": 1,
+      "5": 1
+    },
+    "multiples": {
+      "1": 1,
+      "101": 1,
+      "161": 1,
+      "179": 1,
+      "239": 1,
+      "260": 1,
+      "304": 1,
+      "333": 1,
+      "4": 1
+    },
+    "mycoplasma": {
+      "1": 1,
+      "101": 1,
+      "161": 1,
+      "179": 1,
+      "239": 1,
+      "248": 1,
+      "249": 1,
+      "260": 1,
+      "304": 1,
+      "333": 1,
+      "4": 1,
+      "46": 1,
+      "9": 1
+    },
+    "mystérieuse": {
+      "13": 2,
+      "73": 1,
+      "9": 1
+    },
+    "médias": {
+      "10": 1,
+      "13": 1,
+      "132": 1,
+      "137": 1,
+      "207": 1,
+      "215": 1,
+      "232": 1,
+      "242": 1,
+      "262": 1,
+      "314": 1,
+      "43": 1,
+      "46": 1,
+      "63": 1
+    },
+    "métapneumovirus": {
+      "25": 9,
+      "31": 4,
+      "12": 3,
+      "0": 2,
+      "11": 2,
+      "113": 2,
+      "13": 2,
+      "47": 2,
+      "5": 2,
+      "50": 2,
+      "58": 2,
+      "9": 2,
+      "10": 1,
+      "103": 1,
+      "106": 1,
+      "107": 1,
+      "114": 1,
+      "115": 1,
+      "118": 1,
+      "131": 1,
+      "132": 1,
+      "14": 1,
+      "146": 1,
+      "156": 1,
+      "161": 1,
+      "169": 1,
+      "173": 1,
+      "18": 1,
+      "180": 1,
+      "186": 1,
+      "189": 1,
+      "193": 1,
+      "194": 1,
+      "195": 1,
+      "2": 1,
+      "204": 1,
+      "207": 1,
+      "209": 1,
+      "215": 1,
+      "217": 1,
+      "218": 1,
+      "219": 1,
+      "220": 1,
+      "222": 1,
+      "224": 1,
+      "227": 1,
+      "228": 1,
+      "237": 1,
+      "243": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "251": 1,
+      "252": 1,
+      "256": 1,
+      "258": 1,
+      "26": 1,
+      "263": 1,
+      "264": 1,
+      "27": 1,
+      "271": 1,
+      "281": 1,
+      "282": 1,
+      "285": 1,
+      "288": 1,
+      "289": 1,
+      "290": 1,
+      "291": 1,
+      "294": 1,
+      "298": 1,
+      "3": 1,
+      "303": 1,
+      "304": 1,
+      "308": 1,
+      "313": 1,
+      "314": 1,
+      "315": 1,
+      "328": 1,
+      "329": 1,
+      "336": 1,
+      "338": 1,
+      "339": 1,
+      "34": 1,
+      "341": 1,
+      "342": 1,
+      "343": 1,
+      "345": 1,
+      "346": 1,
+      "36": 1,
+      "38": 1,
+      "4": 1,
+      "40": 1,
+      "41": 1,
+      "42": 1,
+      "55": 1,
+      "56": 1,
+      "57": 1,
+      "65": 1,
+      "67": 1,
+      "69": 1,
+      "7": 1,
+      "71": 1,
+      "72": 1,
+      "76": 1,
+      "78": 1,
+      "79": 1,
+      "8": 1,
+      "81": 1
+    },
+    "non": {
+      "9": 2,
+      "10": 1,
+      "105": 1,
+      "15": 1,
+      "21": 1,
+      "218": 1,
+      "230": 1,
+      "231": 1,
+      "237": 1,
+      "245": 1,
+      "304": 1,
+      "32": 1,
+      "334": 1,
+      "345": 1,
+      "5": 1,
+      "7": 1,
+      "97": 1,
+      "98": 1
+    },
+    "nord": {
+      "10": 2,
+      "18": 2,
+      "7": 2,
+      "173": 1,
+      "191": 1,
+      "192": 1,
+      "20": 1,
+      "226": 1,
+      "270": 1,
+      "290": 1,
+      "47": 1,
+      "5": 1,
+      "79": 1
+    },
+    "nouveau": {
+      "13": 3,
+      "7": 2,
+      "0": 1,
+      "10": 1,
+      "121": 1,
+      "122": 1,
+      "128": 1,
+      "132": 1,
+      "137": 1,
+      "149": 1,
+      "155": 1,
+      "192": 1,
+      "193": 1,
+      "195": 1,
+      "197": 1,
+      "202": 1,
+      "204": 1,
+      "207": 1,
+      "237": 1,
+      "242": 1,
+      "26": 1,
+      "262": 1,
+      "269": 1,
+      "280": 1,
+      "284": 1,
+      "285": 1,
+      "294": 1,
+      "295": 1,
+      "3": 1,
+      "304": 1,
+      "305": 1,
+      "307": 1,
+      "308": 1,
+      "31": 1,
+      "32": 1,
+      "320": 1,
+      "327": 1,
+      "332": 1,
+      "36": 1,
+      "38": 1,
+      "4": 1,
+      "43": 1,
+      "46": 1,
+      "49": 1,
+      "55": 1,
+      "64": 1,
+      "69": 1,
+      "72": 1,
+      "76": 1,
+      "88": 1,
+      "9": 1,
+      "94": 1
+    },
+    "nouvelle": {
+      "12": 4,
+      "11": 2,
+      "50": 2,
+      "0": 1,
+      "106": 1,
+      "107": 1,
+      "13": 1,
+      "139": 1,
+      "142": 1,
+      "146": 1,
+      "150": 1,
+      "151": 1,
+      "153": 1,
+      "171": 1,
+      "180": 1,
+      "181": 1,
+      "193": 1,
+      "196": 1,
+      "200": 1,
+      "204": 1,
+      "222": 1,
+      "226": 1,
+      "23": 1,
+      "232": 1,
+      "237": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "264": 1,
+      "266": 1,
+      "268": 1,
+      "272": 1,
+      "276": 1,
+      "289": 1,
+      "292": 1,
+      "299": 1,
+      "30": 1,
+      "303": 1,
+      "304": 1,
+      "318": 1,
+      "325": 1,
+      "326": 1,
+      "33": 1,
+      "330": 1,
+      "336": 1,
+      "342": 1,
+      "344": 1,
+      "347": 1,
+      "37": 1,
+      "4": 1,
+      "40": 1,
+      "42": 1,
+      "46": 1,
+      "47": 1,
+      "51": 1,
+      "54": 1,
+      "59": 1,
+      "65": 1,
+      "66": 1,
+      "67": 1,
+      "71": 1,
+      "73": 1,
+      "8": 1,
+      "85": 1,
+      "9": 1,
+      "93": 1
+    },
+    "origine": {
+      "58": 2,
+      "149": 1,
+      "308": 1,
+      "4": 1,
+      "55": 1
+    },
+    "pandémie": {
+      "12": 4,
+      "0": 1,
+      "10": 1,
+      "103": 1,
+      "107": 1,
+      "11": 1,
+      "139": 1,
+      "142": 1,
+      "150": 1,
+      "181": 1,
+      "19": 1,
+      "193": 1,
+      "200": 1,
+      "23": 1,
+      "264": 1,
+      "272": 1,
+      "276": 1,
+      "28": 1,
+      "289": 1,
+      "299": 1,
+      "304": 1,
+      "318": 1,
+      "325": 1,
+      "326": 1,
+      "327": 1,
+      "33": 1,
+      "330": 1,
+      "331": 1,
+      "339": 1,
+      "347": 1,
+      "4": 1,
+      "66": 1,
+      "7": 1
+    },
+    "pandémies": {
+      "133": 1,
+      "8": 1
+    },
+    "panique": {
+      "10": 1,
+      "16": 1,
+      "187": 1,
+      "285": 1,
+      "3": 1,
+      "310": 1,
+      "327": 1,
+      "331": 1,
+      "5": 1
+    },
+    "paniquer": {
+      "8": 1
+    },
+    "pays": {
+      "10": 1,
+      "133": 1,
+      "174": 1,
+      "185": 1,
+      "193": 1,
+      "2": 1,
+      "204": 1,
+      "21": 1,
+      "222": 1,
+      "28": 1,
+      "295": 1,
+      "304": 1,
+      "308": 1,
+      "344": 1,
+      "51": 1,
+      "8": 1,
+      "9": 1,
+      "90": 1
+    },
+    "peur": {
+      "10": 1,
+      "185": 1,
+      "208": 1,
+      "327": 1,
+      "41": 1
+    },
+    "pic": {
+      "18": 3,
+      "20": 1,
+      "9": 1
+    },
+    "pneumoniae": {
+      "1": 1,
+      "101": 1,
+      "161": 1,
+      "179": 1,
+      "239": 1,
+      "248": 1,
+      "249": 1,
+      "260": 1,
+      "304": 1,
+      "333": 1,
+      "4": 1,
+      "46": 1
+    },
+    "pneumonie": {
+      "58": 2,
+      "192": 1,
+      "238": 1,
+      "306": 1,
+      "314": 1,
+      "335": 1,
+      "4": 1
+    },
+    "populations": {
+      "128": 1,
+      "8": 1
+    },
+    "premier": {
+      "107": 1,
+      "194": 1,
+      "336": 1,
+      "338": 1,
+      "68": 1,
+      "7": 1,
+      "9": 1
+    },
+    "premiers": {
+      "0": 2,
+      "28": 1,
+      "7": 1
+    },
+    "propage": {
+      "7": 4,
+      "50": 2,
+      "107": 1,
+      "11": 1,
+      "132": 1,
+      "151": 1,
+      "172": 1,
+      "193": 1,
+      "196": 1,
+      "204": 1,
+      "207": 1,
+      "232": 1,
+      "248": 1,
+      "254": 1,
+      "268": 1,
+      "304": 1,
+      "342": 1,
+      "344": 1,
+      "40": 1,
+      "42": 1,
+      "46": 1,
+      "67": 1,
+      "71": 1,
+      "8": 1
+    },
+    "propageant": {
+      "107": 1,
+      "11": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "303": 1,
+      "336": 1,
+      "65": 1
+    },
+    "provoquant": {
+      "50": 2,
+      "107": 1,
+      "11": 1,
+      "171": 1,
+      "176": 1,
+      "180": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "264": 1,
+      "294": 1,
+      "30": 1,
+      "303": 1,
+      "336": 1,
+      "40": 1,
+      "65": 1
+    },
+    "provoque": {
+      "146": 1,
+      "194": 1,
+      "209": 1,
+      "243": 1,
+      "26": 1,
+      "3": 1,
+      "314": 1,
+      "335": 1,
+      "36": 1,
+      "42": 1,
+      "67": 1,
+      "71": 1,
+      "8": 1,
+      "95": 1
+    },
+    "rapidement": {
+      "11": 2,
+      "50": 2,
+      "1": 1,
+      "101": 1,
+      "107": 1,
+      "161": 1,
+      "193": 1,
+      "196": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "260": 1,
+      "303": 1,
+      "304": 1,
+      "306": 1,
+      "336": 1,
+      "342": 1,
+      "344": 1,
+      "4": 1,
+      "40": 1,
+      "42": 1,
+      "5": 1,
+      "65": 1,
+      "67": 1,
+      "71": 1,
+      "8": 1
+    },
+    "rappelle": {
+      "9": 2,
+      "153": 1,
+      "262": 1,
+      "331": 1,
+      "99": 1
+    },
+    "recommençons": {
+      "8": 1
+    },
+    "respiratoire": {
+      "10": 3,
+      "47": 2,
+      "7": 2,
+      "0": 1,
+      "115": 1,
+      "116": 1,
+      "12": 1,
+      "121": 1,
+      "132": 1,
+      "142": 1,
+      "146": 1,
+      "149": 1,
+      "15": 1,
+      "150": 1,
+      "161": 1,
+      "171": 1,
+      "176": 1,
+      "181": 1,
+      "182": 1,
+      "200": 1,
+      "202": 1,
+      "226": 1,
+      "23": 1,
+      "237": 1,
+      "243": 1,
+      "254": 1,
+      "264": 1,
+      "272": 1,
+      "273": 1,
+      "276": 1,
+      "29": 1,
+      "291": 1,
+      "298": 1,
+      "299": 1,
+      "30": 1,
+      "308": 1,
+      "318": 1,
+      "325": 1,
+      "326": 1,
+      "327": 1,
+      "33": 1,
+      "330": 1,
+      "34": 1,
+      "340": 1,
+      "35": 1,
+      "42": 1,
+      "44": 1,
+      "55": 1,
+      "60": 1,
+      "66": 1,
+      "69": 1,
+      "8": 1,
+      "9": 1
+    },
+    "respiratoires": {
+      "10": 1,
+      "113": 1,
+      "115": 1,
+      "118": 1,
+      "13": 1,
+      "169": 1,
+      "170": 1,
+      "171": 1,
+      "184": 1,
+      "186": 1,
+      "191": 1,
+      "195": 1,
+      "197": 1,
+      "207": 1,
+      "21": 1,
+      "210": 1,
+      "215": 1,
+      "218": 1,
+      "223": 1,
+      "26": 1,
+      "262": 1,
+      "3": 1,
+      "30": 1,
+      "314": 1,
+      "322": 1,
+      "4": 1,
+      "5": 1,
+      "55": 1,
+      "78": 1,
+      "79": 1,
+      "9": 1,
+      "94": 1
+    },
+    "rhinovirus": {
+      "9": 2,
+      "10": 1,
+      "115": 1,
+      "116": 1,
+      "195": 1,
+      "21": 1,
+      "210": 1,
+      "218": 1,
+      "22": 1,
+      "263": 1,
+      "313": 1,
+      "82": 1
+    },
+    "rien": {
+      "10": 1,
+      "3": 1,
+      "43": 1,
+      "62": 1,
+      "9": 1,
+      "99": 1
+    },
+    "récession": {
+      "8": 1
+    },
+    "réseaux": {
+      "10": 2,
+      "7": 2,
+      "112": 1,
+      "182": 1,
+      "184": 1,
+      "248": 1,
+      "259": 1,
+      "282": 1,
+      "29": 1,
+      "308": 1,
+      "340": 1,
+      "44": 1,
+      "55": 1,
+      "72": 1,
+      "85": 1
+    },
+    "sanitaire": {
+      "0": 2,
+      "10": 2,
+      "222": 1,
+      "249": 1,
+      "266": 1,
+      "342": 1,
+      "344": 1,
+      "41": 1,
+      "46": 1,
+      "5": 1,
+      "8": 1
+    },
+    "sanitaires": {
+      "10": 1,
+      "114": 1,
+      "174": 1,
+      "192": 1,
+      "195": 1,
+      "222": 1,
+      "226": 1,
+      "256": 1,
+      "270": 1,
+      "42": 1,
+      "5": 1,
+      "59": 1,
+      "7": 1
+    },
+    "santé": {
+      "31": 2,
+      "4": 2,
+      "114": 1,
+      "12": 1,
+      "128": 1,
+      "174": 1,
+      "200": 1,
+      "203": 1,
+      "204": 1,
+      "211": 1,
+      "223": 1,
+      "228": 1,
+      "23": 1,
+      "235": 1,
+      "238": 1,
+      "273": 1,
+      "304": 1,
+      "316": 1,
+      "325": 1,
+      "339": 1,
+      "342": 1,
+      "41": 1,
+      "42": 1,
+      "46": 1,
+      "59": 1,
+      "63": 1,
+      "7": 1,
+      "76": 1,
+      "9": 1
+    },
+    "serait": {
+      "12": 3,
+      "9": 2,
+      "248": 1,
+      "289": 1,
+      "344": 1,
+      "43": 1,
+      "8": 1,
+      "90": 1
+    },
+    "signalés": {
+      "0": 2
+    },
+    "sociaux": {
+      "10": 2,
+      "7": 2,
+      "112": 1,
+      "13": 1,
+      "182": 1,
+      "184": 1,
+      "248": 1,
+      "259": 1,
+      "282": 1,
+      "29": 1,
+      "308": 1,
+      "340": 1,
+      "38": 1,
+      "44": 1,
+      "55": 1,
+      "72": 1,
+      "85": 1
+    },
+    "submerge": {
+      "101": 1,
+      "147": 1,
+      "239": 1,
+      "260": 1,
+      "306": 1,
+      "36": 1,
+      "4": 1,
+      "5": 1,
+      "9": 1
+    },
+    "symptômes": {
+      "50": 2,
+      "107": 1,
+      "11": 1,
+      "113": 1,
+      "13": 1,
+      "139": 1,
+      "142": 1,
+      "146": 1,
+      "15": 1,
+      "150": 1,
+      "151": 1,
+      "176": 1,
+      "180": 1,
+      "186": 1,
+      "194": 1,
+      "196": 1,
+      "226": 1,
+      "232": 1,
+      "243": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "258": 1,
+      "26": 1,
+      "269": 1,
+      "276": 1,
+      "292": 1,
+      "294": 1,
+      "3": 1,
+      "303": 1,
+      "304": 1,
+      "308": 1,
+      "314": 1,
+      "318": 1,
+      "326": 1,
+      "33": 1,
+      "330": 1,
+      "332": 1,
+      "336": 1,
+      "342": 1,
+      "345": 1,
+      "4": 1,
+      "40": 1,
+      "63": 1,
+      "65": 1,
+      "67": 1,
+      "71": 1,
+      "9": 1,
+      "95": 1
+    },
+    "sévit": {
+      "114": 1,
+      "228": 1,
+      "291": 1
+    },
+    "taux": {
+      "314": 1,
+      "5": 1
+    },
+    "tranchés": {
+      "187": 1,
+      "310": 1
+    },
+    "urgence": {
+      "0": 2,
+      "1": 1,
+      "10": 1,
+      "101": 1,
+      "114": 1,
+      "147": 1,
+      "155": 1,
+      "161": 1,
+      "179": 1,
+      "192": 1,
+      "239": 1,
+      "242": 1,
+      "248": 1,
+      "260": 1,
+      "264": 1,
+      "268": 1,
+      "304": 1,
+      "306": 1,
+      "333": 1,
+      "4": 1,
+      "46": 1,
+      "5": 1,
+      "8": 1
+    },
+    "van": {
+      "187": 1,
+      "310": 1
+    },
+    "virale": {
+      "13": 2,
+      "292": 1,
+      "296": 1,
+      "4": 1,
+      "46": 1,
+      "9": 1
+    },
+    "virus": {
+      "7": 7,
+      "10": 3,
+      "18": 3,
+      "4": 3,
+      "101": 2,
+      "11": 2,
+      "113": 2,
+      "13": 2,
+      "50": 2,
+      "58": 2,
+      "63": 2,
+      "8": 2,
+      "88": 2,
+      "9": 2,
+      "0": 1,
+      "1": 1,
+      "105": 1,
+      "106": 1,
+      "107": 1,
+      "108": 1,
+      "109": 1,
+      "112": 1,
+      "115": 1,
+      "116": 1,
+      "118": 1,
+      "12": 1,
+      "120": 1,
+      "121": 1,
+      "122": 1,
+      "123": 1,
+      "124": 1,
+      "128": 1,
+      "130": 1,
+      "132": 1,
+      "133": 1,
+      "138": 1,
+      "139": 1,
+      "142": 1,
+      "144": 1,
+      "145": 1,
+      "146": 1,
+      "149": 1,
+      "15": 1,
+      "150": 1,
+      "151": 1,
+      "155": 1,
+      "158": 1,
+      "161": 1,
+      "163": 1,
+      "164": 1,
+      "167": 1,
+      "17": 1,
+      "171": 1,
+      "173": 1,
+      "176": 1,
+      "177": 1,
+      "178": 1,
+      "179": 1,
+      "181": 1,
+      "182": 1,
+      "186": 1,
+      "187": 1,
+      "188": 1,
+      "189": 1,
+      "19": 1,
+      "191": 1,
+      "192": 1,
+      "193": 1,
+      "194": 1,
+      "196": 1,
+      "197": 1,
+      "199": 1,
+      "20": 1,
+      "200": 1,
+      "201": 1,
+      "202": 1,
+      "203": 1,
+      "204": 1,
+      "208": 1,
+      "21": 1,
+      "211": 1,
+      "218": 1,
+      "219": 1,
+      "220": 1,
+      "223": 1,
+      "225": 1,
+      "226": 1,
+      "23": 1,
+      "230": 1,
+      "232": 1,
+      "235": 1,
+      "237": 1,
+      "238": 1,
+      "239": 1,
+      "24": 1,
+      "240": 1,
+      "242": 1,
+      "243": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "249": 1,
+      "25": 1,
+      "251": 1,
+      "254": 1,
+      "258": 1,
+      "259": 1,
+      "26": 1,
+      "260": 1,
+      "262": 1,
+      "264": 1,
+      "268": 1,
+      "269": 1,
+      "27": 1,
+      "270": 1,
+      "271": 1,
+      "272": 1,
+      "273": 1,
+      "276": 1,
+      "277": 1,
+      "279": 1,
+      "280": 1,
+      "281": 1,
+      "282": 1,
+      "283": 1,
+      "284": 1,
+      "285": 1,
+      "288": 1,
+      "29": 1,
+      "291": 1,
+      "294": 1,
+      "298": 1,
+      "299": 1,
+      "3": 1,
+      "30": 1,
+      "303": 1,
+      "304": 1,
+      "306": 1,
+      "307": 1,
+      "308": 1,
+      "309": 1,
+      "31": 1,
+      "310": 1,
+      "313": 1,
+      "314": 1,
+      "316": 1,
+      "318": 1,
+      "319": 1,
+      "32": 1,
+      "321": 1,
+      "322": 1,
+      "323": 1,
+      "325": 1,
+      "326": 1,
+      "327": 1,
+      "329": 1,
+      "33": 1,
+      "330": 1,
+      "331": 1,
+      "332": 1,
+      "333": 1,
+      "334": 1,
+      "336": 1,
+      "337": 1,
+      "339": 1,
+      "34": 1,
+      "340": 1,
+      "341": 1,
+      "345": 1,
+      "346": 1,
+      "35": 1,
+      "36": 1,
+      "38": 1,
+      "40": 1,
+      "41": 1,
+      "42": 1,
+      "43": 1,
+      "44": 1,
+      "46": 1,
+      "47": 1,
+      "49": 1,
+      "5": 1,
+      "51": 1,
+      "54": 1,
+      "55": 1,
+      "56": 1,
+      "59": 1,
+      "60": 1,
+      "64": 1,
+      "65": 1,
+      "66": 1,
+      "67": 1,
+      "68": 1,
+      "69": 1,
+      "72": 1,
+      "73": 1,
+      "74": 1,
+      "76": 1,
+      "81": 1,
+      "82": 1,
+      "85": 1,
+      "94": 1,
+      "95": 1
+    },
+    "vraiment": {
+      "31": 4
+    },
+    "vrs": {
+      "10": 1,
+      "103": 1,
+      "105": 1,
+      "115": 1,
+      "116": 1,
+      "161": 1,
+      "21": 1,
+      "218": 1,
+      "22": 1,
+      "245": 1,
+      "47": 1,
+      "5": 1,
+      "82": 1,
+      "9": 1
+    },
+    "yves": {
+      "187": 1,
+      "310": 1
+    },
+    "épidémie": {
+      "25": 9,
+      "13": 3,
+      "0": 2,
+      "11": 2,
+      "4": 2,
+      "50": 2,
+      "9": 2,
+      "10": 1,
+      "101": 1,
+      "106": 1,
+      "107": 1,
+      "113": 1,
+      "118": 1,
+      "131": 1,
+      "132": 1,
+      "139": 1,
+      "14": 1,
+      "142": 1,
+      "146": 1,
+      "147": 1,
+      "150": 1,
+      "151": 1,
+      "153": 1,
+      "156": 1,
+      "161": 1,
+      "169": 1,
+      "170": 1,
+      "171": 1,
+      "179": 1,
+      "180": 1,
+      "186": 1,
+      "193": 1,
+      "2": 1,
+      "202": 1,
+      "204": 1,
+      "21": 1,
+      "215": 1,
+      "222": 1,
+      "225": 1,
+      "226": 1,
+      "23": 1,
+      "232": 1,
+      "239": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "260": 1,
+      "264": 1,
+      "268": 1,
+      "271": 1,
+      "276": 1,
+      "299": 1,
+      "30": 1,
+      "303": 1,
+      "304": 1,
+      "306": 1,
+      "314": 1,
+      "315": 1,
+      "318": 1,
+      "325": 1,
+      "326": 1,
+      "328": 1,
+      "33": 1,
+      "330": 1,
+      "336": 1,
+      "343": 1,
+      "344": 1,
+      "348": 1,
+      "40": 1,
+      "47": 1,
+      "5": 1,
+      "51": 1,
+      "54": 1,
+      "6": 1,
+      "60": 1,
+      "65": 1,
+      "66": 1,
+      "67": 1,
+      "7": 1,
+      "71": 1,
+      "76": 1,
+      "8": 1,
+      "85": 1,
+      "93": 1
+    },
+    "état": {
+      "0": 2,
+      "101": 2,
+      "5": 2,
+      "1": 1,
+      "10": 1,
+      "132": 1,
+      "147": 1,
+      "15": 1,
+      "155": 1,
+      "161": 1,
+      "179": 1,
+      "19": 1,
+      "192": 1,
+      "215": 1,
+      "239": 1,
+      "248": 1,
+      "249": 1,
+      "260": 1,
+      "264": 1,
+      "29": 1,
+      "304": 1,
+      "306": 1,
+      "314": 1,
+      "333": 1,
+      "4": 1,
+      "9": 1
+    },
+    "été": {
+      "25": 9,
+      "0": 2,
+      "107": 1,
+      "131": 1,
+      "14": 1,
+      "173": 1,
+      "189": 1,
+      "2": 1,
+      "207": 1,
+      "212": 1,
+      "238": 1,
+      "248": 1,
+      "271": 1,
+      "328": 1,
+      "338": 1,
+      "343": 1,
+      "4": 1,
+      "51": 1,
+      "54": 1,
+      "69": 1,
+      "7": 1,
+      "8": 1,
+      "9": 1
     }
   }
 }

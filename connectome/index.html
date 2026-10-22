@@ -190,8 +190,8 @@
     #colorModeBtns .color-btn.active[data-mode="rt_classes"] {
       color: #fff8e8; background: rgba(255,140,40,0.4); border-color: rgba(255,180,80,0.7);
     }
-    #hashModeBtn[hidden] { display: none !important; }
-    #hashModeBtn:disabled {
+    #hashModeBtn[hidden], #lemmaModeBtn[hidden] { display: none !important; }
+    #hashModeBtn:disabled, #lemmaModeBtn:disabled {
       opacity: 0.35; cursor: not-allowed; pointer-events: none;
     }
     #rtColorLegend {
@@ -541,7 +541,8 @@
       <div id="graphMode" role="tablist" aria-label="Modes du connectome">
         <button type="button" class="mode active" data-graph="all" id="graphModeAll">Toutes interactions</button>
         <button type="button" class="mode" data-graph="rt" id="graphModeRt">RT</button>
-        <button type="button" class="mode mode-analyses" data-mode="analyses" id="hashModeBtn" title="Surligner par hashtag (mode Communautés uniquement)">#</button>
+        <button type="button" class="mode mode-analyses" data-mode="analyses" data-lex="hash" id="hashModeBtn" title="Surligner par hashtag (mode Communautés uniquement)">#</button>
+        <button type="button" class="mode mode-analyses" data-mode="analyses" data-lex="lemma" id="lemmaModeBtn" title="Surligner par lemme / terme distinctif (mode Communautés uniquement)">Lemme</button>
       </div>
       <div id="viewLinks" role="navigation" aria-label="Autres vues">
         <a id="analysesLink" class="mode mode-link" href="../analyses/ebola.html" title="Page analyses complète (nouvel onglet)" target="_blank" rel="noopener noreferrer">Analyses</a>
@@ -552,10 +553,10 @@
   </nav>
   <div id="tooltip"></div>
   <aside id="espaceFiche" aria-live="polite"></aside>
-  <aside id="hashPanel" aria-live="polite" aria-label="Hashtags distinctifs">
+  <aside id="hashPanel" aria-live="polite" aria-label="Lexique distinctif">
     <div class="hp-head">
       <div>
-        <div class="hp-title">Hashtags distinctifs</div>
+        <div class="hp-title" id="hashTitle">Hashtags distinctifs</div>
         <div class="hp-sub" id="hashSub">Clique un # pour surligner les communautés / comptes qui l’utilisent</div>
       </div>
       <div class="hp-actions">
@@ -563,15 +564,15 @@
         <button type="button" class="hp-close" id="hashCloseBtn" aria-label="Fermer">×</button>
       </div>
     </div>
-    <div class="hp-tools" aria-label="Tri et nombre de hashtags">
+    <div class="hp-tools" aria-label="Tri et nombre d’entrées">
       <label>Tri
-        <select id="hashSortMode" title="Ordre d’affichage des hashtags">
+        <select id="hashSortMode" title="Ordre d’affichage">
           <option value="nAcc" selected>Comptes</option>
           <option value="alpha">A → Z</option>
         </select>
       </label>
       <label>Afficher
-        <select id="hashShowLimit" title="Combien de hashtags lister">
+        <select id="hashShowLimit" title="Combien d’entrées lister">
           <option value="20">Top 20</option>
           <option value="40" selected>Top 40</option>
           <option value="80">Top 80</option>
@@ -687,6 +688,8 @@ const tip = document.getElementById('tooltip');
 const tabsEl = document.getElementById('tabs');
 const analysesLinkEl = document.getElementById('analysesLink');
 const hashModeBtn = document.getElementById('hashModeBtn');
+const lemmaModeBtn = document.getElementById('lemmaModeBtn');
+const hashTitleEl = document.getElementById('hashTitle');
 const espaceFicheEl = document.getElementById('espaceFiche');
 const hashPanelEl = document.getElementById('hashPanel');
 const hashListEl = document.getElementById('hashList');
@@ -759,13 +762,21 @@ const inflightFetches = new Map();
 let loadSeq = 0;
 let warmStarted = false;
 let discourseData = null;
-let viewMode = new URLSearchParams(location.search).get('view') === 'analyses' ? 'analyses' : 'graph';
+let viewMode = (() => {
+  const v = new URLSearchParams(location.search).get('view');
+  return (v === 'analyses' || v === 'hash' || v === 'lemma') ? 'analyses' : 'graph';
+})();
 let selectedCommId = null;
+/** Mode lexique actif dans le panneau : hashtag | lemme. */
+let lexKind = new URLSearchParams(location.search).get('view') === 'lemma' ? 'lemma' : 'hash';
+/** Terme actif (sans #) — filtre nœuds / liens. */
+let activeLexeme = null;
+/** Alias historique — même référence que activeLexeme. */
 let activeHashtag = null;
-/** Tri / plafond d’affichage des # (partagé panneau # + chips communautés / fiche). */
+/** Tri / plafond d’affichage (# ou lemmes). */
 let hashSortMode = 'nAcc'; // nAcc | alpha
 let hashShowLimit = 40; // 0 = tous
-/** Dernier filtre # (réappliqué quand on touche Lumière liens / opacité). */
+/** Dernier filtre lexique (réappliqué quand on touche Lumière liens / opacité). */
 let lastHighlightFilter = null;
 let nodeColorsBase = null;
 let nodeSizesBase = null;
@@ -1114,20 +1125,36 @@ function communityColor(commId) {
   return null;
 }
 
-function setViewMode(mode, { syncUrl = true } = {}) {
+function setViewMode(mode, { syncUrl = true, lex = null } = {}) {
   if (mode === 'analyses' && !communityColorModeActive()) return;
   viewMode = mode === 'analyses' ? 'analyses' : 'graph';
-  hashModeBtn?.classList.toggle('active', viewMode === 'analyses' && communityColorModeActive());
+  if (lex === 'lemma' || lex === 'hash') lexKind = lex;
+  syncLexModeButtons();
   if (viewMode === 'analyses') {
     openHashPanel();
-    if (activeHashtag) openHashtagFiche(activeHashtag);
+    if (activeLexeme) openLexemeFiche(activeLexeme);
     else if (selectedCommId != null) openEspaceFiche(selectedCommId);
   } else {
-    clearHashtagFilter();
+    clearLexemeFilter();
     closeHashPanel();
     espaceFicheEl?.classList.remove('open', 'hash-focus');
   }
   if (syncUrl && currentCorpusId) syncCorpusUrl(currentCorpusId);
+}
+
+function syncLexModeButtons() {
+  const on = viewMode === 'analyses' && communityColorModeActive();
+  hashModeBtn?.classList.toggle('active', on && lexKind === 'hash');
+  lemmaModeBtn?.classList.toggle('active', on && lexKind === 'lemma');
+}
+
+function isLemmaMode() {
+  return lexKind === 'lemma';
+}
+
+function lexMark(term) {
+  const t = String(term || '');
+  return isLemmaMode() ? t : `#${t}`;
 }
 
 function accountsForHashtag(tag) {
@@ -1135,9 +1162,39 @@ function accountsForHashtag(tag) {
   return new Set((discourseData?.tag_accounts?.[t] || []).map((s) => String(s).toLowerCase()));
 }
 
+function accountsForLemma(word) {
+  const t = String(word || '').toLowerCase();
+  return new Set((discourseData?.word_accounts?.[t] || []).map((s) => String(s).toLowerCase()));
+}
+
+function accountsForLexeme(term) {
+  return isLemmaMode() ? accountsForLemma(term) : accountsForHashtag(term);
+}
+
 function communitiesForHashtag(tag) {
   const t = String(tag || '').toLowerCase();
   return new Set((discourseData?.tag_communities?.[t] || []).map(Number));
+}
+
+function communitiesForLemma(word) {
+  const t = String(word || '').toLowerCase();
+  return new Set((discourseData?.word_communities?.[t] || []).map(Number));
+}
+
+function communitiesForLexeme(term) {
+  return isLemmaMode() ? communitiesForLemma(term) : communitiesForHashtag(term);
+}
+
+function lexNAccounts(term) {
+  const t = String(term || '').toLowerCase();
+  if (isLemmaMode()) {
+    return Number(discourseData?.word_n_accounts?.[t])
+      || (discourseData?.word_accounts?.[t] || []).length
+      || 0;
+  }
+  return Number(discourseData?.tag_n_accounts?.[t])
+    || (discourseData?.tag_accounts?.[t] || []).length
+    || 0;
 }
 
 /** Nb de chips # par communauté / fiche — suit le plafond « Afficher ». */
@@ -1149,38 +1206,48 @@ function hashChipsPerCommunity() {
   return 12;
 }
 
-/** Agrège les # distinctifs du corpus (g2 max + effectifs comptes / communautés). */
-function listCorpusHashtags() {
-  const byTag = new Map();
-  const bump = (tag, g2 = 0) => {
-    const t = String(tag || '').toLowerCase().replace(/^#/, '');
+/** Agrège # ou lemmes distinctifs du corpus (g2 max + effectifs comptes). */
+function listCorpusLexemes() {
+  const byKey = new Map();
+  const bump = (key, g2 = 0) => {
+    const t = String(key || '').toLowerCase().replace(/^#/, '');
     if (!t) return;
-    const cur = byTag.get(t) || { tag: t, g2: 0, nAcc: 0, nComm: 0 };
+    const cur = byKey.get(t) || { tag: t, g2: 0, nAcc: 0, nComm: 0 };
     cur.g2 = Math.max(cur.g2, Number(g2) || 0);
-    byTag.set(t, cur);
+    byKey.set(t, cur);
   };
   const communities = discourseData?.communities || {};
   for (const c of Object.values(communities)) {
-    for (const h of c.key_hashtags || []) bump(h.tag, h.g2);
+    if (isLemmaMode()) {
+      for (const w of c.key_words || []) bump(w.word, w.g2);
+    } else {
+      for (const h of c.key_hashtags || []) bump(h.tag, h.g2);
+    }
   }
-  const ta = discourseData?.tag_accounts || {};
-  const tn = discourseData?.tag_n_accounts || {};
-  const tc = discourseData?.tag_communities || {};
+  const ta = isLemmaMode() ? (discourseData?.word_accounts || {}) : (discourseData?.tag_accounts || {});
+  const tn = isLemmaMode() ? (discourseData?.word_n_accounts || {}) : (discourseData?.tag_n_accounts || {});
+  const tc = isLemmaMode() ? (discourseData?.word_communities || {}) : (discourseData?.tag_communities || {});
   for (const t of new Set([...Object.keys(ta), ...Object.keys(tn), ...Object.keys(tc)])) {
     bump(t, 0);
-    const cur = byTag.get(t);
+    const cur = byKey.get(t);
     if (!cur) continue;
-    // Effectif réel (tag_n_accounts) ; sinon longueur de la liste stockée
     cur.nAcc = Number(tn[t]) || (ta[t] || []).length || 0;
     cur.nComm = (tc[t] || []).length;
   }
-  return [...byTag.values()].sort((a, b) => {
+  return [...byKey.values()].sort((a, b) => {
     if (hashSortMode === 'alpha') return a.tag.localeCompare(b.tag, 'fr');
-    // nAcc (défaut)
     if (b.nAcc !== a.nAcc) return b.nAcc - a.nAcc;
     if (b.g2 !== a.g2) return b.g2 - a.g2;
     return a.tag.localeCompare(b.tag, 'fr');
   });
+}
+
+function listCorpusHashtags() {
+  const prev = lexKind;
+  lexKind = 'hash';
+  const out = listCorpusLexemes();
+  lexKind = prev;
+  return out;
 }
 
 /** Intersection de deux sets de comptes (co-usage). */
@@ -1192,16 +1259,19 @@ function accountOverlap(a, b) {
   return n;
 }
 
-/** Top hashtags co-occurrents — préchargés (message) si dispo, sinon fallback comptes. */
-function cooccurringHashtags(tag, limit = 12) {
-  const t = String(tag || '').toLowerCase().replace(/^#/, '');
-  const pre = discourseData?.tag_cooccur?.[t];
+/** Top co-occurrents (# ou lemmes) — préchargés si dispo, sinon fallback comptes. */
+function cooccurringLexemes(term, limit = 12) {
+  const t = String(term || '').toLowerCase().replace(/^#/, '');
+  const pre = isLemmaMode()
+    ? discourseData?.word_cooccur?.[t]
+    : discourseData?.tag_cooccur?.[t];
   if (Array.isArray(pre) && pre.length) {
-    const nBase = Number(discourseData?.tag_n_accounts?.[t]) || accountsForHashtag(t).size || 1;
+    const nBase = lexNAccounts(t) || accountsForLexeme(t).size || 1;
     return pre.slice(0, limit).map((h) => {
       const n = Number(h.n) || 0;
+      const other = String(h.tag || h.word || '').toLowerCase();
       return {
-        tag: String(h.tag || '').toLowerCase(),
+        tag: other,
         n,
         pct: Math.round((1000 * n) / nBase) / 10,
         jaccard: 0,
@@ -1209,12 +1279,12 @@ function cooccurringHashtags(tag, limit = 12) {
       };
     });
   }
-  const base = accountsForHashtag(t);
+  const base = accountsForLexeme(t);
   if (!base.size) return [];
   const out = [];
-  for (const h of listCorpusHashtags()) {
+  for (const h of listCorpusLexemes()) {
     if (h.tag === t) continue;
-    const other = accountsForHashtag(h.tag);
+    const other = accountsForLexeme(h.tag);
     const n = accountOverlap(base, other);
     if (n < 2) continue;
     const union = base.size + other.size - n;
@@ -1230,16 +1300,24 @@ function cooccurringHashtags(tag, limit = 12) {
   return out.slice(0, limit);
 }
 
+function cooccurringHashtags(tag, limit = 12) {
+  const prev = lexKind;
+  lexKind = 'hash';
+  const out = cooccurringLexemes(tag, limit);
+  lexKind = prev;
+  return out;
+}
+
 /**
- * Répartition des comptes du # parmi les communautés.
- * Préfère tag_comm_n préchargé ; sinon croisement comptes × graphe.
+ * Répartition des comptes du terme parmi les communautés.
+ * Préfère *_comm_n préchargé ; sinon croisement comptes × graphe.
  */
-function hashtagCommunityShare(tag) {
-  const t = String(tag || '').toLowerCase().replace(/^#/, '');
-  const totalAcc = Number(discourseData?.tag_n_accounts?.[t])
-    || (discourseData?.tag_accounts?.[t] || []).length
-    || 0;
-  const pre = discourseData?.tag_comm_n?.[t];
+function lexemeCommunityShare(term) {
+  const t = String(term || '').toLowerCase().replace(/^#/, '');
+  const totalAcc = lexNAccounts(t);
+  const pre = isLemmaMode()
+    ? discourseData?.word_comm_n?.[t]
+    : discourseData?.tag_comm_n?.[t];
   if (pre && typeof pre === 'object') {
     const rows = Object.entries(pre)
       .map(([id, n]) => {
@@ -1260,7 +1338,7 @@ function hashtagCommunityShare(tag) {
     for (const r of rows) r.pct = (100 * r.n) / matched;
     return { rows, matched, totalAcc: totalAcc || matched, source: 'preloaded' };
   }
-  const accounts = accountsForHashtag(t);
+  const accounts = accountsForLexeme(t);
   if (!accounts.size || !graphData?.nodes) {
     return { rows: [], matched: 0, totalAcc, source: 'none' };
   }
@@ -1289,9 +1367,20 @@ function hashtagCommunityShare(tag) {
   return { rows, matched, totalAcc, source: 'graph' };
 }
 
+function hashtagCommunityShare(tag) {
+  const prev = lexKind;
+  lexKind = 'hash';
+  const out = lexemeCommunityShare(tag);
+  lexKind = prev;
+  return out;
+}
+
 function renderHashPanel() {
   if (!hashListEl) return;
-  const all = listCorpusHashtags();
+  if (hashTitleEl) {
+    hashTitleEl.textContent = isLemmaMode() ? 'Lemmes distinctifs' : 'Hashtags distinctifs';
+  }
+  const all = listCorpusLexemes();
   const tags = hashShowLimit > 0 ? all.slice(0, hashShowLimit) : all;
   const countEl = document.getElementById('hashCountLabel');
   if (countEl) {
@@ -1299,38 +1388,45 @@ function renderHashPanel() {
       ? `${tags.length} / ${all.length}`
       : `${all.length}`;
   }
-  if (hashEmptyEl) hashEmptyEl.hidden = all.length > 0;
+  if (hashEmptyEl) {
+    hashEmptyEl.hidden = all.length > 0;
+    hashEmptyEl.textContent = isLemmaMode()
+      ? 'Aucun lemme distinctif pour ce corpus.'
+      : 'Aucun hashtag distinctif pour ce corpus.';
+  }
   hashListEl.innerHTML = '';
   for (const h of tags) {
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'tag-chip' + (activeHashtag === h.tag ? ' active' : '');
+    btn.className = 'tag-chip' + (activeLexeme === h.tag ? ' active' : '');
     btn.dataset.tag = h.tag;
     const meta = h.nAcc
       ? `${h.nAcc.toLocaleString('fr-FR')} compte${h.nAcc > 1 ? 's' : ''}`
       : h.nComm
         ? `${h.nComm} comm.`
         : (h.g2 ? `z ${h.g2.toFixed(1)}` : '');
-    btn.innerHTML = `#${escapeHtml(h.tag)}${meta ? `<span class="tag-meta">${escapeHtml(meta)}</span>` : ''}`;
+    const label = lexMark(h.tag);
+    btn.innerHTML = `${escapeHtml(label)}${meta ? `<span class="tag-meta">${escapeHtml(meta)}</span>` : ''}`;
     btn.title = [
       h.nAcc ? `${h.nAcc.toLocaleString('fr-FR')} compte${h.nAcc > 1 ? 's' : ''} du graphe (hors RT)` : null,
       h.nComm ? `${h.nComm} communauté(s) distinctive(s)` : null,
       h.g2 ? `keyness z=${h.g2.toFixed(2)}` : null,
     ].filter(Boolean).join(' · ') || h.tag;
-    btn.addEventListener('click', () => toggleHashtagFilter(h.tag));
+    btn.addEventListener('click', () => toggleLexemeFilter(h.tag));
     hashListEl.appendChild(btn);
   }
-  if (hashClearBtn) hashClearBtn.disabled = !activeHashtag;
+  if (hashClearBtn) hashClearBtn.disabled = !activeLexeme;
   if (hashSubEl) {
-    if (activeHashtag) {
-      const nAcc = Number(discourseData?.tag_n_accounts?.[activeHashtag])
-        || (discourseData?.tag_accounts?.[activeHashtag] || []).length
-        || 0;
+    if (activeLexeme) {
+      const nAcc = lexNAccounts(activeLexeme);
+      const mark = lexMark(activeLexeme);
       hashSubEl.textContent = nAcc
-        ? `Filtre · #${activeHashtag} · ${nAcc.toLocaleString('fr-FR')} compte${nAcc > 1 ? 's' : ''} · tous les liens touchés — recliquer pour retirer`
-        : `Filtre actif · #${activeHashtag} — recliquer pour retirer`;
+        ? `Filtre · ${mark} · ${nAcc.toLocaleString('fr-FR')} compte${nAcc > 1 ? 's' : ''} · tous les liens touchés — recliquer pour retirer`
+        : `Filtre actif · ${mark} — recliquer pour retirer`;
     } else {
-      hashSubEl.textContent = 'Clique un # pour surligner les comptes / liens concernés';
+      hashSubEl.textContent = isLemmaMode()
+        ? 'Clique un lemme pour surligner les comptes / liens concernés'
+        : 'Clique un # pour surligner les comptes / liens concernés';
     }
   }
 }
@@ -1344,41 +1440,55 @@ function closeHashPanel() {
   hashPanelEl?.classList.remove('open');
 }
 
-/** Rafraîchit panneau # + communautés + fiche (même sélection active partout). */
+/** Rafraîchit panneau lexique + communautés + fiche. */
 function refreshHashtagUi() {
   renderHashPanel();
   if (graphData) renderCommPanel(graphData);
-  if (activeHashtag) openHashtagFiche(activeHashtag);
+  if (activeLexeme) openLexemeFiche(activeLexeme);
   else if (selectedCommId != null) openEspaceFiche(selectedCommId);
   else {
     espaceFicheEl?.classList.remove('open', 'hash-focus');
   }
 }
 
-function clearHashtagFilter() {
+function clearLexemeFilter() {
+  activeLexeme = null;
   activeHashtag = null;
   lastHighlightFilter = null;
   applyNodeHighlight(null);
   refreshHashtagUi();
 }
 
-function toggleHashtagFilter(tag) {
-  const t = tag ? String(tag).toLowerCase() : null;
-  if (!t) return;
-  if (activeHashtag === t) clearHashtagFilter();
-  else setHashtagFilter(t);
+function clearHashtagFilter() {
+  clearLexemeFilter();
 }
 
-function setHashtagFilter(tag) {
-  if (tag && !communityColorModeActive()) return;
-  activeHashtag = tag ? String(tag).toLowerCase() : null;
-  if (!activeHashtag) {
+function toggleLexemeFilter(term) {
+  const t = term ? String(term).toLowerCase().replace(/^#/, '') : null;
+  if (!t) return;
+  if (activeLexeme === t) clearLexemeFilter();
+  else setLexemeFilter(t);
+}
+
+function toggleHashtagFilter(tag) {
+  // Chips # dans le panneau communautés → bascule en mode hashtag
+  if (lexKind !== 'hash') {
+    lexKind = 'hash';
+    syncLexModeButtons();
+  }
+  toggleLexemeFilter(tag);
+}
+
+function setLexemeFilter(term) {
+  if (term && !communityColorModeActive()) return;
+  activeLexeme = term ? String(term).toLowerCase().replace(/^#/, '') : null;
+  activeHashtag = isLemmaMode() ? null : activeLexeme;
+  if (!activeLexeme) {
     lastHighlightFilter = null;
     applyNodeHighlight(null);
   } else {
-    const accounts = accountsForHashtag(activeHashtag);
-    let comms = communitiesForHashtag(activeHashtag);
-    // Si pas de mapping communauté, déduire depuis les comptes matchés
+    const accounts = accountsForLexeme(activeLexeme);
+    let comms = communitiesForLexeme(activeLexeme);
     if (!comms.size && accounts.size && graphData?.nodes) {
       comms = new Set();
       for (const nd of graphData.nodes) {
@@ -1386,16 +1496,15 @@ function setHashtagFilter(tag) {
         if (accounts.has(sn) && nd.com != null) comms.add(Number(nd.com));
       }
     }
-    // Highlight = comptes réels ; communautés seulement en secours (pas de CSV)
     const filter = {
       accounts,
       comms: accounts.size ? new Set() : comms,
-      tag: activeHashtag,
-      nAcc: Number(discourseData?.tag_n_accounts?.[activeHashtag]) || accounts.size,
+      tag: activeLexeme,
+      nAcc: lexNAccounts(activeLexeme) || accounts.size,
+      kind: lexKind,
     };
     lastHighlightFilter = filter;
     applyNodeHighlight(filter);
-    // Aligner la communauté ouverte sur un pôle où le # est distinctif
     if (comms.size) {
       const prefer = [...comms];
       if (selectedCommId == null || !comms.has(Number(selectedCommId))) {
@@ -1403,9 +1512,15 @@ function setHashtagFilter(tag) {
       }
     }
   }
-  if (viewMode !== 'analyses') setViewMode('analyses');
+  if (viewMode !== 'analyses') setViewMode('analyses', { lex: lexKind });
   else openHashPanel();
   refreshHashtagUi();
+}
+
+function setHashtagFilter(tag) {
+  lexKind = 'hash';
+  syncLexModeButtons();
+  setLexemeFilter(tag);
 }
 
 /** Couleur de surlignage # — distincte des palettes Louvain / RT. */
@@ -1553,9 +1668,9 @@ function openEspaceFiche(commId) {
     espaceFicheEl?.classList.remove('open', 'hash-focus');
     return;
   }
-  // Un # actif : la fiche bas-droite reste centrée sur le hashtag
-  if (activeHashtag) {
-    openHashtagFiche(activeHashtag);
+  // Terme lexique actif : fiche bas-droite centrée sur # / lemme
+  if (activeLexeme) {
+    openLexemeFiche(activeLexeme);
     return;
   }
   selectedCommId = Number(commId);
@@ -1565,11 +1680,11 @@ function openEspaceFiche(commId) {
   const nChips = hashChipsPerCommunity();
   const tags = tagsSrc
     .slice(0, nChips)
-    .map((h) => `<button type="button" class="tag-chip${activeHashtag === h.tag ? ' active' : ''}" data-tag="${h.tag}" title="score ${h.g2}">#${h.tag}</button>`)
+    .map((h) => `<button type="button" class="tag-chip${!isLemmaMode() && activeLexeme === h.tag ? ' active' : ''}" data-tag="${h.tag}" title="score ${h.g2}">#${h.tag}</button>`)
     .join('');
   const words = (d.key_words || [])
     .slice(0, nChips)
-    .map((w) => `<span class="tag-chip" title="score ${w.g2}">${w.word}</span>`)
+    .map((w) => `<button type="button" class="tag-chip${isLemmaMode() && activeLexeme === w.word ? ' active' : ''}" data-word="${w.word}" title="score ${w.g2}">${w.word}</button>`)
     .join('');
   const themeEntries = Object.entries(d.themes || {}).sort((a, b) => b[1] - a[1]);
   const maxT = themeEntries.length ? themeEntries[0][1] : 1;
@@ -1599,8 +1714,8 @@ function openEspaceFiche(commId) {
     <div class="fiche-just">${escapeHtml(d.justification || '')}</div>
     <h4>Hashtags / signaux distinctifs</h4>
     <div class="lexique" id="ficheTags">${tags || '—'}</div>
-    <h4>Mots-clés distinctifs</h4>
-    <div class="lexique">${words || '—'}</div>
+    <h4>Lemmes / mots-clés distinctifs</h4>
+    <div class="lexique" id="ficheWords">${words || '—'}</div>
     ${themesHtml}
     <h4>Extraits (non-RT)</h4>
     ${samplesHtml || '<div class="sample"><div class="txt">Aucun échantillon</div></div>'}
@@ -1613,32 +1728,39 @@ function openEspaceFiche(commId) {
   espaceFicheEl.querySelectorAll('#ficheTags .tag-chip').forEach((btn) => {
     btn.addEventListener('click', () => toggleHashtagFilter(btn.dataset.tag));
   });
+  espaceFicheEl.querySelectorAll('#ficheWords .tag-chip').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      lexKind = 'lemma';
+      syncLexModeButtons();
+      if (viewMode !== 'analyses') setViewMode('analyses', { lex: 'lemma' });
+      toggleLexemeFilter(btn.dataset.word);
+    });
+  });
   document.querySelectorAll('#commList .comm-row').forEach((row) => {
     row.classList.toggle('selected', Number(row.dataset.commId) === selectedCommId);
   });
 }
 
-/** Fiche bas-droite centrée sur un hashtag : co-occurrents + parts par communauté. */
-function openHashtagFiche(tag) {
+/** Fiche bas-droite centrée sur un # ou un lemme. */
+function openLexemeFiche(term) {
   if (!espaceFicheEl) return;
-  const t = String(tag || '').toLowerCase().replace(/^#/, '');
+  const t = String(term || '').toLowerCase().replace(/^#/, '');
   if (!t) {
     espaceFicheEl.classList.remove('open', 'hash-focus');
     return;
   }
-  const nAcc = Number(discourseData?.tag_n_accounts?.[t])
-    || (discourseData?.tag_accounts?.[t] || []).length
-    || 0;
-  const coocs = cooccurringHashtags(t, 12);
-  const share = hashtagCommunityShare(t);
+  const nAcc = lexNAccounts(t);
+  const coocs = cooccurringLexemes(t, 12);
+  const share = lexemeCommunityShare(t);
+  const unit = isLemmaMode() ? 'lemme' : '#';
   const coocHtml = coocs.length
     ? `<div class="lexique" id="ficheCooc">${coocs
-        .map(
-          (h) =>
-            `<button type="button" class="tag-chip${activeHashtag === h.tag ? ' active' : ''}" data-tag="${h.tag}" title="${h.n.toLocaleString('fr-FR')} compte${h.n > 1 ? 's' : ''} en commun · ${h.pct}% des comptes de #${t}">#${escapeHtml(h.tag)}<span class="tag-meta">${h.n.toLocaleString('fr-FR')}</span></button>`
-        )
+        .map((h) => {
+          const mark = lexMark(h.tag);
+          return `<button type="button" class="tag-chip${activeLexeme === h.tag ? ' active' : ''}" data-tag="${h.tag}" title="${h.n.toLocaleString('fr-FR')} en commun · ${h.pct}% des comptes de ${lexMark(t)}">${escapeHtml(mark)}<span class="tag-meta">${h.n.toLocaleString('fr-FR')}</span></button>`;
+        })
         .join('')}</div>`
-    : '<div class="fiche-just">Pas assez de co-usage documenté parmi les # distinctifs.</div>';
+    : `<div class="fiche-just">Pas assez de co-usage documenté parmi les ${isLemmaMode() ? 'lemmes' : '#'} distinctifs.</div>`;
 
   const maxPct = share.rows.length ? share.rows[0].pct : 1;
   const topRows = share.rows.slice(0, 10);
@@ -1657,7 +1779,7 @@ function openHashtagFiche(tag) {
           </div>`;
         })
         .join('')}</div>`
-    : '<div class="fiche-just">Aucun compte du graphe associé à ce #.</div>';
+    : `<div class="fiche-just">Aucun compte du graphe associé à ce ${unit}.</div>`;
 
   const justParts = [
     nAcc ? `${nAcc.toLocaleString('fr-FR')} compte${nAcc > 1 ? 's' : ''} hors RT` : null,
@@ -1668,21 +1790,25 @@ function openHashtagFiche(tag) {
   const coocSrc = coocs[0]?.source;
   const limitNote = [
     coocSrc === 'message'
-      ? 'Co-occurrence = autres # dans le même message (hors RT), préchargée.'
-      : 'Co-occurrence = comptes ayant aussi utilisé l’autre # (hors RT).',
+      ? `Co-occurrence = autres ${isLemmaMode() ? 'formes' : '#'} dans le même message (hors RT), préchargée.`
+      : `Co-occurrence = comptes ayant aussi utilisé l’autre ${unit} (hors RT).`,
     share.source === 'preloaded'
-      ? 'Parts = comptes du # par communauté (préchargées).'
-      : 'Parts = répartition des comptes du # dans les communautés Louvain.',
+      ? `Parts = comptes du ${unit} par communauté (préchargées).`
+      : `Parts = répartition des comptes du ${unit} dans les communautés Louvain.`,
   ].join(' ');
+
+  const titleHtml = isLemmaMode()
+    ? escapeHtml(t)
+    : `<span class="hash-mark">#</span>${escapeHtml(t)}`;
 
   espaceFicheEl.classList.add('hash-focus');
   espaceFicheEl.innerHTML = `
     <div class="fiche-head">
-      <div class="fiche-title"><span class="hash-mark">#</span>${escapeHtml(t)}</div>
+      <div class="fiche-title">${titleHtml}</div>
       <button type="button" class="fiche-close" aria-label="Fermer">×</button>
     </div>
-    <div class="fiche-just">${justParts.join(' · ') || 'Hashtag sélectionné'}</div>
-    <h4>Top hashtags co-occurrents</h4>
+    <div class="fiche-just">${justParts.join(' · ') || (isLemmaMode() ? 'Lemme sélectionné' : 'Hashtag sélectionné')}</div>
+    <h4>Top ${isLemmaMode() ? 'lemmes' : 'hashtags'} co-occurrents</h4>
     ${coocHtml}
     <h4>Utilisation par communauté</h4>
     ${shareHtml}
@@ -1692,8 +1818,13 @@ function openHashtagFiche(tag) {
     espaceFicheEl.classList.remove('open', 'hash-focus');
   });
   espaceFicheEl.querySelectorAll('#ficheCooc .tag-chip').forEach((btn) => {
-    btn.addEventListener('click', () => toggleHashtagFilter(btn.dataset.tag));
+    btn.addEventListener('click', () => toggleLexemeFilter(btn.dataset.tag));
   });
+}
+
+function openHashtagFiche(tag) {
+  lexKind = 'hash';
+  openLexemeFiche(tag);
 }
 
 async function ensureDiscourse(corpusId) {
@@ -1896,12 +2027,20 @@ function communityColorModeActive() {
 
 function syncHashModeAvailability() {
   const ok = communityColorModeActive();
+  for (const btn of [hashModeBtn, lemmaModeBtn]) {
+    if (!btn) continue;
+    btn.hidden = !ok;
+    btn.disabled = !ok;
+  }
   if (hashModeBtn) {
-    hashModeBtn.hidden = !ok;
-    hashModeBtn.disabled = !ok;
     hashModeBtn.title = ok
       ? 'Surligner par hashtag distinctif'
-      : 'Passe en couleurs « Communautés » (panneau gauche) pour utiliser #';
+      : 'Passe en couleurs « Communautés » pour utiliser #';
+  }
+  if (lemmaModeBtn) {
+    lemmaModeBtn.title = ok
+      ? 'Surligner par lemme / terme distinctif'
+      : 'Passe en couleurs « Communautés » pour utiliser Lemme';
   }
   if (!ok && viewMode === 'analyses') {
     setViewMode('graph', { syncUrl: false });
@@ -1912,7 +2051,7 @@ function updateGraphModeButtons() {
   document.querySelectorAll('#graphMode button.mode[data-graph]').forEach((b) => {
     b.classList.toggle('active', b.dataset.graph === graphMode && viewMode !== 'analyses');
   });
-  hashModeBtn?.classList.toggle('active', viewMode === 'analyses' && communityColorModeActive());
+  syncLexModeButtons();
   const modeKey = graphMode === 'rt_classes' ? 'rt_classes' : 'community';
   document.querySelectorAll('#colorModeBtns .color-btn').forEach((b) => {
     b.classList.toggle('active', b.dataset.mode === modeKey);
@@ -1990,7 +2129,9 @@ function syncCorpusUrl(corpusId) {
   if (!corpusId) return;
   const url = new URL(location.href);
   const nextGraph = (graphMode === 'rt' || graphMode === 'rt_classes') ? graphMode : null;
-  const nextView = viewMode === 'analyses' ? 'analyses' : null;
+  const nextView = viewMode === 'analyses'
+    ? (lexKind === 'lemma' ? 'lemma' : 'hash')
+    : null;
   const sameCorpus = url.searchParams.get('corpus') === corpusId;
   const sameGraph = (url.searchParams.get('graph') || null) === nextGraph;
   const sameView = (url.searchParams.get('view') || null) === nextView;
@@ -2000,7 +2141,7 @@ function syncCorpusUrl(corpusId) {
   else url.searchParams.delete('graph');
   if (nextView) url.searchParams.set('view', nextView);
   else url.searchParams.delete('view');
-  history.replaceState({ corpus: corpusId, graph: graphMode, view: viewMode }, '', url);
+  history.replaceState({ corpus: corpusId, graph: graphMode, view: nextView || 'graph' }, '', url);
 }
 
 function resolveCorpus(corpusParam) {
@@ -2158,7 +2299,7 @@ function renderCommPanel(data) {
           .slice(0, nChips)
           .map(
             (h) =>
-              `<button type="button" class="tag-chip${activeHashtag === h.tag ? ' active' : ''}" data-tag="${h.tag}" title="score ${h.g2}">#${h.tag}</button>`
+              `<button type="button" class="tag-chip${!isLemmaMode() && activeLexeme === h.tag ? ' active' : ''}" data-tag="${h.tag}" title="score ${h.g2}">#${h.tag}</button>`
           )
           .join('')}</div>`
       : '';
@@ -2717,7 +2858,7 @@ function applyLinkLight(level = P.linkLight) {
   if (slider && slider.value !== String(P.linkLight)) slider.value = String(P.linkLight);
   if (!lineGeo || !lineColorsBase || !lineMat) return;
   // Filtre # actif : le curseur module l’intensité du sous-graphe, sans restaurer Louvain
-  if (activeHashtag && lastHighlightFilter) {
+  if (activeLexeme && lastHighlightFilter) {
     applyNodeHighlight(lastHighlightFilter);
     return;
   }
@@ -2927,13 +3068,14 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   fitGraphToView(nodes);
   renderCommPanel(data);
   rebuildLabels();
-  if (activeHashtag) {
-    const accounts = accountsForHashtag(activeHashtag);
-    const comms = communitiesForHashtag(activeHashtag);
+  if (activeLexeme) {
+    const accounts = accountsForLexeme(activeLexeme);
+    const comms = communitiesForLexeme(activeLexeme);
     const filter = {
       accounts,
       comms: accounts.size ? new Set() : comms,
-      tag: activeHashtag,
+      tag: activeLexeme,
+      kind: lexKind,
     };
     lastHighlightFilter = filter;
     applyNodeHighlight(filter);
@@ -3409,6 +3551,7 @@ async function loadCorpus(corp) {
   const isCurrent = () => seq === loadSeq;
   currentCorpusId = corp.id;
   selectedCommId = null;
+  activeLexeme = null;
   activeHashtag = null;
   lastHighlightFilter = null;
   espaceFicheEl?.classList.remove('open', 'hash-focus');
@@ -3678,13 +3821,20 @@ async function boot() {
     }, { passive: true });
     tabsEl.insertBefore(b, health3);
   }
-  // Deep-link: ?corpus=ebola&graph=rt&view=analyses
+  // Deep-link: ?corpus=ebola&graph=rt&view=hash|lemma|analyses
+  {
+    const v0 = new URLSearchParams(location.search).get('view');
+    if (v0 === 'lemma') { viewMode = 'analyses'; lexKind = 'lemma'; }
+    else if (v0 === 'hash' || v0 === 'analyses') { viewMode = 'analyses'; lexKind = 'hash'; }
+  }
   updateGraphModeButtons();
   initMethodHelp({
     buttonParent: document.getElementById('navTools'),
     showConnectomeTabs: true,
     getTopic: () => {
-      if (viewMode === 'analyses') return 'connectome_hash';
+      if (viewMode === 'analyses') {
+        return isLemmaMode() ? 'connectome_lemma' : 'connectome_hash';
+      }
       if (graphMode === 'rt') return 'connectome_rt';
       return 'connectome_all';
     },
@@ -3695,13 +3845,19 @@ async function boot() {
   document.querySelectorAll('#colorModeBtns .color-btn').forEach((b) => {
     b.addEventListener('click', () => setEdgeColorFromHud(b.dataset.mode));
   });
-  hashModeBtn?.addEventListener('click', () => {
+  const toggleLexMode = (kind) => {
     if (!communityColorModeActive()) return;
-    if (viewMode === 'analyses') setViewMode('graph');
-    else setViewMode('analyses');
+    if (viewMode === 'analyses' && lexKind === kind) {
+      setViewMode('graph');
+    } else {
+      if (lexKind !== kind) clearLexemeFilter();
+      setViewMode('analyses', { lex: kind });
+    }
     updateGraphModeButtons();
-  });
-  hashClearBtn?.addEventListener('click', () => clearHashtagFilter());
+  };
+  hashModeBtn?.addEventListener('click', () => toggleLexMode('hash'));
+  lemmaModeBtn?.addEventListener('click', () => toggleLexMode('lemma'));
+  hashClearBtn?.addEventListener('click', () => clearLexemeFilter());
   hashCloseBtn?.addEventListener('click', () => {
     setViewMode('graph');
     updateGraphModeButtons();
@@ -3714,10 +3870,12 @@ async function boot() {
     hashShowLimit = Number(e.target.value) || 0;
     refreshHashtagUi();
   });
-  hashModeBtn?.addEventListener('pointerenter', () => {
+  const prefetchLex = () => {
     prefetchAnalysesAssets(currentCorpusId);
     ensureDiscourse(currentCorpusId).catch(() => {});
-  }, { passive: true });
+  };
+  hashModeBtn?.addEventListener('pointerenter', prefetchLex, { passive: true });
+  lemmaModeBtn?.addEventListener('pointerenter', prefetchLex, { passive: true });
   const start = resolveCorpus(new URLSearchParams(location.search).get('corpus')) || corpora[0];
   // Kick fetch immediately (overlaps with UI wiring); then render.
   const kick = ensureGraphData(start, graphMode).catch(() => null);
@@ -3726,7 +3884,7 @@ async function boot() {
   await kick;
   await loadCorpus(start);
   if (viewMode === 'analyses') {
-    setViewMode('analyses');
+    setViewMode('analyses', { lex: lexKind });
     updateGraphModeButtons();
   }
 }
@@ -3736,12 +3894,14 @@ window.addEventListener('popstate', () => {
   const params = new URLSearchParams(location.search);
   const g = params.get('graph');
   const nextMode = (g === 'rt' || g === 'rt_classes') ? g : 'all';
-  const nextView = params.get('view') === 'analyses' ? 'analyses' : 'graph';
+  const v = params.get('view');
+  const nextView = (v === 'analyses' || v === 'hash' || v === 'lemma') ? 'analyses' : 'graph';
+  const nextLex = v === 'lemma' ? 'lemma' : 'hash';
   const corp = resolveCorpus(params.get('corpus')) || corporaList[0];
   const modeChanged = nextMode !== graphMode;
-  const viewChanged = nextView !== viewMode;
+  const viewChanged = nextView !== viewMode || (nextView === 'analyses' && nextLex !== lexKind);
   graphMode = nextMode;
-  if (viewChanged) setViewMode(nextView, { syncUrl: false });
+  if (viewChanged) setViewMode(nextView, { syncUrl: false, lex: nextLex });
   updateGraphModeButtons();
   if (modeChanged || corp.id !== currentCorpusId) loadCorpus(corp);
 });

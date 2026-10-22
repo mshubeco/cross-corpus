@@ -177,9 +177,13 @@ def stream_csv_full(
     sn_to_com: dict[str, int],
     focus_ids: set[int],
     *,
-    need_terms: bool,
+    watch_words: set[str] | None = None,
 ) -> dict:
-    """Un seul passage CSV : effectifs #, keyness counts, cooc messages, samples."""
+    """Un seul passage CSV : effectifs # / lemmes, keyness, cooc #, samples.
+
+    Si watch_words est fourni (profils), on ne stocke les comptes lemme
+    que pour ces formes — sinon tous les tokens (filtrés plus tard sur keyness).
+    """
     ht_c: dict[int, Counter] = defaultdict(Counter)
     tok_c: dict[int, Counter] = defaultdict(Counter)
     n_ht_c: Counter = Counter()
@@ -189,6 +193,10 @@ def stream_csv_full(
     tag_accounts: dict[str, set[str]] = defaultdict(set)
     tag_comm_accounts: dict[str, dict[int, set[str]]] = defaultdict(lambda: defaultdict(set))
     cooccur: dict[str, Counter] = defaultdict(Counter)
+    word_accounts: dict[str, set[str]] = defaultdict(set)
+    word_comm_accounts: dict[str, dict[int, set[str]]] = defaultdict(lambda: defaultdict(set))
+    word_cooccur: dict[str, Counter] = defaultdict(Counter)
+    watch = {w.lower() for w in (watch_words or ())} or None
 
     print(f"  Streaming {csv_path.name} (full enrich)…", flush=True)
     with csv_path.open("r", encoding="utf-8", errors="replace", newline="") as f:
@@ -219,10 +227,25 @@ def stream_csv_full(
                     for tb in tag_list[a_i + 1 :]:
                         cooccur[ta][tb] += 1
                         cooccur[tb][ta] += 1
-            if need_terms and cid in focus_ids:
-                for w in tokens(text):
-                    tok_c[cid][w] += 1
-                    n_tok_c[cid] += 1
+            toks = tokens(text)
+            # Dédupliquer dans le message (1 compte / message pour effectifs)
+            uniq = list(dict.fromkeys(toks))
+            for w in uniq:
+                tok_c[cid][w] += 1
+                n_tok_c[cid] += 1
+                if watch is None or w in watch:
+                    word_accounts[w].add(sn)
+                    word_comm_accounts[w][cid].add(sn)
+            # Co-oc lemmes : uniquement parmi watch (ou top formes si pas de watch)
+            if watch is not None:
+                wpair = sorted(w for w in uniq if w in watch)
+            else:
+                wpair = uniq[:12]  # plafond anti-explosion
+            if len(wpair) >= 2:
+                for a_i, wa in enumerate(wpair):
+                    for wb in wpair[a_i + 1 :]:
+                        word_cooccur[wa][wb] += 1
+                        word_cooccur[wb][wa] += 1
             if cid in focus_ids and len(samples[cid]) < N_SAMPLES + 8:
                 tag0 = next(iter(tags), "")
                 if len(text.strip()) > 25:
@@ -245,6 +268,9 @@ def stream_csv_full(
         "tag_accounts": tag_accounts,
         "tag_comm_accounts": tag_comm_accounts,
         "cooccur": cooccur,
+        "word_accounts": word_accounts,
+        "word_comm_accounts": word_comm_accounts,
+        "word_cooccur": word_cooccur,
     }
 
 
@@ -449,14 +475,24 @@ def build_one(cid: str) -> Path | None:
     focus_ids = set(ordered_ids)
     csv_path = CSV_BY_CORPUS.get(cid)
     csv_file_ok = bool(csv_path and csv_path.is_file())
+    # Lemmes à surveiller si profils connus (sinon collecte large + filtre keyness)
+    watch_words: set[str] = set()
+    if by_id:
+        for c in by_id.values():
+            for t in (c.get("terms") or [])[:N_WORDS]:
+                watch_words.add(str(t["t"]).lower())
     enrich: dict | None = None
     if csv_file_ok:
         enrich = stream_csv_full(
-            csv_path, sn_to_com, focus_ids, need_terms=not bool(by_id)
+            csv_path,
+            sn_to_com,
+            focus_ids,
+            watch_words=watch_words or None,
         )
         print(
             f"  CSV: {sum(len(s) for s in enrich['tag_accounts'].values()):,} "
-            f"compte·tag · {len(enrich['tag_accounts'])} tags uniques",
+            f"compte·tag · {len(enrich['tag_accounts'])} tags · "
+            f"{len(enrich['word_accounts'])} lemmes suivis",
             flush=True,
         )
     elif csv_path and not csv_path.is_file():
@@ -503,9 +539,12 @@ def build_one(cid: str) -> Path | None:
     overrides = DESIGNATIONS.get(cid) or {}
     communities_out: dict[str, dict] = {}
     tag_communities: dict[str, set[int]] = defaultdict(set)
+    word_communities: dict[str, set[int]] = defaultdict(set)
     tag_accounts: dict[str, set[str]] = defaultdict(set)
+    word_accounts: dict[str, set[str]] = defaultdict(set)
     if enrich:
         tag_accounts = enrich["tag_accounts"]
+        word_accounts = enrich["word_accounts"]
 
     for mid in ordered_ids:
         c = by_id.get(mid)
@@ -583,6 +622,10 @@ def build_one(cid: str) -> Path | None:
             tag_communities[h["tag"]].add(mid)
             if not csv_file_ok and hub:
                 tag_accounts[h["tag"]].add(str(hub).lower())
+        for w in key_words:
+            word_communities[w["word"]].add(mid)
+            if not csv_file_ok and hub:
+                word_accounts[w["word"]].add(str(hub).lower())
 
         communities_out[str(mid)] = {
             "id": str(mid),
@@ -600,23 +643,44 @@ def build_one(cid: str) -> Path | None:
         }
 
     keep = set(tag_communities.keys())
+    keep_words = set(word_communities.keys())
     tag_cooccur: dict[str, list[dict]] = {}
     tag_comm_n: dict[str, dict[str, int]] = {}
+    word_cooccur: dict[str, list[dict]] = {}
+    word_comm_n: dict[str, dict[str, int]] = {}
     partner_need: set[str] = set()
+    word_partner_need: set[str] = set()
     if enrich:
         tag_cooccur, partner_need = pack_tag_cooccur(
             enrich["cooccur"], keep, tag_accounts
         )
         tag_comm_n = pack_tag_comm_n(enrich["tag_comm_accounts"], keep | partner_need)
-        # Ne garder en comptes que keep + partenaires cooc (poids JSON)
         keep_store = keep | partner_need
         tag_accounts = {
             t: sns for t, sns in tag_accounts.items() if t in keep_store
         }
+        word_cooccur, word_partner_need = pack_tag_cooccur(
+            enrich["word_cooccur"], keep_words, word_accounts
+        )
+        # pack_tag_cooccur utilise clé "tag" — normaliser en "word" pour le JSON lemmes
+        word_cooccur = {
+            w: [{"word": x["tag"], "n": x["n"]} for x in rows]
+            for w, rows in word_cooccur.items()
+        }
+        word_comm_n = pack_tag_comm_n(
+            enrich["word_comm_accounts"], keep_words | word_partner_need
+        )
+        word_accounts = {
+            w: sns
+            for w, sns in word_accounts.items()
+            if w in (keep_words | word_partner_need)
+        }
     else:
         tag_accounts = {t: sns for t, sns in tag_accounts.items() if t in keep}
+        word_accounts = {w: sns for w, sns in word_accounts.items() if w in keep_words}
 
     stored, counts = pack_tag_accounts(tag_accounts)
+    word_stored, word_counts = pack_tag_accounts(word_accounts)
 
     window = None
     meta_g = graph.get("meta") or {}
@@ -663,6 +727,12 @@ def build_one(cid: str) -> Path | None:
                 if tag_comm_n
                 else None
             ),
+            "word_accounts_def": (
+                "Comptes du graphe ayant publié hors RT au moins un message "
+                "contenant la forme lexicale (token hors stop-words)."
+                if word_stored
+                else None
+            ),
             "limit": LIMIT_FR,
         },
         "communities": communities_out,
@@ -673,6 +743,13 @@ def build_one(cid: str) -> Path | None:
         },
         "tag_cooccur": tag_cooccur,
         "tag_comm_n": tag_comm_n,
+        "word_accounts": word_stored,
+        "word_n_accounts": word_counts,
+        "word_communities": {
+            w: sorted(ids) for w, ids in sorted(word_communities.items()) if ids
+        },
+        "word_cooccur": word_cooccur,
+        "word_comm_n": word_comm_n,
     }
     # drop null meta keys
     payload["meta"] = {k: v for k, v in payload["meta"].items() if v is not None}
@@ -682,9 +759,10 @@ def build_one(cid: str) -> Path | None:
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     print(
         f"  → {out.relative_to(CONNECTOME)} · "
-        f"{len(communities_out)} espaces · {len(keep)} # distinctifs · "
-        f"{len(tag_cooccur)} cooc · {len(tag_comm_n)} parts · "
-        f"nAcc max={max(counts.values()) if counts else 0}",
+        f"{len(communities_out)} espaces · {len(keep)} # · {len(keep_words)} lemmes · "
+        f"cooc#={len(tag_cooccur)} coocL={len(word_cooccur)} · "
+        f"nAcc# max={max(counts.values()) if counts else 0} · "
+        f"nAccL max={max(word_counts.values()) if word_counts else 0}",
         flush=True,
     )
     return out
