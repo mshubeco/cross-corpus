@@ -167,8 +167,24 @@
       position: fixed; z-index: 15; pointer-events: none; display: none;
       background: rgba(8,10,14,0.92); border: 1px solid rgba(255,255,255,0.14);
       border-radius: 8px; padding: 8px 10px; font-size: 11px; color: #e8eef7;
+      max-width: min(320px, calc(100vw - 24px));
+      box-shadow: 0 8px 28px rgba(0,0,0,0.45);
     }
     #tooltip .muted { color: #8b93a0; font-size: 10.5px; margin-top: 3px; }
+    #tooltip .coHead {
+      margin-top: 7px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.08);
+      color: #c5ccd6; font-size: 10px; font-weight: 600; letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    #tooltip .coHead .sum { color: #8ab4ff; font-variant-numeric: tabular-nums; text-transform: none; letter-spacing: 0; }
+    #tooltip .coList { margin-top: 4px; max-height: 180px; overflow: hidden; }
+    #tooltip .coRow {
+      display: flex; justify-content: space-between; gap: 12px;
+      font-size: 10.5px; line-height: 1.45; color: #d5dde8;
+    }
+    #tooltip .coRow .h { color: #e8eef7; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #tooltip .coRow .n { color: #8ab4ff; font-variant-numeric: tabular-nums; font-weight: 600; flex: 0 0 auto; }
+    #tooltip .coMore { color: #6a7380; font-size: 10px; margin-top: 3px; }
   </style>
   <script type="importmap">
   {
@@ -218,7 +234,7 @@
     <div class="row"><span>Opacité</span><input id="op" type="range" min="0" max="0.55" step="0.005" value="0.12"></div>
     <div class="row"><span>Labels</span><input id="nLabels" type="range" min="0" max="80" step="1" value="40"></div>
     <div class="nav-hint" id="labelHint">
-      Survol → infos · zoom → plus de labels · taille = PageRank (poids co-RT)
+      Survol → co-RT par voisin · zoom → plus de labels · taille = PageRank
     </div>
     <div class="note">
       Backbone Serrano (2009). Pas de lien vers X : lecture locale seulement.
@@ -268,6 +284,8 @@ let graph = null;
 let discourse = null;
 let nodes = [];
 let edges = [];
+/** @type {Array<Array<{j:number,w:number}>>} */
+let adj = [];
 let scene, camera, renderer, controls, composer, bloomPass;
 let lineMat, pointsMesh, lineGeo;
 let lineColorsBase = null;
@@ -754,10 +772,42 @@ function projectLabels() {
   }
 }
 
+function buildAdjacency(nodeList, edgeList) {
+  const a = Array.from({ length: nodeList.length }, () => []);
+  for (const e of edgeList) {
+    const s = e.s, t = e.t;
+    if (s == null || t == null || s < 0 || t < 0 || s >= nodeList.length || t >= nodeList.length) continue;
+    const w = Number(e.w) || 0;
+    if (w <= 0) continue;
+    a[s].push({ j: t, w });
+    a[t].push({ j: s, w });
+  }
+  for (const list of a) list.sort((u, v) => v.w - u.w || u.j - v.j);
+  return a;
+}
+
+function formatCoRtNeighbors(i) {
+  const list = adj[i] || [];
+  if (!list.length) {
+    return `<div class="coHead">Co-RT voisins</div><div class="muted">Aucune arête backbone</div>`;
+  }
+  const total = list.reduce((s, x) => s + x.w, 0);
+  const maxShow = 12;
+  const rows = list.slice(0, maxShow).map(({ j, w }) => {
+    const lab = nodes[j]?.l || `#${j}`;
+    return `<div class="coRow"><span class="h">@${lab}</span><span class="n">${w.toLocaleString('fr-FR')}</span></div>`;
+  }).join('');
+  const more = list.length > maxShow
+    ? `<div class="coMore">+${(list.length - maxShow).toLocaleString('fr-FR')} autres voisins</div>`
+    : '';
+  return `<div class="coHead">Co-RT par voisin · <span class="sum">${total.toLocaleString('fr-FR')}</span></div><div class="coList">${rows}</div>${more}`;
+}
+
 function buildScene(data) {
   clearScene();
   nodes = data.nodes || [];
   edges = data.edges || [];
+  adj = buildAdjacency(nodes, edges);
   zSpan = computeZSpan(nodes);
   const maxW = Math.max(1, ...edges.map((e) => e.w || 1));
   const positions = [];
@@ -911,10 +961,26 @@ function onPointerMove(ev) {
     const gap = sec < 60 ? `${sec}s` : sec < 3600 ? `${Math.round(sec / 60)} min` : `${Math.round(sec / 3600)} h`;
     zBit = ` · écart ~${gap} · ${depth}`;
   }
+  const nNeigh = (adj[i] || []).length;
+  const degBit = nNeigh
+    ? `deg ${Number(nd.deg) || nNeigh} · ${nNeigh.toLocaleString('fr-FR')} voisin${nNeigh > 1 ? 's' : ''}`
+    : `deg ${nd.deg ?? 0}`;
   tip.style.display = 'block';
   tip.style.left = `${ev.clientX + 12}px`;
   tip.style.top = `${ev.clientY + 12}px`;
-  tip.innerHTML = `<div>@${nd.l} · deg ${nd.deg}</div><div class="muted">${prBit}${prBit ? ' · ' : ''}${comLabel}${zBit}</div>`;
+  tip.innerHTML =
+    `<div>@${nd.l} · ${degBit}</div>` +
+    `<div class="muted">${prBit}${prBit ? ' · ' : ''}${comLabel}${zBit}</div>` +
+    formatCoRtNeighbors(i);
+
+  // Garde le tooltip dans le viewport
+  const rect = tip.getBoundingClientRect();
+  let left = ev.clientX + 12;
+  let top = ev.clientY + 12;
+  if (left + rect.width > innerWidth - 8) left = Math.max(8, ev.clientX - rect.width - 12);
+  if (top + rect.height > innerHeight - 8) top = Math.max(8, ev.clientY - rect.height - 12);
+  tip.style.left = `${left}px`;
+  tip.style.top = `${top}px`;
 }
 function setStats(meta) {
   const pre = meta.n_edges_pre_serrano != null ? meta.n_edges_pre_serrano.toLocaleString('fr-FR') : '—';
