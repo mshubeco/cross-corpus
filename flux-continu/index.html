@@ -223,7 +223,7 @@
       <select id="colorMode">
         <option value="track">Track · fenêtre 3j</option>
         <option value="global" selected>Louvain global ALL</option>
-        <option value="rt_share">RT vs interactions</option>
+        <option value="rt_share">Classes ternaires RT</option>
       </select>
     </div>
     <div class="row"><span>Périmètre</span>
@@ -397,9 +397,12 @@ let dashPos = null;
 let dashCol = null;
 let dashMat = null;
 let dashMesh = null;
-/** Couleurs fixes du mode RT vs interactions (shader 0–1). */
-const COL_INTERACT = [0.95, 0.82, 0.28]; // ambre clair · reply/quote/mention · trait plein
-const COL_RETWEET = [0.35, 0.55, 1.05];  // bleu · retweet · pointillé
+/** Mode classes ternaires (part RT de l'arête) — traits pleins. */
+const RT_CLASS_IX_MAX = 0.30;  // ≤ 30 % RT → interactions
+const RT_CLASS_RT_MIN = 0.70;  // ≥ 70 % RT → retweets
+const COL_INTERACT = [0.95, 0.82, 0.28]; // ambre
+const COL_RETWEET = [0.32, 0.52, 0.98];  // bleu (plus sombre via bright)
+const COL_MIXED = [0.62, 0.52, 0.78];    // gris-violet
 let pointMesh = null;
 let pointGeo = null;
 let pointPos = null;
@@ -965,14 +968,18 @@ function nodeColorAt(idx, t) {
   return trackColorAt(idx, t);
 }
 
-/** Légère offset perpendiculaire pour séparer RT et interactions sur la même paire. */
-function edgeOffset(ax, ay, bx, by, side) {
-  const dx = bx - ax;
-  const dy = by - ay;
-  const len = Math.hypot(dx, dy) || 1;
-  const ox = (-dy / len) * side;
-  const oy = (dx / len) * side;
-  return [ax + ox, ay + oy, bx + ox, by + oy];
+/** Classe ternaire d'une arête selon sa part RT. */
+function rtEdgeClass(rtFrac) {
+  const t = clamp(rtFrac ?? 0, 0, 1);
+  if (t <= RT_CLASS_IX_MAX) return 'ix';
+  if (t >= RT_CLASS_RT_MIN) return 'rt';
+  return 'mix';
+}
+
+function rtClassStyle(cls) {
+  if (cls === 'ix') return { col: COL_INTERACT, lumMul: 1.15 };
+  if (cls === 'rt') return { col: COL_RETWEET, lumMul: 0.55 };
+  return { col: COL_MIXED, lumMul: 0.78 };
 }
 
 function tightenFrameLayout(frame, factor = LAYOUT_TIGHTEN) {
@@ -1387,20 +1394,6 @@ function pushLineSeg(ax, ay, bx, by, colA, colB, bright, state) {
   return true;
 }
 
-/** Pointillés géométriques (sans LineDashedMaterial / computeLineDistances). */
-function pushDashedEdge(ax, ay, bx, by, colA, colB, bright, state) {
-  const cells = 6;
-  for (let i = 0; i < cells; i++) {
-    const t0 = i / cells;
-    const t1 = Math.min(1, t0 + 0.55 / cells);
-    const x0 = ax + (bx - ax) * t0;
-    const y0 = ay + (by - ay) * t0;
-    const x1 = ax + (bx - ax) * t1;
-    const y1 = ay + (by - ay) * t1;
-    if (!pushLineSeg(x0, y0, x1, y1, colA, colB, bright, state)) return;
-  }
-}
-
 function updateGraphics() {
   const opacity = parseFloat(document.getElementById('opacity').value);
   lineMat.opacity = opacity;
@@ -1410,14 +1403,7 @@ function updateGraphics() {
 
   const state = { lp: 0, lc: 0, segCount: 0 };
   const maxW = edgeList.length ? edgeList[0].w : 1;
-  let maxWRt = 1;
-  let maxWIx = 1;
-  if (rtMode) {
-    for (const e of edgeList) {
-      if (e.wRt > maxWRt) maxWRt = e.wRt;
-      if (e.wIx > maxWIx) maxWIx = e.wIx;
-    }
-  }
+  const classCounts = { ix: 0, rt: 0, mix: 0 };
 
   for (const e of edgeList) {
     const a = simNodes[e.s], b = simNodes[e.t];
@@ -1440,39 +1426,23 @@ function updateGraphics() {
       cohortMul = hit ? 1.35 : 0.08;
     }
 
-    if (rtMode) {
-      // Deux couches distinctes : interactions (plein) + RT (pointillé).
-      const both = (e.wIx > 0.05) && (e.wRt > 0.05);
-      const base = mix * settleFade * stretchFade * edgeBright * cohortMul;
+    const wNorm = Math.pow(e.w / maxW, 0.45);
+    let bright = (0.25 + 0.75 * wNorm) * mix * settleFade * stretchFade * edgeBright * cohortMul;
+    let colA = a.color;
+    let colB = b.color;
 
-      if (e.wIx > 0.05) {
-        const wNorm = Math.pow(e.wIx / maxWIx, 0.45);
-        const bright = (0.45 + 0.85 * wNorm) * base * 1.15;
-        if (bright >= 0.02) {
-          const [x0, y0, x1, y1] = both
-            ? edgeOffset(a.x, a.y, b.x, b.y, 2.2)
-            : [a.x, a.y, b.x, b.y];
-          pushLineSeg(x0, y0, x1, y1, COL_INTERACT, COL_INTERACT, bright, state);
-        }
-      }
-      if (e.wRt > 0.05) {
-        const wNorm = Math.pow(e.wRt / maxWRt, 0.45);
-        const bright = (0.22 + 0.55 * wNorm) * base * 0.85;
-        if (bright >= 0.02) {
-          const [x0, y0, x1, y1] = both
-            ? edgeOffset(a.x, a.y, b.x, b.y, -2.2)
-            : [a.x, a.y, b.x, b.y];
-          pushDashedEdge(x0, y0, x1, y1, COL_RETWEET, COL_RETWEET, bright, state);
-        }
-      }
-    } else {
-      const wNorm = Math.pow(e.w / maxW, 0.45);
-      let bright = (0.25 + 0.75 * wNorm) * mix * settleFade * stretchFade * edgeBright * cohortMul;
-      if (bright < 0.02) continue;
-      pushLineSeg(a.x, a.y, b.x, b.y, a.color, b.color, bright, state);
+    if (rtMode) {
+      const cls = rtEdgeClass(e.rtFrac);
+      classCounts[cls]++;
+      const style = rtClassStyle(cls);
+      bright *= style.lumMul;
+      colA = colB = style.col;
     }
+    if (bright < 0.02) continue;
+    pushLineSeg(a.x, a.y, b.x, b.y, colA, colB, bright, state);
     if (state.segCount >= MAX_LINE_SEGS) break;
   }
+  if (rtMode) window.__rtClassCounts = classCounts;
   lineGeo.setDrawRange(0, state.segCount * 2);
   lineGeo.attributes.position.needsUpdate = true;
   lineGeo.attributes.color.needsUpdate = true;
@@ -1637,25 +1607,41 @@ function updateHUD(visible) {
 
 function renderRtShareLegend() {
   const el = document.getElementById('trackList');
-  document.getElementById('tracksTitle').textContent = 'RT vs interactions';
-  const ix = COL_INTERACT.map((c) => Math.round(clamp(c, 0, 1) * 255));
-  const rt = COL_RETWEET.map((c) => Math.round(clamp(c, 0, 1) * 255));
-  el.innerHTML = `
-    <div class="track">
-      <div class="swatch" style="background:rgb(${ix});width:28px;border-radius:2px"></div>
-      <div class="track-name">Interactions · reply / quote / mention</div>
-      <div class="track-act">plein</div>
-      <div class="track-bar"><i style="width:100%;background:rgb(${ix})"></i></div>
-    </div>
-    <div class="track">
-      <div class="swatch" style="width:28px;border-radius:2px;background:repeating-linear-gradient(90deg,rgb(${rt}) 0 6px,transparent 6px 11px)"></div>
-      <div class="track-name">Retweets</div>
-      <div class="track-act">pointillé</div>
-      <div class="track-bar"><i style="width:70%;background:rgb(${rt})"></i></div>
-    </div>
-    <div class="track-share" style="margin-top:8px">
-      <span>Sur une même paire : les deux couches peuvent coexister (légèrement décalées).</span>
+  document.getElementById('tracksTitle').textContent = 'Classes ternaires · part RT';
+  const counts = window.__rtClassCounts || { ix: 0, rt: 0, mix: 0 };
+  const total = Math.max(1, counts.ix + counts.rt + counts.mix);
+  const rows = [
+    {
+      key: 'ix',
+      label: `Interactions · ≤${Math.round(RT_CLASS_IX_MAX * 100)} % RT`,
+      col: COL_INTERACT,
+      n: counts.ix,
+    },
+    {
+      key: 'mix',
+      label: `Mixtes · ${Math.round(RT_CLASS_IX_MAX * 100)}–${Math.round(RT_CLASS_RT_MIN * 100)} %`,
+      col: COL_MIXED,
+      n: counts.mix,
+    },
+    {
+      key: 'rt',
+      label: `Retweets · ≥${Math.round(RT_CLASS_RT_MIN * 100)} % RT`,
+      col: COL_RETWEET,
+      n: counts.rt,
+    },
+  ];
+  el.innerHTML = rows.map((r) => {
+    const rgb = r.col.map((c) => Math.round(clamp(c, 0, 1) * 255));
+    const pct = Math.round(100 * r.n / total);
+    return `<div class="track">
+      <div class="swatch" style="background:rgb(${rgb});width:28px;border-radius:2px"></div>
+      <div class="track-name">${r.label}</div>
+      <div class="track-act">${r.n.toLocaleString('fr-FR')}</div>
+      <div class="track-bar"><i style="width:${pct}%;background:rgb(${rgb})"></i></div>
     </div>`;
+  }).join('') + `<div class="track-share" style="margin-top:8px">
+    <span>Traits pleins · teinte = classe · luminosité RT atténuée</span>
+  </div>`;
 }
 
 function initVolumeSeries() {
