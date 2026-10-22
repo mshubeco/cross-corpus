@@ -4,7 +4,8 @@
 Sources (when available):
   - analyses/intercomm/<id>_profiles.json  → hashtags / terms (z)
   - connectome/data/<id>/graph.json        → communities90 + hubs
-  - CSV CocktailFusion → effectifs réels de comptes par # distinctif
+  - CSV CocktailFusion → keyness (si pas de profils) + effectifs #
+    + co-occurrences message + parts par communauté
 
 Désignations = panneau COMMUNAUTÉS uniquement (pas sur le graphe).
 """
@@ -12,9 +13,10 @@ from __future__ import annotations
 
 import csv
 import json
+import math
 import re
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -45,6 +47,34 @@ DESIGNATIONS: dict[str, dict[int, str]] = {
 
 # Cap liste stockée pour highlight (n réel = tag_n_accounts)
 TAG_ACCOUNTS_STORE_CAP = 15000
+N_TAGS = 16          # # distinctifs / communauté (profils ou keyness CSV)
+N_WORDS = 8
+N_SAMPLES = 5
+N_COOC = 15          # top co-occurrents préchargés / tag
+MIN_HT_N = 3         # keyness CSV : min occurrences dans le pôle
+MIN_TERM_N = 8
+Z_HT = 1.4
+Z_TERM = 1.7
+TOP_N_COM_FALLBACK = 14  # si pas de profils : pôles communities90
+
+TOKEN_RX = re.compile(r"[a-z0-9àâäéèêëïîôùûüçœæ]{3,}", re.I)
+URL_RX = re.compile(r"https?://\S+|t\.co/\S+|www\.\S+", re.I)
+MENTION_RX = re.compile(r"@\w+")
+FR_STOP = {
+    "a", "ai", "alors", "apres", "après", "au", "aucun", "aucune", "aussi", "autre",
+    "autres", "aux", "avec", "avoir", "bon", "c", "ca", "car", "ce", "cela", "ces",
+    "cet", "cette", "ceux", "chaque", "chez", "comme", "comment", "contre", "d",
+    "dans", "de", "deja", "déjà", "depuis", "des", "donc", "dont", "du", "elle",
+    "elles", "en", "encore", "entre", "est", "et", "etaient", "etait", "etre",
+    "être", "eu", "eux", "fait", "faire", "fais", "faites", "fois", "font", "ici",
+    "il", "ils", "je", "juste", "l", "la", "le", "les", "leur", "leurs", "lui",
+    "ma", "mais", "me", "meme", "même", "mes", "moi", "mon", "ne", "ni", "nos",
+    "notre", "nous", "on", "ont", "ou", "où", "par", "pas", "plus", "pour", "qu",
+    "que", "qui", "quoi", "s", "sa", "sans", "se", "sera", "ses", "si", "sien",
+    "soi", "sommes", "son", "sont", "sous", "suis", "sur", "t", "ta", "te", "tes",
+    "toi", "ton", "tous", "tout", "toute", "toutes", "tres", "très", "tu", "un",
+    "une", "vos", "votre", "vous", "y", "via", "the", "and", "for", "http", "https",
+}
 
 CSV_BY_CORPUS: dict[str, Path] = {
     "ebola_2_2026": Path(
@@ -94,6 +124,31 @@ def is_retweet(tweet_type: str, text: str) -> bool:
     return (text or "").lstrip().startswith("RT @")
 
 
+def tokens(text: str) -> list[str]:
+    t = URL_RX.sub(" ", text or "")
+    t = MENTION_RX.sub(" ", t)
+    t = t.replace("#", " ")
+    out = []
+    for m in TOKEN_RX.findall(t.lower()):
+        if m in FR_STOP or m.isdigit():
+            continue
+        out.append(m)
+    return out
+
+
+def weighted_log_odds(n_w, n_c, n_w_ref, n_ref, prior, prior_scale):
+    """Monroe et al. 2008 — returns z."""
+    a = n_w + prior
+    b = n_c + prior_scale - a
+    c = n_w_ref + prior
+    d = n_ref + prior_scale - c
+    if a <= 0 or b <= 0 or c <= 0 or d <= 0:
+        return 0.0
+    delta = math.log(a / b) - math.log(c / d)
+    sigma = math.sqrt(1 / a + 1 / b + 1 / c + 1 / d)
+    return delta / sigma if sigma > 0 else 0.0
+
+
 def auto_designation(hub: str, key_hashtags: list[dict], key_words: list[dict]) -> str:
     """Qualification panneau COMMUNAUTÉS — pas de # ni « espace @ » sur le graphe."""
     hub = (hub or "").lstrip("@")
@@ -117,20 +172,25 @@ def corpus_ids() -> list[str]:
     return [i for i in ids if i != "canicule"]
 
 
-def collect_from_csv(
+def stream_csv_full(
     csv_path: Path,
     sn_to_com: dict[str, int],
-    watch_tags: set[str],
-    sample_coms: set[int],
-) -> tuple[dict[int, list[dict]], dict[str, set[str]], dict[int, int]]:
-    """Effectifs réels : comptes du graphe ayant publié (hors RT) chaque # surveillé."""
-    samples_by_com: dict[int, list[dict]] = defaultdict(list)
+    focus_ids: set[int],
+    *,
+    need_terms: bool,
+) -> dict:
+    """Un seul passage CSV : effectifs #, keyness counts, cooc messages, samples."""
+    ht_c: dict[int, Counter] = defaultdict(Counter)
+    tok_c: dict[int, Counter] = defaultdict(Counter)
+    n_ht_c: Counter = Counter()
+    n_tok_c: Counter = Counter()
+    n_own: Counter = Counter()
+    samples: dict[int, list[dict]] = defaultdict(list)
     tag_accounts: dict[str, set[str]] = defaultdict(set)
-    n_own_est: dict[int, int] = defaultdict(int)
-    if not watch_tags:
-        return samples_by_com, tag_accounts, n_own_est
+    tag_comm_accounts: dict[str, dict[int, set[str]]] = defaultdict(lambda: defaultdict(set))
+    cooccur: dict[str, Counter] = defaultdict(Counter)
 
-    print(f"  Streaming {csv_path.name} · watch={len(watch_tags)} tags…", flush=True)
+    print(f"  Streaming {csv_path.name} (full enrich)…", flush=True)
     with csv_path.open("r", encoding="utf-8", errors="replace", newline="") as f:
         reader = csv.DictReader(f)
         for i, row in enumerate(reader):
@@ -145,38 +205,165 @@ def collect_from_csv(
             text = row.get("text") or ""
             if is_retweet(row.get("tweet_type") or "", text):
                 continue
-            if cid in sample_coms:
-                n_own_est[cid] += 1
+            if cid in focus_ids:
+                n_own[cid] += 1
             tags = parse_hashtags(row.get("hashtag") or "", text)
-            hit = tags & watch_tags
-            if not hit:
-                if (
-                    cid in sample_coms
-                    and len(samples_by_com[cid]) < 2
-                    and len(text.strip()) > 40
-                ):
-                    samples_by_com[cid].append(
+            for t in tags:
+                ht_c[cid][t] += 1
+                n_ht_c[cid] += 1
+                tag_accounts[t].add(sn)
+                tag_comm_accounts[t][cid].add(sn)
+            if len(tags) >= 2:
+                tag_list = sorted(tags)
+                for a_i, ta in enumerate(tag_list):
+                    for tb in tag_list[a_i + 1 :]:
+                        cooccur[ta][tb] += 1
+                        cooccur[tb][ta] += 1
+            if need_terms and cid in focus_ids:
+                for w in tokens(text):
+                    tok_c[cid][w] += 1
+                    n_tok_c[cid] += 1
+            if cid in focus_ids and len(samples[cid]) < N_SAMPLES + 8:
+                tag0 = next(iter(tags), "")
+                if len(text.strip()) > 25:
+                    samples[cid].append(
                         {
                             "sn": sn,
                             "text": re.sub(r"\s+", " ", text).strip()[:280],
                             "at": str(row.get("created_at") or "")[:10],
-                            "tag": "",
+                            "tag": tag0,
                         }
                     )
+
+    return {
+        "ht_c": ht_c,
+        "tok_c": tok_c,
+        "n_ht_c": n_ht_c,
+        "n_tok_c": n_tok_c,
+        "n_own": n_own,
+        "samples": samples,
+        "tag_accounts": tag_accounts,
+        "tag_comm_accounts": tag_comm_accounts,
+        "cooccur": cooccur,
+    }
+
+
+def keyness_from_counts(
+    emit_ids: list[int],
+    ht_c: dict[int, Counter],
+    tok_c: dict[int, Counter],
+    n_ht_c: Counter,
+    n_tok_c: Counter,
+    *,
+    min_ht_n: int = MIN_HT_N,
+    z_ht: float = Z_HT,
+) -> dict[int, tuple[list[dict], list[dict], dict]]:
+    """Retourne mid → (key_hashtags, key_words, themes).
+
+    Univers statistique = toutes les communautés présentes dans ht_c/tok_c
+    (pas seulement les pôles affichés), pour que le z reste informatif
+    sur les petits corpus.
+    """
+    universe_ht = sorted(set(ht_c.keys()) | set(n_ht_c.keys()))
+    universe_tok = sorted(set(tok_c.keys()) | set(n_tok_c.keys()))
+    ht_all: Counter = Counter()
+    tok_all: Counter = Counter()
+    for cid in universe_ht:
+        ht_all.update(ht_c.get(cid) or {})
+    for cid in universe_tok:
+        tok_all.update(tok_c.get(cid) or {})
+    n_ht_all = sum(int(n_ht_c[c]) for c in universe_ht) or 1
+    n_tok_all = sum(int(n_tok_c[c]) for c in universe_tok) or 1
+
+    out: dict[int, tuple[list[dict], list[dict], dict]] = {}
+    for cid in emit_ids:
+        rest_ht = max(n_ht_all - int(n_ht_c[cid]), 1)
+        rest_tok = max(n_tok_all - int(n_tok_c[cid]), 1)
+        prior_ht = 80.0
+        prior_tok = 80.0
+
+        ht_local = ht_c.get(cid) or Counter()
+        tok_local = tok_c.get(cid) or Counter()
+        key_hashtags = []
+        for h, n_w in ht_local.items():
+            if n_w < min_ht_n:
                 continue
-            for t in hit:
-                tag_accounts[t].add(sn)
-            if cid in sample_coms and len(samples_by_com[cid]) < 8:
-                tag = sorted(hit)[0]
-                samples_by_com[cid].append(
-                    {
-                        "sn": sn,
-                        "text": re.sub(r"\s+", " ", text).strip()[:280],
-                        "at": str(row.get("created_at") or "")[:10],
-                        "tag": tag,
-                    }
-                )
-    return samples_by_com, tag_accounts, n_own_est
+            prior = prior_ht * ((ht_all[h] + 0.5) / (n_ht_all + 1))
+            z = weighted_log_odds(
+                n_w, int(n_ht_c[cid]) or 1, ht_all[h] - n_w, rest_ht, prior, prior_ht
+            )
+            if z < z_ht:
+                continue
+            key_hashtags.append({"tag": h, "g2": round(z, 2), "n": int(n_w)})
+        key_hashtags.sort(key=lambda d: d["g2"], reverse=True)
+        # Fallback fréquence si le pôle est trop petit pour le z
+        if not key_hashtags:
+            for h, n_w in ht_local.most_common(N_TAGS):
+                if n_w < 1:
+                    continue
+                key_hashtags.append({"tag": h, "g2": 0.0, "n": int(n_w)})
+        key_hashtags = [
+            {"tag": h["tag"], "g2": h["g2"]} for h in key_hashtags[:N_TAGS]
+        ]
+
+        key_words = []
+        for w, n_w in tok_local.items():
+            if n_w < MIN_TERM_N:
+                continue
+            prior = prior_tok * ((tok_all[w] + 0.5) / (n_tok_all + 1))
+            z = weighted_log_odds(
+                n_w, int(n_tok_c[cid]) or 1, tok_all[w] - n_w, rest_tok, prior, prior_tok
+            )
+            if z < Z_TERM:
+                continue
+            key_words.append({"word": w, "g2": round(z, 2)})
+        key_words.sort(key=lambda d: d["g2"], reverse=True)
+        if not key_words:
+            for w, n_w in tok_local.most_common(N_WORDS):
+                if n_w < 2:
+                    continue
+                key_words.append({"word": w, "g2": 0.0})
+        key_words = key_words[:N_WORDS]
+
+        themes: dict = {}
+        if key_words:
+            mx = max((w["g2"] for w in key_words), default=0) or 1
+            for w in key_words[:5]:
+                themes[w["word"]] = round(100.0 * max(w["g2"], 0.01) / mx, 1)
+
+        out[cid] = (key_hashtags, key_words, themes)
+    return out
+
+
+def seed_global_tags(
+    ordered_ids: list[int],
+    tag_accounts: dict[str, set[str]],
+    tag_comm_accounts: dict[str, dict[int, set[str]]],
+    ht_c: dict[int, Counter],
+    n_global: int = 40,
+) -> tuple[dict[int, list[dict]], dict[str, set[int]]]:
+    """Si aucun # distinctif local : top corpus + attribution aux pôles affichés."""
+    ranked = sorted(tag_accounts.items(), key=lambda kv: -len(kv[1]))[:n_global]
+    tag_communities: dict[str, set[int]] = defaultdict(set)
+    per_com: dict[int, list[dict]] = {mid: [] for mid in ordered_ids}
+    focus = set(ordered_ids)
+    for t, sns in ranked:
+        for cid, accs in (tag_comm_accounts.get(t) or {}).items():
+            if cid in focus and accs:
+                tag_communities[t].add(cid)
+        for mid in ordered_ids:
+            n = int((ht_c.get(mid) or {}).get(t) or 0)
+            if n > 0:
+                per_com[mid].append({"tag": t, "g2": 0.0, "n": n})
+    for mid in ordered_ids:
+        per_com[mid].sort(key=lambda d: -d["n"])
+        per_com[mid] = [{"tag": x["tag"], "g2": x["g2"]} for x in per_com[mid][:N_TAGS]]
+        # Si pôle sans # local : coller les top globaux (g2=0) pour peupler le panneau
+        if not per_com[mid]:
+            per_com[mid] = [{"tag": t, "g2": 0.0} for t, _ in ranked[: min(6, len(ranked))]]
+            for h in per_com[mid]:
+                tag_communities[h["tag"]].add(mid)
+    return per_com, tag_communities
 
 
 def pack_tag_accounts(
@@ -190,6 +377,44 @@ def pack_tag_accounts(
         counts[t] = len(sns)
         stored[t] = sorted(sns)[:TAG_ACCOUNTS_STORE_CAP]
     return stored, counts
+
+
+def pack_tag_comm_n(
+    tag_comm_accounts: dict[str, dict[int, set[str]]],
+    keep: set[str],
+) -> dict[str, dict[str, int]]:
+    out: dict[str, dict[str, int]] = {}
+    for t in sorted(keep):
+        by = tag_comm_accounts.get(t) or {}
+        row = {str(cid): len(sns) for cid, sns in by.items() if sns}
+        if row:
+            out[t] = dict(sorted(row.items(), key=lambda kv: (-kv[1], kv[0])))
+    return out
+
+
+def pack_tag_cooccur(
+    cooccur: dict[str, Counter],
+    keep: set[str],
+    tag_accounts: dict[str, set[str]],
+) -> dict[str, list[dict]]:
+    """Top co-occurrents message-level ; stocke aussi les partenaires hors keep (effectifs)."""
+    out: dict[str, list[dict]] = {}
+    partner_need: set[str] = set()
+    for t in sorted(keep):
+        ctr = cooccur.get(t) or Counter()
+        top = []
+        for other, n in ctr.most_common(N_COOC * 2):
+            if other == t or n < 2:
+                continue
+            top.append({"tag": other, "n": int(n)})
+            if other not in keep:
+                partner_need.add(other)
+            if len(top) >= N_COOC:
+                break
+        if top:
+            out[t] = top
+    # Garantir tag_accounts pour les partenaires cliquables
+    return out, partner_need
 
 
 def build_one(cid: str) -> Path | None:
@@ -206,7 +431,7 @@ def build_one(cid: str) -> Path | None:
         by_id = {int(c["id"]): c for c in profiles.get("communities") or []}
         print(f"{cid}: profiles={len(by_id)}", flush=True)
     else:
-        print(f"{cid}: no profiles → hubs communities90 only", flush=True)
+        print(f"{cid}: no profiles → keyness CSV si dispo", flush=True)
 
     sn_to_com: dict[str, int] = {}
     for n in graph.get("nodes") or []:
@@ -216,36 +441,71 @@ def build_one(cid: str) -> Path | None:
 
     c90 = (graph.get("meta") or {}).get("communities90") or []
     c90_ids = [int(c["id"]) for c in c90]
-    ordered_ids = list(dict.fromkeys([*by_id.keys(), *c90_ids[:14]]))
+    if by_id:
+        ordered_ids = list(dict.fromkeys([*by_id.keys(), *c90_ids[:TOP_N_COM_FALLBACK]]))
+    else:
+        ordered_ids = list(dict.fromkeys(c90_ids[:TOP_N_COM_FALLBACK]))
 
-    watch_tags: set[str] = set()
-    for mid, c in by_id.items():
-        for h in (c.get("hashtags") or [])[:8]:
-            watch_tags.add(str(h["t"]).lower())
-        if not (c.get("hashtags") or []):
-            for t in (c.get("terms") or [])[:3]:
-                watch_tags.add(str(t["t"]).lower())
-
-    samples_by_com: dict[int, list[dict]] = defaultdict(list)
-    tag_accounts: dict[str, set[str]] = defaultdict(set)
-    n_own_est: dict[int, int] = defaultdict(int)
+    focus_ids = set(ordered_ids)
     csv_path = CSV_BY_CORPUS.get(cid)
-    csv_ok = bool(csv_path and csv_path.is_file() and watch_tags)
-    if csv_ok:
-        samples_by_com, tag_accounts, n_own_est = collect_from_csv(
-            csv_path, sn_to_com, watch_tags, set(by_id.keys()) or set(ordered_ids)
+    csv_file_ok = bool(csv_path and csv_path.is_file())
+    enrich: dict | None = None
+    if csv_file_ok:
+        enrich = stream_csv_full(
+            csv_path, sn_to_com, focus_ids, need_terms=not bool(by_id)
         )
         print(
-            f"  CSV effectifs: {sum(len(s) for s in tag_accounts.values()):,} "
-            f"compte·tag · {len(tag_accounts)} tags",
+            f"  CSV: {sum(len(s) for s in enrich['tag_accounts'].values()):,} "
+            f"compte·tag · {len(enrich['tag_accounts'])} tags uniques",
             flush=True,
         )
     elif csv_path and not csv_path.is_file():
         print(f"  WARN CSV manquant: {csv_path}", flush=True)
 
+    keyness_map: dict[int, tuple[list[dict], list[dict], dict]] = {}
+    # Corpus petit → seuils assouplis
+    n_csv_tags = len(enrich["tag_accounts"]) if enrich else 0
+    small_corpus = bool(enrich) and n_csv_tags < 800
+    if enrich and not by_id:
+        keyness_map = keyness_from_counts(
+            ordered_ids,
+            enrich["ht_c"],
+            enrich["tok_c"],
+            enrich["n_ht_c"],
+            enrich["n_tok_c"],
+            min_ht_n=1 if small_corpus else MIN_HT_N,
+            z_ht=0.9 if small_corpus else Z_HT,
+        )
+        n_ht_keys = sum(len(v[0]) for v in keyness_map.values())
+        print(
+            f"  Keyness CSV: {n_ht_keys} # · "
+            f"{sum(len(v[1]) for v in keyness_map.values())} mots"
+            + (" (seuils assouplis)" if small_corpus else ""),
+            flush=True,
+        )
+        if n_ht_keys == 0:
+            per_com, seeded_tc = seed_global_tags(
+                ordered_ids,
+                enrich["tag_accounts"],
+                enrich["tag_comm_accounts"],
+                enrich["ht_c"],
+            )
+            for mid, tags in per_com.items():
+                words = keyness_map.get(mid, ([], [], {}))[1]
+                themes = keyness_map.get(mid, ([], [], {}))[2]
+                keyness_map[mid] = (tags, words, themes)
+            print(
+                f"  Fallback fréquence: {sum(len(t) for t in per_com.values())} # "
+                f"sur {len(seeded_tc)} tags globaux",
+                flush=True,
+            )
+
     overrides = DESIGNATIONS.get(cid) or {}
     communities_out: dict[str, dict] = {}
     tag_communities: dict[str, set[int]] = defaultdict(set)
+    tag_accounts: dict[str, set[str]] = defaultdict(set)
+    if enrich:
+        tag_accounts = enrich["tag_accounts"]
 
     for mid in ordered_ids:
         c = by_id.get(mid)
@@ -255,18 +515,22 @@ def build_one(cid: str) -> Path | None:
             n_users = int(c.get("nUsers") or 0)
             key_hashtags = [
                 {"tag": str(h["t"]).lower(), "g2": float(h.get("z") or 0)}
-                for h in (c.get("hashtags") or [])[:8]
+                for h in (c.get("hashtags") or [])[:N_TAGS]
             ]
             key_words = [
                 {"word": str(t["t"]).lower(), "g2": float(t.get("z") or 0)}
-                for t in (c.get("terms") or [])[:8]
+                for t in (c.get("terms") or [])[:N_WORDS]
             ]
             themes = {}
             if key_words:
                 mx = max(w["g2"] for w in key_words) or 1
                 for w in key_words[:5]:
                     themes[w["word"]] = round(100.0 * w["g2"] / mx, 1)
-            n_own = int(c.get("nOwnPubs") or n_own_est.get(mid) or 0)
+            n_own = int(
+                c.get("nOwnPubs")
+                or (enrich["n_own"].get(mid) if enrich else 0)
+                or 0
+            )
             just = (
                 f"C{mid} · hub @{hub}. Lexique distinctif (z vs reste) : "
                 + (
@@ -276,6 +540,32 @@ def build_one(cid: str) -> Path | None:
                 )
                 + (f". {n_own} pubs hors RT." if n_own else ".")
             )
+            samples = (enrich["samples"].get(mid) if enrich else [])[:N_SAMPLES]
+        elif mid in keyness_map:
+            row = next((r for r in c90 if int(r["id"]) == mid), None)
+            hub = (
+                ((row.get("accounts") or [{}])[0].get("l") if row else None)
+                or f"c{mid}"
+            )
+            color = row.get("color") if row else None
+            n_users = int(row.get("n") or 0) if row else 0
+            key_hashtags, key_words, themes = keyness_map[mid]
+            n_own = int(enrich["n_own"].get(mid) if enrich else 0) or int(
+                (row or {}).get("nPubs") or 0
+            )
+            just = (
+                f"C{mid} · hub @{hub}. Lexique distinctif (z log-odds CSV vs autres pôles) : "
+                + (
+                    ", ".join(f"#{h['tag']}" for h in key_hashtags[:4])
+                    or ", ".join(w["word"] for w in key_words[:4])
+                    or "—"
+                )
+                + (f". {n_own:,} pubs hors RT." if n_own else ".")
+            )
+            key_tag_set = {h["tag"] for h in key_hashtags}
+            smp = (enrich["samples"].get(mid) if enrich else []) or []
+            smp_pref = [s for s in smp if s.get("tag") in key_tag_set] or smp
+            samples = smp_pref[:N_SAMPLES]
         else:
             row = next((r for r in c90 if int(r["id"]) == mid), None)
             if not row:
@@ -286,12 +576,12 @@ def build_one(cid: str) -> Path | None:
             key_hashtags, key_words, themes = [], [], {}
             n_own = int(row.get("nPubs") or 0)
             just = f"C{mid} · hub @{hub}. Profil lexique non enrichi pour ce pôle."
+            samples = []
 
         des = overrides.get(mid) or auto_designation(str(hub), key_hashtags, key_words)
         for h in key_hashtags:
             tag_communities[h["tag"]].add(mid)
-            # Fallback hubs seulement si pas de CSV (sinon effectifs réels déjà là)
-            if not csv_ok and hub:
+            if not csv_file_ok and hub:
                 tag_accounts[h["tag"]].add(str(hub).lower())
 
         communities_out[str(mid)] = {
@@ -302,16 +592,30 @@ def build_one(cid: str) -> Path | None:
             "key_hashtags": key_hashtags,
             "key_words": key_words,
             "themes": themes,
-            "samples": (samples_by_com.get(mid) or [])[:5],
+            "samples": samples,
             "n_users": n_users,
             "n_original_tweets": n_own or None,
             "color": color,
             "hub": hub,
         }
 
-    # Ne garder que les tags distinctifs listés
     keep = set(tag_communities.keys())
-    tag_accounts = {t: sns for t, sns in tag_accounts.items() if t in keep}
+    tag_cooccur: dict[str, list[dict]] = {}
+    tag_comm_n: dict[str, dict[str, int]] = {}
+    partner_need: set[str] = set()
+    if enrich:
+        tag_cooccur, partner_need = pack_tag_cooccur(
+            enrich["cooccur"], keep, tag_accounts
+        )
+        tag_comm_n = pack_tag_comm_n(enrich["tag_comm_accounts"], keep | partner_need)
+        # Ne garder en comptes que keep + partenaires cooc (poids JSON)
+        keep_store = keep | partner_need
+        tag_accounts = {
+            t: sns for t, sns in tag_accounts.items() if t in keep_store
+        }
+    else:
+        tag_accounts = {t: sns for t, sns in tag_accounts.items() if t in keep}
+
     stored, counts = pack_tag_accounts(tag_accounts)
 
     window = None
@@ -322,9 +626,11 @@ def build_one(cid: str) -> Path | None:
     src_bits = []
     if by_id:
         src_bits.append(f"{cid}_profiles.json")
+    elif enrich:
+        src_bits.append("keyness CSV (Monroe z)")
     src_bits.append("graph communities90")
-    if csv_ok:
-        src_bits.append(f"CSV effectifs # ({csv_path.name})")
+    if csv_file_ok:
+        src_bits.append(f"CSV enrich # ({csv_path.name})")
 
     payload = {
         "meta": {
@@ -332,14 +638,30 @@ def build_one(cid: str) -> Path | None:
             "corpus": cid,
             "window": window,
             "source": " + ".join(src_bits),
-            "keyness": "z log-odds (profiles intercomm) vs reste du graphe"
-            if by_id
-            else "désignation hub (profil lexique absent)",
+            "keyness": (
+                "z log-odds (profiles intercomm) vs reste du graphe"
+                if by_id
+                else (
+                    "z log-odds CSV vs autres pôles connectome (Monroe et al. 2008)"
+                    if enrich
+                    else "désignation hub (profil lexique absent)"
+                )
+            ),
             "tag_accounts_def": (
                 "Comptes du graphe ayant publié hors RT au moins un message "
                 "portant le hashtag (champ hashtag + # dans le texte)."
-                if csv_ok
+                if csv_file_ok
                 else "Fallback hubs (CSV absent)."
+            ),
+            "tag_cooccur_def": (
+                "Co-occurrence message (hors RT) : autres # dans le même message."
+                if tag_cooccur
+                else None
+            ),
+            "tag_comm_n_def": (
+                "Comptes distincts du graphe ayant utilisé le #, par communauté Louvain."
+                if tag_comm_n
+                else None
             ),
             "limit": LIMIT_FR,
         },
@@ -349,14 +671,19 @@ def build_one(cid: str) -> Path | None:
         "tag_communities": {
             t: sorted(ids) for t, ids in sorted(tag_communities.items()) if ids
         },
+        "tag_cooccur": tag_cooccur,
+        "tag_comm_n": tag_comm_n,
     }
+    # drop null meta keys
+    payload["meta"] = {k: v for k, v in payload["meta"].items() if v is not None}
 
     out = CONNECTOME / "data" / cid / "discourse.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     print(
         f"  → {out.relative_to(CONNECTOME)} · "
-        f"{len(communities_out)} espaces · {len(stored)} tags · "
+        f"{len(communities_out)} espaces · {len(keep)} # distinctifs · "
+        f"{len(tag_cooccur)} cooc · {len(tag_comm_n)} parts · "
         f"nAcc max={max(counts.values()) if counts else 0}",
         flush=True,
     )
@@ -365,6 +692,9 @@ def build_one(cid: str) -> Path | None:
 
 def main() -> None:
     ids = corpus_ids()
+    only = [a for a in sys.argv[1:] if not a.startswith("-")]
+    if only:
+        ids = [i for i in ids if i in only]
     print(f"Building discourse for {len(ids)} corpora…", flush=True)
     done = []
     for cid in ids:

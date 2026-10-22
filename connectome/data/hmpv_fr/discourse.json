@@ -2,211 +2,2175 @@
   "meta": {
     "cluster": "HMPV FR · 2025",
     "corpus": "hmpv_fr",
-    "window": null,
-    "source": "graph communities90",
-    "keyness": "désignation hub (profil lexique absent)",
-    "tag_accounts_def": "Fallback hubs (CSV absent).",
+    "source": "keyness CSV (Monroe z) + graph communities90 + CSV enrich # (Export_padmen_hmpv_fr_20250101-20250630_full.csv)",
+    "keyness": "z log-odds CSV vs autres pôles connectome (Monroe et al. 2008)",
+    "tag_accounts_def": "Comptes du graphe ayant publié hors RT au moins un message portant le hashtag (champ hashtag + # dans le texte).",
+    "tag_cooccur_def": "Co-occurrence message (hors RT) : autres # dans le même message.",
+    "tag_comm_n_def": "Comptes distincts du graphe ayant utilisé le #, par communauté Louvain.",
     "limit": "Label opérationnel fondé sur lexique distinctif (z) / structure / échantillons — pas une appartenance partisane des comptes ordinaires."
   },
   "communities": {
     "1": {
       "id": "1",
-      "qualif": "pôle @75secondes",
-      "qualif_short": "pôle @75secondes",
-      "justification": "C1 · hub @75secondes. Profil lexique non enrichi pour ce pôle.",
+      "qualif": "chine",
+      "qualif_short": "chine",
+      "justification": "C1 · hub @75secondes. Lexique distinctif (z log-odds CSV vs autres pôles) : chine. 1 pubs hors RT.",
       "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "key_words": [
+        {
+          "word": "chine",
+          "g2": 0.0
+        }
+      ],
+      "themes": {
+        "chine": 1.0
+      },
+      "samples": [
+        {
+          "sn": "75secondes",
+          "text": "🇨🇳‼️ La Chine déclare l'état d'urgence alors que de multiples virus, dont la grippe A, le HMPV, le mycoplasma pneumoniae et le COVID-19, se propagent rapidement dans toute la Chine. 🗞️ https://t.co/hXjtygQCJ8 https://t.co/1KvHaZdpdN",
+          "at": "2025-01-03",
+          "tag": ""
+        }
+      ],
       "n_users": 153,
-      "n_original_tweets": 153,
+      "n_original_tweets": 1,
       "color": "#73c000",
       "hub": "75secondes"
     },
     "2": {
       "id": "2",
-      "qualif": "pôle @francenews24",
-      "qualif_short": "pôle @francenews24",
-      "justification": "C2 · hub @francenews24. Profil lexique non enrichi pour ce pôle.",
-      "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "qualif": "épidémie / hmpv",
+      "qualif_short": "épidémie / hmpv",
+      "justification": "C2 · hub @francenews24. Lexique distinctif (z log-odds CSV vs autres pôles) : #chine. 2 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "chine",
+          "g2": 0.0
+        }
+      ],
+      "key_words": [
+        {
+          "word": "épidémie",
+          "g2": 0.0
+        },
+        {
+          "word": "hmpv",
+          "g2": 0.0
+        },
+        {
+          "word": "enfants",
+          "g2": 0.0
+        }
+      ],
+      "themes": {
+        "épidémie": 1.0,
+        "hmpv": 1.0,
+        "enfants": 1.0
+      },
+      "samples": [
+        {
+          "sn": "francenews24",
+          "text": "🔴 INFO - #Chine : Le pays est confronté à une épidémie de métapneumovirus humain (HMPV), affectant particulièrement les enfants et les personnes âgées. L’épidémie continue de se propager, et les hôpitaux sont submergés par l’afflux de patients, principalement des enfants. https:/",
+          "at": "2025-01-03",
+          "tag": "chine"
+        }
+      ],
       "n_users": 57,
-      "n_original_tweets": 65,
+      "n_original_tweets": 2,
       "color": "#ff8000",
       "hub": "francenews24"
     },
     "5": {
       "id": "5",
-      "qualif": "pôle @tatiann69922625",
-      "qualif_short": "pôle @tatiann69922625",
-      "justification": "C5 · hub @tatiann69922625. Profil lexique non enrichi pour ce pôle.",
+      "qualif": "métapneumovirus / humain",
+      "qualif_short": "métapneumovirus / humain",
+      "justification": "C5 · hub @tatiann69922625. Lexique distinctif (z log-odds CSV vs autres pôles) : métapneumovirus, humain, chine, hmpv. 4 pubs hors RT.",
       "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "key_words": [
+        {
+          "word": "métapneumovirus",
+          "g2": 0.0
+        },
+        {
+          "word": "humain",
+          "g2": 0.0
+        },
+        {
+          "word": "chine",
+          "g2": 0.0
+        },
+        {
+          "word": "hmpv",
+          "g2": 0.0
+        },
+        {
+          "word": "état",
+          "g2": 0.0
+        },
+        {
+          "word": "virus",
+          "g2": 0.0
+        },
+        {
+          "word": "grippe",
+          "g2": 0.0
+        },
+        {
+          "word": "données",
+          "g2": 0.0
+        }
+      ],
+      "themes": {
+        "métapneumovirus": 1.0,
+        "humain": 1.0,
+        "chine": 1.0,
+        "hmpv": 1.0,
+        "état": 1.0
+      },
+      "samples": [
+        {
+          "sn": "saraart4",
+          "text": "ah oui l'année commence bien, surcharge immunitaire ? La Chine déclare l'état d'urgence alors que l'épidémie submerge les hôpitaux et les crématoriums. Plusieurs virus, dont la grippe A, le virus HMPV, la mycoplasme et le COVID-19, se propagent rapidement à travers la Chine. http",
+          "at": "2025-01-01",
+          "tag": ""
+        },
+        {
+          "sn": "julienm__",
+          "text": "Métapneumovirus humain: L'OMS a annoncé le 7 qu'elle n'avait reçu aucun rapport des autorités sanitaires chinoises faisant état d'une propagation anormale d'une infection par le métapneumovirus humain (hMPV) en Chine. @tatiann69922625 @Nova153 @BanounHelene @ConseilCsi @HamelinMd",
+          "at": "2025-01-10",
+          "tag": ""
+        },
+        {
+          "sn": "tatiann69922625",
+          "text": "Les cas de métapneumovirus humain (HMPV) ont augmenté au Royaume-Uni, les dernières données de l'Agence britannique de sécurité sanitaire montrant un taux de positivité de 4,9%. https://t.co/w9lThQ59mb \"Cependant, la flambée actuelle d'infections respiratoires virales non liées",
+          "at": "2025-01-27",
+          "tag": ""
+        },
+        {
+          "sn": "tatiann69922625",
+          "text": "Donc pas de panique ! Les infections respiratoires aiguës, notamment la grippe, le VRS et le métapneumovirus humain (MPVh), sont en hausse dans l'hémisphère nord, suivant les tendances hivernales habituelles. Les données de surveillance montrent des taux accrus de maladies",
+          "at": "2025-01-09",
+          "tag": ""
+        }
+      ],
       "n_users": 48,
-      "n_original_tweets": 48,
+      "n_original_tweets": 4,
       "color": "#c4a574",
       "hub": "tatiann69922625"
     },
     "7": {
       "id": "7",
-      "qualif": "pôle @france24_fr",
-      "qualif_short": "pôle @france24_fr",
-      "justification": "C7 · hub @france24_fr. Profil lexique non enrichi pour ce pôle.",
-      "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "qualif": "virus",
+      "qualif_short": "virus",
+      "justification": "C7 · hub @france24_fr. Lexique distinctif (z log-odds CSV vs autres pôles) : #chinavirus, #xofluza, #antiviral, #baloxavir. 21 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "chinavirus",
+          "g2": 1.54
+        },
+        {
+          "tag": "xofluza",
+          "g2": 1.54
+        },
+        {
+          "tag": "antiviral",
+          "g2": 1.54
+        },
+        {
+          "tag": "baloxavir",
+          "g2": 1.54
+        },
+        {
+          "tag": "téléchargement",
+          "g2": 1.54
+        },
+        {
+          "tag": "europe",
+          "g2": 1.54
+        },
+        {
+          "tag": "hmpv",
+          "g2": 0.94
+        }
+      ],
+      "key_words": [
+        {
+          "word": "virus",
+          "g2": 2.18
+        }
+      ],
+      "themes": {
+        "virus": 100.0
+      },
+      "samples": [
+        {
+          "sn": "annelaurebeaud2",
+          "text": "#HMPV voici les infos partagées par Dr.Divyaprakash Singh Solanki via LinkedIn Sourcing que j’ai trouvé https://t.co/7c5uU0jhsP",
+          "at": "2025-01-03",
+          "tag": "hmpv"
+        },
+        {
+          "sn": "annelaurebeaud2",
+          "text": "La propagation du virus en Chine #HMPV suscite des inquiétudes dans le monde entier. Aucun cas de HMPV n'a été signalé, selon l'Inde. @Mohammed11Saleh vous en dit plus. #ChinaVirus Un média officiel qui en parle https://t.co/jYtpEZr0hh",
+          "at": "2025-01-03",
+          "tag": "hmpv"
+        },
+        {
+          "sn": "annelaurebeaud2",
+          "text": "Je vous invite à suivre : #HMPV Les infos sur ce sujet",
+          "at": "2025-01-03",
+          "tag": "hmpv"
+        },
+        {
+          "sn": "annelaurebeaud2",
+          "text": "L'Inde signale ses premiers cas de virus #HMPV ; le gouvernement minimise la menace alors que les craintes liées au Covid-19 reviennent https://t.co/BtUlgFqgqP",
+          "at": "2025-01-06",
+          "tag": "hmpv"
+        },
+        {
+          "sn": "annelaurebeaud2",
+          "text": "L'Indonésie a commencé à surveiller les vols en provenance de Chine Malaisie en raison des inquiétudes s du à l'augmentation des infections au virus HMPV En Chine pharmacies augmenteraient les prix du médicament appelé #Xofluza, #antiviral dont l'ingrédient #baloxavir marboxil ht",
+          "at": "2025-01-09",
+          "tag": "xofluza"
+        }
+      ],
       "n_users": 41,
-      "n_original_tweets": 61,
+      "n_original_tweets": 21,
       "color": "#de81ff",
       "hub": "france24_fr"
     },
     "4": {
       "id": "4",
-      "qualif": "pôle @eclairelutin",
-      "qualif_short": "pôle @eclairelutin",
-      "justification": "C4 · hub @eclairelutin. Profil lexique non enrichi pour ce pôle.",
-      "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "qualif": "chine",
+      "qualif_short": "chine",
+      "justification": "C4 · hub @eclairelutin. Lexique distinctif (z log-odds CSV vs autres pôles) : #chine. 7 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "chine",
+          "g2": 0.0
+        }
+      ],
+      "key_words": [
+        {
+          "word": "chine",
+          "g2": 3.01
+        }
+      ],
+      "themes": {
+        "chine": 100.0
+      },
+      "samples": [
+        {
+          "sn": "ebalemozindo",
+          "text": "#CHINE: SANTÉ. La Chine déclare l'état d'urgence alors que de multiples virus, dont la grippe A, le HMPV, le mycoplasma pneumoniae et le COVID-19, se propagent rapidement dans toute la Chine. https://t.co/1o9slQoY2a",
+          "at": "2025-01-03",
+          "tag": "chine"
+        }
+      ],
       "n_users": 30,
-      "n_original_tweets": 38,
+      "n_original_tweets": 7,
       "color": "#ff497c",
       "hub": "eclairelutin"
     },
     "10": {
       "id": "10",
-      "qualif": "pôle @le_parisien",
-      "qualif_short": "pôle @le_parisien",
-      "justification": "C10 · hub @le_parisien. Profil lexique non enrichi pour ce pôle.",
+      "qualif": "hmpv / chine",
+      "qualif_short": "hmpv / chine",
+      "justification": "C10 · hub @le_parisien. Lexique distinctif (z log-odds CSV vs autres pôles) : hmpv, chine, augmentation, cas. 11 pubs hors RT.",
       "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "key_words": [
+        {
+          "word": "hmpv",
+          "g2": 0.0
+        },
+        {
+          "word": "chine",
+          "g2": 0.0
+        },
+        {
+          "word": "augmentation",
+          "g2": 0.0
+        },
+        {
+          "word": "cas",
+          "g2": 0.0
+        },
+        {
+          "word": "panique",
+          "g2": 0.0
+        },
+        {
+          "word": "sanitaire",
+          "g2": 0.0
+        },
+        {
+          "word": "connu",
+          "g2": 0.0
+        },
+        {
+          "word": "virus",
+          "g2": 0.0
+        }
+      ],
+      "themes": {
+        "hmpv": 1.0,
+        "chine": 1.0,
+        "augmentation": 1.0,
+        "cas": 1.0,
+        "panique": 1.0
+      },
+      "samples": [
+        {
+          "sn": "le_parisien",
+          "text": "Cinq ans après le début de la pandémie de Covid-19, l’augmentation des cas de contamination au HMPV inquiète. Une augmentation des cas dans le nord de la Chine a poussé les autorités sanitaires du pays à adresser des recommandations à la population. ➡️ https://t.co/EOD8B2yPfc htt",
+          "at": "2025-01-07",
+          "tag": ""
+        },
+        {
+          "sn": "degeneral__",
+          "text": "@franceinfo Encore une panique sanitaire? Non merci. Les médias adorent créer l'hystérie. Le HMPV est connu depuis 2001, c'est un virus respiratoire banal.",
+          "at": "2025-01-08",
+          "tag": ""
+        },
+        {
+          "sn": "franceinfo",
+          "text": "Cinq ans après le Covid-19, la Chine a-t-elle déclaré l'état d'urgence sanitaire à cause d'une épidémie de HMPV ? https://t.co/tXTPeaY9eR",
+          "at": "2025-01-08",
+          "tag": ""
+        },
+        {
+          "sn": "degeneral__",
+          "text": "@le_Parisien Encore une panique médiatique inutile. Le HMPV est connu depuis 2001, rien de nouveau. La peur vend plus que la vérité, n'est-ce pas?",
+          "at": "2025-01-08",
+          "tag": ""
+        },
+        {
+          "sn": "le_parisien",
+          "text": "Cinq ans après le début de la pandémie de Covid-19, l’augmentation des cas de contamination au HMPV inquiète. Une augmentation des cas dans le nord de la Chine a poussé les autorités sanitaires du pays à adresser des recommandations à la population. ➡️ https://t.co/C0iGYAtwum htt",
+          "at": "2025-01-08",
+          "tag": ""
+        }
+      ],
       "n_users": 30,
-      "n_original_tweets": 38,
+      "n_original_tweets": 11,
       "color": "#00bd94",
       "hub": "le_parisien"
     },
     "3": {
       "id": "3",
-      "qualif": "pôle @kasprzykremi",
-      "qualif_short": "pôle @kasprzykremi",
-      "justification": "C3 · hub @kasprzykremi. Profil lexique non enrichi pour ce pôle.",
+      "qualif": "mpvh / métapneumovirus",
+      "qualif_short": "mpvh / métapneumovirus",
+      "justification": "C3 · hub @kasprzykremi. Lexique distinctif (z log-odds CSV vs autres pôles) : mpvh, métapneumovirus, humain, virus. 2 pubs hors RT.",
       "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "key_words": [
+        {
+          "word": "mpvh",
+          "g2": 0.0
+        },
+        {
+          "word": "métapneumovirus",
+          "g2": 0.0
+        },
+        {
+          "word": "humain",
+          "g2": 0.0
+        },
+        {
+          "word": "virus",
+          "g2": 0.0
+        }
+      ],
+      "themes": {
+        "mpvh": 1.0,
+        "métapneumovirus": 1.0,
+        "humain": 1.0,
+        "virus": 1.0
+      },
+      "samples": [
+        {
+          "sn": "kasprzykremi",
+          "text": "🔬 Qu’est-ce que le MPVH ? Le métapneumovirus humain (HMPV en anglais) appartient à la famille des Paramyxoviridae. Il provoque des infections respiratoires, souvent bénignes. Les Symptômes? toux, fièvre, congestion nasale. Rien d’inquiétant dans la majorité des cas. (2/15) https:",
+          "at": "2025-01-09",
+          "tag": ""
+        },
+        {
+          "sn": "kasprzykremi",
+          "text": "Ces derniers jours, vous avez peut-être entendu parler d’un « nouveau virus »en Chine le métapneumovirus humain (MPVH) Pas de panique, c’est un virus connu depuis 2001, et on sait comment il agit. Voici ce qu’il faut savoir. 👇 FIL 🧶 (1/15) https://t.co/X2eoU5qzsE",
+          "at": "2025-01-09",
+          "tag": ""
+        }
+      ],
       "n_users": 30,
-      "n_original_tweets": 32,
+      "n_original_tweets": 2,
       "color": "#b45309",
       "hub": "kasprzykremi"
     },
     "8": {
       "id": "8",
-      "qualif": "pôle @asianews_fr",
-      "qualif_short": "pôle @asianews_fr",
-      "justification": "C8 · hub @asianews_fr. Profil lexique non enrichi pour ce pôle.",
-      "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "qualif": "populations",
+      "qualif_short": "populations",
+      "justification": "C8 · hub @asianews_fr. Lexique distinctif (z log-odds CSV vs autres pôles) : #chine, #hmpv. 6 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "chine",
+          "g2": 0.0
+        },
+        {
+          "tag": "hmpv",
+          "g2": 0.0
+        }
+      ],
+      "key_words": [
+        {
+          "word": "populations",
+          "g2": 3.41
+        }
+      ],
+      "themes": {
+        "populations": 100.0
+      },
+      "samples": [
+        {
+          "sn": "asianews_fr",
+          "text": "La #Chine 🇨🇳 serait confrontée à une nouvelle crise sanitaire alors que l'épidémie de HMPV se propage rapidement à travers le pays, suscitant des inquiétudes mondiales - Hindustan Times https://t.co/seEfoFV5EB",
+          "at": "2025-01-03",
+          "tag": "chine"
+        },
+        {
+          "sn": "asianews_fr",
+          "text": "La #Chine 🇨🇳 est confrontée à une épidémie de métapneumovirus humain (HMPV) . #HMPV est un virus respiratoire qui provoque des infections bénignes similaires à un rhume. Aucune urgence officielle n'a été déclarée. 🎥@jist_news https://t.co/2OIPZsKpzt",
+          "at": "2025-01-04",
+          "tag": "hmpv"
+        }
+      ],
       "n_users": 27,
-      "n_original_tweets": 28,
+      "n_original_tweets": 6,
       "color": "#eab308",
       "hub": "asianews_fr"
     },
     "9": {
       "id": "9",
-      "qualif": "pôle @c_a_g0101",
-      "qualif_short": "pôle @c_a_g0101",
-      "justification": "C9 · hub @c_a_g0101. Profil lexique non enrichi pour ce pôle.",
-      "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "qualif": "cas",
+      "qualif_short": "cas",
+      "justification": "C9 · hub @c_a_g0101. Lexique distinctif (z log-odds CSV vs autres pôles) : #wasterwater_dont_lie. 26 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "wasterwater_dont_lie",
+          "g2": 1.61
+        }
+      ],
+      "key_words": [
+        {
+          "word": "cas",
+          "g2": 2.58
+        }
+      ],
+      "themes": {
+        "cas": 100.0
+      },
+      "samples": [
+        {
+          "sn": "c_a_g0101",
+          "text": "4/4 Et pour ceux qui seraient tentés d'exploiter ce narratif pour promouvoir la \"dette immunitaire\", le HMPV n'a rien de nouveau, ni d'exceptionnel cette année. Et au passage, il n'est pas non plus hivernal mais printanier 🤷‍♂️ #wasterwater_dont_lie https://t.co/rE33MyKbW8 https:",
+          "at": "2025-01-05",
+          "tag": "wasterwater_dont_lie"
+        }
+      ],
       "n_users": 26,
-      "n_original_tweets": 63,
+      "n_original_tweets": 26,
       "color": "#2563eb",
       "hub": "c_a_g0101"
     },
     "13": {
       "id": "13",
-      "qualif": "pôle @ngrandvaux",
-      "qualif_short": "pôle @ngrandvaux",
-      "justification": "C13 · hub @ngrandvaux. Profil lexique non enrichi pour ce pôle.",
-      "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "qualif": "hmpv / chine",
+      "qualif_short": "hmpv / chine",
+      "justification": "C13 · hub @ngrandvaux. Lexique distinctif (z log-odds CSV vs autres pôles) : #metapneumovirus. 6 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "metapneumovirus",
+          "g2": 0.96
+        }
+      ],
+      "key_words": [
+        {
+          "word": "hmpv",
+          "g2": 0.0
+        },
+        {
+          "word": "chine",
+          "g2": 0.0
+        },
+        {
+          "word": "virus",
+          "g2": 0.0
+        },
+        {
+          "word": "nouveau",
+          "g2": 0.0
+        },
+        {
+          "word": "épidémie",
+          "g2": 0.0
+        },
+        {
+          "word": "humain",
+          "g2": 0.0
+        },
+        {
+          "word": "québec",
+          "g2": 0.0
+        },
+        {
+          "word": "virale",
+          "g2": 0.0
+        }
+      ],
+      "themes": {
+        "hmpv": 1.0,
+        "chine": 1.0,
+        "virus": 1.0,
+        "nouveau": 1.0,
+        "épidémie": 1.0
+      },
+      "samples": [
+        {
+          "sn": "gengis9999",
+          "text": "La Chine est de nouveau confrontée à une nouvelle épidémie virale mystérieuse et mortelle, baptisée HMPV (métapneumovirus humain) Les médias sociaux sont inondés de vidéos d’hôpitaux surpeuplés. https://t.co/5LzgrZOjlA",
+          "at": "2025-01-05",
+          "tag": ""
+        },
+        {
+          "sn": "jeanbarbeau2",
+          "text": "Des informations fiables et utiles sur le HMPV venant de @NGrandvaux . Voir clair sur ce genre de rumeur. 👇👇👇 https://t.co/uSHFRf5mcN",
+          "at": "2025-01-07",
+          "tag": ""
+        },
+        {
+          "sn": "ngrandvaux",
+          "text": "5️⃣ Le HMPV n’est pas anodin, mais il n’y a aucune raison de comparer cette épidémie en Chine à l’émergence du SARS-CoV-2. ⚠️ Cependant, cela soulève une question importante : Devons-nous prendre des mesures pour limiter la propagation des virus respiratoires ?",
+          "at": "2025-01-07",
+          "tag": ""
+        },
+        {
+          "sn": "ngrandvaux",
+          "text": "3️⃣ Le HMPV est suivi par la vigie des virus respiratoires @INSPQ au Québec et au Canada. 📊 Pour les données au Québec: 🔗https://t.co/yc2sFD6drn (Prenez le temps de parcourir les différentes pages, car les analyses sont classées par milieux : cliniques/hôpitaux).",
+          "at": "2025-01-07",
+          "tag": ""
+        },
+        {
+          "sn": "ngrandvaux",
+          "text": "Petit thread sur l’éclosion virale signalée en Chine. 1️⃣L’éclosion est due au #metapneumovirus humain (#HMPV ), qui n’est PAS un nouveau virus. 👉 Identifié en 2001 (mais circulant probablement bien avant). 🔗 Référence : https://t.co/bi1GNDEl2A",
+          "at": "2025-01-07",
+          "tag": "hmpv"
+        }
+      ],
       "n_users": 22,
-      "n_original_tweets": 28,
+      "n_original_tweets": 6,
       "color": "#a855f7",
       "hub": "ngrandvaux"
     },
     "0": {
       "id": "0",
-      "qualif": "pôle @aixematrice",
-      "qualif_short": "pôle @aixematrice",
-      "justification": "C0 · hub @aixematrice. Profil lexique non enrichi pour ce pôle.",
-      "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "qualif": "chine / hmpv",
+      "qualif_short": "chine / hmpv",
+      "justification": "C0 · hub @aixematrice. Lexique distinctif (z log-odds CSV vs autres pôles) : #pandémie, #épidémie, #covid_19, #breaking. 6 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "pandémie",
+          "g2": 2.48
+        },
+        {
+          "tag": "épidémie",
+          "g2": 2.48
+        },
+        {
+          "tag": "covid_19",
+          "g2": 2.18
+        },
+        {
+          "tag": "breaking",
+          "g2": 2.07
+        },
+        {
+          "tag": "oms",
+          "g2": 1.89
+        },
+        {
+          "tag": "beaking",
+          "g2": 1.53
+        },
+        {
+          "tag": "pandemie",
+          "g2": 1.27
+        }
+      ],
+      "key_words": [
+        {
+          "word": "chine",
+          "g2": 0.0
+        },
+        {
+          "word": "hmpv",
+          "g2": 0.0
+        },
+        {
+          "word": "cas",
+          "g2": 0.0
+        },
+        {
+          "word": "épidémie",
+          "g2": 0.0
+        },
+        {
+          "word": "covid",
+          "g2": 0.0
+        },
+        {
+          "word": "virus",
+          "g2": 0.0
+        },
+        {
+          "word": "premiers",
+          "g2": 0.0
+        },
+        {
+          "word": "état",
+          "g2": 0.0
+        }
+      ],
+      "themes": {
+        "chine": 1.0,
+        "hmpv": 1.0,
+        "cas": 1.0,
+        "épidémie": 1.0,
+        "covid": 1.0
+      },
+      "samples": [
+        {
+          "sn": "aixematrice",
+          "text": "#chine 😡😡😡! Les premiers cas de métapneumovirus humain chinois (HMPV) ont été signalés à Hong Kong, suite à la déclaration par la Chine de l'état d'urgence sanitaire face à l'épidémie. ! Encore un nouveau Confinement prochainement 🤔🤔 #OMS #pandemie !! Laissez -nous https://t.co/w",
+          "at": "2025-01-04",
+          "tag": "pandemie"
+        },
+        {
+          "sn": "aixematrice",
+          "text": "Un petit réveil en musique et avec humour ! Passer une bonne semaine ! Est-ce la maladie X de L #oms ? 🔴‼️ Et c’est reparti ? #BREAKING , 🚨 Après 5 ans de la #pandémie de #COVID_19, la #Chine fait face à une nouvelle #épidémie d’un #virus appelé #HMPV (Human https://t.co/flhV46fy",
+          "at": "2025-01-06",
+          "tag": "covid_19"
+        },
+        {
+          "sn": "aixematrice",
+          "text": "🔴‼️ Et c’est reparti ? #BREAKING , 🚨 Après 5 ans de la #pandémie de #COVID_19, la #Chine fait face à une nouvelle #épidémie d’un #virus appelé #HMPV (Human Metapneumovirus), une infection respiratoire. Les hôpitaux sont saturés de cas de ce virus ! Et ça arrive ? Y a personne htt",
+          "at": "2025-01-06",
+          "tag": "covid_19"
+        }
+      ],
       "n_users": 22,
-      "n_original_tweets": 29,
+      "n_original_tweets": 6,
       "color": "#00c1ff",
       "hub": "aixematrice"
     },
     "17": {
       "id": "17",
-      "qualif": "pôle @cavousf5",
-      "qualif_short": "pôle @cavousf5",
-      "justification": "C17 · hub @cavousf5. Profil lexique non enrichi pour ce pôle.",
-      "key_hashtags": [],
+      "qualif": "càvous",
+      "qualif_short": "càvous",
+      "justification": "C17 · hub @cavousf5. Lexique distinctif (z log-odds CSV vs autres pôles) : #càvous. 1 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "càvous",
+          "g2": 1.62
+        }
+      ],
       "key_words": [],
       "themes": {},
-      "samples": [],
+      "samples": [
+        {
+          "sn": "cavousf5",
+          "text": "🔴 Rumeur de reconfinement à cause du virus HMPV : une fake news vue par 1 million de personnes, à laquelle même l’OMS a dû répondre. On vous en parle dans la Story de @mohamedbouhafsi dans #CàVous ⬇️ https://t.co/bpC2jkigNg",
+          "at": "2025-01-17",
+          "tag": "càvous"
+        }
+      ],
       "n_users": 17,
-      "n_original_tweets": 17,
+      "n_original_tweets": 1,
       "color": "#14b8a6",
       "hub": "cavousf5"
     },
     "11": {
       "id": "11",
-      "qualif": "pôle @mickaellaffont",
-      "qualif_short": "pôle @mickaellaffont",
-      "justification": "C11 · hub @mickaellaffont. Profil lexique non enrichi pour ce pôle.",
-      "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "qualif": "chine / nouvelle",
+      "qualif_short": "chine / nouvelle",
+      "justification": "C11 · hub @mickaellaffont. Lexique distinctif (z log-odds CSV vs autres pôles) : #hmpv, #covid19. 3 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "hmpv",
+          "g2": 0.0
+        },
+        {
+          "tag": "covid19",
+          "g2": 0.0
+        }
+      ],
+      "key_words": [
+        {
+          "word": "chine",
+          "g2": 0.0
+        },
+        {
+          "word": "nouvelle",
+          "g2": 0.0
+        },
+        {
+          "word": "épidémie",
+          "g2": 0.0
+        },
+        {
+          "word": "virus",
+          "g2": 0.0
+        },
+        {
+          "word": "métapneumovirus",
+          "g2": 0.0
+        },
+        {
+          "word": "humain",
+          "g2": 0.0
+        },
+        {
+          "word": "hmpv",
+          "g2": 0.0
+        },
+        {
+          "word": "rapidement",
+          "g2": 0.0
+        }
+      ],
+      "themes": {
+        "chine": 1.0,
+        "nouvelle": 1.0,
+        "épidémie": 1.0,
+        "virus": 1.0,
+        "métapneumovirus": 1.0
+      },
+      "samples": [
+        {
+          "sn": "mickaellaffont",
+          "text": "Il semblerait qu’une nouvelle épidémie de virus du métapneumovirus humain (#HMPV) se propage rapidement, en Chine 5 ans après la pandémie de #Covid19 https://t.co/O1Nb4nf6cX",
+          "at": "2025-01-04",
+          "tag": "hmpv"
+        }
+      ],
       "n_users": 12,
-      "n_original_tweets": 15,
+      "n_original_tweets": 3,
       "color": "#f43f5e",
       "hub": "mickaellaffont"
     },
     "23": {
       "id": "23",
-      "qualif": "pôle @bvoltaire",
-      "qualif_short": "pôle @bvoltaire",
-      "justification": "C23 · hub @bvoltaire. Profil lexique non enrichi pour ce pôle.",
-      "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "qualif": "virus / chine",
+      "qualif_short": "virus / chine",
+      "justification": "C23 · hub @bvoltaire. Lexique distinctif (z log-odds CSV vs autres pôles) : #chine, #virus. 1 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "chine",
+          "g2": 0.0
+        },
+        {
+          "tag": "virus",
+          "g2": 0.0
+        }
+      ],
+      "key_words": [
+        {
+          "word": "virus",
+          "g2": 0.0
+        },
+        {
+          "word": "chine",
+          "g2": 0.0
+        }
+      ],
+      "themes": {
+        "virus": 1.0,
+        "chine": 1.0
+      },
+      "samples": [
+        {
+          "sn": "bvoltaire",
+          "text": "[SANTÉ] Le virus respiratoire HMPV va-t-il engendrer une nouvelle pandémie ? - Par Dr. Jacques Michel Lacroix #Chine #virus Encore une épidémie venue de Chine. https://t.co/ltjtgq9GlM",
+          "at": "2025-01-15",
+          "tag": "chine"
+        }
+      ],
       "n_users": 11,
-      "n_original_tweets": 12,
+      "n_original_tweets": 1,
       "color": "#d946ef",
       "hub": "bvoltaire"
     }
   },
-  "tag_accounts": {},
-  "tag_n_accounts": {},
-  "tag_communities": {}
+  "tag_accounts": {
+    "antiviral": [
+      "annelaurebeaud2"
+    ],
+    "baloxavir": [
+      "annelaurebeaud2"
+    ],
+    "beaking": [
+      "aixematrice"
+    ],
+    "breaking": [
+      "aixematrice"
+    ],
+    "brote": [
+      "torreseryc"
+    ],
+    "china": [
+      "alainfrnews",
+      "arvindkuma63460",
+      "jrmeferran85965",
+      "kero_on_x",
+      "laboussolei",
+      "ravipolara",
+      "walawpress",
+      "ysssineyass"
+    ],
+    "chinavirus": [
+      "annelaurebeaud2"
+    ],
+    "chine": [
+      "actuenvif",
+      "aixematrice",
+      "alainfrnews",
+      "asianews_fr",
+      "bvoltaire",
+      "cesarwazen",
+      "citizenbamba",
+      "designche1",
+      "destinationsant",
+      "ebalemozindo",
+      "fab20674300",
+      "france24_fr",
+      "francenews24",
+      "georasia",
+      "hadejakeita",
+      "irisnews_",
+      "jrmeferran85965",
+      "jyves94",
+      "kero_on_x",
+      "laboussolei",
+      "laurentopsomer",
+      "lecanape2",
+      "lepoint",
+      "lntribune",
+      "maliactu",
+      "marochebdo",
+      "medi1tvafrique",
+      "ndaokals",
+      "ngwaditenplar",
+      "nomdidiou501075",
+      "olivier40121476",
+      "partoutatis77",
+      "phoenixpho71063",
+      "sylvainebe54733",
+      "torreseryc",
+      "vigicovid",
+      "walawpress",
+      "woit_geopolitic",
+      "ysssineyass"
+    ],
+    "confinement": [
+      "nax_offi",
+      "simarongongomba",
+      "torreseryc"
+    ],
+    "contagion": [
+      "torreseryc"
+    ],
+    "coronavirus": [
+      "jindependant",
+      "nax_offi",
+      "vigicovid"
+    ],
+    "covid": [
+      "aponiaanalytics",
+      "i3ct3r",
+      "irisnews_",
+      "jrmeferran85965",
+      "kero_on_x",
+      "robin_des_lois",
+      "ruibvic",
+      "torreseryc",
+      "vijayku77120064",
+      "vishvaschikara"
+    ],
+    "covid19": [
+      "alapic974",
+      "binesh_bharat",
+      "citizenbamba",
+      "fab20674300",
+      "france24_fr",
+      "globalintel_",
+      "jyves94",
+      "laboussolei",
+      "lourau20e",
+      "mickaellaffont",
+      "nax_offi",
+      "robin_des_lois",
+      "sylvainebe54733",
+      "var_actu",
+      "vigicovid"
+    ],
+    "covid_19": [
+      "aixematrice",
+      "ndaokals",
+      "torreseryc"
+    ],
+    "càvous": [
+      "cavousf5"
+    ],
+    "europe": [
+      "simarongongomba"
+    ],
+    "europenews": [
+      "torreseryc"
+    ],
+    "france": [
+      "jrmeferran85965",
+      "ndaokals",
+      "olivierrimmel",
+      "torreseryc"
+    ],
+    "hmpv": [
+      "aanand_krishnaa",
+      "actuenvif",
+      "aixematrice",
+      "alainfrnews",
+      "alapic974",
+      "annelaurebeaud2",
+      "aponiaanalytics",
+      "arumugam_94",
+      "arvindkuma63460",
+      "asianews_fr",
+      "benjamin_leduc_",
+      "bewafaladki1",
+      "binesh_bharat",
+      "bnc_2012",
+      "bouaange63937",
+      "cesarwazen",
+      "citizenbamba",
+      "defimediainfo",
+      "designche1",
+      "destinationsant",
+      "dieuson1",
+      "digitalradioone",
+      "doctors_guild",
+      "dommajeur",
+      "dragonstartrump",
+      "extinctionrush",
+      "frajmovies",
+      "france24_fr",
+      "francois_59_",
+      "ganjeetmeena",
+      "globalintel_",
+      "hassahmed93",
+      "hmpv284646",
+      "i3ct3r",
+      "iamyogeshk",
+      "interferonei",
+      "irisnews_",
+      "ishrtweets",
+      "jindependant",
+      "josdyyossi",
+      "jrmeferran85965",
+      "jyves94",
+      "kero_on_x",
+      "khurapati69",
+      "knizakenzaa",
+      "laboussolei",
+      "laurentopsomer",
+      "lecanape2",
+      "lefouparolier",
+      "liberta_parita",
+      "lntribune",
+      "lourau20e",
+      "marochebdo",
+      "medi1tvafrique",
+      "memesmafia_",
+      "mickaellaffont",
+      "mrhinduyou",
+      "nax_offi",
+      "ndaokals",
+      "neveuxbertrand",
+      "ngrandvaux",
+      "nicolasmortel",
+      "nomdidiou501075",
+      "oliver_x44",
+      "olivier40121476",
+      "olivierrimmel",
+      "philkayinga",
+      "poupettemytho",
+      "prashan97478515",
+      "quitin30days",
+      "ravipolara",
+      "reveil_algerie",
+      "revolutionpacif",
+      "robin_des_lois",
+      "serumgroup",
+      "shubham__45_",
+      "stellanwofia",
+      "sumitg71",
+      "tboulboulva",
+      "tekiano",
+      "thecongorx",
+      "ticheck_org",
+      "timelinelatest",
+      "torreseryc",
+      "var_actu",
+      "verif_tf1lci",
+      "vermajeetu1996",
+      "vijayku77120064",
+      "vishvaschikara",
+      "walawpress",
+      "webdo_tn",
+      "ysssineyass",
+      "zewala3"
+    ],
+    "hmpvirus": [
+      "hmpv284646",
+      "jrmeferran85965",
+      "khurapati69",
+      "ravipolara",
+      "sumitg71",
+      "torreseryc"
+    ],
+    "hmpvoutbreak": [
+      "kero_on_x",
+      "torreseryc"
+    ],
+    "hmpvvirus": [
+      "benjamin_leduc_",
+      "kero_on_x",
+      "lefouparolier",
+      "nax_offi",
+      "sumitg71",
+      "thecongorx",
+      "torreseryc",
+      "vermajeetu1996",
+      "ysssineyass"
+    ],
+    "hpmv": [
+      "alainfrnews",
+      "irisnews_",
+      "khurapati69",
+      "medscapefrance",
+      "onuinfo",
+      "vigicovid"
+    ],
+    "lockdown": [
+      "dragonstartrump",
+      "frajmovies",
+      "interferonei",
+      "josdyyossi",
+      "khurapati69",
+      "knizakenzaa",
+      "philkayinga",
+      "shubham__45_",
+      "stellanwofia",
+      "vermajeetu1996",
+      "vijayku77120064"
+    ],
+    "maladie": [
+      "torreseryc"
+    ],
+    "metapneumovirus": [
+      "defimediainfo",
+      "herodote1789",
+      "laboussolei",
+      "ngrandvaux",
+      "partoutatis77",
+      "phoenixpho71063",
+      "pressecitron",
+      "ruibvic",
+      "the88stevend",
+      "vigicovid"
+    ],
+    "monde": [
+      "torreseryc"
+    ],
+    "occident": [
+      "torreseryc"
+    ],
+    "oms": [
+      "aixematrice",
+      "irisnews_",
+      "onugeneve",
+      "quitin30days",
+      "vegasapologies",
+      "vigicovid"
+    ],
+    "pandemie": [
+      "aixematrice",
+      "phoenixpho71063",
+      "torreseryc"
+    ],
+    "pandémie": [
+      "aixematrice",
+      "ndaokals"
+    ],
+    "sante": [
+      "aesinfos",
+      "citizenbamba",
+      "designche1",
+      "laurentopsomer",
+      "pressecitron",
+      "robin_des_lois",
+      "torreseryc"
+    ],
+    "santé": [
+      "defimediainfo",
+      "digitalradioone",
+      "hibaabdelli",
+      "kcharlemag85405",
+      "lorientlejour",
+      "ndaokals",
+      "nicolasmortel",
+      "reveil_algerie",
+      "tboulboulva"
+    ],
+    "stockmarketcrash": [
+      "dragonstartrump",
+      "josdyyossi",
+      "khurapati69",
+      "knizakenzaa",
+      "philkayinga",
+      "prashan97478515",
+      "vijayku77120064"
+    ],
+    "téléchargement": [
+      "simarongongomba"
+    ],
+    "vaccin": [
+      "torreseryc"
+    ],
+    "vaccins": [
+      "ndaokals",
+      "robin_des_lois"
+    ],
+    "virus": [
+      "aixematrice",
+      "alainfrnews",
+      "bvoltaire",
+      "citizenbamba",
+      "designche1",
+      "france24_fr",
+      "jindependant",
+      "jrmeferran85965",
+      "jyves94",
+      "laboussolei",
+      "lefouparolier",
+      "nax_offi",
+      "ndaokals",
+      "nicolasmortel",
+      "reveil_algerie",
+      "tekiano",
+      "ticheck_org",
+      "torreseryc",
+      "vigicovid",
+      "walawpress"
+    ],
+    "virushmpv": [
+      "i3ct3r",
+      "kero_on_x",
+      "torreseryc"
+    ],
+    "wasterwater_dont_lie": [
+      "c_a_g0101"
+    ],
+    "xofluza": [
+      "annelaurebeaud2"
+    ],
+    "zelena": [
+      "dragonstartrump",
+      "interferonei",
+      "josdyyossi",
+      "knizakenzaa",
+      "prashan97478515",
+      "vermajeetu1996"
+    ],
+    "épidémie": [
+      "aixematrice",
+      "ndaokals"
+    ],
+    "𝐇𝐌𝐏𝐕": [
+      "globalintel_"
+    ]
+  },
+  "tag_n_accounts": {
+    "antiviral": 1,
+    "baloxavir": 1,
+    "beaking": 1,
+    "breaking": 1,
+    "brote": 1,
+    "china": 8,
+    "chinavirus": 1,
+    "chine": 39,
+    "confinement": 3,
+    "contagion": 1,
+    "coronavirus": 3,
+    "covid": 10,
+    "covid19": 15,
+    "covid_19": 3,
+    "càvous": 1,
+    "europe": 1,
+    "europenews": 1,
+    "france": 4,
+    "hmpv": 93,
+    "hmpvirus": 6,
+    "hmpvoutbreak": 2,
+    "hmpvvirus": 9,
+    "hpmv": 6,
+    "lockdown": 11,
+    "maladie": 1,
+    "metapneumovirus": 10,
+    "monde": 1,
+    "occident": 1,
+    "oms": 6,
+    "pandemie": 3,
+    "pandémie": 2,
+    "sante": 7,
+    "santé": 9,
+    "stockmarketcrash": 7,
+    "téléchargement": 1,
+    "vaccin": 1,
+    "vaccins": 2,
+    "virus": 20,
+    "virushmpv": 3,
+    "wasterwater_dont_lie": 1,
+    "xofluza": 1,
+    "zelena": 6,
+    "épidémie": 2,
+    "𝐇𝐌𝐏𝐕": 1
+  },
+  "tag_communities": {
+    "antiviral": [
+      7
+    ],
+    "baloxavir": [
+      7
+    ],
+    "beaking": [
+      0
+    ],
+    "breaking": [
+      0
+    ],
+    "chinavirus": [
+      7
+    ],
+    "chine": [
+      2,
+      4,
+      8,
+      23
+    ],
+    "covid19": [
+      11
+    ],
+    "covid_19": [
+      0
+    ],
+    "càvous": [
+      17
+    ],
+    "europe": [
+      7
+    ],
+    "hmpv": [
+      7,
+      8,
+      11
+    ],
+    "metapneumovirus": [
+      13
+    ],
+    "oms": [
+      0
+    ],
+    "pandemie": [
+      0
+    ],
+    "pandémie": [
+      0
+    ],
+    "téléchargement": [
+      7
+    ],
+    "virus": [
+      23
+    ],
+    "wasterwater_dont_lie": [
+      9
+    ],
+    "xofluza": [
+      7
+    ],
+    "épidémie": [
+      0
+    ]
+  },
+  "tag_cooccur": {
+    "breaking": [
+      {
+        "tag": "chine",
+        "n": 2
+      },
+      {
+        "tag": "covid_19",
+        "n": 2
+      },
+      {
+        "tag": "hmpv",
+        "n": 2
+      },
+      {
+        "tag": "pandémie",
+        "n": 2
+      },
+      {
+        "tag": "virus",
+        "n": 2
+      },
+      {
+        "tag": "épidémie",
+        "n": 2
+      }
+    ],
+    "chine": [
+      {
+        "tag": "hmpv",
+        "n": 27
+      },
+      {
+        "tag": "virus",
+        "n": 15
+      },
+      {
+        "tag": "covid19",
+        "n": 7
+      },
+      {
+        "tag": "china",
+        "n": 6
+      },
+      {
+        "tag": "covid_19",
+        "n": 5
+      },
+      {
+        "tag": "hmpvvirus",
+        "n": 5
+      },
+      {
+        "tag": "covid",
+        "n": 4
+      },
+      {
+        "tag": "hmpvoutbreak",
+        "n": 4
+      },
+      {
+        "tag": "pandemie",
+        "n": 4
+      },
+      {
+        "tag": "metapneumovirus",
+        "n": 4
+      },
+      {
+        "tag": "oms",
+        "n": 4
+      },
+      {
+        "tag": "hmpvirus",
+        "n": 3
+      },
+      {
+        "tag": "maladie",
+        "n": 3
+      },
+      {
+        "tag": "virushmpv",
+        "n": 3
+      },
+      {
+        "tag": "pandémie",
+        "n": 3
+      }
+    ],
+    "covid19": [
+      {
+        "tag": "hmpv",
+        "n": 14
+      },
+      {
+        "tag": "chine",
+        "n": 7
+      },
+      {
+        "tag": "virus",
+        "n": 6
+      },
+      {
+        "tag": "𝐇𝐌𝐏𝐕",
+        "n": 2
+      },
+      {
+        "tag": "vaccins",
+        "n": 2
+      },
+      {
+        "tag": "sante",
+        "n": 2
+      },
+      {
+        "tag": "coronavirus",
+        "n": 2
+      },
+      {
+        "tag": "metapneumovirus",
+        "n": 2
+      }
+    ],
+    "covid_19": [
+      {
+        "tag": "chine",
+        "n": 5
+      },
+      {
+        "tag": "hmpv",
+        "n": 5
+      },
+      {
+        "tag": "virus",
+        "n": 5
+      },
+      {
+        "tag": "pandémie",
+        "n": 3
+      },
+      {
+        "tag": "épidémie",
+        "n": 3
+      },
+      {
+        "tag": "brote",
+        "n": 2
+      },
+      {
+        "tag": "confinement",
+        "n": 2
+      },
+      {
+        "tag": "contagion",
+        "n": 2
+      },
+      {
+        "tag": "covid",
+        "n": 2
+      },
+      {
+        "tag": "europenews",
+        "n": 2
+      },
+      {
+        "tag": "hmpvirus",
+        "n": 2
+      },
+      {
+        "tag": "hmpvoutbreak",
+        "n": 2
+      },
+      {
+        "tag": "hmpvvirus",
+        "n": 2
+      },
+      {
+        "tag": "maladie",
+        "n": 2
+      },
+      {
+        "tag": "monde",
+        "n": 2
+      }
+    ],
+    "hmpv": [
+      {
+        "tag": "chine",
+        "n": 27
+      },
+      {
+        "tag": "virus",
+        "n": 25
+      },
+      {
+        "tag": "covid19",
+        "n": 14
+      },
+      {
+        "tag": "hmpvvirus",
+        "n": 13
+      },
+      {
+        "tag": "lockdown",
+        "n": 12
+      },
+      {
+        "tag": "covid",
+        "n": 11
+      },
+      {
+        "tag": "china",
+        "n": 8
+      },
+      {
+        "tag": "confinement",
+        "n": 7
+      },
+      {
+        "tag": "hmpvirus",
+        "n": 7
+      },
+      {
+        "tag": "stockmarketcrash",
+        "n": 7
+      },
+      {
+        "tag": "zelena",
+        "n": 7
+      },
+      {
+        "tag": "hmpvoutbreak",
+        "n": 6
+      },
+      {
+        "tag": "santé",
+        "n": 6
+      },
+      {
+        "tag": "contagion",
+        "n": 5
+      },
+      {
+        "tag": "france",
+        "n": 5
+      }
+    ],
+    "metapneumovirus": [
+      {
+        "tag": "chine",
+        "n": 4
+      },
+      {
+        "tag": "hmpv",
+        "n": 2
+      },
+      {
+        "tag": "covid19",
+        "n": 2
+      },
+      {
+        "tag": "virus",
+        "n": 2
+      }
+    ],
+    "oms": [
+      {
+        "tag": "chine",
+        "n": 4
+      },
+      {
+        "tag": "hmpv",
+        "n": 2
+      },
+      {
+        "tag": "virus",
+        "n": 2
+      },
+      {
+        "tag": "hpmv",
+        "n": 2
+      }
+    ],
+    "pandemie": [
+      {
+        "tag": "chine",
+        "n": 4
+      },
+      {
+        "tag": "brote",
+        "n": 2
+      },
+      {
+        "tag": "confinement",
+        "n": 2
+      },
+      {
+        "tag": "contagion",
+        "n": 2
+      },
+      {
+        "tag": "covid",
+        "n": 2
+      },
+      {
+        "tag": "covid_19",
+        "n": 2
+      },
+      {
+        "tag": "europenews",
+        "n": 2
+      },
+      {
+        "tag": "hmpv",
+        "n": 2
+      },
+      {
+        "tag": "hmpvirus",
+        "n": 2
+      },
+      {
+        "tag": "hmpvoutbreak",
+        "n": 2
+      },
+      {
+        "tag": "hmpvvirus",
+        "n": 2
+      },
+      {
+        "tag": "maladie",
+        "n": 2
+      },
+      {
+        "tag": "monde",
+        "n": 2
+      },
+      {
+        "tag": "occident",
+        "n": 2
+      },
+      {
+        "tag": "vaccin",
+        "n": 2
+      }
+    ],
+    "pandémie": [
+      {
+        "tag": "chine",
+        "n": 3
+      },
+      {
+        "tag": "covid_19",
+        "n": 3
+      },
+      {
+        "tag": "hmpv",
+        "n": 3
+      },
+      {
+        "tag": "virus",
+        "n": 3
+      },
+      {
+        "tag": "épidémie",
+        "n": 3
+      },
+      {
+        "tag": "breaking",
+        "n": 2
+      }
+    ],
+    "virus": [
+      {
+        "tag": "hmpv",
+        "n": 25
+      },
+      {
+        "tag": "chine",
+        "n": 15
+      },
+      {
+        "tag": "confinement",
+        "n": 7
+      },
+      {
+        "tag": "covid19",
+        "n": 6
+      },
+      {
+        "tag": "contagion",
+        "n": 5
+      },
+      {
+        "tag": "covid",
+        "n": 5
+      },
+      {
+        "tag": "covid_19",
+        "n": 5
+      },
+      {
+        "tag": "hmpvvirus",
+        "n": 5
+      },
+      {
+        "tag": "france",
+        "n": 3
+      },
+      {
+        "tag": "maladie",
+        "n": 3
+      },
+      {
+        "tag": "sante",
+        "n": 3
+      },
+      {
+        "tag": "hmpvirus",
+        "n": 3
+      },
+      {
+        "tag": "hmpvoutbreak",
+        "n": 3
+      },
+      {
+        "tag": "vaccin",
+        "n": 3
+      },
+      {
+        "tag": "virushmpv",
+        "n": 3
+      }
+    ],
+    "épidémie": [
+      {
+        "tag": "chine",
+        "n": 3
+      },
+      {
+        "tag": "covid_19",
+        "n": 3
+      },
+      {
+        "tag": "hmpv",
+        "n": 3
+      },
+      {
+        "tag": "pandémie",
+        "n": 3
+      },
+      {
+        "tag": "virus",
+        "n": 3
+      },
+      {
+        "tag": "breaking",
+        "n": 2
+      }
+    ]
+  },
+  "tag_comm_n": {
+    "antiviral": {
+      "7": 1
+    },
+    "baloxavir": {
+      "7": 1
+    },
+    "beaking": {
+      "0": 1
+    },
+    "breaking": {
+      "0": 1
+    },
+    "brote": {
+      "46": 1
+    },
+    "china": {
+      "144": 1,
+      "233": 1,
+      "255": 1,
+      "264": 1,
+      "64": 1,
+      "69": 1,
+      "73": 1,
+      "74": 1
+    },
+    "chinavirus": {
+      "7": 1
+    },
+    "chine": {
+      "7": 2,
+      "0": 1,
+      "133": 1,
+      "144": 1,
+      "161": 1,
+      "2": 1,
+      "219": 1,
+      "222": 1,
+      "226": 1,
+      "23": 1,
+      "246": 1,
+      "263": 1,
+      "264": 1,
+      "267": 1,
+      "270": 1,
+      "281": 1,
+      "288": 1,
+      "291": 1,
+      "31": 1,
+      "322": 1,
+      "325": 1,
+      "327": 1,
+      "336": 1,
+      "337": 1,
+      "340": 1,
+      "4": 1,
+      "46": 1,
+      "48": 1,
+      "54": 1,
+      "64": 1,
+      "69": 1,
+      "72": 1,
+      "73": 1,
+      "74": 1,
+      "78": 1,
+      "8": 1,
+      "88": 1,
+      "94": 1
+    },
+    "confinement": {
+      "123": 1,
+      "46": 1,
+      "7": 1
+    },
+    "contagion": {
+      "46": 1
+    },
+    "coronavirus": {
+      "123": 1,
+      "128": 1,
+      "133": 1
+    },
+    "covid": {
+      "166": 1,
+      "185": 1,
+      "317": 1,
+      "46": 1,
+      "52": 1,
+      "64": 1,
+      "74": 1,
+      "80": 1,
+      "83": 1,
+      "94": 1
+    },
+    "covid19": {
+      "11": 1,
+      "123": 1,
+      "133": 1,
+      "161": 1,
+      "170": 1,
+      "176": 1,
+      "185": 1,
+      "193": 1,
+      "226": 1,
+      "281": 1,
+      "288": 1,
+      "304": 1,
+      "7": 1,
+      "73": 1,
+      "89": 1
+    },
+    "covid_19": {
+      "0": 1,
+      "325": 1,
+      "46": 1
+    },
+    "càvous": {
+      "17": 1
+    },
+    "europe": {
+      "7": 1
+    },
+    "europenews": {
+      "46": 1
+    },
+    "france": {
+      "28": 1,
+      "325": 1,
+      "46": 1,
+      "74": 1
+    },
+    "hmpv": {
+      "7": 3,
+      "0": 1,
+      "11": 1,
+      "110": 1,
+      "117": 1,
+      "118": 1,
+      "123": 1,
+      "127": 1,
+      "128": 1,
+      "129": 1,
+      "13": 1,
+      "136": 1,
+      "137": 1,
+      "143": 1,
+      "144": 1,
+      "160": 1,
+      "161": 1,
+      "162": 1,
+      "165": 1,
+      "166": 1,
+      "168": 1,
+      "170": 1,
+      "175": 1,
+      "176": 1,
+      "185": 1,
+      "193": 1,
+      "196": 1,
+      "202": 1,
+      "205": 1,
+      "206": 1,
+      "214": 1,
+      "219": 1,
+      "223": 1,
+      "226": 1,
+      "229": 1,
+      "231": 1,
+      "233": 1,
+      "235": 1,
+      "236": 1,
+      "238": 1,
+      "241": 1,
+      "244": 1,
+      "254": 1,
+      "255": 1,
+      "257": 1,
+      "263": 1,
+      "264": 1,
+      "267": 1,
+      "270": 1,
+      "275": 1,
+      "28": 1,
+      "291": 1,
+      "293": 1,
+      "297": 1,
+      "299": 1,
+      "300": 1,
+      "304": 1,
+      "309": 1,
+      "311": 1,
+      "312": 1,
+      "317": 1,
+      "32": 1,
+      "322": 1,
+      "325": 1,
+      "336": 1,
+      "340": 1,
+      "342": 1,
+      "346": 1,
+      "41": 1,
+      "45": 1,
+      "46": 1,
+      "51": 1,
+      "52": 1,
+      "53": 1,
+      "61": 1,
+      "63": 1,
+      "64": 1,
+      "69": 1,
+      "73": 1,
+      "74": 1,
+      "78": 1,
+      "8": 1,
+      "83": 1,
+      "88": 1,
+      "89": 1,
+      "9": 1,
+      "92": 1,
+      "94": 1,
+      "96": 1,
+      "97": 1,
+      "99": 1
+    },
+    "hmpvirus": {
+      "165": 1,
+      "205": 1,
+      "233": 1,
+      "46": 1,
+      "53": 1,
+      "74": 1
+    },
+    "hmpvoutbreak": {
+      "46": 1,
+      "64": 1
+    },
+    "hmpvvirus": {
+      "123": 1,
+      "137": 1,
+      "205": 1,
+      "264": 1,
+      "275": 1,
+      "346": 1,
+      "46": 1,
+      "63": 1,
+      "64": 1
+    },
+    "hpmv": {
+      "133": 1,
+      "27": 1,
+      "53": 1,
+      "69": 1,
+      "81": 1,
+      "94": 1
+    },
+    "lockdown": {
+      "136": 1,
+      "160": 1,
+      "162": 1,
+      "229": 1,
+      "275": 1,
+      "300": 1,
+      "45": 1,
+      "52": 1,
+      "53": 1,
+      "61": 1,
+      "96": 1
+    },
+    "maladie": {
+      "46": 1
+    },
+    "metapneumovirus": {
+      "13": 1,
+      "133": 1,
+      "16": 1,
+      "337": 1,
+      "347": 1,
+      "41": 1,
+      "47": 1,
+      "48": 1,
+      "73": 1,
+      "80": 1
+    },
+    "monde": {
+      "46": 1
+    },
+    "occident": {
+      "46": 1
+    },
+    "oms": {
+      "0": 1,
+      "114": 1,
+      "133": 1,
+      "26": 1,
+      "92": 1,
+      "94": 1
+    },
+    "pandemie": {
+      "0": 1,
+      "337": 1,
+      "46": 1
+    },
+    "pandémie": {
+      "0": 1,
+      "325": 1
+    },
+    "sante": {
+      "16": 1,
+      "185": 1,
+      "226": 1,
+      "270": 1,
+      "36": 1,
+      "46": 1,
+      "88": 1
+    },
+    "santé": {
+      "31": 2,
+      "223": 1,
+      "235": 1,
+      "238": 1,
+      "325": 1,
+      "342": 1,
+      "41": 1,
+      "7": 1
+    },
+    "stockmarketcrash": {
+      "162": 1,
+      "229": 1,
+      "300": 1,
+      "312": 1,
+      "52": 1,
+      "53": 1,
+      "61": 1
+    },
+    "téléchargement": {
+      "7": 1
+    },
+    "vaccin": {
+      "46": 1
+    },
+    "vaccins": {
+      "185": 1,
+      "325": 1
+    },
+    "virus": {
+      "0": 1,
+      "123": 1,
+      "128": 1,
+      "133": 1,
+      "144": 1,
+      "161": 1,
+      "223": 1,
+      "226": 1,
+      "23": 1,
+      "238": 1,
+      "254": 1,
+      "270": 1,
+      "325": 1,
+      "346": 1,
+      "46": 1,
+      "51": 1,
+      "69": 1,
+      "7": 1,
+      "73": 1,
+      "74": 1
+    },
+    "virushmpv": {
+      "46": 1,
+      "64": 1,
+      "83": 1
+    },
+    "wasterwater_dont_lie": {
+      "9": 1
+    },
+    "xofluza": {
+      "7": 1
+    },
+    "zelena": {
+      "160": 1,
+      "162": 1,
+      "229": 1,
+      "275": 1,
+      "300": 1,
+      "312": 1
+    },
+    "épidémie": {
+      "0": 1,
+      "325": 1
+    },
+    "𝐇𝐌𝐏𝐕": {
+      "176": 1
+    }
+  }
 }

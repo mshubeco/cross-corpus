@@ -2,10 +2,11 @@
   "meta": {
     "cluster": "Macron nucléaire · mars 2026",
     "corpus": "macron_nucleaire",
-    "window": null,
-    "source": "macron_nucleaire_profiles.json + graph communities90 + CSV effectifs # (Export_FF_corpus_macron_nucleaire_20260301-20260303_full_20260824_114345.csv)",
+    "source": "macron_nucleaire_profiles.json + graph communities90 + CSV enrich # (Export_FF_corpus_macron_nucleaire_20260301-20260303_full_20260824_114345.csv)",
     "keyness": "z log-odds (profiles intercomm) vs reste du graphe",
     "tag_accounts_def": "Comptes du graphe ayant publié hors RT au moins un message portant le hashtag (champ hashtag + # dans le texte).",
+    "tag_cooccur_def": "Co-occurrence message (hors RT) : autres # dans le même message.",
+    "tag_comm_n_def": "Comptes distincts du graphe ayant utilisé le #, par communauté Louvain.",
     "limit": "Label opérationnel fondé sur lexique distinctif (z) / structure / échantillons — pas une appartenance partisane des comptes ordinaires."
   },
   "communities": {
@@ -46,6 +47,22 @@
         {
           "tag": "hdpros2",
           "g2": 6.15
+        },
+        {
+          "tag": "destitution",
+          "g2": 5.8
+        },
+        {
+          "tag": "dissuasionnucleaire",
+          "g2": 5.62
+        },
+        {
+          "tag": "facealinfo",
+          "g2": 5.15
+        },
+        {
+          "tag": "sarahpourparis",
+          "g2": 5.1
         }
       ],
       "key_words": [
@@ -103,22 +120,22 @@
           "tag": ""
         },
         {
-          "sn": "grava_frantz",
-          "text": "@guadeloupela1e Candidats aux municipales, Électeurs, Dites à votre Député de faire voter la Proposition de Frantz Grava pour la Destitution de Macron pour sa Corruption de 500 millions d'€, dénoncée par le Député Olivier Marleix avant sa mort tragique tragique. #Macron #Municipa",
+          "sn": "jlrimi84",
+          "text": "@ManonMeunier_UP Les paysans ont reçu avec enthousiasme Macron, Lecornu et toute la secte.. Pourquoi un tel accueil à leurs bourreaux.? Pourquoi un salon de la honte après le génocide bovins qu'ils ont subi..? Pourquoi le représentant casquette à l'envers est venu parader sur BFM",
           "at": "2026-03-01",
-          "tag": "macron"
+          "tag": ""
         },
         {
-          "sn": "grava_frantz",
-          "text": "@RCI_GP Candidats aux municipales, Électeurs, Dites à votre Député de faire voter la Proposition de Frantz Grava pour la Destitution de Macron pour sa Corruption de 500 millions d'€ dénoncée par le Député Olivier Marleix avant sa mort tragique #Municipales https://t.co/gLKCWHDJnS",
+          "sn": "pietremarie",
+          "text": "@E2Villiers Il confond beaucoup de choses Macron ! Entre autre \"marre de toi\" par je me représente en 2022 !",
           "at": "2026-03-01",
-          "tag": "municipales"
+          "tag": ""
         },
         {
-          "sn": "phaugt",
-          "text": "@f_philippot Florian @f_philippot, organisez une manif contre le sionisme ! NON au sionisme, à la guerre, au #Rothschild, à #Macron ! Clamons corps et âmes notre souveraineté. Dénommer nos véritables ennemis ! N’ayons pas peur de nous faire traiter d’antisémites. Soyons droits et",
+          "sn": "patriciathoral",
+          "text": "@JakubowiczA @jaclostermann Trump a débranché Macron à Davos.",
           "at": "2026-03-01",
-          "tag": "macron"
+          "tag": ""
         }
       ],
       "n_users": 27032,
@@ -163,6 +180,22 @@
         {
           "tag": "cnews",
           "g2": 3.22
+        },
+        {
+          "tag": "europe",
+          "g2": 3.02
+        },
+        {
+          "tag": "dubai",
+          "g2": 2.06
+        },
+        {
+          "tag": "iran",
+          "g2": 1.91
+        },
+        {
+          "tag": "lfislamiste",
+          "g2": 1.61
         }
       ],
       "key_words": [
@@ -220,22 +253,22 @@
           "tag": ""
         },
         {
-          "sn": "pascalbobi44488",
-          "text": "@Mediavenir Ce sont des bouffons #Macron",
+          "sn": "jrdimdim",
+          "text": "On peut aller dormir ou on va se réveiller et Macron sera kidnappé par trump",
           "at": "2026-03-01",
-          "tag": "macron"
+          "tag": ""
         },
         {
-          "sn": "botteq",
-          "text": "#Macron #lecornu #Barrot #Hollande #PS #LR #Macronie #RN #LFIslamiste #IranStrikes On apprend que Omar et Ali ont été rapides a revendiquer n'y être pour rien. A noter qu'ils ne sont pour rien non plus dans l'assistance aux ressortissant français pris sous le tir de l'#Iran https",
+          "sn": "wunalaugh",
+          "text": "@AlertesInfos Macron stp te mêle pas de ça @EmmanuelMacron https://t.co/erNjWMmGYU",
           "at": "2026-03-01",
-          "tag": "hollande"
+          "tag": ""
         },
         {
-          "sn": "botteq",
-          "text": "#Macron #lecornu #lecornard #lecaniche bref la #Macronie #RN #PS #LR #LFIslamiste Trop tard les 🐂! 🤔Fallait pas voter - une fois pour le gros #Hollande - deux fois pour le 🍼Tartarin en couches culottes! https://t.co/5u8ueulqv6",
+          "sn": "benatiamedhi",
+          "text": "@Warretinha @iconicyous En Algerie Tebboune construit des murs pour empêcher ses citoyens de fuir, espérant que Macron va s'excuser d'être le président d'un pays trop attractif ! Heureusement pour l'Algerie que ces murs de la honte n'ont pas l'île d'Epstein comme vis à vis https:",
           "at": "2026-03-01",
-          "tag": "hollande"
+          "tag": ""
         }
       ],
       "n_users": 19191,
@@ -280,6 +313,22 @@
         {
           "tag": "ukrainewar",
           "g2": 5.88
+        },
+        {
+          "tag": "politics",
+          "g2": 5.78
+        },
+        {
+          "tag": "people",
+          "g2": 5.67
+        },
+        {
+          "tag": "kiev",
+          "g2": 5.61
+        },
+        {
+          "tag": "world",
+          "g2": 5.04
         }
       ],
       "key_words": [
@@ -325,6 +374,12 @@
       },
       "samples": [
         {
+          "sn": "randallmandell",
+          "text": "@nypost Have Macron surrendered yet?",
+          "at": "2026-03-01",
+          "tag": ""
+        },
+        {
           "sn": "hughs_rants",
           "text": "What we saw today is how long and how hard it is to remove radical islam from a country. The next Starmer or Macron or Carney tell you we need Palestinians or Syrians or Pakistanis, remember this day. Remember the cheering by 90M Iranians and millions more who want to go home.",
           "at": "2026-03-01",
@@ -337,22 +392,16 @@
           "tag": ""
         },
         {
-          "sn": "bluecobra132912",
-          "text": "@CNNEE .@CNNEE Phoenix reborn from the ashes❗❗❗❗ https://t.co/7YaJ2fTptj #NotreDamedeParis #NotreDamede #Paris #France #news #day #important #fire #art #monument #culture #religion #Christianity #Macron #tradition",
+          "sn": "lisa58615672701",
+          "text": "@YossiBenYakar Fuck macron",
           "at": "2026-03-01",
-          "tag": "macron"
+          "tag": ""
         },
         {
-          "sn": "bluecobra132912",
-          "text": "@CNNEE .@CNNEE Shock and disbelief. A slap in the face for #France. Mission impossible has become a fact. https://t.co/JKVRYeU2LJ #important #day #news #Louvre #Macron #theft #jewels #history #culture #Paris",
+          "sn": "1xaipe",
+          "text": "@9_tellthetruth Don’t call my by my name you daft cunt. I can read. I said the attacks against Iran were illegal and that Iran had a right to defend itself. I guess you’ve missed the posts from Macron and Starmer calling for Iran to “de-escalate,” as though the victims of aggress",
           "at": "2026-03-01",
-          "tag": "macron"
-        },
-        {
-          "sn": "thedailyupdatee",
-          "text": "French President Macron on Iran: \"France was neither informed nor involved, nor were the countries of the region or our allies.\" #Iran #Kuwait #Qatar #Trump #USA #Bahrain #Tehran #Teheran #Israel #UAE #Khamenei #France https://t.co/IipjfO28KB",
-          "at": "2026-03-01",
-          "tag": "israel"
+          "tag": ""
         }
       ],
       "n_users": 18526,
@@ -397,6 +446,22 @@
         {
           "tag": "putin",
           "g2": 6.44
+        },
+        {
+          "tag": "merz",
+          "g2": 5.53
+        },
+        {
+          "tag": "netanyahu",
+          "g2": 5.48
+        },
+        {
+          "tag": "usa",
+          "g2": 4.17
+        },
+        {
+          "tag": "dtrump",
+          "g2": 3.51
         }
       ],
       "key_words": [
@@ -454,22 +519,22 @@
           "tag": ""
         },
         {
-          "sn": "dutheilpierre",
-          "text": "Total soutien à Mélenchon et à LFI! CQFD! Arrêtez le massacre! Ce sont des mange-merdes! #FreePalestine Une seule solution Mélenchon! #PlusJamaisPS #BoycottIsrael Tous les soutiens inconditionnels sont ignobles! Même si Macron veut pas! https://t.co/Ev75mBT5cG",
+          "sn": "maryamarchitect",
+          "text": "@franceinfo Fahimeh Robiolle est un agent du régime travaillant sur le programme nucléaire selon son CV !!!!",
           "at": "2026-03-01",
-          "tag": "boycottisrael"
+          "tag": ""
         },
         {
-          "sn": "dutheilpierre",
-          "text": "Total soutien à Mélenchon et à LFI! CQFD! Arrêtez le massacre! Ce sont des mange-merdes! #FreePalestine Une seule solution Mélenchon! #PlusJamaisPS #BoycottIsrael Tous les soutiens inconditionnels sont ignobles! Même si Macron veut pas! https://t.co/GvuBWzC55u",
+          "sn": "frcastex",
+          "text": "Yesss ! Regardez , écoutez @JLMelenchon vous avez prévenu contre @EmmanuelMacron ! Entre nous , si Macron était juif , @JLMelenchon aurait été déjà, à l’époque, insulté d’antisémitisme ! Ouf .. Macron n’est pas juif ! https://t.co/gcnVkkLwXh",
           "at": "2026-03-01",
-          "tag": "boycottisrael"
+          "tag": ""
         },
         {
-          "sn": "dutheilpierre",
-          "text": "Total soutien à Mélenchon et à LFI! CQFD! Arrêtez le massacre! Ce sont des mange-merdes! #FreePalestine Une seule solution Mélenchon! #PlusJamaisPS #BoycottIsrael Tous les soutiens inconditionnels sont ignobles! Même si Macron veut pas! https://t.co/XQsfz5dQm3",
+          "sn": "drillerx89",
+          "text": "@0sasukeuchiwa0 @lafotaki Parce que ces peuples ne savent pas discuter ils savent juste se mettre sur la gueule, cependant pour la sécurité internationale on ne peut pas laisser une diactature théologique belliqueuse développer l’arme nucléaire",
           "at": "2026-03-01",
-          "tag": "boycottisrael"
+          "tag": ""
         }
       ],
       "n_users": 17603,
@@ -545,28 +610,28 @@
           "tag": ""
         },
         {
+          "sn": "donaldsaxe",
+          "text": "@Osint613 Starmer? Macron?",
+          "at": "2026-03-01",
+          "tag": ""
+        },
+        {
+          "sn": "terri9361387904",
+          "text": "@RadioGenoa We love Macron lol",
+          "at": "2026-03-01",
+          "tag": ""
+        },
+        {
           "sn": "dunjuan",
           "text": "@aniobrien Just another puppet of Israel. Nothing he does is for the good of the US unless it profits him and his masters. Trump, Starmer, Albonese, Macron, Carney are all doing what they are told. Watch the foot soldiers(refugees) rise against their host countries when the time ",
           "at": "2026-03-01",
           "tag": ""
         },
         {
-          "sn": "rickenrich2",
-          "text": "#France truly needs this remarkable Leader to turn them back from the abyss. But the little man #Macron will probably lock her up or otherwise impede her ascendency https://t.co/cn3HY34Miz",
+          "sn": "doggoneskippy",
+          "text": "@YossiBenYakar Shut up, macron. Youre a disgrace.",
           "at": "2026-03-01",
-          "tag": "macron"
-        },
-        {
-          "sn": "stormwatch12345",
-          "text": "#America #usa #israel #iran #uk #France etc YOU SEE THIS, look hard #Macron https://t.co/vwihF06V6X",
-          "at": "2026-03-01",
-          "tag": "israel"
-        },
-        {
-          "sn": "zimmlaw175",
-          "text": "@YossiBenYakar #Macron is a coward.",
-          "at": "2026-03-01",
-          "tag": "macron"
+          "tag": ""
         }
       ],
       "n_users": 17296,
@@ -611,6 +676,22 @@
         {
           "tag": "franceinfo",
           "g2": 5.73
+        },
+        {
+          "tag": "bfmtv",
+          "g2": 5.03
+        },
+        {
+          "tag": "cnews",
+          "g2": 4.54
+        },
+        {
+          "tag": "ps",
+          "g2": 4.45
+        },
+        {
+          "tag": "barrot",
+          "g2": 4.44
         }
       ],
       "key_words": [
@@ -659,7 +740,7 @@
           "sn": "fr34000",
           "text": "@BehzadNaziri De plus, ces lobbyistes de Pahlavi et des mollahs (pour défendre le droit du régime au nucléaire) ne savent même pas parler et ne disent que des banalités. Aujourd'hui j'ai préféré écouter le VOA. #NiChahNiMollah @LCI @BFMTV @France24_fr",
           "at": "2026-03-01",
-          "tag": ""
+          "tag": "nichahnimollah"
         },
         {
           "sn": "clara110400",
@@ -674,16 +755,16 @@
           "tag": "macron"
         },
         {
-          "sn": "moustafabakry",
-          "text": "@Le_Figaro Il faut que #Macron prenne des cours du droit international, auprès de la Norvège … Il faut que la #France dit NON et arrêt de suivre les Etats-Unis… Quelle humiliation.. @EmmanuelMacron",
+          "sn": "annecmmmm",
+          "text": "@GWGoldnadel Passer à côté de l’histoire pour se rêver de valser avec des tyrans, passer à côté des Français sans les regarder. Passer à côté de la vie et faire voter des textes mortifères. S’appeler Macron et pas avoir les mots ni le moindre courage.",
           "at": "2026-03-01",
-          "tag": "macron"
+          "tag": ""
         },
         {
-          "sn": "moustafabakry",
-          "text": "Il faut que #Macron prenne des cours du droit international, auprès de la Norvège … Il faut que la #France dit NON et arrêt de suivre les Etats-Unis… Quelle humiliation.. @EmmanuelMacron https://t.co/UmFTIxGukj",
+          "sn": "carlare57389362",
+          "text": "@JakubowiczA Parce que on est des nains. Et Macron le Premier. La France n’est plus rien dans l’ordre mondiale",
           "at": "2026-03-01",
-          "tag": "macron"
+          "tag": ""
         }
       ],
       "n_users": 14354,
@@ -763,9 +844,233 @@
     }
   },
   "tag_accounts": {
+    "alexsorros": [
+      "anangelslaugh1"
+    ],
+    "allemagne": [
+      "alainl18086",
+      "allonsypatriote",
+      "amrn1fayez",
+      "castrodemariam",
+      "complet99976",
+      "edensissi",
+      "gustave213",
+      "i3ct3r",
+      "mailletlucien",
+      "pl_maurice",
+      "reflexuscubitus",
+      "upstar_7",
+      "vivianelamarle1",
+      "yvesdon",
+      "zepapou"
+    ],
+    "armenucléaire": [
+      "arabi_breves",
+      "nabila_chouia"
+    ],
+    "attal": [
+      "ananasspirine",
+      "annesainte1",
+      "boblecentriste",
+      "lalobarose",
+      "mecreanophile",
+      "pauvreencolere",
+      "thierrymillet75"
+    ],
+    "avancée": [
+      "franceavenir33"
+    ],
+    "aveclepresident": [
+      "deycatherine1"
+    ],
+    "barrot": [
+      "botteq",
+      "christianclor",
+      "corinnedtr",
+      "couturiermichle",
+      "cyorc73",
+      "djilin34",
+      "dr_facts_phd",
+      "filfrance",
+      "girchris",
+      "ichtus765",
+      "k_nadjombe",
+      "leglaude69",
+      "mimimatic",
+      "misssocksplease",
+      "mydaphne",
+      "phaugt",
+      "phosophiahah",
+      "sandrafellous_",
+      "simon_tazeg"
+    ],
+    "bfmtv": [
+      "annesainte1",
+      "avicohen20",
+      "beatriceavignon",
+      "bernardzico",
+      "bleukomlenfer",
+      "bonapart001",
+      "clnplchcnsk",
+      "cristalinevert",
+      "dniepro",
+      "elsasser_witz",
+      "fabdesneiges",
+      "flaowerpower",
+      "fout_sen",
+      "goudesolympe",
+      "lamournotdead",
+      "lebandji",
+      "luc_gras",
+      "mourierrene",
+      "reikersone",
+      "sylvinfo",
+      "ycaree_ricardo"
+    ],
+    "biodechets": [
+      "leadshibiscus"
+    ],
+    "biodiversité": [
+      "zadigobb"
+    ],
+    "biogaz": [
+      "leadshibiscus"
+    ],
+    "biomasse": [
+      "leadshibiscus"
+    ],
+    "blackrock": [
+      "sissipatriote"
+    ],
     "boycottisrael": [
       "dutheilpierre",
       "savesjarrah"
+    ],
+    "breaking": [
+      "0p53c",
+      "999warmonitor",
+      "_desanta0",
+      "aamajnews_en",
+      "abrahama54923",
+      "alex_robertsj",
+      "amandevbar67676",
+      "anadoluagency",
+      "arabnews",
+      "bahabreaking",
+      "besseeth",
+      "breakinnewz01",
+      "by__daniela",
+      "callonalert",
+      "complet99976",
+      "cotamfleet",
+      "crimeadda",
+      "crypedux",
+      "cryptonewshntrs",
+      "dailyirannews",
+      "dantrimont",
+      "death2zionist",
+      "dewana_e_niazi",
+      "dogra_ultra11",
+      "donstefan____",
+      "dpa_intl",
+      "elissamaiss",
+      "elite_theory",
+      "europe9focus",
+      "eye_southern",
+      "fuckziopigs",
+      "gatman180",
+      "gbenro0",
+      "getta50",
+      "globewarreport",
+      "historyunt45462",
+      "horizon_reports",
+      "latestnewz_",
+      "mahrosh9091",
+      "manoj__du",
+      "mapago9",
+      "menaradar",
+      "mildata",
+      "mojtaba_khamene",
+      "mr_unknown65047",
+      "mrdisrupta",
+      "mubu796840mubu",
+      "nancinanci7",
+      "nathanstanfor",
+      "nationalindnews",
+      "ndtv",
+      "news_napoleon",
+      "nucleusprime",
+      "otumfour8",
+      "pkkamboh",
+      "politicsx24",
+      "predeanist",
+      "preparednerd",
+      "putinpulse",
+      "rawsalerts",
+      "realnews829984",
+      "redmaps11",
+      "regsecwatch",
+      "rifatredhoy",
+      "shadesalvo",
+      "shinchun69",
+      "statecipher",
+      "strikexintel",
+      "sunofm894",
+      "syedmuhammadno9",
+      "tgethglobaleye",
+      "theotrobox",
+      "times_nowindia",
+      "tvpworld_com",
+      "updatenew47783",
+      "warbrief2",
+      "warintel4u",
+      "warmonitors",
+      "withnifemi",
+      "wnewsrankx",
+      "worldspeak94111",
+      "zettawire"
+    ],
+    "bretagne": [
+      "gustave213",
+      "maiannah",
+      "profildiscret"
+    ],
+    "brussels": [
+      "bluecobra132912",
+      "cobra41816"
+    ],
+    "bruxellesout": [
+      "france_sursaut"
+    ],
+    "cavous": [
+      "fout_sen",
+      "mourierrene",
+      "tribundanton"
+    ],
+    "censure": [
+      "amimaux",
+      "ernestociesco",
+      "france_sursaut",
+      "oonorshine",
+      "politik333",
+      "raphaeldubouch1",
+      "yenpeplou"
+    ],
+    "chasse": [
+      "zadigobb"
+    ],
+    "chine": [
+      "anarlove_668",
+      "cgtnfrancais",
+      "cindawuert46123",
+      "cyorc73",
+      "gerscheleric",
+      "icibeyrouthnews",
+      "thetruthdw"
+    ],
+    "chirac": [
+      "beltaifam",
+      "sylvinfo"
     ],
     "cnews": [
       "abbonachris",
@@ -807,6 +1112,9 @@
       "talos_heraklion",
       "ycaree_ricardo"
     ],
+    "corse": [
+      "cristalinevert"
+    ],
     "dati": [
       "borgo7551",
       "brevesdepresse",
@@ -824,6 +1132,62 @@
       "tauriacc",
       "xexilikattaling",
       "zemm63"
+    ],
+    "day": [
+      "bluecobra132912",
+      "journalist21050"
+    ],
+    "defense": [
+      "actu_france01",
+      "claudarnaud",
+      "costardewen",
+      "defensenew61038",
+      "globalrushh",
+      "goodfrey195",
+      "information24_",
+      "kazinform_eng",
+      "laurentopsomer",
+      "lemediapolitifr",
+      "luc_gras",
+      "menaradar",
+      "milox_viral",
+      "modeinfo24",
+      "narrradar",
+      "publicsenat",
+      "realnews829984",
+      "roussey25004f",
+      "shorts_91",
+      "truebeaconintel",
+      "williamzawson",
+      "zettawire"
+    ],
+    "destitution": [
+      "amimaux",
+      "arnaud300781",
+      "b_imoka",
+      "bl_syfy",
+      "boboteuteu",
+      "ernestociesco",
+      "france_sursaut",
+      "gereffe",
+      "hdebonnevolonte",
+      "jeanfume5",
+      "jerryle91001364",
+      "jusko_bout",
+      "lespatriotes_75",
+      "lesterrassesca",
+      "limonier1",
+      "pierrephilos",
+      "pravda45",
+      "sissipatriote",
+      "steflyon",
+      "vingtdeux7eme"
+    ],
+    "dette": [
+      "davidjouarisse",
+      "gloriacasa77",
+      "goudesolympe",
+      "laurence1119436"
     ],
     "dissuasion": [
       "1graindefolie",
@@ -900,6 +1264,726 @@
       "vanessa_drx",
       "williamzawson"
     ],
+    "dissuasionnucleaire": [
+      "annickpllt",
+      "claudarnaud",
+      "information24_",
+      "linuvia_",
+      "nouvelr565660",
+      "reaperooffcl"
+    ],
+    "dissuasionnucléaire": [
+      "allonsypatriote",
+      "altin_alex",
+      "amrn1fayez",
+      "businessamfr",
+      "cevennes14",
+      "citoyenatterre",
+      "claudarnaud",
+      "couturiermichle",
+      "francoisarielle",
+      "fred_faravel",
+      "freebeez",
+      "jacquesmyard",
+      "lebret_tamara",
+      "lespatriotes_75",
+      "meunierelisabe1",
+      "patricianadal3",
+      "pressenza_fr",
+      "prudenciamedia",
+      "saintmauxe",
+      "sandrafellous_",
+      "sissipatriote",
+      "sylvinfo",
+      "thcastioni",
+      "toptribunetoday",
+      "xpmedia69"
+    ],
+    "dtrump": [
+      "fizelierguy"
+    ],
+    "dubai": [
+      "007actarus",
+      "_good_moon",
+      "_lionceaux_",
+      "alexia_1478",
+      "aminegociateur1",
+      "bareford94867",
+      "berenice_lbs",
+      "berenicelabosss",
+      "caliweed913",
+      "chambouletout",
+      "chelby2021",
+      "cindawuert46123",
+      "clnplchcnsk",
+      "cyberc0m",
+      "cyrilleguerin",
+      "eliad_rokibourg",
+      "eow44",
+      "eurovibez",
+      "flaowerpower",
+      "fout_sen",
+      "ga35132",
+      "gusephpisciotta",
+      "inaptocratie_fr",
+      "intelx_global",
+      "irambonapapias",
+      "itellsya",
+      "itspmaheshwari",
+      "jamesenemy",
+      "jhairjhadsones",
+      "jtowley70014",
+      "layla_r0ze",
+      "lebandji",
+      "lebotquitw60050",
+      "lehaffrite",
+      "leifjoh23236455",
+      "levirusduweb",
+      "maa_7593",
+      "matt__m7",
+      "matthieu_d",
+      "mery51231849",
+      "mickaellaffont",
+      "mimimatic",
+      "nassriffii",
+      "nishazient46460",
+      "nogoodnewsfr",
+      "oonorshine",
+      "ouimais30547175",
+      "popemarco",
+      "qilivevipere",
+      "saliharazgui",
+      "shelegshemech3",
+      "shibapasha",
+      "terrorshee",
+      "yuta_zoo77",
+      "zewala3"
+    ],
+    "dubaiattack": [
+      "adityajat_02",
+      "aminegociateur1",
+      "elraf67",
+      "ins1_brd",
+      "introverlawyer",
+      "misspatriote22",
+      "qilivevipere",
+      "sundaydesiderat"
+    ],
+    "ecologie": [
+      "leadshibiscus"
+    ],
+    "elon": [
+      "anangelslaugh1"
+    ],
+    "epstein": [
+      "amimaux",
+      "aminegociateur1",
+      "andreileterrib1",
+      "artichaut63",
+      "aspectofme",
+      "belleville76000",
+      "beltaifam",
+      "boboteuteu",
+      "boujemaa_b",
+      "cedlionlef",
+      "correanne",
+      "couturiermichle",
+      "davynimal",
+      "diaboloshelby",
+      "dieufranceroy",
+      "draregbio",
+      "duvalmarion6",
+      "eddymarflo",
+      "elissamaiss",
+      "enzocollet84265",
+      "fabdesneiges",
+      "faure05faure",
+      "france_bayard",
+      "fredo241987",
+      "gabriel_draghi",
+      "ganciunew",
+      "giovanadu",
+      "j3annormie",
+      "kokonews5",
+      "maskloff",
+      "maxlegrosmatou",
+      "mhmtkaya1464501",
+      "michdoisneau",
+      "misssocksplease",
+      "misterfruidom",
+      "mydaphne",
+      "olivierjean16",
+      "oneyearofbs",
+      "ortissetelodie",
+      "pacifistennl",
+      "pauvreencolere",
+      "petunia_wild",
+      "ready2mix",
+      "shibapasha",
+      "superkevin54",
+      "thekeeper46",
+      "vivianelamarle1",
+      "winnertoto97118",
+      "yapasbesoin2"
+    ],
+    "euronumérique": [
+      "france_sursaut"
+    ],
+    "europe": [
+      "30secondsne",
+      "__dissacrante__",
+      "_jadhavrohit",
+      "_warisacrime",
+      "a4floridacajun",
+      "acamusbzh",
+      "adnauseamz",
+      "ahbonmedia",
+      "allonsypatriote",
+      "artia13200",
+      "artwidak",
+      "bluecobra132912",
+      "botteq",
+      "broadcast0147",
+      "ccnnews360",
+      "claudea82619845",
+      "cmichelw",
+      "costardewen",
+      "cwilly4",
+      "didierlegac",
+      "dispute_it_news",
+      "doyaksec",
+      "dumplingnews",
+      "eliasniyon10080",
+      "europe9focus",
+      "euxternal",
+      "fbrunner_",
+      "federat_galact",
+      "forsaker1900",
+      "fout_sen",
+      "france_cz",
+      "freebeez",
+      "geofrontlinetv",
+      "horzmedias",
+      "indiastrikes_",
+      "information24_",
+      "informationssf",
+      "infosminutesfr",
+      "itspmaheshwari",
+      "jenny14800",
+      "jhairjhadsones",
+      "journalist21050",
+      "laurence1119436",
+      "laurentopsomer",
+      "lawhauz",
+      "let_crash",
+      "linuvia_",
+      "livingonloan",
+      "louisdubonsens",
+      "luc_gras",
+      "luxamorofficial",
+      "manucreateur",
+      "marcmangin",
+      "margarethperun",
+      "marketintl_",
+      "milox_viral",
+      "mimimatic",
+      "mrdisrupta",
+      "nikolamm",
+      "nouvelr565660",
+      "obsarm",
+      "pierrecrom",
+      "pubaffairseu",
+      "renardaux",
+      "renaudbellville",
+      "riodejannehero",
+      "roussey25004f",
+      "shorts_91",
+      "stanleyepstein",
+      "stayinformedc",
+      "thegeopost",
+      "tom_antonov",
+      "tomevolucion",
+      "toptribunetoday",
+      "tribunexpress1",
+      "tut0ugh",
+      "wbstone10",
+      "williamzawson",
+      "yase_aydin",
+      "yasirashirzad"
+    ],
+    "europe1": [
+      "aspelican",
+      "europe1",
+      "goudesolympe",
+      "lamournotdead",
+      "mourierrene",
+      "sondagedivers",
+      "ttm5cvznyw"
+    ],
+    "européenne": [
+      "federat_galact"
+    ],
+    "facealinfo": [
+      "dkbreizh",
+      "france_sursaut",
+      "joker77fancnews",
+      "laurenceputih",
+      "marylineparmi",
+      "natebrubecker",
+      "oxitan30",
+      "shelegshemech3",
+      "sistadunet"
+    ],
+    "fantômas": [
+      "beltaifam"
+    ],
+    "financenews": [
+      "aminegociateur1",
+      "leifjoh23236455"
+    ],
+    "fmerz": [
+      "fizelierguy"
+    ],
+    "france": [
+      "30secondsne",
+      "4r7h3f4c767",
+      "99goa",
+      "_flyingeze",
+      "_warisacrime",
+      "a4floridacajun",
+      "aar_oharo",
+      "aboudalkabid",
+      "abra88200674",
+      "actu_france01",
+      "actuflashinfofr",
+      "afrikasstruggle",
+      "agathoniamedia",
+      "ahmadouatafa",
+      "aijesinfo",
+      "ajantanews",
+      "albawabaenglish",
+      "alex_p_roach",
+      "algatedz",
+      "allapoedie",
+      "allonsypatriote",
+      "alwihdainfo",
+      "amandevbar67676",
+      "amekroun",
+      "amimaux",
+      "aminegociateur1",
+      "amrn1fayez",
+      "anas8634",
+      "andreabox0",
+      "antonin_albert",
+      "apacheqq",
+      "artia13200",
+      "artichaut63",
+      "asnews01",
+      "aspelican",
+      "atalayar_fr",
+      "ave_flym",
+      "azzdean",
+      "b4cryptotw",
+      "baa3465dd891455",
+      "bahatieulige",
+      "bakadifuilachri",
+      "barcolinho291",
+      "bastetmichle3",
+      "batesmotel888",
+      "bba34dz",
+      "bcmt_ecet",
+      "ben54493893",
+      "bensaadisa83164",
+      "bernie75019",
+      "besthealthyou",
+      "bettyzanolli",
+      "bhaskar_journo",
+      "birrittiera",
+      "bluecobra132912",
+      "boboteuteu",
+      "botteq",
+      "boutina76",
+      "breakingn_rdc",
+      "breakinnewz01",
+      "brumy17",
+      "burntoast317",
+      "businessamfr",
+      "by__daniela",
+      "c_lemondeen24h",
+      "candidatnews_fr",
+      "caprasphere",
+      "cartere88991802",
+      "casperhodmusic",
+      "castanetnews",
+      "castrodemariam",
+      "cbaroux_balou",
+      "ccnnews360",
+      "ceanglobal",
+      "cevennes14",
+      "chacha28011",
+      "chaiwala__",
+      "charles52892",
+      "chronikeco34789",
+      "citroyen",
+      "claudea82619845",
+      "cleandataonline",
+      "clubic",
+      "cmichelw",
+      "cnip_fr",
+      "cobra41816",
+      "complet99976",
+      "contacturbana",
+      "costardewen",
+      "cryptomilox",
+      "cryptonewshntrs",
+      "curieuxphilippe",
+      "cyberc0m",
+      "cyrus_in_the_x",
+      "d_evening_news",
+      "d_m_m_ah",
+      "dailyeurotimes",
+      "dailyworld24",
+      "daninspain70",
+      "daviddelapaz",
+      "de_epines",
+      "decrypteactufr",
+      "defence24eng",
+      "defensepolitics",
+      "delta139114",
+      "devaramkelawan4",
+      "dieufranceroy",
+      "dieuson1",
+      "digitaljournal",
+      "diponsaha11",
+      "direct_en31712",
+      "dispute_it_news",
+      "dont_woke_me",
+      "dopecapitalist",
+      "doyaksec",
+      "dr_facts_phd",
+      "draregbio",
+      "drmalko",
+      "drxavierflorida",
+      "dumb_today",
+      "echosplus",
+      "eliad_rokibourg",
+      "eliasalkaied",
+      "eliasniyon10080",
+      "eliendeze",
+      "elissamaiss",
+      "elite_theory",
+      "energiegrise",
+      "energiematin",
+      "erlorraineoff",
+      "ernestociesco",
+      "espoirlukusa",
+      "etnowlive",
+      "europeanmedia24",
+      "eurosintcz",
+      "eurovibez",
+      "euxternal",
+      "f2ffou2foot",
+      "fabme398176",
+      "federat_galact",
+      "filactus",
+      "firsttripr",
+      "flandrephilippe",
+      "fout_sen",
+      "foutage2gueules",
+      "fouzigone",
+      "francklegall13",
+      "francogrecque87",
+      "francoisarielle",
+      "freakvencija",
+      "fredericm1978",
+      "frederictiber",
+      "fredsubirana",
+      "frizvole",
+      "fuckziopigs",
+      "gbafreview",
+      "getbrieforbit",
+      "global_newswire",
+      "globalpulse_raw",
+      "globalpulsenow1",
+      "globalrushh",
+      "globusdaily",
+      "gptvoff",
+      "gregoirelaine",
+      "guffin_mac",
+      "gusephpisciotta",
+      "gustave213",
+      "gythiop",
+      "h_huebener",
+      "haideritay15494",
+      "harzizn",
+      "haseeb_sebi",
+      "heliosgan",
+      "herodote1789",
+      "hngnguy07447698",
+      "iintrouvable13",
+      "ikeunews",
+      "ikhwaninoah",
+      "ilham_ktm",
+      "imperialpresse",
+      "importantrepost",
+      "indiageolens",
+      "indiastrikes_",
+      "indiatoday",
+      "infolovol",
+      "information24_",
+      "informationssf",
+      "infosminutesfr",
+      "insightgl",
+      "intelx_global",
+      "introverlawyer",
+      "isabellann12",
+      "iscoseu",
+      "izlwhd",
+      "jameswisdo31436",
+      "jd_giuliani",
+      "jeansaitout",
+      "jenny14800",
+      "jeson187",
+      "jhairjhadsones",
+      "jlenardmichigan",
+      "jmsardo",
+      "jnwilliamlg",
+      "josly_ngoma",
+      "journalist21050",
+      "jugedunet",
+      "junior_oshiki",
+      "kabumba_justin",
+      "kakashib_94",
+      "kalonjitv",
+      "katherinekt09",
+      "kazinform_eng",
+      "kensbookinfo",
+      "kivuinfo24",
+      "kkoi106223",
+      "kostian_v",
+      "kuchimusta11503",
+      "kwkb_at89194",
+      "lacturapide",
+      "lafamilleadams",
+      "lagostelevision",
+      "lamournotdead",
+      "laurent56895090",
+      "laurent_daniel",
+      "laurentopsomer",
+      "lawhauz",
+      "lebandji",
+      "lehaffrite",
+      "lepeuple_cd",
+      "lequotidien509",
+      "let_crash",
+      "letsplaymodder",
+      "linuvia_",
+      "loeil_du_clone",
+      "lombardcar86263",
+      "lonapaligne",
+      "lorenzo082__",
+      "louisdubonsens",
+      "lreiding",
+      "ltn360_",
+      "luc_gras",
+      "ludmilavasilg",
+      "m_de_bourbon",
+      "m_james46209",
+      "mailletlucien",
+      "makoba_y",
+      "maliteo63",
+      "marccollin14",
+      "marcus_cus62509",
+      "margarethperun",
+      "marketintl_",
+      "marketnews247hq",
+      "massalia131",
+      "matthieu_d",
+      "maximemakengo",
+      "mbotecd",
+      "mbulukumoise",
+      "medias_moov",
+      "menalive_",
+      "menaradar",
+      "mendes_lenine",
+      "meunierelisabe1",
+      "michaela31700",
+      "michombero",
+      "mikekirbyone",
+      "miligor25",
+      "mimimatic",
+      "mistermag00",
+      "mmorisett",
+      "modeinfo24",
+      "mondaynewsmedia",
+      "monkey_journal",
+      "motema_cd",
+      "moustafabakry",
+      "mrdisrupta",
+      "mrericmas",
+      "mroladoke",
+      "muneeb_i2",
+      "murtcrypto",
+      "mydaphne",
+      "myglobalfeed1",
+      "myomiaou357",
+      "nancinanci7",
+      "naranow_eng",
+      "nationalindnews",
+      "ndjakas",
+      "nemanja4252",
+      "neverup23734180",
+      "newdelhitimes",
+      "newsinc24",
+      "nicolas_finance",
+      "nikolamm",
+      "nimegue70",
+      "ninapol3",
+      "nirajmalhotra",
+      "noelreports",
+      "nouvelleaubefr",
+      "nowhere992",
+      "nuclearid68",
+      "nyembo1040765",
+      "obsarm",
+      "observatoiregeo",
+      "omekomba_j75962",
+      "onguibadaniel",
+      "onopolitics",
+      "ormada29",
+      "ottoman20200",
+      "ouragancd",
+      "owawajosejunior",
+      "pachecorj",
+      "pakchinatoday",
+      "patricianadal3",
+      "patrick_mputu",
+      "pauvreencolere",
+      "pavanguptax",
+      "petarva85554823",
+      "peterclifford1",
+      "phlottiaux",
+      "pierrecrom",
+      "pluskutaqueryuk",
+      "politics_news0",
+      "powderkegdaily",
+      "profildiscret",
+      "projradioactif",
+      "publicnewsx",
+      "radar_euro11",
+      "randomstuffa2z",
+      "raoabhijeet",
+      "raoul_benoit",
+      "ratonjaune06",
+      "rawifuleriya",
+      "razakafridi9",
+      "realnews829984",
+      "reflexuscubitus",
+      "relaypress",
+      "renaudbellville",
+      "rickenrich2",
+      "robert4787",
+      "roussey25004f",
+      "rvhunter57",
+      "saliharazgui",
+      "sandrafellous_",
+      "satsukilucca",
+      "satyamkr012",
+      "savesjarrah",
+      "sconosciuto_r",
+      "scopenewsdaily",
+      "sdgai63797",
+      "seahawksonair",
+      "senetoile",
+      "sfournillon",
+      "shahbazpahlavi",
+      "shorts_91",
+      "shukranimbili",
+      "simplyslj",
+      "sissipatriote",
+      "skodofficial",
+      "skygaia",
+      "sofiyasofi01",
+      "sophiebrun15",
+      "soutienrow2026",
+      "spyros_litsas",
+      "stanleyepstein",
+      "stanysbujakera",
+      "statecipher",
+      "steiphweb",
+      "stoiciensky",
+      "stoneyhundo",
+      "stormwatch12345",
+      "strikexintel",
+      "sum_news_",
+      "summitsoldier",
+      "sunbrk",
+      "sunudiotaye",
+      "syber17156428",
+      "sylvainn11",
+      "sylvinfo",
+      "talos_heraklion",
+      "tarekkacem135",
+      "tdtnewsroom",
+      "techtimes477783",
+      "tedourson",
+      "the_best_man_57",
+      "theatrumbelli",
+      "thedailyupdatee",
+      "theglobaljourna",
+      "theriser100x",
+      "thorchrs",
+      "times_nowindia",
+      "toinoune_62",
+      "tom_antonov",
+      "tomlope95565011",
+      "torreseryc",
+      "tractonline",
+      "tribunexpress1",
+      "truebeaconintel",
+      "tut0ugh",
+      "u_tribune",
+      "unevoixp",
+      "unportugaissurx",
+      "upgradepcfr",
+      "upstar_7",
+      "uzbeknow",
+      "vachonghislain",
+      "vaclavusu",
+      "val21qui01rit",
+      "valvalliberte",
+      "vasilisdalianis",
+      "vbordenave",
+      "veroveronique1",
+      "vouskarim",
+      "war_343607",
+      "warbrief2",
+      "warcabinet_",
+      "warmonitoring_x",
+      "wbstone10",
+      "webdo_tn",
+      "wembi_steve",
+      "wnewsrankx",
+      "worldtrackex",
+      "wotan_2099",
+      "wp_space_news",
+      "wparthenope",
+      "wulgarstonehead",
+      "xveightone",
+      "yann541706",
+      "yasirashirzad",
+      "your_views84973",
+      "yuta_zoo77",
+      "yvesdon",
+      "zeeshan189226",
+      "zettawire",
+      "zonedesplugs"
+    ],
+    "france2": [
+      "boutina76",
+      "goudesolympe",
+      "wika_theresia"
+    ],
     "franceinfo": [
       "annesainte1",
       "bleukomlenfer",
@@ -912,6 +1996,15 @@
       "laurentopsomer",
       "mourierrene",
       "sylvinfo"
+    ],
+    "freeiran": [
+      "bcmt_ecet",
+      "cheikattak",
+      "domdombdx",
+      "f_tellier",
+      "raphlesioniste2",
+      "verita_bella",
+      "zadehvida63730"
     ],
     "freepalestine": [
       "boujemaa_b",
@@ -959,6 +2052,21 @@
       "yannickpleyel",
       "yenpeplou"
     ],
+    "frexitvite": [
+      "7708phoenix",
+      "astree_de_mu",
+      "eaufrere",
+      "ferdinebardamu",
+      "france_sursaut",
+      "gachuquet",
+      "jlouisboretti",
+      "kakashib_94",
+      "mgmoretti",
+      "viv506"
+    ],
+    "gabbard": [
+      "anangelslaugh1"
+    ],
     "gatewaypundit": [
       "fearless45trump",
       "frank461985941",
@@ -966,6 +2074,9 @@
       "joehonesttruth",
       "jp51news",
       "roger_mm1"
+    ],
+    "gensduvoyage": [
+      "cristalinevert"
     ],
     "germany": [
       "_warisacrime",
@@ -988,6 +2099,131 @@
       "peterclifford1",
       "shorts_91",
       "zettawire"
+    ],
+    "gerogesoros": [
+      "anangelslaugh1"
+    ],
+    "ggrmc": [
+      "dokazsan",
+      "dougou62_",
+      "gg_rmc",
+      "goudesolympe",
+      "jackslater_13",
+      "jfgino",
+      "laurenceputih",
+      "leprejoseph2",
+      "mayanne05451",
+      "mgnigni",
+      "mourierrene",
+      "nanoulc91",
+      "plouy17",
+      "raez07",
+      "sl_1960",
+      "sondagedivers",
+      "sylvinfo",
+      "tablounette26",
+      "tillily1603",
+      "tribundanton",
+      "will_bzh"
+    ],
+    "gitan": [
+      "cristalinevert"
+    ],
+    "groenland": [
+      "cyorc73",
+      "drxavierflorida",
+      "falconhill",
+      "louisdubonsens"
+    ],
+    "guerre": [
+      "1graindefolie",
+      "antonin_albert",
+      "ave_flym",
+      "barcolinho291",
+      "batesmotel888",
+      "chase_maccain",
+      "claudarnaud",
+      "fout_sen",
+      "francklegall13",
+      "frederic_andre_",
+      "gustave213",
+      "iintrouvable13",
+      "infos_defense",
+      "jeson187",
+      "jnwilliamlg",
+      "kakashib_94",
+      "karlverstraete",
+      "laurence1119436",
+      "lebandji",
+      "lehaffrite",
+      "leo31grc",
+      "listonactu",
+      "matt__m7",
+      "misterfruidom",
+      "nail1253114188",
+      "nassriffii",
+      "nikolamm",
+      "nopassnomask",
+      "ntmrrrrr",
+      "ouimais30547175",
+      "pauvreencolere",
+      "peaceinsouth",
+      "philippelebras3",
+      "qilivevipere",
+      "radiomoscou",
+      "realnews829984",
+      "regressio_fr",
+      "robbinsoars",
+      "ronan_bourgeat",
+      "sicman1375",
+      "tv_finance",
+      "tyler_isback",
+      "unportugaissurx",
+      "upgradepcfr",
+      "vilharr",
+      "vouskarim",
+      "yvesdon"
+    ],
+    "génocidegaza": [
+      "fizelierguy"
+    ],
+    "géopolitique": [
+      "asnews01",
+      "businessamfr",
+      "candidatnews_fr",
+      "diams47761",
+      "jenny14800",
+      "lepeuple_cd",
+      "luxamorofficial",
+      "renardaux",
+      "sofiyasofi01",
+      "tobs_marvel_",
+      "tribunexpress1"
+    ],
+    "hdpros": [
+      "007actarus",
+      "abbonachris",
+      "bernade26318985",
+      "clovis2626",
+      "cnews",
+      "emiddiot",
+      "europe1",
+      "fabdesneiges",
+      "france_sursaut",
+      "goudesolympe",
+      "katellhenry",
+      "lafamilleadams",
+      "lakjoaquim",
+      "lauradubarry76",
+      "laurenceputih",
+      "leredge76",
+      "locjean2",
+      "mourierrene",
+      "petitjacques16",
+      "pionpion234",
+      "scorpion195440",
+      "tribundanton",
+      "victori77866780"
     ],
     "hdpros2": [
       "bsbenche",
@@ -1016,6 +2252,777 @@
       "lecozbruno1",
       "mikhailsmolny",
       "pauvreencolere"
+    ],
+    "influenceurs": [
+      "1graindefolie",
+      "dsazerty",
+      "ernestomarx75",
+      "fils2psy",
+      "fout_sen",
+      "inaptocratie_fr",
+      "jukebox034",
+      "lehaffrite",
+      "levirusduweb",
+      "mistermag00",
+      "ternoise",
+      "vilharr"
+    ],
+    "iran": [
+      "007actarus",
+      "1alerte_1info",
+      "1drice",
+      "1graindefolie",
+      "24heureinfo",
+      "24hpujadas",
+      "4r7h3f4c767",
+      "6_toyen",
+      "9275raihan",
+      "99goa",
+      "__dissacrante__",
+      "_citoyen_alexis",
+      "_good_moon",
+      "_jadhavrohit",
+      "_langelus",
+      "_lionceaux_",
+      "_p__e_a_c_e_",
+      "_progressistes",
+      "_tunka_lemme",
+      "_warisacrime",
+      "aar_oharo",
+      "abacusdos",
+      "abbonachris",
+      "abrahama54923",
+      "actu_france01",
+      "actuflashinfofr",
+      "ad_vitam44_",
+      "adnauseamz",
+      "adoueba",
+      "advance2k25",
+      "afifon_",
+      "agathoniamedia",
+      "ahadali023",
+      "ahmed_niro97388",
+      "ahmedbensoussan",
+      "ai_qube_fr",
+      "aicryptocore",
+      "alarabiya_eng",
+      "alciatorla",
+      "alex_robertsj",
+      "alfred_lanning1",
+      "alijaved29",
+      "allonsypatriote",
+      "allonzzzzenfant",
+      "alperalanyaa",
+      "alternative_war",
+      "alvinsolaire",
+      "ameh_paul85791",
+      "amekroun",
+      "aminegociateur1",
+      "aminemedouar",
+      "amrn1fayez",
+      "ana_pouvreau",
+      "anakin2017",
+      "andreasmoun",
+      "andreileterrib1",
+      "angrycatmustard",
+      "anna_c_moi",
+      "annelisejustice",
+      "annesainte1",
+      "anthonylebbos",
+      "arabi_breves",
+      "arabnews",
+      "archangegaby",
+      "atalayar_fr",
+      "augustinfern",
+      "auroreabcp",
+      "ave_flym",
+      "axelsoncam10258",
+      "azala207",
+      "barcolinho291",
+      "batesmotel888",
+      "bcmt_ecet",
+      "bdspolitique",
+      "beautysexykw",
+      "benaissasimove",
+      "berenice_lbs",
+      "berenicelabosss",
+      "bergman_antoine",
+      "bernathoustra",
+      "bernie75019",
+      "bertrandredone",
+      "bhaskar_journo",
+      "birrittiera",
+      "blondic69",
+      "bongoloser15637",
+      "botteq",
+      "boujemaa_b",
+      "budelbergerr",
+      "burntoast317",
+      "c_encore_b_ea",
+      "cabributarn",
+      "caliweed913",
+      "cest__carre",
+      "cevennes14",
+      "charbonsdusud",
+      "chase_maccain",
+      "chrisdjembo",
+      "chrissgrafe",
+      "citroyen",
+      "clara110400",
+      "claudarnaud",
+      "clementpolitic",
+      "clnplchcnsk",
+      "clovis2626",
+      "combat5261",
+      "complet99976",
+      "corvus_pica",
+      "crichasee",
+      "cricverse07",
+      "crimeadda",
+      "crypto_domainer",
+      "cryptonewshntrs",
+      "curieuxphilippe",
+      "cwilly4",
+      "cyrilleguerin",
+      "d_m_m_ah",
+      "damienb616860",
+      "datta_patil7",
+      "davidangevin",
+      "dbelaid",
+      "decolonialisme",
+      "decrypteactufr",
+      "delongnuna",
+      "delta139114",
+      "demakry6950318",
+      "descanteschris",
+      "desertup",
+      "deskaffairs",
+      "devaramkelawan4",
+      "dezas69",
+      "dharmendra04",
+      "diaboloshelby",
+      "dieufranceroy",
+      "dimpolitique",
+      "dionjack2",
+      "diponsaha11",
+      "dniepro",
+      "doctorgfitness",
+      "domdombdx",
+      "doyaksec",
+      "dr_facts_phd",
+      "drakeoz_g",
+      "drgkyra",
+      "drxavierflorida",
+      "duvalmarion6",
+      "echiquiersocial",
+      "echosplus",
+      "edurengue",
+      "eindia82482",
+      "ekhouvannaai",
+      "elecreconquete",
+      "eliad_rokibourg",
+      "eliasniyon10080",
+      "elisahk92",
+      "elissamaiss",
+      "elraf67",
+      "emmamwanza70",
+      "eow44",
+      "erlorraineoff",
+      "espoirlukusa",
+      "eurovibez",
+      "euxternal",
+      "eveilfr",
+      "exitgloss",
+      "exyp",
+      "ezetrois",
+      "f4uve_",
+      "fabass1312",
+      "fabme398176",
+      "fabol22",
+      "fafaphil54",
+      "farahkhey",
+      "fbrunner_",
+      "fedjf",
+      "fellyluyindadio",
+      "fernandfilback",
+      "fidzontwit",
+      "fifimackie",
+      "finaudmarc",
+      "flaowerpower",
+      "fmhannibal",
+      "fontet33600",
+      "forsaker1900",
+      "fout_sen",
+      "fouzigone",
+      "france24_fr",
+      "franceavenir33",
+      "francesouvunie",
+      "francetrisser",
+      "francklegall13",
+      "franckyeng19878",
+      "francoismendy1",
+      "fredo_2019",
+      "fredsubirana",
+      "freebeez",
+      "freefrance",
+      "frizvole",
+      "g_savoureux93",
+      "ga35132",
+      "gate561122",
+      "gbafreview",
+      "gbenro0",
+      "gdecazaux",
+      "gdestaerck",
+      "geraltstappen",
+      "germembwell",
+      "ghazal_1n",
+      "gherrabi1967",
+      "global_newswire",
+      "globusdaily",
+      "goudesolympe",
+      "grand_gallus",
+      "gravelax3",
+      "gregmaddenusmc",
+      "groquebert",
+      "grossier_merle_",
+      "guigz75116",
+      "guillaumedefr10",
+      "gustave213",
+      "guzmanlaetitia",
+      "hadrichmalik",
+      "hammadia37",
+      "heliosgan",
+      "historyunt45462",
+      "i__iiii__i",
+      "ia1_info",
+      "iaefoffice",
+      "icibeyrouthnews",
+      "iintrouvable13",
+      "ikeunews",
+      "ilham_ktm",
+      "importantrepost",
+      "indiageolens",
+      "indiastrikes_",
+      "information24_",
+      "informationssf",
+      "infos_2025",
+      "infos_defense",
+      "inrodwetrustmtl",
+      "introverlawyer",
+      "irambonapapias",
+      "iranlivewire",
+      "iranonline_fr",
+      "irn_cowboy",
+      "iscoseu",
+      "itspmaheshwari",
+      "ivredevoltaire",
+      "jamesenemy",
+      "jc_dussse",
+      "jeanmessiha",
+      "jeanserran",
+      "jenny14800",
+      "jerome_buisson",
+      "jeson187",
+      "jfphilos",
+      "jhairjhadsones",
+      "jmicolle",
+      "jnwilliamlg",
+      "johnke09295195",
+      "jonashaddad",
+      "jonathan_101305",
+      "jopilib2",
+      "josly_ngoma",
+      "joycelonda243",
+      "jtillault",
+      "jugedunet",
+      "jul_patriote",
+      "just_wende",
+      "justme4now0",
+      "jwhwouei",
+      "kakashib_94",
+      "kakashii2o12406",
+      "kalaamouh_nd",
+      "kalonjitv",
+      "kanishka_digit",
+      "katherinekt09",
+      "katneom1",
+      "kesharwa4tanmay",
+      "kevinbossuet",
+      "kieslo",
+      "kokonews5",
+      "kolly_francois",
+      "kongotimes",
+      "kumar880268",
+      "kwkb_at89194",
+      "la_chaine_off",
+      "lagauloisezzz",
+      "lamaronneuse",
+      "laurence1119436",
+      "laurent_daniel",
+      "laurentopsomer",
+      "layla_r0ze",
+      "lbleublancrouge",
+      "lcedg1",
+      "leap_cdnx",
+      "lebandji",
+      "lebotquitw60050",
+      "ledamne25bezak",
+      "lefildinfo",
+      "lehaffrite",
+      "lejournalrs",
+      "lembraze",
+      "lemediapolitifr",
+      "lepappydeparis",
+      "letactilographe",
+      "levirusduweb",
+      "lindependant",
+      "linuvia_",
+      "listonactu",
+      "loeil_du_clone",
+      "loeiletlebon",
+      "lombardcar86263",
+      "lorenzo082__",
+      "loryanesinger",
+      "lostontranslati",
+      "lou_neg",
+      "loufrance75",
+      "louisdubonsens",
+      "lpdmcom",
+      "luc_gras",
+      "lucspighel",
+      "m_de_bourbon",
+      "ma4dalton",
+      "maa_7593",
+      "madharnabil1",
+      "magelanskull",
+      "malikmelenchon",
+      "maliteo63",
+      "malojmk",
+      "mamaneboukar4",
+      "manoj__du",
+      "manthoparis",
+      "manu20682903",
+      "manucreateur",
+      "marchaisth",
+      "marcmangin",
+      "margaretre40331",
+      "mariatoraj69718",
+      "martinjacrypto",
+      "masalimaom",
+      "maskloff",
+      "matt__m7",
+      "mattday59",
+      "maximemakengo",
+      "mdwajid01",
+      "mecreanophile",
+      "melina_nilles",
+      "menalivehq",
+      "mendes_lenine",
+      "metakognita",
+      "mguenegan",
+      "mhmtkaya1464501",
+      "michaela31700",
+      "miligor25",
+      "mimimatic",
+      "misspatriote22",
+      "misssocksplease",
+      "mistermag00",
+      "mliyoya46587",
+      "modeinfo24",
+      "mollusque75",
+      "momojetli",
+      "morandiniblog",
+      "mr_bear245",
+      "mrcpn7",
+      "mrdisrupta",
+      "mrjack12b",
+      "muneeb_i2",
+      "muso1947",
+      "mywaypress",
+      "namkaribou",
+      "naranow_eng",
+      "nassriffii",
+      "nayika_nayika",
+      "nayrazz",
+      "nebnoune",
+      "netineti24",
+      "news_activity",
+      "newsradars",
+      "newstapworld",
+      "nftenexx",
+      "nicolaswpolitic",
+      "ninapol3",
+      "ninasimone49",
+      "nirajmalhotra",
+      "noesisfr",
+      "nolanf30",
+      "norinov2",
+      "nouvelleaubefr",
+      "ntmrrrrr",
+      "nuclearid68",
+      "nyembo1040765",
+      "oceankayaker50",
+      "octva_",
+      "ohbrokenbritain",
+      "ojcius",
+      "olivierrimmel",
+      "oonapaquita",
+      "oonorshine",
+      "ouimais30547175",
+      "oumsedia69",
+      "padenom7",
+      "pahasauvage",
+      "parnian2013",
+      "pascalou999",
+      "pasinfox",
+      "patricianadal3",
+      "paul_bruno74",
+      "paul_chanc53873",
+      "paulfranckthink",
+      "pauvreencolere",
+      "pepele_news",
+      "petersonbnoel",
+      "petitpalois64",
+      "petunia_wild",
+      "philippelebras3",
+      "phlottiaux",
+      "pierr__v",
+      "pierre_1er",
+      "pierresal1",
+      "pinaamelie",
+      "piy_ushkatariya",
+      "politiquesfilms",
+      "polluxlerigolow",
+      "popopolitik",
+      "populiste63",
+      "powderkegdaily",
+      "praveenyad68203",
+      "preparednerd",
+      "pressburgerpowe",
+      "presseinfos1",
+      "pressenza_fr",
+      "profildiscret",
+      "profquidamn",
+      "protago07500271",
+      "pserenina40795",
+      "pssshitt",
+      "psyhodelikus",
+      "publicenem_y",
+      "publicnewsx",
+      "qvl108332",
+      "rabbinavzemmour",
+      "radiomoscou",
+      "rahim_bellem",
+      "raindiary02",
+      "rajnaidarpan",
+      "ranasaif_01",
+      "randomstuffa2z",
+      "raphlesioniste2",
+      "rbclouston",
+      "realnews829984",
+      "reaperooffcl",
+      "reconstruire_fr",
+      "regressio_fr",
+      "reikersone",
+      "relaypress",
+      "renaudbellville",
+      "revolution73",
+      "rimkus78rimkus",
+      "riodejannehero",
+      "rmy_mr7",
+      "rob__edelji",
+      "roidithaque21",
+      "romansmithson",
+      "romuald_correia",
+      "rosette_baes",
+      "roussey25004f",
+      "rrn_updates",
+      "rvhunter57",
+      "saeedqures49103",
+      "saiyan_du_parc",
+      "saliharazgui",
+      "sam9451sam",
+      "sambayerodia",
+      "sandrafellous_",
+      "sandy5suzi",
+      "sapikoote",
+      "satyamkr012",
+      "schneidtmi10140",
+      "schydlowski1",
+      "sconosciuto_r",
+      "scopenewsdaily",
+      "segadiarrah",
+      "senetoile",
+      "sev7nsurx",
+      "severine4976",
+      "shahmeer_zaidi1",
+      "shaileshsen803",
+      "shanisheikh7871",
+      "shantas11579",
+      "shibapasha",
+      "shunleestompy",
+      "sicman1375",
+      "siganopoutanaki",
+      "sikorskiv62530",
+      "simpleee______",
+      "sissipatriote",
+      "sitgesfranck",
+      "skodofficial",
+      "skygaia",
+      "sl_1960",
+      "sonnimaiga",
+      "soutienrow2026",
+      "spacesentinelle",
+      "steiphweb",
+      "stigmateb",
+      "stormwatch12345",
+      "stphani12351227",
+      "stringer_bell93",
+      "sudradio",
+      "sunilaarnav",
+      "sunofm894",
+      "sunudiotaye",
+      "surackdesign",
+      "swapnil95mishra",
+      "switzerudr",
+      "syednazirimam",
+      "sylibum",
+      "sylvieduh",
+      "sylviee22140659",
+      "sylvinfo",
+      "systemdeal",
+      "talos_heraklion",
+      "tamilatapayeva",
+      "tanyak46626",
+      "tatayoyo_1ere",
+      "tauriacc",
+      "temunip",
+      "terangatimes",
+      "terrorshee",
+      "the__rationale",
+      "thebihariboy_",
+      "thedailyupdatee",
+      "thejeazzy",
+      "themagazineafri",
+      "thequotesnews",
+      "thetruthdw",
+      "thierrymonsx",
+      "thomas246897989",
+      "thomasgarnier8",
+      "tilki2024",
+      "times_nowindia",
+      "timnero349587",
+      "tittofr01",
+      "tokwauluaena2",
+      "tool_am",
+      "torreseryc",
+      "toutsavoirmedia",
+      "tradingbcn",
+      "tribundanton",
+      "tribunexpress1",
+      "ttm5cvznyw",
+      "turenne1611",
+      "tv_finance",
+      "tv_lca",
+      "unevoixp",
+      "unportugaissurx",
+      "updatenew47783",
+      "upgradepcfr",
+      "val21qui01rit",
+      "veillet_s",
+      "veribedmjay",
+      "veteran3679045",
+      "vetopatriote",
+      "victorv_v10",
+      "vincent2354ii",
+      "wahdatj",
+      "walawpress",
+      "walirehmann",
+      "walterstra86430",
+      "warfootagehq",
+      "wbstone10",
+      "wicces_world",
+      "williamzawson",
+      "winnertoto97118",
+      "worldpolitics92",
+      "wotan_2099",
+      "xinfolive",
+      "yann541706",
+      "yassinyd5_00",
+      "yfaizidine",
+      "your_views84973",
+      "yvesdon",
+      "yzk68",
+      "zairker",
+      "zakaria84819211",
+      "zefrenchy",
+      "zeikfried1",
+      "zkdliin0",
+      "zonedesplugs"
+    ],
+    "iranisraelwar": [
+      "_good_moon",
+      "allonsypatriote",
+      "amrn1fayez",
+      "chelby2021",
+      "cyrilleguerin",
+      "drmalko",
+      "eboueurdesmaux",
+      "elissamaiss",
+      "eye_southern",
+      "fabwhat1",
+      "indiastrikes_",
+      "iranlivewire",
+      "itspmaheshwari",
+      "karaktha1",
+      "karim_de_paris",
+      "katneom1",
+      "latestly",
+      "ledamne25bezak",
+      "manoj__du",
+      "mdwajid01",
+      "muhhamza00",
+      "naranow_eng",
+      "onopolitics",
+      "ottoman20200",
+      "pakchinatoday",
+      "pathy70296746",
+      "pierresal1",
+      "ranasaif_01",
+      "saeedqures49103",
+      "themagazineafri",
+      "turenne1611",
+      "vachonghislain",
+      "voicetribal3",
+      "walirehmann",
+      "yfaizidine",
+      "zkdliin0"
+    ],
+    "iranwar": [
+      "1alerte_1info",
+      "1drice",
+      "_citoyen_alexis",
+      "_jadhavrohit",
+      "afifon_",
+      "afrikasstruggle",
+      "agoriummedia",
+      "ahadali023",
+      "aminegociateur1",
+      "anakin2017",
+      "angrycatmustard",
+      "az3rt1x",
+      "bangel525021",
+      "basileberthon",
+      "benjamincauchy",
+      "bisonistparty",
+      "bnc_2012",
+      "bouvines59",
+      "c_encore_b_ea",
+      "codeiaexe",
+      "combat5261",
+      "crichasee",
+      "cripsextremist",
+      "cyorc73",
+      "cyrilleguerin",
+      "dbotpapi",
+      "de_official_ken",
+      "dlicelaurent",
+      "domdombdx",
+      "dont_woke_me",
+      "drmalko",
+      "ecolimima",
+      "eirene_god",
+      "elissamaiss",
+      "elraf67",
+      "f4uve_",
+      "fabwhat1",
+      "flaowerpower",
+      "francesouvunie",
+      "francoisemars",
+      "gbenro0",
+      "ghazal_1n",
+      "gustave213",
+      "helenoraart",
+      "historyunt45462",
+      "hoescarwilde",
+      "imnmtweets",
+      "indiageolens",
+      "intelx_global",
+      "jcgrelet",
+      "jhairjhadsones",
+      "jonathan_101305",
+      "jul_patriote",
+      "karaktha1",
+      "karim_de_paris",
+      "kesharwa4tanmay",
+      "kinro_01021996",
+      "kumar880268",
+      "lan1794",
+      "laurentfurtif",
+      "leammamama",
+      "lebandji",
+      "ledamne25bezak",
+      "makoba_y",
+      "manuelcrespov",
+      "mariatoraj69718",
+      "martinjacrypto",
+      "mecreanophile",
+      "mhmtkaya1464501",
+      "michaela31700",
+      "mmorisett",
+      "mrcpn7",
+      "newsradars",
+      "nicolasidic",
+      "nicolorenzoblue",
+      "oceankayaker50",
+      "pakchinatoday",
+      "peaceinsouth",
+      "pluskutaqueryuk",
+      "preparednerd",
+      "pressafrik",
+      "prosperdecannes",
+      "publicenem_y",
+      "pulsemarkt",
+      "ranasaif_01",
+      "rbclouston",
+      "reaperooffcl",
+      "richard_jlucas",
+      "saxmanbdx",
+      "sev7nsurx",
+      "sikorskiv62530",
+      "sowhatmfethu",
+      "stanstfoy",
+      "statecipher",
+      "stoneyhundo",
+      "sunilaarnav",
+      "switzerudr",
+      "sylibum",
+      "talos_heraklion",
+      "the__rationale",
+      "thebihariboy_",
+      "thedavrollout",
+      "theriser100x",
+      "thibaud1453",
+      "thierrymonsx",
+      "thomas246897989",
+      "timer_x68709",
+      "timnero349587",
+      "tittofr01",
+      "tongalsen",
+      "tonyrb30856330",
+      "torreseryc",
+      "turenne1611",
+      "tyler_isback",
+      "val21qui01rit",
+      "warfootagehq",
+      "wicces_world",
+      "wika_theresia",
+      "witwaveindia",
+      "yfaizidine",
+      "yuta_zoo77"
+    ],
+    "islamout": [
+      "france_sursaut"
     ],
     "israel": [
       "007actarus",
@@ -1186,6 +3193,143 @@
       "zairker",
       "zeikfried1"
     ],
+    "israelmonstruositésansnom": [
+      "fizelierguy"
+    ],
+    "israël": [
+      "_citoyen_alexis",
+      "anthonylebbos",
+      "chdevoogd",
+      "davidg54485524",
+      "fmhannibal",
+      "fouzigone",
+      "france24_fr",
+      "fredsubirana",
+      "guytohone1",
+      "jenny14800",
+      "josly_ngoma",
+      "kalonjitv",
+      "leglaude69",
+      "lemediapolitifr",
+      "letoulois",
+      "lindependant",
+      "linuvia_",
+      "loryanesinger",
+      "lpdmcom",
+      "m_de_bourbon",
+      "madharnabil1",
+      "magelanskull",
+      "malikmelenchon",
+      "marcmangin",
+      "mliyoya46587",
+      "mr_bear245",
+      "nyembo1040765",
+      "pepele_news",
+      "presseinfos1",
+      "pressenza_fr",
+      "rabinedesbois",
+      "raphlesioniste2",
+      "roselouise48520",
+      "saliharazgui",
+      "shibapasha",
+      "sylvinfo",
+      "val21qui01rit",
+      "veroveronique1",
+      "victorv_v10",
+      "williamzawson",
+      "yvesdon"
+    ],
+    "italy": [
+      "bluecobra132912",
+      "cobra41816",
+      "journalist21050"
+    ],
+    "jerusalem": [
+      "morandiniblog"
+    ],
+    "khamenei": [
+      "007actarus",
+      "akthenewsroom",
+      "alfred_lanning1",
+      "andreasmoun",
+      "axelsoncam10258",
+      "baudouinjulien",
+      "benaissasimove",
+      "clementpolitic",
+      "clnplchcnsk",
+      "crimeadda",
+      "dadoubd",
+      "datta_patil7",
+      "davidangevin",
+      "doctorgfitness",
+      "dodgerdaddy",
+      "doyaksec",
+      "elecreconquete",
+      "elisabethfaure1",
+      "elraf67",
+      "elsasser_witz",
+      "eow44",
+      "farahkhey",
+      "flaowerpower",
+      "fmhannibal",
+      "francetrisser",
+      "ga35132",
+      "gopalak50343172",
+      "ilham_ktm",
+      "introverlawyer",
+      "itellsya",
+      "jeanmessiha",
+      "jnalexphilippe",
+      "joslynmich60319",
+      "jtowley70014",
+      "kalaamouh_nd",
+      "kalonjitv",
+      "kongotimes",
+      "kumar880268",
+      "lostontranslati",
+      "luc_gras",
+      "lucioannis70935",
+      "mdwajid01",
+      "mecreanophile",
+      "mendes_lenine",
+      "misspatriote22",
+      "mywaypress",
+      "nayika_nayika",
+      "nirajmalhotra",
+      "pahasauvage",
+      "piy_ushkatariya",
+      "rajnaidarpan",
+      "renaudbellville",
+      "rrn_updates",
+      "schneidtmi10140",
+      "sikorskiv62530",
+      "skodofficial",
+      "st_reemigration",
+      "sundaydesiderat",
+      "sunilaarnav",
+      "swapnil95mishra",
+      "syednazirimam",
+      "thedailyupdatee",
+      "updatenew47783",
+      "veteran3679045",
+      "your_views84973",
+      "yuta_zoo77"
+    ],
+    "kiev": [
+      "bluecobra132912",
+      "cobra41816",
+      "jojogyari",
+      "journalist21050",
+      "wparthenope"
+    ],
+    "kingcharles": [
+      "anangelslaugh1"
+    ],
+    "knafo": [
+      "1010732bis",
+      "cath_rn95",
+      "emmah751"
+    ],
     "lci": [
       "24hpujadas",
       "annesainte1",
@@ -1228,6 +3372,28 @@
       "vrwatchingu",
       "zadigobb"
     ],
+    "lefigaro": [
+      "dkbreizh",
+      "goudesolympe"
+    ],
+    "lemonde": [
+      "goudesolympe"
+    ],
+    "lepen": [
+      "adam_42m",
+      "bluecobra132912",
+      "boblecentriste",
+      "diaboloshelby",
+      "laurenceputih",
+      "lebandji",
+      "lilou5754",
+      "mrericmas",
+      "pier2kan",
+      "pierricv",
+      "prosperdecannes",
+      "systemdeal",
+      "ternoise"
+    ],
     "lfi": [
       "_patrice_leroy_",
       "_stan76_",
@@ -1266,6 +3432,15 @@
       "stefane61669",
       "thalyn_",
       "tribundanton"
+    ],
+    "lfislamiste": [
+      "botteq"
+    ],
+    "lidl": [
+      "aminegociateur1"
+    ],
+    "lobbyisme": [
+      "zadigobb"
     ],
     "lr": [
       "alphamax14",
@@ -2390,6 +4565,29 @@
       "zonedesplugs",
       "zoollysunn"
     ],
+    "macron_tue_la_france": [
+      "france_sursaut"
+    ],
+    "macrondegage": [
+      "alekes___",
+      "c_encore_b_ea",
+      "claireroya14724",
+      "colerenoire",
+      "dani74796026",
+      "fskatoushka",
+      "fuckensemble",
+      "gaelleaquitaine",
+      "gustave213",
+      "morice78158",
+      "namanite",
+      "nimegue70",
+      "patricianadal3",
+      "pika1890778",
+      "sylvinfo",
+      "troll_2508",
+      "tym7575",
+      "vouskarim"
+    ],
     "macrondestitution": [
       "_langelus",
       "_lespatriotes69",
@@ -2462,10 +4660,162 @@
       "ormada29",
       "wooboodk"
     ],
+    "macronistes": [
+      "laurenceputih",
+      "pfilparh"
+    ],
+    "macronout": [
+      "france_sursaut"
+    ],
+    "maga": [
+      "afrikasstruggle",
+      "angrycatmustard",
+      "falconhill",
+      "ianmt492",
+      "leifjoh23236455",
+      "letsplaymodder",
+      "retiredhelmut",
+      "stigmateb",
+      "winnertoto97118"
+    ],
+    "maires": [
+      "cristalinevert"
+    ],
+    "mariupol": [
+      "bluecobra132912",
+      "cobra41816",
+      "journalist21050"
+    ],
+    "medias": [
+      "djadja80425319",
+      "mrericmas"
+    ],
+    "melenchon": [
+      "cyorc73",
+      "goudesolympe",
+      "lebandji",
+      "mecreanophile",
+      "mguenegan",
+      "neo127hoes",
+      "psyhodelikus",
+      "sylviee22140659",
+      "thcastioni",
+      "tontonkomrad"
+    ],
+    "mercosur": [
+      "3genevieve",
+      "alexj_gf",
+      "benobi94",
+      "cnip_fr",
+      "france_sursaut",
+      "fuckensemble",
+      "georges73922577",
+      "gustave213",
+      "lcensur",
+      "lekh27",
+      "liberta_parita",
+      "loulou201282619",
+      "megannkristyn",
+      "pascalou999",
+      "rvhunter57",
+      "sachaandrews17",
+      "thcastioni",
+      "tof92130",
+      "ycaree_ricardo"
+    ],
+    "merkel": [
+      "bluecobra132912",
+      "cobra41816",
+      "journalist21050"
+    ],
+    "merz": [
+      "abacusdos",
+      "abdelelha",
+      "adnauseamz",
+      "alperalanyaa",
+      "als_ick_kan",
+      "anangelslaugh1",
+      "bouvines59",
+      "corvus_pica",
+      "doctorgfitness",
+      "doyaksec",
+      "dudesertfred",
+      "englishbounder",
+      "escalet83",
+      "fabme398176",
+      "georgesclounaud",
+      "giovanadu",
+      "girchris",
+      "javiger30",
+      "jempiou",
+      "jojogyari",
+      "leifjoh23236455",
+      "livingonloan",
+      "louisdubonsens",
+      "magistermoura",
+      "mentecorpore34",
+      "nemanja4252",
+      "odilederaies",
+      "pacifistennl",
+      "pier2kan",
+      "pl_maurice",
+      "republicainlib",
+      "retiredhelmut",
+      "rolandbutter13",
+      "suemcdonald342",
+      "susanne_wolfer",
+      "wethepeople_wtf",
+      "wipokuli",
+      "wparthenope"
+    ],
+    "miller": [
+      "bluecobra132912",
+      "cobra41816",
+      "journalist21050"
+    ],
+    "mlp": [
+      "albanmoyaux",
+      "francia_ya",
+      "guffin_mac",
+      "lalobarose",
+      "laurenceputih",
+      "mrericmas",
+      "pier2kan",
+      "rtolassy"
+    ],
     "modi": [
       "anangelslaugh1",
       "javiger30",
       "swapnil95mishra"
+    ],
+    "mosquéesdissoutes": [
+      "france_sursaut"
+    ],
+    "moyenorient": [
+      "aminemedouar",
+      "bertrandredone",
+      "botteq",
+      "chriscloitre",
+      "clementpolitic",
+      "combat5261",
+      "complet99976",
+      "djeliba3455",
+      "fmhannibal",
+      "france24_fr",
+      "josly_ngoma",
+      "joycelonda243",
+      "laurentopsomer",
+      "lindependant",
+      "listonactu",
+      "loryanesinger",
+      "maliteo63",
+      "mr_bear245",
+      "nyembo1040765",
+      "presseinfos1",
+      "pressenza_fr",
+      "soutienrow2026",
+      "the_best_man_57",
+      "toptribunetoday"
     ],
     "municipales": [
       "agretdenis",
@@ -2475,6 +4825,76 @@
       "laurence1119436",
       "laurenceputih",
       "lucalbernhe"
+    ],
+    "municipales2026": [
+      "boujemaa_b",
+      "dimpolitique",
+      "emmah751",
+      "kakashib_94",
+      "laurence1119436",
+      "lucalbernhe",
+      "manonbymanon_",
+      "marinejordanrn",
+      "mecreanophile",
+      "ne_pat50681",
+      "pelardon",
+      "s_busidan",
+      "salekon2antifa",
+      "sportlitique23",
+      "tatayoyo_1ere",
+      "z_pour_demain"
+    ],
+    "netanyahu": [
+      "anangelslaugh1",
+      "andreasmoun",
+      "arabi_breves",
+      "benaissasimove",
+      "chludzinsk54400",
+      "claricessmart",
+      "cyrilleguerin",
+      "dadoubd",
+      "doctorgfitness",
+      "elena080668",
+      "farahkhey",
+      "fencel3",
+      "gerardsouli",
+      "hendriksmacquin",
+      "heroridder",
+      "introverlawyer",
+      "jmicolle",
+      "kokonews5",
+      "lancerusch20738",
+      "leglaude69",
+      "libertarian196",
+      "lordofintent",
+      "loufrance75",
+      "magsloveslife2",
+      "martinefre5964",
+      "michdoisneau",
+      "mimimatic",
+      "misssocksplease",
+      "mydaphne",
+      "mywaypress",
+      "nishazient46460",
+      "osten69434",
+      "phaup52132",
+      "pierrelema34489",
+      "raphlesioniste2",
+      "realnews829984",
+      "sachin181273",
+      "shaquanasp54500",
+      "stopcensureok",
+      "talos_heraklion",
+      "thierrymonsx",
+      "tongalsen",
+      "tradingbcn",
+      "womandream"
+    ],
+    "nfp": [
+      "adilko91152",
+      "goudesolympe",
+      "mimimatic",
+      "tauriacc"
     ],
     "nucleaire": [
       "1graindefolie",
@@ -2540,6 +4960,237 @@
       "valloovalloo",
       "yann_karen"
     ],
+    "nuclear": [
+      "_flyingeze",
+      "amandevbar67676",
+      "anas8634",
+      "andreabox0",
+      "antony67",
+      "beautysexykw",
+      "benjamincauchy",
+      "ccnnews360",
+      "chaiwala__",
+      "cmichelw",
+      "costardewen",
+      "cyrus_in_the_x",
+      "dailyworld24",
+      "digitaljournal",
+      "etnowlive",
+      "europe9focus",
+      "eurosintcz",
+      "eye_southern",
+      "finaudmarc",
+      "forsaker1900",
+      "france_cz",
+      "globalpulsenow1",
+      "harzizn",
+      "herodote1789",
+      "izlwhd",
+      "jmsardo",
+      "kostian_v",
+      "lazy_ressa",
+      "lequotidien509",
+      "let_crash",
+      "ludmilavasilg",
+      "maawlaw",
+      "makoba_y",
+      "margarethperun",
+      "marketintl_",
+      "marketnews247hq",
+      "megannkristyn",
+      "menaradar",
+      "mildata",
+      "murtcrypto",
+      "muso1947",
+      "myglobalfeed1",
+      "narrradar",
+      "pavanguptax",
+      "pradeepp_tiwari",
+      "profildiscret",
+      "publicnewsx",
+      "pyramid_deguize",
+      "randomstuffa2z",
+      "raoabhijeet",
+      "rawifuleriya",
+      "rblumel",
+      "regressio_fr",
+      "seahawksonair",
+      "shorts_91",
+      "smssomalitv1",
+      "stanleyepstein",
+      "statecipher",
+      "stayinformedc",
+      "sunudiotaye",
+      "techtimes477783",
+      "theriser100x",
+      "truebeaconintel",
+      "u_tribune",
+      "valvalliberte",
+      "warbrief2",
+      "xveightone",
+      "yasirashirzad",
+      "zeeshan189226",
+      "zettawire"
+    ],
+    "nucléaire": [
+      "_mediavenir",
+      "_progressistes",
+      "achgutt",
+      "acpoisson",
+      "ad_vitam44_",
+      "adolforamirez_7",
+      "ahbonmedia",
+      "ahmadouatafa",
+      "alfreddiomba3",
+      "allonsypatriote",
+      "amekroun",
+      "amrn1fayez",
+      "arabi_breves",
+      "artia13200",
+      "as27actu",
+      "asnews01",
+      "asnr_fr",
+      "augustinfern",
+      "boyergabriel042",
+      "businessamfr",
+      "camaran31202008",
+      "camerbe",
+      "chairestrategie",
+      "claudarnaud",
+      "comploplowatch",
+      "couturiermichle",
+      "cricverse07",
+      "dalionedali",
+      "davidjouarisse",
+      "davidros_91",
+      "didierlegac",
+      "dieuson1",
+      "energiegrise",
+      "energiematin",
+      "ethiqueeettac",
+      "farahkhey",
+      "fc_hugon",
+      "federat_galact",
+      "france24_fr",
+      "france_bayard",
+      "franceavenir33",
+      "fredericm1978",
+      "geekphane",
+      "grogfake89",
+      "hadrichmalik",
+      "helenoraart",
+      "i3ct3r",
+      "ican_france",
+      "icibeyrouthnews",
+      "infernale95",
+      "informationssf",
+      "jcheminade",
+      "jdomerchet",
+      "jeanmarc312",
+      "jtillault",
+      "jukebox034",
+      "katherinekt09",
+      "lacturapide",
+      "lanceuri",
+      "latinreporters",
+      "laurence1119436",
+      "lcensur",
+      "legrandmar91945",
+      "lepeuple_cd",
+      "lespatriotes_75",
+      "lindependant",
+      "luc_gras",
+      "lucspighel",
+      "marcendeweld",
+      "marcmangin",
+      "martinv52936114",
+      "medias_moov",
+      "mestuyaux2026",
+      "mimimatic",
+      "mmultilateral",
+      "nikolamm",
+      "obsarm",
+      "oncle_archibald",
+      "pascalplaza",
+      "petru_poggioli",
+      "platdenis",
+      "presseinfos1",
+      "pressenza_fr",
+      "projradioactif",
+      "prudenciamedia",
+      "publicsenat",
+      "realnews829984",
+      "reflexuscubitus",
+      "roussey25004f",
+      "saliharazgui",
+      "sandrafellous_",
+      "shukranimbili",
+      "stphanieblaire1",
+      "tedourson",
+      "theatrumbelli",
+      "themagazineafri",
+      "toptribunetoday",
+      "toutsavoirmedia",
+      "tribunexpress1",
+      "trocaforum_ew",
+      "unevoixp",
+      "vandewalleyves",
+      "walawpress",
+      "yann_karen",
+      "zepapou"
+    ],
+    "paradisfiscaux": [
+      "beltaifam"
+    ],
+    "paris": [
+      "actualites_nrv",
+      "ben54493893",
+      "bivelalain",
+      "bluecobra132912",
+      "borgo7551",
+      "caliweed913",
+      "cobra41816",
+      "devaramkelawan4",
+      "europeanmedia24",
+      "fout_sen",
+      "healthmav",
+      "journalist21050",
+      "laurenceputih",
+      "leifjoh23236455",
+      "libre_musicien",
+      "marinejordanrn",
+      "mecreanophile",
+      "misssocksplease",
+      "mrdisrupta",
+      "pat_athor",
+      "pelardon",
+      "salekon2antifa",
+      "shahbazpahlavi",
+      "tauriacc",
+      "toulousew32910",
+      "veillet_s",
+      "williamzawson",
+      "yann541706"
+    ],
+    "passnumérique": [
+      "france_sursaut"
+    ],
+    "people": [
+      "bluecobra132912",
+      "cobra41816",
+      "insidepublic",
+      "journalist21050"
+    ],
+    "philippot": [
+      "ambianie",
+      "comploplowatch",
+      "lespatriotes_75",
+      "philtys_",
+      "pier2kan"
+    ],
+    "pizzo": [
+      "beltaifam"
+    ],
     "plusjamaisps": [
       "abparis757575",
       "dutheilpierre",
@@ -2563,6 +5214,36 @@
       "nemanja4252",
       "shorts_91"
     ],
+    "policenationale": [
+      "cristalinevert"
+    ],
+    "politics": [
+      "bluecobra132912",
+      "cobra41816",
+      "journalist21050",
+      "syndicateglnews"
+    ],
+    "prank": [
+      "aminegociateur1"
+    ],
+    "prefets": [
+      "cristalinevert"
+    ],
+    "princeharry": [
+      "anangelslaugh1"
+    ],
+    "princewilliam": [
+      "anangelslaugh1"
+    ],
+    "prison": [
+      "fatihabadaoui2",
+      "france_sursaut",
+      "sissipatriote",
+      "superkevin54"
+    ],
+    "prêcheursensoute": [
+      "france_sursaut"
+    ],
     "ps": [
       "alphamax14",
       "ananasspirine",
@@ -2578,6 +5259,13 @@
       "tauriacc",
       "titiart1",
       "valyaincognita"
+    ],
+    "punchline": [
+      "annesainte1",
+      "france_sursaut",
+      "lamournotdead",
+      "nieder_klaus",
+      "tribundanton"
     ],
     "putin": [
       "__dissacrante__",
@@ -2595,6 +5283,54 @@
       "satyamkr012",
       "wparthenope",
       "yak3867952722"
+    ],
+    "qatar": [
+      "9275raihan",
+      "complet99976",
+      "fidzontwit",
+      "flaowerpower",
+      "fredsubirana",
+      "fregozogin96081",
+      "helenoraart",
+      "irambonapapias",
+      "karim_de_paris",
+      "lebandji",
+      "lindependant",
+      "mickaellaffont",
+      "olivierabergel",
+      "renyscott29145",
+      "saliharazgui",
+      "thedailyupdatee",
+      "thejeazzy",
+      "wahdatj",
+      "walter_boujenah"
+    ],
+    "rachidadati": [
+      "babonnay",
+      "borgo7551",
+      "clmentsabine",
+      "davynimal",
+      "emmah751",
+      "henrigoude99935",
+      "mecreanophile",
+      "missuggy"
+    ],
+    "raffarin": [
+      "emmah751",
+      "henrigoude99935"
+    ],
+    "retailleau": [
+      "beatricelbb",
+      "boblecentriste",
+      "borgo7551",
+      "emmah751",
+      "francoise111111",
+      "henrigoude99935",
+      "leglaude69",
+      "parbleusr"
+    ],
+    "rfkjr": [
+      "anangelslaugh1"
     ],
     "rn": [
       "alphamax14",
@@ -2631,6 +5367,12 @@
       "titiart1",
       "valyaincognita",
       "wilfriedgand"
+    ],
+    "rubio": [
+      "jempiou",
+      "paukstis70590",
+      "retiredhelmut",
+      "roserougefrance"
     ],
     "russia": [
       "30secondsne",
@@ -2685,6 +5427,55 @@
       "sev_igne",
       "zemm63"
     ],
+    "sarahknafo2026": [
+      "emmah751",
+      "henrigoude99935"
+    ],
+    "sarahpourparis": [
+      "annelisegregoi1",
+      "cgr007007",
+      "cm16083044",
+      "emmah751",
+      "henrigoude99935",
+      "joangeles2028",
+      "lisabethdanj",
+      "lolam784799",
+      "zemm63"
+    ],
+    "sarkozy": [
+      "beltaifam",
+      "bluecobra132912",
+      "citoyenatterre",
+      "cobra41816",
+      "duvalmarion6",
+      "generationfemm1",
+      "grava_frantz",
+      "journalist21050",
+      "lilou5754",
+      "sissipatriote"
+    ],
+    "scholz": [
+      "bluecobra132912",
+      "cobra41816"
+    ],
+    "sondage": [
+      "emmah751",
+      "henrigoude99935"
+    ],
+    "souveraineté": [
+      "annickpllt",
+      "beautysexykw",
+      "cmmb5555",
+      "gerscheleric",
+      "gsacaze",
+      "lespatriotes_75",
+      "roussey25004f",
+      "sofiyasofi01",
+      "spacesentinelle",
+      "toptribunetoday",
+      "unevoixp",
+      "williamzawson"
+    ],
     "starmer": [
       "__dissacrante__",
       "_warisacrime",
@@ -2728,6 +5519,9 @@
       "wipokuli",
       "wparthenope"
     ],
+    "surimi": [
+      "aminegociateur1"
+    ],
     "taem": [
       "albolylian",
       "charlyne13000",
@@ -2745,6 +5539,279 @@
       "saplanlena",
       "serfi85135960",
       "sevsevparis"
+    ],
+    "taxes": [
+      "aminegociateur1"
+    ],
+    "teheran": [
+      "cierra31105",
+      "dezas69",
+      "doctorgfitness",
+      "eurovibez",
+      "freefrance",
+      "genas96967",
+      "imnmtweets",
+      "kokonews5",
+      "lebandji",
+      "leifjoh23236455",
+      "lostontranslati",
+      "loufrance75",
+      "oonorshine",
+      "padenom7",
+      "profildiscret",
+      "publicenem_y",
+      "switzerudr",
+      "thedailyupdatee",
+      "thierrymonsx",
+      "torreseryc"
+    ],
+    "tehran": [
+      "abrahama54923",
+      "clnplchcnsk",
+      "devaramkelawan4",
+      "grand_gallus",
+      "hariciyenaziric",
+      "historyunt45462",
+      "introverlawyer",
+      "itspmaheshwari",
+      "lebandji",
+      "loufrance75",
+      "nayika_nayika",
+      "news_activity",
+      "nogoodnewsfr",
+      "publicenem_y",
+      "rrn_updates",
+      "thedailyupdatee",
+      "tilki2024",
+      "vincent2354ii",
+      "wicces_world",
+      "yuta_zoo77"
+    ],
+    "test": [
+      "aminegociateur1"
+    ],
+    "trahison": [
+      "bl_syfy",
+      "danioanmuresan",
+      "francoisarielle",
+      "jerryle91001364",
+      "martinv52936114",
+      "pascalplaza",
+      "phosophiahah",
+      "schydlowski1"
+    ],
+    "trump": [
+      "9275raihan",
+      "_frenchpatriot_",
+      "_p__e_a_c_e_",
+      "_patrice_leroy_",
+      "_warisacrime",
+      "abacusdos",
+      "afifon_",
+      "afrikasstruggle",
+      "ahmedbensoussan",
+      "allonsypatriote",
+      "alvisyma",
+      "aminegociateur1",
+      "amrn1fayez",
+      "ana_pouvreau",
+      "ananasspirine",
+      "anangelslaugh1",
+      "andreasmoun",
+      "angrycatmustard",
+      "arabi_breves",
+      "arnold_eteb",
+      "ave_flym",
+      "az3rt1x",
+      "bangel525021",
+      "bauvalmichel",
+      "bcmt_ecet",
+      "benaissasimove",
+      "bertrandredone",
+      "bhaskar_journo",
+      "bluebea22808725",
+      "bluecobra132912",
+      "bnc_2012",
+      "botteq",
+      "boujemaa_b",
+      "bouvines59",
+      "brunoleguen",
+      "btlvmedia",
+      "chauss24",
+      "chrysta62370349",
+      "cindawuert46123",
+      "claudarnaud",
+      "clnplchcnsk",
+      "coimbatoretnadu",
+      "coingapemedia",
+      "comploplowatch",
+      "corentinsellin",
+      "crichasee",
+      "cyorc73",
+      "cyrilleguerin",
+      "dadoubd",
+      "davidangevin",
+      "davidg54485524",
+      "decolonialisme",
+      "delphinesankara",
+      "dharmendra04",
+      "diaboloshelby",
+      "dionjack2",
+      "dniepro",
+      "doctorgfitness",
+      "dodgerdaddy",
+      "domi59genealo",
+      "dominiq49230998",
+      "dram_is",
+      "drgkyra",
+      "duvalmarion6",
+      "eliad_rokibourg",
+      "elsasser_witz",
+      "emmamwanza70",
+      "euxternal",
+      "exarkhun_return",
+      "exlibris401",
+      "falconhill",
+      "farahkhey",
+      "fedjf",
+      "fencel3",
+      "fils2psy",
+      "flaowerpower",
+      "fout_sen",
+      "france24_fr",
+      "franceavenir33",
+      "fredo_2019",
+      "gerardsouli",
+      "gogomoihey",
+      "gopalak50343172",
+      "grand_gallus",
+      "grisou97160",
+      "hbert1mona",
+      "helenoraart",
+      "hendriksmacquin",
+      "huttar15512",
+      "icibeyrouthnews",
+      "infosmaghreb",
+      "introverlawyer",
+      "itspmaheshwari",
+      "javiger30",
+      "jc_dussse",
+      "jeson187",
+      "jhairjhadsones",
+      "jipolon",
+      "jnwilliamlg",
+      "joshprince_jeff",
+      "khaleesitg93",
+      "kinghalladba",
+      "kokonews5",
+      "kumar880268",
+      "kwackwic",
+      "lamaronneuse",
+      "laurence1119436",
+      "le_chiren",
+      "leammamama",
+      "leglaude69",
+      "leifjoh23236455",
+      "leo31grc",
+      "lesbulles1",
+      "letactilographe",
+      "letoulois",
+      "libertarian196",
+      "lotanaemmanuel",
+      "loufrance75",
+      "louisdubonsens",
+      "maja518589",
+      "malojmk",
+      "mariatoraj69718",
+      "martinefre5964",
+      "maskloff",
+      "mhmtkaya1464501",
+      "michdoisneau",
+      "mimimatic",
+      "misssocksplease",
+      "misterfruidom",
+      "modeinfo24",
+      "mrdisrupta",
+      "mywaypress",
+      "nogoodnewsfr",
+      "norinov2",
+      "nyembo1040765",
+      "olivierjean16",
+      "oonorshine",
+      "ottoman20200",
+      "ouimais30547175",
+      "pasclair",
+      "patrioteengager",
+      "pauvreencolere",
+      "philippeguenin",
+      "pierr__v",
+      "pierrelema34489",
+      "politicjock",
+      "popemarco",
+      "pressburgerpowe",
+      "profildiscret",
+      "profquidamn",
+      "pserenina40795",
+      "rahim_bellem",
+      "rajnaidarpan",
+      "raphlesioniste2",
+      "reaperooffcl",
+      "remilebrun",
+      "renyscott29145",
+      "retiredhelmut",
+      "revocit",
+      "ritamae7",
+      "roselouise48520",
+      "rosette_baes",
+      "rrn_updates",
+      "sachin181273",
+      "saiyan_du_parc",
+      "saliharazgui",
+      "samzoomone",
+      "shibapasha",
+      "sikorskiv62530",
+      "sitgesfranck",
+      "stevebiko1406",
+      "stigmateb",
+      "stopcensureok",
+      "sunilaarnav",
+      "talos_heraklion",
+      "tanyak46626",
+      "tatayoyo_1ere",
+      "terrorshee",
+      "thedailyupdatee",
+      "thejeazzy",
+      "thierrymonsx",
+      "thomasgarnier8",
+      "tontocolorado",
+      "torreseryc",
+      "toutsavoirmedia",
+      "twalso",
+      "tyler_isback",
+      "unevoixp",
+      "victorv_v10",
+      "wicces_world",
+      "williamzawson",
+      "wooboodk",
+      "worldfflyer",
+      "wotan_2099"
+    ],
+    "uae": [
+      "angrycatmustard",
+      "crypto_domainer",
+      "damienb616860",
+      "doyaksec",
+      "fidzontwit",
+      "intelx_global",
+      "introverlawyer",
+      "kumar880268",
+      "lepappydeparis",
+      "mrdisrupta",
+      "randomstuffa2z",
+      "sl_1960",
+      "sunilaarnav",
+      "thedailyupdatee",
+      "wahdatj"
     ],
     "ue": [
       "allonsypatriote",
@@ -2827,75 +5894,416 @@
       "roselouise48520",
       "zonedesplugs"
     ],
+    "ukrainerussiawar": [
+      "bluecobra132912",
+      "cobra41816",
+      "journalist21050"
+    ],
     "ukrainewar": [
       "bluecobra132912",
       "chairestrategie",
       "cobra41816",
       "journalist21050"
     ],
+    "unevilleheureuse": [
+      "alexand06006513",
+      "moodyeh_hmoodye",
+      "patriotezfr",
+      "sev_igne"
+    ],
+    "unitednations": [
+      "kcamerica1776",
+      "retiredhelmut"
+    ],
+    "usa": [
+      "30secondsne",
+      "abra88200674",
+      "andreasmoun",
+      "annesainte1",
+      "apacheqq",
+      "barrauyann",
+      "batesmotel888",
+      "baudouinjulien",
+      "bertrandredone",
+      "blondic69",
+      "bluecobra132912",
+      "broadcast0147",
+      "btlvmedia",
+      "chrisdjembo",
+      "cobra41816",
+      "coimbatoretnadu",
+      "complet99976",
+      "dadoubd",
+      "diaboloshelby",
+      "dopecapitalist",
+      "eliad_rokibourg",
+      "emmamwanza70",
+      "fellyluyindadio",
+      "fizelierguy",
+      "fout_sen",
+      "fouzigone",
+      "hadrichmalik",
+      "iaefoffice",
+      "iintrouvable13",
+      "ikeunews",
+      "indiastrikes_",
+      "infos_defense",
+      "introverlawyer",
+      "jenny14800",
+      "jhairjhadsones",
+      "jnwilliamlg",
+      "journalist21050",
+      "joycelonda243",
+      "just_wende",
+      "kwkb_at89194",
+      "lapin47",
+      "laurence1119436",
+      "laurentfurtif",
+      "laurentopsomer",
+      "laveritecequi",
+      "lebandji",
+      "lehaffrite",
+      "letsplaymodder",
+      "liberta_parita",
+      "linuvia_",
+      "luc_gras",
+      "m_de_bourbon",
+      "maa_7593",
+      "manucreateur",
+      "menalivehq",
+      "mimimatic",
+      "misssocksplease",
+      "modeinfo24",
+      "mollusque75",
+      "morandiniblog",
+      "mpoyingandu",
+      "mr_bear245",
+      "mrdisrupta",
+      "mywaypress",
+      "ogarry",
+      "patricianadal3",
+      "pauvreencolere",
+      "petitpalois64",
+      "philnfp",
+      "popopolitik",
+      "presseinfos1",
+      "psyhodelikus",
+      "rahim_bellem",
+      "raphlesioniste2",
+      "realnews829984",
+      "retiredhelmut",
+      "roserougefrance",
+      "shibapasha",
+      "sissipatriote",
+      "skodofficial",
+      "skygaia",
+      "stormwatch12345",
+      "stphani12351227",
+      "sunudiotaye",
+      "switzerudr",
+      "sylvinfo",
+      "systemdeal",
+      "talos_heraklion",
+      "temunip",
+      "thedailyupdatee",
+      "themagazineafri",
+      "tradingbcn",
+      "unportugaissurx",
+      "val21qui01rit",
+      "wika_theresia",
+      "williamzawson",
+      "wipokuli",
+      "witwaveindia"
+    ],
     "vance": [
       "anangelslaugh1",
       "retiredhelmut",
       "toutsavoirmedia"
+    ],
+    "vanderleyen": [
+      "fizelierguy"
+    ],
+    "venezuela": [
+      "cyorc73",
+      "demakry6950318",
+      "ebsenlila75875",
+      "hadrichmalik",
+      "huttar15512",
+      "lancerusch20738",
+      "laurence1119436",
+      "orielley92244",
+      "pressburgerpowe",
+      "theresiaye46564",
+      "tierra80597"
+    ],
+    "war": [
+      "_lionceaux_",
+      "alijaved29",
+      "bergman_antoine",
+      "bluecobra132912",
+      "dadoubd",
+      "damienb616860",
+      "doyaksec",
+      "euxternal",
+      "grogfake89",
+      "herodote1789",
+      "ivredevoltaire",
+      "jhairjhadsones",
+      "maa_7593",
+      "manthoparis",
+      "marketintl_",
+      "menalivehq",
+      "mvrc_777",
+      "nail1253114188",
+      "nogoodnewsfr",
+      "phablobs",
+      "robbinsoars",
+      "tarekkacem135",
+      "torreseryc",
+      "triloch79742929",
+      "wbstone10"
+    ],
+    "world": [
+      "ainvest02",
+      "bluecobra132912",
+      "broadcast0147",
+      "cierra31105",
+      "cobra41816",
+      "dawnnewsup",
+      "dragon4audio",
+      "journalist21050"
+    ],
+    "xi": [
+      "anangelslaugh1"
     ],
     "zelenskyy": [
       "bluecobra132912",
       "cobra41816",
       "jojogyari",
       "journalist21050"
+    ],
+    "écocide": [
+      "zadigobb"
     ]
   },
   "tag_n_accounts": {
+    "alexsorros": 1,
+    "allemagne": 15,
+    "armenucléaire": 2,
+    "attal": 7,
+    "avancée": 1,
+    "aveclepresident": 1,
+    "barrot": 19,
+    "bfmtv": 21,
+    "biodechets": 1,
+    "biodiversité": 1,
+    "biogaz": 1,
+    "biomasse": 1,
+    "blackrock": 1,
     "boycottisrael": 2,
+    "breaking": 82,
+    "bretagne": 3,
+    "brussels": 2,
+    "bruxellesout": 1,
+    "cavous": 3,
+    "censure": 7,
+    "chasse": 1,
+    "chine": 7,
+    "chirac": 2,
     "cnews": 38,
+    "corse": 1,
     "dati": 16,
+    "day": 2,
+    "defense": 22,
+    "destitution": 20,
+    "dette": 4,
     "dissuasion": 73,
+    "dissuasionnucleaire": 6,
+    "dissuasionnucléaire": 25,
+    "dtrump": 1,
+    "dubai": 55,
+    "dubaiattack": 8,
+    "ecologie": 1,
+    "elon": 1,
+    "epstein": 49,
+    "euronumérique": 1,
+    "europe": 80,
+    "europe1": 7,
+    "européenne": 1,
+    "facealinfo": 9,
+    "fantômas": 1,
+    "financenews": 2,
+    "fmerz": 1,
+    "france": 433,
+    "france2": 3,
     "franceinfo": 11,
+    "freeiran": 7,
     "freepalestine": 3,
     "frexit": 39,
+    "frexitvite": 10,
+    "gabbard": 1,
     "gatewaypundit": 6,
+    "gensduvoyage": 1,
     "germany": 20,
+    "gerogesoros": 1,
+    "ggrmc": 21,
+    "gitan": 1,
+    "groenland": 4,
+    "guerre": 47,
+    "génocidegaza": 1,
+    "géopolitique": 11,
+    "hdpros": 23,
     "hdpros2": 13,
     "hollande": 11,
+    "influenceurs": 12,
+    "iran": 591,
+    "iranisraelwar": 36,
+    "iranwar": 121,
+    "islamout": 1,
     "israel": 167,
+    "israelmonstruositésansnom": 1,
+    "israël": 41,
+    "italy": 3,
+    "jerusalem": 1,
+    "khamenei": 66,
+    "kiev": 5,
+    "kingcharles": 1,
+    "knafo": 3,
     "lci": 22,
     "lecornu": 16,
+    "lefigaro": 2,
+    "lemonde": 1,
+    "lepen": 13,
     "lfi": 37,
+    "lfislamiste": 1,
+    "lidl": 1,
+    "lobbyisme": 1,
     "lr": 22,
     "macron": 1097,
+    "macron_tue_la_france": 1,
+    "macrondegage": 18,
     "macrondestitution": 61,
     "macronie": 7,
+    "macronistes": 2,
+    "macronout": 1,
+    "maga": 9,
+    "maires": 1,
+    "mariupol": 3,
+    "medias": 2,
+    "melenchon": 10,
+    "mercosur": 19,
+    "merkel": 3,
+    "merz": 38,
+    "miller": 3,
+    "mlp": 8,
     "modi": 3,
+    "mosquéesdissoutes": 1,
+    "moyenorient": 24,
     "municipales": 7,
+    "municipales2026": 16,
+    "netanyahu": 44,
+    "nfp": 4,
     "nucleaire": 62,
+    "nuclear": 70,
+    "nucléaire": 105,
+    "paradisfiscaux": 1,
+    "paris": 28,
+    "passnumérique": 1,
+    "people": 4,
+    "philippot": 5,
+    "pizzo": 1,
     "plusjamaisps": 14,
     "poland": 5,
+    "policenationale": 1,
+    "politics": 4,
+    "prank": 1,
+    "prefets": 1,
+    "princeharry": 1,
+    "princewilliam": 1,
+    "prison": 4,
+    "prêcheursensoute": 1,
     "ps": 14,
+    "punchline": 5,
     "putin": 15,
+    "qatar": 19,
+    "rachidadati": 8,
+    "raffarin": 2,
+    "retailleau": 8,
+    "rfkjr": 1,
     "rn": 34,
+    "rubio": 4,
     "russia": 25,
     "russian": 6,
     "sarahknafo": 16,
+    "sarahknafo2026": 2,
+    "sarahpourparis": 9,
+    "sarkozy": 10,
+    "scholz": 2,
+    "sondage": 2,
+    "souveraineté": 12,
     "starmer": 41,
+    "surimi": 1,
     "taem": 16,
+    "taxes": 1,
+    "teheran": 20,
+    "tehran": 20,
+    "test": 1,
+    "trahison": 8,
+    "trump": 194,
+    "uae": 15,
     "ue": 38,
     "ukraine": 39,
+    "ukrainerussiawar": 3,
     "ukrainewar": 4,
+    "unevilleheureuse": 4,
+    "unitednations": 2,
+    "usa": 98,
     "vance": 3,
-    "zelenskyy": 4
+    "vanderleyen": 1,
+    "venezuela": 11,
+    "war": 25,
+    "world": 8,
+    "xi": 1,
+    "zelenskyy": 4,
+    "écocide": 1
   },
   "tag_communities": {
+    "barrot": [
+      1
+    ],
+    "bfmtv": [
+      1
+    ],
     "boycottisrael": [
       48
     ],
     "cnews": [
+      1,
       9
     ],
     "dati": [
       6
     ],
+    "destitution": [
+      6
+    ],
     "dissuasion": [
       1
+    ],
+    "dissuasionnucleaire": [
+      6
+    ],
+    "dtrump": [
+      48
+    ],
+    "dubai": [
+      9
+    ],
+    "europe": [
+      9
+    ],
+    "facealinfo": [
+      6
     ],
     "franceinfo": [
       1
@@ -2918,8 +6326,14 @@
     "hollande": [
       9
     ],
+    "iran": [
+      9
+    ],
     "israel": [
       21
+    ],
+    "kiev": [
+      0
     ],
     "lci": [
       1
@@ -2929,6 +6343,9 @@
     ],
     "lfi": [
       1
+    ],
+    "lfislamiste": [
+      9
     ],
     "lr": [
       6,
@@ -2946,14 +6363,23 @@
     "macronie": [
       9
     ],
+    "merz": [
+      48
+    ],
     "modi": [
       48
     ],
     "municipales": [
       6
     ],
+    "netanyahu": [
+      48
+    ],
     "nucleaire": [
       1
+    ],
+    "people": [
+      0
     ],
     "plusjamaisps": [
       48
@@ -2961,7 +6387,11 @@
     "poland": [
       0
     ],
+    "politics": [
+      0
+    ],
     "ps": [
+      1,
       9
     ],
     "putin": [
@@ -2981,6 +6411,9 @@
     "sarahknafo": [
       6
     ],
+    "sarahpourparis": [
+      6
+    ],
     "starmer": [
       48
     ],
@@ -2996,11 +6429,5660 @@
     "ukrainewar": [
       0
     ],
+    "usa": [
+      48
+    ],
     "vance": [
       48
+    ],
+    "world": [
+      0
     ],
     "zelenskyy": [
       0
     ]
+  },
+  "tag_cooccur": {
+    "barrot": [
+      {
+        "tag": "macron",
+        "n": 23
+      },
+      {
+        "tag": "trump",
+        "n": 7
+      },
+      {
+        "tag": "chine",
+        "n": 6
+      },
+      {
+        "tag": "groenland",
+        "n": 6
+      },
+      {
+        "tag": "iranwar",
+        "n": 6
+      },
+      {
+        "tag": "venezuela",
+        "n": 6
+      },
+      {
+        "tag": "iran",
+        "n": 4
+      },
+      {
+        "tag": "lecornu",
+        "n": 4
+      },
+      {
+        "tag": "israel",
+        "n": 2
+      },
+      {
+        "tag": "netanyahu",
+        "n": 2
+      }
+    ],
+    "bfmtv": [
+      {
+        "tag": "macron",
+        "n": 41
+      },
+      {
+        "tag": "lci",
+        "n": 39
+      },
+      {
+        "tag": "cnews",
+        "n": 38
+      },
+      {
+        "tag": "franceinfo",
+        "n": 24
+      },
+      {
+        "tag": "iran",
+        "n": 11
+      },
+      {
+        "tag": "europe1",
+        "n": 7
+      },
+      {
+        "tag": "corse",
+        "n": 7
+      },
+      {
+        "tag": "gensduvoyage",
+        "n": 7
+      },
+      {
+        "tag": "gitan",
+        "n": 7
+      },
+      {
+        "tag": "maires",
+        "n": 7
+      },
+      {
+        "tag": "policenationale",
+        "n": 7
+      },
+      {
+        "tag": "prefets",
+        "n": 7
+      },
+      {
+        "tag": "trump",
+        "n": 6
+      },
+      {
+        "tag": "ggrmc",
+        "n": 6
+      },
+      {
+        "tag": "cavous",
+        "n": 5
+      }
+    ],
+    "boycottisrael": [
+      {
+        "tag": "freepalestine",
+        "n": 234
+      },
+      {
+        "tag": "plusjamaisps",
+        "n": 234
+      }
+    ],
+    "cnews": [
+      {
+        "tag": "macron",
+        "n": 53
+      },
+      {
+        "tag": "bfmtv",
+        "n": 38
+      },
+      {
+        "tag": "lci",
+        "n": 35
+      },
+      {
+        "tag": "franceinfo",
+        "n": 22
+      },
+      {
+        "tag": "iran",
+        "n": 13
+      },
+      {
+        "tag": "europe1",
+        "n": 8
+      },
+      {
+        "tag": "ggrmc",
+        "n": 7
+      },
+      {
+        "tag": "corse",
+        "n": 7
+      },
+      {
+        "tag": "gensduvoyage",
+        "n": 7
+      },
+      {
+        "tag": "gitan",
+        "n": 7
+      },
+      {
+        "tag": "maires",
+        "n": 7
+      },
+      {
+        "tag": "policenationale",
+        "n": 7
+      },
+      {
+        "tag": "prefets",
+        "n": 7
+      },
+      {
+        "tag": "lfi",
+        "n": 6
+      },
+      {
+        "tag": "trump",
+        "n": 6
+      }
+    ],
+    "dati": [
+      {
+        "tag": "macron",
+        "n": 19
+      },
+      {
+        "tag": "lr",
+        "n": 12
+      },
+      {
+        "tag": "sarahpourparis",
+        "n": 11
+      },
+      {
+        "tag": "paris",
+        "n": 11
+      },
+      {
+        "tag": "sarahknafo",
+        "n": 11
+      },
+      {
+        "tag": "municipales",
+        "n": 9
+      },
+      {
+        "tag": "rachidadati",
+        "n": 8
+      },
+      {
+        "tag": "municipales2026",
+        "n": 4
+      },
+      {
+        "tag": "ggrmc",
+        "n": 3
+      },
+      {
+        "tag": "macronistes",
+        "n": 3
+      },
+      {
+        "tag": "cnews",
+        "n": 3
+      },
+      {
+        "tag": "facealinfo",
+        "n": 3
+      },
+      {
+        "tag": "raffarin",
+        "n": 2
+      },
+      {
+        "tag": "retailleau",
+        "n": 2
+      },
+      {
+        "tag": "sarahknafo2026",
+        "n": 2
+      }
+    ],
+    "destitution": [
+      {
+        "tag": "macron",
+        "n": 12
+      },
+      {
+        "tag": "frexit",
+        "n": 7
+      },
+      {
+        "tag": "prison",
+        "n": 4
+      },
+      {
+        "tag": "france",
+        "n": 3
+      },
+      {
+        "tag": "censure",
+        "n": 3
+      },
+      {
+        "tag": "bruxellesout",
+        "n": 2
+      },
+      {
+        "tag": "euronumérique",
+        "n": 2
+      },
+      {
+        "tag": "frexitvite",
+        "n": 2
+      },
+      {
+        "tag": "islamout",
+        "n": 2
+      },
+      {
+        "tag": "macron_tue_la_france",
+        "n": 2
+      },
+      {
+        "tag": "macronout",
+        "n": 2
+      },
+      {
+        "tag": "mercosur",
+        "n": 2
+      },
+      {
+        "tag": "mosquéesdissoutes",
+        "n": 2
+      },
+      {
+        "tag": "passnumérique",
+        "n": 2
+      },
+      {
+        "tag": "prêcheursensoute",
+        "n": 2
+      }
+    ],
+    "dissuasion": [
+      {
+        "tag": "macron",
+        "n": 51
+      },
+      {
+        "tag": "nucléaire",
+        "n": 30
+      },
+      {
+        "tag": "nucleaire",
+        "n": 15
+      },
+      {
+        "tag": "europe",
+        "n": 13
+      },
+      {
+        "tag": "france",
+        "n": 10
+      },
+      {
+        "tag": "géopolitique",
+        "n": 9
+      },
+      {
+        "tag": "iran",
+        "n": 6
+      },
+      {
+        "tag": "souveraineté",
+        "n": 3
+      },
+      {
+        "tag": "lci",
+        "n": 3
+      },
+      {
+        "tag": "armenucléaire",
+        "n": 3
+      },
+      {
+        "tag": "trump",
+        "n": 3
+      },
+      {
+        "tag": "trahison",
+        "n": 2
+      },
+      {
+        "tag": "européenne",
+        "n": 2
+      },
+      {
+        "tag": "allemagne",
+        "n": 2
+      },
+      {
+        "tag": "avancée",
+        "n": 2
+      }
+    ],
+    "dissuasionnucleaire": [
+      {
+        "tag": "macron",
+        "n": 4
+      },
+      {
+        "tag": "europe",
+        "n": 3
+      },
+      {
+        "tag": "france",
+        "n": 2
+      }
+    ],
+    "dtrump": [
+      {
+        "tag": "fmerz",
+        "n": 52
+      },
+      {
+        "tag": "génocidegaza",
+        "n": 52
+      },
+      {
+        "tag": "israelmonstruositésansnom",
+        "n": 52
+      },
+      {
+        "tag": "macron",
+        "n": 52
+      },
+      {
+        "tag": "ue",
+        "n": 51
+      },
+      {
+        "tag": "usa",
+        "n": 51
+      },
+      {
+        "tag": "starmer",
+        "n": 48
+      },
+      {
+        "tag": "vanderleyen",
+        "n": 2
+      }
+    ],
+    "dubai": [
+      {
+        "tag": "macron",
+        "n": 40
+      },
+      {
+        "tag": "iran",
+        "n": 39
+      },
+      {
+        "tag": "trump",
+        "n": 20
+      },
+      {
+        "tag": "france",
+        "n": 14
+      },
+      {
+        "tag": "israel",
+        "n": 13
+      },
+      {
+        "tag": "usa",
+        "n": 8
+      },
+      {
+        "tag": "guerre",
+        "n": 7
+      },
+      {
+        "tag": "macrondestitution",
+        "n": 6
+      },
+      {
+        "tag": "tehran",
+        "n": 5
+      },
+      {
+        "tag": "dubaiattack",
+        "n": 5
+      },
+      {
+        "tag": "financenews",
+        "n": 5
+      },
+      {
+        "tag": "influenceurs",
+        "n": 5
+      },
+      {
+        "tag": "qatar",
+        "n": 4
+      },
+      {
+        "tag": "khamenei",
+        "n": 4
+      },
+      {
+        "tag": "bfmtv",
+        "n": 4
+      }
+    ],
+    "europe": [
+      {
+        "tag": "macron",
+        "n": 67
+      },
+      {
+        "tag": "france",
+        "n": 41
+      },
+      {
+        "tag": "iran",
+        "n": 29
+      },
+      {
+        "tag": "russia",
+        "n": 13
+      },
+      {
+        "tag": "nucléaire",
+        "n": 13
+      },
+      {
+        "tag": "dissuasion",
+        "n": 13
+      },
+      {
+        "tag": "nuclear",
+        "n": 13
+      },
+      {
+        "tag": "trump",
+        "n": 12
+      },
+      {
+        "tag": "usa",
+        "n": 11
+      },
+      {
+        "tag": "ukraine",
+        "n": 9
+      },
+      {
+        "tag": "putin",
+        "n": 9
+      },
+      {
+        "tag": "géopolitique",
+        "n": 8
+      },
+      {
+        "tag": "war",
+        "n": 7
+      },
+      {
+        "tag": "brussels",
+        "n": 6
+      },
+      {
+        "tag": "day",
+        "n": 6
+      }
+    ],
+    "facealinfo": [
+      {
+        "tag": "macron",
+        "n": 6
+      },
+      {
+        "tag": "ggrmc",
+        "n": 4
+      },
+      {
+        "tag": "paris",
+        "n": 4
+      },
+      {
+        "tag": "dati",
+        "n": 3
+      },
+      {
+        "tag": "municipales",
+        "n": 3
+      },
+      {
+        "tag": "hdpros2",
+        "n": 3
+      },
+      {
+        "tag": "hdpros",
+        "n": 2
+      },
+      {
+        "tag": "punchline",
+        "n": 2
+      }
+    ],
+    "franceinfo": [
+      {
+        "tag": "lci",
+        "n": 25
+      },
+      {
+        "tag": "bfmtv",
+        "n": 24
+      },
+      {
+        "tag": "cnews",
+        "n": 22
+      },
+      {
+        "tag": "macron",
+        "n": 21
+      },
+      {
+        "tag": "corse",
+        "n": 7
+      },
+      {
+        "tag": "gensduvoyage",
+        "n": 7
+      },
+      {
+        "tag": "gitan",
+        "n": 7
+      },
+      {
+        "tag": "maires",
+        "n": 7
+      },
+      {
+        "tag": "policenationale",
+        "n": 7
+      },
+      {
+        "tag": "prefets",
+        "n": 7
+      },
+      {
+        "tag": "iran",
+        "n": 6
+      },
+      {
+        "tag": "ggrmc",
+        "n": 5
+      },
+      {
+        "tag": "ukraine",
+        "n": 4
+      },
+      {
+        "tag": "europe1",
+        "n": 3
+      },
+      {
+        "tag": "lemonde",
+        "n": 3
+      }
+    ],
+    "freepalestine": [
+      {
+        "tag": "boycottisrael",
+        "n": 234
+      },
+      {
+        "tag": "plusjamaisps",
+        "n": 234
+      }
+    ],
+    "frexit": [
+      {
+        "tag": "macron",
+        "n": 11
+      },
+      {
+        "tag": "macrondestitution",
+        "n": 8
+      },
+      {
+        "tag": "destitution",
+        "n": 7
+      },
+      {
+        "tag": "ue",
+        "n": 5
+      },
+      {
+        "tag": "blackrock",
+        "n": 4
+      },
+      {
+        "tag": "nucléaire",
+        "n": 3
+      },
+      {
+        "tag": "france",
+        "n": 3
+      },
+      {
+        "tag": "iran",
+        "n": 3
+      },
+      {
+        "tag": "philippot",
+        "n": 2
+      },
+      {
+        "tag": "usa",
+        "n": 2
+      },
+      {
+        "tag": "frexitvite",
+        "n": 2
+      },
+      {
+        "tag": "allemagne",
+        "n": 2
+      },
+      {
+        "tag": "prison",
+        "n": 2
+      },
+      {
+        "tag": "dissuasionnucléaire",
+        "n": 2
+      },
+      {
+        "tag": "europe",
+        "n": 2
+      }
+    ],
+    "germany": [
+      {
+        "tag": "france",
+        "n": 34
+      },
+      {
+        "tag": "macron",
+        "n": 31
+      },
+      {
+        "tag": "russia",
+        "n": 21
+      },
+      {
+        "tag": "ukraine",
+        "n": 21
+      },
+      {
+        "tag": "russian",
+        "n": 18
+      },
+      {
+        "tag": "ukrainerussiawar",
+        "n": 18
+      },
+      {
+        "tag": "scholz",
+        "n": 16
+      },
+      {
+        "tag": "italy",
+        "n": 16
+      },
+      {
+        "tag": "kiev",
+        "n": 16
+      },
+      {
+        "tag": "politics",
+        "n": 16
+      },
+      {
+        "tag": "ukrainewar",
+        "n": 16
+      },
+      {
+        "tag": "zelenskyy",
+        "n": 16
+      },
+      {
+        "tag": "poland",
+        "n": 16
+      },
+      {
+        "tag": "mariupol",
+        "n": 14
+      },
+      {
+        "tag": "people",
+        "n": 14
+      }
+    ],
+    "hdpros2": [
+      {
+        "tag": "cnews",
+        "n": 4
+      },
+      {
+        "tag": "facealinfo",
+        "n": 3
+      },
+      {
+        "tag": "ggrmc",
+        "n": 3
+      },
+      {
+        "tag": "macron",
+        "n": 3
+      },
+      {
+        "tag": "bfmtv",
+        "n": 2
+      },
+      {
+        "tag": "europe1",
+        "n": 2
+      }
+    ],
+    "hollande": [
+      {
+        "tag": "macron",
+        "n": 24
+      },
+      {
+        "tag": "lecornu",
+        "n": 11
+      },
+      {
+        "tag": "sarkozy",
+        "n": 9
+      },
+      {
+        "tag": "ps",
+        "n": 8
+      },
+      {
+        "tag": "iran",
+        "n": 7
+      },
+      {
+        "tag": "lr",
+        "n": 7
+      },
+      {
+        "tag": "macronie",
+        "n": 7
+      },
+      {
+        "tag": "lfislamiste",
+        "n": 6
+      },
+      {
+        "tag": "rn",
+        "n": 6
+      },
+      {
+        "tag": "epstein",
+        "n": 5
+      },
+      {
+        "tag": "trump",
+        "n": 5
+      },
+      {
+        "tag": "chirac",
+        "n": 5
+      },
+      {
+        "tag": "fantômas",
+        "n": 5
+      },
+      {
+        "tag": "paradisfiscaux",
+        "n": 5
+      },
+      {
+        "tag": "pizzo",
+        "n": 5
+      }
+    ],
+    "iran": [
+      {
+        "tag": "macron",
+        "n": 378
+      },
+      {
+        "tag": "israel",
+        "n": 163
+      },
+      {
+        "tag": "france",
+        "n": 138
+      },
+      {
+        "tag": "trump",
+        "n": 126
+      },
+      {
+        "tag": "usa",
+        "n": 98
+      },
+      {
+        "tag": "iranwar",
+        "n": 72
+      },
+      {
+        "tag": "khamenei",
+        "n": 51
+      },
+      {
+        "tag": "israël",
+        "n": 42
+      },
+      {
+        "tag": "dubai",
+        "n": 39
+      },
+      {
+        "tag": "nucléaire",
+        "n": 36
+      },
+      {
+        "tag": "guerre",
+        "n": 34
+      },
+      {
+        "tag": "europe",
+        "n": 29
+      },
+      {
+        "tag": "moyenorient",
+        "n": 25
+      },
+      {
+        "tag": "breaking",
+        "n": 23
+      },
+      {
+        "tag": "netanyahu",
+        "n": 23
+      }
+    ],
+    "israel": [
+      {
+        "tag": "iran",
+        "n": 163
+      },
+      {
+        "tag": "macron",
+        "n": 88
+      },
+      {
+        "tag": "usa",
+        "n": 71
+      },
+      {
+        "tag": "trump",
+        "n": 48
+      },
+      {
+        "tag": "france",
+        "n": 37
+      },
+      {
+        "tag": "khamenei",
+        "n": 22
+      },
+      {
+        "tag": "iranwar",
+        "n": 22
+      },
+      {
+        "tag": "netanyahu",
+        "n": 18
+      },
+      {
+        "tag": "tehran",
+        "n": 13
+      },
+      {
+        "tag": "dubai",
+        "n": 13
+      },
+      {
+        "tag": "iranisraelwar",
+        "n": 11
+      },
+      {
+        "tag": "uae",
+        "n": 10
+      },
+      {
+        "tag": "jerusalem",
+        "n": 10
+      },
+      {
+        "tag": "nucléaire",
+        "n": 9
+      },
+      {
+        "tag": "teheran",
+        "n": 8
+      }
+    ],
+    "kiev": [
+      {
+        "tag": "macron",
+        "n": 24
+      },
+      {
+        "tag": "russia",
+        "n": 24
+      },
+      {
+        "tag": "france",
+        "n": 23
+      },
+      {
+        "tag": "ukraine",
+        "n": 23
+      },
+      {
+        "tag": "politics",
+        "n": 22
+      },
+      {
+        "tag": "ukrainerussiawar",
+        "n": 22
+      },
+      {
+        "tag": "ukrainewar",
+        "n": 22
+      },
+      {
+        "tag": "mariupol",
+        "n": 20
+      },
+      {
+        "tag": "people",
+        "n": 20
+      },
+      {
+        "tag": "russian",
+        "n": 20
+      },
+      {
+        "tag": "zelenskyy",
+        "n": 19
+      },
+      {
+        "tag": "italy",
+        "n": 18
+      },
+      {
+        "tag": "germany",
+        "n": 16
+      },
+      {
+        "tag": "poland",
+        "n": 16
+      },
+      {
+        "tag": "scholz",
+        "n": 12
+      }
+    ],
+    "lci": [
+      {
+        "tag": "bfmtv",
+        "n": 39
+      },
+      {
+        "tag": "macron",
+        "n": 39
+      },
+      {
+        "tag": "cnews",
+        "n": 35
+      },
+      {
+        "tag": "franceinfo",
+        "n": 25
+      },
+      {
+        "tag": "iran",
+        "n": 14
+      },
+      {
+        "tag": "europe1",
+        "n": 7
+      },
+      {
+        "tag": "ggrmc",
+        "n": 7
+      },
+      {
+        "tag": "corse",
+        "n": 7
+      },
+      {
+        "tag": "gensduvoyage",
+        "n": 7
+      },
+      {
+        "tag": "gitan",
+        "n": 7
+      },
+      {
+        "tag": "maires",
+        "n": 7
+      },
+      {
+        "tag": "policenationale",
+        "n": 7
+      },
+      {
+        "tag": "prefets",
+        "n": 7
+      },
+      {
+        "tag": "cavous",
+        "n": 5
+      },
+      {
+        "tag": "lemonde",
+        "n": 5
+      }
+    ],
+    "lecornu": [
+      {
+        "tag": "macron",
+        "n": 31
+      },
+      {
+        "tag": "hollande",
+        "n": 11
+      },
+      {
+        "tag": "ps",
+        "n": 9
+      },
+      {
+        "tag": "lr",
+        "n": 7
+      },
+      {
+        "tag": "macronie",
+        "n": 7
+      },
+      {
+        "tag": "iran",
+        "n": 6
+      },
+      {
+        "tag": "lfislamiste",
+        "n": 6
+      },
+      {
+        "tag": "rn",
+        "n": 6
+      },
+      {
+        "tag": "france",
+        "n": 5
+      },
+      {
+        "tag": "biodiversité",
+        "n": 5
+      },
+      {
+        "tag": "chasse",
+        "n": 5
+      },
+      {
+        "tag": "lobbyisme",
+        "n": 5
+      },
+      {
+        "tag": "écocide",
+        "n": 5
+      },
+      {
+        "tag": "barrot",
+        "n": 4
+      },
+      {
+        "tag": "attal",
+        "n": 4
+      }
+    ],
+    "lfi": [
+      {
+        "tag": "macron",
+        "n": 45
+      },
+      {
+        "tag": "rn",
+        "n": 25
+      },
+      {
+        "tag": "ps",
+        "n": 19
+      },
+      {
+        "tag": "freeiran",
+        "n": 8
+      },
+      {
+        "tag": "iran",
+        "n": 7
+      },
+      {
+        "tag": "cnews",
+        "n": 6
+      },
+      {
+        "tag": "trump",
+        "n": 5
+      },
+      {
+        "tag": "lci",
+        "n": 4
+      },
+      {
+        "tag": "bfmtv",
+        "n": 4
+      },
+      {
+        "tag": "melenchon",
+        "n": 3
+      },
+      {
+        "tag": "nfp",
+        "n": 3
+      },
+      {
+        "tag": "franceinfo",
+        "n": 2
+      },
+      {
+        "tag": "europe1",
+        "n": 2
+      },
+      {
+        "tag": "france2",
+        "n": 2
+      },
+      {
+        "tag": "lefigaro",
+        "n": 2
+      }
+    ],
+    "lfislamiste": [
+      {
+        "tag": "hollande",
+        "n": 6
+      },
+      {
+        "tag": "lecornu",
+        "n": 6
+      },
+      {
+        "tag": "lr",
+        "n": 6
+      },
+      {
+        "tag": "macron",
+        "n": 6
+      },
+      {
+        "tag": "macronie",
+        "n": 6
+      },
+      {
+        "tag": "ps",
+        "n": 6
+      },
+      {
+        "tag": "rn",
+        "n": 6
+      },
+      {
+        "tag": "iran",
+        "n": 3
+      },
+      {
+        "tag": "europe",
+        "n": 3
+      },
+      {
+        "tag": "france",
+        "n": 3
+      }
+    ],
+    "lr": [
+      {
+        "tag": "macron",
+        "n": 27
+      },
+      {
+        "tag": "dati",
+        "n": 12
+      },
+      {
+        "tag": "ps",
+        "n": 10
+      },
+      {
+        "tag": "rn",
+        "n": 9
+      },
+      {
+        "tag": "rachidadati",
+        "n": 9
+      },
+      {
+        "tag": "sarahpourparis",
+        "n": 9
+      },
+      {
+        "tag": "sarahknafo",
+        "n": 8
+      },
+      {
+        "tag": "macronie",
+        "n": 7
+      },
+      {
+        "tag": "hollande",
+        "n": 7
+      },
+      {
+        "tag": "lecornu",
+        "n": 7
+      },
+      {
+        "tag": "lfislamiste",
+        "n": 6
+      },
+      {
+        "tag": "municipales",
+        "n": 6
+      },
+      {
+        "tag": "iran",
+        "n": 4
+      },
+      {
+        "tag": "retailleau",
+        "n": 4
+      },
+      {
+        "tag": "paris",
+        "n": 4
+      }
+    ],
+    "macron": [
+      {
+        "tag": "iran",
+        "n": 378
+      },
+      {
+        "tag": "france",
+        "n": 353
+      },
+      {
+        "tag": "trump",
+        "n": 227
+      },
+      {
+        "tag": "starmer",
+        "n": 147
+      },
+      {
+        "tag": "usa",
+        "n": 135
+      },
+      {
+        "tag": "merz",
+        "n": 91
+      },
+      {
+        "tag": "israel",
+        "n": 88
+      },
+      {
+        "tag": "iranwar",
+        "n": 84
+      },
+      {
+        "tag": "putin",
+        "n": 81
+      },
+      {
+        "tag": "ukraine",
+        "n": 80
+      },
+      {
+        "tag": "ue",
+        "n": 70
+      },
+      {
+        "tag": "europe",
+        "n": 67
+      },
+      {
+        "tag": "russia",
+        "n": 59
+      },
+      {
+        "tag": "netanyahu",
+        "n": 58
+      },
+      {
+        "tag": "vance",
+        "n": 55
+      }
+    ],
+    "macrondestitution": [
+      {
+        "tag": "macron",
+        "n": 28
+      },
+      {
+        "tag": "iran",
+        "n": 17
+      },
+      {
+        "tag": "trump",
+        "n": 9
+      },
+      {
+        "tag": "frexit",
+        "n": 8
+      },
+      {
+        "tag": "france",
+        "n": 8
+      },
+      {
+        "tag": "dubai",
+        "n": 6
+      },
+      {
+        "tag": "dubaiattack",
+        "n": 4
+      },
+      {
+        "tag": "financenews",
+        "n": 4
+      },
+      {
+        "tag": "lidl",
+        "n": 4
+      },
+      {
+        "tag": "macronie",
+        "n": 4
+      },
+      {
+        "tag": "prank",
+        "n": 4
+      },
+      {
+        "tag": "surimi",
+        "n": 4
+      },
+      {
+        "tag": "taxes",
+        "n": 4
+      },
+      {
+        "tag": "test",
+        "n": 4
+      },
+      {
+        "tag": "macrondegage",
+        "n": 4
+      }
+    ],
+    "macronie": [
+      {
+        "tag": "macron",
+        "n": 16
+      },
+      {
+        "tag": "iran",
+        "n": 8
+      },
+      {
+        "tag": "lr",
+        "n": 7
+      },
+      {
+        "tag": "hollande",
+        "n": 7
+      },
+      {
+        "tag": "lecornu",
+        "n": 7
+      },
+      {
+        "tag": "lfislamiste",
+        "n": 6
+      },
+      {
+        "tag": "ps",
+        "n": 6
+      },
+      {
+        "tag": "rn",
+        "n": 6
+      },
+      {
+        "tag": "dubai",
+        "n": 4
+      },
+      {
+        "tag": "dubaiattack",
+        "n": 4
+      },
+      {
+        "tag": "financenews",
+        "n": 4
+      },
+      {
+        "tag": "lidl",
+        "n": 4
+      },
+      {
+        "tag": "macrondestitution",
+        "n": 4
+      },
+      {
+        "tag": "prank",
+        "n": 4
+      },
+      {
+        "tag": "surimi",
+        "n": 4
+      }
+    ],
+    "merz": [
+      {
+        "tag": "macron",
+        "n": 91
+      },
+      {
+        "tag": "starmer",
+        "n": 76
+      },
+      {
+        "tag": "trump",
+        "n": 61
+      },
+      {
+        "tag": "vance",
+        "n": 51
+      },
+      {
+        "tag": "putin",
+        "n": 47
+      },
+      {
+        "tag": "modi",
+        "n": 42
+      },
+      {
+        "tag": "elon",
+        "n": 38
+      },
+      {
+        "tag": "gabbard",
+        "n": 38
+      },
+      {
+        "tag": "gerogesoros",
+        "n": 38
+      },
+      {
+        "tag": "kingcharles",
+        "n": 38
+      },
+      {
+        "tag": "princeharry",
+        "n": 38
+      },
+      {
+        "tag": "princewilliam",
+        "n": 38
+      },
+      {
+        "tag": "rfkjr",
+        "n": 38
+      },
+      {
+        "tag": "xi",
+        "n": 38
+      },
+      {
+        "tag": "netanyahu",
+        "n": 33
+      }
+    ],
+    "modi": [
+      {
+        "tag": "macron",
+        "n": 42
+      },
+      {
+        "tag": "merz",
+        "n": 42
+      },
+      {
+        "tag": "putin",
+        "n": 42
+      },
+      {
+        "tag": "starmer",
+        "n": 42
+      },
+      {
+        "tag": "trump",
+        "n": 42
+      },
+      {
+        "tag": "elon",
+        "n": 38
+      },
+      {
+        "tag": "gabbard",
+        "n": 38
+      },
+      {
+        "tag": "gerogesoros",
+        "n": 38
+      },
+      {
+        "tag": "kingcharles",
+        "n": 38
+      },
+      {
+        "tag": "princeharry",
+        "n": 38
+      },
+      {
+        "tag": "princewilliam",
+        "n": 38
+      },
+      {
+        "tag": "rfkjr",
+        "n": 38
+      },
+      {
+        "tag": "vance",
+        "n": 38
+      },
+      {
+        "tag": "xi",
+        "n": 38
+      },
+      {
+        "tag": "netanyahu",
+        "n": 32
+      }
+    ],
+    "municipales": [
+      {
+        "tag": "dati",
+        "n": 9
+      },
+      {
+        "tag": "macron",
+        "n": 8
+      },
+      {
+        "tag": "lr",
+        "n": 6
+      },
+      {
+        "tag": "rachidadati",
+        "n": 6
+      },
+      {
+        "tag": "sarahknafo",
+        "n": 6
+      },
+      {
+        "tag": "sarahpourparis",
+        "n": 6
+      },
+      {
+        "tag": "municipales2026",
+        "n": 4
+      },
+      {
+        "tag": "facealinfo",
+        "n": 3
+      },
+      {
+        "tag": "paris",
+        "n": 3
+      },
+      {
+        "tag": "iran",
+        "n": 3
+      },
+      {
+        "tag": "nucléaire",
+        "n": 3
+      },
+      {
+        "tag": "cnews",
+        "n": 2
+      },
+      {
+        "tag": "ggrmc",
+        "n": 2
+      },
+      {
+        "tag": "knafo",
+        "n": 2
+      },
+      {
+        "tag": "dette",
+        "n": 2
+      }
+    ],
+    "netanyahu": [
+      {
+        "tag": "trump",
+        "n": 61
+      },
+      {
+        "tag": "macron",
+        "n": 58
+      },
+      {
+        "tag": "putin",
+        "n": 33
+      },
+      {
+        "tag": "merz",
+        "n": 33
+      },
+      {
+        "tag": "elon",
+        "n": 32
+      },
+      {
+        "tag": "gabbard",
+        "n": 32
+      },
+      {
+        "tag": "gerogesoros",
+        "n": 32
+      },
+      {
+        "tag": "kingcharles",
+        "n": 32
+      },
+      {
+        "tag": "modi",
+        "n": 32
+      },
+      {
+        "tag": "princeharry",
+        "n": 32
+      },
+      {
+        "tag": "princewilliam",
+        "n": 32
+      },
+      {
+        "tag": "rfkjr",
+        "n": 32
+      },
+      {
+        "tag": "starmer",
+        "n": 32
+      },
+      {
+        "tag": "vance",
+        "n": 32
+      },
+      {
+        "tag": "xi",
+        "n": 32
+      }
+    ],
+    "nucleaire": [
+      {
+        "tag": "macron",
+        "n": 30
+      },
+      {
+        "tag": "france",
+        "n": 18
+      },
+      {
+        "tag": "iran",
+        "n": 17
+      },
+      {
+        "tag": "dissuasion",
+        "n": 15
+      },
+      {
+        "tag": "defense",
+        "n": 8
+      },
+      {
+        "tag": "guerre",
+        "n": 7
+      },
+      {
+        "tag": "macrondegage",
+        "n": 6
+      },
+      {
+        "tag": "israel",
+        "n": 4
+      },
+      {
+        "tag": "ue",
+        "n": 4
+      },
+      {
+        "tag": "usa",
+        "n": 4
+      },
+      {
+        "tag": "bretagne",
+        "n": 4
+      },
+      {
+        "tag": "biodechets",
+        "n": 3
+      },
+      {
+        "tag": "biogaz",
+        "n": 3
+      },
+      {
+        "tag": "biomasse",
+        "n": 3
+      },
+      {
+        "tag": "ecologie",
+        "n": 3
+      }
+    ],
+    "people": [
+      {
+        "tag": "france",
+        "n": 24
+      },
+      {
+        "tag": "macron",
+        "n": 24
+      },
+      {
+        "tag": "mariupol",
+        "n": 24
+      },
+      {
+        "tag": "politics",
+        "n": 24
+      },
+      {
+        "tag": "russia",
+        "n": 24
+      },
+      {
+        "tag": "russian",
+        "n": 24
+      },
+      {
+        "tag": "ukraine",
+        "n": 24
+      },
+      {
+        "tag": "ukrainerussiawar",
+        "n": 24
+      },
+      {
+        "tag": "ukrainewar",
+        "n": 24
+      },
+      {
+        "tag": "kiev",
+        "n": 20
+      },
+      {
+        "tag": "zelenskyy",
+        "n": 20
+      },
+      {
+        "tag": "italy",
+        "n": 18
+      },
+      {
+        "tag": "poland",
+        "n": 18
+      },
+      {
+        "tag": "germany",
+        "n": 14
+      },
+      {
+        "tag": "merkel",
+        "n": 10
+      }
+    ],
+    "plusjamaisps": [
+      {
+        "tag": "boycottisrael",
+        "n": 234
+      },
+      {
+        "tag": "freepalestine",
+        "n": 234
+      }
+    ],
+    "poland": [
+      {
+        "tag": "macron",
+        "n": 24
+      },
+      {
+        "tag": "russian",
+        "n": 22
+      },
+      {
+        "tag": "ukraine",
+        "n": 22
+      },
+      {
+        "tag": "russia",
+        "n": 20
+      },
+      {
+        "tag": "ukrainerussiawar",
+        "n": 20
+      },
+      {
+        "tag": "zelenskyy",
+        "n": 20
+      },
+      {
+        "tag": "italy",
+        "n": 20
+      },
+      {
+        "tag": "ukrainewar",
+        "n": 20
+      },
+      {
+        "tag": "france",
+        "n": 20
+      },
+      {
+        "tag": "mariupol",
+        "n": 18
+      },
+      {
+        "tag": "people",
+        "n": 18
+      },
+      {
+        "tag": "politics",
+        "n": 18
+      },
+      {
+        "tag": "germany",
+        "n": 16
+      },
+      {
+        "tag": "kiev",
+        "n": 16
+      },
+      {
+        "tag": "merkel",
+        "n": 10
+      }
+    ],
+    "politics": [
+      {
+        "tag": "france",
+        "n": 26
+      },
+      {
+        "tag": "macron",
+        "n": 26
+      },
+      {
+        "tag": "russia",
+        "n": 26
+      },
+      {
+        "tag": "ukraine",
+        "n": 26
+      },
+      {
+        "tag": "ukrainerussiawar",
+        "n": 26
+      },
+      {
+        "tag": "ukrainewar",
+        "n": 26
+      },
+      {
+        "tag": "mariupol",
+        "n": 24
+      },
+      {
+        "tag": "people",
+        "n": 24
+      },
+      {
+        "tag": "russian",
+        "n": 24
+      },
+      {
+        "tag": "kiev",
+        "n": 22
+      },
+      {
+        "tag": "zelenskyy",
+        "n": 22
+      },
+      {
+        "tag": "italy",
+        "n": 20
+      },
+      {
+        "tag": "poland",
+        "n": 18
+      },
+      {
+        "tag": "germany",
+        "n": 16
+      },
+      {
+        "tag": "scholz",
+        "n": 12
+      }
+    ],
+    "ps": [
+      {
+        "tag": "macron",
+        "n": 35
+      },
+      {
+        "tag": "rn",
+        "n": 26
+      },
+      {
+        "tag": "lfi",
+        "n": 19
+      },
+      {
+        "tag": "lr",
+        "n": 10
+      },
+      {
+        "tag": "lecornu",
+        "n": 9
+      },
+      {
+        "tag": "freeiran",
+        "n": 8
+      },
+      {
+        "tag": "hollande",
+        "n": 8
+      },
+      {
+        "tag": "lfislamiste",
+        "n": 6
+      },
+      {
+        "tag": "macronie",
+        "n": 6
+      },
+      {
+        "tag": "iran",
+        "n": 4
+      },
+      {
+        "tag": "france",
+        "n": 4
+      },
+      {
+        "tag": "europe",
+        "n": 3
+      }
+    ],
+    "putin": [
+      {
+        "tag": "macron",
+        "n": 81
+      },
+      {
+        "tag": "trump",
+        "n": 49
+      },
+      {
+        "tag": "merz",
+        "n": 47
+      },
+      {
+        "tag": "starmer",
+        "n": 45
+      },
+      {
+        "tag": "modi",
+        "n": 42
+      },
+      {
+        "tag": "elon",
+        "n": 38
+      },
+      {
+        "tag": "gabbard",
+        "n": 38
+      },
+      {
+        "tag": "gerogesoros",
+        "n": 38
+      },
+      {
+        "tag": "kingcharles",
+        "n": 38
+      },
+      {
+        "tag": "princeharry",
+        "n": 38
+      },
+      {
+        "tag": "princewilliam",
+        "n": 38
+      },
+      {
+        "tag": "rfkjr",
+        "n": 38
+      },
+      {
+        "tag": "vance",
+        "n": 38
+      },
+      {
+        "tag": "xi",
+        "n": 38
+      },
+      {
+        "tag": "netanyahu",
+        "n": 33
+      }
+    ],
+    "rn": [
+      {
+        "tag": "macron",
+        "n": 48
+      },
+      {
+        "tag": "ps",
+        "n": 26
+      },
+      {
+        "tag": "lfi",
+        "n": 25
+      },
+      {
+        "tag": "lr",
+        "n": 9
+      },
+      {
+        "tag": "freeiran",
+        "n": 8
+      },
+      {
+        "tag": "iran",
+        "n": 6
+      },
+      {
+        "tag": "hollande",
+        "n": 6
+      },
+      {
+        "tag": "lecornu",
+        "n": 6
+      },
+      {
+        "tag": "lfislamiste",
+        "n": 6
+      },
+      {
+        "tag": "macronie",
+        "n": 6
+      },
+      {
+        "tag": "france",
+        "n": 6
+      },
+      {
+        "tag": "lepen",
+        "n": 4
+      },
+      {
+        "tag": "mlp",
+        "n": 4
+      },
+      {
+        "tag": "europe",
+        "n": 4
+      },
+      {
+        "tag": "medias",
+        "n": 3
+      }
+    ],
+    "russia": [
+      {
+        "tag": "macron",
+        "n": 59
+      },
+      {
+        "tag": "ukraine",
+        "n": 51
+      },
+      {
+        "tag": "france",
+        "n": 39
+      },
+      {
+        "tag": "ukrainerussiawar",
+        "n": 34
+      },
+      {
+        "tag": "russian",
+        "n": 33
+      },
+      {
+        "tag": "putin",
+        "n": 31
+      },
+      {
+        "tag": "zelenskyy",
+        "n": 29
+      },
+      {
+        "tag": "politics",
+        "n": 26
+      },
+      {
+        "tag": "ukrainewar",
+        "n": 26
+      },
+      {
+        "tag": "kiev",
+        "n": 24
+      },
+      {
+        "tag": "mariupol",
+        "n": 24
+      },
+      {
+        "tag": "people",
+        "n": 24
+      },
+      {
+        "tag": "germany",
+        "n": 21
+      },
+      {
+        "tag": "poland",
+        "n": 20
+      },
+      {
+        "tag": "italy",
+        "n": 20
+      }
+    ],
+    "russian": [
+      {
+        "tag": "macron",
+        "n": 42
+      },
+      {
+        "tag": "ukraine",
+        "n": 38
+      },
+      {
+        "tag": "ukrainerussiawar",
+        "n": 35
+      },
+      {
+        "tag": "russia",
+        "n": 33
+      },
+      {
+        "tag": "france",
+        "n": 30
+      },
+      {
+        "tag": "zelenskyy",
+        "n": 26
+      },
+      {
+        "tag": "ukrainewar",
+        "n": 26
+      },
+      {
+        "tag": "mariupol",
+        "n": 24
+      },
+      {
+        "tag": "people",
+        "n": 24
+      },
+      {
+        "tag": "politics",
+        "n": 24
+      },
+      {
+        "tag": "poland",
+        "n": 22
+      },
+      {
+        "tag": "putin",
+        "n": 22
+      },
+      {
+        "tag": "italy",
+        "n": 20
+      },
+      {
+        "tag": "kiev",
+        "n": 20
+      },
+      {
+        "tag": "germany",
+        "n": 18
+      }
+    ],
+    "sarahknafo": [
+      {
+        "tag": "dati",
+        "n": 11
+      },
+      {
+        "tag": "macron",
+        "n": 8
+      },
+      {
+        "tag": "lr",
+        "n": 8
+      },
+      {
+        "tag": "sarahpourparis",
+        "n": 8
+      },
+      {
+        "tag": "municipales2026",
+        "n": 7
+      },
+      {
+        "tag": "rachidadati",
+        "n": 7
+      },
+      {
+        "tag": "municipales",
+        "n": 6
+      },
+      {
+        "tag": "paris",
+        "n": 4
+      },
+      {
+        "tag": "cnews",
+        "n": 3
+      },
+      {
+        "tag": "knafo",
+        "n": 2
+      },
+      {
+        "tag": "unevilleheureuse",
+        "n": 2
+      }
+    ],
+    "sarahpourparis": [
+      {
+        "tag": "dati",
+        "n": 11
+      },
+      {
+        "tag": "lr",
+        "n": 9
+      },
+      {
+        "tag": "rachidadati",
+        "n": 9
+      },
+      {
+        "tag": "sarahknafo",
+        "n": 8
+      },
+      {
+        "tag": "municipales",
+        "n": 6
+      },
+      {
+        "tag": "municipales2026",
+        "n": 4
+      },
+      {
+        "tag": "raffarin",
+        "n": 3
+      },
+      {
+        "tag": "retailleau",
+        "n": 3
+      },
+      {
+        "tag": "sarahknafo2026",
+        "n": 3
+      },
+      {
+        "tag": "cnews",
+        "n": 3
+      },
+      {
+        "tag": "sondage",
+        "n": 2
+      },
+      {
+        "tag": "knafo",
+        "n": 2
+      },
+      {
+        "tag": "macron",
+        "n": 2
+      }
+    ],
+    "starmer": [
+      {
+        "tag": "macron",
+        "n": 147
+      },
+      {
+        "tag": "merz",
+        "n": 76
+      },
+      {
+        "tag": "trump",
+        "n": 65
+      },
+      {
+        "tag": "usa",
+        "n": 64
+      },
+      {
+        "tag": "vance",
+        "n": 51
+      },
+      {
+        "tag": "dtrump",
+        "n": 48
+      },
+      {
+        "tag": "fmerz",
+        "n": 48
+      },
+      {
+        "tag": "génocidegaza",
+        "n": 48
+      },
+      {
+        "tag": "israelmonstruositésansnom",
+        "n": 48
+      },
+      {
+        "tag": "ue",
+        "n": 48
+      },
+      {
+        "tag": "putin",
+        "n": 45
+      },
+      {
+        "tag": "modi",
+        "n": 42
+      },
+      {
+        "tag": "elon",
+        "n": 38
+      },
+      {
+        "tag": "gabbard",
+        "n": 38
+      },
+      {
+        "tag": "gerogesoros",
+        "n": 38
+      }
+    ],
+    "taem": [
+      {
+        "tag": "macron",
+        "n": 3
+      },
+      {
+        "tag": "aveclepresident",
+        "n": 2
+      }
+    ],
+    "ue": [
+      {
+        "tag": "macron",
+        "n": 70
+      },
+      {
+        "tag": "usa",
+        "n": 53
+      },
+      {
+        "tag": "dtrump",
+        "n": 51
+      },
+      {
+        "tag": "fmerz",
+        "n": 51
+      },
+      {
+        "tag": "génocidegaza",
+        "n": 51
+      },
+      {
+        "tag": "israelmonstruositésansnom",
+        "n": 51
+      },
+      {
+        "tag": "starmer",
+        "n": 48
+      },
+      {
+        "tag": "ukraine",
+        "n": 6
+      },
+      {
+        "tag": "nucléaire",
+        "n": 6
+      },
+      {
+        "tag": "france",
+        "n": 6
+      },
+      {
+        "tag": "frexit",
+        "n": 5
+      },
+      {
+        "tag": "europe",
+        "n": 5
+      },
+      {
+        "tag": "iran",
+        "n": 4
+      },
+      {
+        "tag": "nucleaire",
+        "n": 4
+      },
+      {
+        "tag": "germany",
+        "n": 3
+      }
+    ],
+    "ukraine": [
+      {
+        "tag": "macron",
+        "n": 80
+      },
+      {
+        "tag": "russia",
+        "n": 51
+      },
+      {
+        "tag": "france",
+        "n": 38
+      },
+      {
+        "tag": "russian",
+        "n": 38
+      },
+      {
+        "tag": "ukrainerussiawar",
+        "n": 37
+      },
+      {
+        "tag": "putin",
+        "n": 30
+      },
+      {
+        "tag": "zelenskyy",
+        "n": 29
+      },
+      {
+        "tag": "ukrainewar",
+        "n": 28
+      },
+      {
+        "tag": "politics",
+        "n": 26
+      },
+      {
+        "tag": "mariupol",
+        "n": 24
+      },
+      {
+        "tag": "people",
+        "n": 24
+      },
+      {
+        "tag": "kiev",
+        "n": 23
+      },
+      {
+        "tag": "poland",
+        "n": 22
+      },
+      {
+        "tag": "italy",
+        "n": 22
+      },
+      {
+        "tag": "germany",
+        "n": 21
+      }
+    ],
+    "ukrainewar": [
+      {
+        "tag": "macron",
+        "n": 28
+      },
+      {
+        "tag": "ukraine",
+        "n": 28
+      },
+      {
+        "tag": "russian",
+        "n": 26
+      },
+      {
+        "tag": "france",
+        "n": 26
+      },
+      {
+        "tag": "politics",
+        "n": 26
+      },
+      {
+        "tag": "russia",
+        "n": 26
+      },
+      {
+        "tag": "ukrainerussiawar",
+        "n": 26
+      },
+      {
+        "tag": "mariupol",
+        "n": 24
+      },
+      {
+        "tag": "people",
+        "n": 24
+      },
+      {
+        "tag": "italy",
+        "n": 22
+      },
+      {
+        "tag": "kiev",
+        "n": 22
+      },
+      {
+        "tag": "zelenskyy",
+        "n": 22
+      },
+      {
+        "tag": "poland",
+        "n": 20
+      },
+      {
+        "tag": "germany",
+        "n": 16
+      },
+      {
+        "tag": "scholz",
+        "n": 12
+      }
+    ],
+    "usa": [
+      {
+        "tag": "macron",
+        "n": 135
+      },
+      {
+        "tag": "iran",
+        "n": 98
+      },
+      {
+        "tag": "israel",
+        "n": 71
+      },
+      {
+        "tag": "starmer",
+        "n": 64
+      },
+      {
+        "tag": "ue",
+        "n": 53
+      },
+      {
+        "tag": "dtrump",
+        "n": 51
+      },
+      {
+        "tag": "fmerz",
+        "n": 51
+      },
+      {
+        "tag": "génocidegaza",
+        "n": 51
+      },
+      {
+        "tag": "israelmonstruositésansnom",
+        "n": 51
+      },
+      {
+        "tag": "france",
+        "n": 44
+      },
+      {
+        "tag": "trump",
+        "n": 39
+      },
+      {
+        "tag": "merz",
+        "n": 15
+      },
+      {
+        "tag": "maga",
+        "n": 14
+      },
+      {
+        "tag": "rubio",
+        "n": 14
+      },
+      {
+        "tag": "unitednations",
+        "n": 14
+      }
+    ],
+    "vance": [
+      {
+        "tag": "trump",
+        "n": 56
+      },
+      {
+        "tag": "macron",
+        "n": 55
+      },
+      {
+        "tag": "merz",
+        "n": 51
+      },
+      {
+        "tag": "starmer",
+        "n": 51
+      },
+      {
+        "tag": "elon",
+        "n": 42
+      },
+      {
+        "tag": "gabbard",
+        "n": 42
+      },
+      {
+        "tag": "gerogesoros",
+        "n": 42
+      },
+      {
+        "tag": "rfkjr",
+        "n": 42
+      },
+      {
+        "tag": "kingcharles",
+        "n": 38
+      },
+      {
+        "tag": "modi",
+        "n": 38
+      },
+      {
+        "tag": "princeharry",
+        "n": 38
+      },
+      {
+        "tag": "princewilliam",
+        "n": 38
+      },
+      {
+        "tag": "putin",
+        "n": 38
+      },
+      {
+        "tag": "xi",
+        "n": 38
+      },
+      {
+        "tag": "alexsorros",
+        "n": 34
+      }
+    ],
+    "world": [
+      {
+        "tag": "macron",
+        "n": 8
+      },
+      {
+        "tag": "putin",
+        "n": 8
+      },
+      {
+        "tag": "russia",
+        "n": 8
+      },
+      {
+        "tag": "russian",
+        "n": 8
+      },
+      {
+        "tag": "ukraine",
+        "n": 8
+      },
+      {
+        "tag": "ukrainerussiawar",
+        "n": 8
+      },
+      {
+        "tag": "usa",
+        "n": 7
+      },
+      {
+        "tag": "france",
+        "n": 6
+      },
+      {
+        "tag": "mariupol",
+        "n": 6
+      },
+      {
+        "tag": "people",
+        "n": 6
+      },
+      {
+        "tag": "politics",
+        "n": 6
+      },
+      {
+        "tag": "ukrainewar",
+        "n": 6
+      },
+      {
+        "tag": "zelenskyy",
+        "n": 4
+      },
+      {
+        "tag": "kiev",
+        "n": 4
+      },
+      {
+        "tag": "miller",
+        "n": 4
+      }
+    ],
+    "zelenskyy": [
+      {
+        "tag": "macron",
+        "n": 29
+      },
+      {
+        "tag": "russia",
+        "n": 29
+      },
+      {
+        "tag": "ukraine",
+        "n": 29
+      },
+      {
+        "tag": "ukrainerussiawar",
+        "n": 28
+      },
+      {
+        "tag": "russian",
+        "n": 26
+      },
+      {
+        "tag": "france",
+        "n": 22
+      },
+      {
+        "tag": "politics",
+        "n": 22
+      },
+      {
+        "tag": "ukrainewar",
+        "n": 22
+      },
+      {
+        "tag": "poland",
+        "n": 20
+      },
+      {
+        "tag": "italy",
+        "n": 20
+      },
+      {
+        "tag": "mariupol",
+        "n": 20
+      },
+      {
+        "tag": "people",
+        "n": 20
+      },
+      {
+        "tag": "kiev",
+        "n": 19
+      },
+      {
+        "tag": "germany",
+        "n": 16
+      },
+      {
+        "tag": "scholz",
+        "n": 12
+      }
+    ]
+  },
+  "tag_comm_n": {
+    "alexsorros": {
+      "48": 1
+    },
+    "allemagne": {
+      "6": 6,
+      "1": 4,
+      "19": 1,
+      "4557": 1,
+      "4826": 1,
+      "86": 1,
+      "9": 1
+    },
+    "armenucléaire": {
+      "1": 1,
+      "261": 1
+    },
+    "attal": {
+      "1": 2,
+      "48": 2,
+      "6": 2,
+      "86": 1
+    },
+    "avancée": {
+      "6407": 1
+    },
+    "aveclepresident": {
+      "1": 1
+    },
+    "barrot": {
+      "6": 9,
+      "1": 8,
+      "48": 1,
+      "9": 1
+    },
+    "bfmtv": {
+      "6": 8,
+      "1": 6,
+      "48": 2,
+      "2355": 1,
+      "5375": 1,
+      "6833": 1,
+      "9": 1,
+      "97": 1
+    },
+    "biodechets": {
+      "6152": 1
+    },
+    "biodiversité": {
+      "97": 1
+    },
+    "biogaz": {
+      "6152": 1
+    },
+    "biomasse": {
+      "6152": 1
+    },
+    "blackrock": {
+      "6": 1
+    },
+    "boycottisrael": {
+      "2231": 1,
+      "48": 1
+    },
+    "breaking": {
+      "0": 14,
+      "1": 3,
+      "19": 2,
+      "414": 2,
+      "2012": 1,
+      "2054": 1,
+      "2086": 1,
+      "21": 1,
+      "2118": 1,
+      "2178": 1,
+      "2199": 1,
+      "2615": 1,
+      "2674": 1,
+      "2692": 1,
+      "2706": 1,
+      "2899": 1,
+      "2948": 1,
+      "3088": 1,
+      "3135": 1,
+      "3169": 1,
+      "3214": 1,
+      "3220": 1,
+      "3292": 1,
+      "3333": 1,
+      "3344": 1,
+      "3350": 1,
+      "3414": 1,
+      "3420": 1,
+      "3604": 1,
+      "3740": 1,
+      "3801": 1,
+      "3961": 1,
+      "4103": 1,
+      "4159": 1,
+      "4281": 1,
+      "4785": 1,
+      "48": 1,
+      "4826": 1,
+      "5266": 1,
+      "5288": 1,
+      "5316": 1,
+      "5411": 1,
+      "5467": 1,
+      "5498": 1,
+      "5513": 1,
+      "5549": 1,
+      "5620": 1,
+      "5782": 1,
+      "5863": 1,
+      "5913": 1,
+      "5988": 1,
+      "5998": 1,
+      "5999": 1,
+      "6117": 1,
+      "6217": 1,
+      "6302": 1,
+      "6448": 1,
+      "6498": 1,
+      "6510": 1,
+      "6757": 1,
+      "7025": 1,
+      "7086": 1,
+      "871": 1,
+      "905": 1,
+      "979": 1
+    },
+    "bretagne": {
+      "1": 2,
+      "5228": 1
+    },
+    "brussels": {
+      "0": 2
+    },
+    "bruxellesout": {
+      "19": 1
+    },
+    "cavous": {
+      "1": 1,
+      "5375": 1,
+      "6": 1
+    },
+    "censure": {
+      "6": 2,
+      "1": 1,
+      "19": 1,
+      "4039": 1,
+      "44": 1,
+      "48": 1
+    },
+    "chasse": {
+      "97": 1
+    },
+    "chine": {
+      "48": 3,
+      "1": 1,
+      "1111": 1,
+      "2844": 1,
+      "5646": 1
+    },
+    "chirac": {
+      "1": 1,
+      "6": 1
+    },
+    "cnews": {
+      "1": 12,
+      "6": 11,
+      "1642": 2,
+      "9": 2,
+      "2355": 1,
+      "2359": 1,
+      "2412": 1,
+      "3124": 1,
+      "3553": 1,
+      "3893": 1,
+      "48": 1,
+      "5375": 1,
+      "5910": 1,
+      "6596": 1,
+      "86": 1
+    },
+    "corse": {
+      "1": 1
+    },
+    "dati": {
+      "6": 8,
+      "102": 4,
+      "1": 1,
+      "48": 1,
+      "5824": 1,
+      "97": 1
+    },
+    "day": {
+      "0": 2
+    },
+    "defense": {
+      "1": 5,
+      "6": 2,
+      "0": 1,
+      "19": 1,
+      "2605": 1,
+      "3581": 1,
+      "3600": 1,
+      "3675": 1,
+      "3878": 1,
+      "5043": 1,
+      "5692": 1,
+      "5863": 1,
+      "6472": 1,
+      "6757": 1,
+      "7151": 1,
+      "9": 1,
+      "979": 1
+    },
+    "destitution": {
+      "6": 13,
+      "48": 4,
+      "1": 2,
+      "19": 1
+    },
+    "dette": {
+      "1": 2,
+      "19": 1,
+      "6": 1
+    },
+    "dissuasion": {
+      "1": 24,
+      "6": 21,
+      "48": 6,
+      "44": 2,
+      "21": 1,
+      "2232": 1,
+      "261": 1,
+      "3076": 1,
+      "3956": 1,
+      "4465": 1,
+      "4745": 1,
+      "4793": 1,
+      "4807": 1,
+      "5235": 1,
+      "5466": 1,
+      "5881": 1,
+      "6195": 1,
+      "6244": 1,
+      "6407": 1,
+      "6643": 1,
+      "6990": 1,
+      "7142": 1,
+      "9": 1,
+      "910": 1
+    },
+    "dissuasionnucleaire": {
+      "1": 1,
+      "2605": 1,
+      "2620": 1,
+      "4355": 1,
+      "5880": 1,
+      "6": 1
+    },
+    "dissuasionnucléaire": {
+      "6": 12,
+      "1": 3,
+      "2160": 1,
+      "2314": 1,
+      "3956": 1,
+      "4385": 1,
+      "48": 1,
+      "6563": 1,
+      "7142": 1,
+      "86": 1,
+      "881": 1,
+      "9": 1
+    },
+    "dtrump": {
+      "48": 1
+    },
+    "dubai": {
+      "1": 6,
+      "6": 5,
+      "9": 4,
+      "0": 2,
+      "14": 2,
+      "48": 2,
+      "102": 1,
+      "111": 1,
+      "112": 1,
+      "19": 1,
+      "2151": 1,
+      "2355": 1,
+      "2509": 1,
+      "2761": 1,
+      "2844": 1,
+      "3026": 1,
+      "3124": 1,
+      "3337": 1,
+      "3480": 1,
+      "3482": 1,
+      "3553": 1,
+      "4181": 1,
+      "44": 1,
+      "4445": 1,
+      "4760": 1,
+      "5105": 1,
+      "5223": 1,
+      "5317": 1,
+      "5381": 1,
+      "5422": 1,
+      "5453": 1,
+      "6120": 1,
+      "6271": 1,
+      "6590": 1,
+      "6779": 1,
+      "6833": 1,
+      "7033": 1,
+      "7036": 1,
+      "706": 1,
+      "86": 1
+    },
+    "dubaiattack": {
+      "0": 1,
+      "3379": 1,
+      "3545": 1,
+      "3596": 1,
+      "44": 1,
+      "48": 1,
+      "6": 1,
+      "6350": 1
+    },
+    "ecologie": {
+      "6152": 1
+    },
+    "elon": {
+      "48": 1
+    },
+    "epstein": {
+      "6": 14,
+      "48": 13,
+      "1": 4,
+      "14": 2,
+      "17": 1,
+      "19": 1,
+      "21": 1,
+      "2134": 1,
+      "2515": 1,
+      "3905": 1,
+      "44": 1,
+      "4418": 1,
+      "49": 1,
+      "5209": 1,
+      "549": 1,
+      "6180": 1,
+      "6418": 1,
+      "70": 1,
+      "86": 1,
+      "9": 1
+    },
+    "euronumérique": {
+      "19": 1
+    },
+    "europe": {
+      "1": 20,
+      "0": 6,
+      "9": 5,
+      "6": 2,
+      "97": 2,
+      "17": 1,
+      "1888": 1,
+      "1922": 1,
+      "1940": 1,
+      "2020": 1,
+      "21": 1,
+      "2146": 1,
+      "2232": 1,
+      "2605": 1,
+      "2620": 1,
+      "2659": 1,
+      "2708": 1,
+      "3571": 1,
+      "3647": 1,
+      "3878": 1,
+      "3956": 1,
+      "4100": 1,
+      "4118": 1,
+      "4217": 1,
+      "4264": 1,
+      "4265": 1,
+      "44": 1,
+      "4481": 1,
+      "4648": 1,
+      "48": 1,
+      "4977": 1,
+      "5028": 1,
+      "5040": 1,
+      "5317": 1,
+      "5371": 1,
+      "5513": 1,
+      "5880": 1,
+      "5918": 1,
+      "5919": 1,
+      "5988": 1,
+      "6195": 1,
+      "6241": 1,
+      "6251": 1,
+      "6628": 1,
+      "6747": 1,
+      "6937": 1,
+      "6971": 1,
+      "6999": 1,
+      "7120": 1,
+      "866": 1
+    },
+    "europe1": {
+      "6": 3,
+      "1": 2,
+      "102": 1,
+      "5375": 1
+    },
+    "européenne": {
+      "1": 1
+    },
+    "facealinfo": {
+      "6": 7,
+      "19": 1,
+      "3025": 1
+    },
+    "fantômas": {
+      "6": 1
+    },
+    "financenews": {
+      "44": 1,
+      "5105": 1
+    },
+    "fmerz": {
+      "48": 1
+    },
+    "france": {
+      "1": 74,
+      "6": 36,
+      "0": 31,
+      "48": 21,
+      "19": 15,
+      "9": 12,
+      "21": 8,
+      "44": 6,
+      "97": 4,
+      "14": 3,
+      "22": 3,
+      "86": 3,
+      "850": 2,
+      "1014": 1,
+      "1025": 1,
+      "107": 1,
+      "112": 1,
+      "1227": 1,
+      "1629": 1,
+      "164": 1,
+      "1846": 1,
+      "1937": 1,
+      "1940": 1,
+      "1956": 1,
+      "1983": 1,
+      "1988": 1,
+      "2020": 1,
+      "2026": 1,
+      "2050": 1,
+      "2132": 1,
+      "2151": 1,
+      "2196": 1,
+      "2199": 1,
+      "2231": 1,
+      "2232": 1,
+      "2238": 1,
+      "2329": 1,
+      "2359": 1,
+      "2385": 1,
+      "2459": 1,
+      "2474": 1,
+      "2486": 1,
+      "2559": 1,
+      "256": 1,
+      "2605": 1,
+      "2615": 1,
+      "265": 1,
+      "2676": 1,
+      "2689": 1,
+      "2694": 1,
+      "2723": 1,
+      "2755": 1,
+      "2891": 1,
+      "2898": 1,
+      "2921": 1,
+      "2927": 1,
+      "2948": 1,
+      "3075": 1,
+      "3079": 1,
+      "3094": 1,
+      "3151": 1,
+      "3190": 1,
+      "3222": 1,
+      "3228": 1,
+      "3300": 1,
+      "3312": 1,
+      "3325": 1,
+      "3337": 1,
+      "3344": 1,
+      "3374": 1,
+      "3377": 1,
+      "3403": 1,
+      "3457": 1,
+      "3466": 1,
+      "348": 1,
+      "3481": 1,
+      "3540": 1,
+      "3543": 1,
+      "3551": 1,
+      "3559": 1,
+      "3571": 1,
+      "3588": 1,
+      "3596": 1,
+      "3615": 1,
+      "3647": 1,
+      "3668": 1,
+      "3675": 1,
+      "3696": 1,
+      "3715": 1,
+      "3741": 1,
+      "3785": 1,
+      "3821": 1,
+      "3838": 1,
+      "3844": 1,
+      "3878": 1,
+      "3942": 1,
+      "3970": 1,
+      "3971": 1,
+      "3991": 1,
+      "3995": 1,
+      "4006": 1,
+      "4060": 1,
+      "409": 1,
+      "4100": 1,
+      "4118": 1,
+      "4156": 1,
+      "4181": 1,
+      "4217": 1,
+      "423": 1,
+      "4234": 1,
+      "4247": 1,
+      "4264": 1,
+      "4322": 1,
+      "4445": 1,
+      "4451": 1,
+      "4557": 1,
+      "4613": 1,
+      "4616": 1,
+      "4648": 1,
+      "4649": 1,
+      "4660": 1,
+      "4685": 1,
+      "4793": 1,
+      "4826": 1,
+      "4830": 1,
+      "4838": 1,
+      "4871": 1,
+      "4903": 1,
+      "4916": 1,
+      "4940": 1,
+      "4987": 1,
+      "4989": 1,
+      "5027": 1,
+      "5028": 1,
+      "5040": 1,
+      "5043": 1,
+      "5051": 1,
+      "5080": 1,
+      "5122": 1,
+      "5176": 1,
+      "5195": 1,
+      "5246": 1,
+      "5284": 1,
+      "5286": 1,
+      "5291": 1,
+      "5299": 1,
+      "5303": 1,
+      "5317": 1,
+      "5371": 1,
+      "5411": 1,
+      "5425": 1,
+      "5462": 1,
+      "5473": 1,
+      "549": 1,
+      "5495": 1,
+      "5513": 1,
+      "5542": 1,
+      "5565": 1,
+      "5597": 1,
+      "5629": 1,
+      "5721": 1,
+      "5722": 1,
+      "5782": 1,
+      "5786": 1,
+      "5791": 1,
+      "5816": 1,
+      "5845": 1,
+      "5863": 1,
+      "5875": 1,
+      "5878": 1,
+      "5880": 1,
+      "5912": 1,
+      "5918": 1,
+      "5939": 1,
+      "5941": 1,
+      "5950": 1,
+      "5998": 1,
+      "6026": 1,
+      "6031": 1,
+      "6074": 1,
+      "6084": 1,
+      "6112": 1,
+      "6122": 1,
+      "6195": 1,
+      "6199": 1,
+      "6225": 1,
+      "6241": 1,
+      "6244": 1,
+      "6357": 1,
+      "6386": 1,
+      "6417": 1,
+      "6498": 1,
+      "6510": 1,
+      "656": 1,
+      "66": 1,
+      "6632": 1,
+      "6646": 1,
+      "6654": 1,
+      "6666": 1,
+      "6678": 1,
+      "6757": 1,
+      "6792": 1,
+      "6830": 1,
+      "6833": 1,
+      "6895": 1,
+      "6904": 1,
+      "6923": 1,
+      "6932": 1,
+      "6937": 1,
+      "6999": 1,
+      "70": 1,
+      "7036": 1,
+      "7067": 1,
+      "7098": 1,
+      "7101": 1,
+      "7109": 1,
+      "7140": 1,
+      "7142": 1,
+      "7151": 1,
+      "744": 1,
+      "777": 1,
+      "788": 1,
+      "830": 1,
+      "853": 1,
+      "894": 1,
+      "903": 1,
+      "923": 1,
+      "979": 1
+    },
+    "france2": {
+      "1": 1,
+      "402": 1,
+      "6": 1
+    },
+    "franceinfo": {
+      "1": 6,
+      "6": 2,
+      "48": 1,
+      "5375": 1,
+      "97": 1
+    },
+    "freeiran": {
+      "6": 4,
+      "0": 1,
+      "1": 1,
+      "2214": 1
+    },
+    "freepalestine": {
+      "48": 3
+    },
+    "frexit": {
+      "6": 31,
+      "44": 2,
+      "48": 2,
+      "1": 1,
+      "3649": 1,
+      "6564": 1,
+      "97": 1
+    },
+    "frexitvite": {
+      "6": 8,
+      "19": 1,
+      "21": 1
+    },
+    "gabbard": {
+      "48": 1
+    },
+    "gatewaypundit": {
+      "21": 5,
+      "1": 1
+    },
+    "gensduvoyage": {
+      "1": 1
+    },
+    "germany": {
+      "0": 4,
+      "1": 1,
+      "21": 1,
+      "2755": 1,
+      "3075": 1,
+      "3325": 1,
+      "3878": 1,
+      "4118": 1,
+      "5513": 1,
+      "5863": 1,
+      "6026": 1,
+      "6031": 1,
+      "6303": 1,
+      "6632": 1,
+      "6830": 1,
+      "6999": 1,
+      "9": 1
+    },
+    "gerogesoros": {
+      "48": 1
+    },
+    "ggrmc": {
+      "1": 9,
+      "6": 5,
+      "48": 2,
+      "14": 1,
+      "3750": 1,
+      "5324": 1,
+      "5375": 1,
+      "7044": 1
+    },
+    "gitan": {
+      "1": 1
+    },
+    "groenland": {
+      "1": 3,
+      "3304": 1
+    },
+    "guerre": {
+      "6": 9,
+      "1": 6,
+      "48": 6,
+      "9": 2,
+      "0": 1,
+      "2094": 1,
+      "2151": 1,
+      "2586": 1,
+      "3026": 1,
+      "3142": 1,
+      "3151": 1,
+      "3190": 1,
+      "3234": 1,
+      "3265": 1,
+      "3553": 1,
+      "4006": 1,
+      "4234": 1,
+      "4312": 1,
+      "4393": 1,
+      "4557": 1,
+      "4613": 1,
+      "4616": 1,
+      "4642": 1,
+      "6319": 1,
+      "6833": 1,
+      "6973": 1,
+      "97": 1,
+      "979": 1
+    },
+    "génocidegaza": {
+      "48": 1
+    },
+    "géopolitique": {
+      "1": 2,
+      "3571": 1,
+      "44": 1,
+      "4793": 1,
+      "5176": 1,
+      "5246": 1,
+      "5817": 1,
+      "7142": 1,
+      "9": 1,
+      "97": 1
+    },
+    "hdpros": {
+      "1": 8,
+      "6": 7,
+      "19": 1,
+      "3829": 1,
+      "3909": 1,
+      "4681": 1,
+      "4719": 1,
+      "5099": 1,
+      "5226": 1,
+      "5375": 1
+    },
+    "hdpros2": {
+      "6": 6,
+      "1": 2,
+      "1642": 1,
+      "4542": 1,
+      "5375": 1,
+      "5910": 1,
+      "6369": 1
+    },
+    "hollande": {
+      "48": 5,
+      "6": 2,
+      "3124": 1,
+      "4812": 1,
+      "86": 1,
+      "9": 1
+    },
+    "influenceurs": {
+      "1": 2,
+      "48": 2,
+      "6": 2,
+      "9": 2,
+      "2151": 1,
+      "22": 1,
+      "71": 1,
+      "922": 1
+    },
+    "iran": {
+      "1": 89,
+      "6": 73,
+      "48": 54,
+      "19": 25,
+      "0": 21,
+      "9": 16,
+      "21": 11,
+      "97": 11,
+      "14": 7,
+      "44": 6,
+      "102": 4,
+      "17": 3,
+      "86": 2,
+      "1013": 1,
+      "1014": 1,
+      "11": 1,
+      "111": 1,
+      "1111": 1,
+      "112": 1,
+      "1128": 1,
+      "1145": 1,
+      "1227": 1,
+      "1922": 1,
+      "1953": 1,
+      "1976": 1,
+      "2011": 1,
+      "2047": 1,
+      "2079": 1,
+      "2094": 1,
+      "2095": 1,
+      "2101": 1,
+      "2132": 1,
+      "2134": 1,
+      "2136": 1,
+      "2151": 1,
+      "2189": 1,
+      "22": 1,
+      "2229": 1,
+      "2310": 1,
+      "2322": 1,
+      "2329": 1,
+      "2355": 1,
+      "2359": 1,
+      "2372": 1,
+      "2509": 1,
+      "2515": 1,
+      "2591": 1,
+      "2605": 1,
+      "261": 1,
+      "2612": 1,
+      "2656": 1,
+      "2667": 1,
+      "2687": 1,
+      "2692": 1,
+      "2706": 1,
+      "2761": 1,
+      "2792": 1,
+      "2824": 1,
+      "2868": 1,
+      "2891": 1,
+      "2899": 1,
+      "2907": 1,
+      "2921": 1,
+      "2956": 1,
+      "2970": 1,
+      "2982": 1,
+      "3018": 1,
+      "3026": 1,
+      "3064": 1,
+      "3124": 1,
+      "3142": 1,
+      "3147": 1,
+      "3148": 1,
+      "3151": 1,
+      "3157": 1,
+      "3190": 1,
+      "3198": 1,
+      "3208": 1,
+      "3232": 1,
+      "3234": 1,
+      "3265": 1,
+      "3279": 1,
+      "3312": 1,
+      "3339": 1,
+      "3374": 1,
+      "3379": 1,
+      "3403": 1,
+      "348": 1,
+      "3482": 1,
+      "3523": 1,
+      "3551": 1,
+      "3553": 1,
+      "3559": 1,
+      "3571": 1,
+      "3588": 1,
+      "3596": 1,
+      "3607": 1,
+      "3612": 1,
+      "3615": 1,
+      "3647": 1,
+      "3665": 1,
+      "3668": 1,
+      "3670": 1,
+      "3672": 1,
+      "374": 1,
+      "3740": 1,
+      "3741": 1,
+      "3757": 1,
+      "3759": 1,
+      "3802": 1,
+      "3804": 1,
+      "3819": 1,
+      "3856": 1,
+      "3884": 1,
+      "3887": 1,
+      "3893": 1,
+      "3941": 1,
+      "3971": 1,
+      "3976": 1,
+      "4006": 1,
+      "4049": 1,
+      "4060": 1,
+      "4068": 1,
+      "4091": 1,
+      "4102": 1,
+      "4118": 1,
+      "4124": 1,
+      "414": 1,
+      "4145": 1,
+      "421": 1,
+      "423": 1,
+      "4234": 1,
+      "4236": 1,
+      "4265": 1,
+      "4322": 1,
+      "4325": 1,
+      "4354": 1,
+      "4355": 1,
+      "4385": 1,
+      "4386": 1,
+      "4404": 1,
+      "4427": 1,
+      "4481": 1,
+      "4541": 1,
+      "4557": 1,
+      "4569": 1,
+      "4575": 1,
+      "4598": 1,
+      "4616": 1,
+      "4683": 1,
+      "4685": 1,
+      "4705": 1,
+      "4730": 1,
+      "4734": 1,
+      "4807": 1,
+      "4808": 1,
+      "4824": 1,
+      "4826": 1,
+      "4829": 1,
+      "4830": 1,
+      "4838": 1,
+      "4874": 1,
+      "4896": 1,
+      "4898": 1,
+      "49": 1,
+      "4903": 1,
+      "4910": 1,
+      "4947": 1,
+      "4949": 1,
+      "4952": 1,
+      "4977": 1,
+      "4984": 1,
+      "50": 1,
+      "5040": 1,
+      "5041": 1,
+      "5043": 1,
+      "5060": 1,
+      "5100": 1,
+      "5111": 1,
+      "5118": 1,
+      "5129": 1,
+      "5131": 1,
+      "5166": 1,
+      "5172": 1,
+      "5223": 1,
+      "5224": 1,
+      "5225": 1,
+      "5270": 1,
+      "5275": 1,
+      "5317": 1,
+      "5350": 1,
+      "5376": 1,
+      "5385": 1,
+      "5388": 1,
+      "5403": 1,
+      "5432": 1,
+      "5443": 1,
+      "5462": 1,
+      "5479": 1,
+      "5485": 1,
+      "5513": 1,
+      "5542": 1,
+      "5629": 1,
+      "5646": 1,
+      "5664": 1,
+      "5682": 1,
+      "5722": 1,
+      "5728": 1,
+      "5740": 1,
+      "5741": 1,
+      "5791": 1,
+      "5816": 1,
+      "5836": 1,
+      "5859": 1,
+      "5876": 1,
+      "5878": 1,
+      "5880": 1,
+      "5893": 1,
+      "5919": 1,
+      "5936": 1,
+      "5950": 1,
+      "5970": 1,
+      "5971": 1,
+      "5999": 1,
+      "6003": 1,
+      "6012": 1,
+      "6058": 1,
+      "61": 1,
+      "6117": 1,
+      "6120": 1,
+      "6134": 1,
+      "6195": 1,
+      "6237": 1,
+      "6271": 1,
+      "6310": 1,
+      "6407": 1,
+      "6410": 1,
+      "6418": 1,
+      "6448": 1,
+      "6464": 1,
+      "6472": 1,
+      "656": 1,
+      "6575": 1,
+      "6617": 1,
+      "6618": 1,
+      "6678": 1,
+      "6747": 1,
+      "6798": 1,
+      "6819": 1,
+      "6833": 1,
+      "6859": 1,
+      "6937": 1,
+      "6953": 1,
+      "6964": 1,
+      "6999": 1,
+      "70": 1,
+      "7007": 1,
+      "7012": 1,
+      "7033": 1,
+      "7036": 1,
+      "7052": 1,
+      "7069": 1,
+      "7098": 1,
+      "7102": 1,
+      "7121": 1,
+      "7122": 1,
+      "7127": 1,
+      "7149": 1,
+      "7151": 1,
+      "744": 1,
+      "788": 1,
+      "8": 1,
+      "815": 1,
+      "871": 1,
+      "885": 1,
+      "891": 1,
+      "920": 1,
+      "921": 1,
+      "924": 1,
+      "932": 1,
+      "964": 1,
+      "979": 1
+    },
+    "iranisraelwar": {
+      "1": 6,
+      "48": 4,
+      "6": 2,
+      "0": 1,
+      "14": 1,
+      "3088": 1,
+      "3124": 1,
+      "3198": 1,
+      "3201": 1,
+      "3647": 1,
+      "4354": 1,
+      "4404": 1,
+      "4762": 1,
+      "4830": 1,
+      "5129": 1,
+      "5218": 1,
+      "5453": 1,
+      "5638": 1,
+      "5836": 1,
+      "6026": 1,
+      "6120": 1,
+      "6166": 1,
+      "6964": 1,
+      "7140": 1,
+      "871": 1,
+      "885": 1,
+      "903": 1
+    },
+    "iranwar": {
+      "1": 22,
+      "6": 10,
+      "19": 6,
+      "48": 6,
+      "0": 4,
+      "21": 2,
+      "107": 1,
+      "14": 1,
+      "1509": 1,
+      "1587": 1,
+      "1631": 1,
+      "1976": 1,
+      "1982": 1,
+      "2013": 1,
+      "2101": 1,
+      "2134": 1,
+      "2359": 1,
+      "2383": 1,
+      "2582": 1,
+      "2591": 1,
+      "2692": 1,
+      "2706": 1,
+      "2755": 1,
+      "2899": 1,
+      "2956": 1,
+      "2970": 1,
+      "2982": 1,
+      "3117": 1,
+      "3124": 1,
+      "3148": 1,
+      "3157": 1,
+      "3201": 1,
+      "3222": 1,
+      "3337": 1,
+      "3379": 1,
+      "3639": 1,
+      "402": 1,
+      "4091": 1,
+      "4145": 1,
+      "4167": 1,
+      "4312": 1,
+      "4354": 1,
+      "4355": 1,
+      "44": 1,
+      "4445": 1,
+      "4517": 1,
+      "4598": 1,
+      "4642": 1,
+      "4977": 1,
+      "5100": 1,
+      "5270": 1,
+      "5275": 1,
+      "5317": 1,
+      "5421": 1,
+      "5479": 1,
+      "5542": 1,
+      "5741": 1,
+      "5836": 1,
+      "5893": 1,
+      "5939": 1,
+      "5943": 1,
+      "5998": 1,
+      "6003": 1,
+      "6085": 1,
+      "6575": 1,
+      "6617": 1,
+      "6833": 1,
+      "6932": 1,
+      "7015": 1,
+      "7035": 1,
+      "7080": 1,
+      "7122": 1,
+      "7140": 1,
+      "868": 1,
+      "9": 1,
+      "903": 1,
+      "994": 1
+    },
+    "islamout": {
+      "19": 1
+    },
+    "israel": {
+      "1": 25,
+      "6": 17,
+      "48": 9,
+      "19": 8,
+      "21": 5,
+      "14": 4,
+      "9": 4,
+      "0": 3,
+      "102": 2,
+      "112": 2,
+      "1016": 1,
+      "1128": 1,
+      "1922": 1,
+      "1976": 1,
+      "2189": 1,
+      "2231": 1,
+      "2310": 1,
+      "2359": 1,
+      "2582": 1,
+      "261": 1,
+      "2667": 1,
+      "2982": 1,
+      "3079": 1,
+      "3117": 1,
+      "3147": 1,
+      "3190": 1,
+      "3198": 1,
+      "3208": 1,
+      "3232": 1,
+      "3337": 1,
+      "3341": 1,
+      "3379": 1,
+      "3523": 1,
+      "3551": 1,
+      "3588": 1,
+      "3596": 1,
+      "3607": 1,
+      "3647": 1,
+      "374": 1,
+      "3759": 1,
+      "3804": 1,
+      "385": 1,
+      "4006": 1,
+      "402": 1,
+      "4102": 1,
+      "4145": 1,
+      "421": 1,
+      "4315": 1,
+      "44": 1,
+      "4404": 1,
+      "4509": 1,
+      "4541": 1,
+      "4730": 1,
+      "4826": 1,
+      "4829": 1,
+      "4830": 1,
+      "49": 1,
+      "4935": 1,
+      "4947": 1,
+      "4989": 1,
+      "5040": 1,
+      "5166": 1,
+      "5225": 1,
+      "5385": 1,
+      "5421": 1,
+      "5432": 1,
+      "5513": 1,
+      "5542": 1,
+      "5594": 1,
+      "5728": 1,
+      "5741": 1,
+      "5836": 1,
+      "5893": 1,
+      "5919": 1,
+      "6032": 1,
+      "61": 1,
+      "6120": 1,
+      "6310": 1,
+      "6410": 1,
+      "6448": 1,
+      "6464": 1,
+      "6480": 1,
+      "6806": 1,
+      "6833": 1,
+      "70": 1,
+      "7007": 1,
+      "7015": 1,
+      "7098": 1,
+      "7121": 1,
+      "7122": 1,
+      "7151": 1,
+      "815": 1,
+      "849": 1,
+      "903": 1,
+      "924": 1,
+      "964": 1,
+      "97": 1,
+      "979": 1
+    },
+    "israelmonstruositésansnom": {
+      "48": 1
+    },
+    "israël": {
+      "1": 10,
+      "6": 9,
+      "48": 6,
+      "19": 1,
+      "21": 1,
+      "2868": 1,
+      "3819": 1,
+      "3976": 1,
+      "4385": 1,
+      "4386": 1,
+      "4557": 1,
+      "4949": 1,
+      "5275": 1,
+      "5403": 1,
+      "5722": 1,
+      "5880": 1,
+      "6472": 1,
+      "7036": 1,
+      "97": 1
+    },
+    "italy": {
+      "0": 3
+    },
+    "jerusalem": {
+      "1": 1
+    },
+    "khamenei": {
+      "1": 10,
+      "6": 6,
+      "0": 3,
+      "19": 3,
+      "48": 3,
+      "14": 2,
+      "102": 1,
+      "2019": 1,
+      "2310": 1,
+      "2329": 1,
+      "2355": 1,
+      "2667": 1,
+      "2761": 1,
+      "2982": 1,
+      "3147": 1,
+      "3379": 1,
+      "3545": 1,
+      "3596": 1,
+      "3670": 1,
+      "374": 1,
+      "3741": 1,
+      "3777": 1,
+      "385": 1,
+      "4002": 1,
+      "414": 1,
+      "4445": 1,
+      "4541": 1,
+      "5040": 1,
+      "5060": 1,
+      "5086": 1,
+      "5111": 1,
+      "5403": 1,
+      "5432": 1,
+      "5741": 1,
+      "5937": 1,
+      "6058": 1,
+      "6310": 1,
+      "6400": 1,
+      "6410": 1,
+      "6575": 1,
+      "6590": 1,
+      "6605": 1,
+      "6819": 1,
+      "9": 1,
+      "97": 1
+    },
+    "kiev": {
+      "0": 4,
+      "6682": 1
+    },
+    "kingcharles": {
+      "48": 1
+    },
+    "knafo": {
+      "6": 3
+    },
+    "lci": {
+      "1": 11,
+      "6": 5,
+      "48": 1,
+      "5375": 1,
+      "6828": 1,
+      "6833": 1,
+      "9": 1,
+      "97": 1
+    },
+    "lecornu": {
+      "1": 5,
+      "48": 3,
+      "6": 3,
+      "3942": 1,
+      "4184": 1,
+      "5554": 1,
+      "9": 1,
+      "97": 1
+    },
+    "lefigaro": {
+      "6": 2
+    },
+    "lemonde": {
+      "6": 1
+    },
+    "lepen": {
+      "1": 5,
+      "0": 2,
+      "6": 2,
+      "22": 1,
+      "44": 1,
+      "49": 1,
+      "6833": 1
+    },
+    "lfi": {
+      "1": 11,
+      "48": 7,
+      "6": 7,
+      "19": 2,
+      "1796": 1,
+      "21": 1,
+      "22": 1,
+      "2355": 1,
+      "3648": 1,
+      "5289": 1,
+      "70": 1,
+      "795": 1,
+      "86": 1,
+      "9": 1
+    },
+    "lfislamiste": {
+      "9": 1
+    },
+    "lidl": {
+      "44": 1
+    },
+    "lobbyisme": {
+      "97": 1
+    },
+    "lr": {
+      "6": 12,
+      "1": 4,
+      "102": 2,
+      "21": 1,
+      "48": 1,
+      "6369": 1,
+      "9": 1
+    },
+    "macron": {
+      "6": 229,
+      "1": 211,
+      "48": 103,
+      "9": 39,
+      "0": 37,
+      "19": 35,
+      "21": 25,
+      "44": 19,
+      "97": 16,
+      "102": 13,
+      "86": 10,
+      "14": 9,
+      "22": 7,
+      "112": 3,
+      "57": 2,
+      "82": 2,
+      "1011": 1,
+      "107": 1,
+      "111": 1,
+      "148": 1,
+      "1629": 1,
+      "1631": 1,
+      "164": 1,
+      "1796": 1,
+      "1888": 1,
+      "1922": 1,
+      "1934": 1,
+      "1937": 1,
+      "1940": 1,
+      "1954": 1,
+      "1956": 1,
+      "1963": 1,
+      "1983": 1,
+      "2": 1,
+      "2026": 1,
+      "2094": 1,
+      "2095": 1,
+      "2101": 1,
+      "2132": 1,
+      "2134": 1,
+      "2151": 1,
+      "2162": 1,
+      "2166": 1,
+      "217": 1,
+      "2199": 1,
+      "2200": 1,
+      "2230": 1,
+      "2232": 1,
+      "2238": 1,
+      "2261": 1,
+      "2288": 1,
+      "2307": 1,
+      "2310": 1,
+      "2328": 1,
+      "2355": 1,
+      "2359": 1,
+      "2365": 1,
+      "2383": 1,
+      "2389": 1,
+      "2412": 1,
+      "2424": 1,
+      "2486": 1,
+      "2502": 1,
+      "2509": 1,
+      "2525": 1,
+      "2566": 1,
+      "2586": 1,
+      "2596": 1,
+      "2605": 1,
+      "261": 1,
+      "265": 1,
+      "2656": 1,
+      "2676": 1,
+      "2689": 1,
+      "2694": 1,
+      "2723": 1,
+      "2755": 1,
+      "2792": 1,
+      "2824": 1,
+      "2828": 1,
+      "2898": 1,
+      "2904": 1,
+      "2907": 1,
+      "2921": 1,
+      "2956": 1,
+      "2961": 1,
+      "2976": 1,
+      "2984": 1,
+      "2991": 1,
+      "3004": 1,
+      "3018": 1,
+      "3019": 1,
+      "3083": 1,
+      "3094": 1,
+      "3108": 1,
+      "3124": 1,
+      "3142": 1,
+      "3148": 1,
+      "3151": 1,
+      "3161": 1,
+      "3175": 1,
+      "3190": 1,
+      "3201": 1,
+      "3213": 1,
+      "3222": 1,
+      "3231": 1,
+      "3265": 1,
+      "3304": 1,
+      "3312": 1,
+      "3325": 1,
+      "3337": 1,
+      "3344": 1,
+      "3377": 1,
+      "3415": 1,
+      "3453": 1,
+      "3457": 1,
+      "348": 1,
+      "3481": 1,
+      "3482": 1,
+      "3545": 1,
+      "3553": 1,
+      "3571": 1,
+      "3588": 1,
+      "3596": 1,
+      "36": 1,
+      "3615": 1,
+      "3638": 1,
+      "3647": 1,
+      "3648": 1,
+      "3649": 1,
+      "3694": 1,
+      "3696": 1,
+      "3741": 1,
+      "3767": 1,
+      "3821": 1,
+      "3838": 1,
+      "385": 1,
+      "3856": 1,
+      "3878": 1,
+      "3887": 1,
+      "3923": 1,
+      "3942": 1,
+      "3971": 1,
+      "3995": 1,
+      "4006": 1,
+      "402": 1,
+      "4039": 1,
+      "4060": 1,
+      "4068": 1,
+      "409": 1,
+      "4102": 1,
+      "4118": 1,
+      "4121": 1,
+      "4156": 1,
+      "4157": 1,
+      "4174": 1,
+      "4184": 1,
+      "421": 1,
+      "423": 1,
+      "4247": 1,
+      "4248": 1,
+      "4264": 1,
+      "4265": 1,
+      "4278": 1,
+      "4312": 1,
+      "4315": 1,
+      "4322": 1,
+      "4355": 1,
+      "4404": 1,
+      "4418": 1,
+      "4445": 1,
+      "4451": 1,
+      "446": 1,
+      "4465": 1,
+      "4481": 1,
+      "4541": 1,
+      "4557": 1,
+      "4613": 1,
+      "4616": 1,
+      "4642": 1,
+      "4648": 1,
+      "4655": 1,
+      "4685": 1,
+      "4692": 1,
+      "4701": 1,
+      "4737": 1,
+      "4812": 1,
+      "4820": 1,
+      "4824": 1,
+      "4874": 1,
+      "4886": 1,
+      "4896": 1,
+      "4898": 1,
+      "49": 1,
+      "4902": 1,
+      "4903": 1,
+      "4916": 1,
+      "4935": 1,
+      "4947": 1,
+      "4952": 1,
+      "4956": 1,
+      "4977": 1,
+      "4984": 1,
+      "4989": 1,
+      "50": 1,
+      "5028": 1,
+      "5040": 1,
+      "5041": 1,
+      "5043": 1,
+      "5045": 1,
+      "5051": 1,
+      "5068": 1,
+      "5080": 1,
+      "5090": 1,
+      "5100": 1,
+      "5105": 1,
+      "5122": 1,
+      "5152": 1,
+      "5162": 1,
+      "5166": 1,
+      "5218": 1,
+      "5223": 1,
+      "5279": 1,
+      "5284": 1,
+      "5286": 1,
+      "5291": 1,
+      "5342": 1,
+      "5356": 1,
+      "5385": 1,
+      "5403": 1,
+      "5421": 1,
+      "5425": 1,
+      "5453": 1,
+      "5473": 1,
+      "5476": 1,
+      "549": 1,
+      "55": 1,
+      "5513": 1,
+      "5530": 1,
+      "5542": 1,
+      "5554": 1,
+      "5582": 1,
+      "5597": 1,
+      "5610": 1,
+      "5629": 1,
+      "5664": 1,
+      "5668": 1,
+      "5692": 1,
+      "5698": 1,
+      "5721": 1,
+      "5781": 1,
+      "5788": 1,
+      "5824": 1,
+      "5854": 1,
+      "5863": 1,
+      "5918": 1,
+      "5919": 1,
+      "5936": 1,
+      "5939": 1,
+      "5941": 1,
+      "5950": 1,
+      "5956": 1,
+      "5961": 1,
+      "5964": 1,
+      "5970": 1,
+      "598": 1,
+      "5982": 1,
+      "5983": 1,
+      "5988": 1,
+      "5998": 1,
+      "6004": 1,
+      "6031": 1,
+      "6032": 1,
+      "6057": 1,
+      "6080": 1,
+      "6089": 1,
+      "61": 1,
+      "6112": 1,
+      "6117": 1,
+      "6120": 1,
+      "6124": 1,
+      "6135": 1,
+      "6161": 1,
+      "6177": 1,
+      "6180": 1,
+      "6195": 1,
+      "6199": 1,
+      "6241": 1,
+      "6269": 1,
+      "6271": 1,
+      "6313": 1,
+      "6319": 1,
+      "6357": 1,
+      "6386": 1,
+      "6407": 1,
+      "6417": 1,
+      "6418": 1,
+      "6445": 1,
+      "6464": 1,
+      "6480": 1,
+      "6491": 1,
+      "6501": 1,
+      "6535": 1,
+      "6547": 1,
+      "6563": 1,
+      "6575": 1,
+      "6609": 1,
+      "6611": 1,
+      "6614": 1,
+      "6617": 1,
+      "6624": 1,
+      "6627": 1,
+      "6628": 1,
+      "6646": 1,
+      "6678": 1,
+      "6682": 1,
+      "6686": 1,
+      "6737": 1,
+      "6757": 1,
+      "6792": 1,
+      "6828": 1,
+      "6830": 1,
+      "6833": 1,
+      "6875": 1,
+      "6884": 1,
+      "6904": 1,
+      "6984": 1,
+      "6990": 1,
+      "6999": 1,
+      "70": 1,
+      "7035": 1,
+      "7052": 1,
+      "706": 1,
+      "7067": 1,
+      "7100": 1,
+      "7120": 1,
+      "7140": 1,
+      "7142": 1,
+      "731": 1,
+      "777": 1,
+      "79": 1,
+      "795": 1,
+      "797": 1,
+      "806": 1,
+      "830": 1,
+      "891": 1,
+      "894": 1,
+      "897": 1,
+      "901": 1,
+      "914": 1,
+      "922": 1,
+      "923": 1,
+      "979": 1
+    },
+    "macron_tue_la_france": {
+      "19": 1
+    },
+    "macrondegage": {
+      "6": 10,
+      "1": 4,
+      "112": 1,
+      "21": 1,
+      "48": 1,
+      "5881": 1
+    },
+    "macrondestitution": {
+      "6": 37,
+      "48": 9,
+      "1": 6,
+      "44": 2,
+      "9": 2,
+      "19": 1,
+      "4902": 1,
+      "6564": 1,
+      "6575": 1,
+      "922": 1
+    },
+    "macronie": {
+      "1": 3,
+      "44": 1,
+      "48": 1,
+      "6": 1,
+      "9": 1
+    },
+    "macronistes": {
+      "48": 1,
+      "6": 1
+    },
+    "macronout": {
+      "19": 1
+    },
+    "maga": {
+      "19": 2,
+      "0": 1,
+      "2755": 1,
+      "3304": 1,
+      "4751": 1,
+      "5105": 1,
+      "6": 1,
+      "86": 1
+    },
+    "maires": {
+      "1": 1
+    },
+    "mariupol": {
+      "0": 3
+    },
+    "medias": {
+      "1": 2
+    },
+    "melenchon": {
+      "6": 4,
+      "1": 3,
+      "5788": 1,
+      "6833": 1,
+      "97": 1
+    },
+    "mercosur": {
+      "6": 9,
+      "1": 5,
+      "86": 2,
+      "112": 1,
+      "19": 1,
+      "48": 1
+    },
+    "merkel": {
+      "0": 3
+    },
+    "merz": {
+      "1": 7,
+      "19": 5,
+      "6": 4,
+      "14": 3,
+      "0": 1,
+      "1011": 1,
+      "21": 1,
+      "2261": 1,
+      "3175": 1,
+      "348": 1,
+      "48": 1,
+      "5040": 1,
+      "5105": 1,
+      "5698": 1,
+      "5919": 1,
+      "6031": 1,
+      "6054": 1,
+      "6480": 1,
+      "6682": 1,
+      "6828": 1,
+      "6884": 1,
+      "7120": 1,
+      "932": 1
+    },
+    "miller": {
+      "0": 3
+    },
+    "mlp": {
+      "1": 4,
+      "6": 3,
+      "48": 1
+    },
+    "modi": {
+      "1011": 1,
+      "48": 1,
+      "6410": 1
+    },
+    "mosquéesdissoutes": {
+      "19": 1
+    },
+    "moyenorient": {
+      "1": 6,
+      "9": 2,
+      "19": 1,
+      "21": 1,
+      "3234": 1,
+      "3588": 1,
+      "3819": 1,
+      "3956": 1,
+      "4385": 1,
+      "4386": 1,
+      "44": 1,
+      "4509": 1,
+      "48": 1,
+      "4826": 1,
+      "4952": 1,
+      "5403": 1,
+      "5722": 1,
+      "7007": 1
+    },
+    "municipales": {
+      "6": 5,
+      "1": 1,
+      "1179": 1
+    },
+    "municipales2026": {
+      "6": 8,
+      "1": 3,
+      "97": 2,
+      "1179": 1,
+      "48": 1,
+      "6135": 1
+    },
+    "netanyahu": {
+      "1": 9,
+      "6": 7,
+      "19": 3,
+      "48": 3,
+      "0": 2,
+      "21": 1,
+      "2200": 1,
+      "2307": 1,
+      "2359": 1,
+      "261": 1,
+      "2612": 1,
+      "3042": 1,
+      "3124": 1,
+      "3596": 1,
+      "3766": 1,
+      "385": 1,
+      "4656": 1,
+      "5421": 1,
+      "5432": 1,
+      "6310": 1,
+      "6418": 1,
+      "6420": 1,
+      "6779": 1,
+      "7133": 1,
+      "979": 1
+    },
+    "nfp": {
+      "6": 2,
+      "1": 1,
+      "9": 1
+    },
+    "nucleaire": {
+      "1": 21,
+      "6": 8,
+      "48": 6,
+      "1953": 1,
+      "21": 1,
+      "2146": 1,
+      "2586": 1,
+      "2605": 1,
+      "261": 1,
+      "2961": 1,
+      "3076": 1,
+      "3148": 1,
+      "3250": 1,
+      "3649": 1,
+      "3884": 1,
+      "44": 1,
+      "4613": 1,
+      "4642": 1,
+      "4926": 1,
+      "5554": 1,
+      "5582": 1,
+      "6089": 1,
+      "61": 1,
+      "6152": 1,
+      "6859": 1,
+      "6973": 1,
+      "885": 1,
+      "9": 1,
+      "97": 1,
+      "979": 1
+    },
+    "nuclear": {
+      "1": 7,
+      "0": 6,
+      "6": 3,
+      "17": 2,
+      "164": 1,
+      "19": 1,
+      "1940": 1,
+      "1956": 1,
+      "1983": 1,
+      "2238": 1,
+      "2659": 1,
+      "2927": 1,
+      "2948": 1,
+      "3018": 1,
+      "3088": 1,
+      "3142": 1,
+      "3222": 1,
+      "3250": 1,
+      "3300": 1,
+      "3344": 1,
+      "3481": 1,
+      "3500": 1,
+      "3600": 1,
+      "3675": 1,
+      "3878": 1,
+      "409": 1,
+      "4100": 1,
+      "423": 1,
+      "4264": 1,
+      "4382": 1,
+      "4660": 1,
+      "48": 1,
+      "5152": 1,
+      "5195": 1,
+      "5299": 1,
+      "5316": 1,
+      "5495": 1,
+      "5781": 1,
+      "5845": 1,
+      "5863": 1,
+      "5912": 1,
+      "5918": 1,
+      "5941": 1,
+      "5988": 1,
+      "5998": 1,
+      "6084": 1,
+      "6241": 1,
+      "6386": 1,
+      "6417": 1,
+      "6635": 1,
+      "6646": 1,
+      "6654": 1,
+      "6757": 1,
+      "6830": 1,
+      "6904": 1,
+      "9": 1
+    },
+    "nucléaire": {
+      "1": 31,
+      "6": 19,
+      "48": 9,
+      "19": 3,
+      "9": 3,
+      "97": 2,
+      "1025": 1,
+      "1128": 1,
+      "1558": 1,
+      "2160": 1,
+      "2167": 1,
+      "2232": 1,
+      "261": 1,
+      "3067": 1,
+      "3232": 1,
+      "3457": 1,
+      "3571": 1,
+      "3637": 1,
+      "3648": 1,
+      "3804": 1,
+      "3844": 1,
+      "3956": 1,
+      "3960": 1,
+      "4385": 1,
+      "44": 1,
+      "4404": 1,
+      "5172": 1,
+      "5176": 1,
+      "5246": 1,
+      "5314": 1,
+      "5425": 1,
+      "5432": 1,
+      "5646": 1,
+      "6195": 1,
+      "6407": 1,
+      "6628": 1,
+      "6643": 1,
+      "6934": 1,
+      "7015": 1,
+      "7036": 1,
+      "71": 1,
+      "7142": 1,
+      "849": 1,
+      "979": 1
+    },
+    "paradisfiscaux": {
+      "6": 1
+    },
+    "paris": {
+      "6": 7,
+      "1": 5,
+      "0": 3,
+      "19": 1,
+      "2500": 1,
+      "2509": 1,
+      "2921": 1,
+      "3075": 1,
+      "3887": 1,
+      "4322": 1,
+      "5105": 1,
+      "5513": 1,
+      "5824": 1,
+      "5983": 1,
+      "6135": 1,
+      "6303": 1
+    },
+    "passnumérique": {
+      "19": 1
+    },
+    "people": {
+      "0": 3,
+      "5338": 1
+    },
+    "philippot": {
+      "1": 2,
+      "6": 2,
+      "48": 1
+    },
+    "pizzo": {
+      "6": 1
+    },
+    "plusjamaisps": {
+      "48": 11,
+      "1": 3
+    },
+    "poland": {
+      "0": 3,
+      "3878": 1,
+      "6031": 1
+    },
+    "policenationale": {
+      "1": 1
+    },
+    "politics": {
+      "0": 3,
+      "5867": 1
+    },
+    "prank": {
+      "44": 1
+    },
+    "prefets": {
+      "1": 1
+    },
+    "princeharry": {
+      "48": 1
+    },
+    "princewilliam": {
+      "48": 1
+    },
+    "prison": {
+      "6": 3,
+      "19": 1
+    },
+    "prêcheursensoute": {
+      "19": 1
+    },
+    "ps": {
+      "48": 4,
+      "6": 3,
+      "1": 2,
+      "102": 1,
+      "21": 1,
+      "3942": 1,
+      "86": 1,
+      "9": 1
+    },
+    "punchline": {
+      "6": 4,
+      "19": 1
+    },
+    "putin": {
+      "0": 4,
+      "1": 2,
+      "19": 2,
+      "1011": 1,
+      "3615": 1,
+      "4265": 1,
+      "48": 1,
+      "6": 1,
+      "6646": 1,
+      "6682": 1
+    },
+    "qatar": {
+      "1": 3,
+      "6": 2,
+      "0": 1,
+      "2229": 1,
+      "3201": 1,
+      "3208": 1,
+      "44": 1,
+      "4826": 1,
+      "5223": 1,
+      "5225": 1,
+      "5603": 1,
+      "5971": 1,
+      "6833": 1,
+      "6854": 1,
+      "7015": 1,
+      "7036": 1
+    },
+    "rachidadati": {
+      "6": 5,
+      "102": 2,
+      "86": 1
+    },
+    "raffarin": {
+      "6": 2
+    },
+    "retailleau": {
+      "6": 4,
+      "1": 2,
+      "6875": 1,
+      "7105": 1
+    },
+    "rfkjr": {
+      "48": 1
+    },
+    "rn": {
+      "1": 13,
+      "6": 10,
+      "48": 3,
+      "102": 2,
+      "9": 2,
+      "0": 1,
+      "21": 1,
+      "49": 1,
+      "5375": 1
+    },
+    "rubio": {
+      "19": 1,
+      "4856": 1,
+      "6": 1,
+      "6828": 1
+    },
+    "russia": {
+      "0": 4,
+      "1": 2,
+      "19": 2,
+      "133": 1,
+      "14": 1,
+      "17": 1,
+      "2502": 1,
+      "2921": 1,
+      "3157": 1,
+      "3325": 1,
+      "3818": 1,
+      "4265": 1,
+      "4481": 1,
+      "4541": 1,
+      "4989": 1,
+      "5371": 1,
+      "5513": 1,
+      "6": 1,
+      "6646": 1,
+      "6682": 1
+    },
+    "russian": {
+      "0": 3,
+      "1": 1,
+      "4989": 1,
+      "5827": 1
+    },
+    "sarahknafo": {
+      "6": 11,
+      "102": 4,
+      "1": 1
+    },
+    "sarahknafo2026": {
+      "6": 2
+    },
+    "sarahpourparis": {
+      "6": 6,
+      "102": 3
+    },
+    "sarkozy": {
+      "6": 5,
+      "0": 3,
+      "48": 2
+    },
+    "scholz": {
+      "0": 2
+    },
+    "sondage": {
+      "6": 2
+    },
+    "souveraineté": {
+      "1": 3,
+      "6": 3,
+      "3018": 1,
+      "3956": 1,
+      "48": 1,
+      "4807": 1,
+      "6564": 1,
+      "9": 1
+    },
+    "starmer": {
+      "14": 4,
+      "19": 4,
+      "6": 4,
+      "1": 3,
+      "21": 3,
+      "48": 2,
+      "0": 1,
+      "1011": 1,
+      "107": 1,
+      "2261": 1,
+      "2755": 1,
+      "3175": 1,
+      "3213": 1,
+      "3638": 1,
+      "4102": 1,
+      "4265": 1,
+      "4315": 1,
+      "4903": 1,
+      "5040": 1,
+      "5105": 1,
+      "5698": 1,
+      "6480": 1,
+      "6682": 1,
+      "6999": 1,
+      "706": 1,
+      "7120": 1,
+      "891": 1
+    },
+    "surimi": {
+      "44": 1
+    },
+    "taem": {
+      "1": 13,
+      "102": 2,
+      "19": 1
+    },
+    "taxes": {
+      "44": 1
+    },
+    "teheran": {
+      "1": 4,
+      "6": 2,
+      "0": 1,
+      "14": 1,
+      "19": 1,
+      "2079": 1,
+      "21": 1,
+      "2582": 1,
+      "2813": 1,
+      "3773": 1,
+      "4145": 1,
+      "48": 1,
+      "5105": 1,
+      "5542": 1,
+      "6418": 1,
+      "6833": 1
+    },
+    "tehran": {
+      "0": 2,
+      "1": 1,
+      "21": 1,
+      "2189": 1,
+      "2310": 1,
+      "2355": 1,
+      "2899": 1,
+      "2921": 1,
+      "3596": 1,
+      "374": 1,
+      "4145": 1,
+      "4445": 1,
+      "48": 1,
+      "6": 1,
+      "6448": 1,
+      "6833": 1,
+      "7122": 1,
+      "9": 1,
+      "97": 1
+    },
+    "test": {
+      "44": 1
+    },
+    "trahison": {
+      "6": 4,
+      "1": 3,
+      "19": 1
+    },
+    "trump": {
+      "1": 42,
+      "6": 30,
+      "48": 20,
+      "19": 11,
+      "0": 7,
+      "44": 5,
+      "9": 4,
+      "14": 3,
+      "21": 2,
+      "86": 2,
+      "1011": 1,
+      "111": 1,
+      "112": 1,
+      "1976": 1,
+      "2134": 1,
+      "2166": 1,
+      "22": 1,
+      "2229": 1,
+      "2307": 1,
+      "2310": 1,
+      "2355": 1,
+      "2359": 1,
+      "2372": 1,
+      "261": 1,
+      "2755": 1,
+      "2844": 1,
+      "2982": 1,
+      "3124": 1,
+      "3190": 1,
+      "3208": 1,
+      "3304": 1,
+      "3341": 1,
+      "3596": 1,
+      "3607": 1,
+      "385": 1,
+      "4118": 1,
+      "4236": 1,
+      "4312": 1,
+      "4315": 1,
+      "4325": 1,
+      "4355": 1,
+      "4541": 1,
+      "4616": 1,
+      "49": 1,
+      "4947": 1,
+      "5043": 1,
+      "5105": 1,
+      "5172": 1,
+      "5317": 1,
+      "5432": 1,
+      "5513": 1,
+      "5542": 1,
+      "5646": 1,
+      "5727": 1,
+      "5741": 1,
+      "5936": 1,
+      "5937": 1,
+      "5950": 1,
+      "5956": 1,
+      "6032": 1,
+      "6134": 1,
+      "6310": 1,
+      "6319": 1,
+      "6400": 1,
+      "6407": 1,
+      "6418": 1,
+      "6547": 1,
+      "6575": 1,
+      "6854": 1,
+      "6999": 1,
+      "7015": 1,
+      "7035": 1,
+      "7036": 1,
+      "706": 1,
+      "7122": 1,
+      "731": 1,
+      "795": 1,
+      "891": 1
+    },
+    "uae": {
+      "0": 3,
+      "1": 1,
+      "19": 1,
+      "2982": 1,
+      "3337": 1,
+      "3596": 1,
+      "5040": 1,
+      "5166": 1,
+      "5225": 1,
+      "5513": 1,
+      "5741": 1,
+      "5971": 1,
+      "6": 1
+    },
+    "ue": {
+      "6": 16,
+      "1": 6,
+      "19": 3,
+      "9": 2,
+      "0": 1,
+      "102": 1,
+      "21": 1,
+      "2648": 1,
+      "3457": 1,
+      "3649": 1,
+      "44": 1,
+      "4569": 1,
+      "48": 1,
+      "5554": 1,
+      "97": 1
+    },
+    "ukraine": {
+      "1": 10,
+      "48": 5,
+      "0": 4,
+      "6": 4,
+      "14": 1,
+      "19": 1,
+      "2502": 1,
+      "2605": 1,
+      "2676": 1,
+      "3148": 1,
+      "3312": 1,
+      "3665": 1,
+      "44": 1,
+      "4541": 1,
+      "5554": 1,
+      "5827": 1,
+      "6682": 1,
+      "7142": 1,
+      "9": 1,
+      "97": 1
+    },
+    "ukrainerussiawar": {
+      "0": 3
+    },
+    "ukrainewar": {
+      "0": 3,
+      "1": 1
+    },
+    "unevilleheureuse": {
+      "6": 3,
+      "102": 1
+    },
+    "unitednations": {
+      "19": 1,
+      "3638": 1
+    },
+    "usa": {
+      "1": 19,
+      "6": 11,
+      "48": 8,
+      "19": 6,
+      "0": 5,
+      "97": 3,
+      "112": 2,
+      "21": 2,
+      "1128": 1,
+      "1922": 1,
+      "2151": 1,
+      "2359": 1,
+      "3151": 1,
+      "3523": 1,
+      "3551": 1,
+      "3596": 1,
+      "3647": 1,
+      "3672": 1,
+      "3759": 1,
+      "3819": 1,
+      "385": 1,
+      "4006": 1,
+      "402": 1,
+      "4102": 1,
+      "4236": 1,
+      "44": 1,
+      "4404": 1,
+      "4616": 1,
+      "4826": 1,
+      "4896": 1,
+      "49": 1,
+      "5043": 1,
+      "5317": 1,
+      "5371": 1,
+      "5513": 1,
+      "5610": 1,
+      "5727": 1,
+      "5728": 1,
+      "5786": 1,
+      "5880": 1,
+      "6032": 1,
+      "6310": 1,
+      "6480": 1,
+      "6833": 1,
+      "7007": 1,
+      "7080": 1,
+      "788": 1,
+      "866": 1,
+      "964": 1,
+      "979": 1
+    },
+    "vance": {
+      "19": 1,
+      "48": 1,
+      "5172": 1
+    },
+    "vanderleyen": {
+      "48": 1
+    },
+    "venezuela": {
+      "1": 2,
+      "1128": 1,
+      "14": 1,
+      "3329": 1,
+      "3341": 1,
+      "3766": 1,
+      "4122": 1,
+      "5594": 1,
+      "6": 1,
+      "6395": 1
+    },
+    "war": {
+      "1": 3,
+      "9": 3,
+      "0": 2,
+      "6": 2,
+      "19": 1,
+      "2322": 1,
+      "2586": 1,
+      "3047": 1,
+      "3759": 1,
+      "385": 1,
+      "4118": 1,
+      "48": 1,
+      "5040": 1,
+      "5166": 1,
+      "5317": 1,
+      "5542": 1,
+      "5760": 1,
+      "6241": 1,
+      "6937": 1
+    },
+    "world": {
+      "0": 3,
+      "3100": 1,
+      "3773": 1,
+      "3818": 1,
+      "4780": 1,
+      "866": 1
+    },
+    "xi": {
+      "48": 1
+    },
+    "zelenskyy": {
+      "0": 3,
+      "6682": 1
+    },
+    "écocide": {
+      "97": 1
+    }
   }
 }

@@ -166,6 +166,9 @@ def main() -> None:
     # reservoir samples keyed by (com, tag)
     samples: dict[int, list[dict]] = defaultdict(list)
     tag_accounts: dict[str, set[str]] = defaultdict(set)
+    tag_comm_accounts: dict[str, dict[int, set[str]]] = defaultdict(lambda: defaultdict(set))
+    cooccur: dict[str, Counter] = defaultdict(Counter)
+    N_COOC = 15
 
     print(f"Streaming {CSV.name}…", flush=True)
     with CSV.open("r", encoding="utf-8", errors="replace", newline="") as f:
@@ -187,12 +190,17 @@ def main() -> None:
             for t in tags:
                 ht_c[cid][t] += 1
                 n_ht_c[cid] += 1
+                tag_accounts[t].add(sn)
+                tag_comm_accounts[t][cid].add(sn)
+            if len(tags) >= 2:
+                tag_list = sorted(set(tags))
+                for a_i, ta in enumerate(tag_list):
+                    for tb in tag_list[a_i + 1 :]:
+                        cooccur[ta][tb] += 1
+                        cooccur[tb][ta] += 1
             for w in tokens(text):
                 tok_c[cid][w] += 1
                 n_tok_c[cid] += 1
-            # Effectifs réels : tous les # utilisés (filtrés plus tard sur key tags)
-            for t in tags:
-                tag_accounts[t].add(sn)
             # keep a few samples (prefer tagged)
             if len(samples[cid]) < N_SAMPLES + 8:
                 tag0 = tags[0] if tags else ""
@@ -299,7 +307,34 @@ def main() -> None:
         )
 
     keep = set(tag_communities.keys())
-    tag_accounts = {t: sns for t, sns in tag_accounts.items() if t in keep}
+    partner_need: set[str] = set()
+    tag_cooccur: dict[str, list[dict]] = {}
+    for t in sorted(keep):
+        top = []
+        for other, n in (cooccur.get(t) or Counter()).most_common(N_COOC * 2):
+            if other == t or n < 2:
+                continue
+            top.append({"tag": other, "n": int(n)})
+            if other not in keep:
+                partner_need.add(other)
+            if len(top) >= N_COOC:
+                break
+        if top:
+            tag_cooccur[t] = top
+    keep_store = keep | partner_need
+    tag_accounts = {t: sns for t, sns in tag_accounts.items() if t in keep_store}
+    tag_comm_n = {
+        t: {
+            str(cid): len(sns)
+            for cid, sns in sorted(
+                (tag_comm_accounts.get(t) or {}).items(),
+                key=lambda kv: (-len(kv[1]), kv[0]),
+            )
+            if sns
+        }
+        for t in sorted(keep_store)
+    }
+    tag_comm_n = {t: row for t, row in tag_comm_n.items() if row}
     TAG_CAP = 15000
     stored = {t: sorted(sns)[:TAG_CAP] for t, sns in sorted(tag_accounts.items()) if sns}
     counts = {t: len(sns) for t, sns in tag_accounts.items() if sns}
@@ -309,11 +344,15 @@ def main() -> None:
             "cluster": (graph.get("meta") or {}).get("title") or "Canicule",
             "corpus": "canicule",
             "window": (graph.get("meta") or {}).get("window"),
-            "source": "graph.json communities90 + corpus_canicule CSV (keyness z + effectifs #)",
+            "source": "graph.json communities90 + corpus_canicule CSV (keyness z + effectifs # + cooc)",
             "keyness": "z log-odds pondéré vs autres pôles du connectome (Monroe et al. 2008)",
             "tag_accounts_def": (
                 "Comptes du graphe ayant publié hors RT au moins un message "
                 "portant le hashtag (champ hashtag + # dans le texte)."
+            ),
+            "tag_cooccur_def": "Co-occurrence message (hors RT) : autres # dans le même message.",
+            "tag_comm_n_def": (
+                "Comptes distincts du graphe ayant utilisé le #, par communauté Louvain."
             ),
             "limit": LIMIT_FR,
         },
@@ -323,6 +362,8 @@ def main() -> None:
         "tag_communities": {
             t: sorted(ids) for t, ids in sorted(tag_communities.items()) if ids
         },
+        "tag_cooccur": tag_cooccur,
+        "tag_comm_n": tag_comm_n,
     }
     OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"Wrote {OUT}", flush=True)

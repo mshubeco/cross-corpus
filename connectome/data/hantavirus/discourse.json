@@ -2,10 +2,11 @@
   "meta": {
     "cluster": "Hantavirus · mai 2026",
     "corpus": "hantavirus",
-    "window": null,
-    "source": "hantavirus_profiles.json + graph communities90 + CSV effectifs # (Export_dl_corpus_hantavirus_fr_mai_2026_20260505-20260520_full_20260824_114316.csv)",
+    "source": "hantavirus_profiles.json + graph communities90 + CSV enrich # (Export_dl_corpus_hantavirus_fr_mai_2026_20260505-20260520_full_20260824_114316.csv)",
     "keyness": "z log-odds (profiles intercomm) vs reste du graphe",
     "tag_accounts_def": "Comptes du graphe ayant publié hors RT au moins un message portant le hashtag (champ hashtag + # dans le texte).",
+    "tag_cooccur_def": "Co-occurrence message (hors RT) : autres # dans le même message.",
+    "tag_comm_n_def": "Comptes distincts du graphe ayant utilisé le #, par communauté Louvain.",
     "limit": "Label opérationnel fondé sur lexique distinctif (z) / structure / échantillons — pas une appartenance partisane des comptes ordinaires."
   },
   "communities": {
@@ -74,7 +75,7 @@
           "sn": "benjpkj",
           "text": "| Hantavirus sur un bateau de croisière: l'OMS recherche les passagers d'un vol Sainte-Hélène/Johannesburg 🚨 Rat zombie sur un bateau ? Tagguez-le en story avec #HantaVibes #CroisièreOuApocalypse #RatTok https://t.co/1FLAxVSAtt",
           "at": "2026-05-05",
-          "tag": ""
+          "tag": "croisièreouapocalypse"
         },
         {
           "sn": "shelby5465oid",
@@ -83,22 +84,22 @@
           "tag": ""
         },
         {
-          "sn": "commentairesq",
-          "text": "Pitié, faite que ce virus (HantaVirus) ne se transforme pas en épidémie ou en pire, en pandémie 🙏🙏🙏 #Quotidien https://t.co/6Svnik6z1K",
+          "sn": "novianewsgroup",
+          "text": "🚨⛴️ ALERTE INFO | Hantavirus sur un navire de croisière : l’OMS évoque une possible « transmission interhumaine » de la maladie. https://t.co/jZnTEUwvYx",
           "at": "2026-05-05",
-          "tag": "quotidien"
+          "tag": ""
         },
         {
-          "sn": "amuyakar_ndoy",
-          "text": "🚨 MV Hondius: Toujours à l’ancre au large de Praia (#CapVert). L'OMS confirme une épidémie de #Hantavirus (3 décès). L'accès au port reste interdit, évacuations vers l'Europe en cours. ⛴️ ​Le port de Dakar attend le cruize ship Grande Atlantico ce 20 Mai . 🇸🇳⚓️ https://t.co/BcZLF",
+          "sn": "novianewsgroup",
+          "text": "🚨🌍⛴️ FLASH | Hantavirus : la « transmission interhumaine » évoquée par l’OMS reste rare, selon l’Institut Pasteur. https://t.co/VYJOs8vY4i",
           "at": "2026-05-05",
-          "tag": "hantavirus"
+          "tag": ""
         },
         {
-          "sn": "lucyboregard973",
-          "text": "Vous le sentez venir le futur confinement dû au #Hantavirus sur le bateau de croisière ? Il va accoster en Espagne, et à partir de là, tout va mal se passer 😅 #cnews",
+          "sn": "cerfiafr",
+          "text": "🇪🇸📷 FLASH | L'hantavirus, maladie respiratoire transmise par les RONGEURS, a fait au moins 3 MORTS sur le bateau de croisière MV Hondius. dans l'Atlantique. L’Espagne a accepté un accostage aux îles Canaries. (AFP) https://t.co/qeaf7pFz7e",
           "at": "2026-05-05",
-          "tag": "cnews"
+          "tag": ""
         }
       ],
       "n_users": 21655,
@@ -143,6 +144,22 @@
         {
           "tag": "bfmtv",
           "g2": 5.36
+        },
+        {
+          "tag": "macron",
+          "g2": 4.46
+        },
+        {
+          "tag": "onnousprendpourdescons",
+          "g2": 4.25
+        },
+        {
+          "tag": "pfizer",
+          "g2": 4.13
+        },
+        {
+          "tag": "lci",
+          "g2": 4.12
         }
       ],
       "key_words": [
@@ -191,7 +208,7 @@
           "sn": "defimediainfo",
           "text": "Possible épisode d'hantavirus sur un navire de croisière : ce que l'on sait https://t.co/kgBLsdjfM3 #Hantavirus #SantéPublique #Croisière #Infection #FoyerDInfection",
           "at": "2026-05-05",
-          "tag": "hantavirus"
+          "tag": "foyerdinfection"
         },
         {
           "sn": "gdams70",
@@ -200,22 +217,22 @@
           "tag": ""
         },
         {
-          "sn": "mmyg5460438",
-          "text": "#hdpros @PascalPraud #hantavirus Il faudra un jour que vous nous parliez des graves dégâts dûs aux injections contre le covid. Mais dans ce monde de mensonge, de peur organisée, est-ce possible ?",
+          "sn": "sciencesextreme",
+          "text": "Qu'est-ce que l'infection à hantavirus, qui aurait fait trois morts sur un bateau de croisière ? https://t.co/qJ7c1YhVNV",
           "at": "2026-05-05",
-          "tag": "hantavirus"
+          "tag": ""
         },
         {
-          "sn": "rgauche",
-          "text": "Les #hantavirus se transmettent à l'homme principalement par le contact avec des rongeurs infectés ou leurs excrétions (urine, fèces, salive). Rarement l'infection se transmet d'homme à homme. https://t.co/aZQlrK1E7P",
+          "sn": "terlagr",
+          "text": "La prochaine pandémie! Pour mieux diffuser le virus débarquement des passagers aux Canaries, où s’entassent des milliers de touristes…Possible foyer d'hantavirus sur une croisière : trois morts, refus de débarquement... Ce que l'on sait de la situation https://t.co/k6Y2ul0Jku",
           "at": "2026-05-05",
-          "tag": "hantavirus"
+          "tag": ""
         },
         {
-          "sn": "benjitaloula34",
-          "text": "#Hantavirus #OMS #AlerteSanitaire #Mystère #Actualité #Santé #Virus 🚢🦠 ALERTE HANTAVIRUS UN BATEAU PIEGE EN PLEIN ATLANTIC 🦠🚢 https://t.co/HmsTKedk5E via @YouTube",
+          "sn": "jmnjmn39398094",
+          "text": "Trois morts, alerte au hantavirus, débarquement interdit... L'épidémie à bord d'une croisière en Atlantique sème l'inquiétude https://t.co/MNaMJNryPG via @LeJDD 😤😤😤 ils sont où les écolos parisiens qui protège les rats sur Paris🤮🤮🤮",
           "at": "2026-05-05",
-          "tag": "hantavirus"
+          "tag": ""
         }
       ],
       "n_users": 19075,
@@ -284,6 +301,12 @@
           "tag": ""
         },
         {
+          "sn": "kiddodig",
+          "text": "😱‼️ Foyer potentiel d'hantavirus à bord d'une croisière : trois morts, 23 nationalités... Ce que l'on sait du cauchemar vécu par les passagers https://t.co/IGaE7NNIFT",
+          "at": "2026-05-05",
+          "tag": ""
+        },
+        {
           "sn": "lcavernabereber",
           "text": "Que rule!!! #hantavirus https://t.co/VQktIouD4K",
           "at": "2026-05-05",
@@ -293,12 +316,6 @@
           "sn": "lcavernabereber",
           "text": "Que rule!!! #hantavirus https://t.co/SyR56lxfu5",
           "at": "2026-05-05",
-          "tag": "hantavirus"
-        },
-        {
-          "sn": "fils2psy",
-          "text": "Après le Covid, les spécialistes à deux balles des médias sont prêts pour insuffler la peur à travers leur communication anxiogène. #Hantavirus sur le bateau de croisière MV Hondius, une déclaration du Français, cas contact, placé à l'isolement : - La croisière \"ça m'use\" ! https",
-          "at": "2026-05-08",
           "tag": "hantavirus"
         }
       ],
@@ -344,6 +361,22 @@
         {
           "tag": "scam",
           "g2": 4.22
+        },
+        {
+          "tag": "coronavirus",
+          "g2": 4.2
+        },
+        {
+          "tag": "epstein",
+          "g2": 4.16
+        },
+        {
+          "tag": "billgates",
+          "g2": 4.08
+        },
+        {
+          "tag": "plandemie",
+          "g2": 3.82
         }
       ],
       "key_words": [
@@ -401,22 +434,22 @@
           "tag": ""
         },
         {
-          "sn": "verhaeghe",
-          "text": "Faut-il avoir peur de l'hantavirus? Le point, par Elise Rochefort Elise Rochefort fait un point rapide sur le développement de l'hantavirus... dont le taux de létalité est important. #hantavirus https://t.co/9PCexvJcxH",
-          "at": "2026-05-06",
-          "tag": "hantavirus"
+          "sn": "nionipardon",
+          "text": "🔴 CoronaCircus 03/2020 Les conseils santé de notre éminent docteur Michel Cymes : Aller faire ses courses, c'est prendre le risque de ramener le coronavirus chez soi. Sac de courses, peau des fruits et légumes, emballages plastiques, pain… « Ne pas toucher à ses courses https://t",
+          "at": "2026-05-05",
+          "tag": ""
         },
         {
-          "sn": "pulsefrinfo",
-          "text": "🦠 SANTÉ | Alerte virus sur navire de croisière 📌 Cas suspects d'hantavirus au large du Cap-Vert 🔴 L'OMS met en garde contre les erreurs du COVID : ne pas confiner les passagers à bord Source: France 24 #Hantavirus #Santé #CruiseShip #OMS #CapVert",
-          "at": "2026-05-06",
-          "tag": "hantavirus"
+          "sn": "nionipardon",
+          "text": "06/2021 Jean-Claude Van Damme : « Mon père a eu le Covid à 85 ans, il a reçu ce qu'il fallait, ce qui a été supprimé, tu vois ce que je veux dire. Après 8 jours, il est reparti sur sa bicyclette. » https://t.co/PVZHGe4fWK",
+          "at": "2026-05-05",
+          "tag": ""
         },
         {
-          "sn": "royaliste30",
-          "text": "Ils nous ont sorti un virus pour #Pfizer dites donc...🤔 #hantavirus https://t.co/kzhfXv9Ula",
-          "at": "2026-05-06",
-          "tag": "hantavirus"
+          "sn": "ghislained16953",
+          "text": "@NiONiPardon Notre très appréciée et efficace Presse découvre l'hantavirus.. Tremblons à nouveau 😀😀😀",
+          "at": "2026-05-05",
+          "tag": ""
         }
       ],
       "n_users": 15380,
@@ -461,6 +494,22 @@
         {
           "tag": "foutagedegueule",
           "g2": 3.54
+        },
+        {
+          "tag": "crimecontrelhumanite",
+          "g2": 3.36
+        },
+        {
+          "tag": "tbt9",
+          "g2": 3.35
+        },
+        {
+          "tag": "cavous",
+          "g2": 3.02
+        },
+        {
+          "tag": "jt20h",
+          "g2": 2.93
         }
       ],
       "key_words": [
@@ -518,22 +567,22 @@
           "tag": ""
         },
         {
-          "sn": "cnews",
-          "text": "Charlotte d'Ornellas sur la polémique du recrutement d'Eugénie Bastié par France 2 : «Elle a une grande culture et une maîtrise de l'histoire politique donc ça n'étonne personne qu'ils aient pensé à elle», dans #HDPros Toute l'info est à retrouver sur https://t.co/wCnzQBE1GX http",
+          "sn": "20minutes",
+          "text": "Un foyer suspect d’hantavirus à bord du MV Hondius a fait trois morts. ➡️ https://t.co/pC3LA5tP4i https://t.co/ApFLBqU8p0",
           "at": "2026-05-05",
-          "tag": "hdpros"
+          "tag": ""
         },
         {
-          "sn": "europe1",
-          "text": "Eugénie Bastié chez France télévision : \"Les journalistes qui sont inquiets de l'arrivée, en fait en réalité ils ne sont pas inquiets, ils sont énervés parce qu'elle arrive et qu'elle a des idées qui ne sont pas les leurs\" déclare @ChdOrnellas #HDPros @PascalPraud https://t.co/sV",
+          "sn": "montreal110",
+          "text": "Hantavirus : 149 passagers dans l’incertitude via @RadioCanadaInfo https://t.co/NoW7Hmezjj",
           "at": "2026-05-05",
-          "tag": "hdpros"
+          "tag": ""
         },
         {
-          "sn": "cgtnfrancais",
-          "text": "World Health Organization - Cluster #Hantavirus lié aux voyages en bateau de croisière : Depuis le 1er avril, date à laquelle le bateau a appareillé, sur les 147 passagers et membres d'équipage, 7 personnes sont tombées malades, parmi lesquelles 3 sont décédées, 1 est gravement",
+          "sn": "arnaudmercier",
+          "text": "DIRECT. Foyer présumé d'hantavirus sur une croisière: trois morts recensés, cinq Français à bord, le bateau interdit de débarquement au Cap-Vert… https://t.co/lxVgj1wzzB https://t.co/GUMVgIaPWA",
           "at": "2026-05-05",
-          "tag": "hantavirus"
+          "tag": ""
         }
       ],
       "n_users": 12870,
@@ -578,6 +627,14 @@
         {
           "tag": "hantavirus",
           "g2": 3.97
+        },
+        {
+          "tag": "oms",
+          "g2": 2.13
+        },
+        {
+          "tag": "afropages",
+          "g2": 1.66
         }
       ],
       "key_words": [
@@ -626,13 +683,19 @@
           "sn": "medi1news",
           "text": "L’hantavirus suscite l’inquiétude ces derniers jours… 🦠🚨 Comment les rongeurs🐀 peuvent-ils transmettre un virus potentiellement mortel sans contact direct ? ⚠️🤔 ❓ 👇Les détails 👇 https://t.co/RyV6njbemm #Santé #Hantavirus #Virus #Rongeurs",
           "at": "2026-05-05",
-          "tag": "hantavirus"
+          "tag": "rongeurs"
         },
         {
           "sn": "medi1tvafrique",
           "text": "L’hantavirus suscite l’inquiétude ces derniers jours… 🦠🚨 Comment les rongeurs🐀 peuvent-ils transmettre un virus potentiellement mortel sans contact direct ? ⚠️🤔 ❓ 👇Les détails 👇 https://t.co/GZAwZGMlZL #Santé #Hantavirus #Virus #Rongeurs",
           "at": "2026-05-05",
-          "tag": "hantavirus"
+          "tag": "rongeurs"
+        },
+        {
+          "sn": "de_chardin",
+          "text": "Ces 3 là ont le choix. L’histoire les regarde. Le pays les regarde. Leurs militants aussi. Ou ils trahissent de nouveau les intérêts de la gauche et du pays où ils rejoignent l’alliance populaire avec la @FranceInsoumise pour gagner et changer le cours de l’histoire 🇫🇷 https://t.",
+          "at": "2026-05-05",
+          "tag": ""
         },
         {
           "sn": "medi1news",
@@ -643,12 +706,6 @@
         {
           "sn": "medi1tvafrique",
           "text": "🦠🚢 #Hantavirus sur un navire de croisière : ce que l’on sait vraiment ⚠️ 👇Les détails👇 https://t.co/CmGL3AOLC7",
-          "at": "2026-05-05",
-          "tag": "hantavirus"
-        },
-        {
-          "sn": "medi1tv",
-          "text": "🦠🚢 #Hantavirus sur un navire de croisière : ce que l’on sait vraiment ⚠️ 👇Les détails👇 https://t.co/YigUN3sCNb",
           "at": "2026-05-05",
           "tag": "hantavirus"
         }
@@ -702,6 +759,62 @@
     }
   },
   "tag_accounts": {
+    "100politique": [
+      "cnews",
+      "tribundanton"
+    ],
+    "24hpujadas": [
+      "24hpujadas",
+      "azimutcarib",
+      "thierryf91"
+    ],
+    "606": [
+      "salsadany57"
+    ],
+    "adegager": [
+      "fcl6944"
+    ],
+    "afrique": [
+      "acbetuin",
+      "africtelegraph",
+      "ahmadabdulwaha1",
+      "apa_news",
+      "bretonaverti",
+      "ch_ristv_ee",
+      "ch_ukagam_er",
+      "cl_adowi_se",
+      "cl_stromxwe_ll",
+      "co_cosilv_iu",
+      "co_mfytum_ia",
+      "countdown2027",
+      "coupet541",
+      "cr_yptobar_bq",
+      "cr_yptoewav_er",
+      "dalton_francis",
+      "danar2112",
+      "denmarknice00",
+      "dmaitos",
+      "donallphin1",
+      "donatien_nabo",
+      "dr_kevroach",
+      "fouragebernard",
+      "francetrisser",
+      "petitpalois64",
+      "rdcmonde_mag",
+      "torreseryc"
+    ],
+    "afropages": [
+      "afropages"
+    ],
+    "agenda2030": [
+      "dr_housse_2",
+      "gedlink333",
+      "mentecorpore34",
+      "realjoelgomes"
+    ],
+    "allezbienvousfairefoutre": [
+      "fcl6944"
+    ],
     "antivax": [
       "boulangercoline",
       "chenrydelapomme",
@@ -714,6 +827,33 @@
       "marcellampion",
       "mfelfa"
     ],
+    "argentine": [
+      "24hpujadas",
+      "ahramhebdo",
+      "antoinemor80",
+      "bleuemer75963",
+      "christinahell",
+      "dringdringallo",
+      "espritia_news",
+      "francetrisser",
+      "gbtchristian",
+      "gregoryfiori",
+      "lequotidien509",
+      "medi1tvafrique",
+      "pulsefrinfo",
+      "stellaire_fr",
+      "thierryf91",
+      "vers2045",
+      "zeranecnerden"
+    ],
+    "arnm": [
+      "antoineberetto_",
+      "cyberassist21",
+      "invasion13"
+    ],
+    "ayezconfiance": [
+      "invasion13"
+    ],
     "bateau": [
       "christinepp27",
       "dadoubd",
@@ -723,6 +863,39 @@
       "monique_coudert",
       "morandiniblog",
       "torreseryc"
+    ],
+    "benoîthamon": [
+      "abdelkarim49",
+      "acbetuin",
+      "ahmadabdulwaha1",
+      "cl_adowi_se",
+      "co_cosilv_iu",
+      "co_mfytum_ia",
+      "cr_yptobar_bq",
+      "cr_yptoewav_er",
+      "cr_yptohilto_ns",
+      "dalton_francis",
+      "danar2112",
+      "davidblount5",
+      "denmarknice00",
+      "dmaitos",
+      "donallphin1",
+      "dr_kevroach"
+    ],
+    "bfm": [
+      "chase_maccain",
+      "dadoubd",
+      "deezyboy74",
+      "ellyjuneuk",
+      "emmapioupiou",
+      "fcl6944",
+      "gjchevalier",
+      "laurenceputih",
+      "lilou_siba",
+      "luis021002",
+      "mmerle22128",
+      "regarddefrance7",
+      "vouskarim"
     ],
     "bfmtv": [
       "1graindefolie",
@@ -762,6 +935,17 @@
       "sylvinfo",
       "vander_pat"
     ],
+    "bichat": [
+      "24hpujadas",
+      "actufr92",
+      "actufr93",
+      "actufr94",
+      "actufrparis",
+      "info_paris_idf",
+      "pierreberat",
+      "pulsefrinfo",
+      "stellaire_fr"
+    ],
     "bigpharma": [
       "aileastick1",
       "ayamail41",
@@ -781,10 +965,124 @@
       "realjoelgomes",
       "vetopatriote"
     ],
+    "billgates": [
+      "aileastick1",
+      "al_cabro",
+      "ayamail41",
+      "christianbalzac",
+      "cyberassist21",
+      "desbrosseschan1",
+      "gdams70",
+      "gedlink333",
+      "jc_dussse",
+      "joaocarlooo",
+      "kcnarfhu",
+      "lespartisansfr",
+      "loryanesinger",
+      "luc1again",
+      "marcybryck",
+      "octofarmer",
+      "planet211180",
+      "pointequilibre",
+      "samagace7",
+      "torreseryc",
+      "urvonur"
+    ],
+    "bordeaux": [
+      "acapradimonti",
+      "actucenter",
+      "antoo_crypto",
+      "asticot751",
+      "bamos7moi",
+      "benaraktrip",
+      "bordeauxgazette",
+      "fabien_royere",
+      "frank3264465441",
+      "jennerg",
+      "lenamaddie18",
+      "libourneenlive",
+      "marcmangin",
+      "marieciotti91",
+      "mistermag00",
+      "orphee45",
+      "pnferry",
+      "purpleworld779",
+      "vers2045"
+    ],
     "canal16": [
       "franceinfo",
       "gallieni_57",
       "maria7776367581"
+    ],
+    "canaries": [
+      "140cdesolitude",
+      "actufootparis_",
+      "africtelegraph",
+      "christinahell",
+      "de_bevec",
+      "donna7636142804",
+      "duboismade45982",
+      "espritia_news",
+      "flav_bl75",
+      "france24_fr",
+      "franceafrique23",
+      "francetrisser",
+      "gallusgalgq",
+      "informationssf",
+      "kimberl84320407",
+      "lematinpointma",
+      "lequotidien509",
+      "medi1tvafrique",
+      "ouassou1er",
+      "ouvacemonde",
+      "phineas_barnum",
+      "presse83_fr",
+      "pulsefrinfo",
+      "rafaelsereti",
+      "romainchvt",
+      "sami24tv"
+    ],
+    "carburant": [
+      "juliencivello",
+      "mattwitty88",
+      "mm_archseven"
+    ],
+    "cavous": [
+      "docgill95",
+      "fout_sen",
+      "tribundanton",
+      "unixa_"
+    ],
+    "cesttoutelaquestion": [
+      "franceinfo"
+    ],
+    "charlie": [
+      "acbetuin",
+      "acpt2010",
+      "ahmadabdulwaha1",
+      "ch_ristv_ee",
+      "ch_ukagam_er",
+      "cl_adowi_se",
+      "cl_stromxwe_ll",
+      "co_cosilv_iu",
+      "co_mfytum_ia",
+      "countdown2027",
+      "coupet541",
+      "cr_yptobar_bq",
+      "cr_yptoewav_er",
+      "dalton_francis",
+      "danar2112",
+      "danc4eva525",
+      "davidblount5",
+      "denmarknice00",
+      "devalife",
+      "dmaitos",
+      "donallphin1",
+      "dr_kevroach",
+      "meritobullshit"
+    ],
+    "christinekellyetvous": [
+      "europe1"
     ],
     "cnews": [
       "ad_vitam44_",
@@ -846,6 +1144,15 @@
       "utopic92",
       "vander_pat",
       "xyz_8moii"
+    ],
+    "complotiste": [
+      "09h09o",
+      "abdelmolik",
+      "corsunapo",
+      "infolovol",
+      "lorykya",
+      "pakitodelavega",
+      "ruslanaxz"
     ],
     "confinement": [
       "1graindefolie",
@@ -958,6 +1265,46 @@
       "wilsonxonsliw",
       "yallacan25",
       "zairker"
+    ],
+    "conspi": [
+      "kiki2laro"
+    ],
+    "contagion": [
+      "le_web_journal",
+      "torreseryc"
+    ],
+    "contamination": [
+      "tousvigilants",
+      "unesdepresse"
+    ],
+    "coronavirus": [
+      "agretdenis",
+      "claytoonz",
+      "dave59300",
+      "gabriel_draghi",
+      "goyermel",
+      "hananofficiel",
+      "ithierdemagnac",
+      "le_web_journal",
+      "lepointgenius",
+      "lesnews",
+      "manonbymanon_",
+      "medularisfr",
+      "nugbepole",
+      "pascaladubois",
+      "pompiersuspendu",
+      "rabbinavzemmour",
+      "torreseryc",
+      "toyamazigh"
+    ],
+    "corruption": [
+      "j_de_saintsimon",
+      "teddymcardle"
+    ],
+    "covi19": [
+      "aileastick1",
+      "desbrosseschan1",
+      "luc1again"
     ],
     "covid": [
       "1graindefolie",
@@ -1200,6 +1547,159 @@
       "yreorraent",
       "zox613"
     ],
+    "covid19": [
+      "__verlaine__",
+      "aiditions",
+      "alerte_hanta",
+      "alex49111",
+      "batricemon79877",
+      "betty_oups",
+      "boulangercoline",
+      "cassartleo",
+      "christolien94",
+      "clerhug",
+      "corinnereverbel",
+      "crivan65",
+      "cyberassist21",
+      "defimediainfo",
+      "duboismade45982",
+      "elissamaiss",
+      "espritia_news",
+      "florianpinet",
+      "france24_fr",
+      "fredsubirana",
+      "freeliketux",
+      "g_ontrading",
+      "gaelbita",
+      "galadriell__",
+      "gilbro2010",
+      "grisou97160",
+      "guffin_mac",
+      "guillaume_lny",
+      "gustave213",
+      "hananofficiel",
+      "iprodzmusic",
+      "jeromekoung",
+      "jfhfidjcjxj",
+      "jgl68000",
+      "juju64990",
+      "l_spagg",
+      "laurenceputih",
+      "le_web_journal",
+      "lespatriotes64",
+      "littlenelly33",
+      "luckasdelille59",
+      "marieciotti91",
+      "medularisfr",
+      "mitchco20455648",
+      "monique_coudert",
+      "nelmaropi",
+      "newcryptothe",
+      "opmediacontrol",
+      "pascalbauche",
+      "pdohen",
+      "polak83000",
+      "politik333",
+      "publicenem_y",
+      "remseeks",
+      "sergueyb",
+      "skysteen123",
+      "stellaire_fr",
+      "susannaberlin12",
+      "suse1603",
+      "theforsakenn_",
+      "tiwix44",
+      "unbourguignon",
+      "vangoghinherb",
+      "vkempathy",
+      "xpmedia69"
+    ],
+    "crimecontrelhumanité": [
+      "steffy2nice"
+    ],
+    "croisiere": [
+      "africtelegraph",
+      "another_socdem",
+      "dadoubd",
+      "emmapioupiou",
+      "inlovvithlov",
+      "lalobarose",
+      "lematinpointma",
+      "morandiniblog",
+      "pressecitron",
+      "senegal24news"
+    ],
+    "croisière": [
+      "140cdesolitude",
+      "alina9yrb",
+      "aoptannu",
+      "christinahell",
+      "christinepp27",
+      "defimediainfo",
+      "donna7636142804",
+      "duboismade45982",
+      "espritia_news",
+      "eternos974",
+      "france24_fr",
+      "franceafric_",
+      "fred_parel",
+      "frfrontieres",
+      "informationssf",
+      "jamesdrew196092",
+      "lequotidien509",
+      "lgalyart",
+      "maliteo63",
+      "nicolasberrod",
+      "philoux_99",
+      "presse83_fr",
+      "pulsefrinfo",
+      "torreseryc"
+    ],
+    "croisières": [
+      "morandiniblog"
+    ],
+    "detroitormuz": [
+      "tapahtyna"
+    ],
+    "diaspora": [
+      "lequotidien509"
+    ],
+    "directan": [
+      "assembleenat",
+      "fredericdelpech",
+      "hugocouturier",
+      "isgmcf1",
+      "lcp",
+      "tribundanton"
+    ],
+    "dlf": [
+      "lemaitremi74556"
+    ],
+    "décès": [
+      "kevinle09611603",
+      "morandiniblog"
+    ],
+    "désirédoué": [
+      "abdelkarim49",
+      "acbetuin",
+      "ahmadabdulwaha1",
+      "cl_adowi_se",
+      "co_cosilv_iu",
+      "co_mfytum_ia",
+      "cr_yptobar_bq",
+      "cr_yptoewav_er",
+      "cr_yptohilto_ns",
+      "dalton_francis",
+      "danar2112",
+      "davidblount5",
+      "denmarknice00",
+      "dmaitos",
+      "donallphin1",
+      "dr_kevroach"
+    ],
+    "e1matin": [
+      "tribundanton"
+    ],
     "ebola": [
       "1533ad0baac24d5",
       "24heures_sante",
@@ -1272,15 +1772,173 @@
       "x_particulier",
       "xpmedia69"
     ],
+    "economiste": [
+      "infolovol"
+    ],
+    "epstein": [
+      "alexis_cossette",
+      "aloulo51",
+      "bendezone9",
+      "celticseabird",
+      "escalet83",
+      "forhalinton",
+      "gabriel_draghi",
+      "jc_dussse",
+      "jean_se67",
+      "kcnarfhu",
+      "laotzetung",
+      "lespartisansfr",
+      "luca_gian134",
+      "malavitan67611",
+      "mm_archseven",
+      "octofarmer",
+      "projekon_pmp",
+      "runatonews",
+      "soso2229022290",
+      "xcharleslebon"
+    ],
+    "epsteinfiles": [
+      "chachoulgate",
+      "dumnec",
+      "gabriel_draghi",
+      "juanped08930435",
+      "minibelluleee",
+      "quiquine5",
+      "valexinsky"
+    ],
+    "espritia": [
+      "espritia_news"
+    ],
     "europe1": [
       "claudem54644142",
       "europe1",
       "katelle31201064"
     ],
+    "europe1soir": [
+      "europe1"
+    ],
+    "facealinfo": [
+      "catou_25",
+      "crudimusic",
+      "gizmo46588649",
+      "joker77fancnews",
+      "laurenceputih",
+      "marylineparmi",
+      "monsieurli_",
+      "npommeret",
+      "oxitan30",
+      "philippe2408",
+      "shelegshemech3",
+      "tribundanton"
+    ],
+    "fauci": [
+      "al_cabro",
+      "alexis_cossette",
+      "drgkyra",
+      "gedlink333",
+      "jc_dussse",
+      "maidwarriqr"
+    ],
     "foutagedegueule": [
       "fcl6944",
       "horus1777124636",
       "ingritolesen"
+    ],
+    "foutriquet": [
+      "sylvinfo"
+    ],
+    "france": [
+      "6pattparisi",
+      "__sphinx___",
+      "actualitesnews2",
+      "ahramhebdo",
+      "aijesinfo",
+      "al_fennec",
+      "algatedz",
+      "allonsy_france",
+      "ambianie",
+      "antoineberetto_",
+      "antoinemor80",
+      "bamos7moi",
+      "brevesdepresse",
+      "chaesang99",
+      "chummyy01",
+      "coco_zi_asticot",
+      "countdown2027",
+      "dadoubd",
+      "dom2witte",
+      "ebenyaakov",
+      "espritia_news",
+      "f_honeywellcom",
+      "fanmarine14",
+      "ferreiragui4",
+      "flywithme124775",
+      "france24_fr",
+      "france_masque",
+      "franck77120",
+      "fred_animus",
+      "frfrontieres",
+      "gallusgalgq",
+      "gautamainhp",
+      "gbtchristian",
+      "gregoryfiori",
+      "gustave213",
+      "helixdustfr",
+      "icibeyrouthnews",
+      "itsmeback_",
+      "ivredevoltaire",
+      "jamesdrew196092",
+      "jyzee2",
+      "krapouchnik",
+      "kronikinsights",
+      "lafontainelili1",
+      "laotzetung",
+      "laurent_daniel",
+      "laurentopsomer",
+      "lemediapolitifr",
+      "lenew_ma",
+      "leparisienmatin",
+      "lequotidien509",
+      "lespatriotes64",
+      "lflsunna",
+      "linda964186505",
+      "linepress_off",
+      "linfirmier1",
+      "louisdubonsens",
+      "lwarhibam",
+      "lyonsuper",
+      "mailletlucien",
+      "marseillew14697",
+      "michell80541965",
+      "mimimatic",
+      "mr_yaya_du_1018",
+      "myomiaou357",
+      "nouvelleaubefr",
+      "pacomister1",
+      "plans_weed",
+      "politik333",
+      "poupsi16",
+      "pourquoidocteur",
+      "prim_fr",
+      "pulsefrinfo",
+      "quotientlife",
+      "renaud_favier",
+      "roland91346",
+      "sashaelbaz",
+      "soso2229022290",
+      "steiphweb",
+      "sylvainn11",
+      "systemdeal",
+      "thcastioni",
+      "thierryf91",
+      "torreseryc",
+      "tysung7",
+      "unevoixp",
+      "var_actu",
+      "vers2045",
+      "voxiumx",
+      "weed1428982",
+      "zox613"
     ],
     "france2": [
       "benc_85",
@@ -1309,6 +1967,45 @@
       "sophiecannelle",
       "sylvinfo"
     ],
+    "français": [
+      "antoineberetto_",
+      "countdown2027",
+      "francetrisser",
+      "h_mistinguette",
+      "informationssf",
+      "inst_actu",
+      "lyonsuper",
+      "mpowerhumans"
+    ],
+    "gates": [
+      "aloulo51",
+      "domusignis",
+      "dumnec",
+      "gabriel_draghi",
+      "luca_gian134",
+      "octofarmer",
+      "thompson_2017"
+    ],
+    "gavi": [
+      "ayamail41",
+      "joaocarlooo",
+      "pointequilibre"
+    ],
+    "genesio": [
+      "acpt2010",
+      "ahmadabdulwaha1",
+      "ch_ristv_ee",
+      "ch_ukagam_er",
+      "cl_adowi_se",
+      "co_mfytum_ia",
+      "coupet541",
+      "cr_yptoewav_er",
+      "danar2112",
+      "danc4eva525",
+      "davidblount5",
+      "denmarknice00",
+      "devalife"
+    ],
     "ggrmc": [
       "devillerspatric",
       "dictature1111",
@@ -1332,6 +2029,28 @@
       "snoop1143",
       "sylvinfo",
       "tribundanton"
+    ],
+    "gof": [
+      "invasion13",
+      "letempsdesbises"
+    ],
+    "grandmatin": [
+      "sudradio",
+      "tribundanton"
+    ],
+    "grippe": [
+      "agretdenis",
+      "i3ct3r",
+      "medularisfr",
+      "neveuxbertrand",
+      "nicolasberrod",
+      "ophelieroque",
+      "pascalbauche"
+    ],
+    "h1n1": [
+      "le_web_journal",
+      "lesnews",
+      "rabbinavzemmour"
     ],
     "hantavirus": [
       "007actarus",
@@ -3915,6 +4634,211 @@
       "zozobonzai",
       "zugoljannone"
     ],
+    "hantavirüs": [
+      "1graindefolie",
+      "29_aelia",
+      "__sphinx___",
+      "_booga_b_",
+      "abdelmolik",
+      "ad_vitam44_",
+      "adoufun",
+      "al_cabro",
+      "aldiibarhama",
+      "alex49111",
+      "allonsy_france",
+      "amelie_paul",
+      "amirouchea24168",
+      "andreburnol",
+      "anna_c_moi",
+      "annadubos77673",
+      "annaharfr",
+      "antenne_509",
+      "antoo_crypto",
+      "ars_guadeloupe",
+      "aurosint",
+      "ayamail41",
+      "b_soulard",
+      "badguitch",
+      "bamos7moi",
+      "bchoque025",
+      "benjamin_baruk",
+      "bianconero96rz",
+      "bruno2france",
+      "burunditrend",
+      "cdanslair",
+      "charbeltorbey",
+      "charbofficiel",
+      "chasseurdimage1",
+      "chimpreports",
+      "christineboutin",
+      "cochonvenere",
+      "crudimusic",
+      "dadoubd",
+      "dateed1",
+      "daviddurhum",
+      "dcornichet",
+      "diggerfr",
+      "djeliba3455",
+      "dlfparis16",
+      "dominiq49230998",
+      "dr_housse_2",
+      "dstoyann",
+      "dworaczekbendom",
+      "echiquiersocial",
+      "erwanfrebaultq",
+      "ezetrois",
+      "fabelia29",
+      "fabien_mtp",
+      "fatihsong",
+      "fcl6944",
+      "fencel3",
+      "fleurmail",
+      "flipflap_2017",
+      "fortunastephane",
+      "france_masque",
+      "francetrisser",
+      "franchement14",
+      "franck20270",
+      "frencinas",
+      "gallusgalgq",
+      "gautamainhp",
+      "gdecazaux",
+      "gedlink333",
+      "gerardl50",
+      "gerstmansa",
+      "gonzag74401",
+      "grandebougie",
+      "greuzatd",
+      "guessous_zineb",
+      "gueuxgone",
+      "guycesar22",
+      "h_mistinguette",
+      "hafizahabertv",
+      "hantavirus1234",
+      "hdgremix",
+      "herve2023",
+      "humanisme75",
+      "humberto881991",
+      "humourdedroite1",
+      "itsmeback_",
+      "jc_laborie",
+      "jhletapin",
+      "jmpradiofrance",
+      "joanne_autumn",
+      "jonathan_101305",
+      "jphtwittes",
+      "juanped08930435",
+      "judasnanas33390",
+      "justshareworld",
+      "jyzee2",
+      "kedrickmutayi",
+      "kuzeybeyi1",
+      "la_pollice",
+      "la_vie_en_bd",
+      "laboussolei",
+      "lapinou7677",
+      "laurenceide69",
+      "le_web_journal",
+      "lepretretony",
+      "lezxbre",
+      "lia_lindona_x",
+      "liloumossi",
+      "lilpat73",
+      "lireland1984",
+      "littlenelly33",
+      "lmaxime97428",
+      "louis_trade_06",
+      "lycos973",
+      "lycrem3",
+      "m_sparrow92",
+      "macronardsfm",
+      "maghrebisouiri",
+      "magliber3",
+      "manienkawasaki",
+      "manon_purple_u",
+      "manonbymanon_",
+      "marc_doyer",
+      "marcel81048792",
+      "marcopanzani",
+      "mariane_lab",
+      "marionl2564",
+      "mauricemartin01",
+      "maxibernard_",
+      "maxoouuuu91",
+      "mercatoplein",
+      "metzinho97",
+      "micheom86",
+      "mickaellaffont",
+      "milhpertuis2",
+      "modoubou221",
+      "mondesousilence",
+      "mr_harry18x",
+      "myomiaou357",
+      "myriampalomba",
+      "newcryptothe",
+      "nicolas38872993",
+      "octofarmer",
+      "olalaforreal",
+      "olipopkeating",
+      "ong_la_vie",
+      "orgasmir",
+      "p0lt3rg8st",
+      "patriefrance_",
+      "poire10005",
+      "polak83000",
+      "poupsi16",
+      "pythagore327_r",
+      "r_sicard",
+      "realndingi",
+      "rebel_warriors",
+      "red1_la",
+      "regueyne",
+      "replikacide",
+      "rodolphebaubion",
+      "ruhzen",
+      "rwandan_pundit",
+      "rygbiambyth",
+      "sainte_hermine5",
+      "sauvonslepays",
+      "sergiodde",
+      "shelegshemech3",
+      "sioupatkonnen",
+      "staracnews25",
+      "stellaire_fr",
+      "sylmouilhaud",
+      "tauriacc",
+      "tbibaque",
+      "thery_roms",
+      "tian_a1",
+      "tikamsthekams",
+      "tingamh",
+      "tinkerhell999",
+      "tinomoreira28",
+      "tom_tom_tomasi",
+      "tontonmalette",
+      "torreseryc",
+      "toyamazigh",
+      "trendsnipeagent",
+      "trumpfrance",
+      "tubebeeg",
+      "tuiterosismico",
+      "twittl12",
+      "uneminuteinfo",
+      "unionnatiopop",
+      "valentin_c38252",
+      "valexinsky",
+      "verhaeghe",
+      "veritiste",
+      "vero_trl",
+      "viebanale1",
+      "vivien5757",
+      "winnertoto97118",
+      "x_particulier",
+      "yannsolo15",
+      "ybdbzjz",
+      "zahue",
+      "zeeebulon_media"
+    ],
     "hdpros": [
       "4classic",
       "abbonachris",
@@ -3991,6 +4915,14 @@
       "tribundanton",
       "valloovalloo"
     ],
+    "hdproswe": [
+      "cnews",
+      "hueteve49",
+      "laurenceputih"
+    ],
+    "hihan": [
+      "invasion13"
+    ],
     "hondius": [
       "1jour1actu",
       "24hpujadas",
@@ -4029,6 +4961,87 @@
       "torreseryc",
       "zenzelia"
     ],
+    "idl": [
+      "lemaitremi74556"
+    ],
+    "iran": [
+      "24hpujadas",
+      "albert_nuvo",
+      "benaraktrip",
+      "bloingo",
+      "cdanslair",
+      "conil22132835",
+      "countdown2027",
+      "cryptoapes62",
+      "jtourreille",
+      "laurence1119436",
+      "petitpalois64",
+      "projekon_pmp",
+      "pulsefrinfo",
+      "runatonews",
+      "sapiens3_0",
+      "steiphweb",
+      "urvonur",
+      "vouskarim",
+      "yasin_the_bison"
+    ],
+    "iranwar": [
+      "blaliam",
+      "chris91_76",
+      "malavitan67611",
+      "nhmitha",
+      "poojabnf",
+      "saliharazgui",
+      "tapahtyna"
+    ],
+    "israël": [
+      "aijesinfo",
+      "dailynewsfr_",
+      "gabriel_draghi",
+      "jamesdrew196092",
+      "kronikinsights",
+      "tapahtyna"
+    ],
+    "ituri": [
+      "afrikarabia",
+      "byobe_malenga"
+    ],
+    "jt20h": [
+      "joopafrica",
+      "le20hfrancetele",
+      "maria7776367581"
+    ],
+    "lagrandeinterview": [
+      "cnews",
+      "europe1"
+    ],
+    "lakers": [
+      "acbetuin",
+      "ahmadabdulwaha1",
+      "ch_ristv_ee",
+      "ch_ukagam_er",
+      "cl_adowi_se",
+      "cl_stromxwe_ll",
+      "co_cosilv_iu",
+      "co_mfytum_ia",
+      "coupet541",
+      "cr_yptobar_bq",
+      "cr_yptoewav_er",
+      "dalton_francis",
+      "danar2112",
+      "denmarknice00",
+      "dmaitos",
+      "donallphin1",
+      "dr_kevroach"
+    ],
+    "lamatinale": [
+      "cnews",
+      "cnewslesoff",
+      "mmyg5460438",
+      "npommeret",
+      "osweggo31",
+      "tribundanton"
+    ],
     "lci": [
       "24hpujadas",
       "anthonycomedien",
@@ -4064,6 +5077,194 @@
       "tripam17",
       "vander_pat"
     ],
+    "le23hweekend": [
+      "franceinfo"
+    ],
+    "lecornu": [
+      "1graindefolie",
+      "alexterieurdici",
+      "bertrandredone",
+      "daicaudouit",
+      "de_bevec",
+      "dom2witte",
+      "fout_sen",
+      "jeanfremond1",
+      "jyzee2",
+      "leglaude69",
+      "mailletlucien",
+      "manara37",
+      "paul_barcelonne",
+      "pulsefrinfo",
+      "sidneyazoulay",
+      "steiphweb",
+      "tauriacc",
+      "vosgesrenard"
+    ],
+    "lepouretlecontre": [
+      "franceinfo"
+    ],
+    "lequotidien509": [
+      "lequotidien509"
+    ],
+    "lfi": [
+      "benaraktrip",
+      "brunophg",
+      "fabiani_marc_",
+      "grandsachoir",
+      "ivredevoltaire",
+      "jn_nmr",
+      "karenerodi",
+      "mimimatic",
+      "pierricv",
+      "precairep",
+      "unixa_",
+      "will_nicks_off"
+    ],
+    "macron": [
+      "abreu_thii",
+      "benaraktrip",
+      "bertrandredone",
+      "borderl17984790",
+      "c_atlan_tapiero",
+      "cactus9999999",
+      "chase_maccain",
+      "chenrydelapomme",
+      "cyril21510",
+      "davynimal",
+      "defrecannes",
+      "ellyjuneuk",
+      "f_x_rivas",
+      "fatihsong",
+      "fcl6944",
+      "fout_sen",
+      "fuckensemble",
+      "gallusgalgq",
+      "jc_dussse",
+      "lagauloisezzz",
+      "lapinou7677",
+      "laurenceputih",
+      "lecriducitoyen",
+      "mailletlucien",
+      "majolagmarie",
+      "marieclaudecla2",
+      "mimimatic",
+      "mistermag00",
+      "morandiniblog",
+      "mydaphne",
+      "petitpalois64",
+      "poire10005",
+      "politik333",
+      "poupsi16",
+      "precairep",
+      "pulsefrinfo",
+      "salsadany57",
+      "sidneyazoulay",
+      "sylvinfo",
+      "taran_luimayme",
+      "tauriacc",
+      "tompouce01",
+      "unixa_",
+      "vosgesrenard",
+      "vouskarim"
+    ],
+    "macronnousprendpourdescons": [
+      "fcl6944",
+      "laurence1119436"
+    ],
+    "maladie": [
+      "dadoubd",
+      "defimediainfo",
+      "ftkmmnl1",
+      "ia1_info",
+      "jstm_mali",
+      "laboussolei",
+      "torreseryc",
+      "vigan70_2"
+    ],
+    "mammarenavirus": [
+      "sautodidacte"
+    ],
+    "mapr": [
+      "acbetuin",
+      "ahmadabdulwaha1",
+      "ch_ristv_ee",
+      "ch_ukagam_er",
+      "cl_adowi_se",
+      "cl_stromxwe_ll",
+      "co_cosilv_iu",
+      "co_mfytum_ia",
+      "coupet541",
+      "cr_yptobar_bq",
+      "cr_yptoewav_er",
+      "dalton_francis",
+      "danar2112",
+      "denmarknice00",
+      "dmaitos",
+      "donallphin1",
+      "dr_kevroach",
+      "milan_orin",
+      "nosw343746",
+      "poojabnf",
+      "soso2229022290",
+      "willshakespire"
+    ],
+    "melenchon": [
+      "benaraktrip",
+      "betty_oups",
+      "francetrisser",
+      "jn_nmr",
+      "msihocine",
+      "philippe_viot",
+      "precairep",
+      "unixa_"
+    ],
+    "methalie": [
+      "abdelkarim49",
+      "acbetuin",
+      "ahmadabdulwaha1",
+      "cl_adowi_se",
+      "co_cosilv_iu",
+      "co_mfytum_ia",
+      "cr_yptobar_bq",
+      "cr_yptoewav_er",
+      "cr_yptohilto_ns",
+      "dalton_francis",
+      "danar2112",
+      "davidblount5",
+      "denmarknice00",
+      "dmaitos",
+      "donallphin1",
+      "dr_kevroach"
+    ],
+    "midinews": [
+      "cnews",
+      "gdams70",
+      "hiettelary",
+      "npommeret",
+      "tribundanton"
+    ],
+    "moderna": [
+      "ameledebey",
+      "antoineberetto_",
+      "chachoulgate",
+      "corsicasud",
+      "cyberassist21",
+      "drgkyra",
+      "dringdringallo",
+      "gedlink333",
+      "gregoryfiori",
+      "ilove3m",
+      "jeanfremond1",
+      "jlpujo",
+      "juju64990",
+      "kronikinsights",
+      "lanceuri",
+      "mariane_lab",
+      "misterfruidom",
+      "remigrateur2118",
+      "torreseryc",
+      "tribunelibre1"
+    ],
     "monkeypox": [
       "edouardonnis",
       "fcl6944",
@@ -4072,6 +5273,14 @@
       "olivierrimmel",
       "patomartin9",
       "salsadany57"
+    ],
+    "mv": [
+      "allonsy_france",
+      "frank3264465441",
+      "gautamainhp",
+      "mackensono35867",
+      "maxoouuuu91",
+      "pulsefrinfo"
     ],
     "mvhondius": [
       "al_fennec",
@@ -4124,6 +5333,267 @@
       "wokinette",
       "xpmedia69"
     ],
+    "myocardites": [
+      "agretdenis"
+    ],
+    "médias": [
+      "cevennes14",
+      "dantonq22",
+      "franmichalon",
+      "laurenceputih",
+      "le_web_journal",
+      "lespatriotes64",
+      "nopassnomask",
+      "stefane61669"
+    ],
+    "nasdas": [
+      "levirusduweb",
+      "mocroinblack",
+      "tapahtyna"
+    ],
+    "navire": [
+      "140cdesolitude",
+      "angelo_tino",
+      "arrinat",
+      "chassesetern",
+      "informationssf",
+      "webdo_tn"
+    ],
+    "nipah": [
+      "anticovidiano74",
+      "neveuxbertrand"
+    ],
+    "nofear": [
+      "soltangris2"
+    ],
+    "nonp": [
+      "alecraumer",
+      "invasion13"
+    ],
+    "oise": [
+      "fanmarine14"
+    ],
+    "oms": [
+      "24hpujadas",
+      "ad_vitam44_",
+      "africainav2",
+      "aileastick1",
+      "al24francais",
+      "al_cabro",
+      "alias_sebastien",
+      "alina9yrb",
+      "alternewsonline",
+      "altinoglualexa1",
+      "ameledebey",
+      "ansamedia237",
+      "antenne_509",
+      "antoineberetto_",
+      "antoinemor80",
+      "apa_news",
+      "apokrif1",
+      "arabi_breves",
+      "arrinat",
+      "ayamail41",
+      "benjitaloula34",
+      "bernis_eli93658",
+      "bounabuzz7",
+      "bouthillon",
+      "bruno2france",
+      "calamyjane",
+      "cevennes14",
+      "chenrydelapomme",
+      "christinahell",
+      "claudetan911",
+      "colasente",
+      "cris6043",
+      "cyberassist21",
+      "de_bevec",
+      "defimediainfo",
+      "desbrosseschan1",
+      "devencelo",
+      "domusignis",
+      "drgkyra",
+      "dringdringallo",
+      "elecreconquete",
+      "ellyjuneuk",
+      "emmapioupiou",
+      "ericfarfour",
+      "escalet83",
+      "espritia_news",
+      "eternos974",
+      "europ24",
+      "financialafrik",
+      "fineandrich",
+      "frank3264465441",
+      "gallusgalgq",
+      "gerardl50",
+      "gerstmansa",
+      "gregoryfiori",
+      "gregwalter85",
+      "griseba",
+      "gueuxgone",
+      "gxxgf2a9hfmmqw6",
+      "hantavirusactus",
+      "herstalle",
+      "heyoo68",
+      "hforstinger",
+      "iamlouay",
+      "icibeyrouthnews",
+      "informationssf",
+      "inst_actu",
+      "intellactuel",
+      "itsmeback_",
+      "j_de_saintsimon",
+      "jamesdrew196092",
+      "jc_dussse",
+      "jcperezcodex",
+      "jeanyvestarrade",
+      "jlpujo",
+      "jolvitalis",
+      "josephlunieoff",
+      "jphtwittes",
+      "jstm_mali",
+      "juju64990",
+      "kitttaaa11",
+      "kronikinsights",
+      "kulturadartvv",
+      "lafontainelili1",
+      "lafrancfort",
+      "lanceuri",
+      "laurenceputih",
+      "ledocnews",
+      "lematinpointma",
+      "lequotidien509",
+      "lespartisansfr",
+      "lespatriotes64",
+      "lezoomdz",
+      "linda964186505",
+      "lino_fcb",
+      "loryanesinger",
+      "luc1again",
+      "ludovictoro",
+      "magazinepj",
+      "maireinfo2",
+      "mamathassane",
+      "marchaljacques3",
+      "medi1news",
+      "medi1tvafrique",
+      "misssocksplease",
+      "nathanaell67",
+      "neokklas",
+      "olivier40121476",
+      "omarioofficiel",
+      "onjobspeed",
+      "onugeneve",
+      "paulnewmanfr",
+      "pdohen",
+      "phd2468",
+      "phiwebb",
+      "politik333",
+      "pourquoidocteur",
+      "poutaine",
+      "primeraplanaecu",
+      "psyhodelikus",
+      "pulsefrinfo",
+      "samagace7",
+      "sami24tv",
+      "sergueyb",
+      "small_reset",
+      "solitairedz54",
+      "stellaire_fr",
+      "taran_luimayme",
+      "teddymcardle",
+      "tg_antoi8",
+      "thalassa2008",
+      "thcastioni",
+      "thierryf91",
+      "tocsin_media",
+      "torreseryc",
+      "toyamazigh",
+      "unesdepresse",
+      "urvonur",
+      "verity_france",
+      "vetopatriote",
+      "virtualnotmx",
+      "voxiumx",
+      "x_particulier",
+      "xarius07",
+      "xpmedia69",
+      "yabiladi_fr",
+      "zewala3",
+      "zolaview_fr",
+      "zoomalgerie"
+    ],
+    "onnousprendpourdescons": [
+      "lanceuri",
+      "lothbrokeragna1",
+      "ludovine33",
+      "whambill13"
+    ],
+    "ormuz": [
+      "24hpujadas",
+      "ai1aix",
+      "alexis_cossette",
+      "bloingo",
+      "en_tongs",
+      "informationssf",
+      "lequotidien509",
+      "martel60",
+      "msihocine",
+      "tapahtyna",
+      "unevoixp"
+    ],
+    "orthohantavirus": [
+      "de_bevec",
+      "sautodidacte"
+    ],
+    "pandemie": [
+      "8enoit",
+      "__sphinx___",
+      "back2basics_pii",
+      "br_cryptoo",
+      "brumedofus",
+      "cin33000",
+      "defrecannes",
+      "elissamaiss",
+      "ericcoresky",
+      "fanmarine14",
+      "finallymehdi",
+      "gedlink333",
+      "gregwalter85",
+      "gustave213",
+      "hantatrackmap",
+      "juju64990",
+      "octva_",
+      "parisien1986",
+      "stellaire_fr",
+      "sylvies53929064",
+      "uso45",
+      "voxiumx"
+    ],
+    "pandémie": [
+      "achgutt",
+      "arabi_breves",
+      "bangintunesmon",
+      "betty_oups",
+      "chris91_76",
+      "chriscloitre",
+      "de_bevec",
+      "dominiq49230998",
+      "fabricehespel",
+      "icibeyrouthnews",
+      "intellactuel",
+      "lespatriotes64",
+      "loryanesinger",
+      "mpredictifs",
+      "quivoitsein",
+      "republicoftogo",
+      "samagace7",
+      "torreseryc"
+    ],
+    "pangolinbis": [
+      "invasion13"
+    ],
     "paris": [
       "actufr92",
       "actufr93",
@@ -4160,6 +5630,91 @@
       "weed1428982",
       "whaaaatelse"
     ],
+    "pascalpraudetvous": [
+      "europe1"
+    ],
+    "passagers": [
+      "arrinat",
+      "dantonq22",
+      "informationssf",
+      "maliteo63"
+    ],
+    "peste": [
+      "agretdenis",
+      "monsieurchat__"
+    ],
+    "pfizer": [
+      "aileastick1",
+      "b5z9h",
+      "b_sheeptruther",
+      "bruno2france",
+      "chlechevalier",
+      "cris6043",
+      "dominiq49230998",
+      "dr_housse_2",
+      "gabriel_draghi",
+      "gedlink333",
+      "jeanfremond1",
+      "octofarmer",
+      "realjoelgomes",
+      "royaliste30",
+      "salsadany57",
+      "soso2229022290",
+      "taradicale",
+      "tocsin_media",
+      "torreseryc",
+      "yreorraent"
+    ],
+    "pika": [
+      "acpt2010",
+      "ahmadabdulwaha1",
+      "ch_ristv_ee",
+      "ch_ukagam_er",
+      "cl_adowi_se",
+      "co_mfytum_ia",
+      "coupet541",
+      "cr_yptoewav_er",
+      "danar2112",
+      "danc4eva525",
+      "davidblount5",
+      "denmarknice00",
+      "devalife"
+    ],
+    "plandemie": [
+      "erwanfrebaultq",
+      "harmonycom9",
+      "planet211180",
+      "sophiesainttro1"
+    ],
+    "poupettekenza": [
+      "isgmcf1",
+      "levirusduweb",
+      "tapahtyna"
+    ],
+    "propagande": [
+      "_flgliumar",
+      "ayamail41",
+      "b5z9h",
+      "blancsmasques",
+      "cathypatagone",
+      "dringdringallo",
+      "fabien_royere",
+      "gachuquet",
+      "gdams70",
+      "guffin_mac",
+      "j_de_saintsimon",
+      "ludovine33",
+      "mes5929",
+      "milhpertuis2",
+      "philippe_dormoy",
+      "politiqart",
+      "soso2229022290",
+      "teddymcardle"
+    ],
+    "ps": [
+      "mimimatic",
+      "unixa_"
+    ],
     "psyop": [
       "cb_elvirebat",
       "ddv641",
@@ -4168,6 +5723,18 @@
       "lady_pill",
       "mes5929",
       "patrick_shan"
+    ],
+    "punchline": [
+      "cnews",
+      "jeanluclaurent7",
+      "katelle31201064",
+      "laurenceputih",
+      "npommeret",
+      "philippe2408",
+      "shelegshemech3",
+      "tribundanton",
+      "utopic92",
+      "xyz_8moii"
     ],
     "qag": [
       "assembleenat",
@@ -4178,6 +5745,21 @@
       "rdse_senat",
       "redditlfi",
       "senat"
+    ],
+    "quarantaine": [
+      "angelo_tino",
+      "de_bevec",
+      "fandevlad3",
+      "france24_fr",
+      "frfrontieres",
+      "jamesdrew196092",
+      "ldphilippe",
+      "lecriducitoyen",
+      "lematinpointma",
+      "presse83_fr",
+      "pulsefrinfo",
+      "torreseryc",
+      "tousvigilants"
     ],
     "quotidien": [
       "commentairesq",
@@ -4192,6 +5774,55 @@
       "serialoveuse",
       "topher8002",
       "unixa_"
+    ],
+    "radionova": [
+      "abdelkarim49",
+      "acbetuin",
+      "ahmadabdulwaha1",
+      "carolinefourest",
+      "cl_adowi_se",
+      "co_cosilv_iu",
+      "co_mfytum_ia",
+      "cr_yptobar_bq",
+      "cr_yptoewav_er",
+      "cr_yptohilto_ns",
+      "dalton_francis",
+      "danar2112",
+      "davidblount5",
+      "denmarknice00",
+      "dmaitos",
+      "donallphin1",
+      "dr_kevroach"
+    ],
+    "rats": [
+      "dadoubd",
+      "emmapioupiou",
+      "francetrisser",
+      "laurenceputih",
+      "mistermag00",
+      "mserguy61833",
+      "sergueyb",
+      "stellaire_fr",
+      "unevoixp",
+      "vers2045",
+      "xyz_8moii"
+    ],
+    "rdc": [
+      "afrikarabia",
+      "ambadrien",
+      "byobe_malenga",
+      "cabinetmbungani",
+      "ebalemozindo",
+      "francetrisser",
+      "kapend_mutomb",
+      "kpembwa",
+      "oms_afrique",
+      "rdcmonde_mag",
+      "stanysbujakera",
+      "wembi_steve"
+    ],
+    "reconquete": [
+      "lemaitremi74556"
     ],
     "rmc": [
       "i3ct3r",
@@ -4210,6 +5841,199 @@
       "unixa_",
       "voxiumx"
     ],
+    "rothschild": [
+      "forhalinton",
+      "jean_se67"
+    ],
+    "rtlmatin": [
+      "rtlfrance",
+      "tribundanton"
+    ],
+    "santé": [
+      "140cdesolitude",
+      "24hpujadas",
+      "abidjan_net",
+      "afautrat",
+      "africa_univers",
+      "africainav2",
+      "al_cabro",
+      "al_fennec",
+      "alina9yrb",
+      "allonsy_france",
+      "alternewsonline",
+      "andre_hatte",
+      "ansamedia237",
+      "antoinemor80",
+      "assorvpb",
+      "b42_ath",
+      "benjitaloula34",
+      "blogdesr3000",
+      "bordeauxgazette",
+      "bounabuzz7",
+      "bruce57290",
+      "cambe_micheline",
+      "cardin42",
+      "cdanslair",
+      "cdesplaces",
+      "cevennes14",
+      "chaesang99",
+      "christinepp27",
+      "chummyy01",
+      "claudem54644142",
+      "consoglobe",
+      "datphamtha91354",
+      "de_bevec",
+      "de_la8183",
+      "defimediainfo",
+      "deprazf",
+      "dirob85",
+      "docekl",
+      "dyscerebrum_cat",
+      "ebenyaakov",
+      "emachares19060",
+      "espritia_news",
+      "europ24",
+      "f3franchecomte",
+      "f_honeywellcom",
+      "fandevlad3",
+      "fineandrich",
+      "fleursdecactus7",
+      "flywithme124775",
+      "fouragebernard",
+      "franceafric_",
+      "francenews24",
+      "franmichalon",
+      "fredvalletoux",
+      "frfrontieres",
+      "ftkmmnl1",
+      "gallieni_57",
+      "gautamainhp",
+      "geovisiosn",
+      "gitblamedfr",
+      "gptvoff",
+      "gregoryfiori",
+      "gribouille_1452",
+      "guffin_mac",
+      "hantatrackmap",
+      "hcasamance",
+      "helixdustfr",
+      "humetcit",
+      "ia1_info",
+      "info241_",
+      "info_paris_idf",
+      "infomediaire",
+      "informationssf",
+      "jamesdrew196092",
+      "jclvallee1",
+      "jhalfort",
+      "jo_fitou_ssi",
+      "joopafrica",
+      "juju64990",
+      "julianmattei",
+      "kakariki45",
+      "katdelyon",
+      "kronikinsights",
+      "kulturadartvv",
+      "lachambrebe",
+      "lady_pill",
+      "lafrancfort",
+      "laurent_daniel",
+      "ldphilippe",
+      "ledevoir",
+      "ledocnews",
+      "lematinpointma",
+      "lenamaddie18",
+      "lequotidien509",
+      "lescoop24",
+      "lespatriotes64",
+      "lespatriotes_77",
+      "lezoomdz",
+      "linda964186505",
+      "lindependant",
+      "lino_fcb",
+      "lobservateur_x",
+      "ludovictoro",
+      "luluapso",
+      "marcmangin",
+      "marcpayet75",
+      "maria7776367581",
+      "marieciotti91",
+      "medi1news",
+      "medi1tvafrique",
+      "mistermag00",
+      "morandiniblog",
+      "nugbepole",
+      "numerama",
+      "olidarkside",
+      "ondikwaofficiel",
+      "onews1eretv",
+      "papierspresse",
+      "peck84200",
+      "pmc847",
+      "politik333",
+      "porteparolemeae",
+      "pourquoidocteur",
+      "prefet95",
+      "psyhodelikus",
+      "pulsefrinfo",
+      "rdcmonde_mag",
+      "reservoirapps",
+      "ricardominute",
+      "robotof_1er",
+      "samrqem",
+      "sdjagouti",
+      "senegal24news",
+      "serge_muller24",
+      "soleillibrefr",
+      "tkushiyama",
+      "tribunedelyon",
+      "tsvmag",
+      "var_actu",
+      "verdallejoel",
+      "vermarion94",
+      "vertex_review",
+      "vkempathy",
+      "voxiumx",
+      "yabiladi_fr",
+      "zeranecnerden"
+    ],
+    "santépublique": [
+      "achgutt",
+      "africa_univers",
+      "al_fennec",
+      "ansamedia237",
+      "antoinemor80",
+      "apresj20",
+      "coldcasefrance",
+      "dagonewsreader",
+      "damassterlingdj",
+      "defimediainfo",
+      "doclamarre",
+      "dr_victormanda",
+      "ericbillyfr",
+      "eternos974",
+      "fabricehespel",
+      "franceafric_",
+      "griseba",
+      "hantavirusactus",
+      "henockpelenda",
+      "intellactuel",
+      "jorf_legi",
+      "kapend_mutomb",
+      "le_sml",
+      "lematinpointma",
+      "leparisienmatin",
+      "lespatriotes64",
+      "ludovictoro",
+      "magazinepj",
+      "maireinfo2",
+      "neokklas",
+      "politik333",
+      "tg_antoi8",
+      "tousvigilants",
+      "voxiumx",
+      "wt_trending"
+    ],
     "scam": [
       "claihel1",
       "claudetan911",
@@ -4218,6 +6042,78 @@
       "lilou150777",
       "soltangris2",
       "vangoghinherb"
+    ],
+    "sionistes": [
+      "isgmcf1"
+    ],
+    "soignantssuspendus": [
+      "salsadany57"
+    ],
+    "stopscam": [
+      "jo_andrs",
+      "louisfouch3",
+      "quiquine5"
+    ],
+    "suprémaciste": [
+      "infolovol"
+    ],
+    "surleterrain": [
+      "franceinfo"
+    ],
+    "surmulots": [
+      "catou_25",
+      "eddyplut",
+      "laurenceputih",
+      "torreseryc"
+    ],
+    "tbt9": [
+      "6pattparisi",
+      "__aliceopaysdes",
+      "altesse64",
+      "asystphlippe",
+      "bluesnake2433",
+      "crudimusic",
+      "cyrilhanouna",
+      "dadoubd",
+      "dgfmarie8000",
+      "electeuronlibre",
+      "foralonglife",
+      "ilove3m",
+      "is_zabelle",
+      "mattwitty88",
+      "mistermag00",
+      "niko_officiel",
+      "pipapipopu",
+      "poire10005",
+      "sophiecannelle",
+      "tapahtyna",
+      "tbt9_w9",
+      "temiscaming62",
+      "thierryf91",
+      "tribundanton",
+      "vertig06",
+      "w9",
+      "willshakespire",
+      "wilsonxonsliw",
+      "x_mandalor",
+      "yentl58"
+    ],
+    "tenerife": [
+      "benaraktrip",
+      "elecreconquete",
+      "francenews24",
+      "gregoryfiori",
+      "inst_actu",
+      "lagostelevision",
+      "lequotidien509",
+      "lyonsuper",
+      "medi1tvafrique",
+      "onugeneve",
+      "pulsefrinfo",
+      "romainchvt",
+      "torreseryc",
+      "unesdepresse",
+      "westernculturel"
     ],
     "tf1": [
       "benc_85",
@@ -4229,6 +6125,10 @@
       "martinv52936114",
       "regarddefrance7",
       "sophiecannelle"
+    ],
+    "tf1info": [
+      "jeanlucmaurice",
+      "sylvinfo"
     ],
     "tiktok": [
       "antoniopuccine2",
@@ -4251,6 +6151,157 @@
       "petois92",
       "thajoka2007"
     ],
+    "toutestpolitique": [
+      "franceinfo"
+    ],
+    "transmission": [
+      "augrillvapeur",
+      "christinahell",
+      "informationssf",
+      "pourquoidocteur",
+      "torreseryc",
+      "tousvigilants",
+      "zeranecnerden"
+    ],
+    "tropheesunfp": [
+      "acbetuin",
+      "ahmadabdulwaha1",
+      "ch_ristv_ee",
+      "ch_ukagam_er",
+      "cl_adowi_se",
+      "cl_stromxwe_ll",
+      "co_cosilv_iu",
+      "co_mfytum_ia",
+      "coupet541",
+      "cr_yptobar_bq",
+      "cr_yptoewav_er",
+      "dalton_francis",
+      "danar2112",
+      "denmarknice00",
+      "dmaitos",
+      "donallphin1",
+      "dr_kevroach",
+      "nosw343746",
+      "willshakespire"
+    ],
+    "trump": [
+      "24hpujadas",
+      "al_cabro",
+      "antoineah2020",
+      "bloingo",
+      "canardenchaine",
+      "castelli_wook",
+      "cdanslair",
+      "claytoonz",
+      "countdown2027",
+      "frbackbone",
+      "informationssf",
+      "infoveryfiable",
+      "jtourreille",
+      "kronikinsights",
+      "lacomt",
+      "lafrancfort",
+      "le_web_journal",
+      "magliber3",
+      "mickaellaffont",
+      "misssocksplease",
+      "mj_blackburn_",
+      "mr_yaya_du_1018",
+      "politik333",
+      "poubellelounet2",
+      "saliharazgui",
+      "tapahtyna",
+      "yasin_the_bison"
+    ],
+    "udr": [
+      "lemaitremi74556"
+    ],
+    "ukraine": [
+      "alexis_cossette",
+      "aloulo51",
+      "annedurgueil",
+      "chris91_76",
+      "fruskof",
+      "pulsefrinfo",
+      "runatonews",
+      "yasin_the_bison"
+    ],
+    "unfp": [
+      "acpt2010",
+      "ahmadabdulwaha1",
+      "ch_ristv_ee",
+      "ch_ukagam_er",
+      "cl_adowi_se",
+      "co_mfytum_ia",
+      "coupet541",
+      "cr_yptoewav_er",
+      "danar2112",
+      "danc4eva525",
+      "davidblount5",
+      "denmarknice00",
+      "devalife"
+    ],
+    "usa": [
+      "epersy",
+      "fandevlad3",
+      "francenews24",
+      "g_caprotti",
+      "gautamainhp",
+      "infolovol",
+      "jamesdrew196092",
+      "jcperezcodex",
+      "kronikinsights",
+      "le_web_journal",
+      "medi1tvafrique",
+      "misssocksplease",
+      "mj_blackburn_",
+      "mondesousilence",
+      "olivier40121476",
+      "poubellelounet2",
+      "pulsefrinfo",
+      "sapiens3_0",
+      "sioupatkonnen",
+      "vers2045"
+    ],
+    "vaccin": [
+      "adamdupon19",
+      "amirouchea24168",
+      "anvmoor",
+      "b5z9h",
+      "bernardmalherbe",
+      "chenrydelapomme",
+      "cyberassist21",
+      "defrecannes",
+      "dr_housse_2",
+      "drgkyra",
+      "dringdringallo",
+      "francetrisser",
+      "g_ontrading",
+      "gabriel_draghi",
+      "i3ct3r",
+      "infoalliance",
+      "lanceuri",
+      "laurence1119436",
+      "laurenceputih",
+      "le_web_journal",
+      "lespatriotes64",
+      "mmc_zen",
+      "newattitude7",
+      "numerama",
+      "pokhara8",
+      "soso2229022290",
+      "tatasuzanne0",
+      "torreseryc",
+      "tousvigilants",
+      "valentin_c38252",
+      "valexinsky",
+      "yallacan25",
+      "yamaniactualite"
+    ],
+    "vaccine": [
+      "bendezone9",
+      "loryanesinger"
+    ],
     "vaccins": [
       "62patriotes",
       "agretdenis",
@@ -4271,42 +6322,360 @@
       "pythagore327_r",
       "samagace7",
       "torreseryc"
+    ],
+    "vascularites": [
+      "agretdenis"
+    ],
+    "veran": [
+      "aileastick1",
+      "ellyjuneuk",
+      "laurenceputih",
+      "papypaul2014"
+    ],
+    "virus": [
+      "24hpujadas",
+      "afautrat",
+      "africa_univers",
+      "agretdenis",
+      "al_cabro",
+      "angelo_tino",
+      "arnopadawan",
+      "aurosint",
+      "b42_ath",
+      "badetthierry",
+      "bamos7moi",
+      "benjitaloula34",
+      "boulangercoline",
+      "cardin42",
+      "chanasitjonas",
+      "chidoricha",
+      "chriscloitre",
+      "christelek2",
+      "consoglobe",
+      "dadoubd",
+      "dalidabarbarell",
+      "diego2nimes",
+      "dirob85",
+      "docekl",
+      "ebenyaakov",
+      "elissamaiss",
+      "emachares19060",
+      "enpaknews",
+      "f_honeywellcom",
+      "f_x_rivas",
+      "fandevlad3",
+      "fatihsong",
+      "fouragebernard",
+      "france24_en",
+      "francenews24",
+      "francetrisser",
+      "francevraie2027",
+      "frank3264465441",
+      "frederictiber",
+      "frfrontieres",
+      "ftkmmnl1",
+      "gerstmansa",
+      "gribouille_1452",
+      "hantatrackmap",
+      "hantavirusfr",
+      "helixdustfr",
+      "heyoo68",
+      "ia1_info",
+      "icibeyrouthnews",
+      "idj_infodujour",
+      "info_paris_idf",
+      "infolovol",
+      "isabellechivilo",
+      "jenny14800",
+      "johnmar65708994",
+      "jphtwittes",
+      "jpsolari",
+      "juju64990",
+      "kissmybull2",
+      "lady_pill",
+      "laurence1119436",
+      "laurent_daniel",
+      "le_web_journal",
+      "ledocnews",
+      "lematinpointma",
+      "lenamaddie18",
+      "lespatriotes64",
+      "lgalyart",
+      "lobservateur_x",
+      "loryanesinger",
+      "luluapso",
+      "medi1news",
+      "medi1tvafrique",
+      "media_normandie",
+      "medularisfr",
+      "michaelkael14",
+      "misaluaye",
+      "morandiniblog",
+      "newcryptothe",
+      "nowaktombe",
+      "numerama",
+      "omsouf",
+      "orgasmir",
+      "orphee45",
+      "papierspresse",
+      "pokhara8",
+      "politik333",
+      "pourquoidocteur",
+      "pressecitron",
+      "publicsenat",
+      "pulsefrinfo",
+      "republicoftogo",
+      "rexofbabylone",
+      "sashaelbaz",
+      "sioupatkonnen",
+      "sosouistitii",
+      "stellaire_fr",
+      "tauriacc",
+      "thierryf91",
+      "torreseryc",
+      "tousvigilants",
+      "tribunedelyon",
+      "unesdepresse",
+      "vers2045",
+      "vertex_review",
+      "vkempathy",
+      "voxiumx",
+      "yabiladi_fr",
+      "zoomalgerie"
+    ],
+    "wha79": [
+      "drtedros",
+      "franceonugeneve",
+      "gillescote36422",
+      "onugeneve",
+      "stephanie_rist"
+    ],
+    "who": [
+      "al_cabro",
+      "chachoulgate",
+      "hafizahabertv",
+      "jcperezcodex",
+      "lagostelevision",
+      "lino_fcb",
+      "newcryptothe",
+      "planet211180",
+      "rbclouston",
+      "soleillibrefr",
+      "thesecretvoice4",
+      "unesdepresse"
+    ],
+    "yassouk": [
+      "isgmcf1"
+    ],
+    "épidémie": [
+      "24hpujadas",
+      "ahramhebdo",
+      "bertrandredone",
+      "christinahell",
+      "daniel__baal",
+      "defimediainfo",
+      "ericfarfour",
+      "france24_fr",
+      "frfrontieres",
+      "jamesdrew196092",
+      "jpsolari",
+      "lematinpointma",
+      "maria1459932010",
+      "medi1tvafrique",
+      "morandiniblog",
+      "philoux_99",
+      "pourquoidocteur",
+      "pulsefrinfo",
+      "thierryf91",
+      "torreseryc",
+      "tousvigilants",
+      "var_actu",
+      "xxfoofighterxx",
+      "zeranecnerden"
     ]
   },
   "tag_n_accounts": {
+    "100politique": 2,
+    "24hpujadas": 3,
+    "606": 1,
+    "adegager": 1,
+    "afrique": 27,
+    "afropages": 1,
+    "agenda2030": 4,
+    "allezbienvousfairefoutre": 1,
     "antivax": 10,
+    "argentine": 17,
+    "arnm": 3,
+    "ayezconfiance": 1,
     "bateau": 8,
+    "benoîthamon": 16,
+    "bfm": 13,
     "bfmtv": 36,
+    "bichat": 9,
     "bigpharma": 17,
+    "billgates": 21,
+    "bordeaux": 19,
     "canal16": 3,
+    "canaries": 26,
+    "carburant": 3,
+    "cavous": 4,
+    "cesttoutelaquestion": 1,
+    "charlie": 23,
+    "christinekellyetvous": 1,
     "cnews": 59,
+    "complotiste": 7,
     "confinement": 110,
+    "conspi": 1,
+    "contagion": 2,
+    "contamination": 2,
+    "coronavirus": 18,
+    "corruption": 2,
+    "covi19": 3,
     "covid": 239,
+    "covid19": 65,
+    "crimecontrelhumanité": 1,
+    "croisiere": 10,
+    "croisière": 24,
+    "croisières": 1,
+    "detroitormuz": 1,
+    "diaspora": 1,
+    "directan": 6,
+    "dlf": 1,
+    "décès": 2,
+    "désirédoué": 16,
+    "e1matin": 1,
     "ebola": 70,
+    "economiste": 1,
+    "epstein": 20,
+    "epsteinfiles": 7,
+    "espritia": 1,
     "europe1": 3,
+    "europe1soir": 1,
+    "facealinfo": 12,
+    "fauci": 6,
     "foutagedegueule": 3,
+    "foutriquet": 1,
+    "france": 91,
     "france2": 4,
     "franceinfo": 19,
+    "français": 8,
+    "gates": 7,
+    "gavi": 3,
+    "genesio": 13,
     "ggrmc": 22,
+    "gof": 2,
+    "grandmatin": 2,
+    "grippe": 7,
+    "h1n1": 3,
     "hantavirus": 2580,
+    "hantavirüs": 203,
     "hdpros": 44,
     "hdpros2": 28,
+    "hdproswe": 3,
+    "hihan": 1,
     "hondius": 36,
+    "idl": 1,
+    "iran": 19,
+    "iranwar": 7,
+    "israël": 6,
+    "ituri": 2,
+    "jt20h": 3,
+    "lagrandeinterview": 2,
+    "lakers": 17,
+    "lamatinale": 6,
     "lci": 33,
+    "le23hweekend": 1,
+    "lecornu": 18,
+    "lepouretlecontre": 1,
+    "lequotidien509": 1,
+    "lfi": 12,
+    "macron": 45,
+    "macronnousprendpourdescons": 2,
+    "maladie": 8,
+    "mammarenavirus": 1,
+    "mapr": 22,
+    "melenchon": 8,
+    "methalie": 16,
+    "midinews": 5,
+    "moderna": 20,
     "monkeypox": 7,
+    "mv": 6,
     "mvhondius": 49,
+    "myocardites": 1,
+    "médias": 8,
+    "nasdas": 3,
+    "navire": 6,
+    "nipah": 2,
+    "nofear": 1,
+    "nonp": 2,
+    "oise": 1,
+    "oms": 149,
+    "onnousprendpourdescons": 4,
+    "ormuz": 11,
+    "orthohantavirus": 2,
+    "pandemie": 22,
+    "pandémie": 18,
+    "pangolinbis": 1,
     "paris": 34,
+    "pascalpraudetvous": 1,
+    "passagers": 4,
+    "peste": 2,
+    "pfizer": 20,
+    "pika": 13,
+    "plandemie": 4,
+    "poupettekenza": 3,
+    "propagande": 18,
+    "ps": 2,
     "psyop": 7,
+    "punchline": 10,
     "qag": 8,
+    "quarantaine": 13,
     "quotidien": 12,
+    "radionova": 17,
+    "rats": 11,
+    "rdc": 12,
+    "reconquete": 1,
     "rmc": 3,
     "rn": 10,
+    "rothschild": 2,
+    "rtlmatin": 2,
+    "santé": 146,
+    "santépublique": 35,
     "scam": 7,
+    "sionistes": 1,
+    "soignantssuspendus": 1,
+    "stopscam": 3,
+    "suprémaciste": 1,
+    "surleterrain": 1,
+    "surmulots": 4,
+    "tbt9": 30,
+    "tenerife": 15,
     "tf1": 9,
+    "tf1info": 2,
     "tiktok": 19,
-    "vaccins": 19
+    "toutestpolitique": 1,
+    "transmission": 7,
+    "tropheesunfp": 19,
+    "trump": 27,
+    "udr": 1,
+    "ukraine": 8,
+    "unfp": 13,
+    "usa": 20,
+    "vaccin": 33,
+    "vaccine": 2,
+    "vaccins": 19,
+    "vascularites": 1,
+    "veran": 4,
+    "virus": 109,
+    "wha79": 5,
+    "who": 12,
+    "yassouk": 1,
+    "épidémie": 24
   },
   "tag_communities": {
+    "afropages": [
+      0
+    ],
     "antivax": [
       9
     ],
@@ -4320,7 +6689,13 @@
     "bigpharma": [
       5
     ],
+    "billgates": [
+      5
+    ],
     "canal16": [
+      9
+    ],
+    "cavous": [
       9
     ],
     "cnews": [
@@ -4329,11 +6704,20 @@
     "confinement": [
       9
     ],
+    "coronavirus": [
+      5
+    ],
     "covid": [
       0,
       5
     ],
+    "crimecontrelhumanite": [
+      9
+    ],
     "ebola": [
+      5
+    ],
+    "epstein": [
       5
     ],
     "europe1": [
@@ -4365,8 +6749,15 @@
     "hondius": [
       0
     ],
+    "jt20h": [
+      9
+    ],
     "lci": [
-      0
+      0,
+      4
+    ],
+    "macron": [
+      4
     ],
     "monkeypox": [
       5
@@ -4374,8 +6765,20 @@
     "mvhondius": [
       0
     ],
+    "oms": [
+      0
+    ],
+    "onnousprendpourdescons": [
+      4
+    ],
     "paris": [
       8
+    ],
+    "pfizer": [
+      4
+    ],
+    "plandemie": [
+      5
     ],
     "psyop": [
       5
@@ -4395,6 +6798,9 @@
     "scam": [
       5
     ],
+    "tbt9": [
+      9
+    ],
     "tf1": [
       4
     ],
@@ -4404,5 +6810,4453 @@
     "vaccins": [
       5
     ]
+  },
+  "tag_cooccur": {
+    "antivax": [
+      {
+        "tag": "hantavirus",
+        "n": 18
+      },
+      {
+        "tag": "complotiste",
+        "n": 10
+      },
+      {
+        "tag": "economiste",
+        "n": 10
+      },
+      {
+        "tag": "suprémaciste",
+        "n": 10
+      },
+      {
+        "tag": "usa",
+        "n": 10
+      },
+      {
+        "tag": "virus",
+        "n": 10
+      }
+    ],
+    "bateau": [
+      {
+        "tag": "hantavirus",
+        "n": 21
+      },
+      {
+        "tag": "croisières",
+        "n": 11
+      },
+      {
+        "tag": "croisiere",
+        "n": 4
+      },
+      {
+        "tag": "épidémie",
+        "n": 4
+      },
+      {
+        "tag": "décès",
+        "n": 3
+      },
+      {
+        "tag": "croisière",
+        "n": 3
+      },
+      {
+        "tag": "hondius",
+        "n": 2
+      },
+      {
+        "tag": "transmission",
+        "n": 2
+      },
+      {
+        "tag": "maladie",
+        "n": 2
+      },
+      {
+        "tag": "virus",
+        "n": 2
+      }
+    ],
+    "bfmtv": [
+      {
+        "tag": "lci",
+        "n": 51
+      },
+      {
+        "tag": "cnews",
+        "n": 46
+      },
+      {
+        "tag": "hantavirus",
+        "n": 36
+      },
+      {
+        "tag": "rmc",
+        "n": 22
+      },
+      {
+        "tag": "tf1",
+        "n": 22
+      },
+      {
+        "tag": "dlf",
+        "n": 20
+      },
+      {
+        "tag": "france2",
+        "n": 20
+      },
+      {
+        "tag": "idl",
+        "n": 20
+      },
+      {
+        "tag": "reconquete",
+        "n": 20
+      },
+      {
+        "tag": "rn",
+        "n": 20
+      },
+      {
+        "tag": "udr",
+        "n": 20
+      },
+      {
+        "tag": "franceinfo",
+        "n": 19
+      },
+      {
+        "tag": "confinement",
+        "n": 7
+      },
+      {
+        "tag": "ggrmc",
+        "n": 4
+      },
+      {
+        "tag": "bordeaux",
+        "n": 4
+      }
+    ],
+    "bigpharma": [
+      {
+        "tag": "hantavirus",
+        "n": 16
+      },
+      {
+        "tag": "pfizer",
+        "n": 3
+      },
+      {
+        "tag": "oms",
+        "n": 3
+      },
+      {
+        "tag": "covid",
+        "n": 3
+      },
+      {
+        "tag": "veran",
+        "n": 2
+      },
+      {
+        "tag": "corruption",
+        "n": 2
+      }
+    ],
+    "billgates": [
+      {
+        "tag": "hantavirus",
+        "n": 21
+      },
+      {
+        "tag": "oms",
+        "n": 11
+      },
+      {
+        "tag": "hantavirüs",
+        "n": 5
+      },
+      {
+        "tag": "gavi",
+        "n": 4
+      },
+      {
+        "tag": "vaccins",
+        "n": 3
+      },
+      {
+        "tag": "epstein",
+        "n": 3
+      },
+      {
+        "tag": "pfizer",
+        "n": 3
+      },
+      {
+        "tag": "moderna",
+        "n": 3
+      },
+      {
+        "tag": "virus",
+        "n": 3
+      },
+      {
+        "tag": "covi19",
+        "n": 3
+      },
+      {
+        "tag": "pandémie",
+        "n": 2
+      },
+      {
+        "tag": "confinement",
+        "n": 2
+      },
+      {
+        "tag": "vaccin",
+        "n": 2
+      },
+      {
+        "tag": "fauci",
+        "n": 2
+      },
+      {
+        "tag": "who",
+        "n": 2
+      }
+    ],
+    "canal16": [
+      {
+        "tag": "surleterrain",
+        "n": 44
+      },
+      {
+        "tag": "toutestpolitique",
+        "n": 43
+      },
+      {
+        "tag": "cesttoutelaquestion",
+        "n": 10
+      },
+      {
+        "tag": "lepouretlecontre",
+        "n": 6
+      },
+      {
+        "tag": "hantavirus",
+        "n": 3
+      },
+      {
+        "tag": "le23hweekend",
+        "n": 2
+      },
+      {
+        "tag": "franceinfo",
+        "n": 2
+      },
+      {
+        "tag": "santé",
+        "n": 2
+      }
+    ],
+    "cavous": [
+      {
+        "tag": "hantavirus",
+        "n": 6
+      },
+      {
+        "tag": "covid",
+        "n": 4
+      },
+      {
+        "tag": "directan",
+        "n": 4
+      },
+      {
+        "tag": "ggrmc",
+        "n": 3
+      },
+      {
+        "tag": "grandmatin",
+        "n": 3
+      },
+      {
+        "tag": "punchline",
+        "n": 3
+      },
+      {
+        "tag": "100politique",
+        "n": 2
+      },
+      {
+        "tag": "e1matin",
+        "n": 2
+      },
+      {
+        "tag": "hdpros",
+        "n": 2
+      },
+      {
+        "tag": "lamatinale",
+        "n": 2
+      },
+      {
+        "tag": "midinews",
+        "n": 2
+      },
+      {
+        "tag": "rtlmatin",
+        "n": 2
+      }
+    ],
+    "cnews": [
+      {
+        "tag": "hantavirus",
+        "n": 56
+      },
+      {
+        "tag": "bfmtv",
+        "n": 46
+      },
+      {
+        "tag": "lci",
+        "n": 44
+      },
+      {
+        "tag": "rmc",
+        "n": 22
+      },
+      {
+        "tag": "tf1",
+        "n": 22
+      },
+      {
+        "tag": "france2",
+        "n": 21
+      },
+      {
+        "tag": "dlf",
+        "n": 20
+      },
+      {
+        "tag": "idl",
+        "n": 20
+      },
+      {
+        "tag": "reconquete",
+        "n": 20
+      },
+      {
+        "tag": "rn",
+        "n": 20
+      },
+      {
+        "tag": "udr",
+        "n": 20
+      },
+      {
+        "tag": "franceinfo",
+        "n": 11
+      },
+      {
+        "tag": "hdpros",
+        "n": 9
+      },
+      {
+        "tag": "confinement",
+        "n": 8
+      },
+      {
+        "tag": "bfm",
+        "n": 5
+      }
+    ],
+    "confinement": [
+      {
+        "tag": "hantavirus",
+        "n": 268
+      },
+      {
+        "tag": "covid",
+        "n": 32
+      },
+      {
+        "tag": "virus",
+        "n": 16
+      },
+      {
+        "tag": "france",
+        "n": 16
+      },
+      {
+        "tag": "charlie",
+        "n": 13
+      },
+      {
+        "tag": "genesio",
+        "n": 13
+      },
+      {
+        "tag": "pika",
+        "n": 13
+      },
+      {
+        "tag": "unfp",
+        "n": 13
+      },
+      {
+        "tag": "hantavirüs",
+        "n": 12
+      },
+      {
+        "tag": "oms",
+        "n": 12
+      },
+      {
+        "tag": "cnews",
+        "n": 8
+      },
+      {
+        "tag": "vaccin",
+        "n": 7
+      },
+      {
+        "tag": "bfmtv",
+        "n": 7
+      },
+      {
+        "tag": "pandemie",
+        "n": 6
+      },
+      {
+        "tag": "contamination",
+        "n": 5
+      }
+    ],
+    "coronavirus": [
+      {
+        "tag": "hantavirus",
+        "n": 23
+      },
+      {
+        "tag": "covid",
+        "n": 9
+      },
+      {
+        "tag": "ebola",
+        "n": 4
+      },
+      {
+        "tag": "h1n1",
+        "n": 3
+      },
+      {
+        "tag": "confinement",
+        "n": 2
+      },
+      {
+        "tag": "hantavirüs",
+        "n": 2
+      },
+      {
+        "tag": "oms",
+        "n": 2
+      },
+      {
+        "tag": "pfizer",
+        "n": 2
+      },
+      {
+        "tag": "epsteinfiles",
+        "n": 2
+      },
+      {
+        "tag": "scam",
+        "n": 2
+      },
+      {
+        "tag": "virus",
+        "n": 2
+      },
+      {
+        "tag": "covid19",
+        "n": 2
+      }
+    ],
+    "covid": [
+      {
+        "tag": "hantavirus",
+        "n": 320
+      },
+      {
+        "tag": "confinement",
+        "n": 32
+      },
+      {
+        "tag": "charlie",
+        "n": 32
+      },
+      {
+        "tag": "hantavirüs",
+        "n": 19
+      },
+      {
+        "tag": "mapr",
+        "n": 18
+      },
+      {
+        "tag": "tropheesunfp",
+        "n": 18
+      },
+      {
+        "tag": "afrique",
+        "n": 18
+      },
+      {
+        "tag": "oms",
+        "n": 17
+      },
+      {
+        "tag": "lakers",
+        "n": 17
+      },
+      {
+        "tag": "benoîthamon",
+        "n": 16
+      },
+      {
+        "tag": "désirédoué",
+        "n": 16
+      },
+      {
+        "tag": "methalie",
+        "n": 16
+      },
+      {
+        "tag": "radionova",
+        "n": 16
+      },
+      {
+        "tag": "genesio",
+        "n": 13
+      },
+      {
+        "tag": "pika",
+        "n": 13
+      }
+    ],
+    "ebola": [
+      {
+        "tag": "hantavirus",
+        "n": 73
+      },
+      {
+        "tag": "covid",
+        "n": 6
+      },
+      {
+        "tag": "oms",
+        "n": 5
+      },
+      {
+        "tag": "wha79",
+        "n": 5
+      },
+      {
+        "tag": "hantavirüs",
+        "n": 4
+      },
+      {
+        "tag": "rdc",
+        "n": 4
+      },
+      {
+        "tag": "coronavirus",
+        "n": 4
+      },
+      {
+        "tag": "conspi",
+        "n": 3
+      },
+      {
+        "tag": "virus",
+        "n": 3
+      },
+      {
+        "tag": "tbt9",
+        "n": 2
+      },
+      {
+        "tag": "afrique",
+        "n": 2
+      },
+      {
+        "tag": "ituri",
+        "n": 2
+      },
+      {
+        "tag": "mammarenavirus",
+        "n": 2
+      },
+      {
+        "tag": "orthohantavirus",
+        "n": 2
+      },
+      {
+        "tag": "nipah",
+        "n": 2
+      }
+    ],
+    "epstein": [
+      {
+        "tag": "hantavirus",
+        "n": 21
+      },
+      {
+        "tag": "covid",
+        "n": 4
+      },
+      {
+        "tag": "gates",
+        "n": 3
+      },
+      {
+        "tag": "billgates",
+        "n": 3
+      },
+      {
+        "tag": "vaccine",
+        "n": 3
+      },
+      {
+        "tag": "iran",
+        "n": 2
+      },
+      {
+        "tag": "ukraine",
+        "n": 2
+      },
+      {
+        "tag": "rothschild",
+        "n": 2
+      },
+      {
+        "tag": "carburant",
+        "n": 2
+      }
+    ],
+    "europe1": [
+      {
+        "tag": "pascalpraudetvous",
+        "n": 17
+      },
+      {
+        "tag": "hdpros",
+        "n": 13
+      },
+      {
+        "tag": "europe1soir",
+        "n": 12
+      },
+      {
+        "tag": "christinekellyetvous",
+        "n": 4
+      },
+      {
+        "tag": "lagrandeinterview",
+        "n": 3
+      }
+    ],
+    "foutagedegueule": [
+      {
+        "tag": "hantavirus",
+        "n": 23
+      },
+      {
+        "tag": "allezbienvousfairefoutre",
+        "n": 8
+      },
+      {
+        "tag": "adegager",
+        "n": 3
+      },
+      {
+        "tag": "macronnousprendpourdescons",
+        "n": 2
+      }
+    ],
+    "france2": [
+      {
+        "tag": "tf1",
+        "n": 22
+      },
+      {
+        "tag": "cnews",
+        "n": 21
+      },
+      {
+        "tag": "lci",
+        "n": 21
+      },
+      {
+        "tag": "bfmtv",
+        "n": 20
+      },
+      {
+        "tag": "dlf",
+        "n": 20
+      },
+      {
+        "tag": "idl",
+        "n": 20
+      },
+      {
+        "tag": "reconquete",
+        "n": 20
+      },
+      {
+        "tag": "rmc",
+        "n": 20
+      },
+      {
+        "tag": "rn",
+        "n": 20
+      },
+      {
+        "tag": "udr",
+        "n": 20
+      },
+      {
+        "tag": "hantavirus",
+        "n": 2
+      }
+    ],
+    "franceinfo": [
+      {
+        "tag": "hantavirus",
+        "n": 22
+      },
+      {
+        "tag": "lci",
+        "n": 21
+      },
+      {
+        "tag": "bfmtv",
+        "n": 19
+      },
+      {
+        "tag": "cnews",
+        "n": 11
+      },
+      {
+        "tag": "tf1info",
+        "n": 3
+      },
+      {
+        "tag": "canal16",
+        "n": 2
+      },
+      {
+        "tag": "ggrmc",
+        "n": 2
+      },
+      {
+        "tag": "rmc",
+        "n": 2
+      }
+    ],
+    "ggrmc": [
+      {
+        "tag": "hantavirus",
+        "n": 40
+      },
+      {
+        "tag": "hdpros",
+        "n": 23
+      },
+      {
+        "tag": "covid19",
+        "n": 13
+      },
+      {
+        "tag": "facealinfo",
+        "n": 10
+      },
+      {
+        "tag": "médias",
+        "n": 6
+      },
+      {
+        "tag": "hdproswe",
+        "n": 6
+      },
+      {
+        "tag": "covid",
+        "n": 6
+      },
+      {
+        "tag": "directan",
+        "n": 5
+      },
+      {
+        "tag": "grandmatin",
+        "n": 5
+      },
+      {
+        "tag": "confinement",
+        "n": 4
+      },
+      {
+        "tag": "100politique",
+        "n": 4
+      },
+      {
+        "tag": "e1matin",
+        "n": 4
+      },
+      {
+        "tag": "lamatinale",
+        "n": 4
+      },
+      {
+        "tag": "rtlmatin",
+        "n": 4
+      },
+      {
+        "tag": "bfmtv",
+        "n": 4
+      }
+    ],
+    "hantavirus": [
+      {
+        "tag": "covid",
+        "n": 320
+      },
+      {
+        "tag": "confinement",
+        "n": 268
+      },
+      {
+        "tag": "santé",
+        "n": 217
+      },
+      {
+        "tag": "oms",
+        "n": 211
+      },
+      {
+        "tag": "virus",
+        "n": 170
+      },
+      {
+        "tag": "france",
+        "n": 141
+      },
+      {
+        "tag": "hantavirüs",
+        "n": 118
+      },
+      {
+        "tag": "covid19",
+        "n": 84
+      },
+      {
+        "tag": "mvhondius",
+        "n": 81
+      },
+      {
+        "tag": "hondius",
+        "n": 77
+      },
+      {
+        "tag": "ebola",
+        "n": 73
+      },
+      {
+        "tag": "crimecontrelhumanité",
+        "n": 66
+      },
+      {
+        "tag": "lci",
+        "n": 57
+      },
+      {
+        "tag": "cnews",
+        "n": 56
+      },
+      {
+        "tag": "macron",
+        "n": 55
+      }
+    ],
+    "hdpros": [
+      {
+        "tag": "hantavirus",
+        "n": 53
+      },
+      {
+        "tag": "ggrmc",
+        "n": 23
+      },
+      {
+        "tag": "europe1",
+        "n": 13
+      },
+      {
+        "tag": "covid19",
+        "n": 12
+      },
+      {
+        "tag": "cnews",
+        "n": 9
+      },
+      {
+        "tag": "covid",
+        "n": 8
+      },
+      {
+        "tag": "médias",
+        "n": 8
+      },
+      {
+        "tag": "facealinfo",
+        "n": 6
+      },
+      {
+        "tag": "tbt9",
+        "n": 6
+      },
+      {
+        "tag": "lamatinale",
+        "n": 5
+      },
+      {
+        "tag": "confinement",
+        "n": 4
+      },
+      {
+        "tag": "100politique",
+        "n": 4
+      },
+      {
+        "tag": "directan",
+        "n": 4
+      },
+      {
+        "tag": "e1matin",
+        "n": 4
+      },
+      {
+        "tag": "grandmatin",
+        "n": 4
+      }
+    ],
+    "hdpros2": [
+      {
+        "tag": "hantavirus",
+        "n": 15
+      },
+      {
+        "tag": "facealinfo",
+        "n": 5
+      },
+      {
+        "tag": "tbt9",
+        "n": 5
+      },
+      {
+        "tag": "hdpros",
+        "n": 3
+      },
+      {
+        "tag": "punchline",
+        "n": 2
+      },
+      {
+        "tag": "ggrmc",
+        "n": 2
+      },
+      {
+        "tag": "covid",
+        "n": 2
+      },
+      {
+        "tag": "directan",
+        "n": 2
+      }
+    ],
+    "hondius": [
+      {
+        "tag": "hantavirus",
+        "n": 77
+      },
+      {
+        "tag": "oms",
+        "n": 13
+      },
+      {
+        "tag": "24hpujadas",
+        "n": 10
+      },
+      {
+        "tag": "lci",
+        "n": 10
+      },
+      {
+        "tag": "covid",
+        "n": 9
+      },
+      {
+        "tag": "virus",
+        "n": 8
+      },
+      {
+        "tag": "épidémie",
+        "n": 7
+      },
+      {
+        "tag": "santé",
+        "n": 7
+      },
+      {
+        "tag": "mv",
+        "n": 6
+      },
+      {
+        "tag": "argentine",
+        "n": 4
+      },
+      {
+        "tag": "navire",
+        "n": 3
+      },
+      {
+        "tag": "croisière",
+        "n": 3
+      },
+      {
+        "tag": "passagers",
+        "n": 3
+      },
+      {
+        "tag": "france",
+        "n": 3
+      },
+      {
+        "tag": "bateau",
+        "n": 2
+      }
+    ],
+    "lci": [
+      {
+        "tag": "hantavirus",
+        "n": 57
+      },
+      {
+        "tag": "bfmtv",
+        "n": 51
+      },
+      {
+        "tag": "cnews",
+        "n": 44
+      },
+      {
+        "tag": "rmc",
+        "n": 22
+      },
+      {
+        "tag": "24hpujadas",
+        "n": 21
+      },
+      {
+        "tag": "franceinfo",
+        "n": 21
+      },
+      {
+        "tag": "france2",
+        "n": 21
+      },
+      {
+        "tag": "tf1",
+        "n": 21
+      },
+      {
+        "tag": "dlf",
+        "n": 20
+      },
+      {
+        "tag": "idl",
+        "n": 20
+      },
+      {
+        "tag": "reconquete",
+        "n": 20
+      },
+      {
+        "tag": "rn",
+        "n": 20
+      },
+      {
+        "tag": "udr",
+        "n": 20
+      },
+      {
+        "tag": "hondius",
+        "n": 10
+      },
+      {
+        "tag": "santé",
+        "n": 9
+      }
+    ],
+    "macron": [
+      {
+        "tag": "hantavirus",
+        "n": 55
+      },
+      {
+        "tag": "france",
+        "n": 13
+      },
+      {
+        "tag": "hantavirüs",
+        "n": 12
+      },
+      {
+        "tag": "mvhondius",
+        "n": 9
+      },
+      {
+        "tag": "covid",
+        "n": 8
+      },
+      {
+        "tag": "lecornu",
+        "n": 6
+      },
+      {
+        "tag": "lfi",
+        "n": 3
+      },
+      {
+        "tag": "confinement",
+        "n": 3
+      },
+      {
+        "tag": "ggrmc",
+        "n": 3
+      },
+      {
+        "tag": "ps",
+        "n": 2
+      },
+      {
+        "tag": "vaccin",
+        "n": 2
+      },
+      {
+        "tag": "oms",
+        "n": 2
+      },
+      {
+        "tag": "iran",
+        "n": 2
+      },
+      {
+        "tag": "bfmtv",
+        "n": 2
+      },
+      {
+        "tag": "melenchon",
+        "n": 2
+      }
+    ],
+    "monkeypox": [
+      {
+        "tag": "hantavirus",
+        "n": 13
+      },
+      {
+        "tag": "arnm",
+        "n": 6
+      },
+      {
+        "tag": "ayezconfiance",
+        "n": 6
+      },
+      {
+        "tag": "nonp",
+        "n": 6
+      },
+      {
+        "tag": "pangolinbis",
+        "n": 6
+      },
+      {
+        "tag": "hihan",
+        "n": 5
+      },
+      {
+        "tag": "gof",
+        "n": 2
+      },
+      {
+        "tag": "606",
+        "n": 2
+      },
+      {
+        "tag": "soignantssuspendus",
+        "n": 2
+      }
+    ],
+    "mvhondius": [
+      {
+        "tag": "hantavirus",
+        "n": 81
+      },
+      {
+        "tag": "oms",
+        "n": 14
+      },
+      {
+        "tag": "hantavirüs",
+        "n": 12
+      },
+      {
+        "tag": "france",
+        "n": 11
+      },
+      {
+        "tag": "macron",
+        "n": 9
+      },
+      {
+        "tag": "espritia",
+        "n": 7
+      },
+      {
+        "tag": "covid",
+        "n": 5
+      },
+      {
+        "tag": "canaries",
+        "n": 5
+      },
+      {
+        "tag": "santé",
+        "n": 5
+      },
+      {
+        "tag": "santépublique",
+        "n": 5
+      },
+      {
+        "tag": "lequotidien509",
+        "n": 4
+      },
+      {
+        "tag": "pandémie",
+        "n": 4
+      },
+      {
+        "tag": "tenerife",
+        "n": 4
+      },
+      {
+        "tag": "quarantaine",
+        "n": 4
+      },
+      {
+        "tag": "virus",
+        "n": 4
+      }
+    ],
+    "oms": [
+      {
+        "tag": "hantavirus",
+        "n": 211
+      },
+      {
+        "tag": "santé",
+        "n": 41
+      },
+      {
+        "tag": "virus",
+        "n": 28
+      },
+      {
+        "tag": "covid",
+        "n": 17
+      },
+      {
+        "tag": "santépublique",
+        "n": 15
+      },
+      {
+        "tag": "mvhondius",
+        "n": 14
+      },
+      {
+        "tag": "hondius",
+        "n": 13
+      },
+      {
+        "tag": "confinement",
+        "n": 12
+      },
+      {
+        "tag": "hantavirüs",
+        "n": 11
+      },
+      {
+        "tag": "who",
+        "n": 11
+      },
+      {
+        "tag": "billgates",
+        "n": 11
+      },
+      {
+        "tag": "canaries",
+        "n": 10
+      },
+      {
+        "tag": "lequotidien509",
+        "n": 9
+      },
+      {
+        "tag": "espritia",
+        "n": 8
+      },
+      {
+        "tag": "diaspora",
+        "n": 8
+      }
+    ],
+    "onnousprendpourdescons": [
+      {
+        "tag": "hantavirus",
+        "n": 5
+      }
+    ],
+    "paris": [
+      {
+        "tag": "hantavirus",
+        "n": 33
+      },
+      {
+        "tag": "bichat",
+        "n": 7
+      },
+      {
+        "tag": "france",
+        "n": 6
+      },
+      {
+        "tag": "rats",
+        "n": 4
+      },
+      {
+        "tag": "confinement",
+        "n": 4
+      },
+      {
+        "tag": "virus",
+        "n": 4
+      },
+      {
+        "tag": "santé",
+        "n": 3
+      },
+      {
+        "tag": "covid",
+        "n": 3
+      },
+      {
+        "tag": "surmulots",
+        "n": 2
+      },
+      {
+        "tag": "hantavirüs",
+        "n": 2
+      },
+      {
+        "tag": "pandémie",
+        "n": 2
+      },
+      {
+        "tag": "oms",
+        "n": 2
+      },
+      {
+        "tag": "français",
+        "n": 2
+      },
+      {
+        "tag": "hondius",
+        "n": 2
+      },
+      {
+        "tag": "oise",
+        "n": 2
+      }
+    ],
+    "pfizer": [
+      {
+        "tag": "hantavirus",
+        "n": 20
+      },
+      {
+        "tag": "hantavirüs",
+        "n": 5
+      },
+      {
+        "tag": "oms",
+        "n": 4
+      },
+      {
+        "tag": "moderna",
+        "n": 4
+      },
+      {
+        "tag": "covid",
+        "n": 4
+      },
+      {
+        "tag": "vaccin",
+        "n": 3
+      },
+      {
+        "tag": "bigpharma",
+        "n": 3
+      },
+      {
+        "tag": "billgates",
+        "n": 3
+      },
+      {
+        "tag": "contagion",
+        "n": 2
+      },
+      {
+        "tag": "propagande",
+        "n": 2
+      },
+      {
+        "tag": "agenda2030",
+        "n": 2
+      },
+      {
+        "tag": "confinement",
+        "n": 2
+      },
+      {
+        "tag": "pandémie",
+        "n": 2
+      },
+      {
+        "tag": "coronavirus",
+        "n": 2
+      }
+    ],
+    "plandemie": [
+      {
+        "tag": "hantavirus",
+        "n": 2
+      }
+    ],
+    "psyop": [
+      {
+        "tag": "hantavirus",
+        "n": 18
+      },
+      {
+        "tag": "stopscam",
+        "n": 2
+      }
+    ],
+    "qag": [
+      {
+        "tag": "hantavirus",
+        "n": 21
+      },
+      {
+        "tag": "directan",
+        "n": 9
+      }
+    ],
+    "quotidien": [
+      {
+        "tag": "hantavirus",
+        "n": 6
+      },
+      {
+        "tag": "ggrmc",
+        "n": 2
+      },
+      {
+        "tag": "poupettekenza",
+        "n": 2
+      },
+      {
+        "tag": "sionistes",
+        "n": 2
+      },
+      {
+        "tag": "yassouk",
+        "n": 2
+      }
+    ],
+    "rmc": [
+      {
+        "tag": "bfmtv",
+        "n": 22
+      },
+      {
+        "tag": "cnews",
+        "n": 22
+      },
+      {
+        "tag": "lci",
+        "n": 22
+      },
+      {
+        "tag": "dlf",
+        "n": 20
+      },
+      {
+        "tag": "france2",
+        "n": 20
+      },
+      {
+        "tag": "idl",
+        "n": 20
+      },
+      {
+        "tag": "reconquete",
+        "n": 20
+      },
+      {
+        "tag": "rn",
+        "n": 20
+      },
+      {
+        "tag": "tf1",
+        "n": 20
+      },
+      {
+        "tag": "udr",
+        "n": 20
+      },
+      {
+        "tag": "hantavirus",
+        "n": 6
+      },
+      {
+        "tag": "foutriquet",
+        "n": 3
+      },
+      {
+        "tag": "franceinfo",
+        "n": 2
+      },
+      {
+        "tag": "ggrmc",
+        "n": 2
+      },
+      {
+        "tag": "tf1info",
+        "n": 2
+      }
+    ],
+    "rn": [
+      {
+        "tag": "bfmtv",
+        "n": 20
+      },
+      {
+        "tag": "cnews",
+        "n": 20
+      },
+      {
+        "tag": "dlf",
+        "n": 20
+      },
+      {
+        "tag": "france2",
+        "n": 20
+      },
+      {
+        "tag": "idl",
+        "n": 20
+      },
+      {
+        "tag": "lci",
+        "n": 20
+      },
+      {
+        "tag": "reconquete",
+        "n": 20
+      },
+      {
+        "tag": "rmc",
+        "n": 20
+      },
+      {
+        "tag": "tf1",
+        "n": 20
+      },
+      {
+        "tag": "udr",
+        "n": 20
+      },
+      {
+        "tag": "hantavirus",
+        "n": 5
+      },
+      {
+        "tag": "lfi",
+        "n": 3
+      },
+      {
+        "tag": "france",
+        "n": 2
+      }
+    ],
+    "scam": [
+      {
+        "tag": "hantavirus",
+        "n": 11
+      },
+      {
+        "tag": "nofear",
+        "n": 4
+      },
+      {
+        "tag": "covid",
+        "n": 2
+      },
+      {
+        "tag": "coronavirus",
+        "n": 2
+      },
+      {
+        "tag": "epsteinfiles",
+        "n": 2
+      }
+    ],
+    "tbt9": [
+      {
+        "tag": "hantavirus",
+        "n": 22
+      },
+      {
+        "tag": "hdpros",
+        "n": 6
+      },
+      {
+        "tag": "cnews",
+        "n": 5
+      },
+      {
+        "tag": "hdpros2",
+        "n": 5
+      },
+      {
+        "tag": "confinement",
+        "n": 5
+      },
+      {
+        "tag": "covid",
+        "n": 4
+      },
+      {
+        "tag": "detroitormuz",
+        "n": 3
+      },
+      {
+        "tag": "iranwar",
+        "n": 3
+      },
+      {
+        "tag": "israël",
+        "n": 3
+      },
+      {
+        "tag": "nasdas",
+        "n": 3
+      },
+      {
+        "tag": "ormuz",
+        "n": 3
+      },
+      {
+        "tag": "poupettekenza",
+        "n": 3
+      },
+      {
+        "tag": "trump",
+        "n": 3
+      },
+      {
+        "tag": "bfmtv",
+        "n": 2
+      },
+      {
+        "tag": "ebola",
+        "n": 2
+      }
+    ],
+    "tf1": [
+      {
+        "tag": "bfmtv",
+        "n": 22
+      },
+      {
+        "tag": "cnews",
+        "n": 22
+      },
+      {
+        "tag": "france2",
+        "n": 22
+      },
+      {
+        "tag": "lci",
+        "n": 21
+      },
+      {
+        "tag": "dlf",
+        "n": 20
+      },
+      {
+        "tag": "idl",
+        "n": 20
+      },
+      {
+        "tag": "reconquete",
+        "n": 20
+      },
+      {
+        "tag": "rmc",
+        "n": 20
+      },
+      {
+        "tag": "rn",
+        "n": 20
+      },
+      {
+        "tag": "udr",
+        "n": 20
+      },
+      {
+        "tag": "hantavirus",
+        "n": 5
+      }
+    ],
+    "tiktok": [
+      {
+        "tag": "hantavirus",
+        "n": 5
+      },
+      {
+        "tag": "virus",
+        "n": 2
+      }
+    ],
+    "vaccins": [
+      {
+        "tag": "hantavirus",
+        "n": 23
+      },
+      {
+        "tag": "peste",
+        "n": 7
+      },
+      {
+        "tag": "myocardites",
+        "n": 4
+      },
+      {
+        "tag": "oms",
+        "n": 4
+      },
+      {
+        "tag": "virus",
+        "n": 4
+      },
+      {
+        "tag": "billgates",
+        "n": 3
+      },
+      {
+        "tag": "covid",
+        "n": 3
+      },
+      {
+        "tag": "grippe",
+        "n": 2
+      },
+      {
+        "tag": "vascularites",
+        "n": 2
+      },
+      {
+        "tag": "confinement",
+        "n": 2
+      },
+      {
+        "tag": "hantavirüs",
+        "n": 2
+      },
+      {
+        "tag": "moderna",
+        "n": 2
+      }
+    ]
+  },
+  "tag_comm_n": {
+    "100politique": {
+      "9": 2
+    },
+    "24hpujadas": {
+      "9": 3
+    },
+    "606": {
+      "5": 1
+    },
+    "adegager": {
+      "9": 1
+    },
+    "afrique": {
+      "9": 8,
+      "5": 2,
+      "1014": 1,
+      "1185": 1,
+      "165": 1,
+      "1674": 1,
+      "1875": 1,
+      "1959": 1,
+      "2416": 1,
+      "2460": 1,
+      "3547": 1,
+      "3651": 1,
+      "3875": 1,
+      "3909": 1,
+      "3913": 1,
+      "4502": 1,
+      "4905": 1,
+      "4913": 1,
+      "50": 1
+    },
+    "afropages": {
+      "0": 1
+    },
+    "agenda2030": {
+      "1596": 1,
+      "3246": 1,
+      "4": 1,
+      "5": 1
+    },
+    "allezbienvousfairefoutre": {
+      "9": 1
+    },
+    "antivax": {
+      "9": 8,
+      "2480": 1,
+      "4058": 1
+    },
+    "argentine": {
+      "9": 5,
+      "5": 2,
+      "0": 1,
+      "14": 1,
+      "17": 1,
+      "3779": 1,
+      "4": 1,
+      "4042": 1,
+      "4047": 1,
+      "4345": 1,
+      "671": 1,
+      "78": 1
+    },
+    "arnm": {
+      "5": 3
+    },
+    "ayezconfiance": {
+      "5": 1
+    },
+    "bateau": {
+      "9": 4,
+      "130": 1,
+      "165": 1,
+      "3383": 1,
+      "5": 1
+    },
+    "benoîthamon": {
+      "9": 3,
+      "1014": 1,
+      "1055": 1,
+      "1674": 1,
+      "1875": 1,
+      "1922": 1,
+      "1959": 1,
+      "2222": 1,
+      "2460": 1,
+      "3651": 1,
+      "3909": 1,
+      "3913": 1,
+      "4905": 1,
+      "5": 1
+    },
+    "bfm": {
+      "9": 7,
+      "5": 2,
+      "0": 1,
+      "17": 1,
+      "2477": 1,
+      "3696": 1
+    },
+    "bfmtv": {
+      "9": 17,
+      "5": 3,
+      "0": 2,
+      "4": 2,
+      "1707": 1,
+      "2270": 1,
+      "2691": 1,
+      "3134": 1,
+      "3260": 1,
+      "35": 1,
+      "3553": 1,
+      "4080": 1,
+      "4553": 1,
+      "527": 1,
+      "8": 1,
+      "877": 1
+    },
+    "bichat": {
+      "8": 2,
+      "2434": 1,
+      "2930": 1,
+      "3204": 1,
+      "4825": 1,
+      "5": 1,
+      "78": 1,
+      "9": 1
+    },
+    "bigpharma": {
+      "5": 8,
+      "4": 4,
+      "9": 3,
+      "1596": 1,
+      "41": 1
+    },
+    "billgates": {
+      "5": 9,
+      "4": 7,
+      "165": 1,
+      "17": 1,
+      "3199": 1,
+      "3255": 1,
+      "9": 1
+    },
+    "bordeaux": {
+      "9": 6,
+      "4": 2,
+      "12": 1,
+      "1271": 1,
+      "1337": 1,
+      "2486": 1,
+      "2651": 1,
+      "3553": 1,
+      "4047": 1,
+      "41": 1,
+      "4225": 1,
+      "452": 1,
+      "4764": 1
+    },
+    "canal16": {
+      "9": 2,
+      "8": 1
+    },
+    "canaries": {
+      "9": 10,
+      "4": 2,
+      "0": 1,
+      "1137": 1,
+      "1177": 1,
+      "130": 1,
+      "2146": 1,
+      "2787": 1,
+      "317": 1,
+      "3779": 1,
+      "3875": 1,
+      "4101": 1,
+      "4139": 1,
+      "5": 1,
+      "671": 1,
+      "8": 1
+    },
+    "carburant": {
+      "9": 2,
+      "8": 1
+    },
+    "cavous": {
+      "9": 3,
+      "3558": 1
+    },
+    "cesttoutelaquestion": {
+      "9": 1
+    },
+    "charlie": {
+      "9": 4,
+      "5": 3,
+      "1014": 1,
+      "1185": 1,
+      "1187": 1,
+      "1377": 1,
+      "1674": 1,
+      "1875": 1,
+      "1922": 1,
+      "1959": 1,
+      "2460": 1,
+      "3547": 1,
+      "3651": 1,
+      "3909": 1,
+      "3913": 1,
+      "4": 1,
+      "4905": 1,
+      "4913": 1
+    },
+    "christinekellyetvous": {
+      "9": 1
+    },
+    "cnews": {
+      "9": 29,
+      "4": 10,
+      "5": 4,
+      "0": 2,
+      "8": 2,
+      "10": 1,
+      "1199": 1,
+      "17": 1,
+      "29": 1,
+      "3069": 1,
+      "3170": 1,
+      "3404": 1,
+      "3553": 1,
+      "3696": 1,
+      "4553": 1,
+      "4609": 1,
+      "877": 1
+    },
+    "complotiste": {
+      "8": 2,
+      "1807": 1,
+      "1948": 1,
+      "335": 1,
+      "5": 1,
+      "9": 1
+    },
+    "confinement": {
+      "9": 49,
+      "5": 9,
+      "4": 8,
+      "8": 6,
+      "0": 4,
+      "17": 2,
+      "1135": 1,
+      "1185": 1,
+      "1328": 1,
+      "1377": 1,
+      "1591": 1,
+      "165": 1,
+      "1844": 1,
+      "1922": 1,
+      "1928": 1,
+      "1959": 1,
+      "1965": 1,
+      "2727": 1,
+      "2795": 1,
+      "2857": 1,
+      "301": 1,
+      "304": 1,
+      "3142": 1,
+      "3309": 1,
+      "3383": 1,
+      "35": 1,
+      "3547": 1,
+      "368": 1,
+      "40": 1,
+      "4007": 1,
+      "4023": 1,
+      "4383": 1,
+      "4506": 1,
+      "4645": 1,
+      "4798": 1,
+      "4905": 1,
+      "4959": 1,
+      "78": 1
+    },
+    "conspi": {
+      "4": 1
+    },
+    "contagion": {
+      "165": 1,
+      "5": 1
+    },
+    "contamination": {
+      "9": 2
+    },
+    "coronavirus": {
+      "5": 6,
+      "9": 4,
+      "4": 2,
+      "0": 1,
+      "165": 1,
+      "1928": 1,
+      "2": 1,
+      "3073": 1,
+      "877": 1
+    },
+    "corruption": {
+      "5": 1,
+      "9": 1
+    },
+    "covi19": {
+      "3199": 1,
+      "4": 1,
+      "5": 1
+    },
+    "covid": {
+      "9": 70,
+      "5": 39,
+      "4": 29,
+      "0": 9,
+      "8": 6,
+      "17": 4,
+      "10": 3,
+      "12": 3,
+      "30": 2,
+      "41": 2,
+      "1014": 1,
+      "1043": 1,
+      "1055": 1,
+      "111": 1,
+      "1135": 1,
+      "1185": 1,
+      "1187": 1,
+      "1328": 1,
+      "1377": 1,
+      "1617": 1,
+      "1628": 1,
+      "165": 1,
+      "1667": 1,
+      "1674": 1,
+      "1875": 1,
+      "1922": 1,
+      "1931": 1,
+      "1959": 1,
+      "2105": 1,
+      "2222": 1,
+      "2243": 1,
+      "230": 1,
+      "2393": 1,
+      "2460": 1,
+      "2486": 1,
+      "2497": 1,
+      "2667": 1,
+      "270": 1,
+      "2817": 1,
+      "2840": 1,
+      "2857": 1,
+      "290": 1,
+      "3019": 1,
+      "3045": 1,
+      "3060": 1,
+      "3073": 1,
+      "3091": 1,
+      "3277": 1,
+      "3383": 1,
+      "341": 1,
+      "3461": 1,
+      "3474": 1,
+      "3547": 1,
+      "3558": 1,
+      "3651": 1,
+      "3674": 1,
+      "368": 1,
+      "3694": 1,
+      "3727": 1,
+      "3774": 1,
+      "3779": 1,
+      "3829": 1,
+      "3909": 1,
+      "3913": 1,
+      "3975": 1,
+      "40": 1,
+      "4012": 1,
+      "4303": 1,
+      "4379": 1,
+      "4406": 1,
+      "4475": 1,
+      "4573": 1,
+      "4618": 1,
+      "4619": 1,
+      "4745": 1,
+      "4905": 1,
+      "4913": 1,
+      "4914": 1,
+      "4966": 1,
+      "707": 1,
+      "78": 1,
+      "868": 1
+    },
+    "covid19": {
+      "9": 23,
+      "5": 12,
+      "4": 8,
+      "12": 2,
+      "0": 1,
+      "11": 1,
+      "1143": 1,
+      "1230": 1,
+      "14": 1,
+      "1909": 1,
+      "1949": 1,
+      "317": 1,
+      "3179": 1,
+      "3383": 1,
+      "3400": 1,
+      "3463": 1,
+      "3846": 1,
+      "4239": 1,
+      "4403": 1,
+      "4938": 1,
+      "671": 1,
+      "733": 1,
+      "78": 1,
+      "8": 1
+    },
+    "crimecontrelhumanité": {
+      "9": 1
+    },
+    "croisiere": {
+      "9": 4,
+      "0": 1,
+      "1814": 1,
+      "2146": 1,
+      "3875": 1,
+      "4814": 1,
+      "5": 1
+    },
+    "croisière": {
+      "9": 5,
+      "5": 2,
+      "1111": 1,
+      "1177": 1,
+      "130": 1,
+      "165": 1,
+      "1682": 1,
+      "17": 1,
+      "2418": 1,
+      "2787": 1,
+      "2853": 1,
+      "2929": 1,
+      "3682": 1,
+      "3779": 1,
+      "4": 1,
+      "4358": 1,
+      "4561": 1,
+      "671": 1,
+      "8": 1
+    },
+    "croisières": {
+      "9": 1
+    },
+    "detroitormuz": {
+      "38": 1
+    },
+    "diaspora": {
+      "9": 1
+    },
+    "directan": {
+      "9": 6
+    },
+    "dlf": {
+      "4": 1
+    },
+    "décès": {
+      "5": 1,
+      "9": 1
+    },
+    "désirédoué": {
+      "9": 3,
+      "1014": 1,
+      "1055": 1,
+      "1674": 1,
+      "1875": 1,
+      "1922": 1,
+      "1959": 1,
+      "2222": 1,
+      "2460": 1,
+      "3651": 1,
+      "3909": 1,
+      "3913": 1,
+      "4905": 1,
+      "5": 1
+    },
+    "e1matin": {
+      "9": 1
+    },
+    "ebola": {
+      "9": 29,
+      "5": 12,
+      "4": 6,
+      "8": 3,
+      "12": 2,
+      "14": 2,
+      "30": 2,
+      "0": 1,
+      "10": 1,
+      "17": 1,
+      "2241": 1,
+      "2900": 1,
+      "3017": 1,
+      "3260": 1,
+      "3474": 1,
+      "3491": 1,
+      "35": 1,
+      "38": 1,
+      "4063": 1,
+      "4452": 1,
+      "801": 1
+    },
+    "economiste": {
+      "9": 1
+    },
+    "epstein": {
+      "5": 8,
+      "4": 5,
+      "9": 4,
+      "2": 2,
+      "8": 1
+    },
+    "epsteinfiles": {
+      "5": 4,
+      "2466": 1,
+      "41": 1,
+      "958": 1
+    },
+    "espritia": {
+      "671": 1
+    },
+    "europe1": {
+      "17": 1,
+      "4": 1,
+      "9": 1
+    },
+    "europe1soir": {
+      "9": 1
+    },
+    "facealinfo": {
+      "4": 3,
+      "9": 3,
+      "12": 2,
+      "5": 2,
+      "1570": 1,
+      "2482": 1
+    },
+    "fauci": {
+      "4": 2,
+      "5": 2,
+      "2": 1,
+      "4363": 1
+    },
+    "foutagedegueule": {
+      "9": 2,
+      "4": 1
+    },
+    "foutriquet": {
+      "9": 1
+    },
+    "france": {
+      "9": 31,
+      "4": 9,
+      "5": 7,
+      "8": 6,
+      "0": 2,
+      "1101": 1,
+      "1326": 1,
+      "1337": 1,
+      "14": 1,
+      "165": 1,
+      "1697": 1,
+      "2083": 1,
+      "2243": 1,
+      "2275": 1,
+      "245": 1,
+      "2528": 1,
+      "2601": 1,
+      "2840": 1,
+      "2853": 1,
+      "2886": 1,
+      "3048": 1,
+      "3132": 1,
+      "3149": 1,
+      "336": 1,
+      "3584": 1,
+      "3682": 1,
+      "3694": 1,
+      "3695": 1,
+      "4047": 1,
+      "406": 1,
+      "4106": 1,
+      "4184": 1,
+      "42": 1,
+      "4345": 1,
+      "4421": 1,
+      "4604": 1,
+      "4796": 1,
+      "4864": 1,
+      "4920": 1,
+      "530": 1,
+      "671": 1
+    },
+    "france2": {
+      "9": 3,
+      "4": 1
+    },
+    "franceinfo": {
+      "9": 12,
+      "0": 3,
+      "3260": 1,
+      "4": 1,
+      "497": 1,
+      "877": 1
+    },
+    "français": {
+      "9": 5,
+      "130": 1,
+      "4": 1,
+      "5": 1
+    },
+    "gates": {
+      "5": 5,
+      "4": 2
+    },
+    "gavi": {
+      "17": 1,
+      "3255": 1,
+      "9": 1
+    },
+    "genesio": {
+      "5": 3,
+      "9": 3,
+      "1185": 1,
+      "1377": 1,
+      "1922": 1,
+      "1959": 1,
+      "3547": 1,
+      "4": 1,
+      "4905": 1
+    },
+    "ggrmc": {
+      "9": 14,
+      "0": 1,
+      "1": 1,
+      "1435": 1,
+      "1693": 1,
+      "1707": 1,
+      "2080": 1,
+      "4": 1,
+      "5": 1
+    },
+    "gof": {
+      "5": 1,
+      "9": 1
+    },
+    "grandmatin": {
+      "9": 2
+    },
+    "grippe": {
+      "9": 3,
+      "12": 1,
+      "3474": 1,
+      "4": 1,
+      "5": 1
+    },
+    "h1n1": {
+      "9": 2,
+      "5": 1
+    },
+    "hantavirus": {
+      "9": 749,
+      "5": 393,
+      "4": 194,
+      "8": 123,
+      "0": 81,
+      "12": 31,
+      "17": 30,
+      "10": 21,
+      "35": 20,
+      "41": 19,
+      "2": 16,
+      "30": 9,
+      "29": 5,
+      "11": 3,
+      "16": 3,
+      "14": 2,
+      "210": 2,
+      "317": 2,
+      "34": 2,
+      "45": 2,
+      "48": 2,
+      "683": 2,
+      "78": 2,
+      "84": 2,
+      "1002": 1,
+      "101": 1,
+      "1014": 1,
+      "1016": 1,
+      "1018": 1,
+      "1030": 1,
+      "1038": 1,
+      "104": 1,
+      "1041": 1,
+      "1055": 1,
+      "1059": 1,
+      "1071": 1,
+      "1074": 1,
+      "1086": 1,
+      "1093": 1,
+      "1101": 1,
+      "111": 1,
+      "1111": 1,
+      "1113": 1,
+      "1115": 1,
+      "112": 1,
+      "1123": 1,
+      "1125": 1,
+      "1128": 1,
+      "1135": 1,
+      "1137": 1,
+      "1143": 1,
+      "1145": 1,
+      "1147": 1,
+      "1154": 1,
+      "1168": 1,
+      "1169": 1,
+      "1172": 1,
+      "1177": 1,
+      "1181": 1,
+      "1185": 1,
+      "1187": 1,
+      "1190": 1,
+      "1199": 1,
+      "1202": 1,
+      "1216": 1,
+      "1230": 1,
+      "1236": 1,
+      "1238": 1,
+      "1244": 1,
+      "1252": 1,
+      "1257": 1,
+      "1264": 1,
+      "1265": 1,
+      "1269": 1,
+      "1271": 1,
+      "1276": 1,
+      "1280": 1,
+      "1282": 1,
+      "1284": 1,
+      "1287": 1,
+      "1289": 1,
+      "1297": 1,
+      "13": 1,
+      "130": 1,
+      "1303": 1,
+      "1312": 1,
+      "1313": 1,
+      "1319": 1,
+      "1320": 1,
+      "1323": 1,
+      "1326": 1,
+      "1328": 1,
+      "1334": 1,
+      "1337": 1,
+      "134": 1,
+      "1349": 1,
+      "1352": 1,
+      "1355": 1,
+      "136": 1,
+      "1362": 1,
+      "1364": 1,
+      "137": 1,
+      "1371": 1,
+      "1374": 1,
+      "1376": 1,
+      "1377": 1,
+      "1384": 1,
+      "1388": 1,
+      "1394": 1,
+      "1398": 1,
+      "1405": 1,
+      "1409": 1,
+      "1415": 1,
+      "1426": 1,
+      "1441": 1,
+      "1442": 1,
+      "1443": 1,
+      "1451": 1,
+      "1458": 1,
+      "1479": 1,
+      "1490": 1,
+      "1494": 1,
+      "1496": 1,
+      "1519": 1,
+      "1524": 1,
+      "1537": 1,
+      "1541": 1,
+      "1542": 1,
+      "1543": 1,
+      "1544": 1,
+      "1548": 1,
+      "1549": 1,
+      "1552": 1,
+      "1558": 1,
+      "1559": 1,
+      "1566": 1,
+      "1569": 1,
+      "1572": 1,
+      "1573": 1,
+      "1576": 1,
+      "1578": 1,
+      "158": 1,
+      "1581": 1,
+      "1586": 1,
+      "1589": 1,
+      "1591": 1,
+      "1596": 1,
+      "1597": 1,
+      "1608": 1,
+      "1610": 1,
+      "1615": 1,
+      "1617": 1,
+      "1620": 1,
+      "1628": 1,
+      "1642": 1,
+      "1647": 1,
+      "165": 1,
+      "1650": 1,
+      "1653": 1,
+      "1659": 1,
+      "1663": 1,
+      "1667": 1,
+      "1668": 1,
+      "167": 1,
+      "1674": 1,
+      "1676": 1,
+      "1682": 1,
+      "1687": 1,
+      "1688": 1,
+      "1697": 1,
+      "1708": 1,
+      "1711": 1,
+      "1732": 1,
+      "1742": 1,
+      "1743": 1,
+      "1767": 1,
+      "1783": 1,
+      "1786": 1,
+      "1793": 1,
+      "1794": 1,
+      "1806": 1,
+      "1807": 1,
+      "1814": 1,
+      "1830": 1,
+      "1846": 1,
+      "1848": 1,
+      "1850": 1,
+      "1854": 1,
+      "1859": 1,
+      "1861": 1,
+      "1862": 1,
+      "1875": 1,
+      "1877": 1,
+      "1883": 1,
+      "1884": 1,
+      "1886": 1,
+      "1887": 1,
+      "1889": 1,
+      "1898": 1,
+      "1900": 1,
+      "1909": 1,
+      "1911": 1,
+      "1917": 1,
+      "1922": 1,
+      "1928": 1,
+      "1931": 1,
+      "1949": 1,
+      "1956": 1,
+      "1959": 1,
+      "1965": 1,
+      "1973": 1,
+      "1986": 1,
+      "1992": 1,
+      "1996": 1,
+      "2003": 1,
+      "2005": 1,
+      "2011": 1,
+      "2012": 1,
+      "2021": 1,
+      "2026": 1,
+      "2037": 1,
+      "2054": 1,
+      "2064": 1,
+      "2067": 1,
+      "2078": 1,
+      "2082": 1,
+      "2083": 1,
+      "2087": 1,
+      "2105": 1,
+      "2113": 1,
+      "2120": 1,
+      "2124": 1,
+      "2125": 1,
+      "2127": 1,
+      "2128": 1,
+      "2131": 1,
+      "2135": 1,
+      "2143": 1,
+      "2144": 1,
+      "2145": 1,
+      "2146": 1,
+      "2157": 1,
+      "2161": 1,
+      "2174": 1,
+      "2175": 1,
+      "2183": 1,
+      "2188": 1,
+      "2191": 1,
+      "2205": 1,
+      "2208": 1,
+      "2214": 1,
+      "2222": 1,
+      "2228": 1,
+      "2237": 1,
+      "2243": 1,
+      "2250": 1,
+      "2255": 1,
+      "2257": 1,
+      "2270": 1,
+      "2273": 1,
+      "2275": 1,
+      "2281": 1,
+      "2283": 1,
+      "2290": 1,
+      "2297": 1,
+      "230": 1,
+      "2310": 1,
+      "2312": 1,
+      "2316": 1,
+      "2321": 1,
+      "2327": 1,
+      "2336": 1,
+      "2337": 1,
+      "2340": 1,
+      "2342": 1,
+      "2356": 1,
+      "2363": 1,
+      "2372": 1,
+      "2374": 1,
+      "2381": 1,
+      "2383": 1,
+      "2385": 1,
+      "2392": 1,
+      "2393": 1,
+      "24": 1,
+      "2412": 1,
+      "2416": 1,
+      "2418": 1,
+      "2432": 1,
+      "2434": 1,
+      "2448": 1,
+      "245": 1,
+      "2450": 1,
+      "2460": 1,
+      "2464": 1,
+      "2466": 1,
+      "2470": 1,
+      "2471": 1,
+      "2477": 1,
+      "248": 1,
+      "2480": 1,
+      "2481": 1,
+      "2482": 1,
+      "2486": 1,
+      "2488": 1,
+      "2497": 1,
+      "2499": 1,
+      "2500": 1,
+      "2507": 1,
+      "2508": 1,
+      "2511": 1,
+      "2512": 1,
+      "2522": 1,
+      "2524": 1,
+      "2525": 1,
+      "2528": 1,
+      "2529": 1,
+      "2532": 1,
+      "2538": 1,
+      "2542": 1,
+      "2543": 1,
+      "2546": 1,
+      "255": 1,
+      "2554": 1,
+      "2561": 1,
+      "2572": 1,
+      "2576": 1,
+      "2584": 1,
+      "2593": 1,
+      "260": 1,
+      "2601": 1,
+      "2602": 1,
+      "2614": 1,
+      "262": 1,
+      "2631": 1,
+      "2632": 1,
+      "2637": 1,
+      "2645": 1,
+      "265": 1,
+      "2650": 1,
+      "2651": 1,
+      "2654": 1,
+      "2658": 1,
+      "2664": 1,
+      "2667": 1,
+      "2668": 1,
+      "2674": 1,
+      "2678": 1,
+      "269": 1,
+      "2690": 1,
+      "2691": 1,
+      "2695": 1,
+      "27": 1,
+      "270": 1,
+      "2704": 1,
+      "271": 1,
+      "2727": 1,
+      "2733": 1,
+      "2737": 1,
+      "2741": 1,
+      "2742": 1,
+      "276": 1,
+      "2760": 1,
+      "2762": 1,
+      "2783": 1,
+      "2787": 1,
+      "2790": 1,
+      "2795": 1,
+      "280": 1,
+      "2805": 1,
+      "2806": 1,
+      "2813": 1,
+      "2817": 1,
+      "2823": 1,
+      "2827": 1,
+      "2832": 1,
+      "2840": 1,
+      "2844": 1,
+      "2857": 1,
+      "2858": 1,
+      "2874": 1,
+      "2875": 1,
+      "2880": 1,
+      "2884": 1,
+      "2886": 1,
+      "2889": 1,
+      "2892": 1,
+      "2893": 1,
+      "2894": 1,
+      "2895": 1,
+      "2899": 1,
+      "290": 1,
+      "2900": 1,
+      "2903": 1,
+      "2912": 1,
+      "2924": 1,
+      "2929": 1,
+      "2930": 1,
+      "2931": 1,
+      "2935": 1,
+      "2939": 1,
+      "2940": 1,
+      "2942": 1,
+      "2964": 1,
+      "2968": 1,
+      "2986": 1,
+      "299": 1,
+      "2991": 1,
+      "2997": 1,
+      "3005": 1,
+      "3007": 1,
+      "301": 1,
+      "3013": 1,
+      "3017": 1,
+      "3019": 1,
+      "302": 1,
+      "3023": 1,
+      "3024": 1,
+      "3028": 1,
+      "3029": 1,
+      "303": 1,
+      "3032": 1,
+      "3037": 1,
+      "304": 1,
+      "3042": 1,
+      "3045": 1,
+      "3047": 1,
+      "3048": 1,
+      "3060": 1,
+      "3073": 1,
+      "308": 1,
+      "3090": 1,
+      "3091": 1,
+      "3093": 1,
+      "3097": 1,
+      "310": 1,
+      "3102": 1,
+      "3105": 1,
+      "311": 1,
+      "3111": 1,
+      "3112": 1,
+      "3121": 1,
+      "3131": 1,
+      "3132": 1,
+      "3134": 1,
+      "3136": 1,
+      "3139": 1,
+      "3142": 1,
+      "3144": 1,
+      "3149": 1,
+      "3157": 1,
+      "3161": 1,
+      "3169": 1,
+      "3171": 1,
+      "3173": 1,
+      "3179": 1,
+      "318": 1,
+      "3180": 1,
+      "3197": 1,
+      "3198": 1,
+      "3199": 1,
+      "32": 1,
+      "3204": 1,
+      "3210": 1,
+      "3211": 1,
+      "3217": 1,
+      "3227": 1,
+      "323": 1,
+      "3246": 1,
+      "3255": 1,
+      "3259": 1,
+      "3260": 1,
+      "3262": 1,
+      "3264": 1,
+      "3265": 1,
+      "3266": 1,
+      "3267": 1,
+      "3268": 1,
+      "3270": 1,
+      "3271": 1,
+      "3276": 1,
+      "3277": 1,
+      "3282": 1,
+      "329": 1,
+      "3306": 1,
+      "3309": 1,
+      "331": 1,
+      "3323": 1,
+      "3328": 1,
+      "3332": 1,
+      "3346": 1,
+      "337": 1,
+      "3370": 1,
+      "3372": 1,
+      "3374": 1,
+      "3390": 1,
+      "3393": 1,
+      "3395": 1,
+      "3401": 1,
+      "3403": 1,
+      "3404": 1,
+      "3421": 1,
+      "3424": 1,
+      "3426": 1,
+      "3434": 1,
+      "3436": 1,
+      "3438": 1,
+      "3442": 1,
+      "3448": 1,
+      "3449": 1,
+      "3456": 1,
+      "3457": 1,
+      "3461": 1,
+      "3463": 1,
+      "3470": 1,
+      "3474": 1,
+      "3480": 1,
+      "3489": 1,
+      "3491": 1,
+      "3493": 1,
+      "3495": 1,
+      "3497": 1,
+      "3500": 1,
+      "3502": 1,
+      "3504": 1,
+      "3507": 1,
+      "351": 1,
+      "3511": 1,
+      "352": 1,
+      "3522": 1,
+      "353": 1,
+      "3531": 1,
+      "3534": 1,
+      "3536": 1,
+      "354": 1,
+      "3545": 1,
+      "3546": 1,
+      "3547": 1,
+      "3550": 1,
+      "3552": 1,
+      "3553": 1,
+      "3555": 1,
+      "3558": 1,
+      "3560": 1,
+      "357": 1,
+      "3570": 1,
+      "3576": 1,
+      "3584": 1,
+      "3586": 1,
+      "3588": 1,
+      "359": 1,
+      "3593": 1,
+      "3594": 1,
+      "3595": 1,
+      "3597": 1,
+      "3609": 1,
+      "3616": 1,
+      "3621": 1,
+      "3624": 1,
+      "3627": 1,
+      "3636": 1,
+      "3638": 1,
+      "364": 1,
+      "3647": 1,
+      "3651": 1,
+      "3652": 1,
+      "3653": 1,
+      "3658": 1,
+      "366": 1,
+      "3661": 1,
+      "3669": 1,
+      "3674": 1,
+      "368": 1,
+      "3682": 1,
+      "3694": 1,
+      "3695": 1,
+      "3699": 1,
+      "3705": 1,
+      "371": 1,
+      "3724": 1,
+      "3727": 1,
+      "373": 1,
+      "3732": 1,
+      "3734": 1,
+      "3736": 1,
+      "3740": 1,
+      "3742": 1,
+      "375": 1,
+      "3762": 1,
+      "3763": 1,
+      "3764": 1,
+      "3774": 1,
+      "3779": 1,
+      "3780": 1,
+      "3785": 1,
+      "3786": 1,
+      "379": 1,
+      "3790": 1,
+      "38": 1,
+      "380": 1,
+      "3805": 1,
+      "3806": 1,
+      "3813": 1,
+      "3817": 1,
+      "3818": 1,
+      "3824": 1,
+      "3829": 1,
+      "384": 1,
+      "3842": 1,
+      "3846": 1,
+      "385": 1,
+      "3852": 1,
+      "3875": 1,
+      "3878": 1,
+      "3881": 1,
+      "3882": 1,
+      "3886": 1,
+      "3893": 1,
+      "3895": 1,
+      "3898": 1,
+      "3909": 1,
+      "3913": 1,
+      "3921": 1,
+      "3922": 1,
+      "3935": 1,
+      "3941": 1,
+      "3943": 1,
+      "3951": 1,
+      "3956": 1,
+      "3973": 1,
+      "3975": 1,
+      "3986": 1,
+      "3987": 1,
+      "3989": 1,
+      "3993": 1,
+      "3996": 1,
+      "40": 1,
+      "4007": 1,
+      "4012": 1,
+      "402": 1,
+      "4021": 1,
+      "4022": 1,
+      "4028": 1,
+      "4029": 1,
+      "4033": 1,
+      "4042": 1,
+      "4045": 1,
+      "4047": 1,
+      "4050": 1,
+      "4054": 1,
+      "4058": 1,
+      "406": 1,
+      "4077": 1,
+      "4116": 1,
+      "4121": 1,
+      "4129": 1,
+      "4131": 1,
+      "4139": 1,
+      "4143": 1,
+      "4144": 1,
+      "4148": 1,
+      "4149": 1,
+      "4156": 1,
+      "4157": 1,
+      "4163": 1,
+      "417": 1,
+      "4170": 1,
+      "4174": 1,
+      "4183": 1,
+      "4184": 1,
+      "4185": 1,
+      "4187": 1,
+      "42": 1,
+      "420": 1,
+      "4205": 1,
+      "4217": 1,
+      "4224": 1,
+      "4227": 1,
+      "4234": 1,
+      "4239": 1,
+      "424": 1,
+      "4242": 1,
+      "4246": 1,
+      "4250": 1,
+      "4260": 1,
+      "4268": 1,
+      "4269": 1,
+      "4278": 1,
+      "4295": 1,
+      "4296": 1,
+      "4297": 1,
+      "4303": 1,
+      "4308": 1,
+      "4309": 1,
+      "4310": 1,
+      "4313": 1,
+      "4314": 1,
+      "4315": 1,
+      "4316": 1,
+      "4317": 1,
+      "4330": 1,
+      "4332": 1,
+      "4344": 1,
+      "4345": 1,
+      "4350": 1,
+      "4353": 1,
+      "4356": 1,
+      "4358": 1,
+      "4359": 1,
+      "4363": 1,
+      "4372": 1,
+      "4379": 1,
+      "438": 1,
+      "4383": 1,
+      "4384": 1,
+      "439": 1,
+      "4390": 1,
+      "4395": 1,
+      "4397": 1,
+      "44": 1,
+      "4402": 1,
+      "4403": 1,
+      "4405": 1,
+      "4406": 1,
+      "4407": 1,
+      "4417": 1,
+      "4421": 1,
+      "4422": 1,
+      "4425": 1,
+      "4429": 1,
+      "4437": 1,
+      "4438": 1,
+      "4439": 1,
+      "4452": 1,
+      "4453": 1,
+      "4465": 1,
+      "4467": 1,
+      "4475": 1,
+      "4476": 1,
+      "4477": 1,
+      "4488": 1,
+      "4489": 1,
+      "4491": 1,
+      "4502": 1,
+      "4506": 1,
+      "452": 1,
+      "4535": 1,
+      "4548": 1,
+      "4553": 1,
+      "4561": 1,
+      "4573": 1,
+      "4577": 1,
+      "4578": 1,
+      "4580": 1,
+      "4582": 1,
+      "4590": 1,
+      "4596": 1,
+      "4604": 1,
+      "4605": 1,
+      "4606": 1,
+      "4615": 1,
+      "4618": 1,
+      "4619": 1,
+      "4630": 1,
+      "4638": 1,
+      "4639": 1,
+      "4641": 1,
+      "4643": 1,
+      "4644": 1,
+      "4645": 1,
+      "4651": 1,
+      "4654": 1,
+      "4659": 1,
+      "4668": 1,
+      "4671": 1,
+      "4672": 1,
+      "4674": 1,
+      "4696": 1,
+      "4697": 1,
+      "4700": 1,
+      "4710": 1,
+      "4736": 1,
+      "4743": 1,
+      "4745": 1,
+      "4750": 1,
+      "4754": 1,
+      "4767": 1,
+      "4768": 1,
+      "4772": 1,
+      "4774": 1,
+      "4777": 1,
+      "4780": 1,
+      "4781": 1,
+      "4784": 1,
+      "4785": 1,
+      "4796": 1,
+      "4798": 1,
+      "4813": 1,
+      "4814": 1,
+      "4817": 1,
+      "4823": 1,
+      "4824": 1,
+      "4825": 1,
+      "4829": 1,
+      "4833": 1,
+      "4834": 1,
+      "4836": 1,
+      "4848": 1,
+      "4852": 1,
+      "4855": 1,
+      "4863": 1,
+      "487": 1,
+      "4876": 1,
+      "4884": 1,
+      "4886": 1,
+      "4905": 1,
+      "4907": 1,
+      "4910": 1,
+      "4912": 1,
+      "4913": 1,
+      "4914": 1,
+      "4919": 1,
+      "4920": 1,
+      "4922": 1,
+      "4927": 1,
+      "4937": 1,
+      "4938": 1,
+      "4959": 1,
+      "4965": 1,
+      "4966": 1,
+      "50": 1,
+      "521": 1,
+      "527": 1,
+      "530": 1,
+      "538": 1,
+      "54": 1,
+      "548": 1,
+      "56": 1,
+      "562": 1,
+      "573": 1,
+      "59": 1,
+      "591": 1,
+      "62": 1,
+      "63": 1,
+      "64": 1,
+      "647": 1,
+      "651": 1,
+      "652": 1,
+      "660": 1,
+      "671": 1,
+      "695": 1,
+      "698": 1,
+      "707": 1,
+      "710": 1,
+      "747": 1,
+      "797": 1,
+      "801": 1,
+      "822": 1,
+      "823": 1,
+      "825": 1,
+      "837": 1,
+      "846": 1,
+      "847": 1,
+      "853": 1,
+      "855": 1,
+      "856": 1,
+      "859": 1,
+      "867": 1,
+      "868": 1,
+      "869": 1,
+      "872": 1,
+      "877": 1,
+      "885": 1,
+      "905": 1,
+      "910": 1,
+      "928": 1,
+      "939": 1,
+      "941": 1,
+      "949": 1,
+      "951": 1,
+      "957": 1,
+      "958": 1,
+      "96": 1,
+      "982": 1,
+      "983": 1,
+      "984": 1,
+      "99": 1,
+      "990": 1,
+      "996": 1
+    },
+    "hantavirüs": {
+      "9": 46,
+      "5": 27,
+      "4": 23,
+      "10": 8,
+      "8": 8,
+      "0": 4,
+      "17": 3,
+      "12": 2,
+      "35": 2,
+      "41": 2,
+      "1043": 1,
+      "1054": 1,
+      "1150": 1,
+      "1152": 1,
+      "1190": 1,
+      "1337": 1,
+      "1364": 1,
+      "1367": 1,
+      "1446": 1,
+      "16": 1,
+      "165": 1,
+      "1653": 1,
+      "1807": 1,
+      "19": 1,
+      "1924": 1,
+      "2082": 1,
+      "2083": 1,
+      "2085": 1,
+      "2124": 1,
+      "2188": 1,
+      "2328": 1,
+      "2345": 1,
+      "2396": 1,
+      "2456": 1,
+      "2466": 1,
+      "2550": 1,
+      "2601": 1,
+      "2608": 1,
+      "2651": 1,
+      "2743": 1,
+      "2760": 1,
+      "2869": 1,
+      "299": 1,
+      "30": 1,
+      "3024": 1,
+      "3073": 1,
+      "3074": 1,
+      "31": 1,
+      "3107": 1,
+      "317": 1,
+      "3290": 1,
+      "332": 1,
+      "3370": 1,
+      "3400": 1,
+      "3418": 1,
+      "346": 1,
+      "3463": 1,
+      "3487": 1,
+      "3531": 1,
+      "3624": 1,
+      "3647": 1,
+      "368": 1,
+      "3695": 1,
+      "3758": 1,
+      "3762": 1,
+      "3819": 1,
+      "3829": 1,
+      "3856": 1,
+      "3943": 1,
+      "3975": 1,
+      "4033": 1,
+      "4038": 1,
+      "4148": 1,
+      "42": 1,
+      "4256": 1,
+      "4298": 1,
+      "44": 1,
+      "4479": 1,
+      "4577": 1,
+      "4756": 1,
+      "4927": 1,
+      "4947": 1,
+      "4959": 1,
+      "651": 1,
+      "78": 1,
+      "849": 1,
+      "904": 1,
+      "981": 1
+    },
+    "hdpros": {
+      "9": 22,
+      "4": 10,
+      "5": 3,
+      "10": 1,
+      "1017": 1,
+      "1100": 1,
+      "1246": 1,
+      "17": 1,
+      "35": 1,
+      "3730": 1,
+      "4470": 1,
+      "8": 1
+    },
+    "hdpros2": {
+      "9": 11,
+      "4": 8,
+      "5": 2,
+      "1036": 1,
+      "1687": 1,
+      "295": 1,
+      "3535": 1,
+      "4499": 1,
+      "4618": 1,
+      "4878": 1
+    },
+    "hdproswe": {
+      "9": 3
+    },
+    "hihan": {
+      "5": 1
+    },
+    "hondius": {
+      "9": 15,
+      "4": 3,
+      "0": 1,
+      "12": 1,
+      "130": 1,
+      "14": 1,
+      "1490": 1,
+      "165": 1,
+      "17": 1,
+      "1848": 1,
+      "2418": 1,
+      "2601": 1,
+      "3144": 1,
+      "3584": 1,
+      "3682": 1,
+      "3701": 1,
+      "3779": 1,
+      "42": 1,
+      "5": 1,
+      "8": 1
+    },
+    "idl": {
+      "4": 1
+    },
+    "iran": {
+      "9": 7,
+      "5": 3,
+      "12": 1,
+      "2": 1,
+      "2105": 1,
+      "2381": 1,
+      "2416": 1,
+      "2477": 1,
+      "341": 1,
+      "4": 1,
+      "8": 1
+    },
+    "iranwar": {
+      "0": 1,
+      "38": 1,
+      "4784": 1,
+      "5": 1,
+      "8": 1,
+      "837": 1,
+      "9": 1
+    },
+    "israël": {
+      "245": 1,
+      "3276": 1,
+      "3682": 1,
+      "38": 1,
+      "5": 1,
+      "9": 1
+    },
+    "ituri": {
+      "5": 2
+    },
+    "jt20h": {
+      "2211": 1,
+      "8": 1,
+      "9": 1
+    },
+    "lagrandeinterview": {
+      "9": 2
+    },
+    "lakers": {
+      "9": 3,
+      "5": 2,
+      "1014": 1,
+      "1185": 1,
+      "1674": 1,
+      "1875": 1,
+      "1959": 1,
+      "2460": 1,
+      "3547": 1,
+      "3651": 1,
+      "3909": 1,
+      "3913": 1,
+      "4905": 1,
+      "4913": 1
+    },
+    "lamatinale": {
+      "9": 3,
+      "35": 1,
+      "4": 1,
+      "5": 1
+    },
+    "lci": {
+      "9": 17,
+      "0": 2,
+      "4": 2,
+      "1676": 1,
+      "17": 1,
+      "1973": 1,
+      "2512": 1,
+      "3260": 1,
+      "3553": 1,
+      "3696": 1,
+      "4553": 1,
+      "4615": 1,
+      "4951": 1,
+      "8": 1,
+      "877": 1
+    },
+    "le23hweekend": {
+      "9": 1
+    },
+    "lecornu": {
+      "4": 5,
+      "9": 5,
+      "8": 4,
+      "0": 2,
+      "12": 1,
+      "5": 1
+    },
+    "lepouretlecontre": {
+      "9": 1
+    },
+    "lequotidien509": {
+      "9": 1
+    },
+    "lfi": {
+      "9": 7,
+      "0": 2,
+      "12": 1,
+      "2747": 1,
+      "3558": 1
+    },
+    "macron": {
+      "9": 17,
+      "4": 8,
+      "5": 3,
+      "17": 2,
+      "8": 2,
+      "0": 1,
+      "111": 1,
+      "12": 1,
+      "150": 1,
+      "1965": 1,
+      "2416": 1,
+      "2477": 1,
+      "3493": 1,
+      "35": 1,
+      "3558": 1,
+      "368": 1,
+      "3695": 1,
+      "41": 1
+    },
+    "macronnousprendpourdescons": {
+      "341": 1,
+      "9": 1
+    },
+    "maladie": {
+      "4": 2,
+      "165": 1,
+      "352": 1,
+      "375": 1,
+      "3763": 1,
+      "5": 1,
+      "9": 1
+    },
+    "mammarenavirus": {
+      "8": 1
+    },
+    "mapr": {
+      "9": 4,
+      "5": 2,
+      "1014": 1,
+      "1185": 1,
+      "1674": 1,
+      "1875": 1,
+      "1959": 1,
+      "2460": 1,
+      "2727": 1,
+      "3547": 1,
+      "3651": 1,
+      "3909": 1,
+      "3913": 1,
+      "4406": 1,
+      "4582": 1,
+      "4905": 1,
+      "4913": 1,
+      "837": 1
+    },
+    "melenchon": {
+      "0": 2,
+      "9": 2,
+      "12": 1,
+      "1362": 1,
+      "3558": 1,
+      "4239": 1
+    },
+    "methalie": {
+      "9": 3,
+      "1014": 1,
+      "1055": 1,
+      "1674": 1,
+      "1875": 1,
+      "1922": 1,
+      "1959": 1,
+      "2222": 1,
+      "2460": 1,
+      "3651": 1,
+      "3909": 1,
+      "3913": 1,
+      "4905": 1,
+      "5": 1
+    },
+    "midinews": {
+      "4": 2,
+      "9": 2,
+      "5": 1
+    },
+    "moderna": {
+      "5": 10,
+      "4": 3,
+      "9": 3,
+      "14": 1,
+      "165": 1,
+      "2497": 1,
+      "3332": 1
+    },
+    "monkeypox": {
+      "5": 3,
+      "9": 2,
+      "4": 1,
+      "8": 1
+    },
+    "mv": {
+      "1238": 1,
+      "2601": 1,
+      "4": 1,
+      "42": 1,
+      "5": 1,
+      "651": 1
+    },
+    "mvhondius": {
+      "9": 15,
+      "0": 4,
+      "4": 4,
+      "5": 4,
+      "14": 2,
+      "17": 2,
+      "1086": 1,
+      "1137": 1,
+      "1257": 1,
+      "1337": 1,
+      "2146": 1,
+      "2275": 1,
+      "2528": 1,
+      "2601": 1,
+      "2720": 1,
+      "3007": 1,
+      "3372": 1,
+      "4116": 1,
+      "42": 1,
+      "4297": 1,
+      "4439": 1,
+      "4920": 1,
+      "671": 1,
+      "867": 1
+    },
+    "myocardites": {
+      "5": 1
+    },
+    "médias": {
+      "9": 3,
+      "0": 1,
+      "10": 1,
+      "4": 1,
+      "4494": 1,
+      "5": 1
+    },
+    "nasdas": {
+      "1125": 1,
+      "38": 1,
+      "8": 1
+    },
+    "navire": {
+      "9": 3,
+      "130": 1,
+      "1352": 1,
+      "2787": 1
+    },
+    "nipah": {
+      "3474": 1,
+      "35": 1
+    },
+    "nofear": {
+      "5": 1
+    },
+    "nonp": {
+      "5": 2
+    },
+    "oise": {
+      "9": 1
+    },
+    "oms": {
+      "9": 33,
+      "4": 23,
+      "5": 23,
+      "0": 6,
+      "8": 3,
+      "14": 2,
+      "17": 2,
+      "1111": 1,
+      "1128": 1,
+      "12": 1,
+      "1284": 1,
+      "130": 1,
+      "1545": 1,
+      "165": 1,
+      "1667": 1,
+      "1697": 1,
+      "1859": 1,
+      "2": 1,
+      "2083": 1,
+      "2146": 1,
+      "2157": 1,
+      "2342": 1,
+      "2345": 1,
+      "2480": 1,
+      "2584": 1,
+      "2630": 1,
+      "2664": 1,
+      "2942": 1,
+      "2968": 1,
+      "30": 1,
+      "3073": 1,
+      "3199": 1,
+      "3332": 1,
+      "3404": 1,
+      "343": 1,
+      "3491": 1,
+      "3546": 1,
+      "3584": 1,
+      "3624": 1,
+      "3647": 1,
+      "3661": 1,
+      "3682": 1,
+      "375": 1,
+      "3779": 1,
+      "3819": 1,
+      "3824": 1,
+      "4010": 1,
+      "4139": 1,
+      "417": 1,
+      "4174": 1,
+      "4185": 1,
+      "4358": 1,
+      "4439": 1,
+      "4502": 1,
+      "4619": 1,
+      "4736": 1,
+      "4755": 1,
+      "4839": 1,
+      "4966": 1,
+      "671": 1,
+      "78": 1,
+      "859": 1,
+      "867": 1,
+      "949": 1
+    },
+    "onnousprendpourdescons": {
+      "9": 2,
+      "3990": 1,
+      "4": 1
+    },
+    "ormuz": {
+      "9": 5,
+      "130": 1,
+      "1362": 1,
+      "1591": 1,
+      "2": 1,
+      "38": 1,
+      "4": 1
+    },
+    "orthohantavirus": {
+      "8": 1,
+      "9": 1
+    },
+    "pandemie": {
+      "9": 7,
+      "5": 3,
+      "4": 2,
+      "1260": 1,
+      "1589": 1,
+      "1667": 1,
+      "1697": 1,
+      "3142": 1,
+      "3245": 1,
+      "3805": 1,
+      "4488": 1,
+      "4863": 1,
+      "78": 1
+    },
+    "pandémie": {
+      "4": 3,
+      "9": 3,
+      "5": 2,
+      "0": 1,
+      "1147": 1,
+      "1628": 1,
+      "165": 1,
+      "17": 1,
+      "3495": 1,
+      "4239": 1,
+      "4619": 1,
+      "4643": 1,
+      "8": 1
+    },
+    "pangolinbis": {
+      "5": 1
+    },
+    "paris": {
+      "9": 8,
+      "8": 3,
+      "4": 2,
+      "130": 1,
+      "165": 1,
+      "1907": 1,
+      "2434": 1,
+      "271": 1,
+      "2886": 1,
+      "2930": 1,
+      "2997": 1,
+      "3204": 1,
+      "3893": 1,
+      "4047": 1,
+      "41": 1,
+      "4421": 1,
+      "4606": 1,
+      "4754": 1,
+      "48": 1,
+      "4836": 1,
+      "5": 1,
+      "78": 1,
+      "822": 1,
+      "939": 1
+    },
+    "pascalpraudetvous": {
+      "9": 1
+    },
+    "passagers": {
+      "9": 3,
+      "130": 1
+    },
+    "peste": {
+      "5": 1,
+      "9": 1
+    },
+    "pfizer": {
+      "5": 8,
+      "4": 7,
+      "9": 2,
+      "1596": 1,
+      "165": 1,
+      "8": 1
+    },
+    "pika": {
+      "5": 3,
+      "9": 3,
+      "1185": 1,
+      "1377": 1,
+      "1922": 1,
+      "1959": 1,
+      "3547": 1,
+      "4": 1,
+      "4905": 1
+    },
+    "plandemie": {
+      "5": 2,
+      "1367": 1,
+      "9": 1
+    },
+    "poupettekenza": {
+      "38": 1,
+      "8": 1,
+      "9": 1
+    },
+    "propagande": {
+      "5": 7,
+      "9": 6,
+      "4": 3,
+      "3906": 1,
+      "452": 1
+    },
+    "ps": {
+      "3558": 1,
+      "9": 1
+    },
+    "psyop": {
+      "5": 5,
+      "10": 1,
+      "4": 1
+    },
+    "punchline": {
+      "9": 5,
+      "4": 2,
+      "5": 2,
+      "10": 1
+    },
+    "qag": {
+      "9": 5,
+      "0": 2,
+      "1358": 1
+    },
+    "quarantaine": {
+      "9": 6,
+      "1177": 1,
+      "165": 1,
+      "2146": 1,
+      "2175": 1,
+      "2853": 1,
+      "3682": 1,
+      "5": 1
+    },
+    "quotidien": {
+      "8": 5,
+      "9": 2,
+      "2521": 1,
+      "3082": 1,
+      "3325": 1,
+      "3558": 1,
+      "3672": 1
+    },
+    "radionova": {
+      "9": 3,
+      "0": 1,
+      "1014": 1,
+      "1055": 1,
+      "1674": 1,
+      "1875": 1,
+      "1922": 1,
+      "1959": 1,
+      "2222": 1,
+      "2460": 1,
+      "3651": 1,
+      "3909": 1,
+      "3913": 1,
+      "4905": 1,
+      "5": 1
+    },
+    "rats": {
+      "9": 5,
+      "10": 1,
+      "3817": 1,
+      "4": 1,
+      "4047": 1,
+      "5": 1,
+      "78": 1
+    },
+    "rdc": {
+      "5": 3,
+      "9": 2,
+      "1815": 1,
+      "2548": 1,
+      "4353": 1,
+      "50": 1,
+      "525": 1,
+      "8": 1,
+      "96": 1
+    },
+    "reconquete": {
+      "4": 1
+    },
+    "rmc": {
+      "4": 2,
+      "9": 1
+    },
+    "rn": {
+      "9": 4,
+      "1697": 1,
+      "2480": 1,
+      "3558": 1,
+      "4": 1,
+      "4864": 1,
+      "5": 1
+    },
+    "rothschild": {
+      "4": 2
+    },
+    "rtlmatin": {
+      "9": 2
+    },
+    "santé": {
+      "9": 38,
+      "5": 13,
+      "4": 10,
+      "17": 7,
+      "8": 5,
+      "0": 3,
+      "12": 2,
+      "35": 2,
+      "1111": 1,
+      "1128": 1,
+      "1284": 1,
+      "130": 1,
+      "1313": 1,
+      "1323": 1,
+      "14": 1,
+      "1599": 1,
+      "1650": 1,
+      "1697": 1,
+      "1786": 1,
+      "1814": 1,
+      "1833": 1,
+      "1928": 1,
+      "2146": 1,
+      "2175": 1,
+      "2211": 1,
+      "2243": 1,
+      "2480": 1,
+      "2486": 1,
+      "2511": 1,
+      "2526": 1,
+      "2601": 1,
+      "262": 1,
+      "2664": 1,
+      "270": 1,
+      "2787": 1,
+      "2790": 1,
+      "2853": 1,
+      "2963": 1,
+      "3197": 1,
+      "3352": 1,
+      "347": 1,
+      "352": 1,
+      "3584": 1,
+      "3609": 1,
+      "3661": 1,
+      "3682": 1,
+      "3763": 1,
+      "385": 1,
+      "3862": 1,
+      "388": 1,
+      "3971": 1,
+      "4042": 1,
+      "406": 1,
+      "41": 1,
+      "4143": 1,
+      "4163": 1,
+      "417": 1,
+      "4185": 1,
+      "42": 1,
+      "4225": 1,
+      "4250": 1,
+      "4350": 1,
+      "4494": 1,
+      "4497": 1,
+      "4510": 1,
+      "4561": 1,
+      "4611": 1,
+      "4755": 1,
+      "4839": 1,
+      "4884": 1,
+      "4919": 1,
+      "50": 1,
+      "671": 1,
+      "949": 1
+    },
+    "santépublique": {
+      "9": 13,
+      "4": 4,
+      "101": 1,
+      "1128": 1,
+      "1697": 1,
+      "1815": 1,
+      "2146": 1,
+      "2250": 1,
+      "2275": 1,
+      "262": 1,
+      "2806": 1,
+      "3491": 1,
+      "3536": 1,
+      "4297": 1,
+      "4358": 1,
+      "4561": 1,
+      "4619": 1,
+      "4643": 1,
+      "4674": 1,
+      "867": 1
+    },
+    "scam": {
+      "5": 5,
+      "12": 1,
+      "2": 1
+    },
+    "sionistes": {
+      "9": 1
+    },
+    "soignantssuspendus": {
+      "5": 1
+    },
+    "stopscam": {
+      "10": 1,
+      "41": 1,
+      "5": 1
+    },
+    "suprémaciste": {
+      "9": 1
+    },
+    "surleterrain": {
+      "9": 1
+    },
+    "surmulots": {
+      "9": 2,
+      "165": 1,
+      "4": 1
+    },
+    "tbt9": {
+      "9": 19,
+      "4": 4,
+      "8": 2,
+      "1332": 1,
+      "2830": 1,
+      "38": 1,
+      "4582": 1,
+      "4694": 1
+    },
+    "tenerife": {
+      "9": 8,
+      "0": 1,
+      "12": 1,
+      "1257": 1,
+      "14": 1,
+      "165": 1,
+      "4965": 1,
+      "5": 1
+    },
+    "tf1": {
+      "9": 5,
+      "2367": 1,
+      "4": 1,
+      "5": 1,
+      "8": 1
+    },
+    "tf1info": {
+      "9": 2
+    },
+    "tiktok": {
+      "4": 7,
+      "5": 4,
+      "2": 1,
+      "2857": 1,
+      "29": 1,
+      "3486": 1,
+      "4022": 1,
+      "4049": 1,
+      "406": 1,
+      "4513": 1
+    },
+    "toutestpolitique": {
+      "9": 1
+    },
+    "transmission": {
+      "130": 1,
+      "165": 1,
+      "3584": 1,
+      "3779": 1,
+      "4042": 1,
+      "4696": 1,
+      "9": 1
+    },
+    "tropheesunfp": {
+      "9": 3,
+      "5": 2,
+      "1014": 1,
+      "1185": 1,
+      "1674": 1,
+      "1875": 1,
+      "1959": 1,
+      "2460": 1,
+      "3547": 1,
+      "3651": 1,
+      "3909": 1,
+      "3913": 1,
+      "4406": 1,
+      "4582": 1,
+      "4905": 1,
+      "4913": 1
+    },
+    "trump": {
+      "9": 14,
+      "5": 6,
+      "130": 1,
+      "2381": 1,
+      "2480": 1,
+      "38": 1,
+      "4784": 1,
+      "4966": 1,
+      "825": 1
+    },
+    "udr": {
+      "4": 1
+    },
+    "ukraine": {
+      "5": 4,
+      "17": 1,
+      "2": 1,
+      "2381": 1,
+      "4170": 1
+    },
+    "unfp": {
+      "5": 3,
+      "9": 3,
+      "1185": 1,
+      "1377": 1,
+      "1922": 1,
+      "1959": 1,
+      "3547": 1,
+      "4": 1,
+      "4905": 1
+    },
+    "usa": {
+      "9": 7,
+      "5": 5,
+      "0": 1,
+      "2175": 1,
+      "2601": 1,
+      "2743": 1,
+      "299": 1,
+      "3682": 1,
+      "4047": 1,
+      "4966": 1
+    },
+    "vaccin": {
+      "5": 9,
+      "9": 9,
+      "4": 4,
+      "0": 1,
+      "165": 1,
+      "17": 1,
+      "2064": 1,
+      "2466": 1,
+      "2795": 1,
+      "341": 1,
+      "439": 1,
+      "4403": 1,
+      "4855": 1,
+      "8": 1
+    },
+    "vaccine": {
+      "4": 1,
+      "5": 1
+    },
+    "vaccins": {
+      "4": 7,
+      "5": 6,
+      "9": 2,
+      "165": 1,
+      "2968": 1,
+      "341": 1,
+      "3817": 1
+    },
+    "vascularites": {
+      "5": 1
+    },
+    "veran": {
+      "9": 3,
+      "5": 1
+    },
+    "virus": {
+      "9": 33,
+      "5": 13,
+      "4": 7,
+      "17": 5,
+      "0": 4,
+      "8": 3,
+      "1337": 1,
+      "1597": 1,
+      "1628": 1,
+      "165": 1,
+      "1697": 1,
+      "1786": 1,
+      "1965": 1,
+      "2146": 1,
+      "2175": 1,
+      "2345": 1,
+      "2418": 1,
+      "262": 1,
+      "2853": 1,
+      "2857": 1,
+      "2863": 1,
+      "2963": 1,
+      "299": 1,
+      "3005": 1,
+      "3393": 1,
+      "3403": 1,
+      "341": 1,
+      "3463": 1,
+      "35": 1,
+      "3500": 1,
+      "352": 1,
+      "3546": 1,
+      "3550": 1,
+      "3584": 1,
+      "3609": 1,
+      "368": 1,
+      "3763": 1,
+      "3819": 1,
+      "3886": 1,
+      "3922": 1,
+      "3971": 1,
+      "4033": 1,
+      "4047": 1,
+      "406": 1,
+      "4157": 1,
+      "4183": 1,
+      "4606": 1,
+      "4611": 1,
+      "78": 1,
+      "905": 1
+    },
+    "wha79": {
+      "9": 4,
+      "5": 1
+    },
+    "who": {
+      "5": 4,
+      "9": 2,
+      "12": 1,
+      "1257": 1,
+      "3463": 1,
+      "35": 1,
+      "3758": 1,
+      "4185": 1
+    },
+    "yassouk": {
+      "9": 1
+    },
+    "épidémie": {
+      "9": 7,
+      "0": 2,
+      "4": 2,
+      "10": 1,
+      "165": 1,
+      "1757": 1,
+      "2146": 1,
+      "2243": 1,
+      "2853": 1,
+      "2929": 1,
+      "3584": 1,
+      "3682": 1,
+      "3779": 1,
+      "4042": 1,
+      "4439": 1,
+      "5": 1
+    }
   }
 }

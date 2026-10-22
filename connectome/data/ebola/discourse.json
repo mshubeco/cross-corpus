@@ -2,10 +2,11 @@
   "meta": {
     "cluster": "Ebola · mai 2026",
     "corpus": "ebola",
-    "window": null,
-    "source": "ebola_profiles.json + graph communities90 + CSV effectifs # (Export_dl_ebola_corpus_ebola_fr_2014_2026_20260507-20260519_full_20260824_114335.csv)",
+    "source": "ebola_profiles.json + graph communities90 + CSV enrich # (Export_dl_ebola_corpus_ebola_fr_2014_2026_20260507-20260519_full_20260824_114335.csv)",
     "keyness": "z log-odds (profiles intercomm) vs reste du graphe",
     "tag_accounts_def": "Comptes du graphe ayant publié hors RT au moins un message portant le hashtag (champ hashtag + # dans le texte).",
+    "tag_cooccur_def": "Co-occurrence message (hors RT) : autres # dans le même message.",
+    "tag_comm_n_def": "Comptes distincts du graphe ayant utilisé le #, par communauté Louvain.",
     "limit": "Label opérationnel fondé sur lexique distinctif (z) / structure / échantillons — pas une appartenance partisane des comptes ordinaires."
   },
   "communities": {
@@ -83,22 +84,22 @@
           "tag": ""
         },
         {
-          "sn": "sante_gouv",
-          "text": "#Hantavirus | Toute l’actualité en direct est accessible sur notre site internet ⤵️ https://t.co/cLjCW8G5sv https://t.co/7h3rpzKMAk",
-          "at": "2026-05-15",
-          "tag": "hantavirus"
+          "sn": "annelisebocquet",
+          "text": "@verity_france @b_scotto Non... moi, je me demanderai pourquoi d'abord Hantavirus puis Ebola ? Chronologie précise... 1. Hantavirus Andes : - Départ du bateau d’Ushuaia (Argentine) : 1er avril 2026. - Premier cas symptomatique : 6 avril 2026 (décès le 11 avril). - Notification of",
+          "at": "2026-05-17",
+          "tag": ""
         },
         {
-          "sn": "sencolere",
-          "text": "@FredGaulois Oui et gageons que quand cette nouvelle arnaque #hantavirus tombera à l’eau, plouf💦le narratif se tournera probablement vers un dur de dur qui fait peur, comme Ebola, dont la transmission est sensiblement identique à hantavirus, donc TRÈS PEU contagieux!",
-          "at": "2026-05-08",
-          "tag": "hantavirus"
+          "sn": "letempsdesbises",
+          "text": "recoupent ne font pas l’objet d’une cartographie plus approfondie ? Car la tendance qui se dessine est la suivante : ▪️ 2013–2014 : Réponse à la crise Ebola, systèmes de distribution de la Banque mondiale, Libéria/Afrique de l’Ouest, accélération de la mise au point de vaccins,",
+          "at": "2026-05-17",
+          "tag": ""
         },
         {
-          "sn": "sencolere",
-          "text": "La question que je me pose désormais est la suivante: vu que l’arnaque/escroquerie #hantavirus à beaucoup de mal à prendre, quelle sera la prochaine «star microbienne🦠» à sortir du cerveau dégénéré du système qui rêve de pouvoir absolu: Ebola?Peste bubonique? Anthrax ? Rhume 🤨?",
-          "at": "2026-05-12",
-          "tag": "hantavirus"
+          "sn": "letempsdesbises",
+          "text": "UKE Hambourg / Marylyn Addo. ▪️ Plus tard : Julia Port passe par la médecine tropicale allemande — Lübeck, Bernhard Nocht / Hambourg — pour rejoindre les Rocky Mountain Labs / BatOneHealth. ▪️ RML/BatOneHealth : Vincent Munster, Claude Kwe Yinda, Julia Port — virus des chauves-",
+          "at": "2026-05-17",
+          "tag": ""
         }
       ],
       "n_users": 2819,
@@ -172,22 +173,22 @@
           "tag": ""
         },
         {
-          "sn": "paulnewmanfr",
-          "text": "L'OMS sait que Hantavirus est trop faible pour une pandémie mondiale. Et seuls le Canada et l'Australie auraient été assez corrompus pour rejouer le Nazisme des confinements de l'ère Covid L OMS passe à Ebola qu il a créé, et déclaré urgence de santé mondiale. L'#OMS terroriste !",
-          "at": "2026-05-18",
-          "tag": "oms"
+          "sn": "malibusmurf",
+          "text": "@_h16 @LCI @BrandonWaret Cela dit une epidemie d'ebola ca aurait de la geule. Il faudrait plus de place en rayon dans les magasins pour les costumes hazmat qu'avec les masques papiers, mais il faut se donner les moyens de ses ambitions. https://t.co/k8BKPAdiMg",
+          "at": "2026-05-17",
+          "tag": ""
         },
         {
-          "sn": "mailletlucien",
-          "text": "Ah bon, l'industrie pharmaceutique n'a pas encore un \"vaccin\" à nous proposer c'est étonnant ! Gageons que cette lacune va bientôt être comblée, si il y a un domaine où l'on peut faire confiance aux labos c'est bien celui là. #hantavirus #Ebola #France https://t.co/SodtH18PUZ",
-          "at": "2026-05-18",
-          "tag": "hantavirus"
-        },
-        {
-          "sn": "kiki2laro",
-          "text": "L'#Hantavirus a fait un flop : comprenez plus assez bankable dans le marché concurrentiel du sensationnalisme #conspi. Heureusement, #Ebola arrive pour relancer la saison. @f_philippot et @DidierMaisto sont déjà sur le coup. https://t.co/zQK9oCTDum",
+          "sn": "pralinecucula",
+          "text": "@f_philippot oui, ça y ressemble, ils ont embrayé directement en 24h sur Ebola ! Mdr",
           "at": "2026-05-16",
-          "tag": "hantavirus"
+          "tag": ""
+        },
+        {
+          "sn": "purplehaze53",
+          "text": "@MontesYal @f_philippot Ebola pseudo virus ? T’es aussi nul en virologie qu’en matière de défense de tes clients, Di Vizio.",
+          "at": "2026-05-17",
+          "tag": ""
         }
       ],
       "n_users": 1885,
@@ -265,22 +266,22 @@
           "tag": ""
         },
         {
-          "sn": "sautodidacte",
-          "text": "Alerte info : #Orthohantavirus #hantavirus #Mammarenavirus #ebola C'est horrible! Tous les virus se réveillent un peu partout dans le monde. Nous y sommes, c'est ce que je craignais, mais c'était aussi prévisible pour ceux qui ont du bon sens comme moi https://t.co/U2fyWsahKr",
-          "at": "2026-05-15",
-          "tag": "hantavirus"
-        },
-        {
-          "sn": "sautodidacte",
-          "text": "Alerte info : Planquez vous ! Une nouvelle souche d'ébola à muté et émerge #Orthohantavirus #hantavirus #Mammarenavirus #ebola C'est horrible! La souche «Bundibugyo» d'Ebola «n'a aucun vaccin, aucun médicament disponible» https://t.co/tdpL4yXHoO",
+          "sn": "planetes360",
+          "text": "La FRANCE perd la RAISON : 20 MILLIONS de masques pour un virus de RONGEURS ! | GPTV https://t.co/4JkbZSW3H1",
           "at": "2026-05-16",
-          "tag": "hantavirus"
+          "tag": ""
         },
         {
-          "sn": "ikiriho",
-          "text": "Santé publique | Grands Lacs | 🇧🇮 #Burundi 🚨#Ebola en #RDC: la région sous tension sanitaire La République démocratique du Congo fait face à sa 17ᵉ épidémie d’Ebola, concentrée dans l’Est du pays. Plus de 300 cas suspects et plus de 80 décès ont déjà été signalés, avec une https:",
-          "at": "2026-05-18",
-          "tag": "rdc"
+          "sn": "po_frenette",
+          "text": "@JdeMontreal Tant qu’a avoir peur, parler du Ebola",
+          "at": "2026-05-09",
+          "tag": ""
+        },
+        {
+          "sn": "politicoeurope",
+          "text": "The World Health Organization has declared a global health emergency over the Ebola outbreak that has killed a suspected 80 people in the Democratic Republic of Congo. https://t.co/Q5v9zVLpqK",
+          "at": "2026-05-17",
+          "tag": ""
         }
       ],
       "n_users": 1465,
@@ -325,6 +326,22 @@
         {
           "tag": "goma",
           "g2": 2.2
+        },
+        {
+          "tag": "mongwalu",
+          "g2": 2.2
+        },
+        {
+          "tag": "cousp",
+          "g2": 2.05
+        },
+        {
+          "tag": "ouganda",
+          "g2": 1.87
+        },
+        {
+          "tag": "butembo",
+          "g2": 1.83
         }
       ],
       "key_words": [
@@ -379,19 +396,19 @@
           "sn": "pbeyok",
           "text": "Ebola en #RDC 🇨🇩 : l’#OMS annonce un cas confirmé à Kinshasa, tandis que le ministère de la Santé et l’#INRB démentent la présence d’un malade dans la capitale. Confusion autour de la communication officielle ? #ebolardc #ebolaoutbreak #ebolavirus #ebolafight #drcnews https://t.c",
           "at": "2026-05-17",
-          "tag": "inrb"
+          "tag": "ebolaoutbreak"
         },
         {
           "sn": "maozigabe",
           "text": "#RDC : #EBOLA : « SUR LES 17 ÉPIDÉMIES , 15 ONT ÉTÉ GÉRÉES SANS VACCIN NI TRAITEMENT » , DOCTEUR MUYEMBE À @ACTUALITECD https://t.co/98eWzTUQAP",
           "at": "2026-05-17",
-          "tag": "rdc"
+          "tag": "ebola"
         },
         {
           "sn": "peroluwara1",
           "text": "#Rdc Une nouvelle épidémie d’Ebola est en cours en #Ituri, au nord-est de la #Rdc. Plusieurs échantillons analysés par les équipes de l’Institut national de recherches biomédicales de Kinshasa, #INRB, ont été déclarés positifs à la souche dite de « Bundibugyo ». Selon le https://",
           "at": "2026-05-16",
-          "tag": "inrb"
+          "tag": "rdc"
         },
         {
           "sn": "peroluwara1",
@@ -424,6 +441,24 @@
           "sn": "zde0000",
           "text": "Y'a ebola en France mais il préfère participer à top chef all stars https://t.co/rNveKkIP7Q",
           "at": "2026-05-12",
+          "tag": ""
+        },
+        {
+          "sn": "clubberlang8888",
+          "text": "@zde0000 Ebola de rien du tout",
+          "at": "2026-05-13",
+          "tag": ""
+        },
+        {
+          "sn": "insouuu__",
+          "text": "@zde0000 xptddddrrr ebola js sciée",
+          "at": "2026-05-14",
+          "tag": ""
+        },
+        {
+          "sn": "jax_rebellion",
+          "text": "@zde0000 Y a Ebola marché de l'emploi fichu et ce fdp joue a cooking mama",
+          "at": "2026-05-13",
           "tag": ""
         }
       ],
@@ -485,10 +520,22 @@
           "tag": ""
         },
         {
-          "sn": "ivanrioufol",
-          "text": "L'#hantavirus réactive la fabrique de la peur Les fabricants de peurs ont repris leur commerce. Six ans après l’épisode du #Covid, avec son hystérie hygiéniste et ses docteurs Folamour, les mêmes médecins reviennent sur les plateaux des télévisions. Certains y annoncent déjà",
-          "at": "2026-05-13",
-          "tag": "hantavirus"
+          "sn": "pointequilibre",
+          "text": "L’épidémie soudaine de « hantavirus » est-elle en réalité une couverture de l’État profond pour quelque chose de bien plus MORTEL ? Le virologue anti-Trump Vincent Munster a récemment été pris en flagrant délit de contrebande de pathogènes semblables à EBOLA depuis l’Afrique http",
+          "at": "2026-05-16",
+          "tag": ""
+        },
+        {
+          "sn": "pres_reine",
+          "text": "Bon, ils sont en forme ça l’air, c’est parti sur un autre truc. La méningite… et j’ai vue aussi passer l’ébola. 😅 https://t.co/pVEZxgFCkW",
+          "at": "2026-05-15",
+          "tag": ""
+        },
+        {
+          "sn": "pres_reine",
+          "text": "1- ici pour l’ebola… https://t.co/2ulTIh0Zxd",
+          "at": "2026-05-15",
+          "tag": ""
         }
       ],
       "n_users": 1061,
@@ -610,6 +657,96 @@
     }
   },
   "tag_accounts": {
+    "afc": [
+      "7sur7magazine",
+      "afrikarabia",
+      "grandslacsnews",
+      "humpla",
+      "maozigabe"
+    ],
+    "africacdc": [
+      "actuniger",
+      "africtelegraph",
+      "akmoumouni",
+      "de_la8183",
+      "drcuganda",
+      "gloirebalolage9",
+      "lequotidien509",
+      "mauritiuscapita",
+      "rtvh103",
+      "syndicaterss"
+    ],
+    "afrique": [
+      "aagendanews",
+      "actuniger",
+      "africtelegraph",
+      "akmoumouni",
+      "algeriafaradase",
+      "annaharfr",
+      "donatien_nabo",
+      "dr_victormanda",
+      "dworaczekbendom",
+      "francetrisser",
+      "gautamainhp",
+      "getchtchern",
+      "gloirebalolage9",
+      "humetcit",
+      "info241_",
+      "lakivu70875",
+      "maliactu",
+      "mauritiuscapita",
+      "ncatv26",
+      "pourquoidocteur",
+      "pres_reine",
+      "rkasamba96",
+      "syndicaterss",
+      "zeneba_saleh"
+    ],
+    "alerteinfo": [
+      "insprdc",
+      "quedieubenisse"
+    ],
+    "bfmtv": [
+      "1graindefolie",
+      "dijkzee",
+      "frederichonore1",
+      "guymanmins",
+      "lamnidae62",
+      "makhloufieric",
+      "p83_jean"
+    ],
+    "bukavu": [
+      "justinnkumbarhi",
+      "juvenoscar",
+      "lakivu70875"
+    ],
+    "bundibugyo": [
+      "africtelegraph",
+      "afrikarabia",
+      "alimaong",
+      "bobomokonzi",
+      "elie_kashama",
+      "ericfarfour",
+      "fmlarousse",
+      "gloirebalolage9",
+      "helenbranswell",
+      "herodote1789",
+      "humpla",
+      "icibeyrouthnews",
+      "kiro_merveilles",
+      "maozigabe",
+      "marcusloika",
+      "mazambogaspard",
+      "michombero",
+      "omsrdcongo",
+      "ongeayaga",
+      "pascal_mulegwa",
+      "polelenews",
+      "rajlabn",
+      "victorkith",
+      "vifederdc1",
+      "wembi_steve"
+    ],
     "bunia": [
       "243afro12253",
       "acprdcongo",
@@ -643,6 +780,556 @@
       "radiookapi",
       "rec_news1",
       "sergesindani01",
+      "tazamardc_infos"
+    ],
+    "butembo": [
+      "afrikarabia",
+      "blaisebasabose",
+      "buniaactualite",
+      "elie_kashama",
+      "greatdreamdrc",
+      "hangijospin",
+      "heritierbarak",
+      "mondeinfo243",
+      "mukengerej",
+      "pbeyok",
+      "tazamardc_infos",
+      "volcansles",
+      "wembi_steve"
+    ],
+    "congo": [
+      "370films",
+      "afriquinfosactu",
+      "akhbaralyawm",
+      "albcontact",
+      "algeriafaradase",
+      "byobe_malenga",
+      "coyitungiy78935",
+      "emmanuel_ndume",
+      "fmlarousse",
+      "france24_fr",
+      "francenews24",
+      "frank3264465441",
+      "gomalac0",
+      "icibeyrouthnews",
+      "jacquesvagheni",
+      "lakivu70875",
+      "lecanape2",
+      "msp_burundi",
+      "petesamperas",
+      "petitpalois64",
+      "pourquoidocteur",
+      "pulseactus",
+      "saliharazgui",
+      "viaouest_fr"
+    ],
+    "conspi": [
+      "kiki2laro"
+    ],
+    "coronavirus": [
+      "agretdenis"
+    ],
+    "cousp": [
+      "insprdc",
+      "pascal_mulegwa",
+      "tazamardc_infos",
+      "vanmutoka1"
+    ],
+    "covid": [
+      "_lebeauf",
+      "agretdenis",
+      "charlespelayo9",
+      "crudimusic",
+      "ivanrioufol",
+      "nicolasberrod",
+      "nonetubetv",
+      "olivierrimmel",
+      "regueyne",
+      "winny5151",
+      "x_particulier"
+    ],
+    "ebola": [
+      "243afro12253",
+      "24heures_sante",
+      "370films",
+      "_lebeauf",
+      "aagendanews",
+      "abrahamkweto",
+      "acprdcongo",
+      "actualitecd",
+      "actuniger",
+      "actuspherelb",
+      "ad_vitam44_",
+      "afh_drc",
+      "afrc_initiative",
+      "africa54infos",
+      "africa_univers",
+      "africtelegraph",
+      "afrikarabia",
+      "afriquepacifiq",
+      "afriquinfosactu",
+      "aganzematthias",
+      "agretdenis",
+      "ahramhebdo",
+      "aifintechsupera",
+      "aiglemagazine",
+      "akhbaralyawm",
+      "akmoumouni",
+      "al24francais",
+      "albcontact",
+      "algeriafaradase",
+      "alimaong",
+      "amistl57",
+      "amourimani31503",
+      "anascrdc51946",
+      "ankingicd",
+      "annaharfr",
+      "anticovidiano74",
+      "apa_news",
+      "arthur_61932",
+      "as27actu",
+      "asblaspp",
+      "asblcomfor44668",
+      "askofumobali",
+      "asnews01",
+      "augustinsadiki1",
+      "auroreitalie",
+      "authentikcd",
+      "autruicomoi",
+      "avicohen20",
+      "awazidr",
+      "ayiidongd47418",
+      "azga_shachikere",
+      "b_one_tv_info",
+      "bakadifuilachri",
+      "bashizialain",
+      "beatricelbb",
+      "benbulambo",
+      "benc_85",
+      "beninipashe",
+      "benoitmputu",
+      "betordc",
+      "bishopnational",
+      "bobomokonzi",
+      "boyomainfos",
+      "buniaactualite",
+      "byobe_malenga",
+      "cacap_news",
+      "candidekipulu",
+      "caprices2riches",
+      "caredrc",
+      "catfiankbok",
+      "caudehenrion",
+      "chachoulgate",
+      "charlequinkank",
+      "charlespelayo9",
+      "checkcongo",
+      "cheikhahmedfall",
+      "chouchou4759",
+      "chris_kabanga",
+      "christal00243",
+      "chronikeco34789",
+      "cibalwiraglordy",
+      "claudarnaud",
+      "complet99976",
+      "congo1cd",
+      "congo7en_",
+      "congo_monde",
+      "congob430777",
+      "congoveritetop",
+      "coyitungiy78935",
+      "crudimusic",
+      "cyrillemilandou",
+      "d18275206",
+      "dagonewsreader",
+      "danielsang78583",
+      "datphamtha91354",
+      "davengonde",
+      "david27952981",
+      "davidaluta59758",
+      "davidlupemba2",
+      "dbangala",
+      "de_bevec",
+      "de_la8183",
+      "defimediainfo",
+      "delphino12",
+      "deputeeestelle",
+      "derickkatola",
+      "dieu38905963",
+      "dieuson1",
+      "divcirim",
+      "djeliba3455",
+      "docpalfrancesc2",
+      "donatien_nabo",
+      "dr_jimmynicedem",
+      "dr_victormanda",
+      "drc_sci",
+      "drdash250",
+      "drtedros",
+      "dryan_bensoff",
+      "echangenet",
+      "echocdnews",
+      "ekatoto",
+      "eliabadjo",
+      "elie_kashama",
+      "ellyjuneuk",
+      "emmanuel_ndume",
+      "enpaknews",
+      "environews_rdc",
+      "ericbillyfr",
+      "ericfarfour",
+      "espritia_news",
+      "etienneb1",
+      "fabiencikuru",
+      "fabricelukamba",
+      "factgrandlacs",
+      "fanclublouisdor",
+      "fanmarine14",
+      "fayau1",
+      "fcl6944",
+      "fellymbula3",
+      "fesedasbl",
+      "fistonissemwami",
+      "fmlarousse",
+      "focusdroits",
+      "forumdesas1",
+      "fout_sen",
+      "france24_fr",
+      "franceafric_",
+      "franceinfo",
+      "francenews24",
+      "francetrisser",
+      "franckyeng19878",
+      "frank3264465441",
+      "fredmastaki6",
+      "frlangard",
+      "fsr243",
+      "ftkmmnl1",
+      "gautamainhp",
+      "gdnews25",
+      "generalfixao",
+      "georgeskisando",
+      "gh813600",
+      "ghislain_wat",
+      "gillescote36422",
+      "gillesklein",
+      "gloirebalolage9",
+      "gomalac0",
+      "grandslacsnews",
+      "greatdreamdrc",
+      "gregoryfiori",
+      "grisou97160",
+      "groupegabontv",
+      "gubeteka",
+      "gueuxgone",
+      "guinee28info",
+      "gusephpisciotta",
+      "gxxgf2a9hfmmqw6",
+      "hadriendemeure",
+      "hamamamedia",
+      "hangijospin",
+      "helenbranswell",
+      "heritierbarak",
+      "herodote1789",
+      "hobabfils",
+      "hubertcoster",
+      "humetcit",
+      "humpla",
+      "husseintwaibur",
+      "icibeyrouthnews",
+      "idriss_mh7",
+      "ikiriho",
+      "imicokamaradio",
+      "info241_",
+      "informationssf",
+      "infos7cd",
+      "infosdufasmhny",
+      "infosfrancaises",
+      "infosplus_rdc",
+      "innobuchu",
+      "innovartechnet",
+      "inrb_kinshasa",
+      "insprdc",
+      "iomindrc",
+      "iris1164",
+      "irisnews_",
+      "irkyalondawadan",
+      "islamdanger13",
+      "islamic593554",
+      "j31883junior",
+      "jacklove_any",
+      "jacquesvagheni",
+      "james946733197",
+      "jamesdrew196092",
+      "javichu73",
+      "jaydjuma1",
+      "jb_michot",
+      "jcgaleazzi",
+      "jean_kisole",
+      "jeancy_mulenda",
+      "jeanluc1477859",
+      "jeanphi01",
+      "jempiou",
+      "jerrymatsoro",
+      "jlgervaise",
+      "jlutete20",
+      "jmchataigner",
+      "johnbusomoke",
+      "josly_ngoma",
+      "journaldesnati1",
+      "journalistessf",
+      "jugumila20",
+      "junior576ledy",
+      "justinmakangara",
+      "juvenoscar",
+      "kahongo_joseph",
+      "kalonjitv",
+      "kamweta75",
+      "katsuva_r",
+      "kelvinlukula",
+      "ketan72",
+      "kiki2laro",
+      "kimkimuntu",
+      "kiro_merveilles",
+      "kis24info",
+      "kivu7media",
+      "kivumorningpost",
+      "kivunewstoday",
+      "koppjacques",
+      "kronikinsights",
+      "krutikakuppalli",
+      "kwetubest",
+      "kwezifaustin1",
+      "lafaitd",
+      "lakivu70875",
+      "lalibrevoix18",
+      "lamnidae62",
+      "lampaerte",
+      "lanationbenin",
+      "lanceuri",
+      "lanmanu327",
+      "laune_rw",
+      "laurenceputih",
+      "lbakamana13",
+      "lcensur",
+      "le212news",
+      "lebulletinrdc",
+      "ledevoir",
+      "lejournalafrica",
+      "lematinpointma",
+      "lepartidesidees",
+      "lepretretony",
+      "lequotidien509",
+      "lesaviezvousqt",
+      "leseptieme777",
+      "lesnews",
+      "letempsdesbises",
+      "lewis_nshu2833",
+      "lianza_france7",
+      "life_info__",
+      "ligodipatient",
+      "lindamapen80738",
+      "lintervieweurcd",
+      "lntribune",
+      "logosinstitute_",
+      "luumieremedia",
+      "magazinejimbere",
+      "magazinepj",
+      "mailletlucien",
+      "malembesoraya",
+      "maliactu",
+      "mamanimamaasbl",
+      "mambuenindangi",
+      "manonbymanon_",
+      "maozigabe",
+      "mapendanomuroha",
+      "marcgozlan",
+      "marcusloika",
+      "martinteral",
+      "mauritiuscapita",
+      "mazambogaspard",
+      "mbapbourse",
+      "mbulukumoise",
+      "mbuyimichael71",
+      "mcr4s",
+      "medairfr",
+      "medi1tvafrique",
+      "mediacongo",
+      "medias4peace",
+      "mentalityzone",
+      "michombero",
+      "mimouni_jamila",
+      "miningbusinessm",
+      "mondeinfo243",
+      "mongongonews1",
+      "monusco",
+      "morandiniblog",
+      "mpukuta_chris",
+      "msf_france",
+      "msf_westafrica",
+      "msfcongo",
+      "msp_burundi",
+      "mugishahv",
+      "muhindokisonia1",
+      "mukengerej",
+      "mulikuza_jordan",
+      "mwaiyanga1",
+      "mwebembezielly",
+      "mystic_cayman",
+      "naomiecirimwami",
+      "narmerbis",
+      "nathanaell67",
+      "ncatv26",
+      "ndoolejunior",
+      "nettech9238",
+      "neutreolivier",
+      "neveuxbertrand",
+      "newscd15",
+      "nicksonmanzeke1",
+      "nicolasberrod",
+      "nonetubetv",
+      "nyakuraelu",
+      "nyamuhombeza",
+      "nyembo1040765",
+      "oddnewsburundi",
+      "olivierkyemba23",
+      "olivierrimmel",
+      "oms_afrique",
+      "omsrdcongo",
+      "ongeayaga",
+      "onugeneve",
+      "onuinfo",
+      "ospdu1",
+      "pandaseiju",
+      "pascal_mulegwa",
+      "pascamushi",
+      "passymubalama",
+      "patricketric",
+      "pauvreencolere",
+      "pbeyok",
+      "petesamperas",
+      "pierreemma69315",
+      "pms_pamoja",
+      "pngangambo",
+      "polelenews",
+      "pombesymphorien",
+      "pontazfr",
+      "pourgenre",
+      "pourquoidocteur",
+      "pres_reine",
+      "presse83_fr",
+      "princebagheni",
+      "profjanabi",
+      "promoboombastic",
+      "ptfukushima",
+      "pulsefrinfo",
+      "pyousseficrc",
+      "radiookapi",
+      "rajlabn",
+      "rec_news1",
+      "reelactu",
+      "reformecd",
+      "regueyne",
+      "rev_de_presse",
+      "revelationcanal",
+      "ricardoinvest_",
+      "robzezpierre",
+      "rogerkamba",
+      "roland_mimingoy",
+      "rosemathe4",
+      "rtvh103",
+      "sai_monde",
+      "salekon2antifa",
+      "saliharazgui",
+      "samagace7",
+      "saturnindidier",
+      "sautodidacte",
+      "sbatukwa",
+      "selpasbl",
+      "sergeireng25",
+      "sergemavungu71",
+      "sergesindani01",
+      "seydoukabokkmf",
+      "shakabaudouin",
+      "silimusympho",
+      "skinkumba20505",
+      "slanteyequant",
+      "smupfuni",
+      "smwanamilongo1",
+      "sngesso30676",
+      "somamedialab",
+      "stanysbujakera",
+      "staracnews25",
+      "stephanie_rist",
+      "steven_kabang",
+      "stoiciensky",
+      "syldube59",
+      "syndicaterss",
+      "taristote64366",
+      "tazamardc_infos",
+      "tbibaque",
+      "teddymfitu",
+      "telemaofficiels",
+      "thailandmedicax",
+      "timkamanga",
+      "tokwauluaena2",
+      "tontonkomrad",
+      "tonyantoine13",
+      "topcongo",
+      "tresorkanda2",
+      "tripam17",
+      "trompette915894",
+      "tsongojona83437",
+      "twirwanehomoise",
+      "twittl12",
+      "uelenews",
+      "unicef_burundi",
+      "unicefdrc",
+      "vanmutoka1",
+      "vanneur",
+      "verity_france",
+      "viaouest_fr",
+      "victoirembuto",
+      "victorkith",
+      "vivianelamarle1",
+      "vlautard",
+      "volcansles",
+      "walawpress",
+      "wanneltv",
+      "webdo_tn",
+      "wembi_steve",
+      "wenbash",
+      "wfpdrc",
+      "who",
+      "whoafro",
+      "winny5151",
+      "x_particulier",
+      "x_umututu",
+      "xpmedia69",
+      "yabiladi_fr",
+      "yangotika2",
+      "yannicksimonin",
+      "yello777",
+      "zadigobb",
+      "zamzamfaruku",
+      "zeneba_saleh",
+      "zolanews_net",
+      "zolaview_fr",
+      "zoom_eco"
+    ],
+    "flash": [
+      "volcansles"
+    ],
+    "gisenyi": [
+      "authentic360cd",
+      "danielsang78583",
+      "fmlarousse",
+      "georgeskisando",
+      "lakivu70875",
+      "lalibrevoix18",
+      "maozigabe",
+      "michombero",
+      "nyamuhombeza",
       "tazamardc_infos"
     ],
     "goma": [
@@ -775,6 +1462,13 @@
       "vlautard",
       "xpmedia69"
     ],
+    "hdpros": [
+      "charlybarbet",
+      "cnews",
+      "crudimusic",
+      "laurenceputih",
+      "lucyboregard973"
+    ],
     "inrb": [
       "inrb_kinshasa",
       "maozigabe",
@@ -893,6 +1587,126 @@
       "wembi_steve",
       "zoom_eco"
     ],
+    "kamba": [
+      "congo_monde",
+      "fmlarousse"
+    ],
+    "kampala": [
+      "fmlarousse",
+      "georgeskisando",
+      "pbeyok"
+    ],
+    "katwa": [
+      "afrikarabia",
+      "elie_kashama"
+    ],
+    "kinshasa": [
+      "acprdcongo",
+      "beninipashe",
+      "cnews561696c",
+      "complet99976",
+      "derickkatola",
+      "fmlarousse",
+      "infos7cd",
+      "insprdc",
+      "kalonjitv",
+      "lakivu70875",
+      "lianza_france7",
+      "maliactu",
+      "maozigabe",
+      "mediacongo",
+      "miningbusinessm",
+      "mulikuza_jordan",
+      "polelenews",
+      "quedieubenisse",
+      "rdcmonde_mag",
+      "sngesso30676",
+      "taristote64366",
+      "tazamardc_infos",
+      "thecongoherald",
+      "theompoze",
+      "volcansles"
+    ],
+    "lci": [
+      "24hpujadas",
+      "chase_maccain",
+      "frederichonore1",
+      "lamnidae62"
+    ],
+    "lecornu": [
+      "1graindefolie",
+      "fout_sen"
+    ],
+    "m23": [
+      "7sur7magazine",
+      "afrikarabia",
+      "convictionkab",
+      "danielsang78583",
+      "georgeskisando",
+      "grandslacsnews",
+      "hangijospin",
+      "humpla",
+      "maozigabe",
+      "yusufukibingila"
+    ],
+    "macron": [
+      "auroreitalie",
+      "ellyjuneuk",
+      "fout_sen",
+      "laurenceputih",
+      "petitpalois64"
+    ],
+    "mammarenavirus": [
+      "sautodidacte"
+    ],
+    "mongbwalu": [
+      "afrikarabia",
+      "buniaactualite",
+      "elie_kashama",
+      "revelationcanal"
+    ],
+    "mongwalu": [
+      "acprdcongo",
+      "chris_kabanga",
+      "fmlarousse",
+      "maozigabe",
+      "nicksonmanzeke1",
+      "radiookapi"
+    ],
+    "muyembe": [
+      "fmlarousse",
+      "grandslacsnews",
+      "kiro_merveilles",
+      "mukengerej",
+      "volcansles"
+    ],
+    "nord_kivu": [
+      "afrikarabia",
+      "elie_kashama",
+      "georgeskisando",
+      "greatdreamdrc",
+      "kivumorningpost",
+      "maozigabe",
+      "mulikuza_jordan",
+      "revelationcanal"
+    ],
+    "nordkivu": [
+      "7unecd",
+      "asblaspp",
+      "georgeskisando",
+      "lakivu70875",
+      "miriambahaya",
+      "nathanaell67"
+    ],
+    "nyankunde": [
+      "afrikarabia",
+      "elie_kashama",
+      "kiro_merveilles",
+      "maozigabe",
+      "michombero",
+      "mulikuza_jordan",
+      "wembi_steve"
+    ],
     "oms": [
       "aagendanews",
       "acprdcongo",
@@ -951,9 +1765,108 @@
       "xpmedia69",
       "yabiladi_fr"
     ],
+    "orthohantavirus": [
+      "sautodidacte"
+    ],
+    "ouganda": [
+      "aagendanews",
+      "acprdcongo",
+      "afrc_initiative",
+      "agretdenis",
+      "akhbaralyawm",
+      "authentikcd",
+      "bakadifuilachri",
+      "charlequinkank",
+      "chris_kabanga",
+      "cnews561696c",
+      "complet99976",
+      "coyitungiy78935",
+      "dr_victormanda",
+      "drcuganda",
+      "eliabadjo",
+      "ericfarfour",
+      "fabiencikuru",
+      "fmlarousse",
+      "francenews24",
+      "francetrisser",
+      "ftkmmnl1",
+      "gautamainhp",
+      "georgeskisando",
+      "gregoryfiori",
+      "info241_",
+      "infosdufasmhny",
+      "infosplus_rdc",
+      "irkyalondawadan",
+      "johnshindano",
+      "junior576ledy",
+      "kamweta75",
+      "kiro_merveilles",
+      "lalibrevoix18",
+      "lejournalafrica",
+      "lematinpointma",
+      "lequotidien509",
+      "lianza_france7",
+      "libre_express",
+      "life_info__",
+      "mambojournal",
+      "maozigabe",
+      "mauritiuscapita",
+      "mazambogaspard",
+      "medi1tvafrique",
+      "michombero",
+      "mimouni_jamila",
+      "msp_burundi",
+      "mugishahv",
+      "mulikuza_jordan",
+      "nathanaell67",
+      "nicoleposho",
+      "nyembo1040765",
+      "oms_afrique",
+      "omsrdcongo",
+      "onugeneve",
+      "pascal_mulegwa",
+      "pascamushi",
+      "pbeyok",
+      "polelenews",
+      "radiookapi",
+      "rkasamba96",
+      "stanysbujakera",
+      "tazamardc_infos",
+      "tonykitamb26933",
+      "topcongo",
+      "unicef_burundi",
+      "victorkith",
+      "wembi_steve"
+    ],
     "prevenirebola": [
       "aifintechsupera",
       "pourgenre"
+    ],
+    "prévention": [
+      "afriyanrdc",
+      "apc_asbl",
+      "asblaspp",
+      "ayiidongd47418",
+      "defimediainfo",
+      "divcirim",
+      "dr_victormanda",
+      "gloirebalolage9",
+      "innovartechnet",
+      "jean_kisole",
+      "jeancy_mulenda",
+      "lebulletinrdc",
+      "logosinstitute_",
+      "medias4peace",
+      "ncatv26",
+      "nettech9238",
+      "passymubalama",
+      "revelationcanal"
+    ],
+    "préventionebola": [
+      "afrieducated",
+      "anascrdc51946",
+      "gdnews25",
+      "insprdc"
     ],
     "rdc": [
       "243afro12253",
@@ -1267,6 +2180,141 @@
     "rotavirus": [
       "agretdenis"
     ],
+    "rwampara": [
+      "acprdcongo",
+      "afrikarabia",
+      "caredrc",
+      "elie_kashama",
+      "fmlarousse",
+      "hirondellerdc",
+      "maozigabe",
+      "marcusloika",
+      "nicksonmanzeke1"
+    ],
+    "rwanda": [
+      "370films",
+      "africa54infos",
+      "africa_univers",
+      "augustinsadiki1",
+      "azga_shachikere",
+      "chris_kabanga",
+      "complet99976",
+      "congoveritetop",
+      "conseilsvoyages",
+      "generalfixao",
+      "grandslacsnews",
+      "humpla",
+      "jerrymatsoro",
+      "katsuva_r",
+      "kelvinlukula",
+      "kivumorningpost",
+      "lakivu70875",
+      "lecanape2",
+      "lwarhibam",
+      "maozigabe",
+      "mapendanomuroha",
+      "mastermind152",
+      "mazambogaspard",
+      "medias4peace",
+      "mwasi_na49644",
+      "newafrica27",
+      "nyamuhombeza",
+      "ongeayaga",
+      "princebagheni",
+      "stanysbujakera",
+      "tazamardc_infos",
+      "theompoze",
+      "twirwanehomoise",
+      "victorkith",
+      "volcansles",
+      "wembi_steve"
+    ],
+    "santé": [
+      "24hpujadas",
+      "afautrat",
+      "africa_univers",
+      "afrikarabia",
+      "afriquepacifiq",
+      "annaharfr",
+      "azga_shachikere",
+      "christal00243",
+      "complet99976",
+      "de_la8183",
+      "defimediainfo",
+      "ekoloupdates",
+      "elie_kashama",
+      "fabiencikuru",
+      "fondationm63195",
+      "france24_fr",
+      "franceafric_",
+      "franckmandundu1",
+      "gdnews25",
+      "gloirebalolage9",
+      "gouvciofficiel",
+      "groupegabontv",
+      "humetcit",
+      "idriss_mh7",
+      "immaculeebwasso",
+      "infosdufasmhny",
+      "innobuchu",
+      "innovartechnet",
+      "jamesdrew196092",
+      "kelvinlukula",
+      "kronikinsights",
+      "lalibrevoix18",
+      "lequotidien509",
+      "lesaviezvousqt",
+      "maliactu",
+      "mimouni_jamila",
+      "morandiniblog",
+      "mukengerej",
+      "mwaiyanga1",
+      "ncatv26",
+      "newscd15",
+      "nicksonmanzeke1",
+      "polelenews",
+      "pontazfr",
+      "pourquoidocteur",
+      "pulsefrinfo",
+      "virtssoft",
+      "volcansles",
+      "yabiladi_fr",
+      "zolanews_net"
+    ],
+    "santépublique": [
+      "actuniger",
+      "akmoumouni",
+      "asblaspp",
+      "baptistelushom1",
+      "christal00243",
+      "defimediainfo",
+      "dr_victormanda",
+      "echangenet",
+      "factgrandlacs",
+      "gloirebalolage9",
+      "inrb_kinshasa",
+      "jean_kisole",
+      "jeanluc1477859",
+      "kapend_mutomb",
+      "lakivu70875",
+      "lebulletinrdc",
+      "lematinpointma",
+      "lequotidien509",
+      "logosinstitute_",
+      "magazinepj",
+      "mamanimamaasbl",
+      "maozigabe",
+      "ncatv26",
+      "nettech9238",
+      "passymubalama",
+      "presse83_fr",
+      "teddymfitu",
+      "tshamunyongue"
+    ],
+    "serge": [
+      "fmlarousse",
+      "michombero"
+    ],
     "soudan": [
       "agretdenis",
       "cnews561696c",
@@ -1277,24 +2325,172 @@
       "irkyalondawadan",
       "maozigabe",
       "stanysbujakera"
+    ],
+    "soudandusud": [
+      "authentikcd",
+      "irkyalondawadan",
+      "lequotidien509"
+    ],
+    "urgencesanitaire": [
+      "annaharfr",
+      "asnews01",
+      "coyitungiy78935",
+      "defimediainfo",
+      "gdnews25",
+      "gloirebalolage9",
+      "humetcit",
+      "infosdufasmhny",
+      "miriambahaya",
+      "msp_burundi",
+      "mwaiyanga1",
+      "ncatv26",
+      "pierreemma69315",
+      "pourquoidocteur"
+    ],
+    "usa": [
+      "amisimusada",
+      "complet99976",
+      "derickkatola",
+      "ebalemozindo",
+      "echangenet",
+      "francenews24",
+      "humpla",
+      "infos7cd",
+      "irkyalondawadan",
+      "jamesdrew196092",
+      "journaldesnati1",
+      "lequotidien509",
+      "lntribune",
+      "maozigabe",
+      "mediacongo",
+      "nathanaell67",
+      "nyamuhombeza",
+      "polelenews",
+      "volcansles",
+      "wembi_steve"
+    ],
+    "vaccin": [
+      "afrikarabia",
+      "dr_victormanda",
+      "gloirebalolage9",
+      "humpla",
+      "icibeyrouthnews",
+      "ncatv26",
+      "regueyne",
+      "rkasamba96"
+    ],
+    "virus": [
+      "afautrat",
+      "agretdenis",
+      "candidekipulu",
+      "done39891907",
+      "francetrisser",
+      "ftkmmnl1",
+      "gloirebalolage9",
+      "icibeyrouthnews",
+      "jeanphi01",
+      "marteauniqueur",
+      "mulikuza_jordan",
+      "pauvreencolere",
+      "pourquoidocteur",
+      "salekon2antifa",
+      "selpasbl",
+      "zolanews_net"
+    ],
+    "wha79": [
+      "drtedros",
+      "gillescote36422",
+      "onugeneve",
+      "stephanie_rist"
+    ],
+    "épidémie": [
+      "afrikarabia",
+      "afriquinfosactu",
+      "de_bevec",
+      "defimediainfo",
+      "emmanuel_ndume",
+      "frfrontieres",
+      "humetcit",
+      "jerrymatsoro",
+      "morandiniblog",
+      "ncatv26",
+      "pontazfr",
+      "pourquoidocteur",
+      "rosemathe4",
+      "zadigobb",
+      "zolanews_net"
     ]
   },
   "tag_n_accounts": {
+    "afc": 5,
+    "africacdc": 10,
+    "afrique": 24,
+    "alerteinfo": 2,
+    "bfmtv": 7,
+    "bukavu": 3,
+    "bundibugyo": 25,
     "bunia": 33,
+    "butembo": 13,
+    "congo": 24,
+    "conspi": 1,
+    "coronavirus": 1,
+    "cousp": 4,
+    "covid": 11,
+    "ebola": 467,
+    "flash": 1,
+    "gisenyi": 10,
     "goma": 60,
     "hantavirus": 66,
+    "hdpros": 5,
     "inrb": 6,
     "insp": 5,
     "ituri": 101,
+    "kamba": 2,
+    "kampala": 3,
+    "katwa": 2,
+    "kinshasa": 25,
+    "lci": 4,
+    "lecornu": 2,
+    "m23": 10,
+    "macron": 5,
+    "mammarenavirus": 1,
+    "mongbwalu": 4,
+    "mongwalu": 6,
+    "muyembe": 5,
+    "nord_kivu": 8,
+    "nordkivu": 6,
+    "nyankunde": 7,
     "oms": 56,
+    "orthohantavirus": 1,
+    "ouganda": 68,
     "prevenirebola": 2,
+    "prévention": 18,
+    "préventionebola": 4,
     "rdc": 294,
     "rdcongo": 11,
     "rotavirus": 1,
-    "soudan": 9
+    "rwampara": 9,
+    "rwanda": 36,
+    "santé": 50,
+    "santépublique": 28,
+    "serge": 2,
+    "soudan": 9,
+    "soudandusud": 3,
+    "urgencesanitaire": 14,
+    "usa": 20,
+    "vaccin": 8,
+    "virus": 16,
+    "wha79": 4,
+    "épidémie": 15
   },
   "tag_communities": {
     "bunia": [
+      12
+    ],
+    "butembo": [
+      12
+    ],
+    "cousp": [
       12
     ],
     "goma": [
@@ -1314,8 +2510,14 @@
     "ituri": [
       12
     ],
+    "mongwalu": [
+      12
+    ],
     "oms": [
       11
+    ],
+    "ouganda": [
+      12
     ],
     "prevenirebola": [
       12
@@ -1332,5 +2534,1654 @@
     "soudan": [
       3
     ]
+  },
+  "tag_cooccur": {
+    "bunia": [
+      {
+        "tag": "ebola",
+        "n": 37
+      },
+      {
+        "tag": "rdc",
+        "n": 34
+      },
+      {
+        "tag": "ituri",
+        "n": 23
+      },
+      {
+        "tag": "goma",
+        "n": 10
+      },
+      {
+        "tag": "rwampara",
+        "n": 8
+      },
+      {
+        "tag": "mongwalu",
+        "n": 6
+      },
+      {
+        "tag": "bundibugyo",
+        "n": 6
+      },
+      {
+        "tag": "santé",
+        "n": 4
+      },
+      {
+        "tag": "butembo",
+        "n": 4
+      },
+      {
+        "tag": "kinshasa",
+        "n": 3
+      },
+      {
+        "tag": "nyankunde",
+        "n": 3
+      },
+      {
+        "tag": "nord_kivu",
+        "n": 3
+      },
+      {
+        "tag": "kamba",
+        "n": 2
+      },
+      {
+        "tag": "oms",
+        "n": 2
+      },
+      {
+        "tag": "serge",
+        "n": 2
+      }
+    ],
+    "butembo": [
+      {
+        "tag": "ebola",
+        "n": 14
+      },
+      {
+        "tag": "rdc",
+        "n": 11
+      },
+      {
+        "tag": "ituri",
+        "n": 7
+      },
+      {
+        "tag": "santé",
+        "n": 6
+      },
+      {
+        "tag": "goma",
+        "n": 6
+      },
+      {
+        "tag": "bunia",
+        "n": 4
+      },
+      {
+        "tag": "nord_kivu",
+        "n": 3
+      },
+      {
+        "tag": "inrb",
+        "n": 2
+      },
+      {
+        "tag": "bundibugyo",
+        "n": 2
+      },
+      {
+        "tag": "katwa",
+        "n": 2
+      },
+      {
+        "tag": "mongbwalu",
+        "n": 2
+      },
+      {
+        "tag": "nyankunde",
+        "n": 2
+      },
+      {
+        "tag": "rwampara",
+        "n": 2
+      },
+      {
+        "tag": "muyembe",
+        "n": 2
+      },
+      {
+        "tag": "flash",
+        "n": 2
+      }
+    ],
+    "cousp": [
+      {
+        "tag": "insp",
+        "n": 7
+      },
+      {
+        "tag": "ebola",
+        "n": 3
+      },
+      {
+        "tag": "préventionebola",
+        "n": 2
+      },
+      {
+        "tag": "ituri",
+        "n": 2
+      }
+    ],
+    "goma": [
+      {
+        "tag": "ebola",
+        "n": 57
+      },
+      {
+        "tag": "rdc",
+        "n": 46
+      },
+      {
+        "tag": "rwanda",
+        "n": 15
+      },
+      {
+        "tag": "ituri",
+        "n": 11
+      },
+      {
+        "tag": "bunia",
+        "n": 10
+      },
+      {
+        "tag": "gisenyi",
+        "n": 10
+      },
+      {
+        "tag": "m23",
+        "n": 8
+      },
+      {
+        "tag": "santé",
+        "n": 7
+      },
+      {
+        "tag": "nordkivu",
+        "n": 7
+      },
+      {
+        "tag": "butembo",
+        "n": 6
+      },
+      {
+        "tag": "kinshasa",
+        "n": 5
+      },
+      {
+        "tag": "afc",
+        "n": 5
+      },
+      {
+        "tag": "bukavu",
+        "n": 4
+      },
+      {
+        "tag": "congo",
+        "n": 4
+      },
+      {
+        "tag": "prévention",
+        "n": 4
+      }
+    ],
+    "hantavirus": [
+      {
+        "tag": "ebola",
+        "n": 65
+      },
+      {
+        "tag": "covid",
+        "n": 9
+      },
+      {
+        "tag": "wha79",
+        "n": 5
+      },
+      {
+        "tag": "oms",
+        "n": 4
+      },
+      {
+        "tag": "coronavirus",
+        "n": 4
+      },
+      {
+        "tag": "lci",
+        "n": 3
+      },
+      {
+        "tag": "conspi",
+        "n": 3
+      },
+      {
+        "tag": "mammarenavirus",
+        "n": 2
+      },
+      {
+        "tag": "orthohantavirus",
+        "n": 2
+      },
+      {
+        "tag": "macron",
+        "n": 2
+      },
+      {
+        "tag": "lecornu",
+        "n": 2
+      },
+      {
+        "tag": "hdpros",
+        "n": 2
+      },
+      {
+        "tag": "afrique",
+        "n": 2
+      },
+      {
+        "tag": "bfmtv",
+        "n": 2
+      }
+    ],
+    "inrb": [
+      {
+        "tag": "rdc",
+        "n": 8
+      },
+      {
+        "tag": "ebola",
+        "n": 6
+      },
+      {
+        "tag": "ituri",
+        "n": 4
+      },
+      {
+        "tag": "afc",
+        "n": 2
+      },
+      {
+        "tag": "m23",
+        "n": 2
+      },
+      {
+        "tag": "santépublique",
+        "n": 2
+      },
+      {
+        "tag": "butembo",
+        "n": 2
+      }
+    ],
+    "insp": [
+      {
+        "tag": "cousp",
+        "n": 7
+      },
+      {
+        "tag": "ebola",
+        "n": 5
+      },
+      {
+        "tag": "ituri",
+        "n": 4
+      },
+      {
+        "tag": "kinshasa",
+        "n": 3
+      },
+      {
+        "tag": "alerteinfo",
+        "n": 2
+      },
+      {
+        "tag": "préventionebola",
+        "n": 2
+      }
+    ],
+    "ituri": [
+      {
+        "tag": "ebola",
+        "n": 127
+      },
+      {
+        "tag": "rdc",
+        "n": 92
+      },
+      {
+        "tag": "bunia",
+        "n": 23
+      },
+      {
+        "tag": "goma",
+        "n": 11
+      },
+      {
+        "tag": "santé",
+        "n": 11
+      },
+      {
+        "tag": "kinshasa",
+        "n": 10
+      },
+      {
+        "tag": "oms",
+        "n": 7
+      },
+      {
+        "tag": "butembo",
+        "n": 7
+      },
+      {
+        "tag": "rwampara",
+        "n": 7
+      },
+      {
+        "tag": "santépublique",
+        "n": 6
+      },
+      {
+        "tag": "bundibugyo",
+        "n": 5
+      },
+      {
+        "tag": "nord_kivu",
+        "n": 5
+      },
+      {
+        "tag": "inrb",
+        "n": 4
+      },
+      {
+        "tag": "mongbwalu",
+        "n": 4
+      },
+      {
+        "tag": "afrique",
+        "n": 4
+      }
+    ],
+    "mongwalu": [
+      {
+        "tag": "bunia",
+        "n": 6
+      },
+      {
+        "tag": "rwampara",
+        "n": 5
+      },
+      {
+        "tag": "ebola",
+        "n": 4
+      },
+      {
+        "tag": "ituri",
+        "n": 4
+      },
+      {
+        "tag": "rdc",
+        "n": 4
+      }
+    ],
+    "oms": [
+      {
+        "tag": "ebola",
+        "n": 65
+      },
+      {
+        "tag": "rdc",
+        "n": 45
+      },
+      {
+        "tag": "ouganda",
+        "n": 14
+      },
+      {
+        "tag": "santé",
+        "n": 12
+      },
+      {
+        "tag": "afrique",
+        "n": 10
+      },
+      {
+        "tag": "santépublique",
+        "n": 9
+      },
+      {
+        "tag": "urgencesanitaire",
+        "n": 8
+      },
+      {
+        "tag": "épidémie",
+        "n": 8
+      },
+      {
+        "tag": "ituri",
+        "n": 7
+      },
+      {
+        "tag": "vaccin",
+        "n": 5
+      },
+      {
+        "tag": "virus",
+        "n": 4
+      },
+      {
+        "tag": "africacdc",
+        "n": 4
+      },
+      {
+        "tag": "hantavirus",
+        "n": 4
+      },
+      {
+        "tag": "congo",
+        "n": 4
+      },
+      {
+        "tag": "prévention",
+        "n": 3
+      }
+    ],
+    "ouganda": [
+      {
+        "tag": "rdc",
+        "n": 85
+      },
+      {
+        "tag": "ebola",
+        "n": 82
+      },
+      {
+        "tag": "soudan",
+        "n": 15
+      },
+      {
+        "tag": "oms",
+        "n": 14
+      },
+      {
+        "tag": "rdcongo",
+        "n": 9
+      },
+      {
+        "tag": "bundibugyo",
+        "n": 9
+      },
+      {
+        "tag": "congo",
+        "n": 8
+      },
+      {
+        "tag": "afrique",
+        "n": 6
+      },
+      {
+        "tag": "rotavirus",
+        "n": 5
+      },
+      {
+        "tag": "usa",
+        "n": 5
+      },
+      {
+        "tag": "ituri",
+        "n": 4
+      },
+      {
+        "tag": "soudandusud",
+        "n": 4
+      },
+      {
+        "tag": "kampala",
+        "n": 3
+      },
+      {
+        "tag": "africacdc",
+        "n": 3
+      },
+      {
+        "tag": "kinshasa",
+        "n": 3
+      }
+    ],
+    "prevenirebola": [
+      {
+        "tag": "ebola",
+        "n": 10
+      }
+    ],
+    "rdc": [
+      {
+        "tag": "ebola",
+        "n": 394
+      },
+      {
+        "tag": "ituri",
+        "n": 92
+      },
+      {
+        "tag": "ouganda",
+        "n": 85
+      },
+      {
+        "tag": "goma",
+        "n": 46
+      },
+      {
+        "tag": "oms",
+        "n": 45
+      },
+      {
+        "tag": "santé",
+        "n": 40
+      },
+      {
+        "tag": "bunia",
+        "n": 34
+      },
+      {
+        "tag": "rwanda",
+        "n": 28
+      },
+      {
+        "tag": "santépublique",
+        "n": 26
+      },
+      {
+        "tag": "kinshasa",
+        "n": 24
+      },
+      {
+        "tag": "usa",
+        "n": 17
+      },
+      {
+        "tag": "bundibugyo",
+        "n": 17
+      },
+      {
+        "tag": "épidémie",
+        "n": 15
+      },
+      {
+        "tag": "afrique",
+        "n": 15
+      },
+      {
+        "tag": "soudan",
+        "n": 13
+      }
+    ],
+    "rdcongo": [
+      {
+        "tag": "ouganda",
+        "n": 9
+      },
+      {
+        "tag": "ebola",
+        "n": 3
+      },
+      {
+        "tag": "oms",
+        "n": 2
+      }
+    ],
+    "rotavirus": [
+      {
+        "tag": "ebola",
+        "n": 5
+      },
+      {
+        "tag": "ouganda",
+        "n": 5
+      },
+      {
+        "tag": "rdc",
+        "n": 5
+      },
+      {
+        "tag": "soudan",
+        "n": 5
+      }
+    ],
+    "soudan": [
+      {
+        "tag": "ouganda",
+        "n": 15
+      },
+      {
+        "tag": "ebola",
+        "n": 14
+      },
+      {
+        "tag": "rdc",
+        "n": 13
+      },
+      {
+        "tag": "rotavirus",
+        "n": 5
+      },
+      {
+        "tag": "usa",
+        "n": 2
+      }
+    ]
+  },
+  "tag_comm_n": {
+    "afc": {
+      "12": 2,
+      "9": 2,
+      "222": 1
+    },
+    "africacdc": {
+      "309": 2,
+      "1066": 1,
+      "1084": 1,
+      "1091": 1,
+      "1180": 1,
+      "184": 1,
+      "25": 1,
+      "840": 1,
+      "9": 1
+    },
+    "afrique": {
+      "11": 2,
+      "309": 2,
+      "9": 2,
+      "1": 1,
+      "1084": 1,
+      "1142": 1,
+      "1180": 1,
+      "12": 1,
+      "14": 1,
+      "169": 1,
+      "25": 1,
+      "354": 1,
+      "439": 1,
+      "477": 1,
+      "521": 1,
+      "595": 1,
+      "614": 1,
+      "714": 1,
+      "840": 1,
+      "862": 1,
+      "936": 1
+    },
+    "alerteinfo": {
+      "12": 2
+    },
+    "bfmtv": {
+      "11": 4,
+      "40": 1,
+      "610": 1,
+      "971": 1
+    },
+    "bukavu": {
+      "12": 1,
+      "439": 1,
+      "743": 1
+    },
+    "bundibugyo": {
+      "12": 8,
+      "9": 7,
+      "1078": 1,
+      "1130": 1,
+      "1180": 1,
+      "1215": 1,
+      "14": 1,
+      "669": 1,
+      "675": 1,
+      "935": 1,
+      "939": 1,
+      "988": 1
+    },
+    "bunia": {
+      "12": 19,
+      "9": 5,
+      "14": 1,
+      "16": 1,
+      "214": 1,
+      "289": 1,
+      "3": 1,
+      "400": 1,
+      "439": 1,
+      "616": 1,
+      "935": 1
+    },
+    "butembo": {
+      "12": 7,
+      "1045": 1,
+      "3": 1,
+      "400": 1,
+      "466": 1,
+      "9": 1,
+      "935": 1
+    },
+    "congo": {
+      "9": 3,
+      "25": 2,
+      "1048": 1,
+      "11": 1,
+      "112": 1,
+      "1148": 1,
+      "12": 1,
+      "210": 1,
+      "33": 1,
+      "399": 1,
+      "419": 1,
+      "439": 1,
+      "445": 1,
+      "446": 1,
+      "480": 1,
+      "614": 1,
+      "675": 1,
+      "688": 1,
+      "758": 1,
+      "854": 1,
+      "912": 1
+    },
+    "conspi": {
+      "2": 1
+    },
+    "coronavirus": {
+      "3": 1
+    },
+    "cousp": {
+      "12": 4
+    },
+    "covid": {
+      "14": 2,
+      "25": 2,
+      "1": 1,
+      "1187": 1,
+      "157": 1,
+      "2": 1,
+      "26": 1,
+      "3": 1,
+      "5": 1
+    },
+    "ebola": {
+      "12": 109,
+      "9": 53,
+      "11": 28,
+      "14": 20,
+      "3": 11,
+      "25": 10,
+      "39": 8,
+      "2": 5,
+      "33": 5,
+      "1": 4,
+      "104": 2,
+      "16": 2,
+      "164": 2,
+      "21": 2,
+      "23": 2,
+      "26": 2,
+      "309": 2,
+      "48": 2,
+      "5": 2,
+      "1000": 1,
+      "1010": 1,
+      "1025": 1,
+      "1028": 1,
+      "1029": 1,
+      "1037": 1,
+      "1038": 1,
+      "1040": 1,
+      "1045": 1,
+      "1047": 1,
+      "1048": 1,
+      "105": 1,
+      "1050": 1,
+      "1055": 1,
+      "1066": 1,
+      "1072": 1,
+      "1078": 1,
+      "108": 1,
+      "1084": 1,
+      "1090": 1,
+      "1091": 1,
+      "1101": 1,
+      "1109": 1,
+      "1113": 1,
+      "1114": 1,
+      "1129": 1,
+      "1130": 1,
+      "1133": 1,
+      "1137": 1,
+      "1142": 1,
+      "1148": 1,
+      "1149": 1,
+      "1153": 1,
+      "1158": 1,
+      "1163": 1,
+      "1165": 1,
+      "1174": 1,
+      "1175": 1,
+      "1180": 1,
+      "1183": 1,
+      "1187": 1,
+      "1198": 1,
+      "1209": 1,
+      "1215": 1,
+      "1231": 1,
+      "1233": 1,
+      "1240": 1,
+      "1241": 1,
+      "1253": 1,
+      "1254": 1,
+      "135": 1,
+      "157": 1,
+      "161": 1,
+      "163": 1,
+      "165": 1,
+      "169": 1,
+      "17": 1,
+      "170": 1,
+      "180": 1,
+      "182": 1,
+      "189": 1,
+      "191": 1,
+      "193": 1,
+      "198": 1,
+      "20": 1,
+      "207": 1,
+      "208": 1,
+      "210": 1,
+      "213": 1,
+      "24": 1,
+      "275": 1,
+      "289": 1,
+      "292": 1,
+      "298": 1,
+      "335": 1,
+      "354": 1,
+      "361": 1,
+      "363": 1,
+      "373": 1,
+      "379": 1,
+      "389": 1,
+      "395": 1,
+      "396": 1,
+      "399": 1,
+      "415": 1,
+      "417": 1,
+      "419": 1,
+      "423": 1,
+      "425": 1,
+      "431": 1,
+      "434": 1,
+      "438": 1,
+      "439": 1,
+      "445": 1,
+      "453": 1,
+      "460": 1,
+      "465": 1,
+      "466": 1,
+      "472": 1,
+      "476": 1,
+      "480": 1,
+      "484": 1,
+      "498": 1,
+      "499": 1,
+      "50": 1,
+      "509": 1,
+      "510": 1,
+      "514": 1,
+      "518": 1,
+      "519": 1,
+      "521": 1,
+      "523": 1,
+      "528": 1,
+      "534": 1,
+      "535": 1,
+      "546": 1,
+      "55": 1,
+      "552": 1,
+      "554": 1,
+      "563": 1,
+      "568": 1,
+      "575": 1,
+      "580": 1,
+      "584": 1,
+      "595": 1,
+      "604": 1,
+      "614": 1,
+      "616": 1,
+      "623": 1,
+      "629": 1,
+      "632": 1,
+      "634": 1,
+      "642": 1,
+      "651": 1,
+      "653": 1,
+      "668": 1,
+      "669": 1,
+      "675": 1,
+      "677": 1,
+      "68": 1,
+      "684": 1,
+      "687": 1,
+      "688": 1,
+      "689": 1,
+      "69": 1,
+      "692": 1,
+      "701": 1,
+      "706": 1,
+      "710": 1,
+      "711": 1,
+      "714": 1,
+      "722": 1,
+      "743": 1,
+      "746": 1,
+      "756": 1,
+      "76": 1,
+      "764": 1,
+      "773": 1,
+      "78": 1,
+      "787": 1,
+      "789": 1,
+      "796": 1,
+      "808": 1,
+      "822": 1,
+      "823": 1,
+      "824": 1,
+      "828": 1,
+      "832": 1,
+      "840": 1,
+      "847": 1,
+      "852": 1,
+      "854": 1,
+      "860": 1,
+      "862": 1,
+      "863": 1,
+      "871": 1,
+      "874": 1,
+      "884": 1,
+      "885": 1,
+      "887": 1,
+      "912": 1,
+      "929": 1,
+      "933": 1,
+      "935": 1,
+      "936": 1,
+      "939": 1,
+      "948": 1,
+      "963": 1,
+      "965": 1,
+      "971": 1,
+      "972": 1,
+      "975": 1,
+      "976": 1,
+      "980": 1,
+      "983": 1,
+      "995": 1
+    },
+    "flash": {
+      "12": 1
+    },
+    "gisenyi": {
+      "12": 7,
+      "439": 1,
+      "863": 1,
+      "9": 1
+    },
+    "goma": {
+      "12": 25,
+      "9": 7,
+      "1037": 1,
+      "106": 1,
+      "11": 1,
+      "1180": 1,
+      "14": 1,
+      "213": 1,
+      "222": 1,
+      "33": 1,
+      "396": 1,
+      "400": 1,
+      "439": 1,
+      "476": 1,
+      "498": 1,
+      "561": 1,
+      "563": 1,
+      "641": 1,
+      "655": 1,
+      "710": 1,
+      "743": 1,
+      "746": 1,
+      "773": 1,
+      "796": 1,
+      "863": 1,
+      "871": 1,
+      "935": 1,
+      "942": 1,
+      "975": 1,
+      "989": 1
+    },
+    "hantavirus": {
+      "11": 10,
+      "14": 7,
+      "3": 7,
+      "2": 4,
+      "24": 2,
+      "40": 2,
+      "43": 2,
+      "9": 2,
+      "1": 1,
+      "1090": 1,
+      "1129": 1,
+      "1137": 1,
+      "1142": 1,
+      "1149": 1,
+      "1204": 1,
+      "1227": 1,
+      "1231": 1,
+      "1253": 1,
+      "157": 1,
+      "18": 1,
+      "19": 1,
+      "198": 1,
+      "21": 1,
+      "248": 1,
+      "25": 1,
+      "275": 1,
+      "301": 1,
+      "465": 1,
+      "470": 1,
+      "5": 1,
+      "52": 1,
+      "528": 1,
+      "559": 1,
+      "68": 1,
+      "78": 1,
+      "793": 1,
+      "803": 1,
+      "971": 1
+    },
+    "hdpros": {
+      "11": 1,
+      "14": 1,
+      "157": 1,
+      "248": 1,
+      "914": 1
+    },
+    "inrb": {
+      "12": 5,
+      "25": 1
+    },
+    "insp": {
+      "12": 4,
+      "9": 1
+    },
+    "ituri": {
+      "12": 43,
+      "9": 18,
+      "14": 3,
+      "39": 3,
+      "1047": 1,
+      "1091": 1,
+      "11": 1,
+      "1119": 1,
+      "1175": 1,
+      "1180": 1,
+      "1264": 1,
+      "189": 1,
+      "208": 1,
+      "213": 1,
+      "214": 1,
+      "289": 1,
+      "298": 1,
+      "3": 1,
+      "400": 1,
+      "417": 1,
+      "434": 1,
+      "439": 1,
+      "509": 1,
+      "528": 1,
+      "616": 1,
+      "632": 1,
+      "76": 1,
+      "796": 1,
+      "80": 1,
+      "828": 1,
+      "832": 1,
+      "840": 1,
+      "841": 1,
+      "847": 1,
+      "871": 1,
+      "918": 1,
+      "929": 1,
+      "935": 1
+    },
+    "kamba": {
+      "616": 1,
+      "9": 1
+    },
+    "kampala": {
+      "12": 2,
+      "9": 1
+    },
+    "katwa": {
+      "12": 1,
+      "935": 1
+    },
+    "kinshasa": {
+      "12": 11,
+      "9": 5,
+      "104": 2,
+      "1026": 1,
+      "1078": 1,
+      "293": 1,
+      "439": 1,
+      "521": 1,
+      "634": 1,
+      "80": 1
+    },
+    "lci": {
+      "11": 2,
+      "24": 1,
+      "971": 1
+    },
+    "lecornu": {
+      "1149": 1,
+      "40": 1
+    },
+    "m23": {
+      "12": 5,
+      "9": 2,
+      "222": 1,
+      "33": 1,
+      "863": 1
+    },
+    "macron": {
+      "11": 2,
+      "1149": 1,
+      "14": 1,
+      "446": 1
+    },
+    "mammarenavirus": {
+      "11": 1
+    },
+    "mongbwalu": {
+      "12": 2,
+      "9": 1,
+      "935": 1
+    },
+    "mongwalu": {
+      "12": 5,
+      "9": 1
+    },
+    "muyembe": {
+      "9": 3,
+      "12": 1,
+      "466": 1
+    },
+    "nord_kivu": {
+      "12": 4,
+      "14": 1,
+      "3": 1,
+      "9": 1,
+      "935": 1
+    },
+    "nordkivu": {
+      "12": 1,
+      "161": 1,
+      "439": 1,
+      "56": 1,
+      "710": 1,
+      "9": 1
+    },
+    "nyankunde": {
+      "12": 5,
+      "9": 1,
+      "935": 1
+    },
+    "oms": {
+      "12": 10,
+      "11": 4,
+      "9": 4,
+      "3": 3,
+      "14": 2,
+      "309": 2,
+      "1080": 1,
+      "1109": 1,
+      "1129": 1,
+      "1133": 1,
+      "16": 1,
+      "161": 1,
+      "169": 1,
+      "170": 1,
+      "2": 1,
+      "209": 1,
+      "25": 1,
+      "415": 1,
+      "438": 1,
+      "465": 1,
+      "518": 1,
+      "519": 1,
+      "528": 1,
+      "568": 1,
+      "595": 1,
+      "614": 1,
+      "653": 1,
+      "675": 1,
+      "711": 1,
+      "764": 1,
+      "766": 1,
+      "796": 1,
+      "840": 1,
+      "862": 1,
+      "874": 1,
+      "948": 1,
+      "995": 1
+    },
+    "orthohantavirus": {
+      "11": 1
+    },
+    "ouganda": {
+      "12": 26,
+      "9": 10,
+      "11": 2,
+      "1026": 1,
+      "1049": 1,
+      "1055": 1,
+      "1078": 1,
+      "1080": 1,
+      "1091": 1,
+      "1148": 1,
+      "1165": 1,
+      "1215": 1,
+      "161": 1,
+      "169": 1,
+      "184": 1,
+      "21": 1,
+      "25": 1,
+      "3": 1,
+      "361": 1,
+      "39": 1,
+      "417": 1,
+      "438": 1,
+      "519": 1,
+      "528": 1,
+      "546": 1,
+      "554": 1,
+      "714": 1,
+      "840": 1,
+      "862": 1,
+      "871": 1,
+      "874": 1,
+      "918": 1,
+      "963": 1
+    },
+    "prevenirebola": {
+      "12": 1,
+      "1241": 1
+    },
+    "prévention": {
+      "9": 3,
+      "164": 2,
+      "48": 2,
+      "12": 1,
+      "14": 1,
+      "208": 1,
+      "451": 1,
+      "498": 1,
+      "568": 1,
+      "642": 1,
+      "710": 1,
+      "796": 1,
+      "801": 1,
+      "975": 1
+    },
+    "préventionebola": {
+      "1008": 1,
+      "12": 1,
+      "39": 1,
+      "980": 1
+    },
+    "rdc": {
+      "12": 103,
+      "9": 31,
+      "11": 7,
+      "14": 6,
+      "39": 5,
+      "104": 2,
+      "16": 2,
+      "196": 2,
+      "309": 2,
+      "33": 2,
+      "1010": 1,
+      "1026": 1,
+      "1028": 1,
+      "103": 1,
+      "1037": 1,
+      "1038": 1,
+      "1040": 1,
+      "1045": 1,
+      "1047": 1,
+      "1049": 1,
+      "1050": 1,
+      "1055": 1,
+      "1066": 1,
+      "1072": 1,
+      "1078": 1,
+      "1084": 1,
+      "1091": 1,
+      "1101": 1,
+      "1102": 1,
+      "1113": 1,
+      "112": 1,
+      "1153": 1,
+      "1158": 1,
+      "1165": 1,
+      "1167": 1,
+      "1174": 1,
+      "1175": 1,
+      "1183": 1,
+      "1197": 1,
+      "1203": 1,
+      "1207": 1,
+      "1210": 1,
+      "1215": 1,
+      "1222": 1,
+      "1240": 1,
+      "1254": 1,
+      "135": 1,
+      "161": 1,
+      "162": 1,
+      "169": 1,
+      "170": 1,
+      "179": 1,
+      "184": 1,
+      "188": 1,
+      "189": 1,
+      "208": 1,
+      "21": 1,
+      "210": 1,
+      "211": 1,
+      "213": 1,
+      "23": 1,
+      "25": 1,
+      "289": 1,
+      "293": 1,
+      "298": 1,
+      "3": 1,
+      "35": 1,
+      "358": 1,
+      "361": 1,
+      "363": 1,
+      "400": 1,
+      "415": 1,
+      "417": 1,
+      "425": 1,
+      "431": 1,
+      "434": 1,
+      "438": 1,
+      "439": 1,
+      "466": 1,
+      "472": 1,
+      "476": 1,
+      "48": 1,
+      "484": 1,
+      "494": 1,
+      "498": 1,
+      "499": 1,
+      "514": 1,
+      "518": 1,
+      "519": 1,
+      "521": 1,
+      "528": 1,
+      "534": 1,
+      "546": 1,
+      "554": 1,
+      "568": 1,
+      "573": 1,
+      "575": 1,
+      "580": 1,
+      "595": 1,
+      "604": 1,
+      "606": 1,
+      "616": 1,
+      "632": 1,
+      "634": 1,
+      "635": 1,
+      "642": 1,
+      "651": 1,
+      "656": 1,
+      "677": 1,
+      "689": 1,
+      "692": 1,
+      "699": 1,
+      "71": 1,
+      "710": 1,
+      "746": 1,
+      "747": 1,
+      "76": 1,
+      "766": 1,
+      "77": 1,
+      "787": 1,
+      "796": 1,
+      "80": 1,
+      "801": 1,
+      "812": 1,
+      "824": 1,
+      "832": 1,
+      "841": 1,
+      "854": 1,
+      "86": 1,
+      "862": 1,
+      "874": 1,
+      "905": 1,
+      "907": 1,
+      "918": 1,
+      "929": 1,
+      "935": 1,
+      "948": 1,
+      "963": 1,
+      "965": 1,
+      "972": 1,
+      "980": 1,
+      "982": 1
+    },
+    "rdcongo": {
+      "12": 8,
+      "1080": 1,
+      "11": 1,
+      "840": 1
+    },
+    "rotavirus": {
+      "3": 1
+    },
+    "rwampara": {
+      "12": 5,
+      "188": 1,
+      "289": 1,
+      "9": 1,
+      "935": 1
+    },
+    "rwanda": {
+      "12": 14,
+      "9": 5,
+      "1047": 1,
+      "106": 1,
+      "11": 1,
+      "1101": 1,
+      "112": 1,
+      "1183": 1,
+      "14": 1,
+      "162": 1,
+      "210": 1,
+      "213": 1,
+      "293": 1,
+      "439": 1,
+      "476": 1,
+      "48": 1,
+      "509": 1,
+      "689": 1,
+      "746": 1
+    },
+    "santé": {
+      "12": 11,
+      "11": 4,
+      "14": 3,
+      "1015": 1,
+      "1038": 1,
+      "1047": 1,
+      "1066": 1,
+      "1078": 1,
+      "1091": 1,
+      "1133": 1,
+      "16": 1,
+      "179": 1,
+      "213": 1,
+      "25": 1,
+      "354": 1,
+      "361": 1,
+      "407": 1,
+      "434": 1,
+      "438": 1,
+      "466": 1,
+      "498": 1,
+      "514": 1,
+      "521": 1,
+      "568": 1,
+      "595": 1,
+      "69": 1,
+      "711": 1,
+      "776": 1,
+      "822": 1,
+      "824": 1,
+      "887": 1,
+      "9": 1,
+      "933": 1,
+      "935": 1,
+      "980": 1
+    },
+    "santépublique": {
+      "9": 5,
+      "12": 4,
+      "309": 2,
+      "1010": 1,
+      "105": 1,
+      "1091": 1,
+      "1197": 1,
+      "14": 1,
+      "208": 1,
+      "434": 1,
+      "439": 1,
+      "465": 1,
+      "568": 1,
+      "642": 1,
+      "710": 1,
+      "796": 1,
+      "832": 1,
+      "874": 1,
+      "975": 1,
+      "982": 1
+    },
+    "serge": {
+      "12": 1,
+      "9": 1
+    },
+    "soudan": {
+      "11": 2,
+      "12": 2,
+      "1026": 1,
+      "25": 1,
+      "3": 1,
+      "714": 1,
+      "9": 1
+    },
+    "soudandusud": {
+      "1091": 1,
+      "11": 1,
+      "546": 1
+    },
+    "urgencesanitaire": {
+      "9": 3,
+      "14": 1,
+      "25": 1,
+      "354": 1,
+      "425": 1,
+      "438": 1,
+      "56": 1,
+      "568": 1,
+      "595": 1,
+      "824": 1,
+      "948": 1,
+      "980": 1
+    },
+    "usa": {
+      "12": 6,
+      "9": 3,
+      "104": 2,
+      "1040": 1,
+      "1078": 1,
+      "1091": 1,
+      "11": 1,
+      "1207": 1,
+      "161": 1,
+      "25": 1,
+      "534": 1,
+      "822": 1
+    },
+    "vaccin": {
+      "9": 3,
+      "12": 2,
+      "14": 2,
+      "675": 1
+    },
+    "virus": {
+      "11": 2,
+      "12": 2,
+      "1029": 1,
+      "14": 1,
+      "25": 1,
+      "3": 1,
+      "423": 1,
+      "499": 1,
+      "604": 1,
+      "675": 1,
+      "728": 1,
+      "764": 1,
+      "9": 1,
+      "963": 1
+    },
+    "wha79": {
+      "9": 3,
+      "14": 1
+    },
+    "épidémie": {
+      "12": 3,
+      "11": 2,
+      "1048": 1,
+      "1116": 1,
+      "1133": 1,
+      "14": 1,
+      "25": 1,
+      "39": 1,
+      "509": 1,
+      "568": 1,
+      "595": 1,
+      "854": 1
+    }
   }
 }

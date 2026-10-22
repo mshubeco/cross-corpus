@@ -3,9 +3,11 @@
     "cluster": "Canicule · mai–juin 2026",
     "corpus": "canicule",
     "window": "2026-05-20 → 2026-06-29",
-    "source": "graph.json communities90 + corpus_canicule CSV (keyness z + effectifs #)",
+    "source": "graph.json communities90 + corpus_canicule CSV (keyness z + effectifs # + cooc)",
     "keyness": "z log-odds pondéré vs autres pôles du connectome (Monroe et al. 2008)",
     "tag_accounts_def": "Comptes du graphe ayant publié hors RT au moins un message portant le hashtag (champ hashtag + # dans le texte).",
+    "tag_cooccur_def": "Co-occurrence message (hors RT) : autres # dans le même message.",
+    "tag_comm_n_def": "Comptes distincts du graphe ayant utilisé le #, par communauté Louvain.",
     "limit": "Label opérationnel fondé sur lexique distinctif (z) / structure / échantillons — pas une appartenance partisane des comptes ordinaires."
   },
   "communities": {
@@ -1203,6 +1205,50 @@
     }
   },
   "tag_accounts": {
+    "2026": [
+      "calphilippe",
+      "deuzamsc",
+      "dyingiseasy0",
+      "ericbassi",
+      "mlle_hatoumata",
+      "papibrocar",
+      "thesecretvoice4"
+    ],
+    "20hbfm": [
+      "mrsclovisse"
+    ],
+    "23hinfo": [
+      "mrsclovisse"
+    ],
+    "42c": [
+      "meteoclimatpro",
+      "patrickmarliere"
+    ],
+    "78": [
+      "tv78_yvelines"
+    ],
+    "actu": [
+      "arameteo_france",
+      "elissamaiss",
+      "emmanuelchaunu",
+      "htoneki",
+      "meme_lyon",
+      "pouish4k",
+      "reservoirapps",
+      "thesecretvoice4"
+    ],
+    "actualite": [
+      "charles_monarc",
+      "eric265538999",
+      "hellowork",
+      "la_vie_en_bd",
+      "lyoncap",
+      "psyhodelikus",
+      "radioscoopinfos"
+    ],
+    "actulocale": [
+      "tv78_yvelines"
+    ],
     "adaptation": [
       "cecilgaran",
       "dedelagourde",
@@ -1223,6 +1269,16 @@
       "royaumedezinzin",
       "union_ce"
     ],
+    "aec": [
+      "carolinatibou",
+      "cftc37metal",
+      "leilaclaude",
+      "rourelaurie",
+      "toufoux_news"
+    ],
+    "aerosols": [
+      "soleillibrefr"
+    ],
     "affaireconclue": [
       "aline_marthon",
       "bernard_du_nord",
@@ -1234,6 +1290,93 @@
       "roseofprovence",
       "sagittaire_miss",
       "seumlulu"
+    ],
+    "afuera": [
+      "_teobeo_",
+      "aserieux",
+      "bettinahortal",
+      "calvitonews",
+      "djolhan",
+      "ericklein_",
+      "ernestpriarollo",
+      "gaami44",
+      "gaillardmann",
+      "gerardrass",
+      "jaclinemouraud",
+      "knightlilian2",
+      "laurenceputih",
+      "meunier_ph",
+      "missjuper",
+      "nominoe922",
+      "odilederaies",
+      "orangia51",
+      "piotrszut",
+      "quanticfrog",
+      "saccagebordeaux",
+      "stertrais",
+      "teddymcardle",
+      "tomfrancelibre",
+      "troll_2508"
+    ],
+    "agenda2030": [
+      "demeulenaereo",
+      "gedlink333",
+      "pasclair",
+      "portailcomplot"
+    ],
+    "agriculture": [
+      "boureznicolas",
+      "cdanslair",
+      "citoyendumonde5",
+      "corinnelaurent",
+      "cwilly4",
+      "desangosse",
+      "descanteschris",
+      "dommajeur",
+      "ecotimes_dz",
+      "fnsea41",
+      "fpetorin",
+      "franceagricole",
+      "g_le_du",
+      "informationssf",
+      "jaimelespaysans",
+      "josianemehouas",
+      "jubrugerolles",
+      "laurence1119436",
+      "laurentopsomer",
+      "lesescrolos",
+      "lindependant",
+      "maclesggy",
+      "marc_seban",
+      "monikafrance",
+      "oliviercoste2",
+      "olivierviticog1",
+      "paysquebec",
+      "planeteverte",
+      "pompiers03",
+      "prefet53",
+      "prefet95",
+      "salondelagri",
+      "sergedanilo",
+      "valmelusine",
+      "var_actu",
+      "vittart75",
+      "yabiladi_fr",
+      "zadigobb"
+    ],
+    "aimbot": [
+      "ryunochi"
+    ],
+    "ain": [
+      "01meteo",
+      "jerome_buisson",
+      "lyoncap",
+      "prefet01",
+      "rn_ain_01"
+    ],
+    "airparif": [
+      "informationssf",
+      "tv78_yvelines"
     ],
     "alertemétéo": [
       "davidar70323381",
@@ -1259,6 +1402,51 @@
       "prefet_82",
       "yabiladi_fr"
     ],
+    "alerterouge": [
+      "1petitsecret",
+      "cabributarn",
+      "coucouvous62",
+      "dricemyton",
+      "fanmarine14",
+      "florianpinet",
+      "fnsea18",
+      "hoperatornews",
+      "just_bonjour",
+      "kimjongunique",
+      "siffrebouli",
+      "wysifox1"
+    ],
+    "angers": [
+      "abbadabbadoo05",
+      "angers",
+      "angersroyals",
+      "angersvillactu",
+      "as_49191",
+      "cliches49",
+      "cshabyne",
+      "danboc49",
+      "france24_fr",
+      "francenews24",
+      "francoismiz6o",
+      "guill500",
+      "noamleandri",
+      "oisa_mog",
+      "philipperubion",
+      "pierre_pzt",
+      "prefet49",
+      "romainlaveau",
+      "sxbgg"
+    ],
+    "antisémites": [
+      "jyves94"
+    ],
+    "aqababe": [
+      "levirusduweb"
+    ],
+    "argaut": [
+      "countdown2027",
+      "menow_fr"
+    ],
     "atm": [
       "_a_lya",
       "bao_gs16",
@@ -1274,6 +1462,72 @@
       "reine_metisse",
       "rostiswings",
       "sarakhlo666"
+    ],
+    "atp": [
+      "tennisactu",
+      "tennisbetstudio"
+    ],
+    "attal": [
+      "ananasspirine",
+      "botteq",
+      "boujemaa_b",
+      "chenrydelapomme",
+      "chmerchadou",
+      "dd95615154",
+      "francoisedegois",
+      "jcfagnoulo",
+      "laurence1119436",
+      "libredepenserfr",
+      "profquidamn",
+      "sylvainn11",
+      "tomlasnier3xs",
+      "zairker"
+    ],
+    "austriangp": [
+      "cladounnet",
+      "dernier_secteur",
+      "f1",
+      "lesprintedition",
+      "mastaf1",
+      "motorsport_fr",
+      "pg10__inside",
+      "tearofffr"
+    ],
+    "avenir": [
+      "pascal21cor",
+      "prefet11",
+      "thesecretvoice4"
+    ],
+    "aérosols": [
+      "soleillibrefr"
+    ],
+    "bac": [
+      "boureznicolas",
+      "cathy2820",
+      "combat5261",
+      "de_bevec",
+      "demeulenaereo",
+      "francetrisser",
+      "gabriela78450",
+      "hebdoduvendredi",
+      "jeandenormandie",
+      "laurencebastia3",
+      "lcensur",
+      "lindependant",
+      "ltinette",
+      "mathieugarnier_",
+      "negentropism",
+      "nico650",
+      "philocognitif",
+      "yamnesiaa"
+    ],
+    "baltringues": [
+      "annetestuz",
+      "jmchipot",
+      "jyves94",
+      "krisdub67",
+      "pierremartin196",
+      "theskepticalhe2"
     ],
     "barbut": [
       "_hirondelle64",
@@ -1322,11 +1576,230 @@
       "vanille_47",
       "wil75"
     ],
+    "barthès": [
+      "__sphinx___",
+      "bonz2521",
+      "brevesdepresse",
+      "fkm7g2",
+      "fobouger",
+      "fofolefou",
+      "julielbsl",
+      "ladandur",
+      "pipotache",
+      "renesaens"
+    ],
     "bd": [
       "beile_fr",
       "la_vie_en_bd",
       "thebdrawings",
       "universcomics"
+    ],
+    "beinfwc2026": [
+      "beinsports_fr"
+    ],
+    "bfmtv": [
+      "1graindefolie",
+      "achabussuspendu",
+      "ahmedbensoussan",
+      "allarddenis",
+      "amphe_chantenay",
+      "ananasspirine",
+      "annickmarie_44",
+      "anouk1818",
+      "barryright2",
+      "bonapart001",
+      "bretagne2droite",
+      "cakrin64",
+      "candy7595",
+      "christofnamoi",
+      "cookiegr25",
+      "corsu20a",
+      "cristalinevert",
+      "delcroixx",
+      "devillerspatric",
+      "dniepro",
+      "domipre2016",
+      "dommajeur",
+      "eliotflux",
+      "elsasser_witz",
+      "fandevlad3",
+      "feogassy31",
+      "florianpinet",
+      "fofolefou",
+      "francesouvunie",
+      "franckbalourd",
+      "freddlcslc",
+      "frederic19671",
+      "frederichonore1",
+      "gallieni_57",
+      "geronimo1972",
+      "gestalalouise2",
+      "hassanlemaroc",
+      "iithorking",
+      "j_e_a_n_l_e_u",
+      "jclaude_dusse",
+      "jeanmarieadam",
+      "johnconnorrevol",
+      "laveritecequi",
+      "leito30580508",
+      "louipir",
+      "louis_m75",
+      "lulowesh",
+      "manara37",
+      "marc_hay_meteo",
+      "marcgral",
+      "maria7776367581",
+      "michelwelbeck",
+      "morandiniblog",
+      "mrsclovisse",
+      "murielangele",
+      "mz0058",
+      "nel1078",
+      "p83_jean",
+      "pauline28924071",
+      "pbiane",
+      "peterveg1",
+      "pierre6417",
+      "pionpion234",
+      "polders",
+      "precairep",
+      "raymondthiebaut",
+      "reikersone",
+      "ronchon_thierry",
+      "seb84291085diog",
+      "sebpatriote_",
+      "sinet_sylvie",
+      "sophiecannelle",
+      "spy201944316",
+      "sylvinfo",
+      "teddymcardle",
+      "thorynno",
+      "tkushiyama",
+      "vander_pat",
+      "vernayphilippe3",
+      "veroveronique1",
+      "x_mandalor",
+      "ycaree_ricardo"
+    ],
+    "blackmail": [
+      "bao_gs16",
+      "reinealba1999",
+      "ruinnora93726"
+    ],
+    "bleu": [
+      "countdown2027",
+      "gopirenonx"
+    ],
+    "bolloré": [
+      "cedricliope",
+      "flouchart",
+      "maximelisbonn",
+      "nicolaslecorvec",
+      "pierrelema34489",
+      "serge_uleski",
+      "unesdepresse"
+    ],
+    "bordeaux": [
+      "acapradimonti",
+      "acbordeaux",
+      "alainde96544302",
+      "alexand04161229",
+      "antiescrolo",
+      "benaraktrip",
+      "bordeauxgazette",
+      "catmarie1812",
+      "dydy0102021",
+      "filochat",
+      "france24_fr",
+      "france3provence",
+      "ginisty11",
+      "globespotter33",
+      "gwoznica",
+      "informationssf",
+      "lachainemeteo",
+      "laurence1119436",
+      "medelguer",
+      "meteo60",
+      "meteociel",
+      "meteovilles",
+      "prefaquitaine33",
+      "saccagebordeaux",
+      "tinkl0ves1d",
+      "veronique_jur",
+      "vino_griego",
+      "yannctr_off"
+    ],
+    "bretagne": [
+      "186a_l",
+      "afautrat",
+      "benaraktrip",
+      "bentricolore",
+      "bivelalain",
+      "brigittelecam",
+      "carlabzh",
+      "catbzh44",
+      "celine29m",
+      "cgryph",
+      "chrislelay",
+      "christi94767360",
+      "christinahell",
+      "clob755",
+      "clochapuis",
+      "cornouaillais29",
+      "creachquevilly",
+      "ctyzef",
+      "cyriacguillard",
+      "darkvador_off",
+      "ekerfriden",
+      "elodie2913",
+      "enedis_bretagne",
+      "fanch_mrl",
+      "faranssy",
+      "guelcan_b",
+      "historymattersx",
+      "jfgino",
+      "joee_05",
+      "johnnyrockzard",
+      "kevinfloury",
+      "lachainemeteo",
+      "lactuen2bulles",
+      "ladyroxane72",
+      "laurentopsomer",
+      "loicrousval",
+      "luckasdelille59",
+      "luluapso",
+      "mael_reboux_bzh",
+      "marilynechenuet",
+      "martinteral",
+      "maxime_gogris",
+      "mcofficielle",
+      "meteobretagne",
+      "meteofrance_o",
+      "mishamichien",
+      "mysteremeteo",
+      "nathali37468405",
+      "nhubretagne",
+      "nk1mx",
+      "nonhumain",
+      "paolocrostino",
+      "pitchiefaby",
+      "sebdecaux",
+      "stephvaldu2929",
+      "steventual_off",
+      "temps_breton",
+      "thesecretvoice4",
+      "valerie7456",
+      "vigipreventionm",
+      "vincentpaire",
+      "visiometeo",
+      "wokistanien"
+    ],
+    "brigitte": [
+      "benaraktrip",
+      "laurenceputih"
+    ],
+    "canadinagp": [
+      "pg10__inside"
     ],
     "canicule": [
       "007actarus",
@@ -5591,6 +6064,20 @@
       "ztec6",
       "zulu18360299"
     ],
+    "caniculeinfoservice": [
+      "soleillibrefr",
+      "var_actu"
+    ],
+    "carcassonne": [
+      "carca_lindep",
+      "corsu20a",
+      "dansle11",
+      "gilbertcollard",
+      "lachainemeteo",
+      "lindependant",
+      "oxymoratus",
+      "wokinette"
+    ],
     "chaleur": [
       "01meteo",
       "0rnement",
@@ -6130,6 +6617,104 @@
       "zerosoum5047",
       "zetrader"
     ],
+    "chaleurs": [
+      "01meteo",
+      "1graindefolie",
+      "adrienfour",
+      "citoyendumonde5",
+      "dniepro",
+      "elisahk92",
+      "erikpages",
+      "fabienvalente",
+      "fecfo",
+      "gwoznica",
+      "info_paris_idf",
+      "informationssf",
+      "lachainemeteo",
+      "ladivadudancing",
+      "logitechgfrance",
+      "lolitazemorita",
+      "maireinfo2",
+      "manu_aquarelle",
+      "meteociel",
+      "meteovillages",
+      "prefet83",
+      "rosalie_glacis",
+      "steventual_off",
+      "sylvainn11",
+      "temps_breton",
+      "tieph38",
+      "torreseryc",
+      "vigipreventionm",
+      "wokinette"
+    ],
+    "changementclimatique": [
+      "actuenviro",
+      "ceremacom",
+      "christinahell",
+      "citoyennea",
+      "comptephmre1",
+      "dedelagourde",
+      "domi59genealo",
+      "durovray",
+      "farahkhey",
+      "gh_thry_57yo",
+      "herev89",
+      "intellactuel",
+      "jakguion",
+      "jaoueneric1",
+      "jeanlesnes",
+      "lagrange_bx",
+      "lailaeren",
+      "lamireaut",
+      "medef",
+      "moshat_83",
+      "mysterty",
+      "napakatbra",
+      "neoresistant",
+      "nicktamair69",
+      "pcr_revolution",
+      "raymondthiebaut",
+      "reservoirapps",
+      "schydlowski1",
+      "seuilhaut",
+      "sitgesfranck",
+      "thomaspretti91",
+      "wimocean"
+    ],
+    "chapitre": [
+      "countdown2027"
+    ],
+    "chaud": [
+      "_lionceaux_",
+      "alb34991995",
+      "avecduo",
+      "ben_jinator",
+      "caroange",
+      "coucouvous62",
+      "dekerros",
+      "emmi_kra",
+      "infomediaire",
+      "informationssf",
+      "inkedstep",
+      "juliapantiesoff",
+      "lachainemeteo",
+      "laurentr18",
+      "lukasmau__",
+      "mapetitesucette",
+      "meteo60",
+      "meteoredfr",
+      "meteovillages",
+      "paroisse_niort",
+      "rem_y3",
+      "sarttax",
+      "shynsouu",
+      "tieph38",
+      "torreseryc",
+      "un1te_idf",
+      "vigipreventionm",
+      "wishywitch"
+    ],
     "chemtrails": [
       "al_cadon",
       "anna_c_moi",
@@ -6164,11 +6749,43 @@
       "tuxinette",
       "valerianturf"
     ],
+    "chill": [
+      "dallytwt",
+      "ryunochi"
+    ],
     "cholet": [
       "alouetteradio",
       "as_49191",
       "laroulotte49",
       "philipperubion"
+    ],
+    "christinekellyetvous": [
+      "europe1",
+      "sistadunet"
+    ],
+    "chu": [
+      "3genevieve",
+      "ana_anamddk",
+      "angersvillactu",
+      "aredius44",
+      "f3bourgogne",
+      "filippimichel",
+      "fucius49",
+      "jpcouturier9977",
+      "morandiniblog",
+      "valerie_oppelt"
+    ],
+    "ciel": [
+      "laroulotte49",
+      "loulouoz1",
+      "soleillibrefr",
+      "thesecretvoice4"
+    ],
+    "citation": [
+      "benaraktrip",
+      "dvanonacker",
+      "philocloud52",
+      "tino_bourse"
     ],
     "clim": [
       "1fortitude1",
@@ -6454,6 +7071,251 @@
       "zewala3",
       "zyannah7"
     ],
+    "climat": [
+      "01meteo",
+      "24hpujadas",
+      "6pattparisi",
+      "_jeanseb_",
+      "abbepages",
+      "abreu_thii",
+      "acgriffon",
+      "achedfr",
+      "adnanefilalitv",
+      "ahellf",
+      "aiditions",
+      "aileastick1",
+      "airport_tlse",
+      "al_cabro",
+      "alainavello",
+      "alexseale",
+      "angersvillactu",
+      "antiescrolo",
+      "anto4465",
+      "arneekyd",
+      "assoclimatoreal",
+      "assograndparis",
+      "ayo2026",
+      "babelio",
+      "balivernologie",
+      "bamos7moi",
+      "batinfo_com",
+      "benjihj",
+      "benoitberthe",
+      "bergen_1980",
+      "bertrandbob",
+      "birdyaccount1",
+      "blancsmasques",
+      "bordeauxgazette",
+      "bretreja",
+      "c_desmaires",
+      "cartoonsmrt",
+      "catnatnet",
+      "catwomeyes",
+      "cblaurence2",
+      "cdanslair",
+      "cerebroonair",
+      "cevennes14",
+      "chrishpb73",
+      "christinahell",
+      "citoyendumonde5",
+      "claudea82619845",
+      "claudinelayre",
+      "clintelorg",
+      "cnes",
+      "consoglobe",
+      "cwilly4",
+      "dana_prepy",
+      "de_chardin",
+      "demeulenaereo",
+      "descanteschris",
+      "doclamarre",
+      "dsfeurope",
+      "ecotimes_dz",
+      "editionsscpo",
+      "emilieange",
+      "energiechalleng",
+      "epauledetorse",
+      "eric265538999",
+      "euroscartouches",
+      "evenpascal99823",
+      "f3bourgogne",
+      "fab0591",
+      "fab5875",
+      "farahkhey",
+      "faroukamri01",
+      "felix67162406",
+      "ferreiragui4",
+      "flouchart",
+      "flyforpal",
+      "fout_sen",
+      "francaispresse",
+      "france3paris",
+      "francenews24",
+      "francinelfe",
+      "franmichalon",
+      "frfrontieres",
+      "g_le_du",
+      "gaby_wald",
+      "gaelroblin",
+      "gaillardmann",
+      "gallieni_57",
+      "gb_gbernard",
+      "gedlink333",
+      "georgiob3",
+      "gerardl50",
+      "gillescallot",
+      "gloriacasa77",
+      "gourmelonber",
+      "grandsachoir",
+      "guigz75116",
+      "guisyo69",
+      "gustave213",
+      "hadrichmalik",
+      "hebdoduvendredi",
+      "helenerossinot",
+      "hervelambel",
+      "i3ct3r",
+      "i__iiii__i",
+      "idl_avecmarion",
+      "infirmiersnpi",
+      "infoclimat",
+      "infomediaire",
+      "intellactuel",
+      "intelligencena2",
+      "italia57fr",
+      "jamesdrew196092",
+      "jcfagnoulo",
+      "jeanlesnes",
+      "jeanpansu",
+      "jes68_twit",
+      "jlgervaise",
+      "jlr_d77678",
+      "joffrinlaurent",
+      "jujare56",
+      "julieneko112700",
+      "julienrifflet",
+      "justeungaucho",
+      "jymmyelloco",
+      "l_emmerdeur_69",
+      "lafrelon",
+      "lailaeren",
+      "lalobarose",
+      "lanceuri",
+      "lanludovic9",
+      "lauremoreau78",
+      "laurence1119436",
+      "laurentopsomer",
+      "lautrefranck",
+      "lcensur",
+      "lenveaureporter",
+      "leprogresloire",
+      "lesecologistes0",
+      "lesescrolos",
+      "lessurligneurs",
+      "letsborg",
+      "libre83000",
+      "linathin",
+      "lindependant",
+      "ln356",
+      "loicrousval",
+      "loki10681601",
+      "loursolivier",
+      "lucspighel",
+      "macronardsfm",
+      "mahorchiche",
+      "maireinfo2",
+      "manouchkya",
+      "mapyntonga",
+      "marcgozlan",
+      "martadecidrac",
+      "mercijlm",
+      "mercilesarbres",
+      "merylpinque",
+      "meteobretagne",
+      "meteoclimatpro",
+      "mg_resurrection",
+      "monsieurmeteo07",
+      "morandiniblog",
+      "moreaugabarain",
+      "mpaolidevictor",
+      "napakatbra",
+      "neoresistant",
+      "nguyensylvie5",
+      "nico650",
+      "nicolaslecorvec",
+      "nicolaslefriant",
+      "nonhumain",
+      "nouvelleaubefr",
+      "numerama",
+      "odilelerasle",
+      "olivier_power",
+      "omarioofficiel",
+      "onugeneve",
+      "orvaultpcf",
+      "parisapaise",
+      "parstfbrb",
+      "patrickmarliere",
+      "patriefrance_",
+      "paulmaxit",
+      "pernambucano69",
+      "petrus2005",
+      "philipp10630230",
+      "philipperubion",
+      "planeteverte",
+      "polemus",
+      "prefet971",
+      "pressecitron",
+      "projet_arcadie",
+      "pslachambre",
+      "pulsefrinfo",
+      "raimonvirtuale",
+      "raymondthiebaut",
+      "rdse_senat",
+      "reservoirapps",
+      "romainrferrara",
+      "rvhunter57",
+      "schydlowski1",
+      "sergedanilo",
+      "sidibe17520",
+      "singular2231",
+      "sitgesfranck",
+      "sixieme_avenue",
+      "soleillibrefr",
+      "sophie_bussiere",
+      "steffy2nice",
+      "steiphweb",
+      "steventual_off",
+      "sttravert",
+      "svimaire",
+      "swiss_pepita",
+      "sylibum",
+      "thalassa2008",
+      "thierryjaccaud",
+      "thom_wx",
+      "thomaspretti91",
+      "tiendalasabila",
+      "tieph38",
+      "tiredearth_fr",
+      "tkushiyama",
+      "torreseryc",
+      "tribunedelyon",
+      "unesdepresse",
+      "union_ce",
+      "valerianturf",
+      "valeriepestre",
+      "valmelusine",
+      "var_actu",
+      "vision2050fr",
+      "vlautard",
+      "vovksamotniy",
+      "vspillebout",
+      "wakatanka4006",
+      "x_mandalor",
+      "yannickboutot",
+      "zadigobb",
+      "zeseb29",
+      "zetrader"
+    ],
     "climatisation": [
       "24hpujadas",
       "2lapagerie",
@@ -6686,6 +7548,207 @@
       "yannzerodeux",
       "zetrader"
     ],
+    "climatisonsnous": [
+      "aserieux",
+      "brucewayne055",
+      "couturiermichle",
+      "hansnijsen",
+      "intellactuel",
+      "jeanpansu",
+      "landpc_world",
+      "maclesggy",
+      "mathieu2b",
+      "pantruchard",
+      "publicenem_y",
+      "zewala3"
+    ],
+    "clisson": [
+      "fouragebernard",
+      "mathieunantais",
+      "terpays2laloire"
+    ],
+    "clown": [
+      "julieteric7",
+      "tieph38"
+    ],
+    "clubamerica": [
+      "beinsports_fr"
+    ],
+    "cnews": [
+      "achabussuspendu",
+      "ad_vitam44_",
+      "adia66",
+      "anti_doxe",
+      "belda30010",
+      "bertrandbob",
+      "biotopgo",
+      "busdriver04",
+      "catman3012",
+      "cedricliope",
+      "cg59300",
+      "charles_taieb",
+      "chr_louis",
+      "claudevictoria2",
+      "clematitebleue",
+      "coloretteart",
+      "corsu20a",
+      "cr77france",
+      "cristalinevert",
+      "dniepro",
+      "domipre2016",
+      "dommajeur",
+      "duprata",
+      "elsasser_witz",
+      "emmapioupiou",
+      "fab_2_thann",
+      "fandevlad3",
+      "flaowerpower",
+      "florianpinet",
+      "fofolefou",
+      "forzanimes1203",
+      "fout_sen",
+      "franckbalourd",
+      "frederichonore1",
+      "gilbertcollard",
+      "grandsachoir",
+      "graspthesilence",
+      "griou1591",
+      "hassanlemaroc",
+      "hassanoun",
+      "heilatan",
+      "i__iiii__i",
+      "intellactuel",
+      "j_bg",
+      "jacquidn",
+      "jpestaque",
+      "katuadire",
+      "kbenams",
+      "laurentmorino",
+      "laveritecequi",
+      "louis_m75",
+      "ludianov",
+      "luigisintierra",
+      "luis021002",
+      "lulowesh",
+      "lusitanien77",
+      "manara37",
+      "manu20682903",
+      "michaela31700",
+      "michotmuguette",
+      "milihistory",
+      "minisa5455",
+      "mistermag00",
+      "mookass",
+      "mousti69619",
+      "mrsclovisse",
+      "ms_drous",
+      "nad75020",
+      "napakatbra",
+      "nonhumain",
+      "notaure",
+      "patricia_m06",
+      "patricia_zonza",
+      "pbiane",
+      "phdevilliers",
+      "phelixtjm",
+      "pierre6417",
+      "pserenina40795",
+      "reikersone",
+      "robwallaceone",
+      "ronchon_thierry",
+      "rouhault",
+      "seb84291085diog",
+      "siffrebouli",
+      "sophiecannelle",
+      "sylvinfo",
+      "tamerlateup",
+      "ternoise",
+      "thomas_isotopie",
+      "unesdepresse",
+      "utopic92",
+      "vallyjules",
+      "vander_pat",
+      "vycanismajori",
+      "webscann",
+      "will_nicks_off",
+      "ycaree_ricardo",
+      "zyannah7"
+    ],
+    "collabos": [
+      "esnim78",
+      "jyves94",
+      "v2vofficial"
+    ],
+    "cs2": [
+      "ryunochi"
+    ],
+    "cuck": [
+      "anaisdomine_",
+      "charlene3400da",
+      "cocuheureux72",
+      "mastervirgo69",
+      "missc0219164549",
+      "moneymissclara2",
+      "moneymissclaraa",
+      "sunshiika",
+      "tintindebonnair"
+    ],
+    "dessindepresse": [
+      "dadoubd",
+      "emmanuelchaunu",
+      "marielauredupon"
+    ],
+    "deuxsèvres": [
+      "boyolfr",
+      "e_niort",
+      "prefet79"
+    ],
+    "dgm": [
+      "medi1tvafrique",
+      "yabiladi_fr"
+    ],
+    "directan": [
+      "amelia_lkf",
+      "assembleenat",
+      "canal_training",
+      "chenrydelapomme",
+      "christophebex",
+      "djokl",
+      "ebothorel",
+      "florianpinet",
+      "fredericdelpech",
+      "gallieni_57",
+      "genethique",
+      "groupeliot_an",
+      "jeson187",
+      "jubrugerolles",
+      "laurenceputih",
+      "lcp",
+      "manara37",
+      "manthoparis",
+      "matthiasrn",
+      "projet_arcadie",
+      "realmarcel1",
+      "stjuste66438315",
+      "udr_alpilles13",
+      "union_ce",
+      "vspillebout"
+    ],
+    "dnb": [
+      "1prof2lettres",
+      "agatheirene",
+      "benmiloudkarim",
+      "berenyce76",
+      "cafepedagogique",
+      "cyniquedegauche",
+      "europeced",
+      "idefix_spqr",
+      "ju_51lie",
+      "kems2001",
+      "negentropism",
+      "rem93200",
+      "s3b_blstr"
+    ],
     "domina": [
       "_a_lya",
       "bao_gs16",
@@ -6715,6 +7778,17 @@
       "sarakhlo666",
       "sofiaqueen92",
       "sweetcherryt0es"
+    ],
+    "dômedechaleur": [
+      "capitaine951869",
+      "duprata",
+      "soleillibrefr",
+      "stregamicca"
+    ],
+    "ecobre": [
+      "eaujusth1",
+      "oui_ready",
+      "soulmanscofield"
     ],
     "ecole": [
       "_periscolaire",
@@ -6752,6 +7826,130 @@
       "soseducation",
       "theoremeautumn"
     ],
+    "ecologie": [
+      "24hpujadas",
+      "323pacman",
+      "aieaie01",
+      "al_cabro",
+      "babelio",
+      "bertrandredone",
+      "bordeauxgazette",
+      "boudaud2020",
+      "christellecipi",
+      "chunnly67",
+      "comprendre_agir",
+      "cwilly4",
+      "erikpages",
+      "fab5875",
+      "farahkhey",
+      "fcroutard",
+      "gallieni_57",
+      "gengist17",
+      "gustave213",
+      "htoneki",
+      "insoumis69_8",
+      "insoumis9113",
+      "jcfagnoulo",
+      "jpsolari",
+      "julien_ducerf",
+      "karibunami",
+      "laurentopsomer",
+      "lepappydeparis",
+      "lesecologistes0",
+      "lesescrolos",
+      "letuze75",
+      "loolou21",
+      "ludovicmondot",
+      "manue42765",
+      "media_normandie",
+      "misssocksplease",
+      "noellelenoir",
+      "omarioofficiel",
+      "orvaultpcf",
+      "puncktamatic",
+      "regueyne",
+      "robertoted58092",
+      "superdiabolo777",
+      "svimaire",
+      "thierrybeaucamp",
+      "wagahat2547376"
+    ],
+    "education": [
+      "airport60",
+      "ayo2026",
+      "d_munich",
+      "ghostfire15130",
+      "htdemazargues",
+      "lionel_rapha",
+      "media_normandie",
+      "poubellelounet2",
+      "publicsenat",
+      "snpden",
+      "var_actu",
+      "yannickbedin",
+      "yannicktrigance"
+    ],
+    "educationnationale": [
+      "agatheirene",
+      "bernathoustra",
+      "dekerros",
+      "dsireroua",
+      "fabricecharvet",
+      "fnecfpfo",
+      "maireinfo2",
+      "negreactif",
+      "pdohen",
+      "snalc_national"
+    ],
+    "eelv": [
+      "agrosgros",
+      "ananasspirine",
+      "anastas77581540",
+      "corsu20a",
+      "coucou564",
+      "davidyukioamano",
+      "ecologisteseelv",
+      "gillescallot",
+      "guffin_mac",
+      "hiettelary",
+      "jc_dussse",
+      "jpsolari",
+      "jyves94",
+      "laurent56895090",
+      "lcensur",
+      "lepappydeparis",
+      "letuze75",
+      "mathzefencer",
+      "monopolyon_off",
+      "mthistoria",
+      "notaure",
+      "oimtid",
+      "pabouger",
+      "patricebonnefoy",
+      "petitpalois64",
+      "pierricv",
+      "saccagebordeaux",
+      "saplanlena",
+      "sparkykv",
+      "superdiabolo777",
+      "svimaire",
+      "union_ce",
+      "yguil"
+    ],
+    "electricite": [
+      "baedongmi79",
+      "bocquillon",
+      "claudinelayre",
+      "dragolito52",
+      "elissamaiss",
+      "energiematin",
+      "gillescallot",
+      "jigen_fr",
+      "laurentopsomer"
+    ],
+    "eliotdevaletvous": [
+      "europe1"
+    ],
     "elle": [
       "arrache2chicots",
       "aure_13974",
@@ -6765,6 +7963,95 @@
       "theguyanedictat",
       "tojioz",
       "wolffamadeus_"
+    ],
+    "enfants": [
+      "agretdenis",
+      "arnauddelebarre",
+      "ars_grand_est",
+      "cftc37metal",
+      "contessina26",
+      "dommajeur",
+      "fandevlad3",
+      "informationssf",
+      "inst_actu",
+      "jeanluc33210",
+      "loki10681601",
+      "media_normandie",
+      "prefet67",
+      "prefet91",
+      "santecool",
+      "soso2229022290",
+      "studiotamani",
+      "tiendalasabila",
+      "var_actu"
+    ],
+    "environnement": [
+      "batinfo_com",
+      "eric265538999",
+      "euroscartouches",
+      "franco57124579",
+      "frfrontieres",
+      "gnls69720",
+      "incasprod",
+      "infomediaire",
+      "joffrinlaurent",
+      "laurentopsomer",
+      "lemediapolitifr",
+      "luluapso",
+      "lyoncap",
+      "media_normandie",
+      "mmorlaisiennes",
+      "orvaultpcf",
+      "prefet971",
+      "reservoirapps",
+      "thenancyroc",
+      "thierrybeaucamp",
+      "tribunedelyon",
+      "var_actu",
+      "vernayphilippe3"
+    ],
+    "epsteintech": [
+      "citoyendumonde5"
+    ],
+    "equidia": [
+      "pbiane"
+    ],
+    "equipedefrance": [
+      "ternoise",
+      "tv78_yvelines"
+    ],
+    "escrologie": [
+      "al_cabro",
+      "beyrtrand",
+      "bianchidaniele8",
+      "c_pantalon",
+      "cblaurence2",
+      "cigartour",
+      "cindylony",
+      "eveilleurduco1",
+      "farce53516",
+      "francewoke",
+      "gerardpouzoulet",
+      "groookounet",
+      "guffin_mac",
+      "icezebrastation",
+      "j_de_saintsimon",
+      "jakguion",
+      "kurejiiu",
+      "lanceuri",
+      "liberte_verites",
+      "polemus",
+      "unevoixp"
+    ],
+    "eure": [
+      "archernormandie",
+      "f3normandie",
+      "infonormandie",
+      "media_normandie",
+      "prefet27",
+      "presse_30",
+      "raphtual",
+      "reconqueteeure"
     ],
     "europe1": [
       "bayrou",
@@ -6780,6 +8067,74 @@
       "salsadany57",
       "sunseroa"
     ],
+    "europe1matin": [
+      "europe1",
+      "sunseroa"
+    ],
+    "europe1soir": [
+      "europe1"
+    ],
+    "europe1soirwk": [
+      "doleveronique",
+      "europe1"
+    ],
+    "euthanasie": [
+      "admd64",
+      "admdcorse",
+      "alliancevita_35",
+      "ana_pouvreau",
+      "anastas77581540",
+      "antoineberetto_",
+      "benaraktrip",
+      "caius_cplus",
+      "cevennes14",
+      "chachoulgate",
+      "chamiteux",
+      "chenrydelapomme",
+      "cidure1990",
+      "cnafc",
+      "coldoct",
+      "couturiermichle",
+      "craps0072",
+      "david_k95200",
+      "demore93",
+      "descanteschris",
+      "dlfparis16",
+      "dominiq14912964",
+      "fhfrancoisle",
+      "hiboudunet",
+      "hydrosaure",
+      "jeansaitout",
+      "jfcuignet",
+      "koztoujours",
+      "laurenceputih",
+      "libredepenserfr",
+      "lisepierr",
+      "marchepourlavie",
+      "menddydelilah",
+      "moshat_83",
+      "mrsclovisse",
+      "n_tardyjoubert",
+      "nellnell2025",
+      "pdohen",
+      "pietremarie",
+      "protago07500271",
+      "remseeks",
+      "sergyl_lafont",
+      "teddymcardle",
+      "ul_ti_ma_ratio",
+      "unryyenagain",
+      "valmelusine",
+      "vielleuse",
+      "xyz_8moii"
+    ],
+    "expertmeteo": [
+      "meteoclimatpro",
+      "patrickmarliere"
+    ],
+    "extreme": [
+      "countdown2027"
+    ],
     "f1": [
       "cissmohamed61",
       "cladounnet",
@@ -6792,6 +8147,189 @@
       "paddock_inside",
       "pg10__inside",
       "tearofffr"
+    ],
+    "facealinfo": [
+      "atomecrochu",
+      "christine_kelly",
+      "cnews",
+      "dkbreizh",
+      "heilatan",
+      "joker77fancnews",
+      "laurenceputih",
+      "legauloisphil",
+      "marylineparmi",
+      "michaela31700",
+      "mrsclovisse",
+      "oxitan30",
+      "philippe2408",
+      "pionpion234",
+      "rouhault",
+      "seb_st_emilion",
+      "shelegshemech3",
+      "timaurielle",
+      "zyannah7"
+    ],
+    "fadv": [
+      "laurenceputih",
+      "michaela31700",
+      "phdevilliers"
+    ],
+    "feet": [
+      "bao_gs16",
+      "frenchfeet0",
+      "jadembk1",
+      "ju17te",
+      "july1ym",
+      "khaleesi_soles",
+      "leynaqueen55",
+      "lia_lindona_x",
+      "moneymissclaraa",
+      "p_carlaa",
+      "princessbe27733",
+      "prudencepieds",
+      "reine_dinasty_",
+      "reine_l420",
+      "reineayna9",
+      "ruinnora93726",
+      "scarlettnymphe",
+      "stonydu93",
+      "sweetcherryt0es",
+      "zoefrenchfeet"
+    ],
+    "feetfetısh": [
+      "3unnybby",
+      "_a_lya",
+      "alyaaaaapst2",
+      "ana_ananal",
+      "babiiyxoreliie",
+      "deesseabyy",
+      "deesselou2001",
+      "douceurlylou",
+      "frenchfeet0",
+      "kellysm245158",
+      "khaleesi_soles",
+      "lia_lindona_x",
+      "mclrlola",
+      "minou01__",
+      "oreliiefeet",
+      "prudencepieds",
+      "reine_l420",
+      "reineayna9",
+      "sarakhlo666",
+      "scarlettnymphe",
+      "stelladivinfeet",
+      "sunshiika",
+      "zoefrenchfeet"
+    ],
+    "femdom": [
+      "_a_lya",
+      "anaisdomine_",
+      "charlene3400da",
+      "clarawxua",
+      "feetzillaa",
+      "missc0219164549",
+      "mllekittynl",
+      "nayapnm",
+      "qveenroxi2",
+      "reinealba1999",
+      "reinecerise",
+      "reineul4",
+      "safia928",
+      "samdctll",
+      "sweetcherryt0es",
+      "venussceleste"
+    ],
+    "fetedelamusique": [
+      "01meteo",
+      "1graindefolie",
+      "1petitsecret",
+      "_pascommevous",
+      "actarus7m51",
+      "actufr_lyon",
+      "alainb_paris",
+      "auchecocitoyen",
+      "bordeauxgazette",
+      "boujemaa_b",
+      "brk1729180",
+      "chgiraudeau",
+      "christofnamoi",
+      "cleaenfinla",
+      "clpressfr",
+      "coucouvous62",
+      "deepekachu",
+      "dj_molo_pepito",
+      "dunaljonnhy",
+      "exarkhun_return",
+      "fanmarine14",
+      "faure05faure",
+      "fcmetzfans",
+      "fflayol",
+      "fils2psy",
+      "flash1nfo",
+      "france3437",
+      "fredericlefevre",
+      "gallieni_57",
+      "guil21036",
+      "infoverifmedia",
+      "ioannalazana",
+      "italia57fr",
+      "jack_lang",
+      "jeancyrileforch",
+      "jeson187",
+      "jojouchiwa",
+      "jolvitalis",
+      "jpcouturier9977",
+      "la_pollice",
+      "laurence1119436",
+      "laurenceputih",
+      "levirusduweb",
+      "lucauffret",
+      "mapool07",
+      "mdumont75",
+      "menow_fr",
+      "ninasimone49",
+      "oumsedia69",
+      "padenom7",
+      "pierreberat",
+      "pippin1964",
+      "pizzediben",
+      "poissecaille39",
+      "prefet51",
+      "quivoitsein",
+      "razetin",
+      "rcfcoeurdechamp",
+      "redfivehouse",
+      "regueyne",
+      "rgxhgrg",
+      "sedfleck75",
+      "sirenesfr",
+      "sonkobafaw04",
+      "sophie_pons",
+      "stephbonsens",
+      "steveladureau",
+      "thorfinn1610",
+      "tv_baron",
+      "un1te_policenat",
+      "variologo",
+      "varlanolivier"
+    ],
+    "fetichiste": [
+      "_a_lya",
+      "anaisdomine_",
+      "clarawxua",
+      "feliciaabch26",
+      "july1ym",
+      "khaleesi_soles",
+      "lilla8646780671",
+      "luxetoesclb",
+      "princessbe27733"
+    ],
+    "fetichistepied": [
+      "princessbe27733"
+    ],
+    "fft": [
+      "sportlitique23",
+      "tennisactu"
     ],
     "fifaworldcup": [
       "anthobenguigui",
@@ -6813,6 +8351,9 @@
       "paris_liberte",
       "thedarky9",
       "walidelk5"
+    ],
+    "finale": [
+      "thesecretvoice4"
     ],
     "findom": [
       "_a_lya",
@@ -6876,6 +8417,76 @@
       "shhgjgdy8",
       "smaa_92",
       "tochosani"
+    ],
+    "followbackinsoumis": [
+      "cftc37metal",
+      "leilaclaude",
+      "reckdrogeek",
+      "rourelaurie",
+      "toufoux_news"
+    ],
+    "forteschaleurs": [
+      "anthodepe",
+      "ars_naquit",
+      "ceremacom",
+      "cnomk",
+      "fabien2176",
+      "fedunsater",
+      "gallieni_57",
+      "karine4269",
+      "mattrohff",
+      "policenat13",
+      "policenat_36",
+      "prefecture50",
+      "prefet13",
+      "prefet14",
+      "prefet27",
+      "prefet29",
+      "prefet2b",
+      "prefet46",
+      "prefet53",
+      "prefet59",
+      "prefet67",
+      "prefet74",
+      "prefet75_idf",
+      "prefet77",
+      "prefet83",
+      "prefet88",
+      "prefet93",
+      "prefet_10",
+      "prefetrhone",
+      "prefpolice",
+      "sunyfinebulle",
+      "travail_gouv",
+      "usapcgt",
+      "var_actu"
+    ],
+    "foudre": [
+      "atthisatthis",
+      "countdown2027",
+      "fregyptologist",
+      "jeangui17",
+      "sylvainfreres"
+    ],
+    "foutagedegueule": [
+      "agatheirene",
+      "en_ricochet",
+      "fabricecharvet",
+      "fcl6944",
+      "fpetorin",
+      "julieneko112700",
+      "ln2champagne",
+      "ouvertes_portes",
+      "vally711"
+    ],
+    "fps": [
+      "ryunochi"
+    ],
+    "fraira": [
+      "1graindefolie",
+      "leclerinhoo16",
+      "levirusduweb",
+      "troyesdauteur"
     ],
     "frairq": [
       "alexand04161229",
@@ -7259,6 +8870,37 @@
       "ynhallak",
       "zetrader"
     ],
+    "francegalop": [
+      "pbiane"
+    ],
+    "franceinfo": [
+      "achabussuspendu",
+      "assograndparis",
+      "cristalinevert",
+      "domipre2016",
+      "dommajeur",
+      "elsasser_witz",
+      "franceinfo",
+      "franceinfopro",
+      "frederichonore1",
+      "gallieni_57",
+      "intellactuel",
+      "jypsega",
+      "katuadire",
+      "laveritecequi",
+      "misssocksplease",
+      "mrsclovisse",
+      "pbiane",
+      "raymondthiebaut",
+      "ronchon_thierry",
+      "seb84291085diog",
+      "sergem28892094",
+      "sophiecannelle",
+      "sylvinfo",
+      "thesecretvoice4",
+      "vycanismajori",
+      "ycaree_ricardo"
+    ],
     "francetv": [
       "de_epines",
       "ellyjuneuk",
@@ -7266,6 +8908,112 @@
       "seb84291085diog",
       "sergem28892094",
       "vander_pat"
+    ],
+    "francetvsport": [
+      "daviddetroyes4",
+      "jeanlucmaurice",
+      "xavier76100"
+    ],
+    "francevsiraq": [
+      "ankaralim95",
+      "cavasesavoir2",
+      "echalandre",
+      "flaviefig",
+      "julianosperoni",
+      "nynyaks",
+      "rozacarbonara",
+      "serialoveuse",
+      "weed_france13"
+    ],
+    "franor": [
+      "bitoune_gonz",
+      "bretonaverti",
+      "demongentil",
+      "itsmarie_bttfly",
+      "kalinah_2",
+      "laurapas_",
+      "letsbefree",
+      "mabouyadesmers",
+      "sabris7uppp",
+      "seinsvendredi",
+      "sylaristheboss",
+      "ternoise",
+      "victoriasurx",
+      "zewala3"
+    ],
+    "frasen": [
+      "auditeurcac",
+      "azisstivn",
+      "belda30010",
+      "countdown2027",
+      "fouks451",
+      "galsenfootsn",
+      "ibnzoubeyri",
+      "lateambdt",
+      "maimounacara",
+      "nick59",
+      "nightfever54",
+      "pvsportfr",
+      "scousersniper10",
+      "spirit_paris94",
+      "ternoise",
+      "thedarky9"
+    ],
+    "frenchgirl": [
+      "didinelib_off",
+      "themademoize"
+    ],
+    "g7": [
+      "argiope28",
+      "comploplowatch",
+      "coucou564",
+      "franceinfo",
+      "gazolineintense",
+      "gdecazaux",
+      "jeanserran",
+      "jingle_all",
+      "shelegshemech3",
+      "shlagtv",
+      "thesecretvoice4"
+    ],
+    "gamecube": [
+      "allmightofranky",
+      "ossoragenki"
+    ],
+    "gamer": [
+      "encore1gamer",
+      "nolwnlm",
+      "ryunochi"
+    ],
+    "gaming": [
+      "encore1gamer",
+      "frdprh",
+      "lezouloufr",
+      "menow_fr",
+      "ryunochi",
+      "wales27forever"
+    ],
+    "gare": [
+      "fucius49",
+      "metropolisdate",
+      "renesaens",
+      "telenantesinfo"
+    ],
+    "geffray": [
+      "agatheirene",
+      "bernathoustra",
+      "eulenssspiegel",
+      "informationssf",
+      "jc_dussse",
+      "jolvitalis",
+      "larueofficiel",
+      "mookass"
+    ],
+    "geoingenierie": [
+      "fleurdotone",
+      "jakkajfr",
+      "lanludovic9",
+      "mzellchat"
     ],
     "ggrmc": [
       "007jean5",
@@ -7316,6 +9064,140 @@
       "steph_leon29",
       "the_best_man_57"
     ],
+    "giec": [
+      "antonin_duarte",
+      "assoclimatoreal",
+      "c_ono_dit_biot",
+      "christinahell",
+      "cmartellus732",
+      "correerwan",
+      "countdown2027",
+      "daniel_fraczak",
+      "despoisse_y",
+      "dussolalexis",
+      "ellyjuneuk",
+      "evah5m",
+      "flouchart",
+      "francoisedegois",
+      "fucius49",
+      "gedlink333",
+      "gerardl50",
+      "gfrx",
+      "gregoirenormand",
+      "isodeboot",
+      "joypc37",
+      "jyves94",
+      "lanceuri",
+      "lucspighel",
+      "macronardsfm",
+      "maleeek",
+      "mapyntonga",
+      "martinebillard",
+      "medi1tv",
+      "meteocea",
+      "neoresistant",
+      "olidarkside",
+      "omarioofficiel",
+      "paulmaxit",
+      "pierricv",
+      "remiangec",
+      "richard_loyen",
+      "shelegshemech3",
+      "skatemackey",
+      "speedy06200",
+      "stonellyon",
+      "teddy_devisme",
+      "ternoise",
+      "tomlasnier3xs",
+      "valerianturf",
+      "winspecta",
+      "xyz_8moii"
+    ],
+    "globalwarminghoax": [
+      "fab0591"
+    ],
+    "gouvernement": [
+      "13fredykruger",
+      "24hpujadas",
+      "323pacman",
+      "agatheirene",
+      "anthonybrondel",
+      "batinfo_com",
+      "cal_beaumont",
+      "capitaine951869",
+      "chasseabolition",
+      "chrisprodigal",
+      "christinahell",
+      "cleomagali",
+      "dd95615154",
+      "farahkhey",
+      "faroukamri01",
+      "fede_sud_rail",
+      "florianpinet",
+      "gaetanld56",
+      "iixkenpachixii",
+      "informationssf",
+      "inoxtee",
+      "jcfagnoulo",
+      "jeanned20401",
+      "jeson187",
+      "jujare56",
+      "julieneko112700",
+      "lanotif45",
+      "lauronnicolas",
+      "lcensur",
+      "lesecologistes0",
+      "ln2champagne",
+      "loovenelle",
+      "loubestal17",
+      "madrigalenr",
+      "merylpinque",
+      "monikafrance",
+      "morandiniblog",
+      "nebs36",
+      "nelcheross",
+      "nonhumain",
+      "onmarchefrance",
+      "patrick49000p",
+      "patrioteengager",
+      "pizzediben",
+      "polemus",
+      "purepolitique",
+      "renaudbellville",
+      "rolcarolcarole",
+      "running93137953",
+      "saccagebordeaux",
+      "schwartzanne2",
+      "soleillibrefr",
+      "soso2229022290",
+      "sylvie_bert",
+      "toufoux_news",
+      "unesdepresse",
+      "x_mandalor",
+      "xavier76100"
+    ],
+    "grandslam": [
+      "tennistemple"
+    ],
+    "groix": [
+      "gwoznica",
+      "meteobretagne"
+    ],
+    "grêle": [
+      "helenebaye",
+      "infoccitanie",
+      "inst_actu",
+      "lachainemeteo",
+      "meteofrance_o",
+      "meteovillages"
+    ],
+    "géoingenierie": [
+      "solucetomnibus"
+    ],
+    "géoingénierie": [
+      "beauregardjust2",
+      "soleillibrefr"
+    ],
     "haarp": [
       "anaellearchange",
       "anna_c_moi",
@@ -7344,6 +9226,21 @@
       "tribunelibre1",
       "vovksamotniy",
       "vuzavatar"
+    ],
+    "hautevienne": [
+      "legralinfo",
+      "prefet87"
+    ],
+    "hautsdefrance": [
+      "cci_hdf",
+      "hautsdefrance",
+      "laontourisme",
+      "laurentopsomer",
+      "meteo60",
+      "meteociel",
+      "meteovilles",
+      "prefet59",
+      "vigipreventionm"
     ],
     "hdpros": [
       "anti_doxe",
@@ -7386,6 +9283,59 @@
       "v_deperiers",
       "victori77866780",
       "xyz_8moii"
+    ],
+    "hdpros2": [
+      "beret_vert",
+      "depoelfjg",
+      "ellyjuneuk",
+      "katuadire",
+      "laurenceputih",
+      "louis_m75",
+      "macsample27",
+      "michaela31700",
+      "minotaure91",
+      "natebrubecker",
+      "nieder_klaus",
+      "philippe2408",
+      "pionpion234",
+      "samsung409",
+      "shelegshemech3",
+      "siffrebouli",
+      "superaigri",
+      "utopic92"
+    ],
+    "hdproswe": [
+      "clematitebleue",
+      "cnews",
+      "forzanimes1203",
+      "laurenceputih",
+      "leito30580508",
+      "mousti69619",
+      "xyz_8moii"
+    ],
+    "hellfest": [
+      "anthoatana",
+      "christi94767360",
+      "cyrild44",
+      "elisaphantom",
+      "europe2vendee",
+      "fouragebernard",
+      "johjohbat",
+      "lachainemeteo",
+      "mathieunantais",
+      "prefet44",
+      "stephanepajot44",
+      "zion_devil21966"
+    ],
+    "hmi": [
+      "evacohendusud",
+      "levirusduweb"
+    ],
+    "homeoftennis": [
+      "de_epines",
+      "jmnness",
+      "masuremike",
+      "xavier76100"
     ],
     "humour": [
       "_lebeauf",
@@ -7433,6 +9383,86 @@
       "vision2050fr",
       "zulu18360299"
     ],
+    "hôpital": [
+      "agatheirene",
+      "allonsy_france",
+      "bill90807930",
+      "cftc37metal",
+      "demore93",
+      "dussolalexis",
+      "elisa6666",
+      "fouragebernard",
+      "frfrontieres",
+      "jcav8607",
+      "jcfagnoulo",
+      "laurence1119436",
+      "lcensur",
+      "leprogreslyon",
+      "lezemoadelilas",
+      "mimijotte2",
+      "nicolasberrod",
+      "nini18b",
+      "petrus2005"
+    ],
+    "ia": [
+      "actu43_fr",
+      "audouinc",
+      "bruno_fibre",
+      "cecile_diz",
+      "chenardg",
+      "citoyendumonde5",
+      "cwilly4",
+      "descanteschris",
+      "fair_finance",
+      "france24_fr",
+      "gregoirenormand",
+      "halpern_g",
+      "intelligencena2",
+      "julien_ducerf",
+      "jyves94",
+      "laurence1119436",
+      "monopolyon_off",
+      "ol_c3307",
+      "pascalplaza",
+      "phil_7338",
+      "rev_de_presse",
+      "sylvainn11",
+      "thesecretvoice4",
+      "valmelusine",
+      "vinclefevre"
+    ],
+    "idfmobilites": [
+      "tv78_yvelines"
+    ],
+    "iledefrance": [
+      "actuenviro",
+      "actufr92",
+      "actufr93",
+      "actufr94",
+      "actufrparis",
+      "adrienfour",
+      "cwilly4",
+      "faboune57",
+      "fanmarine14",
+      "frfrontieres",
+      "gwoznica",
+      "info_paris_idf",
+      "informationssf",
+      "josly_ngoma",
+      "jtoulousain",
+      "meteociel",
+      "meteoparisiene",
+      "meteoredfr",
+      "tv78_yvelines"
+    ],
+    "indiegame": [
+      "gameforeverfr",
+      "pakyotille",
+      "redkovfr"
+    ],
+    "individu": [
+      "countdown2027"
+    ],
     "infotrafic": [
       "argbds_idfm",
       "autorouteinfo",
@@ -7441,6 +9471,24 @@
       "prefet53",
       "sweetfmradio",
       "terpays2laloire"
+    ],
+    "jamais": [
+      "countdown2027"
+    ],
+    "jeudi": [
+      "informationssf",
+      "josettej1",
+      "manu44700"
+    ],
+    "jlm2027": [
+      "boursicot74",
+      "craak32",
+      "gh_thry_57yo",
+      "linasurprise",
+      "ninasimone3194",
+      "ninasimone49",
+      "phportier",
+      "rgxhgrg"
     ],
     "juin": [
       "01meteo",
@@ -7458,6 +9506,158 @@
       "thierrybeaucamp",
       "torreseryc",
       "williamken30807"
+    ],
+    "kohlanta": [
+      "amnesiiia99",
+      "dictature1111",
+      "entoilette",
+      "fredsherman333",
+      "hawonlea",
+      "jennymyoff",
+      "latchatcherie",
+      "leyna_aurelia",
+      "lumineuse777",
+      "ms_ayana_",
+      "mushu_lucifer",
+      "newstvreal",
+      "nmalaboeuf",
+      "noewatchestv",
+      "philippe_dias77",
+      "pierroquefort",
+      "pierrot80remy",
+      "quishipqui",
+      "spaciatrix",
+      "starketienne",
+      "ternoise",
+      "the_best_man_57",
+      "thepopunion2022",
+      "thesecretvoice4",
+      "valywan"
+    ],
+    "kouame": [
+      "anthonymaubert",
+      "masuremike",
+      "pierrot80remy",
+      "seinsvendredi"
+    ],
+    "lagrandeinterview": [
+      "christalroche",
+      "cnews",
+      "europe1",
+      "pays_francoise"
+    ],
+    "larbin": [
+      "charlene3400da",
+      "princessbe27733",
+      "reine_metisse",
+      "reineayna9"
+    ],
+    "lci": [
+      "24hpujadas",
+      "89_patrice",
+      "amphe_chantenay",
+      "avirille",
+      "azimutcarib",
+      "bonapart001",
+      "cakrin64",
+      "carolelemaire1",
+      "charles_taieb",
+      "corsu20a",
+      "cristalinevert",
+      "domipre2016",
+      "doublepix",
+      "elrenee14330",
+      "elsasser_witz",
+      "fandevlad3",
+      "felix67162406",
+      "flaowerpower",
+      "fout_sen",
+      "franckbalourd",
+      "frederichonore1",
+      "gallieni_57",
+      "gjchevalier",
+      "graspthesilence",
+      "i3ct3r",
+      "intellactuel",
+      "ive88000",
+      "jypsega",
+      "langlois_manu",
+      "laveritecequi",
+      "lebandji",
+      "leito30580508",
+      "luis021002",
+      "manara37",
+      "marcgral",
+      "mecontentle",
+      "mistertortue",
+      "oyl2",
+      "pbiane",
+      "pbriday",
+      "pereirajer95902",
+      "pierre6417",
+      "pseudododo_1",
+      "reikersone",
+      "ronchon_thierry",
+      "rongere",
+      "saplanlena",
+      "seb84291085diog",
+      "sophiecannelle",
+      "sylvinfo",
+      "thegrreatpingu",
+      "vander_pat",
+      "vernayphilippe3",
+      "vycanismajori",
+      "xyz_8moii",
+      "ycaree_ricardo"
+    ],
+    "lecornu": [
+      "01meteo",
+      "24hpujadas",
+      "anarlove_668",
+      "auf_l35188",
+      "balkanyisabelle",
+      "botteq",
+      "boujemaa_b",
+      "cartoonsmrt",
+      "christinahell",
+      "clair_officiel",
+      "dd95615154",
+      "de_bevec",
+      "dimpolitique",
+      "exarkhun_return",
+      "falconfrederic",
+      "flaowerpower",
+      "fout_sen",
+      "i3ct3r",
+      "i__iiii__i",
+      "itsnottime2",
+      "laurence1119436",
+      "laurentopsomer",
+      "lcensur",
+      "leglaude69",
+      "louis_m75",
+      "louisondecharn1",
+      "loursolivier",
+      "luckasdelille59",
+      "manua443",
+      "marcsouverain",
+      "mistermag00",
+      "nanoushka28",
+      "nebs36",
+      "nelcheross",
+      "paul_barcelonne",
+      "petitpalois64",
+      "pnferry",
+      "poubellelounet2",
+      "renaudbellville",
+      "rforgues",
+      "thomsonjoss",
+      "tournesol34000",
+      "tripam17",
+      "vkempathy"
+    ],
+    "ledesk": [
+      "ledesk_ma"
     ],
     "lfi": [
       "323pacman",
@@ -7631,11 +9831,90 @@
       "yveslefvre3",
       "zelakonkek"
     ],
+    "lie": [
+      "countdown2027"
+    ],
+    "lien": [
+      "countdown2027"
+    ],
+    "ligue_des_optimistes": [
+      "josettej1",
+      "ldoptimistes",
+      "oiseaudejour"
+    ],
     "live": [
       "coucouvous62",
       "johndostudio",
       "pakyotille",
       "shlagtv"
+    ],
+    "loire": [
+      "01meteo",
+      "cgtchunantes",
+      "emimariev",
+      "incasprod",
+      "jp_berto",
+      "lyoncap",
+      "meteo_45",
+      "orage_42",
+      "prefecture42",
+      "stephanepajot44",
+      "stormaxou",
+      "vigipreventionm"
+    ],
+    "lycée": [
+      "hebdoduvendredi",
+      "lakaranss",
+      "tamerelapute35"
+    ],
+    "lyon": [
+      "afavre_m",
+      "carmelinadu69",
+      "cheineze",
+      "ciel_paysage",
+      "coeur_lyonnais_",
+      "corsu20a",
+      "cwilly4",
+      "damboisejulien",
+      "ed_soignant",
+      "fabien2176",
+      "farahkhey",
+      "flyforpal",
+      "gueuxgone",
+      "hadriendemeure",
+      "informationssf",
+      "irkoulayr",
+      "isabellemarcel0",
+      "jeanphi01",
+      "l_emmerdeur_69",
+      "lachainemeteo",
+      "le_progres",
+      "lemondeduprof20",
+      "leprogreslyon",
+      "luckasdelille59",
+      "lyoncap",
+      "lyondemain",
+      "lyonsuper",
+      "marilyn54435638",
+      "me73133phoenix",
+      "meteoredfr",
+      "monopolyon_off",
+      "mv_frey",
+      "novakris_lyon",
+      "parcsetloisirs",
+      "pierretherond",
+      "pierrot80remy",
+      "platinium230",
+      "policerealites",
+      "prefetrhone",
+      "radioscoopinfos",
+      "soukainabgg",
+      "theodoraaaaa",
+      "thesecretvoice4",
+      "titi75005",
+      "tribunedelyon",
+      "xcouplefun",
+      "yasminebouagga"
     ],
     "macron": [
       "_rassemblement",
@@ -7791,6 +10070,84 @@
       "yl2235",
       "yollar9"
     ],
+    "macronie": [
+      "7im37",
+      "_direct_news",
+      "bertrandredone",
+      "blancliss",
+      "botteq",
+      "charles817702",
+      "cindylony",
+      "coucou564",
+      "craps0072",
+      "dd95615154",
+      "dommajeur",
+      "ernestpriarollo",
+      "j_de_saintsimon",
+      "jeromepr80",
+      "laurentbruno68",
+      "laurentopsomer",
+      "lcensur",
+      "leglaude69",
+      "lemousticpique",
+      "libredepenserfr",
+      "lilangell_",
+      "ln2champagne",
+      "lorentzmathias",
+      "lpdmcom",
+      "manara37",
+      "mephisto5273",
+      "misterfruidom",
+      "mookass",
+      "nanoushka28",
+      "patrick49000p",
+      "petitpalois64",
+      "reconstruire_fr",
+      "saccagebordeaux",
+      "tedforum",
+      "tieph38",
+      "tomlasnier3xs",
+      "torreseryc",
+      "tournesol34000",
+      "valyaincognita",
+      "xavier76100",
+      "zadigobb",
+      "zakaria84819211"
+    ],
+    "maevaghennam": [
+      "levirusduweb"
+    ],
+    "mais": [
+      "countdown2027"
+    ],
+    "maisonsalfort": [
+      "erikpages",
+      "info_paris_idf"
+    ],
+    "manonaubry": [
+      "anastas77581540",
+      "anitaderra92",
+      "claudetan911",
+      "dansuvygn",
+      "francenews24",
+      "francetrisser",
+      "frdesouche",
+      "gatejohn6",
+      "lobservateur_x",
+      "mcuissinat",
+      "minipoucelyon",
+      "monopolyon_off",
+      "nhmitha",
+      "spankplease",
+      "spitfe",
+      "stefappriou",
+      "upsophieso",
+      "v2vofficial",
+      "will_nicks_off"
+    ],
+    "manteslajolie_": [
+      "tv78_yvelines"
+    ],
     "marhai": [
       "21mgrb",
       "_ayyyl",
@@ -7807,6 +10164,11 @@
       "s_irenix",
       "skmimi212"
     ],
+    "marne": [
+      "hebdoduvendredi",
+      "prefet51",
+      "rcfcoeurdechamp"
+    ],
     "maroc": [
       "bto_nic",
       "cgtnfrancais",
@@ -7820,6 +10182,46 @@
       "meteoredfr",
       "yabiladi_fr",
       "zewala3"
+    ],
+    "mauresmo": [
+      "tennisactu"
+    ],
+    "mayenne": [
+      "adrienfour",
+      "girard_bd",
+      "icimayenne",
+      "prefet53",
+      "proteccivile53",
+      "remybesson"
+    ],
+    "melenchon": [
+      "afifon_",
+      "amos7506",
+      "dan4unomor",
+      "doudoudisdonc75",
+      "droophistory",
+      "eric_fallourd",
+      "evan_bzh14",
+      "florianpinet",
+      "francetrisser",
+      "gcurieux76",
+      "gdecazaux",
+      "gerardpouzoulet",
+      "gillescallot",
+      "i3ct3r",
+      "mousti69619",
+      "nobody1593526",
+      "noeldalus",
+      "petitpalois64",
+      "philber78",
+      "pierreberat",
+      "pomalo91",
+      "regueyne",
+      "roseflamand3",
+      "switzerudr",
+      "thegoodrv",
+      "tichvanondermui",
+      "variologo"
     ],
     "melenchon2027": [
       "actu_elections",
@@ -7861,6 +10263,12 @@
       "toufoux_news",
       "wowthk"
     ],
+    "mercatom": [
+      "ometernity",
+      "oya273604589136",
+      "peupleolympien",
+      "tifabinhom"
+    ],
     "merci": [
       "032bfm",
       "choppykidd",
@@ -7874,6 +10282,14 @@
       "pauvreencolere",
       "peter_robinxxx",
       "venusyio"
+    ],
+    "mercredi": [
+      "espacefrancais",
+      "informationssf",
+      "josettej1",
+      "pauvreencolere",
+      "ternoise",
+      "thesecretvoice4"
     ],
     "messi": [
       "clovis2626",
@@ -8071,6 +10487,61 @@
       "wokinette",
       "yreorraent"
     ],
+    "meteofrance": [
+      "01meteo",
+      "firsteyeoff",
+      "florianpinet",
+      "g_savoureux93",
+      "hebdoduvendredi",
+      "jeanluc33210",
+      "julianosperoni",
+      "lyonsuper",
+      "pompier_nice",
+      "satsukilucca",
+      "sergelotz",
+      "sweetfmradio",
+      "var_actu"
+    ],
+    "mideaportasplit": [
+      "akr_bnt",
+      "anova144",
+      "dervichter"
+    ],
+    "midinews": [
+      "cnews",
+      "f395455088479f",
+      "heilatan",
+      "kiliesco77809",
+      "mrsclovisse",
+      "xyz_8moii"
+    ],
+    "ministre": [
+      "chase_maccain",
+      "emmapioupiou",
+      "euslib",
+      "franbed3726",
+      "hadass118",
+      "jasonbo69801968",
+      "johnnyfutur",
+      "jolvitalis",
+      "justebeta",
+      "lavignepascale",
+      "loryanesinger",
+      "morandiniblog",
+      "nini18b",
+      "nousspm",
+      "nytoverra",
+      "rolcarolcarole",
+      "zerosoum5047"
+    ],
+    "monde": [
+      "countdown2027",
+      "lamireaut",
+      "thesecretvoice4"
+    ],
+    "moneylover": [
+      "princessbe27733"
+    ],
     "moneymiss": [
       "_a_lya",
       "anaisdomine_",
@@ -8160,6 +10631,68 @@
       "sunshiika",
       "venussceleste",
       "zouzouk160256"
+    ],
+    "moneyslaves": [
+      "_a_lya",
+      "feetzillaa",
+      "missc0219164549",
+      "moneymissclaraa",
+      "reine_dinasty_",
+      "reinealba1999"
+    ],
+    "moniquebarbut": [
+      "323pacman",
+      "_annaaaaaac_",
+      "agnes1440701",
+      "agnsmenescot",
+      "alainl18086",
+      "becdombrelle_83",
+      "bzhjoshua",
+      "calphilippe",
+      "chrism35625249",
+      "cinetous",
+      "exlibris401",
+      "gachuquet",
+      "gaillardmann",
+      "gh_thry_57yo",
+      "guffin_mac",
+      "lamournotdead",
+      "lapinou7677",
+      "lavignepascale",
+      "philippe2408",
+      "regarddefrance7",
+      "rigalmichele",
+      "royaumedezinzin",
+      "shelegshemech3",
+      "v2vofficial",
+      "wimocean"
+    ],
+    "montcuq": [
+      "ternoise"
+    ],
+    "mouna": [
+      "levirusduweb"
+    ],
+    "mélenchon": [
+      "apoliticiens",
+      "arkanovius",
+      "aserieux",
+      "atn_fp",
+      "catapoulpot",
+      "chenrydelapomme",
+      "drakeoz_g",
+      "gensbel",
+      "gjchevalier",
+      "jyves94",
+      "lcensur",
+      "luigisintierra",
+      "missjuper",
+      "pas81869",
+      "pier2kan",
+      "renesaens",
+      "ricosifeli",
+      "roselineb83",
+      "roselouise48520"
     ],
     "météo": [
       "140cdesolitude",
@@ -8336,6 +10869,42 @@
       "yannctr_off",
       "ysabussett"
     ],
+    "météo83": [
+      "prefet83",
+      "var_actu",
+      "villedraguignan"
+    ],
+    "météobtp": [
+      "meteoclimatpro",
+      "patrickmarliere"
+    ],
+    "météofrance": [
+      "actufrparis",
+      "agathedeblouz",
+      "allonsy_france",
+      "arabi_breves",
+      "benjihj",
+      "christinahell",
+      "coucouvous62",
+      "de_bevec",
+      "debatf24",
+      "hebdoduvendredi",
+      "informationssf",
+      "linathin",
+      "loicrousval",
+      "medi1tvafrique",
+      "melyemeloooo",
+      "meteoclimatpro",
+      "monsieurmeteo07",
+      "patrickmarliere",
+      "rcfcoeurdechamp",
+      "thesecretvoice4",
+      "tkushiyama",
+      "var_actu"
+    ],
+    "météovar": [
+      "var_actu"
+    ],
     "nantes": [
       "3genevieve",
       "actu_nantes",
@@ -8408,6 +10977,22 @@
       "will_nicks_off",
       "wokinette"
     ],
+    "narbonne": [
+      "amoudruber2788",
+      "benconstant_",
+      "bouletteskefta",
+      "cathare111",
+      "fofolefou",
+      "inst_actu",
+      "jul_patriote",
+      "lindependant",
+      "louis_m75",
+      "narbonne_lindep",
+      "noellelenoir",
+      "patrioteengager",
+      "policerealites",
+      "wokinette"
+    ],
     "nasdas": [
       "dictature1111",
       "evacohendusud",
@@ -8462,6 +11047,18 @@
       "victoriasurx",
       "wizzilc"
     ],
+    "norvege": [
+      "itsmarie_bttfly",
+      "seinsvendredi",
+      "victoriasurx"
+    ],
+    "nowstreaming": [
+      "pakyotille"
+    ],
+    "nuisible": [
+      "elghali39631408",
+      "tieph38"
+    ],
     "om": [
       "avengerbroly",
       "g_savoureux93",
@@ -8469,6 +11066,74 @@
       "parcprince70",
       "peupleolympien",
       "weed_france13"
+    ],
+    "orage": [
+      "3amigrinch",
+      "alexandreconan",
+      "arnoldupyla",
+      "arthurlimi",
+      "atthisatthis",
+      "aufildelactu",
+      "boitamalices",
+      "brittiaguiriec",
+      "cadenly22",
+      "cand75",
+      "chrisbelicchi",
+      "cleelis87",
+      "countdown2027",
+      "cshabyne",
+      "deuzamsc",
+      "djeydjey953",
+      "dommajeur",
+      "dragolito52",
+      "duprata",
+      "emeric9235",
+      "emmapioupiou",
+      "fales_19",
+      "firsteyeoff",
+      "globespotter33",
+      "hebdoduvendredi",
+      "heissama",
+      "jeanragefr",
+      "jlnalex94",
+      "jtoulousain",
+      "juliette212121",
+      "lachainemeteo",
+      "lalapolit_",
+      "laurence1119436",
+      "limperatrice934",
+      "maary637",
+      "marcourrutia_pb",
+      "melyemeloooo",
+      "meteo60",
+      "meteobretagne",
+      "meteociel",
+      "meteoclimatpro",
+      "meteophile",
+      "meteovilles",
+      "millonac02",
+      "miriwia1",
+      "nadiahuet2",
+      "nath_35",
+      "nicolasberrod",
+      "nicolaslefriant",
+      "ninazamparis",
+      "nini18b",
+      "ol_c3307",
+      "patrickmarliere",
+      "prefet18",
+      "prefet53",
+      "prefetrhone",
+      "publicenem_y",
+      "purpleshadowcom",
+      "s_wl_",
+      "sandrinek92",
+      "satsukilucca",
+      "sebdecaux",
+      "sephora_paris",
+      "sylvainfreres",
+      "thom_wx",
+      "victorchevai"
     ],
     "orages": [
       "01meteo",
@@ -8597,16 +11262,402 @@
       "visiometeo",
       "ysabussett"
     ],
+    "panne": [
+      "jamesdrew196092",
+      "jigen_fr"
+    ],
+    "parasite": [
+      "tieph38"
+    ],
+    "parasites": [
+      "jyves94"
+    ],
+    "paris": [
+      "140cdesolitude",
+      "1petitsecret",
+      "1squadramilano",
+      "3patchtardis",
+      "_franck_paris",
+      "_periscolaire",
+      "_spartiat",
+      "abies77",
+      "abran_paul",
+      "abreu_thii",
+      "acgriffon",
+      "actufr92",
+      "actufr93",
+      "actufr94",
+      "actufrparis",
+      "actusnonstop",
+      "actyssandier",
+      "alise48",
+      "allarddenis",
+      "allonsy_france",
+      "amimaux",
+      "angelse7en",
+      "anthodepe",
+      "antiescrolo",
+      "antoineberetto_",
+      "antoinecomte",
+      "antonin_albert",
+      "antonin_duarte",
+      "arameteo_france",
+      "arthurlimi",
+      "assograndparis",
+      "atomecrochu",
+      "aufildelactu",
+      "axinfos",
+      "ayo2026",
+      "azisstivn",
+      "bavidozo",
+      "bellemonjeau",
+      "benaraktrip",
+      "bensal69546",
+      "bigot44408011",
+      "bonne_creme",
+      "boumsly",
+      "bouvet_patricia",
+      "braski_00",
+      "brevesdepresse",
+      "cachauphilippe",
+      "calphilippe",
+      "canalguada",
+      "cand75",
+      "capadrien",
+      "catherine_dumas",
+      "cdpaci",
+      "cheminsdefertc",
+      "chitam",
+      "chmerchadou",
+      "chouxhiboux",
+      "christinahell",
+      "christofnamoi",
+      "cidure1990",
+      "claireparisjazz",
+      "claudetan911",
+      "combat5261",
+      "complotismus",
+      "corentinsellin",
+      "corinne_j_d",
+      "coucouvous62",
+      "couturiermichle",
+      "crokmi",
+      "cwilly4",
+      "danemarseille",
+      "danielino22",
+      "dashvir",
+      "davidar70323381",
+      "davidfayon",
+      "de_bevec",
+      "delcroixx",
+      "destinyfunnny",
+      "djeggg23",
+      "dominiquepucini",
+      "dorian_sq",
+      "doriandziadula",
+      "down228781",
+      "duprdominique2",
+      "dussolalexis",
+      "edenval1",
+      "ehk82551351",
+      "emmanuelpierrat",
+      "epauledetorse",
+      "f_emmanuel",
+      "fanmarine14",
+      "fdardel",
+      "felix67162406",
+      "ferreiragui4",
+      "fleeapplication",
+      "flyforpal",
+      "fr_bechieau",
+      "france24_fr",
+      "france3paris",
+      "franceetinfo",
+      "francenews24",
+      "frank3264465441",
+      "fredericmignard",
+      "fregyptologist",
+      "frenchieromainb",
+      "fucius49",
+      "fxromieux",
+      "gaby_wald",
+      "gallusgalgq",
+      "gdecazaux",
+      "georgesattile",
+      "ghislain__roger",
+      "giannihcesari",
+      "gjauseau",
+      "goelandmoqueur",
+      "grillonlydia",
+      "guisyo69",
+      "gurpier",
+      "gustavefaucp",
+      "gwoznica",
+      "habitantedu18",
+      "hadriendemeure",
+      "hannahodeglingo",
+      "herm4res",
+      "hibooexpert",
+      "htoneki",
+      "hugy4113",
+      "incognito751369",
+      "info_paris_idf",
+      "informationssf",
+      "infosminutesfr",
+      "inlovvithlov",
+      "inst_actu",
+      "ioannalazana",
+      "isabelle_rocca",
+      "j_bg",
+      "jackgreen320817",
+      "jamesdrew196092",
+      "jay120797667526",
+      "jbgr_662a",
+      "jcav8607",
+      "jclaude_dusse",
+      "jclvallee1",
+      "jeannem78148397",
+      "jevevoudire2",
+      "johnjbens",
+      "josly_ngoma",
+      "jphtwittes",
+      "juju_c89",
+      "jukkaisorinne",
+      "jyves94",
+      "kevinbossuet",
+      "kitttaaa11",
+      "lachainemeteo",
+      "lactuen2bulles",
+      "lapinou7677",
+      "larrogante01",
+      "laurence1119436",
+      "laurenceputih",
+      "le_vtc_francais",
+      "leptijrnliste",
+      "leredge76",
+      "lesecologistes0",
+      "lesescrolos",
+      "letaphopile",
+      "lethiecv",
+      "leyawiliams",
+      "liberer_paris",
+      "licornefache",
+      "lindependant",
+      "lio_38",
+      "liztheesquire",
+      "lolita19803072",
+      "lolitazemorita",
+      "loryanesinger",
+      "lucauffret",
+      "lucspighel",
+      "luluapso",
+      "m_monteil",
+      "maary637",
+      "mabouyadesmers",
+      "macronardsfm",
+      "madotrave",
+      "magikaaa",
+      "mahorchiche",
+      "maireinfo2",
+      "manulecomptable",
+      "marc_hay_meteo",
+      "marchaljacques3",
+      "maria7776367581",
+      "mdumont75",
+      "mechabanne",
+      "meteo60",
+      "meteo_stream",
+      "meteociel",
+      "meteoparisiene",
+      "meteophile",
+      "meteoredfr",
+      "meteovilles",
+      "metropolisdate",
+      "miacarter25770",
+      "mimiechipy",
+      "miounaomie",
+      "mistermag00",
+      "mlvape",
+      "mmjl",
+      "moreaugabarain",
+      "mr_nico_bull",
+      "msieurludo",
+      "mv_frey",
+      "mysteremeteo",
+      "nadiahuet2",
+      "nathetmelu2026",
+      "nayapnm",
+      "nicolas_anty",
+      "nicolasberrod",
+      "nopopulodemago",
+      "nouvelleaubefr",
+      "nparispopulaire",
+      "off_mehdidonc",
+      "oimtid",
+      "ojcius",
+      "oldparis75",
+      "orvaultpcf",
+      "oznurgattegno",
+      "parcsetloisirs",
+      "paris_vert",
+      "parisapaise",
+      "paristvcom",
+      "parisvisites",
+      "parstfbrb",
+      "pauvreencolere",
+      "pbi_fr",
+      "pdohen",
+      "pelissolos",
+      "petitartmateur",
+      "phdelorme27",
+      "philauvergne",
+      "philocloud52",
+      "philocognitif",
+      "philsudouest",
+      "pierrot80remy",
+      "planet211180",
+      "ploucaparis",
+      "poseidon921000",
+      "postcolonialweb",
+      "pouceopposable",
+      "prodrivin",
+      "protago07500271",
+      "pserenina40795",
+      "psyhodelikus",
+      "pulsefrinfo",
+      "puncktamatic",
+      "quentin__france",
+      "quivoitsein",
+      "ragnar1324753d",
+      "realbeck",
+      "redfivehouse",
+      "reineayna9",
+      "renaud_favier",
+      "renaudbellville",
+      "richard_oxdy",
+      "s_wl_",
+      "saliharazgui",
+      "sambostnwave",
+      "samothistoire",
+      "sandydeparis",
+      "santecool",
+      "seinsvendredi",
+      "shairosan",
+      "signalert",
+      "sitgesfranck",
+      "smugnier",
+      "softnolly",
+      "soukainabgg",
+      "spitfe",
+      "spy201944316",
+      "sterkers",
+      "stphanieblaire1",
+      "stregamicca",
+      "sunyfinebulle",
+      "syllapoutine",
+      "sylvainfreres",
+      "sylvainn11",
+      "tanguiledantec",
+      "tennisactu",
+      "the_best_man_57",
+      "theduke0870",
+      "thom_mcoulibaly",
+      "thom_wx",
+      "thomatoketchup1",
+      "tiimal91000",
+      "tonypittaro",
+      "turenne1611",
+      "tv_baron",
+      "unevoixp",
+      "upgradepcfr",
+      "variologo",
+      "varlanolivier",
+      "varronanne",
+      "vigipreventionm",
+      "vignede",
+      "vilharr",
+      "vinclefevre",
+      "watchthisfr",
+      "wizzilc",
+      "xopherobin",
+      "yanninlyon",
+      "ynhallak",
+      "zewala3"
+    ],
     "paris12": [
       "anniesaintleger",
       "jigen_fr",
       "usapcgt",
       "vignede"
     ],
+    "pas": [
+      "countdown2027",
+      "moshat_83",
+      "ternoise"
+    ],
+    "pascalpraudetvous": [
+      "europe1",
+      "gastonsq"
+    ],
+    "paypig": [
+      "_a_lya",
+      "anaisdomine_",
+      "bao_gs16",
+      "dominanoroff",
+      "dominantelouve",
+      "iivysin",
+      "jadembk1",
+      "ludivineslave",
+      "masterrey222",
+      "missc0219164549",
+      "mllekittynl",
+      "moneymissclaraa",
+      "queenoctaa",
+      "reine_l420",
+      "reinealba1999",
+      "reinelea20",
+      "reinesucre",
+      "reineul4",
+      "rostiswings",
+      "ruinnora93726",
+      "samdctll",
+      "sofiaqueen92"
+    ],
+    "people": [
+      "thesecretvoice4"
+    ],
+    "perpignan": [
+      "aldric66",
+      "lachainemeteo",
+      "lindep_perpi",
+      "lindependant",
+      "mairieperpignan",
+      "marc_hay_meteo",
+      "meteo60",
+      "meteovilles",
+      "wokinette"
+    ],
     "photodujour": [
       "didinelib_off",
       "roger_viollet",
       "themademoize"
+    ],
+    "pied": [
+      "anaisdomine_",
+      "annadomination",
+      "ilonaafeet",
+      "july1ym",
+      "masterrey222",
+      "princessbe27733"
+    ],
+    "pieds": [
+      "_a_lya",
+      "khaleesi_soles",
+      "luxetoesclb",
+      "minou01__",
+      "nnmmks_",
+      "ouafouafsoumise",
+      "stonydu93"
     ],
     "pmu": [
       "bilurien724",
@@ -8614,6 +11665,58 @@
       "lcensur",
       "pbiane",
       "resultatpmu"
+    ],
+    "pngtuber": [
+      "le_mimolette",
+      "thecommander644"
+    ],
+    "politique": [
+      "24hpujadas",
+      "al_cabro",
+      "batinfo_com",
+      "c_roux49",
+      "cal_beaumont",
+      "cdanslair",
+      "cwilly4",
+      "elissamaiss",
+      "euslib",
+      "faroukamri01",
+      "franbed3726",
+      "francenews24",
+      "gazolineintense",
+      "gregphil",
+      "gustave213",
+      "intellactuel",
+      "jamesdrew196092",
+      "jasonbo69801968",
+      "jcfagnoulo",
+      "joffrinlaurent",
+      "johnnyfutur",
+      "la23946",
+      "lamireaut",
+      "laurenceputih",
+      "laurentopsomer",
+      "lemediapolitifr",
+      "libre_musicien",
+      "liliafkrr",
+      "lindependant",
+      "lobservateur_x",
+      "lyoncap",
+      "media_normandie",
+      "nousspm",
+      "nytoverra",
+      "onmarchefrance",
+      "peter_robinxxx",
+      "petrus2005",
+      "philipperubion",
+      "polemus",
+      "rampage_ludo",
+      "regueyne",
+      "reservoirapps",
+      "sergedanilo",
+      "torreseryc",
+      "vkempathy",
+      "zerosoum5047"
     ],
     "poupettekenza": [
       "agmh2011",
@@ -8640,6 +11743,73 @@
       "user2482819",
       "yasminelepenou"
     ],
+    "pqevolution": [
+      "citoyendumonde5"
+    ],
+    "prefet78": [
+      "tv78_yvelines"
+    ],
+    "previsions": [
+      "meteobretagne",
+      "meteoredfr",
+      "ormeteo"
+    ],
+    "préfectureduvar": [
+      "var_actu"
+    ],
+    "prévention": [
+      "amiensmetropole",
+      "annajegat",
+      "antoinedup1970",
+      "aspquebec",
+      "assur_maladie",
+      "batinfo_com",
+      "bernieshoot",
+      "cci_hdf",
+      "chudenice",
+      "consoglobe",
+      "cory260282",
+      "davidmasso70666",
+      "drajescentrevdl",
+      "franceolympique",
+      "franmichalon",
+      "frfrontieres",
+      "gendarmerie_017",
+      "gendarmerie_080",
+      "hebdoduvendredi",
+      "infirmiersnpi",
+      "inrsfrance",
+      "jeanluc33210",
+      "jpcarpentierue",
+      "laurent27100",
+      "pindropoffice",
+      "policenat69",
+      "pompiers03",
+      "pompiers60",
+      "pompiersfr",
+      "pompiersparis",
+      "prefaquitaine33",
+      "prefet13",
+      "prefet22",
+      "prefet2b",
+      "prefet44",
+      "prefet51",
+      "prefet53",
+      "prefet59",
+      "prefet68",
+      "prefet83",
+      "prefet93",
+      "prefetoccitanie",
+      "prefetzoneest",
+      "psy_massondavid",
+      "rcfcoeurdechamp",
+      "saintmande",
+      "santepubliquefr",
+      "scmf_syndicat",
+      "tribunedelyon",
+      "var_actu",
+      "z_eodn"
+    ],
     "ps5": [
       "darkstorm33",
       "jami88176468",
@@ -8647,6 +11817,34 @@
       "menow_fr",
       "misterkylehyde",
       "nolwnlm"
+    ],
+    "punchline": [
+      "ad_vitam44_",
+      "cnews",
+      "corsu20a",
+      "heilatan",
+      "kiliesco77809",
+      "michaela31700",
+      "mmyg5460438",
+      "mrsclovisse",
+      "nieder_klaus",
+      "philippemichel2",
+      "vanessa170601",
+      "vero_jacquier"
+    ],
+    "puydedôme": [
+      "agatheirene"
+    ],
+    "pyrénéesorientales": [
+      "lindependant"
+    ],
+    "qinegatif": [
+      "tieph38"
+    ],
+    "quinté": [
+      "ecurieseror",
+      "pbiane",
+      "resultatpmu"
     ],
     "quotidien": [
       "7sseine",
@@ -8725,6 +11923,22 @@
       "yselda_beck",
       "zopicline"
     ],
+    "re": [
+      "countdown2027"
+    ],
+    "rechauffement": [
+      "antiescrolo",
+      "c_desmaires",
+      "de_chardin",
+      "e_dupin",
+      "echodureel",
+      "fab0591",
+      "intellactuel",
+      "jcfagnoulo",
+      "myomiaou357",
+      "omarioofficiel",
+      "tomlasnier3xs"
+    ],
     "rechauffementclimatique": [
       "323pacman",
       "aileastick1",
@@ -8766,6 +11980,187 @@
       "sitgesfranck",
       "sophiebria",
       "thierrybeaucamp"
+    ],
+    "records": [
+      "corentinbrgn",
+      "france24",
+      "gjauseau",
+      "gwoznica",
+      "informationssf",
+      "lachainemeteo",
+      "loicrousval",
+      "meteo60",
+      "meteo_stream",
+      "meteobretagne",
+      "meteociel",
+      "meteomedia",
+      "meteoredfr",
+      "meteosuisse",
+      "meteovilles",
+      "ormeteo",
+      "sebdecaux",
+      "thesecretvoice4"
+    ],
+    "reims": [
+      "boobalyne",
+      "hebdoduvendredi",
+      "legardmichelle",
+      "levyguillaume"
+    ],
+    "rennes": [
+      "afautrat",
+      "alexisjannot",
+      "egoutier35",
+      "francenews24",
+      "gaspardglanz",
+      "gwenydixon",
+      "haroldmaze",
+      "hubert_ludo",
+      "lachainemeteo",
+      "leprocalain",
+      "loicrousval",
+      "mariemesmeur",
+      "meteovilles",
+      "mike96_re",
+      "philleray",
+      "radio_hitwest",
+      "rautrement",
+      "sebdecaux",
+      "sloderici",
+      "steevenpe2l",
+      "tamerelapute35",
+      "thalassa2008"
+    ],
+    "retro": [
+      "allmightofranky",
+      "mohli_mehdi"
+    ],
+    "retrogaming": [
+      "allmightofranky",
+      "johndostudio"
+    ],
+    "rg2026": [
+      "a__l__i__",
+      "abdel80344839",
+      "de_epines",
+      "deleurmep",
+      "lindependant",
+      "nicosbossisfcn",
+      "nolefanmc",
+      "panthera_x_85",
+      "pierrot80remy",
+      "tennisbetstudio"
+    ],
+    "rg26": [
+      "de_epines",
+      "ericsalliot",
+      "florianpinet",
+      "tennisactu",
+      "tibarrel"
+    ],
+    "rn": [
+      "1r2famille",
+      "albanmoyaux",
+      "antoine0667best",
+      "antoinecontrant",
+      "balintin69",
+      "bataillekahlen1",
+      "beccarofrank",
+      "bentricolore",
+      "botteq",
+      "burn_sider36839",
+      "castagneurde",
+      "cath_rn95",
+      "cathrn95",
+      "ceccatomarion",
+      "cecilgaran",
+      "chilivinlebanni",
+      "christinahell",
+      "corsu20a",
+      "croqueusevie",
+      "cyril_clope",
+      "damienrieu",
+      "daysonvaz",
+      "dji_le_francais",
+      "dusud_kiki",
+      "duvalmarion6",
+      "egsparis",
+      "ellefromparis",
+      "enculeunwokiste",
+      "energiegrise",
+      "faroukamri01",
+      "flyforpal",
+      "fobouger",
+      "fofolefou",
+      "foudepicardie",
+      "fra_eternelle",
+      "fran6_brunet",
+      "fucius49",
+      "gardienmoai",
+      "gh_thry_57yo",
+      "gofni",
+      "heureux_raleur",
+      "i__iiii__i",
+      "inoxtee",
+      "intellactuel",
+      "isat61",
+      "jeandenormandie",
+      "jeanned20401",
+      "jerome_buisson",
+      "julienodoul",
+      "laurence1119436",
+      "laurentopsomer",
+      "lcensur",
+      "ledamne25bezak",
+      "leilaclaude",
+      "leopurguette",
+      "lesecologistes0",
+      "lfisuisse",
+      "linasurprise",
+      "lolita19803072",
+      "lolo_g5670",
+      "loupgristoh",
+      "ludovicmondot",
+      "macronardsfm",
+      "madgui1902",
+      "manara37",
+      "manthoparis",
+      "manu20682903",
+      "marcgral",
+      "matriste93rs",
+      "mauricemartin01",
+      "mimijotte2",
+      "mrsclovisse",
+      "natheli14",
+      "nebs36",
+      "nhmitha",
+      "noeldalus",
+      "pauvreencolere",
+      "phimul3008",
+      "pier2kan",
+      "pierrecheynet",
+      "pierricv",
+      "polders",
+      "renaud_favier",
+      "rev_de_presse",
+      "saccagebordeaux",
+      "sacha_bxl",
+      "samylechat976",
+      "sandrinescrenci",
+      "schydlowski1",
+      "sid96444775",
+      "silver__pronos",
+      "siphon69",
+      "stonellyon",
+      "teamrep2022",
+      "tripam17",
+      "unevoixp",
+      "union_ce",
+      "vrai_cro_magnon",
+      "wilfriedgand",
+      "wokistanien",
+      "xyz_8moii",
+      "zakaria84819211"
     ],
     "rolandgarros": [
       "13_auditore",
@@ -8872,6 +12267,148 @@
       "zebulonite",
       "zefilm001",
       "zidanepaname"
+    ],
+    "rpg": [
+      "ryunochi"
+    ],
+    "rts": [
+      "thesecretvoice4"
+    ],
+    "rtslave": [
+      "alexabis31",
+      "feet_hot_couple",
+      "moneymissclara2",
+      "moneymissclaraa",
+      "reine_metisse"
+    ],
+    "résultat": [
+      "resultatpmu"
+    ],
+    "réveil": [
+      "soleillibrefr"
+    ],
+    "samu": [
+      "angersvillactu",
+      "dussolalexis",
+      "gloriacasa77",
+      "lepappydeparis",
+      "patrioteengager",
+      "var_actu"
+    ],
+    "sante": [
+      "francepollens",
+      "frk_labaule",
+      "gustave213",
+      "helen4820888035",
+      "lamireaut",
+      "lanceuri",
+      "laurentopsomer",
+      "lemediapolitifr",
+      "licornefache",
+      "lyoncap",
+      "mercilesarbres",
+      "meteomedia",
+      "mimijotte2",
+      "mojotech196203",
+      "planeteverte",
+      "poissonpoker",
+      "pressecitron",
+      "reservoirapps",
+      "rostimmo",
+      "var_actu"
+    ],
+    "santé": [
+      "01meteo",
+      "24hpujadas",
+      "agatheirene",
+      "al_cabro",
+      "ana_anamddk",
+      "angersvillactu",
+      "aympasdutout",
+      "batinfo_com",
+      "bb257nw",
+      "bernieshoot",
+      "bescondpetitb",
+      "cdanslair",
+      "christinahell",
+      "chudenice",
+      "consoglobe",
+      "crawdadssong",
+      "cultivelavie",
+      "davidangevin",
+      "dinfos",
+      "elissamaiss",
+      "euractiv_fr",
+      "fabricecharvet",
+      "faroukamri01",
+      "fouragebernard",
+      "fr_bechieau",
+      "france3paris",
+      "franmichalon",
+      "frfrontieres",
+      "gallieni_57",
+      "gegeguit",
+      "gkierzek",
+      "grosdidiermetz",
+      "guerfiamane",
+      "hebdoduvendredi",
+      "idelencolere",
+      "infirmiersnpi",
+      "informationssf",
+      "jamesdrew196092",
+      "jcav8607",
+      "jcfagnoulo",
+      "lachainemeteo",
+      "languedetaz",
+      "leprogresloire",
+      "lesecologistes0",
+      "letullepatricia",
+      "lindependant",
+      "longuejumelles",
+      "lucspighel",
+      "luluapso",
+      "maireinfo2",
+      "mariemkapil",
+      "mattrohff",
+      "maxime_gogris",
+      "meteo_stream",
+      "miacarter25770",
+      "mikl53",
+      "minne_jean",
+      "nchevesson",
+      "numerama",
+      "oimtid",
+      "onmarchefrance",
+      "onmarcheslatete",
+      "pasquierma64338",
+      "paysquebec",
+      "petrus2005",
+      "pindropoffice",
+      "pourquoidocteur",
+      "prefet11",
+      "prefet13",
+      "prefet53",
+      "prefet62",
+      "prefet75_idf",
+      "prefet86",
+      "prefet93",
+      "prefet95",
+      "pulsefrinfo",
+      "rcfcoeurdechamp",
+      "reservoirapps",
+      "rtlfrance",
+      "santepubliquefr",
+      "sergedanilo",
+      "sylvainn11",
+      "thesecretvoice4",
+      "thierrybeaucamp",
+      "travail_gouv",
+      "tv78_yvelines",
+      "valerie_oppelt",
+      "var_actu",
+      "vision2050fr",
+      "wokinette",
+      "yabiladi_fr"
     ],
     "sciences": [
       "batinfo_com",
@@ -9038,6 +12575,98 @@
       "zoeazure",
       "zowenne"
     ],
+    "secretstorylelive": [
+      "dyzzy_off",
+      "johandelrey",
+      "mythosong_",
+      "storyplustf1"
+    ],
+    "secretstorylive": [
+      "doodaaas3"
+    ],
+    "selfie": [
+      "danielichou",
+      "didinelib_off",
+      "themademoize"
+    ],
+    "setf": [
+      "pbiane"
+    ],
+    "shlagtv": [
+      "shlagtv"
+    ],
+    "silenceonarme": [
+      "citoyendumonde5"
+    ],
+    "sinner": [
+      "231bonneville",
+      "de_epines",
+      "ludolovesmetal",
+      "mt1899glm"
+    ],
+    "slave": [
+      "alexabis31",
+      "anaisdomine_",
+      "jadembk1",
+      "reinealba1999"
+    ],
+    "smallstreamers": [
+      "ryunochi"
+    ],
+    "smallstreamersconnect": [
+      "ryunochi"
+    ],
+    "soleil": [
+      "_annelala",
+      "actufrparis",
+      "bavidozo",
+      "bergen_1980",
+      "cachauphilippe",
+      "coucouvous62",
+      "dekerros",
+      "delusionanakin",
+      "emmi_kra",
+      "gachenotandre",
+      "gamer_dreams",
+      "gwoznica",
+      "ilove3m",
+      "info_paris_idf",
+      "ixtasia_off",
+      "johndostudio",
+      "jymmyelloco",
+      "katana31200",
+      "krzkpcc",
+      "lachainemeteo",
+      "lanceuri",
+      "lea_simon01",
+      "lenny89204",
+      "leo_king1972",
+      "loki10681601",
+      "manu44700",
+      "marc_hay_meteo",
+      "margotton91",
+      "mclrlola",
+      "meteoconcept",
+      "meteoredfr",
+      "meteovilles",
+      "micka25gaming",
+      "morandiniblog",
+      "moshat_83",
+      "nicolaslefriant",
+      "oimtid",
+      "pompiersherault",
+      "pourquoidocteur",
+      "radio_hitwest",
+      "saliharazgui",
+      "secretblondinet",
+      "soleillibrefr",
+      "solidinfo16",
+      "sophiebria",
+      "tapetite_cassie",
+      "themademoize",
+      "torreseryc",
+      "var_actu"
+    ],
     "soumis": [
       "3unnybby",
       "_a_lya",
@@ -9105,6 +12734,21 @@
       "venussceleste",
       "zouzouk160256"
     ],
+    "splintercell": [
+      "allmightofranky"
+    ],
+    "srm": [
+      "fxcalmettes",
+      "soleillibrefr"
+    ],
+    "ss14": [
+      "cocsandluns",
+      "fabien_fichaux",
+      "jajar_1d",
+      "nayla54088637",
+      "the_best_man_57",
+      "xoleoune"
+    ],
     "stop": [
       "10elhadj",
       "94mythomane",
@@ -9129,6 +12773,47 @@
       "rm_kive",
       "uzumaju"
     ],
+    "stream": [
+      "minhs_art",
+      "ryunochi",
+      "shlagtv"
+    ],
+    "streamer": [
+      "chtifou95",
+      "missflamme11",
+      "ryunochi"
+    ],
+    "streamfr": [
+      "ysalines_vt"
+    ],
+    "suisse": [
+      "claudea82619845",
+      "comploplowatch",
+      "dumnec",
+      "marielauredupon",
+      "meteovilles",
+      "swiss_pepita",
+      "thesecretvoice4",
+      "vigipreventionm"
+    ],
+    "summervibes": [
+      "danielichou",
+      "didinelib_off",
+      "gildas873305181",
+      "lenageeknice",
+      "mysticshan85265",
+      "themademoize"
+    ],
+    "switch2": [
+      "darkstorm33",
+      "misterkylehyde",
+      "valantine77"
+    ],
+    "sénégal": [
+      "arlette_zilberg",
+      "geocherifien",
+      "meteosenegal"
+    ],
     "teamom": [
       "avengerbroly",
       "bibzom93",
@@ -9150,6 +12835,49 @@
       "tifabinhom",
       "tofio2",
       "wirminghausl"
+    ],
+    "tech": [
+      "_inforea",
+      "citoyendumonde5",
+      "julien_ducerf",
+      "rebec34"
+    ],
+    "température": [
+      "actuenviro",
+      "assoclimatoreal",
+      "ayledain",
+      "batinfo_com",
+      "beta3093",
+      "ceremacom",
+      "coucouvous62",
+      "countdown2027",
+      "de_bevec",
+      "epauledetorse",
+      "france24",
+      "fred_animus",
+      "gillescallot",
+      "gwoznica",
+      "hoperatornews",
+      "informationssf",
+      "inseenormandie",
+      "lachainemeteo",
+      "lia_lindona_x",
+      "madotrave",
+      "marie_joseph_p",
+      "meteobretagne",
+      "morandiniblog",
+      "nicolaslefriant",
+      "numerama",
+      "pierre_pzt",
+      "pourquoidocteur",
+      "quentin__france",
+      "reregfr1647",
+      "rev_de_presse",
+      "shunleestompy",
+      "thesecretvoice4",
+      "torreseryc",
+      "unesdepresse",
+      "vigipreventionm"
     ],
     "températures": [
       "24hpujadas",
@@ -9186,6 +12914,20 @@
       "toufoux_news",
       "vigipreventionm"
     ],
+    "tennis": [
+      "abdel80344839",
+      "anthonymaubert",
+      "de_epines",
+      "duperronpierre",
+      "kval3003",
+      "lindependant",
+      "medias_act",
+      "nicolaslefriant",
+      "seinsvendredi",
+      "sportlitique23",
+      "tennisbetstudio",
+      "xprt_stpub"
+    ],
     "tiktok": [
       "2026enfin",
       "al85063",
@@ -9219,6 +12961,128 @@
       "stephanied40934",
       "valmelusine"
     ],
+    "tintin": [
+      "beile_fr",
+      "goulards",
+      "universcomics"
+    ],
+    "tmc": [
+      "dodcoquelicot",
+      "fred_versailles",
+      "lcensur",
+      "mercijlm",
+      "tvmag",
+      "vosgesrenard100"
+    ],
+    "toulon": [
+      "var_actu"
+    ],
+    "toulouse": [
+      "actutoulouse",
+      "aimer_toulouse",
+      "airport_tlse",
+      "alexisledandy",
+      "autantramontane",
+      "beatrixdelarue",
+      "benoitpraderie",
+      "bertrandserp",
+      "c_riquet",
+      "catheri76947001",
+      "claireparisjazz",
+      "djeggg23",
+      "ginisty11",
+      "icioccitanie",
+      "infoverifmedia",
+      "ismael_yh",
+      "jtoulousain",
+      "katana31200",
+      "killingswitch98",
+      "lachainemeteo",
+      "lnnersmiie",
+      "manuella3120",
+      "mick_le_priol",
+      "ninofishing",
+      "noucksha",
+      "noway499763",
+      "orna",
+      "oumsedia69",
+      "pboureau31",
+      "pixfan",
+      "rafaelsereti",
+      "samothistoire",
+      "stop_avions_chu",
+      "vlautard",
+      "wokinette"
+    ],
+    "tours": [
+      "albancossard",
+      "cftc37metal",
+      "informationssf",
+      "laurentopsomer",
+      "toufoux_news",
+      "toursinsoumis",
+      "yvetteferrand"
+    ],
+    "toutou": [
+      "anaisdomine_",
+      "feet_hot_couple",
+      "luxetoesclb",
+      "princessbe27733",
+      "sarakhlo666"
+    ],
+    "tram2": [
+      "naolib_direct"
+    ],
+    "tram3": [
+      "naolib_direct"
+    ],
+    "transition": [
+      "gregorysansoz",
+      "gwiazdzinski",
+      "lesecologistes0",
+      "loryanesinger",
+      "madrigalenr",
+      "royaumedezinzin",
+      "union_ce"
+    ],
+    "travail": [
+      "_mediavenir",
+      "agatheirene",
+      "allonsy_france",
+      "batinfo_com",
+      "canalguada",
+      "cfecgc",
+      "consoglobe",
+      "cwilly4",
+      "daysonvaz",
+      "elise_000",
+      "eric265538999",
+      "eveflament",
+      "flyforpal",
+      "gwiazdzinski",
+      "hellowork",
+      "informationssf",
+      "inrsfrance",
+      "jamesdrew196092",
+      "jolvitalis",
+      "laurentopsomer",
+      "leopurguette",
+      "martinteral",
+      "mick_le_priol",
+      "oimtid",
+      "pasquierma64338",
+      "prefet61",
+      "prefet88",
+      "prefetvendee",
+      "rosalie_glacis",
+      "stephpellegrini",
+      "sylvainviale",
+      "un1te_idf",
+      "vkempathy"
+    ],
+    "tvpirate": [
+      "shlagtv"
+    ],
     "twitch": [
       "aleaument",
       "biscottealex",
@@ -9250,6 +13114,90 @@
       "solunie0475",
       "valantine77"
     ],
+    "twitchstreamer": [
+      "franekiron",
+      "pakyotille",
+      "ryunochi"
+    ],
+    "twitchstreamers": [
+      "ryunochi",
+      "venusisnaive"
+    ],
+    "unjourunemesure": [
+      "cftc37metal",
+      "leilaclaude",
+      "rourelaurie",
+      "toufoux_news"
+    ],
+    "urgenceclimatique": [
+      "anouk1818",
+      "aure_lacour",
+      "colinegreen",
+      "frfrontieres",
+      "lailaeren",
+      "maclesggy",
+      "neoresistant",
+      "nicosbossisfcn",
+      "pasclavergne",
+      "reservoirapps",
+      "schydlowski1",
+      "valyaincognita",
+      "zadigobb"
+    ],
+    "urgences": [
+      "_chouuu",
+      "botteq",
+      "f3bourgogne",
+      "gallieni_57",
+      "gkierzek",
+      "infirmiersnpi",
+      "laurentopsomer",
+      "lcensur",
+      "leprogreslyon",
+      "nicolasberrod",
+      "pierreberat",
+      "thesecretvoice4",
+      "var_actu"
+    ],
+    "vaguedechaleur": [
+      "abreu_thii",
+      "actuenviro",
+      "arameteo_france",
+      "charlen29353500",
+      "chudenice",
+      "clair_officiel",
+      "davidar70323381",
+      "dragolito52",
+      "eric265538999",
+      "idek621979361",
+      "jackgreen320817",
+      "jcav8607",
+      "jeanluc33210",
+      "kevin_fillin",
+      "kitttaaa11",
+      "krism220",
+      "lachainemeteo",
+      "landpc_world",
+      "linda964186505",
+      "meteoclimatpro",
+      "miacarter25770",
+      "michele27249639",
+      "millonac02",
+      "nancy4430368170",
+      "nicolaslefriant",
+      "patrickmarliere",
+      "pompiersdugard",
+      "prefet14",
+      "prefet18",
+      "prefet2a",
+      "prefet88",
+      "sainte_hermine5",
+      "sambostnwave",
+      "unbb30",
+      "var_actu",
+      "yabiladi_fr",
+      "zadigobb"
+    ],
     "var": [
       "lachainemeteo",
       "leopurguette",
@@ -9262,6 +13210,132 @@
       "var_actu",
       "vigipreventionm",
       "villedraguignan"
+    ],
+    "varactu": [
+      "var_actu"
+    ],
+    "vendredi": [
+      "agathedeblouz",
+      "informationssf",
+      "josettej1",
+      "lachainemeteo",
+      "schydlowski1",
+      "thesecretvoice4"
+    ],
+    "vigilance": [
+      "01meteo",
+      "actufr92",
+      "actufr93",
+      "actufr94",
+      "actufrparis",
+      "adrienfour",
+      "angersvillactu",
+      "antonin_albert",
+      "ars_grand_est",
+      "europe2vendee",
+      "florianpinet",
+      "frfrontieres",
+      "guyotvincent02",
+      "hebdoduvendredi",
+      "icimayenne",
+      "informationssf",
+      "jeanluc33210",
+      "johjohbat",
+      "jtoulousain",
+      "kourigenkastra",
+      "linathin",
+      "marc_hay_meteo",
+      "mediabaskinfo",
+      "meteo60",
+      "meteoclimatpro",
+      "meteofrance_o",
+      "meteofrcomtoise",
+      "meteoredfr",
+      "monnomestdegun1",
+      "n37v91",
+      "ordredemaltefr",
+      "patrickmarliere",
+      "pichej",
+      "policenat05",
+      "policenat38",
+      "pompiers03",
+      "prefaquitaine33",
+      "prefet07",
+      "prefet13",
+      "prefet17",
+      "prefet27",
+      "prefet2b",
+      "prefet38",
+      "prefet44",
+      "prefet49",
+      "prefet57",
+      "prefet59",
+      "prefet62",
+      "prefet67",
+      "prefet71",
+      "prefet77",
+      "prefet93",
+      "prefet95",
+      "prefet_10",
+      "prefet_15",
+      "prefetvendee",
+      "proteccivile13",
+      "rcfcoeurdechamp",
+      "sebastienbesse1",
+      "sebastienleas",
+      "sophiebria",
+      "teddymcardle",
+      "th0my_500",
+      "thom_wx",
+      "thomasroullon",
+      "turenne1611",
+      "var_actu",
+      "vigimeteofrance",
+      "vigipreventionm",
+      "villedereims"
+    ],
+    "vigilancejaune": [
+      "1graindefolie",
+      "adrienfour",
+      "alexisjannot",
+      "angersvillactu",
+      "apcsp",
+      "gallieni_57",
+      "gwoznica",
+      "hautegaronne",
+      "hebdoduvendredi",
+      "iffo_rme",
+      "krapouchnik",
+      "meteo_stream",
+      "meteoamateur06",
+      "meteociel",
+      "meteofrance_o",
+      "meteofrance_se",
+      "meteolafleche",
+      "meteovilles",
+      "pompiersdugard",
+      "pompiersdulot",
+      "pompiersherault",
+      "prefaquitaine33",
+      "prefet11",
+      "prefet13",
+      "prefet24",
+      "prefet26",
+      "prefet2b",
+      "prefet51",
+      "prefet53",
+      "prefet59",
+      "prefet64",
+      "prefet80",
+      "prefet84",
+      "prefet91",
+      "prefet92",
+      "prefet93",
+      "prefet_15",
+      "prefetrhone",
+      "rcn_dordogne",
+      "th0my_500",
+      "var_actu"
     ],
     "vigilanceorange": [
       "01meteo",
@@ -9484,6 +13558,18 @@
       "yann_karen",
       "zadigobb"
     ],
+    "villes": [
+      "c_desmaires",
+      "ceremacom",
+      "informationssf",
+      "laurence1119436",
+      "meteoredfr",
+      "seuilhaut",
+      "thesecretvoice4"
+    ],
+    "vivant": [
+      "citoyendumonde5"
+    ],
     "vtuber": [
       "bloodylua",
       "ciiraya",
@@ -9523,6 +13609,26 @@
       "thecommander644",
       "valantine77",
       "zekkotheyeen"
+    ],
+    "weekend": [
+      "1alerte_1info",
+      "bisonfute_mt",
+      "fabricecharvet",
+      "fr_bechieau",
+      "gamol__",
+      "gb_boobslover",
+      "gwoznica",
+      "havraisesg",
+      "josettej1",
+      "jphtwittes",
+      "lachainemeteo",
+      "manu44700",
+      "meteoredfr",
+      "pauvreencolere",
+      "priscacb15",
+      "themademoize",
+      "thesecretvoice4",
+      "var_actu"
     ],
     "wow": [
       "44naanaa",
@@ -9568,6 +13674,72 @@
       "whateverbrosky",
       "wnhjhan"
     ],
+    "xboxseriesx": [
+      "darkstorm33",
+      "m4nd0thereal0ne"
+    ],
+    "yannbartes": [
+      "dodcoquelicot",
+      "lacomplautiste"
+    ],
+    "yannbarthes": [
+      "afogg2qc",
+      "alitamultipass",
+      "almaliyee",
+      "argiope28",
+      "becdombrelle_83",
+      "bernathoustra",
+      "delcroixx",
+      "doublepix",
+      "edensissi",
+      "gleluza56",
+      "herev89",
+      "i3ct3r",
+      "julieneko112700",
+      "laroulotte49",
+      "lcensur",
+      "nini18b",
+      "oubertalli",
+      "robby78",
+      "sandycool17",
+      "soleillibrefr",
+      "toursinsoumis"
+    ],
+    "youtube": [
+      "angelusesport",
+      "balivernologie",
+      "raiderjason1",
+      "ternoise"
+    ],
+    "yvelines": [
+      "francenews24",
+      "helenebaye",
+      "info_paris_idf",
+      "josly_ngoma",
+      "lauremoreau78",
+      "lon23406577",
+      "lwadechu",
+      "meteonordparis",
+      "occhilo",
+      "pompiers78",
+      "prefet78",
+      "rougesgorges",
+      "tv78_yvelines"
+    ],
+    "zfe": [
+      "bazouzabou",
+      "canal_training",
+      "couturiermichle",
+      "escalet83",
+      "eveilleurduco1",
+      "fab0591",
+      "gedlink333",
+      "heleneschild",
+      "lisepierr",
+      "soleillibrefr",
+      "unevoixp",
+      "yannicktanguyde"
+    ],
     "école": [
       "a_zbtc",
       "acgriffon",
@@ -9595,81 +13767,444 @@
       "toursinsoumis",
       "valeriepestre",
       "var_actu"
+    ],
+    "éducation": [
+      "agatheirene",
+      "aure_lacour",
+      "bahiaflaneur",
+      "batinfo_com",
+      "bazouzabou",
+      "bescondpetitb",
+      "cftc37metal",
+      "dekerros",
+      "f_gibert",
+      "francenews24",
+      "frfrontieres",
+      "garciamuriel1",
+      "hebdoduvendredi",
+      "informationssf",
+      "jackgreen320817",
+      "jamesdrew196092",
+      "kitttaaa11",
+      "maxdotnet7335",
+      "paysquebec",
+      "pindropoffice",
+      "pulsefrinfo",
+      "rachidalak98695",
+      "serge_muller24",
+      "toufoux_news",
+      "toursinsoumis"
+    ],
+    "été": [
+      "01meteo",
+      "3txvzm4",
+      "_sunchim",
+      "bisonfute_mt",
+      "capitaine951869",
+      "carlabzh",
+      "chgiraudeau",
+      "claireparisjazz",
+      "consoglobe",
+      "david7879",
+      "dekerros",
+      "europe2vendee",
+      "fab0591",
+      "francaller_info",
+      "frfrontieres",
+      "gamol__",
+      "genschillimpact",
+      "georgiob3",
+      "hebdoduvendredi",
+      "hoperatornews",
+      "info_paris_idf",
+      "informationssf",
+      "ixtasia_off",
+      "j_de_saintsimon",
+      "jolvitalis",
+      "kevinle09611603",
+      "lachainemeteo",
+      "lainesminerales",
+      "laroulotte49",
+      "loicrousval",
+      "lolita19803072",
+      "loloteandlyly",
+      "luciemerlinian",
+      "lucspighel",
+      "maireinfo2",
+      "mezzogiorno25",
+      "mimiechipy",
+      "nicolaslefriant",
+      "numerama",
+      "oaba_off",
+      "platetjean",
+      "pourquoidocteur",
+      "pres_reine",
+      "rautrement",
+      "schydlowski1",
+      "seinsvendredi",
+      "sophiebria",
+      "soukainabgg",
+      "stephbonsens",
+      "sylvaintristanx",
+      "the_best_man_57",
+      "thesecretvoice4",
+      "torreseryc",
+      "winchester_tina"
     ]
   },
   "tag_n_accounts": {
+    "macronie": 42,
     "chaleur": 537,
     "météo": 173,
+    "weekend": 18,
     "meteo": 188,
+    "electricite": 9,
     "france": 359,
     "températures": 33,
+    "lyon": 47,
+    "orage": 66,
     "canicule": 4261,
+    "toulouse": 35,
+    "perpignan": 9,
+    "pyrénéesorientales": 1,
+    "soleil": 49,
+    "climat": 243,
+    "été": 54,
+    "enfants": 19,
     "rechauffementclimatique": 40,
+    "bretagne": 63,
+    "chaleurs": 29,
     "maroc": 12,
+    "chaud": 28,
     "orages": 125,
     "affaireconclue": 10,
+    "urgenceclimatique": 13,
+    "actualite": 7,
+    "ledesk": 1,
+    "iledefrance": 19,
+    "météofrance": 22,
+    "eelv": 33,
     "chemtrails": 32,
+    "mayenne": 6,
+    "records": 18,
     "atm": 14,
     "domina": 28,
+    "feetfetısh": 23,
     "findom": 47,
     "moneymiss": 27,
     "moneyslave": 59,
+    "toutou": 5,
+    "dgm": 2,
+    "vendredi": 6,
+    "prévention": 51,
+    "travail": 33,
+    "environnement": 23,
     "francetv": 6,
     "soumis": 65,
+    "facealinfo": 19,
+    "feet": 20,
+    "pieds": 7,
+    "clown": 2,
+    "qinegatif": 1,
+    "meteofrance": 13,
+    "vaguedechaleur": 37,
+    "franceinfo": 26,
+    "dômedechaleur": 4,
+    "aérosols": 1,
+    "géoingénierie": 2,
+    "srm": 2,
     "climatisation": 230,
+    "aerosols": 1,
+    "grandslam": 1,
     "rolandgarros": 104,
+    "paris": 310,
+    "femdom": 16,
+    "bfmtv": 82,
+    "reims": 4,
+    "cuck": 9,
+    "santé": 91,
+    "giec": 47,
     "f1": 11,
+    "canadinagp": 1,
+    "directan": 25,
+    "zfe": 12,
     "nasdas": 9,
+    "suisse": 8,
+    "previsions": 3,
     "humour": 44,
+    "ligue_des_optimistes": 3,
+    "température": 35,
+    "deuxsèvres": 3,
     "paris12": 4,
     "alertemétéo": 22,
     "nantes": 70,
+    "midinews": 6,
+    "cnews": 98,
+    "vigilance": 70,
+    "vigilancejaune": 41,
+    "ecologie": 46,
     "teamom": 20,
+    "rennes": 22,
+    "citation": 4,
+    "paypig": 22,
+    "ia": 25,
+    "escrologie": 21,
+    "tennis": 12,
+    "gouvernement": 58,
+    "expertmeteo": 2,
     "macron": 152,
+    "nuisible": 2,
+    "parasite": 1,
     "twitch": 18,
     "twitchfr": 9,
     "vtuber": 15,
     "vtuberfr": 21,
     "école": 26,
+    "rg2026": 10,
+    "atp": 2,
+    "rg26": 5,
     "folle": 12,
     "stop": 22,
+    "actulocale": 1,
     "news": 6,
+    "yvelines": 13,
+    "attal": 14,
     "ggrmc": 47,
+    "twitchstreamer": 3,
+    "angers": 19,
+    "forteschaleurs": 34,
+    "eure": 8,
     "hdpros": 40,
     "haarp": 27,
     "lfi": 170,
+    "maisonsalfort": 2,
+    "pqevolution": 1,
     "vigilanceorange": 67,
+    "larbin": 4,
+    "carcassonne": 8,
+    "narbonne": 14,
     "europe1": 12,
+    "pascalpraudetvous": 2,
+    "actu": 8,
     "bd": 4,
+    "tintin": 3,
+    "hdpros2": 18,
     "elle": 12,
+    "melenchon": 27,
+    "gaming": 6,
     "clim": 282,
     "quotidien": 75,
+    "lecornu": 44,
+    "lci": 56,
+    "bordeaux": 28,
     "wow": 42,
+    "afuera": 25,
+    "78": 1,
+    "lagrandeinterview": 4,
+    "foutagedegueule": 9,
+    "éducation": 25,
+    "geffray": 8,
+    "changementclimatique": 32,
+    "christinekellyetvous": 2,
+    "airparif": 2,
     "melenchon2027": 38,
     "cholet": 4,
+    "rn": 102,
+    "montcuq": 1,
+    "agenda2030": 4,
+    "lycée": 3,
+    "epsteintech": 1,
     "sciences": 5,
+    "tech": 4,
+    "agriculture": 38,
     "var": 11,
+    "politique": 46,
     "ecole": 34,
+    "punchline": 12,
+    "tours": 7,
+    "education": 13,
+    "kouame": 4,
     "poupettekenza": 23,
+    "homeoftennis": 4,
+    "globalwarminghoax": 1,
+    "rechauffement": 11,
+    "youtube": 4,
+    "geoingenierie": 4,
+    "kohlanta": 25,
     "merci": 12,
+    "blackmail": 3,
+    "mélenchon": 19,
+    "sante": 20,
     "infotrafic": 7,
+    "loire": 12,
     "vigilancerouge": 150,
+    "streamfr": 1,
+    "grêle": 6,
+    "aec": 5,
+    "unjourunemesure": 4,
+    "switch2": 3,
+    "bolloré": 7,
+    "mercredi": 6,
+    "marne": 3,
+    "mercatom": 4,
+    "aqababe": 1,
+    "hmi": 2,
+    "streamer": 3,
+    "brigitte": 2,
     "tiktok": 31,
+    "manteslajolie_": 1,
+    "ciel": 4,
+    "europe1matin": 2,
     "om": 6,
+    "hautsdefrance": 9,
+    "réveil": 1,
+    "bac": 18,
+    "sinner": 4,
+    "villes": 7,
+    "francetvsport": 3,
     "juin": 15,
+    "fadv": 3,
+    "hautevienne": 2,
+    "educationnationale": 10,
+    "indiegame": 3,
+    "frenchgirl": 2,
     "photodujour": 3,
+    "selfie": 3,
+    "summervibes": 6,
+    "dessindepresse": 3,
     "ps5": 6,
+    "euthanasie": 48,
+    "fetichiste": 9,
+    "fetichistepied": 1,
+    "moneylover": 1,
+    "pied": 6,
+    "quinté": 3,
+    "mauresmo": 1,
+    "moneyslaves": 6,
+    "rtslave": 5,
     "adaptation": 18,
     "nintendo": 5,
+    "2026": 7,
+    "gamecube": 2,
+    "transition": 7,
+    "slave": 4,
+    "g7": 11,
+    "retro": 2,
+    "retrogaming": 2,
+    "splintercell": 1,
+    "beinfwc2026": 1,
+    "clubamerica": 1,
     "fifaworldcup": 19,
+    "avenir": 3,
+    "pas": 3,
+    "frasen": 16,
     "live": 4,
+    "shlagtv": 1,
+    "tvpirate": 1,
+    "hellfest": 12,
+    "42c": 2,
+    "météobtp": 2,
+    "hôpital": 19,
+    "equipedefrance": 2,
+    "puydedôme": 1,
+    "equidia": 1,
+    "francegalop": 1,
     "pmu": 5,
+    "setf": 1,
+    "fetedelamusique": 72,
+    "ain": 5,
+    "chu": 10,
+    "jeudi": 3,
+    "toulon": 1,
+    "varactu": 1,
+    "prefet78": 1,
+    "aimbot": 1,
+    "chill": 2,
+    "cs2": 1,
+    "fps": 1,
+    "gamer": 3,
+    "rpg": 1,
+    "smallstreamers": 1,
+    "smallstreamersconnect": 1,
+    "stream": 3,
+    "twitchstreamers": 2,
+    "nowstreaming": 1,
     "secretstory": 156,
+    "météo83": 3,
+    "préfectureduvar": 1,
+    "baltringues": 6,
+    "idfmobilites": 1,
+    "eliotdevaletvous": 1,
+    "sénégal": 3,
+    "jlm2027": 8,
+    "europe1soirwk": 2,
+    "antisémites": 1,
+    "clisson": 3,
+    "20hbfm": 1,
+    "23hinfo": 1,
+    "hdproswe": 7,
+    "fft": 2,
+    "urgences": 13,
+    "vivant": 1,
+    "followbackinsoumis": 5,
+    "alerterouge": 12,
+    "mouna": 1,
+    "climatisonsnous": 12,
+    "maevaghennam": 1,
+    "xboxseriesx": 2,
+    "caniculeinfoservice": 2,
+    "foudre": 5,
+    "météovar": 1,
+    "manonaubry": 19,
+    "samu": 6,
+    "rts": 1,
+    "gare": 4,
     "barbut": 45,
+    "fraira": 4,
+    "pngtuber": 2,
+    "dnb": 13,
+    "silenceonarme": 1,
+    "francevsiraq": 9,
     "messi": 4,
+    "argaut": 2,
+    "bleu": 2,
+    "chapitre": 1,
+    "extreme": 1,
     "frairq": 19,
+    "individu": 1,
+    "jamais": 1,
+    "lie": 1,
+    "lien": 1,
+    "monde": 3,
+    "re": 1,
+    "mais": 1,
+    "géoingenierie": 1,
+    "finale": 1,
+    "people": 1,
+    "austriangp": 8,
+    "tram2": 1,
+    "tram3": 1,
+    "ss14": 6,
+    "mideaportasplit": 3,
+    "collabos": 3,
+    "moniquebarbut": 25,
+    "ministre": 17,
+    "groix": 2,
+    "panne": 2,
+    "barthès": 10,
+    "yannbarthes": 21,
     "marhai": 14,
-    "norfra": 26
+    "ecobre": 3,
+    "tmc": 6,
+    "secretstorylelive": 4,
+    "europe1soir": 1,
+    "résultat": 1,
+    "secretstorylive": 1,
+    "yannbartes": 2,
+    "norfra": 26,
+    "franor": 14,
+    "parasites": 1,
+    "norvege": 3
   },
   "tag_communities": {
     "adaptation": [
@@ -9892,5 +14427,4898 @@
       14,
       229
     ]
+  },
+  "tag_cooccur": {
+    "adaptation": [
+      {
+        "tag": "canicule",
+        "n": 11
+      },
+      {
+        "tag": "climat",
+        "n": 9
+      },
+      {
+        "tag": "rechauffementclimatique",
+        "n": 5
+      },
+      {
+        "tag": "transition",
+        "n": 5
+      },
+      {
+        "tag": "changementclimatique",
+        "n": 4
+      },
+      {
+        "tag": "france",
+        "n": 3
+      },
+      {
+        "tag": "urgenceclimatique",
+        "n": 2
+      },
+      {
+        "tag": "climatisonsnous",
+        "n": 2
+      },
+      {
+        "tag": "climatisation",
+        "n": 2
+      }
+    ],
+    "alertemétéo": [
+      {
+        "tag": "canicule",
+        "n": 37
+      },
+      {
+        "tag": "mayenne",
+        "n": 14
+      },
+      {
+        "tag": "orages",
+        "n": 14
+      },
+      {
+        "tag": "vigilancejaune",
+        "n": 13
+      },
+      {
+        "tag": "chaleur",
+        "n": 10
+      },
+      {
+        "tag": "hautevienne",
+        "n": 7
+      },
+      {
+        "tag": "vigilanceorange",
+        "n": 5
+      },
+      {
+        "tag": "vigilancerouge",
+        "n": 5
+      },
+      {
+        "tag": "deuxsèvres",
+        "n": 3
+      },
+      {
+        "tag": "vigilance",
+        "n": 3
+      },
+      {
+        "tag": "42c",
+        "n": 2
+      },
+      {
+        "tag": "expertmeteo",
+        "n": 2
+      },
+      {
+        "tag": "météobtp",
+        "n": 2
+      },
+      {
+        "tag": "météofrance",
+        "n": 2
+      },
+      {
+        "tag": "eure",
+        "n": 2
+      }
+    ],
+    "atm": [
+      {
+        "tag": "findom",
+        "n": 24
+      },
+      {
+        "tag": "moneymiss",
+        "n": 21
+      },
+      {
+        "tag": "soumis",
+        "n": 21
+      },
+      {
+        "tag": "moneyslave",
+        "n": 18
+      },
+      {
+        "tag": "domina",
+        "n": 15
+      },
+      {
+        "tag": "paypig",
+        "n": 11
+      },
+      {
+        "tag": "feet",
+        "n": 10
+      },
+      {
+        "tag": "feetfetısh",
+        "n": 7
+      },
+      {
+        "tag": "fetichiste",
+        "n": 7
+      },
+      {
+        "tag": "larbin",
+        "n": 6
+      },
+      {
+        "tag": "femdom",
+        "n": 6
+      },
+      {
+        "tag": "toutou",
+        "n": 5
+      },
+      {
+        "tag": "moneyslaves",
+        "n": 5
+      },
+      {
+        "tag": "fetichistepied",
+        "n": 4
+      },
+      {
+        "tag": "moneylover",
+        "n": 4
+      }
+    ],
+    "barbut": [
+      {
+        "tag": "canicule",
+        "n": 35
+      },
+      {
+        "tag": "clim",
+        "n": 20
+      },
+      {
+        "tag": "climatisation",
+        "n": 20
+      },
+      {
+        "tag": "bolloré",
+        "n": 18
+      },
+      {
+        "tag": "macron",
+        "n": 7
+      },
+      {
+        "tag": "eelv",
+        "n": 4
+      },
+      {
+        "tag": "ministre",
+        "n": 3
+      },
+      {
+        "tag": "alerterouge",
+        "n": 2
+      },
+      {
+        "tag": "gouvernement",
+        "n": 2
+      },
+      {
+        "tag": "hdpros",
+        "n": 2
+      },
+      {
+        "tag": "moniquebarbut",
+        "n": 2
+      },
+      {
+        "tag": "ecologie",
+        "n": 2
+      },
+      {
+        "tag": "escrologie",
+        "n": 2
+      },
+      {
+        "tag": "orage",
+        "n": 2
+      }
+    ],
+    "bd": [
+      {
+        "tag": "canicule",
+        "n": 7
+      },
+      {
+        "tag": "actualite",
+        "n": 4
+      },
+      {
+        "tag": "tintin",
+        "n": 2
+      },
+      {
+        "tag": "humour",
+        "n": 2
+      }
+    ],
+    "canicule": [
+      {
+        "tag": "chaleur",
+        "n": 781
+      },
+      {
+        "tag": "france",
+        "n": 703
+      },
+      {
+        "tag": "climat",
+        "n": 389
+      },
+      {
+        "tag": "vigilancerouge",
+        "n": 370
+      },
+      {
+        "tag": "meteo",
+        "n": 362
+      },
+      {
+        "tag": "paris",
+        "n": 360
+      },
+      {
+        "tag": "climatisation",
+        "n": 320
+      },
+      {
+        "tag": "météo",
+        "n": 302
+      },
+      {
+        "tag": "clim",
+        "n": 302
+      },
+      {
+        "tag": "école",
+        "n": 228
+      },
+      {
+        "tag": "vigilanceorange",
+        "n": 211
+      },
+      {
+        "tag": "macron",
+        "n": 187
+      },
+      {
+        "tag": "orages",
+        "n": 180
+      },
+      {
+        "tag": "santé",
+        "n": 104
+      },
+      {
+        "tag": "lfi",
+        "n": 94
+      }
+    ],
+    "chaleur": [
+      {
+        "tag": "canicule",
+        "n": 781
+      },
+      {
+        "tag": "france",
+        "n": 211
+      },
+      {
+        "tag": "météo",
+        "n": 163
+      },
+      {
+        "tag": "meteo",
+        "n": 126
+      },
+      {
+        "tag": "climat",
+        "n": 84
+      },
+      {
+        "tag": "paris",
+        "n": 72
+      },
+      {
+        "tag": "températures",
+        "n": 71
+      },
+      {
+        "tag": "soleil",
+        "n": 50
+      },
+      {
+        "tag": "été",
+        "n": 36
+      },
+      {
+        "tag": "climatisation",
+        "n": 31
+      },
+      {
+        "tag": "orages",
+        "n": 30
+      },
+      {
+        "tag": "records",
+        "n": 27
+      },
+      {
+        "tag": "santé",
+        "n": 24
+      },
+      {
+        "tag": "température",
+        "n": 24
+      },
+      {
+        "tag": "iledefrance",
+        "n": 23
+      }
+    ],
+    "chemtrails": [
+      {
+        "tag": "canicule",
+        "n": 44
+      },
+      {
+        "tag": "srm",
+        "n": 35
+      },
+      {
+        "tag": "géoingénierie",
+        "n": 31
+      },
+      {
+        "tag": "haarp",
+        "n": 17
+      },
+      {
+        "tag": "aérosols",
+        "n": 12
+      },
+      {
+        "tag": "climat",
+        "n": 6
+      },
+      {
+        "tag": "météo",
+        "n": 6
+      },
+      {
+        "tag": "ciel",
+        "n": 5
+      },
+      {
+        "tag": "dômedechaleur",
+        "n": 4
+      },
+      {
+        "tag": "réveil",
+        "n": 4
+      },
+      {
+        "tag": "zfe",
+        "n": 3
+      },
+      {
+        "tag": "rechauffementclimatique",
+        "n": 3
+      },
+      {
+        "tag": "france",
+        "n": 3
+      },
+      {
+        "tag": "meteo",
+        "n": 3
+      },
+      {
+        "tag": "aerosols",
+        "n": 2
+      }
+    ],
+    "cholet": [
+      {
+        "tag": "canicule",
+        "n": 9
+      },
+      {
+        "tag": "angers",
+        "n": 3
+      }
+    ],
+    "clim": [
+      {
+        "tag": "canicule",
+        "n": 302
+      },
+      {
+        "tag": "climatisation",
+        "n": 53
+      },
+      {
+        "tag": "ecole",
+        "n": 38
+      },
+      {
+        "tag": "mideaportasplit",
+        "n": 21
+      },
+      {
+        "tag": "france",
+        "n": 20
+      },
+      {
+        "tag": "barbut",
+        "n": 20
+      },
+      {
+        "tag": "chaleur",
+        "n": 18
+      },
+      {
+        "tag": "bolloré",
+        "n": 18
+      },
+      {
+        "tag": "lfi",
+        "n": 13
+      },
+      {
+        "tag": "macron",
+        "n": 11
+      },
+      {
+        "tag": "climatisonsnous",
+        "n": 11
+      },
+      {
+        "tag": "climat",
+        "n": 9
+      },
+      {
+        "tag": "gouvernement",
+        "n": 9
+      },
+      {
+        "tag": "lci",
+        "n": 9
+      },
+      {
+        "tag": "paris",
+        "n": 6
+      }
+    ],
+    "climatisation": [
+      {
+        "tag": "canicule",
+        "n": 320
+      },
+      {
+        "tag": "école",
+        "n": 65
+      },
+      {
+        "tag": "clim",
+        "n": 53
+      },
+      {
+        "tag": "rechauffementclimatique",
+        "n": 40
+      },
+      {
+        "tag": "chaleur",
+        "n": 31
+      },
+      {
+        "tag": "france",
+        "n": 20
+      },
+      {
+        "tag": "barbut",
+        "n": 20
+      },
+      {
+        "tag": "bolloré",
+        "n": 18
+      },
+      {
+        "tag": "lfi",
+        "n": 14
+      },
+      {
+        "tag": "climat",
+        "n": 12
+      },
+      {
+        "tag": "eelv",
+        "n": 10
+      },
+      {
+        "tag": "macron",
+        "n": 10
+      },
+      {
+        "tag": "ecologie",
+        "n": 9
+      },
+      {
+        "tag": "giec",
+        "n": 6
+      },
+      {
+        "tag": "paris",
+        "n": 6
+      }
+    ],
+    "domina": [
+      {
+        "tag": "soumis",
+        "n": 41
+      },
+      {
+        "tag": "moneyslave",
+        "n": 30
+      },
+      {
+        "tag": "findom",
+        "n": 29
+      },
+      {
+        "tag": "moneymiss",
+        "n": 21
+      },
+      {
+        "tag": "paypig",
+        "n": 19
+      },
+      {
+        "tag": "atm",
+        "n": 15
+      },
+      {
+        "tag": "feet",
+        "n": 14
+      },
+      {
+        "tag": "femdom",
+        "n": 12
+      },
+      {
+        "tag": "moneyslaves",
+        "n": 11
+      },
+      {
+        "tag": "fetichiste",
+        "n": 9
+      },
+      {
+        "tag": "feetfetısh",
+        "n": 8
+      },
+      {
+        "tag": "larbin",
+        "n": 7
+      },
+      {
+        "tag": "toutou",
+        "n": 6
+      },
+      {
+        "tag": "blackmail",
+        "n": 6
+      },
+      {
+        "tag": "pieds",
+        "n": 5
+      }
+    ],
+    "ecole": [
+      {
+        "tag": "canicule",
+        "n": 76
+      },
+      {
+        "tag": "clim",
+        "n": 38
+      },
+      {
+        "tag": "chaleur",
+        "n": 6
+      },
+      {
+        "tag": "reims",
+        "n": 6
+      },
+      {
+        "tag": "education",
+        "n": 5
+      },
+      {
+        "tag": "marne",
+        "n": 4
+      },
+      {
+        "tag": "vigilanceorange",
+        "n": 4
+      },
+      {
+        "tag": "enfants",
+        "n": 3
+      },
+      {
+        "tag": "lfi",
+        "n": 2
+      },
+      {
+        "tag": "maisonsalfort",
+        "n": 2
+      },
+      {
+        "tag": "educationnationale",
+        "n": 2
+      },
+      {
+        "tag": "bac",
+        "n": 2
+      },
+      {
+        "tag": "lycée",
+        "n": 2
+      },
+      {
+        "tag": "paris",
+        "n": 2
+      }
+    ],
+    "europe1": [
+      {
+        "tag": "pascalpraudetvous",
+        "n": 15
+      },
+      {
+        "tag": "eliotdevaletvous",
+        "n": 11
+      },
+      {
+        "tag": "christinekellyetvous",
+        "n": 9
+      },
+      {
+        "tag": "europe1soirwk",
+        "n": 8
+      },
+      {
+        "tag": "europe1soir",
+        "n": 7
+      },
+      {
+        "tag": "lagrandeinterview",
+        "n": 5
+      },
+      {
+        "tag": "hdpros",
+        "n": 5
+      },
+      {
+        "tag": "europe1matin",
+        "n": 5
+      },
+      {
+        "tag": "cnews",
+        "n": 4
+      },
+      {
+        "tag": "canicule",
+        "n": 4
+      },
+      {
+        "tag": "france",
+        "n": 2
+      }
+    ],
+    "f1": [
+      {
+        "tag": "austriangp",
+        "n": 9
+      },
+      {
+        "tag": "canadinagp",
+        "n": 2
+      }
+    ],
+    "fifaworldcup": [
+      {
+        "tag": "norfra",
+        "n": 9
+      },
+      {
+        "tag": "canicule",
+        "n": 7
+      },
+      {
+        "tag": "nasdas",
+        "n": 6
+      },
+      {
+        "tag": "poupettekenza",
+        "n": 5
+      },
+      {
+        "tag": "beinfwc2026",
+        "n": 4
+      },
+      {
+        "tag": "clubamerica",
+        "n": 3
+      },
+      {
+        "tag": "frasen",
+        "n": 2
+      },
+      {
+        "tag": "mouna",
+        "n": 2
+      }
+    ],
+    "findom": [
+      {
+        "tag": "soumis",
+        "n": 75
+      },
+      {
+        "tag": "moneyslave",
+        "n": 56
+      },
+      {
+        "tag": "moneymiss",
+        "n": 33
+      },
+      {
+        "tag": "domina",
+        "n": 29
+      },
+      {
+        "tag": "paypig",
+        "n": 26
+      },
+      {
+        "tag": "atm",
+        "n": 24
+      },
+      {
+        "tag": "femdom",
+        "n": 18
+      },
+      {
+        "tag": "feet",
+        "n": 16
+      },
+      {
+        "tag": "moneyslaves",
+        "n": 14
+      },
+      {
+        "tag": "feetfetısh",
+        "n": 11
+      },
+      {
+        "tag": "cuck",
+        "n": 10
+      },
+      {
+        "tag": "larbin",
+        "n": 10
+      },
+      {
+        "tag": "rtslave",
+        "n": 9
+      },
+      {
+        "tag": "fetichiste",
+        "n": 8
+      },
+      {
+        "tag": "slave",
+        "n": 8
+      }
+    ],
+    "frairq": [
+      {
+        "tag": "canicule",
+        "n": 19
+      },
+      {
+        "tag": "argaut",
+        "n": 14
+      },
+      {
+        "tag": "individu",
+        "n": 13
+      },
+      {
+        "tag": "jamais",
+        "n": 13
+      },
+      {
+        "tag": "lie",
+        "n": 13
+      },
+      {
+        "tag": "lien",
+        "n": 13
+      },
+      {
+        "tag": "messi",
+        "n": 13
+      },
+      {
+        "tag": "pas",
+        "n": 13
+      },
+      {
+        "tag": "re",
+        "n": 13
+      },
+      {
+        "tag": "monde",
+        "n": 4
+      },
+      {
+        "tag": "mais",
+        "n": 4
+      },
+      {
+        "tag": "francevsiraq",
+        "n": 4
+      },
+      {
+        "tag": "bleu",
+        "n": 3
+      },
+      {
+        "tag": "chapitre",
+        "n": 3
+      },
+      {
+        "tag": "extreme",
+        "n": 3
+      }
+    ],
+    "france": [
+      {
+        "tag": "canicule",
+        "n": 703
+      },
+      {
+        "tag": "chaleur",
+        "n": 211
+      },
+      {
+        "tag": "meteo",
+        "n": 101
+      },
+      {
+        "tag": "climat",
+        "n": 78
+      },
+      {
+        "tag": "météo",
+        "n": 65
+      },
+      {
+        "tag": "previsions",
+        "n": 45
+      },
+      {
+        "tag": "macron",
+        "n": 44
+      },
+      {
+        "tag": "paris",
+        "n": 36
+      },
+      {
+        "tag": "vigilancerouge",
+        "n": 29
+      },
+      {
+        "tag": "politique",
+        "n": 23
+      },
+      {
+        "tag": "climatisation",
+        "n": 20
+      },
+      {
+        "tag": "clim",
+        "n": 20
+      },
+      {
+        "tag": "vaguedechaleur",
+        "n": 18
+      },
+      {
+        "tag": "orages",
+        "n": 17
+      },
+      {
+        "tag": "sante",
+        "n": 15
+      }
+    ],
+    "francetv": [
+      {
+        "tag": "bfmtv",
+        "n": 7
+      },
+      {
+        "tag": "cnews",
+        "n": 7
+      },
+      {
+        "tag": "lci",
+        "n": 7
+      },
+      {
+        "tag": "rolandgarros",
+        "n": 2
+      }
+    ],
+    "ggrmc": [
+      {
+        "tag": "canicule",
+        "n": 33
+      },
+      {
+        "tag": "hdpros",
+        "n": 10
+      },
+      {
+        "tag": "macron",
+        "n": 7
+      },
+      {
+        "tag": "directan",
+        "n": 6
+      },
+      {
+        "tag": "bfmtv",
+        "n": 6
+      },
+      {
+        "tag": "hdproswe",
+        "n": 5
+      },
+      {
+        "tag": "chaleur",
+        "n": 4
+      },
+      {
+        "tag": "facealinfo",
+        "n": 4
+      },
+      {
+        "tag": "euthanasie",
+        "n": 4
+      },
+      {
+        "tag": "lci",
+        "n": 4
+      },
+      {
+        "tag": "fadv",
+        "n": 3
+      },
+      {
+        "tag": "nasdas",
+        "n": 3
+      },
+      {
+        "tag": "kohlanta",
+        "n": 3
+      },
+      {
+        "tag": "afuera",
+        "n": 2
+      },
+      {
+        "tag": "haarp",
+        "n": 2
+      }
+    ],
+    "haarp": [
+      {
+        "tag": "canicule",
+        "n": 21
+      },
+      {
+        "tag": "chemtrails",
+        "n": 17
+      },
+      {
+        "tag": "géoingénierie",
+        "n": 3
+      },
+      {
+        "tag": "climat",
+        "n": 3
+      },
+      {
+        "tag": "meteo",
+        "n": 3
+      },
+      {
+        "tag": "srm",
+        "n": 2
+      },
+      {
+        "tag": "nasdas",
+        "n": 2
+      },
+      {
+        "tag": "france",
+        "n": 2
+      },
+      {
+        "tag": "agenda2030",
+        "n": 2
+      },
+      {
+        "tag": "ggrmc",
+        "n": 2
+      },
+      {
+        "tag": "géoingenierie",
+        "n": 2
+      },
+      {
+        "tag": "geoingenierie",
+        "n": 2
+      }
+    ],
+    "hdpros": [
+      {
+        "tag": "canicule",
+        "n": 15
+      },
+      {
+        "tag": "ggrmc",
+        "n": 10
+      },
+      {
+        "tag": "rechauffementclimatique",
+        "n": 7
+      },
+      {
+        "tag": "cnews",
+        "n": 6
+      },
+      {
+        "tag": "europe1",
+        "n": 5
+      },
+      {
+        "tag": "facealinfo",
+        "n": 5
+      },
+      {
+        "tag": "punchline",
+        "n": 4
+      },
+      {
+        "tag": "hdproswe",
+        "n": 4
+      },
+      {
+        "tag": "hdpros2",
+        "n": 3
+      },
+      {
+        "tag": "chaleur",
+        "n": 3
+      },
+      {
+        "tag": "midinews",
+        "n": 3
+      },
+      {
+        "tag": "directan",
+        "n": 2
+      },
+      {
+        "tag": "macron",
+        "n": 2
+      },
+      {
+        "tag": "20hbfm",
+        "n": 2
+      },
+      {
+        "tag": "23hinfo",
+        "n": 2
+      }
+    ],
+    "humour": [
+      {
+        "tag": "canicule",
+        "n": 70
+      },
+      {
+        "tag": "chaleur",
+        "n": 9
+      },
+      {
+        "tag": "france",
+        "n": 8
+      },
+      {
+        "tag": "meteo",
+        "n": 6
+      },
+      {
+        "tag": "paris",
+        "n": 6
+      },
+      {
+        "tag": "actu",
+        "n": 6
+      },
+      {
+        "tag": "macron",
+        "n": 5
+      },
+      {
+        "tag": "clim",
+        "n": 5
+      },
+      {
+        "tag": "montcuq",
+        "n": 3
+      },
+      {
+        "tag": "bretagne",
+        "n": 3
+      },
+      {
+        "tag": "climatisation",
+        "n": 3
+      },
+      {
+        "tag": "citation",
+        "n": 2
+      },
+      {
+        "tag": "orages",
+        "n": 2
+      },
+      {
+        "tag": "brigitte",
+        "n": 2
+      },
+      {
+        "tag": "dessindepresse",
+        "n": 2
+      }
+    ],
+    "infotrafic": [
+      {
+        "tag": "tram2",
+        "n": 5
+      },
+      {
+        "tag": "tram3",
+        "n": 3
+      }
+    ],
+    "juin": [
+      {
+        "tag": "canicule",
+        "n": 11
+      },
+      {
+        "tag": "chaleur",
+        "n": 7
+      },
+      {
+        "tag": "météo",
+        "n": 5
+      },
+      {
+        "tag": "france",
+        "n": 3
+      },
+      {
+        "tag": "mercredi",
+        "n": 3
+      },
+      {
+        "tag": "jeudi",
+        "n": 3
+      },
+      {
+        "tag": "ligue_des_optimistes",
+        "n": 3
+      },
+      {
+        "tag": "chaud",
+        "n": 2
+      },
+      {
+        "tag": "été",
+        "n": 2
+      },
+      {
+        "tag": "vendredi",
+        "n": 2
+      },
+      {
+        "tag": "bretagne",
+        "n": 2
+      },
+      {
+        "tag": "records",
+        "n": 2
+      },
+      {
+        "tag": "météofrance",
+        "n": 2
+      },
+      {
+        "tag": "2026",
+        "n": 2
+      },
+      {
+        "tag": "avenir",
+        "n": 2
+      }
+    ],
+    "lfi": [
+      {
+        "tag": "canicule",
+        "n": 94
+      },
+      {
+        "tag": "melenchon",
+        "n": 15
+      },
+      {
+        "tag": "baltringues",
+        "n": 14
+      },
+      {
+        "tag": "climatisation",
+        "n": 14
+      },
+      {
+        "tag": "clim",
+        "n": 13
+      },
+      {
+        "tag": "rn",
+        "n": 12
+      },
+      {
+        "tag": "mélenchon",
+        "n": 12
+      },
+      {
+        "tag": "antisémites",
+        "n": 11
+      },
+      {
+        "tag": "eelv",
+        "n": 10
+      },
+      {
+        "tag": "france",
+        "n": 10
+      },
+      {
+        "tag": "manonaubry",
+        "n": 9
+      },
+      {
+        "tag": "collabos",
+        "n": 9
+      },
+      {
+        "tag": "parasites",
+        "n": 9
+      },
+      {
+        "tag": "melenchon2027",
+        "n": 7
+      },
+      {
+        "tag": "climat",
+        "n": 6
+      }
+    ],
+    "live": [
+      {
+        "tag": "shlagtv",
+        "n": 2
+      },
+      {
+        "tag": "tvpirate",
+        "n": 2
+      },
+      {
+        "tag": "twitch",
+        "n": 2
+      },
+      {
+        "tag": "indiegame",
+        "n": 2
+      },
+      {
+        "tag": "nowstreaming",
+        "n": 2
+      },
+      {
+        "tag": "twitchstreamer",
+        "n": 2
+      },
+      {
+        "tag": "vtuber",
+        "n": 2
+      },
+      {
+        "tag": "vtuberfr",
+        "n": 2
+      }
+    ],
+    "macron": [
+      {
+        "tag": "canicule",
+        "n": 187
+      },
+      {
+        "tag": "france",
+        "n": 44
+      },
+      {
+        "tag": "lecornu",
+        "n": 29
+      },
+      {
+        "tag": "macronie",
+        "n": 18
+      },
+      {
+        "tag": "cnews",
+        "n": 18
+      },
+      {
+        "tag": "chaleur",
+        "n": 17
+      },
+      {
+        "tag": "bfmtv",
+        "n": 13
+      },
+      {
+        "tag": "lci",
+        "n": 13
+      },
+      {
+        "tag": "gouvernement",
+        "n": 12
+      },
+      {
+        "tag": "attal",
+        "n": 11
+      },
+      {
+        "tag": "clim",
+        "n": 11
+      },
+      {
+        "tag": "politique",
+        "n": 11
+      },
+      {
+        "tag": "climatisation",
+        "n": 10
+      },
+      {
+        "tag": "franceinfo",
+        "n": 9
+      },
+      {
+        "tag": "climat",
+        "n": 8
+      }
+    ],
+    "marhai": [
+      {
+        "tag": "ecobre",
+        "n": 2
+      }
+    ],
+    "maroc": [
+      {
+        "tag": "ledesk",
+        "n": 10
+      },
+      {
+        "tag": "dgm",
+        "n": 6
+      },
+      {
+        "tag": "météo",
+        "n": 5
+      },
+      {
+        "tag": "canicule",
+        "n": 4
+      },
+      {
+        "tag": "vaguedechaleur",
+        "n": 4
+      },
+      {
+        "tag": "chaleur",
+        "n": 2
+      },
+      {
+        "tag": "climat",
+        "n": 2
+      },
+      {
+        "tag": "sénégal",
+        "n": 2
+      },
+      {
+        "tag": "alertemétéo",
+        "n": 2
+      }
+    ],
+    "melenchon2027": [
+      {
+        "tag": "canicule",
+        "n": 12
+      },
+      {
+        "tag": "lfi",
+        "n": 7
+      },
+      {
+        "tag": "aec",
+        "n": 6
+      },
+      {
+        "tag": "unjourunemesure",
+        "n": 6
+      },
+      {
+        "tag": "followbackinsoumis",
+        "n": 5
+      },
+      {
+        "tag": "jlm2027",
+        "n": 2
+      }
+    ],
+    "merci": [
+      {
+        "tag": "canicule",
+        "n": 2
+      }
+    ],
+    "messi": [
+      {
+        "tag": "canicule",
+        "n": 15
+      },
+      {
+        "tag": "argaut",
+        "n": 13
+      },
+      {
+        "tag": "frairq",
+        "n": 13
+      },
+      {
+        "tag": "individu",
+        "n": 13
+      },
+      {
+        "tag": "jamais",
+        "n": 13
+      },
+      {
+        "tag": "lie",
+        "n": 13
+      },
+      {
+        "tag": "lien",
+        "n": 13
+      },
+      {
+        "tag": "pas",
+        "n": 13
+      },
+      {
+        "tag": "re",
+        "n": 13
+      },
+      {
+        "tag": "monde",
+        "n": 4
+      },
+      {
+        "tag": "mais",
+        "n": 4
+      },
+      {
+        "tag": "bleu",
+        "n": 3
+      },
+      {
+        "tag": "chapitre",
+        "n": 3
+      },
+      {
+        "tag": "extreme",
+        "n": 3
+      },
+      {
+        "tag": "foudre",
+        "n": 3
+      }
+    ],
+    "meteo": [
+      {
+        "tag": "canicule",
+        "n": 362
+      },
+      {
+        "tag": "chaleur",
+        "n": 126
+      },
+      {
+        "tag": "climat",
+        "n": 103
+      },
+      {
+        "tag": "france",
+        "n": 101
+      },
+      {
+        "tag": "previsions",
+        "n": 53
+      },
+      {
+        "tag": "actualite",
+        "n": 45
+      },
+      {
+        "tag": "clown",
+        "n": 35
+      },
+      {
+        "tag": "qinegatif",
+        "n": 35
+      },
+      {
+        "tag": "bretagne",
+        "n": 34
+      },
+      {
+        "tag": "nuisible",
+        "n": 34
+      },
+      {
+        "tag": "parasite",
+        "n": 34
+      },
+      {
+        "tag": "lyon",
+        "n": 31
+      },
+      {
+        "tag": "paris",
+        "n": 26
+      },
+      {
+        "tag": "orage",
+        "n": 25
+      },
+      {
+        "tag": "orages",
+        "n": 22
+      }
+    ],
+    "moneymiss": [
+      {
+        "tag": "soumis",
+        "n": 39
+      },
+      {
+        "tag": "moneyslave",
+        "n": 34
+      },
+      {
+        "tag": "findom",
+        "n": 33
+      },
+      {
+        "tag": "atm",
+        "n": 21
+      },
+      {
+        "tag": "domina",
+        "n": 21
+      },
+      {
+        "tag": "paypig",
+        "n": 20
+      },
+      {
+        "tag": "feet",
+        "n": 13
+      },
+      {
+        "tag": "feetfetısh",
+        "n": 9
+      },
+      {
+        "tag": "cuck",
+        "n": 9
+      },
+      {
+        "tag": "fetichiste",
+        "n": 8
+      },
+      {
+        "tag": "femdom",
+        "n": 8
+      },
+      {
+        "tag": "toutou",
+        "n": 7
+      },
+      {
+        "tag": "rtslave",
+        "n": 7
+      },
+      {
+        "tag": "moneyslaves",
+        "n": 6
+      },
+      {
+        "tag": "larbin",
+        "n": 5
+      }
+    ],
+    "moneyslave": [
+      {
+        "tag": "soumis",
+        "n": 73
+      },
+      {
+        "tag": "findom",
+        "n": 56
+      },
+      {
+        "tag": "moneymiss",
+        "n": 34
+      },
+      {
+        "tag": "paypig",
+        "n": 31
+      },
+      {
+        "tag": "domina",
+        "n": 30
+      },
+      {
+        "tag": "atm",
+        "n": 18
+      },
+      {
+        "tag": "feet",
+        "n": 18
+      },
+      {
+        "tag": "feetfetısh",
+        "n": 12
+      },
+      {
+        "tag": "pied",
+        "n": 9
+      },
+      {
+        "tag": "femdom",
+        "n": 9
+      },
+      {
+        "tag": "larbin",
+        "n": 8
+      },
+      {
+        "tag": "cuck",
+        "n": 8
+      },
+      {
+        "tag": "slave",
+        "n": 8
+      },
+      {
+        "tag": "toutou",
+        "n": 7
+      },
+      {
+        "tag": "fetichiste",
+        "n": 7
+      }
+    ],
+    "météo": [
+      {
+        "tag": "canicule",
+        "n": 302
+      },
+      {
+        "tag": "chaleur",
+        "n": 163
+      },
+      {
+        "tag": "climat",
+        "n": 69
+      },
+      {
+        "tag": "france",
+        "n": 65
+      },
+      {
+        "tag": "orages",
+        "n": 22
+      },
+      {
+        "tag": "santé",
+        "n": 19
+      },
+      {
+        "tag": "température",
+        "n": 16
+      },
+      {
+        "tag": "bretagne",
+        "n": 14
+      },
+      {
+        "tag": "températures",
+        "n": 13
+      },
+      {
+        "tag": "perpignan",
+        "n": 13
+      },
+      {
+        "tag": "narbonne",
+        "n": 13
+      },
+      {
+        "tag": "vaguedechaleur",
+        "n": 13
+      },
+      {
+        "tag": "vigilance",
+        "n": 12
+      },
+      {
+        "tag": "pyrénéesorientales",
+        "n": 11
+      },
+      {
+        "tag": "carcassonne",
+        "n": 11
+      }
+    ],
+    "nantes": [
+      {
+        "tag": "canicule",
+        "n": 61
+      },
+      {
+        "tag": "chaleur",
+        "n": 9
+      },
+      {
+        "tag": "chu",
+        "n": 7
+      },
+      {
+        "tag": "bordeaux",
+        "n": 7
+      },
+      {
+        "tag": "paris",
+        "n": 6
+      },
+      {
+        "tag": "loire",
+        "n": 5
+      },
+      {
+        "tag": "hellfest",
+        "n": 5
+      },
+      {
+        "tag": "santé",
+        "n": 4
+      },
+      {
+        "tag": "gare",
+        "n": 4
+      },
+      {
+        "tag": "toulouse",
+        "n": 3
+      },
+      {
+        "tag": "france",
+        "n": 3
+      },
+      {
+        "tag": "clisson",
+        "n": 3
+      },
+      {
+        "tag": "lyon",
+        "n": 3
+      },
+      {
+        "tag": "rennes",
+        "n": 3
+      },
+      {
+        "tag": "climatisation",
+        "n": 2
+      }
+    ],
+    "nasdas": [
+      {
+        "tag": "canicule",
+        "n": 29
+      },
+      {
+        "tag": "poupettekenza",
+        "n": 20
+      },
+      {
+        "tag": "fifaworldcup",
+        "n": 6
+      },
+      {
+        "tag": "maevaghennam",
+        "n": 6
+      },
+      {
+        "tag": "secretstory",
+        "n": 5
+      },
+      {
+        "tag": "hmi",
+        "n": 4
+      },
+      {
+        "tag": "ggrmc",
+        "n": 3
+      },
+      {
+        "tag": "kohlanta",
+        "n": 3
+      },
+      {
+        "tag": "haarp",
+        "n": 2
+      },
+      {
+        "tag": "aqababe",
+        "n": 2
+      },
+      {
+        "tag": "mouna",
+        "n": 2
+      },
+      {
+        "tag": "fetedelamusique",
+        "n": 2
+      },
+      {
+        "tag": "hdpros",
+        "n": 2
+      },
+      {
+        "tag": "fraira",
+        "n": 2
+      },
+      {
+        "tag": "vigilancerouge",
+        "n": 2
+      }
+    ],
+    "news": [
+      {
+        "tag": "actulocale",
+        "n": 25
+      },
+      {
+        "tag": "yvelines",
+        "n": 25
+      },
+      {
+        "tag": "78",
+        "n": 23
+      },
+      {
+        "tag": "canicule",
+        "n": 22
+      },
+      {
+        "tag": "chaleur",
+        "n": 9
+      },
+      {
+        "tag": "prefet78",
+        "n": 5
+      },
+      {
+        "tag": "france",
+        "n": 4
+      },
+      {
+        "tag": "airparif",
+        "n": 4
+      },
+      {
+        "tag": "idfmobilites",
+        "n": 4
+      },
+      {
+        "tag": "rts",
+        "n": 4
+      },
+      {
+        "tag": "villes",
+        "n": 4
+      },
+      {
+        "tag": "manteslajolie_",
+        "n": 2
+      },
+      {
+        "tag": "g7",
+        "n": 2
+      },
+      {
+        "tag": "equipedefrance",
+        "n": 2
+      },
+      {
+        "tag": "suisse",
+        "n": 2
+      }
+    ],
+    "nintendo": [
+      {
+        "tag": "gamecube",
+        "n": 2
+      },
+      {
+        "tag": "retro",
+        "n": 2
+      },
+      {
+        "tag": "retrogaming",
+        "n": 2
+      },
+      {
+        "tag": "splintercell",
+        "n": 2
+      }
+    ],
+    "norfra": [
+      {
+        "tag": "franor",
+        "n": 10
+      },
+      {
+        "tag": "fifaworldcup",
+        "n": 9
+      },
+      {
+        "tag": "canicule",
+        "n": 7
+      },
+      {
+        "tag": "france",
+        "n": 4
+      },
+      {
+        "tag": "norvege",
+        "n": 3
+      }
+    ],
+    "om": [
+      {
+        "tag": "teamom",
+        "n": 16
+      },
+      {
+        "tag": "mercatom",
+        "n": 3
+      }
+    ],
+    "orages": [
+      {
+        "tag": "canicule",
+        "n": 180
+      },
+      {
+        "tag": "chaleur",
+        "n": 30
+      },
+      {
+        "tag": "vigilanceorange",
+        "n": 25
+      },
+      {
+        "tag": "vigilancejaune",
+        "n": 23
+      },
+      {
+        "tag": "météo",
+        "n": 22
+      },
+      {
+        "tag": "meteo",
+        "n": 22
+      },
+      {
+        "tag": "paris",
+        "n": 19
+      },
+      {
+        "tag": "france",
+        "n": 17
+      },
+      {
+        "tag": "vigilancerouge",
+        "n": 15
+      },
+      {
+        "tag": "alertemétéo",
+        "n": 14
+      },
+      {
+        "tag": "bretagne",
+        "n": 13
+      },
+      {
+        "tag": "mayenne",
+        "n": 13
+      },
+      {
+        "tag": "grêle",
+        "n": 8
+      },
+      {
+        "tag": "hautsdefrance",
+        "n": 5
+      },
+      {
+        "tag": "vigilance",
+        "n": 5
+      }
+    ],
+    "paris12": [
+      {
+        "tag": "canicule",
+        "n": 4
+      },
+      {
+        "tag": "electricite",
+        "n": 3
+      },
+      {
+        "tag": "panne",
+        "n": 2
+      }
+    ],
+    "photodujour": [
+      {
+        "tag": "frenchgirl",
+        "n": 2
+      },
+      {
+        "tag": "selfie",
+        "n": 2
+      },
+      {
+        "tag": "summervibes",
+        "n": 2
+      }
+    ],
+    "pmu": [
+      {
+        "tag": "quinté",
+        "n": 15
+      },
+      {
+        "tag": "equidia",
+        "n": 13
+      },
+      {
+        "tag": "francegalop",
+        "n": 13
+      },
+      {
+        "tag": "setf",
+        "n": 13
+      },
+      {
+        "tag": "canicule",
+        "n": 6
+      },
+      {
+        "tag": "résultat",
+        "n": 2
+      }
+    ],
+    "poupettekenza": [
+      {
+        "tag": "canicule",
+        "n": 23
+      },
+      {
+        "tag": "nasdas",
+        "n": 20
+      },
+      {
+        "tag": "maevaghennam",
+        "n": 6
+      },
+      {
+        "tag": "fifaworldcup",
+        "n": 5
+      },
+      {
+        "tag": "secretstory",
+        "n": 4
+      },
+      {
+        "tag": "fetedelamusique",
+        "n": 3
+      },
+      {
+        "tag": "aqababe",
+        "n": 2
+      },
+      {
+        "tag": "hmi",
+        "n": 2
+      },
+      {
+        "tag": "mouna",
+        "n": 2
+      },
+      {
+        "tag": "vigilancerouge",
+        "n": 2
+      },
+      {
+        "tag": "fraira",
+        "n": 2
+      }
+    ],
+    "ps5": [
+      {
+        "tag": "xboxseriesx",
+        "n": 3
+      },
+      {
+        "tag": "switch2",
+        "n": 2
+      }
+    ],
+    "quotidien": [
+      {
+        "tag": "canicule",
+        "n": 26
+      },
+      {
+        "tag": "yannbarthes",
+        "n": 8
+      },
+      {
+        "tag": "barthès",
+        "n": 6
+      },
+      {
+        "tag": "tmc",
+        "n": 5
+      },
+      {
+        "tag": "bfmtv",
+        "n": 2
+      },
+      {
+        "tag": "chaleur",
+        "n": 2
+      },
+      {
+        "tag": "france",
+        "n": 2
+      },
+      {
+        "tag": "clim",
+        "n": 2
+      },
+      {
+        "tag": "yannbartes",
+        "n": 2
+      }
+    ],
+    "rechauffementclimatique": [
+      {
+        "tag": "canicule",
+        "n": 76
+      },
+      {
+        "tag": "climatisation",
+        "n": 40
+      },
+      {
+        "tag": "climat",
+        "n": 10
+      },
+      {
+        "tag": "hdpros",
+        "n": 7
+      },
+      {
+        "tag": "adaptation",
+        "n": 5
+      },
+      {
+        "tag": "chaleur",
+        "n": 4
+      },
+      {
+        "tag": "meteo",
+        "n": 4
+      },
+      {
+        "tag": "ecologie",
+        "n": 4
+      },
+      {
+        "tag": "chemtrails",
+        "n": 3
+      },
+      {
+        "tag": "rn",
+        "n": 3
+      },
+      {
+        "tag": "clim",
+        "n": 3
+      },
+      {
+        "tag": "météo",
+        "n": 2
+      },
+      {
+        "tag": "globalwarminghoax",
+        "n": 2
+      },
+      {
+        "tag": "rechauffement",
+        "n": 2
+      },
+      {
+        "tag": "giec",
+        "n": 2
+      }
+    ],
+    "rolandgarros": [
+      {
+        "tag": "canicule",
+        "n": 23
+      },
+      {
+        "tag": "rg26",
+        "n": 11
+      },
+      {
+        "tag": "tennis",
+        "n": 10
+      },
+      {
+        "tag": "grandslam",
+        "n": 9
+      },
+      {
+        "tag": "rg2026",
+        "n": 8
+      },
+      {
+        "tag": "homeoftennis",
+        "n": 6
+      },
+      {
+        "tag": "chaleur",
+        "n": 4
+      },
+      {
+        "tag": "kouame",
+        "n": 4
+      },
+      {
+        "tag": "sinner",
+        "n": 4
+      },
+      {
+        "tag": "francetvsport",
+        "n": 4
+      },
+      {
+        "tag": "atp",
+        "n": 3
+      },
+      {
+        "tag": "paris",
+        "n": 3
+      },
+      {
+        "tag": "mauresmo",
+        "n": 3
+      },
+      {
+        "tag": "fft",
+        "n": 3
+      },
+      {
+        "tag": "france",
+        "n": 3
+      }
+    ],
+    "sciences": [
+      {
+        "tag": "canicule",
+        "n": 20
+      },
+      {
+        "tag": "tech",
+        "n": 17
+      },
+      {
+        "tag": "climat",
+        "n": 5
+      },
+      {
+        "tag": "ia",
+        "n": 3
+      },
+      {
+        "tag": "agriculture",
+        "n": 3
+      },
+      {
+        "tag": "epsteintech",
+        "n": 2
+      },
+      {
+        "tag": "pqevolution",
+        "n": 2
+      },
+      {
+        "tag": "chaleurs",
+        "n": 2
+      },
+      {
+        "tag": "vivant",
+        "n": 2
+      },
+      {
+        "tag": "silenceonarme",
+        "n": 2
+      }
+    ],
+    "secretstory": [
+      {
+        "tag": "canicule",
+        "n": 14
+      },
+      {
+        "tag": "ss14",
+        "n": 7
+      },
+      {
+        "tag": "secretstorylelive",
+        "n": 5
+      },
+      {
+        "tag": "nasdas",
+        "n": 5
+      },
+      {
+        "tag": "poupettekenza",
+        "n": 4
+      },
+      {
+        "tag": "kohlanta",
+        "n": 3
+      },
+      {
+        "tag": "finale",
+        "n": 2
+      },
+      {
+        "tag": "people",
+        "n": 2
+      },
+      {
+        "tag": "urgences",
+        "n": 2
+      },
+      {
+        "tag": "secretstorylive",
+        "n": 2
+      }
+    ],
+    "soumis": [
+      {
+        "tag": "findom",
+        "n": 75
+      },
+      {
+        "tag": "moneyslave",
+        "n": 73
+      },
+      {
+        "tag": "domina",
+        "n": 41
+      },
+      {
+        "tag": "moneymiss",
+        "n": 39
+      },
+      {
+        "tag": "paypig",
+        "n": 32
+      },
+      {
+        "tag": "femdom",
+        "n": 21
+      },
+      {
+        "tag": "feet",
+        "n": 21
+      },
+      {
+        "tag": "atm",
+        "n": 21
+      },
+      {
+        "tag": "feetfetısh",
+        "n": 19
+      },
+      {
+        "tag": "moneyslaves",
+        "n": 14
+      },
+      {
+        "tag": "fetichiste",
+        "n": 12
+      },
+      {
+        "tag": "cuck",
+        "n": 10
+      },
+      {
+        "tag": "pied",
+        "n": 9
+      },
+      {
+        "tag": "larbin",
+        "n": 8
+      },
+      {
+        "tag": "rtslave",
+        "n": 8
+      }
+    ],
+    "teamom": [
+      {
+        "tag": "om",
+        "n": 16
+      },
+      {
+        "tag": "mercatom",
+        "n": 5
+      },
+      {
+        "tag": "canicule",
+        "n": 3
+      }
+    ],
+    "températures": [
+      {
+        "tag": "canicule",
+        "n": 87
+      },
+      {
+        "tag": "chaleur",
+        "n": 71
+      },
+      {
+        "tag": "météo",
+        "n": 13
+      },
+      {
+        "tag": "france",
+        "n": 13
+      },
+      {
+        "tag": "chaleurs",
+        "n": 7
+      },
+      {
+        "tag": "bretagne",
+        "n": 6
+      },
+      {
+        "tag": "orages",
+        "n": 5
+      },
+      {
+        "tag": "records",
+        "n": 4
+      },
+      {
+        "tag": "santé",
+        "n": 4
+      },
+      {
+        "tag": "climat",
+        "n": 4
+      },
+      {
+        "tag": "weekend",
+        "n": 3
+      },
+      {
+        "tag": "paris",
+        "n": 3
+      },
+      {
+        "tag": "meteo",
+        "n": 3
+      },
+      {
+        "tag": "groix",
+        "n": 3
+      },
+      {
+        "tag": "travail",
+        "n": 2
+      }
+    ],
+    "tiktok": [
+      {
+        "tag": "canicule",
+        "n": 3
+      }
+    ],
+    "twitch": [
+      {
+        "tag": "twitchfr",
+        "n": 7
+      },
+      {
+        "tag": "vtuber",
+        "n": 7
+      },
+      {
+        "tag": "streamfr",
+        "n": 5
+      },
+      {
+        "tag": "vtuberfr",
+        "n": 4
+      },
+      {
+        "tag": "gaming",
+        "n": 4
+      },
+      {
+        "tag": "streamer",
+        "n": 4
+      },
+      {
+        "tag": "stream",
+        "n": 4
+      },
+      {
+        "tag": "youtube",
+        "n": 3
+      },
+      {
+        "tag": "aimbot",
+        "n": 3
+      },
+      {
+        "tag": "chill",
+        "n": 3
+      },
+      {
+        "tag": "cs2",
+        "n": 3
+      },
+      {
+        "tag": "fps",
+        "n": 3
+      },
+      {
+        "tag": "gamer",
+        "n": 3
+      },
+      {
+        "tag": "rpg",
+        "n": 3
+      },
+      {
+        "tag": "smallstreamers",
+        "n": 3
+      }
+    ],
+    "twitchfr": [
+      {
+        "tag": "twitch",
+        "n": 7
+      },
+      {
+        "tag": "vtuberfr",
+        "n": 5
+      },
+      {
+        "tag": "twitchstreamer",
+        "n": 4
+      },
+      {
+        "tag": "stream",
+        "n": 4
+      },
+      {
+        "tag": "aimbot",
+        "n": 3
+      },
+      {
+        "tag": "chill",
+        "n": 3
+      },
+      {
+        "tag": "cs2",
+        "n": 3
+      },
+      {
+        "tag": "fps",
+        "n": 3
+      },
+      {
+        "tag": "gamer",
+        "n": 3
+      },
+      {
+        "tag": "gaming",
+        "n": 3
+      },
+      {
+        "tag": "rpg",
+        "n": 3
+      },
+      {
+        "tag": "smallstreamers",
+        "n": 3
+      },
+      {
+        "tag": "smallstreamersconnect",
+        "n": 3
+      },
+      {
+        "tag": "streamer",
+        "n": 3
+      },
+      {
+        "tag": "twitchstreamers",
+        "n": 3
+      }
+    ],
+    "var": [
+      {
+        "tag": "canicule",
+        "n": 43
+      },
+      {
+        "tag": "forteschaleurs",
+        "n": 18
+      },
+      {
+        "tag": "toulon",
+        "n": 18
+      },
+      {
+        "tag": "chaleur",
+        "n": 13
+      },
+      {
+        "tag": "varactu",
+        "n": 11
+      },
+      {
+        "tag": "santé",
+        "n": 10
+      },
+      {
+        "tag": "vigilanceorange",
+        "n": 9
+      },
+      {
+        "tag": "prévention",
+        "n": 8
+      },
+      {
+        "tag": "caniculeinfoservice",
+        "n": 6
+      },
+      {
+        "tag": "samu",
+        "n": 6
+      },
+      {
+        "tag": "météo83",
+        "n": 5
+      },
+      {
+        "tag": "préfectureduvar",
+        "n": 5
+      },
+      {
+        "tag": "météofrance",
+        "n": 4
+      },
+      {
+        "tag": "météovar",
+        "n": 4
+      },
+      {
+        "tag": "environnement",
+        "n": 3
+      }
+    ],
+    "vigilanceorange": [
+      {
+        "tag": "canicule",
+        "n": 211
+      },
+      {
+        "tag": "vigilancerouge",
+        "n": 41
+      },
+      {
+        "tag": "orages",
+        "n": 25
+      },
+      {
+        "tag": "meteofrance",
+        "n": 15
+      },
+      {
+        "tag": "climat",
+        "n": 14
+      },
+      {
+        "tag": "ain",
+        "n": 13
+      },
+      {
+        "tag": "chaleur",
+        "n": 11
+      },
+      {
+        "tag": "santé",
+        "n": 11
+      },
+      {
+        "tag": "vigilancejaune",
+        "n": 10
+      },
+      {
+        "tag": "meteo",
+        "n": 10
+      },
+      {
+        "tag": "forteschaleurs",
+        "n": 9
+      },
+      {
+        "tag": "var",
+        "n": 9
+      },
+      {
+        "tag": "mayenne",
+        "n": 8
+      },
+      {
+        "tag": "paris",
+        "n": 7
+      },
+      {
+        "tag": "france",
+        "n": 6
+      }
+    ],
+    "vigilancerouge": [
+      {
+        "tag": "canicule",
+        "n": 370
+      },
+      {
+        "tag": "vigilanceorange",
+        "n": 41
+      },
+      {
+        "tag": "france",
+        "n": 29
+      },
+      {
+        "tag": "climat",
+        "n": 23
+      },
+      {
+        "tag": "chaleur",
+        "n": 20
+      },
+      {
+        "tag": "meteofrance",
+        "n": 18
+      },
+      {
+        "tag": "meteo",
+        "n": 18
+      },
+      {
+        "tag": "orages",
+        "n": 15
+      },
+      {
+        "tag": "météo",
+        "n": 10
+      },
+      {
+        "tag": "hautsdefrance",
+        "n": 9
+      },
+      {
+        "tag": "paris",
+        "n": 8
+      },
+      {
+        "tag": "fetedelamusique",
+        "n": 8
+      },
+      {
+        "tag": "mayenne",
+        "n": 8
+      },
+      {
+        "tag": "eure",
+        "n": 8
+      },
+      {
+        "tag": "vigilancejaune",
+        "n": 7
+      }
+    ],
+    "vtuber": [
+      {
+        "tag": "vtuberfr",
+        "n": 15
+      },
+      {
+        "tag": "twitch",
+        "n": 7
+      },
+      {
+        "tag": "streamfr",
+        "n": 5
+      },
+      {
+        "tag": "indiegame",
+        "n": 2
+      },
+      {
+        "tag": "live",
+        "n": 2
+      },
+      {
+        "tag": "nowstreaming",
+        "n": 2
+      },
+      {
+        "tag": "twitchstreamer",
+        "n": 2
+      },
+      {
+        "tag": "pngtuber",
+        "n": 2
+      }
+    ],
+    "vtuberfr": [
+      {
+        "tag": "vtuber",
+        "n": 15
+      },
+      {
+        "tag": "twitchfr",
+        "n": 5
+      },
+      {
+        "tag": "twitch",
+        "n": 4
+      },
+      {
+        "tag": "switch2",
+        "n": 2
+      },
+      {
+        "tag": "indiegame",
+        "n": 2
+      },
+      {
+        "tag": "live",
+        "n": 2
+      },
+      {
+        "tag": "nowstreaming",
+        "n": 2
+      },
+      {
+        "tag": "twitchstreamer",
+        "n": 2
+      },
+      {
+        "tag": "pngtuber",
+        "n": 2
+      }
+    ],
+    "école": [
+      {
+        "tag": "canicule",
+        "n": 228
+      },
+      {
+        "tag": "climatisation",
+        "n": 65
+      },
+      {
+        "tag": "éducation",
+        "n": 11
+      },
+      {
+        "tag": "chaleur",
+        "n": 10
+      },
+      {
+        "tag": "climat",
+        "n": 9
+      },
+      {
+        "tag": "tours",
+        "n": 9
+      },
+      {
+        "tag": "foutagedegueule",
+        "n": 4
+      },
+      {
+        "tag": "educationnationale",
+        "n": 3
+      },
+      {
+        "tag": "santé",
+        "n": 3
+      },
+      {
+        "tag": "puydedôme",
+        "n": 2
+      },
+      {
+        "tag": "geffray",
+        "n": 2
+      },
+      {
+        "tag": "paris",
+        "n": 2
+      },
+      {
+        "tag": "france",
+        "n": 2
+      },
+      {
+        "tag": "dnb",
+        "n": 2
+      },
+      {
+        "tag": "hôpital",
+        "n": 2
+      }
+    ]
+  },
+  "tag_comm_n": {
+    "2026": {
+      "10": 3,
+      "546": 2,
+      "0": 1,
+      "229": 1
+    },
+    "20hbfm": {
+      "0": 1
+    },
+    "23hinfo": {
+      "0": 1
+    },
+    "42c": {
+      "229": 1,
+      "546": 1
+    },
+    "78": {
+      "546": 1
+    },
+    "actu": {
+      "0": 3,
+      "14": 2,
+      "546": 2,
+      "75": 1
+    },
+    "actualite": {
+      "546": 3,
+      "75": 2,
+      "49": 1,
+      "229": 1
+    },
+    "actulocale": {
+      "546": 1
+    },
+    "adaptation": {
+      "229": 9,
+      "546": 6,
+      "14": 3
+    },
+    "aec": {
+      "14": 5
+    },
+    "aerosols": {
+      "0": 1
+    },
+    "affaireconclue": {
+      "49": 9,
+      "229": 1
+    },
+    "afuera": {
+      "229": 14,
+      "0": 7,
+      "546": 4
+    },
+    "agenda2030": {
+      "0": 3,
+      "229": 1
+    },
+    "agriculture": {
+      "546": 26,
+      "229": 7,
+      "0": 2,
+      "14": 1,
+      "49": 1,
+      "75": 1
+    },
+    "aimbot": {
+      "161": 1
+    },
+    "ain": {
+      "546": 3,
+      "0": 2
+    },
+    "airparif": {
+      "546": 2
+    },
+    "alertemétéo": {
+      "546": 14,
+      "9": 3,
+      "229": 2,
+      "0": 1,
+      "14": 1,
+      "75": 1
+    },
+    "alerterouge": {
+      "229": 5,
+      "14": 3,
+      "0": 2,
+      "546": 2
+    },
+    "angers": {
+      "546": 12,
+      "229": 4,
+      "14": 2,
+      "0": 1
+    },
+    "antisémites": {
+      "546": 1
+    },
+    "aqababe": {
+      "88": 1
+    },
+    "argaut": {
+      "75": 1,
+      "161": 1
+    },
+    "atm": {
+      "88": 13,
+      "10": 1
+    },
+    "atp": {
+      "75": 1,
+      "546": 1
+    },
+    "attal": {
+      "14": 4,
+      "229": 4,
+      "546": 4,
+      "0": 2
+    },
+    "austriangp": {
+      "75": 4,
+      "10": 2,
+      "229": 1,
+      "546": 1
+    },
+    "avenir": {
+      "546": 2,
+      "0": 1
+    },
+    "aérosols": {
+      "0": 1
+    },
+    "bac": {
+      "229": 6,
+      "546": 6,
+      "0": 3,
+      "14": 2,
+      "10": 1
+    },
+    "baltringues": {
+      "14": 2,
+      "229": 2,
+      "0": 1,
+      "546": 1
+    },
+    "barbut": {
+      "229": 22,
+      "0": 16,
+      "546": 4,
+      "14": 3
+    },
+    "barthès": {
+      "14": 8,
+      "0": 1,
+      "229": 1
+    },
+    "bd": {
+      "49": 2,
+      "14": 1,
+      "75": 1
+    },
+    "beinfwc2026": {
+      "75": 1
+    },
+    "bfmtv": {
+      "546": 33,
+      "0": 18,
+      "229": 14,
+      "14": 10,
+      "49": 5,
+      "10": 2
+    },
+    "blackmail": {
+      "88": 3
+    },
+    "bleu": {
+      "75": 1,
+      "229": 1
+    },
+    "bolloré": {
+      "546": 4,
+      "0": 2,
+      "14": 1
+    },
+    "bordeaux": {
+      "546": 15,
+      "229": 11,
+      "0": 1,
+      "10": 1
+    },
+    "bretagne": {
+      "546": 30,
+      "229": 17,
+      "0": 8,
+      "49": 3,
+      "161": 2,
+      "10": 1,
+      "14": 1,
+      "88": 1
+    },
+    "brigitte": {
+      "0": 1,
+      "546": 1
+    },
+    "canadinagp": {
+      "75": 1
+    },
+    "canicule": {
+      "546": 1196,
+      "229": 1110,
+      "0": 731,
+      "14": 521,
+      "10": 299,
+      "49": 151,
+      "75": 95,
+      "161": 82,
+      "88": 63,
+      "9": 11,
+      "525": 2
+    },
+    "caniculeinfoservice": {
+      "0": 1,
+      "229": 1
+    },
+    "carcassonne": {
+      "546": 5,
+      "0": 1,
+      "14": 1,
+      "49": 1
+    },
+    "chaleur": {
+      "546": 210,
+      "229": 119,
+      "0": 83,
+      "14": 32,
+      "10": 28,
+      "49": 20,
+      "88": 16,
+      "161": 14,
+      "75": 12,
+      "9": 3
+    },
+    "chaleurs": {
+      "546": 19,
+      "14": 4,
+      "0": 3,
+      "229": 2,
+      "88": 1
+    },
+    "changementclimatique": {
+      "14": 10,
+      "546": 9,
+      "0": 6,
+      "229": 5,
+      "49": 2
+    },
+    "chapitre": {
+      "75": 1
+    },
+    "chaud": {
+      "229": 11,
+      "546": 11,
+      "88": 2,
+      "0": 1,
+      "10": 1,
+      "14": 1,
+      "161": 1
+    },
+    "chemtrails": {
+      "0": 19,
+      "229": 7,
+      "546": 4,
+      "49": 2
+    },
+    "chill": {
+      "10": 1,
+      "161": 1
+    },
+    "cholet": {
+      "546": 3,
+      "49": 1
+    },
+    "christinekellyetvous": {
+      "0": 2
+    },
+    "chu": {
+      "229": 4,
+      "546": 4,
+      "0": 2
+    },
+    "ciel": {
+      "0": 2,
+      "49": 1,
+      "229": 1
+    },
+    "citation": {
+      "0": 1,
+      "49": 1,
+      "229": 1,
+      "546": 1
+    },
+    "clim": {
+      "229": 138,
+      "0": 75,
+      "546": 38,
+      "14": 13,
+      "75": 8,
+      "10": 6,
+      "49": 2,
+      "9": 1,
+      "161": 1
+    },
+    "climat": {
+      "546": 92,
+      "229": 68,
+      "0": 42,
+      "14": 34,
+      "49": 4,
+      "161": 2,
+      "88": 1
+    },
+    "climatisation": {
+      "229": 107,
+      "0": 62,
+      "546": 41,
+      "14": 13,
+      "161": 5,
+      "49": 2
+    },
+    "climatisonsnous": {
+      "0": 5,
+      "229": 4,
+      "546": 2,
+      "14": 1
+    },
+    "clisson": {
+      "546": 2,
+      "161": 1
+    },
+    "clown": {
+      "229": 1,
+      "546": 1
+    },
+    "clubamerica": {
+      "75": 1
+    },
+    "cnews": {
+      "0": 41,
+      "229": 27,
+      "546": 17,
+      "14": 9,
+      "10": 2,
+      "49": 2
+    },
+    "collabos": {
+      "0": 1,
+      "14": 1,
+      "546": 1
+    },
+    "cs2": {
+      "161": 1
+    },
+    "cuck": {
+      "88": 8,
+      "229": 1
+    },
+    "dessindepresse": {
+      "546": 2,
+      "0": 1
+    },
+    "deuxsèvres": {
+      "546": 2,
+      "229": 1
+    },
+    "dgm": {
+      "9": 1,
+      "75": 1
+    },
+    "directan": {
+      "546": 7,
+      "14": 6,
+      "229": 6,
+      "0": 5,
+      "161": 1
+    },
+    "dnb": {
+      "229": 8,
+      "14": 3,
+      "49": 1,
+      "546": 1
+    },
+    "domina": {
+      "88": 27,
+      "10": 1
+    },
+    "dômedechaleur": {
+      "229": 2,
+      "0": 1,
+      "546": 1
+    },
+    "ecobre": {
+      "10": 2,
+      "546": 1
+    },
+    "ecole": {
+      "546": 13,
+      "229": 11,
+      "0": 5,
+      "14": 4,
+      "10": 1
+    },
+    "ecologie": {
+      "229": 17,
+      "14": 10,
+      "0": 9,
+      "546": 9,
+      "10": 1
+    },
+    "education": {
+      "546": 7,
+      "229": 6
+    },
+    "educationnationale": {
+      "14": 4,
+      "546": 4,
+      "0": 1,
+      "229": 1
+    },
+    "eelv": {
+      "229": 17,
+      "0": 8,
+      "14": 4,
+      "546": 4
+    },
+    "electricite": {
+      "546": 3,
+      "49": 2,
+      "0": 1,
+      "14": 1,
+      "75": 1,
+      "229": 1
+    },
+    "eliotdevaletvous": {
+      "0": 1
+    },
+    "elle": {
+      "10": 8,
+      "14": 3,
+      "161": 1
+    },
+    "enfants": {
+      "546": 9,
+      "0": 4,
+      "229": 3,
+      "14": 2,
+      "88": 1
+    },
+    "environnement": {
+      "546": 11,
+      "229": 5,
+      "0": 3,
+      "14": 2,
+      "49": 2
+    },
+    "epsteintech": {
+      "14": 1
+    },
+    "equidia": {
+      "49": 1
+    },
+    "equipedefrance": {
+      "546": 2
+    },
+    "escrologie": {
+      "229": 11,
+      "0": 9,
+      "546": 1
+    },
+    "eure": {
+      "546": 6,
+      "0": 1,
+      "229": 1
+    },
+    "europe1": {
+      "0": 7,
+      "546": 3,
+      "14": 1,
+      "229": 1
+    },
+    "europe1matin": {
+      "0": 2
+    },
+    "europe1soir": {
+      "0": 1
+    },
+    "europe1soirwk": {
+      "0": 2
+    },
+    "euthanasie": {
+      "0": 30,
+      "546": 8,
+      "229": 6,
+      "14": 2,
+      "49": 1,
+      "161": 1
+    },
+    "expertmeteo": {
+      "229": 1,
+      "546": 1
+    },
+    "extreme": {
+      "75": 1
+    },
+    "f1": {
+      "75": 7,
+      "10": 2,
+      "229": 1,
+      "546": 1
+    },
+    "facealinfo": {
+      "0": 13,
+      "229": 3,
+      "546": 3
+    },
+    "fadv": {
+      "0": 2,
+      "546": 1
+    },
+    "feet": {
+      "88": 20
+    },
+    "feetfetısh": {
+      "88": 23
+    },
+    "femdom": {
+      "88": 16
+    },
+    "fetedelamusique": {
+      "546": 26,
+      "229": 17,
+      "0": 11,
+      "10": 7,
+      "14": 4,
+      "49": 2,
+      "75": 2,
+      "161": 2,
+      "88": 1
+    },
+    "fetichiste": {
+      "88": 9
+    },
+    "fetichistepied": {
+      "88": 1
+    },
+    "fft": {
+      "75": 1,
+      "546": 1
+    },
+    "fifaworldcup": {
+      "75": 7,
+      "229": 4,
+      "546": 3,
+      "0": 1,
+      "14": 1,
+      "49": 1,
+      "88": 1,
+      "161": 1
+    },
+    "finale": {
+      "0": 1
+    },
+    "findom": {
+      "88": 45,
+      "10": 1,
+      "229": 1
+    },
+    "folle": {
+      "10": 7,
+      "161": 2,
+      "14": 1,
+      "88": 1,
+      "229": 1
+    },
+    "followbackinsoumis": {
+      "14": 5
+    },
+    "forteschaleurs": {
+      "546": 27,
+      "229": 3,
+      "14": 2,
+      "49": 1,
+      "75": 1
+    },
+    "foudre": {
+      "75": 2,
+      "546": 2,
+      "229": 1
+    },
+    "foutagedegueule": {
+      "546": 4,
+      "0": 2,
+      "229": 2,
+      "14": 1
+    },
+    "fps": {
+      "161": 1
+    },
+    "fraira": {
+      "75": 2,
+      "88": 1,
+      "546": 1
+    },
+    "frairq": {
+      "546": 6,
+      "10": 4,
+      "229": 4,
+      "75": 3,
+      "0": 1,
+      "161": 1
+    },
+    "france": {
+      "546": 128,
+      "229": 79,
+      "0": 75,
+      "14": 34,
+      "75": 12,
+      "49": 11,
+      "10": 7,
+      "161": 7,
+      "9": 3,
+      "88": 3
+    },
+    "francegalop": {
+      "49": 1
+    },
+    "franceinfo": {
+      "546": 9,
+      "229": 7,
+      "14": 5,
+      "0": 4,
+      "49": 1
+    },
+    "francetv": {
+      "229": 2,
+      "546": 2,
+      "0": 1,
+      "49": 1
+    },
+    "francetvsport": {
+      "14": 1,
+      "88": 1,
+      "546": 1
+    },
+    "francevsiraq": {
+      "10": 4,
+      "546": 3,
+      "14": 1,
+      "229": 1
+    },
+    "franor": {
+      "546": 4,
+      "75": 3,
+      "10": 2,
+      "88": 2,
+      "229": 2,
+      "49": 1
+    },
+    "frasen": {
+      "75": 9,
+      "546": 3,
+      "229": 2,
+      "0": 1,
+      "10": 1
+    },
+    "frenchgirl": {
+      "88": 1,
+      "229": 1
+    },
+    "g7": {
+      "229": 5,
+      "546": 3,
+      "0": 2,
+      "14": 1
+    },
+    "gamecube": {
+      "161": 2
+    },
+    "gamer": {
+      "161": 2,
+      "229": 1
+    },
+    "gaming": {
+      "161": 6
+    },
+    "gare": {
+      "546": 2,
+      "0": 1,
+      "229": 1
+    },
+    "geffray": {
+      "0": 2,
+      "14": 2,
+      "229": 2,
+      "546": 2
+    },
+    "geoingenierie": {
+      "0": 3,
+      "229": 1
+    },
+    "ggrmc": {
+      "0": 20,
+      "229": 10,
+      "14": 8,
+      "546": 8,
+      "49": 1
+    },
+    "giec": {
+      "229": 18,
+      "546": 10,
+      "0": 8,
+      "14": 8,
+      "9": 1,
+      "75": 1,
+      "161": 1
+    },
+    "globalwarminghoax": {
+      "229": 1
+    },
+    "gouvernement": {
+      "0": 17,
+      "229": 16,
+      "546": 13,
+      "14": 9,
+      "49": 2,
+      "10": 1
+    },
+    "grandslam": {
+      "0": 1
+    },
+    "groix": {
+      "546": 2
+    },
+    "grêle": {
+      "546": 5,
+      "0": 1
+    },
+    "géoingenierie": {
+      "0": 1
+    },
+    "géoingénierie": {
+      "0": 2
+    },
+    "haarp": {
+      "0": 17,
+      "229": 5,
+      "546": 3,
+      "49": 2
+    },
+    "hautevienne": {
+      "546": 2
+    },
+    "hautsdefrance": {
+      "546": 9
+    },
+    "hdpros": {
+      "0": 24,
+      "229": 10,
+      "546": 4,
+      "14": 1,
+      "161": 1
+    },
+    "hdpros2": {
+      "0": 10,
+      "546": 5,
+      "229": 2,
+      "14": 1
+    },
+    "hdproswe": {
+      "0": 4,
+      "161": 1,
+      "229": 1,
+      "546": 1
+    },
+    "hellfest": {
+      "546": 8,
+      "229": 3,
+      "161": 1
+    },
+    "hmi": {
+      "75": 1,
+      "88": 1
+    },
+    "homeoftennis": {
+      "0": 1,
+      "14": 1,
+      "75": 1,
+      "229": 1
+    },
+    "humour": {
+      "0": 15,
+      "546": 10,
+      "229": 6,
+      "49": 4,
+      "14": 3,
+      "10": 2,
+      "75": 2,
+      "88": 2
+    },
+    "hôpital": {
+      "14": 9,
+      "546": 6,
+      "0": 2,
+      "229": 2
+    },
+    "ia": {
+      "0": 8,
+      "229": 8,
+      "546": 8,
+      "14": 1
+    },
+    "idfmobilites": {
+      "546": 1
+    },
+    "iledefrance": {
+      "546": 16,
+      "229": 2,
+      "75": 1
+    },
+    "indiegame": {
+      "161": 2,
+      "229": 1
+    },
+    "individu": {
+      "75": 1
+    },
+    "infotrafic": {
+      "546": 3,
+      "161": 2,
+      "75": 1,
+      "229": 1
+    },
+    "jamais": {
+      "75": 1
+    },
+    "jeudi": {
+      "546": 2,
+      "49": 1
+    },
+    "jlm2027": {
+      "14": 7,
+      "229": 1
+    },
+    "juin": {
+      "546": 8,
+      "49": 2,
+      "229": 2,
+      "0": 1,
+      "10": 1,
+      "14": 1
+    },
+    "kohlanta": {
+      "10": 7,
+      "229": 6,
+      "0": 4,
+      "14": 3,
+      "546": 2,
+      "9": 1,
+      "49": 1,
+      "75": 1
+    },
+    "kouame": {
+      "75": 2,
+      "229": 1,
+      "546": 1
+    },
+    "lagrandeinterview": {
+      "0": 4
+    },
+    "larbin": {
+      "88": 4
+    },
+    "lci": {
+      "229": 18,
+      "546": 16,
+      "14": 10,
+      "0": 9,
+      "49": 2,
+      "161": 1
+    },
+    "lecornu": {
+      "546": 12,
+      "0": 11,
+      "229": 11,
+      "14": 9,
+      "75": 1
+    },
+    "ledesk": {
+      "9": 1
+    },
+    "lfi": {
+      "0": 54,
+      "14": 52,
+      "229": 48,
+      "546": 12,
+      "49": 2,
+      "75": 2
+    },
+    "lie": {
+      "75": 1
+    },
+    "lien": {
+      "75": 1
+    },
+    "ligue_des_optimistes": {
+      "49": 3
+    },
+    "live": {
+      "161": 2,
+      "14": 1,
+      "229": 1
+    },
+    "loire": {
+      "546": 12
+    },
+    "lycée": {
+      "14": 1,
+      "229": 1,
+      "546": 1
+    },
+    "lyon": {
+      "546": 22,
+      "229": 12,
+      "0": 6,
+      "10": 3,
+      "14": 2,
+      "49": 1,
+      "88": 1
+    },
+    "macron": {
+      "0": 43,
+      "546": 36,
+      "229": 35,
+      "14": 33,
+      "10": 2,
+      "49": 1,
+      "75": 1,
+      "161": 1
+    },
+    "macronie": {
+      "0": 17,
+      "14": 10,
+      "546": 9,
+      "229": 6
+    },
+    "maevaghennam": {
+      "88": 1
+    },
+    "mais": {
+      "75": 1
+    },
+    "maisonsalfort": {
+      "14": 1,
+      "546": 1
+    },
+    "manonaubry": {
+      "0": 7,
+      "229": 7,
+      "14": 3,
+      "75": 1,
+      "546": 1
+    },
+    "manteslajolie_": {
+      "546": 1
+    },
+    "marhai": {
+      "10": 8,
+      "75": 3,
+      "229": 2,
+      "546": 1
+    },
+    "marne": {
+      "546": 3
+    },
+    "maroc": {
+      "9": 3,
+      "546": 3,
+      "75": 2,
+      "229": 2,
+      "10": 1,
+      "14": 1
+    },
+    "mauresmo": {
+      "546": 1
+    },
+    "mayenne": {
+      "546": 5,
+      "14": 1
+    },
+    "melenchon": {
+      "229": 16,
+      "0": 6,
+      "14": 4,
+      "546": 1
+    },
+    "melenchon2027": {
+      "14": 34,
+      "229": 2,
+      "0": 1,
+      "88": 1
+    },
+    "mercatom": {
+      "75": 4
+    },
+    "merci": {
+      "10": 8,
+      "546": 2,
+      "0": 1,
+      "14": 1
+    },
+    "mercredi": {
+      "49": 2,
+      "546": 2,
+      "0": 1,
+      "14": 1
+    },
+    "messi": {
+      "546": 2,
+      "75": 1,
+      "229": 1
+    },
+    "meteo": {
+      "546": 84,
+      "229": 42,
+      "0": 33,
+      "10": 8,
+      "14": 7,
+      "49": 4,
+      "161": 4,
+      "75": 3,
+      "9": 2,
+      "88": 1
+    },
+    "meteofrance": {
+      "546": 7,
+      "229": 5,
+      "75": 1
+    },
+    "mideaportasplit": {
+      "229": 2,
+      "161": 1
+    },
+    "midinews": {
+      "0": 5,
+      "161": 1
+    },
+    "ministre": {
+      "0": 14,
+      "229": 2,
+      "546": 1
+    },
+    "monde": {
+      "0": 1,
+      "75": 1,
+      "546": 1
+    },
+    "moneylover": {
+      "88": 1
+    },
+    "moneymiss": {
+      "88": 26,
+      "10": 1
+    },
+    "moneyslave": {
+      "88": 55,
+      "10": 2,
+      "229": 2
+    },
+    "moneyslaves": {
+      "88": 6
+    },
+    "moniquebarbut": {
+      "229": 10,
+      "0": 8,
+      "14": 5,
+      "546": 2
+    },
+    "montcuq": {
+      "546": 1
+    },
+    "mouna": {
+      "88": 1
+    },
+    "mélenchon": {
+      "229": 8,
+      "14": 5,
+      "0": 4,
+      "546": 2
+    },
+    "météo": {
+      "546": 105,
+      "229": 34,
+      "0": 19,
+      "49": 7,
+      "75": 3,
+      "14": 2,
+      "9": 1,
+      "88": 1,
+      "161": 1
+    },
+    "météo83": {
+      "546": 2,
+      "229": 1
+    },
+    "météobtp": {
+      "229": 1,
+      "546": 1
+    },
+    "météofrance": {
+      "546": 11,
+      "229": 6,
+      "0": 3,
+      "9": 1,
+      "14": 1
+    },
+    "météovar": {
+      "229": 1
+    },
+    "nantes": {
+      "546": 29,
+      "229": 20,
+      "0": 11,
+      "14": 5,
+      "161": 2,
+      "9": 1,
+      "10": 1,
+      "75": 1
+    },
+    "narbonne": {
+      "546": 6,
+      "0": 4,
+      "14": 2,
+      "49": 1,
+      "75": 1
+    },
+    "nasdas": {
+      "10": 2,
+      "75": 2,
+      "229": 2,
+      "0": 1,
+      "88": 1,
+      "161": 1
+    },
+    "news": {
+      "546": 3,
+      "0": 1,
+      "14": 1,
+      "75": 1
+    },
+    "nintendo": {
+      "161": 3,
+      "229": 1,
+      "546": 1
+    },
+    "norfra": {
+      "75": 8,
+      "10": 4,
+      "229": 4,
+      "546": 4,
+      "88": 2,
+      "0": 1,
+      "14": 1,
+      "49": 1,
+      "161": 1
+    },
+    "norvege": {
+      "88": 2,
+      "546": 1
+    },
+    "nowstreaming": {
+      "161": 1
+    },
+    "nuisible": {
+      "49": 1,
+      "546": 1
+    },
+    "om": {
+      "75": 4,
+      "546": 2
+    },
+    "orage": {
+      "546": 28,
+      "229": 21,
+      "0": 4,
+      "10": 4,
+      "75": 3,
+      "14": 2,
+      "49": 2,
+      "161": 2
+    },
+    "orages": {
+      "546": 93,
+      "229": 15,
+      "0": 5,
+      "14": 5,
+      "10": 3,
+      "49": 2,
+      "75": 2
+    },
+    "panne": {
+      "49": 1,
+      "546": 1
+    },
+    "parasite": {
+      "546": 1
+    },
+    "parasites": {
+      "546": 1
+    },
+    "paris": {
+      "546": 113,
+      "229": 90,
+      "0": 45,
+      "14": 29,
+      "10": 11,
+      "75": 8,
+      "49": 7,
+      "88": 6,
+      "161": 1
+    },
+    "paris12": {
+      "49": 2,
+      "14": 1,
+      "229": 1
+    },
+    "pas": {
+      "0": 1,
+      "75": 1,
+      "546": 1
+    },
+    "pascalpraudetvous": {
+      "0": 1,
+      "229": 1
+    },
+    "paypig": {
+      "88": 22
+    },
+    "people": {
+      "0": 1
+    },
+    "perpignan": {
+      "546": 8,
+      "229": 1
+    },
+    "photodujour": {
+      "49": 1,
+      "88": 1,
+      "229": 1
+    },
+    "pied": {
+      "88": 6
+    },
+    "pieds": {
+      "88": 7
+    },
+    "pmu": {
+      "49": 3,
+      "14": 2
+    },
+    "pngtuber": {
+      "161": 1,
+      "546": 1
+    },
+    "politique": {
+      "546": 17,
+      "0": 16,
+      "229": 8,
+      "14": 3,
+      "10": 1,
+      "75": 1
+    },
+    "poupettekenza": {
+      "10": 13,
+      "229": 3,
+      "0": 2,
+      "14": 2,
+      "9": 1,
+      "75": 1,
+      "88": 1
+    },
+    "pqevolution": {
+      "14": 1
+    },
+    "prefet78": {
+      "546": 1
+    },
+    "previsions": {
+      "546": 3
+    },
+    "préfectureduvar": {
+      "229": 1
+    },
+    "prévention": {
+      "546": 34,
+      "229": 7,
+      "49": 4,
+      "14": 3,
+      "0": 2,
+      "161": 1
+    },
+    "ps5": {
+      "161": 4,
+      "229": 2
+    },
+    "punchline": {
+      "0": 11,
+      "14": 1
+    },
+    "puydedôme": {
+      "14": 1
+    },
+    "pyrénéesorientales": {
+      "546": 1
+    },
+    "qinegatif": {
+      "546": 1
+    },
+    "quinté": {
+      "49": 3
+    },
+    "quotidien": {
+      "14": 32,
+      "229": 17,
+      "546": 11,
+      "0": 8,
+      "49": 5,
+      "10": 1,
+      "75": 1
+    },
+    "re": {
+      "75": 1
+    },
+    "rechauffement": {
+      "229": 4,
+      "14": 3,
+      "546": 2,
+      "0": 1,
+      "88": 1
+    },
+    "rechauffementclimatique": {
+      "0": 12,
+      "229": 11,
+      "14": 8,
+      "546": 7,
+      "49": 1,
+      "161": 1
+    },
+    "records": {
+      "546": 16,
+      "0": 1,
+      "229": 1
+    },
+    "reims": {
+      "546": 3,
+      "0": 1
+    },
+    "rennes": {
+      "546": 13,
+      "14": 3,
+      "229": 3,
+      "0": 2,
+      "10": 1
+    },
+    "retro": {
+      "75": 1,
+      "161": 1
+    },
+    "retrogaming": {
+      "161": 2
+    },
+    "rg2026": {
+      "75": 4,
+      "546": 4,
+      "229": 2
+    },
+    "rg26": {
+      "229": 2,
+      "546": 2,
+      "75": 1
+    },
+    "rn": {
+      "229": 34,
+      "0": 27,
+      "14": 23,
+      "546": 13,
+      "49": 2,
+      "10": 1,
+      "75": 1,
+      "161": 1
+    },
+    "rolandgarros": {
+      "75": 32,
+      "546": 27,
+      "229": 19,
+      "10": 7,
+      "14": 6,
+      "0": 5,
+      "49": 5,
+      "88": 3
+    },
+    "rpg": {
+      "161": 1
+    },
+    "rts": {
+      "0": 1
+    },
+    "rtslave": {
+      "88": 5
+    },
+    "résultat": {
+      "49": 1
+    },
+    "réveil": {
+      "0": 1
+    },
+    "samu": {
+      "0": 2,
+      "546": 2,
+      "14": 1,
+      "229": 1
+    },
+    "sante": {
+      "546": 8,
+      "229": 5,
+      "0": 4,
+      "10": 1,
+      "14": 1,
+      "161": 1
+    },
+    "santé": {
+      "546": 53,
+      "229": 18,
+      "0": 9,
+      "14": 7,
+      "49": 2,
+      "75": 2
+    },
+    "sciences": {
+      "546": 2,
+      "14": 1,
+      "161": 1,
+      "229": 1
+    },
+    "secretstory": {
+      "10": 98,
+      "229": 18,
+      "14": 15,
+      "546": 11,
+      "161": 8,
+      "0": 3,
+      "49": 1,
+      "75": 1,
+      "88": 1
+    },
+    "secretstorylelive": {
+      "10": 4
+    },
+    "secretstorylive": {
+      "10": 1
+    },
+    "selfie": {
+      "229": 2,
+      "88": 1
+    },
+    "setf": {
+      "49": 1
+    },
+    "shlagtv": {
+      "14": 1
+    },
+    "silenceonarme": {
+      "14": 1
+    },
+    "sinner": {
+      "75": 2,
+      "229": 2
+    },
+    "slave": {
+      "88": 4
+    },
+    "smallstreamers": {
+      "161": 1
+    },
+    "smallstreamersconnect": {
+      "161": 1
+    },
+    "soleil": {
+      "546": 20,
+      "229": 9,
+      "0": 5,
+      "88": 5,
+      "10": 4,
+      "161": 3,
+      "49": 2,
+      "14": 1
+    },
+    "soumis": {
+      "88": 64,
+      "10": 1
+    },
+    "splintercell": {
+      "161": 1
+    },
+    "srm": {
+      "0": 2
+    },
+    "ss14": {
+      "10": 5,
+      "229": 1
+    },
+    "stop": {
+      "10": 13,
+      "14": 3,
+      "75": 2,
+      "229": 2,
+      "161": 1,
+      "546": 1
+    },
+    "stream": {
+      "161": 2,
+      "14": 1
+    },
+    "streamer": {
+      "161": 3
+    },
+    "streamfr": {
+      "161": 1
+    },
+    "suisse": {
+      "0": 4,
+      "546": 3,
+      "229": 1
+    },
+    "summervibes": {
+      "88": 2,
+      "229": 2,
+      "49": 1,
+      "161": 1
+    },
+    "switch2": {
+      "161": 3
+    },
+    "sénégal": {
+      "75": 2,
+      "229": 1
+    },
+    "teamom": {
+      "75": 14,
+      "546": 3,
+      "49": 1,
+      "161": 1,
+      "229": 1
+    },
+    "tech": {
+      "229": 2,
+      "0": 1,
+      "14": 1
+    },
+    "température": {
+      "546": 15,
+      "229": 10,
+      "0": 3,
+      "14": 3,
+      "88": 2,
+      "49": 1,
+      "75": 1
+    },
+    "températures": {
+      "546": 20,
+      "0": 5,
+      "229": 5,
+      "14": 3
+    },
+    "tennis": {
+      "75": 6,
+      "229": 3,
+      "546": 3
+    },
+    "tiktok": {
+      "0": 11,
+      "14": 7,
+      "229": 6,
+      "546": 3,
+      "49": 2,
+      "10": 1,
+      "161": 1
+    },
+    "tintin": {
+      "49": 1,
+      "75": 1,
+      "229": 1
+    },
+    "tmc": {
+      "0": 2,
+      "14": 2,
+      "546": 2
+    },
+    "toulon": {
+      "229": 1
+    },
+    "toulouse": {
+      "546": 16,
+      "229": 9,
+      "0": 4,
+      "14": 4,
+      "49": 1,
+      "88": 1
+    },
+    "tours": {
+      "14": 3,
+      "229": 2,
+      "546": 2
+    },
+    "toutou": {
+      "88": 5
+    },
+    "tram2": {
+      "161": 1
+    },
+    "tram3": {
+      "161": 1
+    },
+    "transition": {
+      "229": 4,
+      "0": 2,
+      "546": 1
+    },
+    "travail": {
+      "546": 19,
+      "14": 7,
+      "0": 3,
+      "229": 2,
+      "49": 1,
+      "75": 1
+    },
+    "tvpirate": {
+      "14": 1
+    },
+    "twitch": {
+      "161": 13,
+      "14": 3,
+      "10": 1,
+      "229": 1
+    },
+    "twitchfr": {
+      "161": 5,
+      "229": 2,
+      "10": 1,
+      "14": 1
+    },
+    "twitchstreamer": {
+      "161": 2,
+      "229": 1
+    },
+    "twitchstreamers": {
+      "161": 2
+    },
+    "unjourunemesure": {
+      "14": 4
+    },
+    "urgenceclimatique": {
+      "14": 4,
+      "546": 4,
+      "0": 2,
+      "229": 2,
+      "49": 1
+    },
+    "urgences": {
+      "546": 7,
+      "0": 3,
+      "14": 2,
+      "229": 1
+    },
+    "vaguedechaleur": {
+      "546": 22,
+      "229": 8,
+      "0": 3,
+      "75": 3,
+      "161": 1
+    },
+    "var": {
+      "546": 9,
+      "229": 2
+    },
+    "varactu": {
+      "229": 1
+    },
+    "vendredi": {
+      "49": 2,
+      "546": 2,
+      "0": 1,
+      "229": 1
+    },
+    "vigilance": {
+      "546": 60,
+      "229": 8,
+      "0": 1,
+      "14": 1
+    },
+    "vigilancejaune": {
+      "546": 39,
+      "9": 1,
+      "229": 1
+    },
+    "vigilanceorange": {
+      "546": 61,
+      "0": 2,
+      "229": 2,
+      "9": 1,
+      "49": 1
+    },
+    "vigilancerouge": {
+      "546": 90,
+      "229": 27,
+      "0": 14,
+      "14": 6,
+      "49": 4,
+      "10": 3,
+      "75": 3,
+      "161": 2,
+      "9": 1
+    },
+    "villes": {
+      "546": 6,
+      "0": 1
+    },
+    "vivant": {
+      "14": 1
+    },
+    "vtuber": {
+      "161": 13,
+      "10": 1,
+      "546": 1
+    },
+    "vtuberfr": {
+      "161": 17,
+      "10": 1,
+      "14": 1,
+      "229": 1,
+      "546": 1
+    },
+    "weekend": {
+      "546": 8,
+      "0": 2,
+      "49": 2,
+      "88": 2,
+      "161": 2,
+      "14": 1,
+      "229": 1
+    },
+    "wow": {
+      "10": 31,
+      "14": 3,
+      "75": 2,
+      "161": 2,
+      "229": 2,
+      "0": 1,
+      "546": 1
+    },
+    "xboxseriesx": {
+      "161": 1,
+      "229": 1
+    },
+    "yannbartes": {
+      "0": 1,
+      "546": 1
+    },
+    "yannbarthes": {
+      "14": 8,
+      "0": 5,
+      "229": 5,
+      "546": 2,
+      "49": 1
+    },
+    "youtube": {
+      "229": 2,
+      "161": 1,
+      "546": 1
+    },
+    "yvelines": {
+      "546": 10,
+      "0": 1,
+      "75": 1,
+      "229": 1
+    },
+    "zfe": {
+      "0": 9,
+      "229": 2,
+      "14": 1
+    },
+    "école": {
+      "546": 9,
+      "14": 8,
+      "229": 6,
+      "0": 3
+    },
+    "éducation": {
+      "546": 13,
+      "14": 8,
+      "229": 2,
+      "0": 1,
+      "49": 1
+    },
+    "été": {
+      "546": 25,
+      "0": 10,
+      "229": 9,
+      "49": 4,
+      "10": 2,
+      "14": 2,
+      "88": 1,
+      "161": 1
+    }
   }
 }

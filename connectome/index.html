@@ -506,6 +506,16 @@
     preload('./data/' + encodeURIComponent(id) + '/community_stats.json');
     preload('./data/' + encodeURIComponent(id) + '/discourse.json');
     preload('./manifest.json');
+    // Précharge discourse des autres corpus (fiche # / cooc) en idle
+    var others = ['ebola','ebola_2_2026','hantavirus','mpox','macron_nucleaire','hmpv','hmpv_fr','canicule'];
+    if (typeof requestIdleCallback === 'function') {
+      requestIdleCallback(function () {
+        others.forEach(function (oid) {
+          if (oid === id) return;
+          preload('./data/' + encodeURIComponent(oid) + '/discourse.json');
+        });
+      });
+    }
   })();
   </script>
 </head>
@@ -1160,9 +1170,23 @@ function accountOverlap(a, b) {
   return n;
 }
 
-/** Top hashtags co-utilisés (mêmes comptes hors RT), hors le tag cible. */
+/** Top hashtags co-occurrents — préchargés (message) si dispo, sinon fallback comptes. */
 function cooccurringHashtags(tag, limit = 12) {
   const t = String(tag || '').toLowerCase().replace(/^#/, '');
+  const pre = discourseData?.tag_cooccur?.[t];
+  if (Array.isArray(pre) && pre.length) {
+    const nBase = Number(discourseData?.tag_n_accounts?.[t]) || accountsForHashtag(t).size || 1;
+    return pre.slice(0, limit).map((h) => {
+      const n = Number(h.n) || 0;
+      return {
+        tag: String(h.tag || '').toLowerCase(),
+        n,
+        pct: Math.round((1000 * n) / nBase) / 10,
+        jaccard: 0,
+        source: 'message',
+      };
+    });
+  }
   const base = accountsForHashtag(t);
   if (!base.size) return [];
   const out = [];
@@ -1177,6 +1201,7 @@ function cooccurringHashtags(tag, limit = 12) {
       n,
       pct: Math.round((1000 * n) / base.size) / 10,
       jaccard: union ? n / union : 0,
+      source: 'accounts',
     });
   }
   out.sort((a, b) => b.n - a.n || b.jaccard - a.jaccard || a.tag.localeCompare(b.tag, 'fr'));
@@ -1184,15 +1209,38 @@ function cooccurringHashtags(tag, limit = 12) {
 }
 
 /**
- * Répartition des comptes du # parmi les communautés du graphe.
- * Retourne { rows, matched, totalAcc } — % sur les comptes du graphe qui portent le #.
+ * Répartition des comptes du # parmi les communautés.
+ * Préfère tag_comm_n préchargé ; sinon croisement comptes × graphe.
  */
 function hashtagCommunityShare(tag) {
   const t = String(tag || '').toLowerCase().replace(/^#/, '');
+  const totalAcc = Number(discourseData?.tag_n_accounts?.[t])
+    || (discourseData?.tag_accounts?.[t] || []).length
+    || 0;
+  const pre = discourseData?.tag_comm_n?.[t];
+  if (pre && typeof pre === 'object') {
+    const rows = Object.entries(pre)
+      .map(([id, n]) => {
+        const cid = Number(id);
+        const nn = Number(n) || 0;
+        const d = discourseFor(cid);
+        return {
+          id: cid,
+          n: nn,
+          pct: 0,
+          label: d?.qualif_short || d?.qualif || `C${id}`,
+          color: d?.color || null,
+        };
+      })
+      .filter((r) => r.n > 0)
+      .sort((a, b) => b.n - a.n || a.id - b.id);
+    const matched = rows.reduce((s, r) => s + r.n, 0) || 1;
+    for (const r of rows) r.pct = (100 * r.n) / matched;
+    return { rows, matched, totalAcc: totalAcc || matched, source: 'preloaded' };
+  }
   const accounts = accountsForHashtag(t);
-  const totalAcc = Number(discourseData?.tag_n_accounts?.[t]) || accounts.size;
   if (!accounts.size || !graphData?.nodes) {
-    return { rows: [], matched: 0, totalAcc };
+    return { rows: [], matched: 0, totalAcc, source: 'none' };
   }
   const byCom = new Map();
   let matched = 0;
@@ -1216,7 +1264,7 @@ function hashtagCommunityShare(tag) {
       };
     })
     .sort((a, b) => b.n - a.n || a.id - b.id);
-  return { rows, matched, totalAcc };
+  return { rows, matched, totalAcc, source: 'graph' };
 }
 
 function renderHashPanel() {
@@ -1592,9 +1640,18 @@ function openHashtagFiche(tag) {
   const justParts = [
     nAcc ? `${nAcc.toLocaleString('fr-FR')} compte${nAcc > 1 ? 's' : ''} hors RT` : null,
     share.matched
-      ? `${share.matched.toLocaleString('fr-FR')} dans le graphe affiché`
+      ? `${share.matched.toLocaleString('fr-FR')} dans le graphe`
       : null,
   ].filter(Boolean);
+  const coocSrc = coocs[0]?.source;
+  const limitNote = [
+    coocSrc === 'message'
+      ? 'Co-occurrence = autres # dans le même message (hors RT), préchargée.'
+      : 'Co-occurrence = comptes ayant aussi utilisé l’autre # (hors RT).',
+    share.source === 'preloaded'
+      ? 'Parts = comptes du # par communauté (préchargées).'
+      : 'Parts = répartition des comptes du # dans les communautés Louvain.',
+  ].join(' ');
 
   espaceFicheEl.classList.add('hash-focus');
   espaceFicheEl.innerHTML = `
@@ -1607,7 +1664,7 @@ function openHashtagFiche(tag) {
     ${coocHtml}
     <h4>Utilisation par communauté</h4>
     ${shareHtml}
-    <div class="limit">Co-occurrence = comptes ayant aussi utilisé l’autre # (hors RT). Parts = répartition de ces comptes dans les communautés Louvain du graphe.</div>`;
+    <div class="limit">${escapeHtml(limitNote)}</div>`;
   espaceFicheEl.classList.add('open');
   espaceFicheEl.querySelector('.fiche-close')?.addEventListener('click', () => {
     espaceFicheEl.classList.remove('open', 'hash-focus');
