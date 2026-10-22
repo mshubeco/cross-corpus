@@ -193,6 +193,46 @@
     #tooltip .coRow .h { color: #e8eef7; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     #tooltip .coRow .n { color: #8ab4ff; font-variant-numeric: tabular-nums; font-weight: 600; flex: 0 0 auto; }
     #tooltip .coMore { color: #6a7380; font-size: 10px; margin-top: 3px; }
+    #zRuler {
+      position: fixed; right: 16px; bottom: 22px; z-index: 11;
+      display: none; flex-direction: column; align-items: center; gap: 6px;
+      width: 52px; padding: 10px 8px; border-radius: 12px;
+      background: rgba(8,10,14,0.78); border: 1px solid rgba(138,180,255,0.22);
+      backdrop-filter: blur(8px); pointer-events: none;
+      font-size: 9.5px; color: #9aa3b0; letter-spacing: 0.02em;
+    }
+    #zRuler.on { display: flex; }
+    #zRuler .zr-title {
+      color: #8ab4ff; font-weight: 700; font-size: 10px;
+      text-transform: uppercase; letter-spacing: 0.08em;
+    }
+    #zRuler .zr-high, #zRuler .zr-low {
+      text-align: center; line-height: 1.25; color: #d5dde8; font-weight: 600;
+      max-width: 72px;
+    }
+    #zRuler .zr-track {
+      position: relative; width: 6px; height: 110px; border-radius: 999px;
+      background: linear-gradient(180deg, #60a5fa 0%, rgba(96,165,250,0.15) 100%);
+      box-shadow: 0 0 12px rgba(96,165,250,0.25);
+    }
+    #zRuler .zr-tick {
+      position: absolute; left: 10px; transform: translateY(-50%);
+      white-space: nowrap; color: #6a7380; font-size: 9px; font-variant-numeric: tabular-nums;
+    }
+    #axisLabels { position: fixed; inset: 0; pointer-events: none; z-index: 3; overflow: hidden; }
+    .axis-lab {
+      position: absolute; transform: translate(-50%, -50%);
+      padding: 3px 7px; border-radius: 6px;
+      background: rgba(8,10,14,0.82); border: 1px solid rgba(255,255,255,0.12);
+      font-size: 10px; font-weight: 650; letter-spacing: 0.03em;
+      white-space: nowrap; color: #e8eef7;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+      opacity: 0.94;
+    }
+    .axis-lab.ax-x { border-color: rgba(248,113,113,0.45); color: #fecaca; }
+    .axis-lab.ax-y { border-color: rgba(74,222,128,0.45); color: #bbf7d0; }
+    .axis-lab.ax-z { border-color: rgba(96,165,250,0.55); color: #bfdbfe; }
+    .axis-lab.ax-z-end { font-size: 9.5px; font-weight: 600; opacity: 0.9; }
   </style>
   <script type="importmap">
   {
@@ -212,6 +252,13 @@
   </div>
   <div id="c"></div>
   <div id="labels"></div>
+  <div id="axisLabels" aria-hidden="true"></div>
+  <div id="zRuler" aria-hidden="true">
+    <div class="zr-title" id="zrTitle">Z</div>
+    <div class="zr-high" id="zrHigh">—</div>
+    <div class="zr-track" id="zrTrack"></div>
+    <div class="zr-low" id="zrLow">—</div>
+  </div>
   <nav id="corpusNav" aria-label="Corpus"></nav>
   <aside id="hud">
     <a class="hud-link" id="backConnectome" href="../connectome/">← Connectome</a>
@@ -277,6 +324,12 @@ initMethodHelp({
 
 const wrap = document.getElementById('c');
 const labelsEl = document.getElementById('labels');
+const axisLabelsEl = document.getElementById('axisLabels');
+const zRulerEl = document.getElementById('zRuler');
+const zrTitleEl = document.getElementById('zrTitle');
+const zrHighEl = document.getElementById('zrHigh');
+const zrLowEl = document.getElementById('zrLow');
+const zrTrackEl = document.getElementById('zrTrack');
 const loading = document.getElementById('loading');
 const ldMsg = document.getElementById('ldMsg');
 const tip = document.getElementById('tooltip');
@@ -305,6 +358,10 @@ let adj = [];
 let scene, camera, renderer, controls, composer, bloomPass;
 let lineMat, pointsMesh, lineGeo;
 let lineColorsBase = null;
+let axisGroup = null;
+/** @type {Array<{el:HTMLElement,x:number,y:number,z:number}>} */
+let axisHudItems = [];
+const _axisProj = new THREE.Vector3();
 let frustum = 480;
 const FIT_PADDING = 1.45;
 let fitZoom = 1;
@@ -381,7 +438,10 @@ function setZMode(mode) {
     b.classList.toggle('active', b.dataset.z === zMode);
   });
   if (mode3d) applyGeometryZ();
-  else sync3dControls();
+  else {
+    rebuildAxes();
+    sync3dControls();
+  }
 }
 
 function computeZSpan(ns) {
@@ -390,6 +450,189 @@ function computeZSpan(ns) {
   const ys = ns.map((n) => n.y);
   const span = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys), 1);
   return Math.max(120, span * 0.35);
+}
+
+function zAxisSemantics(mode = zMode) {
+  if (mode === 'cross') {
+    return {
+      title: 'Z · cross',
+      low: 'mono-corpus',
+      high: 'multi-corpus',
+      mid: 'partagé',
+      ticks: ['0', '½', 'max'],
+    };
+  }
+  if (mode === 'chrono') {
+    return {
+      title: 'Z · chrono',
+      low: 'tôt',
+      high: 'tard',
+      mid: 'milieu',
+      ticks: ['début', 'milieu', 'fin'],
+    };
+  }
+  return {
+    title: 'Z · sync',
+    low: 'décalé',
+    high: 'synchrone',
+    mid: 'moyen',
+    ticks: ['Δt↑', '·', 'Δt↓'],
+  };
+}
+
+function disposeAxisGroup() {
+  if (!axisGroup) return;
+  scene?.remove(axisGroup);
+  axisGroup.traverse((obj) => {
+    obj.geometry?.dispose?.();
+    if (obj.material) {
+      if (Array.isArray(obj.material)) obj.material.forEach((m) => m.dispose?.());
+      else obj.material.dispose?.();
+    }
+  });
+  axisGroup = null;
+  axisHudItems = [];
+  if (axisLabelsEl) axisLabelsEl.innerHTML = '';
+}
+
+function makeAxisLine(ax, ay, az, bx, by, bz, color, opacity = 0.85) {
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute([ax, ay, az, bx, by, bz], 3));
+  const mat = new THREE.LineBasicMaterial({
+    color, transparent: true, opacity, depthWrite: false,
+  });
+  const line = new THREE.Line(geo, mat);
+  line.frustumCulled = false;
+  return line;
+}
+
+function makeAxisHud(text, cls, x, y, z) {
+  const el = document.createElement('div');
+  el.className = `axis-lab ${cls}`;
+  el.textContent = text;
+  axisLabelsEl?.appendChild(el);
+  axisHudItems.push({ el, x, y, z });
+  return el;
+}
+
+function rebuildAxes() {
+  disposeAxisGroup();
+  zRulerEl?.classList.toggle('on', !!mode3d);
+  if (zRulerEl) zRulerEl.setAttribute('aria-hidden', mode3d ? 'false' : 'true');
+  if (!mode3d || !nodes.length || !scene) {
+    syncZRuler();
+    return;
+  }
+
+  const sem = zAxisSemantics();
+  syncZRuler();
+
+  const xs = nodes.map((n) => n.x);
+  const ys = nodes.map((n) => n.y);
+  const minX = Math.min(...xs);
+  const maxX = Math.max(...xs);
+  const minY = Math.min(...ys);
+  const maxY = Math.max(...ys);
+  const spanX = Math.max(maxX - minX, 40);
+  const spanY = Math.max(maxY - minY, 40);
+  const pad = Math.max(spanX, spanY) * 0.06;
+  const ox = minX - pad;
+  const oy = minY - pad;
+  const oz = 0;
+  const lenXY = Math.max(spanX, spanY) * 0.28;
+  const lenZ = Math.max(zSpan, 80);
+
+  const group = new THREE.Group();
+  group.name = 'coordAxes';
+
+  // Plan de référence Z=0 (grille légère)
+  const grid = new THREE.GridHelper(Math.max(spanX, spanY) * 0.55, 4, 0x1e293b, 0x111827);
+  grid.rotation.x = Math.PI / 2;
+  grid.position.set((minX + maxX) * 0.5, (minY + maxY) * 0.5, 0.02);
+  const gridMats = Array.isArray(grid.material) ? grid.material : [grid.material];
+  for (const m of gridMats) {
+    m.transparent = true;
+    m.opacity = 0.22;
+    m.depthWrite = false;
+  }
+  group.add(grid);
+
+  // Triad au coin du graphe
+  group.add(makeAxisLine(ox, oy, oz, ox + lenXY, oy, oz, 0xf87171, 0.75));
+  group.add(makeAxisLine(ox, oy, oz, ox, oy + lenXY, oz, 0x4ade80, 0.75));
+  group.add(makeAxisLine(ox, oy, oz, ox, oy, oz + lenZ, 0x60a5fa, 0.95));
+
+  // Échelle Z : ticks + anneaux
+  for (let i = 0; i <= 4; i++) {
+    const t = i / 4;
+    const z = oz + lenZ * t;
+    const tick = Math.max(6, lenXY * 0.06);
+    group.add(makeAxisLine(ox - tick, oy, z, ox + tick, oy, z, 0x60a5fa, 0.35 + 0.45 * t));
+    if (i > 0 && i < 4) {
+      const ring = new THREE.Mesh(
+        new THREE.RingGeometry(lenXY * 0.08, lenXY * 0.088, 48),
+        new THREE.MeshBasicMaterial({
+          color: 0x60a5fa, transparent: true, opacity: 0.12 + 0.08 * t,
+          side: THREE.DoubleSide, depthWrite: false,
+        }),
+      );
+      ring.position.set(ox, oy, z);
+      group.add(ring);
+    }
+  }
+
+  // Flèche Z (cône)
+  const cone = new THREE.Mesh(
+    new THREE.ConeGeometry(Math.max(3.5, lenXY * 0.035), Math.max(10, lenXY * 0.08), 10),
+    new THREE.MeshBasicMaterial({ color: 0x93c5fd, transparent: true, opacity: 0.9, depthWrite: false }),
+  );
+  cone.position.set(ox, oy, oz + lenZ + Math.max(6, lenXY * 0.04));
+  cone.rotation.x = -Math.PI / 2; // cône vers +Z (up)
+  group.add(cone);
+
+  scene.add(group);
+  axisGroup = group;
+
+  makeAxisHud('X · layout', 'ax-x', ox + lenXY * 1.05, oy, oz);
+  makeAxisHud('Y · layout', 'ax-y', ox, oy + lenXY * 1.05, oz);
+  makeAxisHud(sem.title, 'ax-z', ox, oy, oz + lenZ * 1.12);
+  makeAxisHud(sem.low, 'ax-z ax-z-end', ox + lenXY * 0.12, oy, oz + lenZ * 0.02);
+  makeAxisHud(sem.high, 'ax-z ax-z-end', ox + lenXY * 0.12, oy, oz + lenZ * 0.98);
+}
+
+function syncZRuler() {
+  const sem = zAxisSemantics();
+  if (zrTitleEl) zrTitleEl.textContent = sem.title;
+  if (zrHighEl) zrHighEl.textContent = sem.high;
+  if (zrLowEl) zrLowEl.textContent = sem.low;
+  if (zrTrackEl) {
+    zrTrackEl.innerHTML = '';
+    [0.05, 0.5, 0.95].forEach((p, i) => {
+      const tick = document.createElement('div');
+      tick.className = 'zr-tick';
+      tick.style.top = `${(1 - p) * 100}%`;
+      tick.textContent = sem.ticks[i] || '';
+      zrTrackEl.appendChild(tick);
+    });
+  }
+}
+
+function projectAxisLabels() {
+  if (!mode3d || !axisHudItems.length || !camera) return;
+  const halfW = innerWidth * 0.5;
+  const halfH = innerHeight * 0.5;
+  for (const it of axisHudItems) {
+    _axisProj.set(it.x, it.y, it.z).project(camera);
+    const behind = _axisProj.z > 1 || _axisProj.z < -1;
+    const x = (_axisProj.x * halfW) + halfW;
+    const y = (-_axisProj.y * halfH) + halfH;
+    const on = !behind && x > -40 && x < innerWidth + 40 && y > -40 && y < innerHeight + 40;
+    it.el.style.display = on ? 'block' : 'none';
+    if (on) {
+      it.el.style.left = `${x}px`;
+      it.el.style.top = `${y}px`;
+    }
+  }
 }
 
 function applyGeometryZ() {
@@ -416,6 +659,7 @@ function applyGeometryZ() {
     if (it.nodeRef) it.z = nodeZ(it.nodeRef);
   }
   lastLabelCamKey = '';
+  rebuildAxes();
   sync3dControls();
 }
 
@@ -485,14 +729,21 @@ function setMode3d(on) {
     const t = controls.target.clone();
     // Vue oblique : hauteur Z lisible, orbit souris gauche autour du centre
     camera.up.set(0, 0, 1);
-    camera.position.set(t.x, t.y - Math.max(280, zSpan * 1.1), Math.max(420, zSpan * 1.5));
-    controls.target.copy(t);
+    const zMid = zSpan * 0.45;
+    controls.target.set(t.x, t.y, zMid);
+    camera.position.set(
+      t.x + Math.max(220, zSpan * 0.55),
+      t.y - Math.max(320, zSpan * 1.15),
+      zMid + Math.max(280, zSpan * 0.95),
+    );
     controls.update();
   } else {
     camera.up.set(0, 1, 0);
     camera.position.set(controls.target.x, controls.target.y, 400);
+    controls.target.set(controls.target.x, controls.target.y, 0);
     controls.update();
     fitGraphToView(nodes);
+    rebuildAxes();
   }
 }
 
@@ -563,6 +814,7 @@ function initThree() {
     controls.update();
     composer.render();
     projectLabels();
+    projectAxisLabels();
   }
   loop();
 }
@@ -598,6 +850,7 @@ function fitGraphToView(ns) {
 }
 
 function clearScene() {
+  disposeAxisGroup();
   while (scene.children.length) scene.remove(scene.children[0]);
   labelsEl.innerHTML = '';
   lineGeo = null;
@@ -607,6 +860,7 @@ function clearScene() {
   labelItems = [];
   labelItemsBySize = [];
   lastLabelCamKey = '';
+  zRulerEl?.classList.remove('on');
 }
 
 function graphVisualScale(nNodes) {
