@@ -373,8 +373,8 @@
     .comm-disc-size { color: #6a7380; font-size: 10px; margin-top: 3px; }
     #espaceFiche {
       position: fixed; right: 12px; bottom: 12px; z-index: 5;
-      width: min(340px, calc(100vw - 24px));
-      max-height: min(42vh, 400px);
+      width: min(360px, calc(100vw - 24px));
+      max-height: min(52vh, 480px);
       overflow-y: auto;
       background: rgba(0,0,0,0.72); border: 1px solid rgba(255,255,255,0.1);
       border-radius: 10px; padding: 12px 14px;
@@ -382,11 +382,13 @@
       scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.2) transparent;
     }
     #espaceFiche.open { display: block; }
+    #espaceFiche.hash-focus { border-color: rgba(232, 180, 60, 0.35); }
     #espaceFiche .fiche-head {
       display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;
       margin-bottom: 8px;
     }
     #espaceFiche .fiche-title { color: #e8eef7; font-weight: 700; font-size: 12.5px; line-height: 1.3; }
+    #espaceFiche .fiche-title .hash-mark { color: #f0c84a; }
     #espaceFiche .fiche-close {
       border: 0; background: transparent; color: #6a7380; cursor: pointer;
       font-size: 16px; line-height: 1; padding: 0 2px;
@@ -398,17 +400,25 @@
       margin: 10px 0 5px; font-weight: 600;
     }
     #espaceFiche .lexique { display: flex; flex-wrap: wrap; gap: 4px; }
+    #espaceFiche .tag-meta { color: #6a7380; font-size: 9.5px; margin-left: 4px; font-weight: 500; }
     #espaceFiche .sample {
       border-top: 1px solid rgba(255,255,255,0.06); padding: 7px 0; line-height: 1.4;
     }
     #espaceFiche .sample .meta { color: #6a7380; font-size: 10px; margin-bottom: 3px; }
     #espaceFiche .sample .txt { color: #c5ccd6; font-size: 11px; }
     #espaceFiche .themes { display: flex; flex-direction: column; gap: 4px; }
-    #espaceFiche .theme-row { display: grid; grid-template-columns: 1fr 36px; gap: 6px; align-items: center; }
+    #espaceFiche .theme-row { display: grid; grid-template-columns: 1fr 42px; gap: 6px; align-items: center; }
+    #espaceFiche .theme-row .theme-lab {
+      display: flex; flex-direction: column; gap: 2px; min-width: 0;
+    }
+    #espaceFiche .theme-row .theme-lab > span {
+      color: #9aa3b0; font-size: 10.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
     #espaceFiche .theme-bar {
       height: 4px; border-radius: 2px; background: rgba(255,255,255,0.08); overflow: hidden;
     }
     #espaceFiche .theme-bar > i { display: block; height: 100%; background: #4d8af0; border-radius: 2px; }
+    #espaceFiche.hash-focus .theme-bar > i { background: #e8b43c; }
     #espaceFiche .theme-pct { text-align: right; font-variant-numeric: tabular-nums; color: #6a7380; font-size: 10px; }
     #espaceFiche .limit {
       margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.08);
@@ -542,7 +552,6 @@
       <label>Tri
         <select id="hashSortMode" title="Ordre d’affichage des hashtags">
           <option value="nAcc" selected>Comptes</option>
-          <option value="g2">Keyness z</option>
           <option value="alpha">A → Z</option>
         </select>
       </label>
@@ -739,7 +748,7 @@ let viewMode = new URLSearchParams(location.search).get('view') === 'analyses' ?
 let selectedCommId = null;
 let activeHashtag = null;
 /** Tri / plafond d’affichage des # (partagé panneau # + chips communautés / fiche). */
-let hashSortMode = 'nAcc'; // nAcc | g2 | alpha
+let hashSortMode = 'nAcc'; // nAcc | alpha
 let hashShowLimit = 40; // 0 = tous
 /** Dernier filtre # (réappliqué quand on touche Lumière liens / opacité). */
 let lastHighlightFilter = null;
@@ -1079,11 +1088,12 @@ function setViewMode(mode, { syncUrl = true } = {}) {
   hashModeBtn?.classList.toggle('active', viewMode === 'analyses' && communityColorModeActive());
   if (viewMode === 'analyses') {
     openHashPanel();
-    if (selectedCommId != null) openEspaceFiche(selectedCommId);
+    if (activeHashtag) openHashtagFiche(activeHashtag);
+    else if (selectedCommId != null) openEspaceFiche(selectedCommId);
   } else {
     clearHashtagFilter();
     closeHashPanel();
-    espaceFicheEl?.classList.remove('open');
+    espaceFicheEl?.classList.remove('open', 'hash-focus');
   }
   if (syncUrl && currentCorpusId) syncCorpusUrl(currentCorpusId);
 }
@@ -1134,16 +1144,79 @@ function listCorpusHashtags() {
   }
   return [...byTag.values()].sort((a, b) => {
     if (hashSortMode === 'alpha') return a.tag.localeCompare(b.tag, 'fr');
-    if (hashSortMode === 'g2') {
-      if (b.g2 !== a.g2) return b.g2 - a.g2;
-      if (b.nAcc !== a.nAcc) return b.nAcc - a.nAcc;
-      return a.tag.localeCompare(b.tag, 'fr');
-    }
     // nAcc (défaut)
     if (b.nAcc !== a.nAcc) return b.nAcc - a.nAcc;
     if (b.g2 !== a.g2) return b.g2 - a.g2;
     return a.tag.localeCompare(b.tag, 'fr');
   });
+}
+
+/** Intersection de deux sets de comptes (co-usage). */
+function accountOverlap(a, b) {
+  if (!a?.size || !b?.size) return 0;
+  const [small, large] = a.size <= b.size ? [a, b] : [b, a];
+  let n = 0;
+  for (const sn of small) if (large.has(sn)) n++;
+  return n;
+}
+
+/** Top hashtags co-utilisés (mêmes comptes hors RT), hors le tag cible. */
+function cooccurringHashtags(tag, limit = 12) {
+  const t = String(tag || '').toLowerCase().replace(/^#/, '');
+  const base = accountsForHashtag(t);
+  if (!base.size) return [];
+  const out = [];
+  for (const h of listCorpusHashtags()) {
+    if (h.tag === t) continue;
+    const other = accountsForHashtag(h.tag);
+    const n = accountOverlap(base, other);
+    if (n < 2) continue;
+    const union = base.size + other.size - n;
+    out.push({
+      tag: h.tag,
+      n,
+      pct: Math.round((1000 * n) / base.size) / 10,
+      jaccard: union ? n / union : 0,
+    });
+  }
+  out.sort((a, b) => b.n - a.n || b.jaccard - a.jaccard || a.tag.localeCompare(b.tag, 'fr'));
+  return out.slice(0, limit);
+}
+
+/**
+ * Répartition des comptes du # parmi les communautés du graphe.
+ * Retourne { rows, matched, totalAcc } — % sur les comptes du graphe qui portent le #.
+ */
+function hashtagCommunityShare(tag) {
+  const t = String(tag || '').toLowerCase().replace(/^#/, '');
+  const accounts = accountsForHashtag(t);
+  const totalAcc = Number(discourseData?.tag_n_accounts?.[t]) || accounts.size;
+  if (!accounts.size || !graphData?.nodes) {
+    return { rows: [], matched: 0, totalAcc };
+  }
+  const byCom = new Map();
+  let matched = 0;
+  for (const nd of graphData.nodes) {
+    const sn = String(nd.l || '').toLowerCase().replace(/^@/, '');
+    if (!accounts.has(sn)) continue;
+    matched++;
+    const cid = Number(nd.com);
+    if (Number.isNaN(cid)) continue;
+    byCom.set(cid, (byCom.get(cid) || 0) + 1);
+  }
+  const rows = [...byCom.entries()]
+    .map(([id, n]) => {
+      const d = discourseFor(id);
+      return {
+        id,
+        n,
+        pct: matched ? (100 * n) / matched : 0,
+        label: d?.qualif_short || d?.qualif || `C${id}`,
+        color: d?.color || null,
+      };
+    })
+    .sort((a, b) => b.n - a.n || a.id - b.id);
+  return { rows, matched, totalAcc };
 }
 
 function renderHashPanel() {
@@ -1205,7 +1278,11 @@ function closeHashPanel() {
 function refreshHashtagUi() {
   renderHashPanel();
   if (graphData) renderCommPanel(graphData);
-  if (selectedCommId != null) openEspaceFiche(selectedCommId);
+  if (activeHashtag) openHashtagFiche(activeHashtag);
+  else if (selectedCommId != null) openEspaceFiche(selectedCommId);
+  else {
+    espaceFicheEl?.classList.remove('open', 'hash-focus');
+  }
 }
 
 function clearHashtagFilter() {
@@ -1403,7 +1480,12 @@ function applyNodeHighlight(filter) {
 function openEspaceFiche(commId) {
   const d = discourseFor(commId);
   if (!espaceFicheEl || !d) {
-    espaceFicheEl?.classList.remove('open');
+    espaceFicheEl?.classList.remove('open', 'hash-focus');
+    return;
+  }
+  // Un # actif : la fiche bas-droite reste centrée sur le hashtag
+  if (activeHashtag) {
+    openHashtagFiche(activeHashtag);
     return;
   }
   selectedCommId = Number(commId);
@@ -1425,7 +1507,7 @@ function openEspaceFiche(commId) {
     ? `<h4>Thèmes (termes distinctifs)</h4><div class="themes">${themeEntries
         .map(
           ([k, v]) =>
-            `<div class="theme-row"><div><div style="margin-bottom:2px;color:#9aa3b0">${escapeHtml(k)}</div><div class="theme-bar"><i style="width:${Math.max(2, (100 * v) / maxT)}%"></i></div></div><div class="theme-pct">${v}</div></div>`
+            `<div class="theme-row"><div class="theme-lab"><span>${escapeHtml(k)}</span><div class="theme-bar"><i style="width:${Math.max(2, (100 * v) / maxT)}%"></i></div></div><div class="theme-pct">${v}</div></div>`
         )
         .join('')}</div>`
     : '';
@@ -1438,6 +1520,7 @@ function openEspaceFiche(commId) {
     .join('');
   const limit = discourseData?.meta?.limit || LIMIT_DEFAULT;
   const analysesHref = analysesLinkEl?.getAttribute('href') || '../analyses/';
+  espaceFicheEl.classList.remove('hash-focus');
   espaceFicheEl.innerHTML = `
     <div class="fiche-head">
       <div class="fiche-title">C${d.id} — ${escapeHtml(d.qualif_short || d.qualif || '')}</div>
@@ -1455,13 +1538,82 @@ function openEspaceFiche(commId) {
     <div class="limit">${escapeHtml(limit)}</div>`;
   espaceFicheEl.classList.add('open');
   espaceFicheEl.querySelector('.fiche-close')?.addEventListener('click', () => {
-    espaceFicheEl.classList.remove('open');
+    espaceFicheEl.classList.remove('open', 'hash-focus');
   });
   espaceFicheEl.querySelectorAll('#ficheTags .tag-chip').forEach((btn) => {
     btn.addEventListener('click', () => toggleHashtagFilter(btn.dataset.tag));
   });
   document.querySelectorAll('#commList .comm-row').forEach((row) => {
     row.classList.toggle('selected', Number(row.dataset.commId) === selectedCommId);
+  });
+}
+
+/** Fiche bas-droite centrée sur un hashtag : co-occurrents + parts par communauté. */
+function openHashtagFiche(tag) {
+  if (!espaceFicheEl) return;
+  const t = String(tag || '').toLowerCase().replace(/^#/, '');
+  if (!t) {
+    espaceFicheEl.classList.remove('open', 'hash-focus');
+    return;
+  }
+  const nAcc = Number(discourseData?.tag_n_accounts?.[t])
+    || (discourseData?.tag_accounts?.[t] || []).length
+    || 0;
+  const coocs = cooccurringHashtags(t, 12);
+  const share = hashtagCommunityShare(t);
+  const coocHtml = coocs.length
+    ? `<div class="lexique" id="ficheCooc">${coocs
+        .map(
+          (h) =>
+            `<button type="button" class="tag-chip${activeHashtag === h.tag ? ' active' : ''}" data-tag="${h.tag}" title="${h.n.toLocaleString('fr-FR')} compte${h.n > 1 ? 's' : ''} en commun · ${h.pct}% des comptes de #${t}">#${escapeHtml(h.tag)}<span class="tag-meta">${h.n.toLocaleString('fr-FR')}</span></button>`
+        )
+        .join('')}</div>`
+    : '<div class="fiche-just">Pas assez de co-usage documenté parmi les # distinctifs.</div>';
+
+  const maxPct = share.rows.length ? share.rows[0].pct : 1;
+  const topRows = share.rows.slice(0, 10);
+  const shareHtml = topRows.length
+    ? `<div class="themes">${topRows
+        .map((r) => {
+          const barColor = r.color
+            ? `background:${escapeHtml(r.color)}`
+            : '';
+          return `<div class="theme-row" title="C${r.id} · ${r.n.toLocaleString('fr-FR')} compte${r.n > 1 ? 's' : ''}">
+            <div class="theme-lab">
+              <span>C${r.id} — ${escapeHtml(r.label)}</span>
+              <div class="theme-bar"><i style="width:${Math.max(2, (100 * r.pct) / maxPct)}%;${barColor}"></i></div>
+            </div>
+            <div class="theme-pct">${r.pct.toFixed(0)}%</div>
+          </div>`;
+        })
+        .join('')}</div>`
+    : '<div class="fiche-just">Aucun compte du graphe associé à ce #.</div>';
+
+  const justParts = [
+    nAcc ? `${nAcc.toLocaleString('fr-FR')} compte${nAcc > 1 ? 's' : ''} hors RT` : null,
+    share.matched
+      ? `${share.matched.toLocaleString('fr-FR')} dans le graphe affiché`
+      : null,
+  ].filter(Boolean);
+
+  espaceFicheEl.classList.add('hash-focus');
+  espaceFicheEl.innerHTML = `
+    <div class="fiche-head">
+      <div class="fiche-title"><span class="hash-mark">#</span>${escapeHtml(t)}</div>
+      <button type="button" class="fiche-close" aria-label="Fermer">×</button>
+    </div>
+    <div class="fiche-just">${justParts.join(' · ') || 'Hashtag sélectionné'}</div>
+    <h4>Top hashtags co-occurrents</h4>
+    ${coocHtml}
+    <h4>Utilisation par communauté</h4>
+    ${shareHtml}
+    <div class="limit">Co-occurrence = comptes ayant aussi utilisé l’autre # (hors RT). Parts = répartition de ces comptes dans les communautés Louvain du graphe.</div>`;
+  espaceFicheEl.classList.add('open');
+  espaceFicheEl.querySelector('.fiche-close')?.addEventListener('click', () => {
+    espaceFicheEl.classList.remove('open', 'hash-focus');
+  });
+  espaceFicheEl.querySelectorAll('#ficheCooc .tag-chip').forEach((btn) => {
+    btn.addEventListener('click', () => toggleHashtagFilter(btn.dataset.tag));
   });
 }
 
@@ -3180,7 +3332,7 @@ async function loadCorpus(corp) {
   selectedCommId = null;
   activeHashtag = null;
   lastHighlightFilter = null;
-  espaceFicheEl?.classList.remove('open');
+  espaceFicheEl?.classList.remove('open', 'hash-focus');
   if (viewMode !== 'analyses') closeHashPanel();
   updateGraphModeButtons();
   syncCorpusUrl(corp.id);
