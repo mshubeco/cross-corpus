@@ -70,6 +70,9 @@ DESIGNATIONS: dict[int, str] = {
     75: "Sport (hors sujet canicule)",
     9: "Alertes météo / Maghreb",
     161: "Twitch / créateurs",
+    88: "Contenu adulte / spam",
+    49: "Paris sportifs / TV",
+    525: "Conversation chaleur",
 }
 
 
@@ -126,14 +129,13 @@ def weighted_log_odds(n_w, n_c, n_w_ref, n_ref, prior, prior_scale):
 
 
 def auto_designation(hub: str, key_hashtags: list[dict], key_words: list[dict]) -> str:
+    """Qualification courte pour le panneau — jamais de # ni « espace @ » (réservé hors graphe)."""
     hub = (hub or "").lstrip("@")
-    if key_hashtags:
-        bits = [f"#{h['tag']}" for h in key_hashtags[:2]]
-        return f"{' · '.join(bits)} · @{hub}"
     if key_words:
-        bits = [w["word"] for w in key_words[:2]]
-        return f"{' · '.join(bits)} · @{hub}"
-    return f"espace @{hub}"
+        return " / ".join(w["word"] for w in key_words[:2])
+    if key_hashtags:
+        return " / ".join(h["tag"] for h in key_hashtags[:2])
+    return f"pôle @{hub}"
 
 
 def main() -> None:
@@ -278,8 +280,8 @@ def main() -> None:
 
         communities_out[str(cid)] = {
             "id": str(cid),
-            "designation": des,
-            "designation_short": short_label(des),
+            "qualif": des,
+            "qualif_short": short_label(des),
             "justification": just[:280],
             "key_hashtags": [{"tag": h["tag"], "g2": h["g2"]} for h in key_hashtags],
             "key_words": key_words,

@@ -10,8 +10,6 @@
   "communities": {
     "8": {
       "id": "8",
-      "designation": "#stopmpoxrdc · #varioledusinge · @cerfiafr",
-      "designation_short": "#stopmpoxrdc · #varioledusinge · @cerfiafr",
       "justification": "C8 · hub @cerfiafr. Lexique distinctif (z vs reste) : #stopmpoxrdc, #varioledusinge, #santepublique, #mpox. 1552 pubs hors RT.",
       "key_hashtags": [
         {
@@ -80,12 +78,12 @@
       "n_users": 12496,
       "n_original_tweets": 1552,
       "color": "#73c000",
-      "hub": "cerfiafr"
+      "hub": "cerfiafr",
+      "qualif": "#stopmpoxrdc · #varioledusinge · @cerfiafr",
+      "qualif_short": "#stopmpoxrdc · #varioledusinge · @cerfiafr"
     },
     "2": {
       "id": "2",
-      "designation": "#monkeypox · #varioledusinge · @banounhelene",
-      "designation_short": "#monkeypox · #varioledusinge · @banounhelene",
       "justification": "C2 · hub @banounhelene. Lexique distinctif (z vs reste) : #monkeypox, #varioledusinge, #actualite, #mpox. 3305 pubs hors RT.",
       "key_hashtags": [
         {
@@ -166,12 +164,12 @@
       "n_users": 10188,
       "n_original_tweets": 3305,
       "color": "#ff8000",
-      "hub": "banounhelene"
+      "hub": "banounhelene",
+      "qualif": "#monkeypox · #varioledusinge · @banounhelene",
+      "qualif_short": "#monkeypox · #varioledusinge · @banounhelene"
     },
     "0": {
       "id": "0",
-      "designation": "#monkeypox · #varioledusinge · @f_philippot",
-      "designation_short": "#monkeypox · #varioledusinge · @f_philippot",
       "justification": "C0 · hub @f_philippot. Lexique distinctif (z vs reste) : #monkeypox, #varioledusinge, #macron, #attal. 2726 pubs hors RT.",
       "key_hashtags": [
         {
@@ -252,12 +250,12 @@
       "n_users": 9937,
       "n_original_tweets": 2726,
       "color": "#2563EB",
-      "hub": "f_philippot"
+      "hub": "f_philippot",
+      "qualif": "#monkeypox · #varioledusinge · @f_philippot",
+      "qualif_short": "#monkeypox · #varioledusinge · @f_philippot"
     },
     "51": {
       "id": "51",
-      "designation": "#mpox · #vaccination · @nicolasberrod",
-      "designation_short": "#mpox · #vaccination · @nicolasberrod",
       "justification": "C51 · hub @nicolasberrod. Lexique distinctif (z vs reste) : #mpox, #vaccination, #afp, #varioledusinge. 5560 pubs hors RT.",
       "key_hashtags": [
         {
@@ -338,12 +336,12 @@
       "n_users": 9319,
       "n_original_tweets": 5560,
       "color": "#de81ff",
-      "hub": "nicolasberrod"
+      "hub": "nicolasberrod",
+      "qualif": "#mpox · #vaccination · @nicolasberrod",
+      "qualif_short": "#mpox · #vaccination · @nicolasberrod"
     },
     "12": {
       "id": "12",
-      "designation": "#varioledusinge · #monkeypox · @alexsofamous",
-      "designation_short": "#varioledusinge · #monkeypox · @alexsofamous",
       "justification": "C12 · hub @alexsofamous. Lexique distinctif (z vs reste) : #varioledusinge, #monkeypox, #mpox2024, #pfizer. 1916 pubs hors RT.",
       "key_hashtags": [
         {
@@ -424,12 +422,12 @@
       "n_users": 7075,
       "n_original_tweets": 1916,
       "color": "#c4a574",
-      "hub": "alexsofamous"
+      "hub": "alexsofamous",
+      "qualif": "#varioledusinge · #monkeypox · @alexsofamous",
+      "qualif_short": "#varioledusinge · #monkeypox · @alexsofamous"
     },
     "6": {
       "id": "6",
-      "designation": "#rdc · #stopmpoxrdc · @omsrdcongo",
-      "designation_short": "#rdc · #stopmpoxrdc · @omsrdcongo",
       "justification": "C6 · hub @omsrdcongo. Lexique distinctif (z vs reste) : #rdc, #stopmpoxrdc, #mpox, #burundi. 9064 pubs hors RT.",
       "key_hashtags": [
         {
@@ -510,12 +508,12 @@
       "n_users": 6904,
       "n_original_tweets": 9064,
       "color": "#ff497c",
-      "hub": "omsrdcongo"
+      "hub": "omsrdcongo",
+      "qualif": "#rdc · #stopmpoxrdc · @omsrdcongo",
+      "qualif_short": "#rdc · #stopmpoxrdc · @omsrdcongo"
     },
     "9": {
       "id": "9",
-      "designation": "espace @cnews",
-      "designation_short": "espace @cnews",
       "justification": "C9 · hub @cnews. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -524,12 +522,12 @@
       "n_users": 2411,
       "n_original_tweets": null,
       "color": "#00bd94",
-      "hub": "cnews"
+      "hub": "cnews",
+      "qualif": "espace @cnews",
+      "qualif_short": "espace @cnews"
     },
     "7": {
       "id": "7",
-      "designation": "espace @aesinfos",
-      "designation_short": "espace @aesinfos",
       "justification": "C7 · hub @aesinfos. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -538,12 +536,12 @@
       "n_users": 1392,
       "n_original_tweets": null,
       "color": "#b45309",
-      "hub": "aesinfos"
+      "hub": "aesinfos",
+      "qualif": "espace @aesinfos",
+      "qualif_short": "espace @aesinfos"
     },
     "53": {
       "id": "53",
-      "designation": "espace @jhondoe2509",
-      "designation_short": "espace @jhondoe2509",
       "justification": "C53 · hub @jhondoe2509. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -552,12 +550,12 @@
       "n_users": 840,
       "n_original_tweets": null,
       "color": "#9aa3b5",
-      "hub": "jhondoe2509"
+      "hub": "jhondoe2509",
+      "qualif": "espace @jhondoe2509",
+      "qualif_short": "espace @jhondoe2509"
     },
     "13": {
       "id": "13",
-      "designation": "espace @yvanmlnr",
-      "designation_short": "espace @yvanmlnr",
       "justification": "C13 · hub @yvanmlnr. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -566,12 +564,12 @@
       "n_users": 700,
       "n_original_tweets": null,
       "color": "#00c1ff",
-      "hub": "yvanmlnr"
+      "hub": "yvanmlnr",
+      "qualif": "espace @yvanmlnr",
+      "qualif_short": "espace @yvanmlnr"
     },
     "25": {
       "id": "25",
-      "designation": "espace @actufoot_",
-      "designation_short": "espace @actufoot_",
       "justification": "C25 · hub @actufoot_. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -580,12 +578,12 @@
       "n_users": 673,
       "n_original_tweets": null,
       "color": "#73c000",
-      "hub": "actufoot_"
+      "hub": "actufoot_",
+      "qualif": "espace @actufoot_",
+      "qualif_short": "espace @actufoot_"
     },
     "18": {
       "id": "18",
-      "designation": "espace @larevueafrique",
-      "designation_short": "espace @larevueafrique",
       "justification": "C18 · hub @larevueafrique. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -594,12 +592,12 @@
       "n_users": 466,
       "n_original_tweets": null,
       "color": "#ff8000",
-      "hub": "larevueafrique"
+      "hub": "larevueafrique",
+      "qualif": "espace @larevueafrique",
+      "qualif_short": "espace @larevueafrique"
     },
     "58": {
       "id": "58",
-      "designation": "espace @justefofolle",
-      "designation_short": "espace @justefofolle",
       "justification": "C58 · hub @justefofolle. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -608,12 +606,12 @@
       "n_users": 421,
       "n_original_tweets": null,
       "color": "#2563eb",
-      "hub": "justefofolle"
+      "hub": "justefofolle",
+      "qualif": "espace @justefofolle",
+      "qualif_short": "espace @justefofolle"
     },
     "22": {
       "id": "22",
-      "designation": "espace @youtube",
-      "designation_short": "espace @youtube",
       "justification": "C22 · hub @youtube. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -622,7 +620,9 @@
       "n_users": 369,
       "n_original_tweets": null,
       "color": "#de81ff",
-      "hub": "youtube"
+      "hub": "youtube",
+      "qualif": "espace @youtube",
+      "qualif_short": "espace @youtube"
     }
   },
   "tag_accounts": {

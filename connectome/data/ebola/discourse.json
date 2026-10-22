@@ -10,8 +10,6 @@
   "communities": {
     "3": {
       "id": "3",
-      "designation": "#hantavirus · #soudan · @caudehenrion",
-      "designation_short": "#hantavirus · #soudan · @caudehenrion",
       "justification": "C3 · hub @caudehenrion. Lexique distinctif (z vs reste) : #hantavirus, #soudan, #rotavirus. 435 pubs hors RT.",
       "key_hashtags": [
         {
@@ -72,12 +70,12 @@
       "n_users": 2819,
       "n_original_tweets": 435,
       "color": "#73c000",
-      "hub": "caudehenrion"
+      "hub": "caudehenrion",
+      "qualif": "#hantavirus · #soudan · @caudehenrion",
+      "qualif_short": "#hantavirus · #soudan · @caudehenrion"
     },
     "2": {
       "id": "2",
-      "designation": "#hantavirus · @didiermaisto",
-      "designation_short": "#hantavirus · @didiermaisto",
       "justification": "C2 · hub @didiermaisto. Lexique distinctif (z vs reste) : #hantavirus. 251 pubs hors RT.",
       "key_hashtags": [
         {
@@ -130,12 +128,12 @@
       "n_users": 1885,
       "n_original_tweets": 251,
       "color": "#ff8000",
-      "hub": "didiermaisto"
+      "hub": "didiermaisto",
+      "qualif": "#hantavirus · @didiermaisto",
+      "qualif_short": "#hantavirus · @didiermaisto"
     },
     "11": {
       "id": "11",
-      "designation": "#hantavirus · #oms · @le_parisien",
-      "designation_short": "#hantavirus · #oms · @le_parisien",
       "justification": "C11 · hub @le_parisien. Lexique distinctif (z vs reste) : #hantavirus, #oms. 1437 pubs hors RT.",
       "key_hashtags": [
         {
@@ -192,12 +190,12 @@
       "n_users": 1465,
       "n_original_tweets": 1437,
       "color": "#2563EB",
-      "hub": "le_parisien"
+      "hub": "le_parisien",
+      "qualif": "#hantavirus · #oms · @le_parisien",
+      "qualif_short": "#hantavirus · #oms · @le_parisien"
     },
     "12": {
       "id": "12",
-      "designation": "#rdc · #ituri · @stanysbujakera",
-      "designation_short": "#rdc · #ituri · @stanysbujakera",
       "justification": "C12 · hub @stanysbujakera. Lexique distinctif (z vs reste) : #rdc, #ituri, #bunia, #insp. 1444 pubs hors RT.",
       "key_hashtags": [
         {
@@ -278,12 +276,12 @@
       "n_users": 1443,
       "n_original_tweets": 1444,
       "color": "#de81ff",
-      "hub": "stanysbujakera"
+      "hub": "stanysbujakera",
+      "qualif": "#rdc · #ituri · @stanysbujakera",
+      "qualif_short": "#rdc · #ituri · @stanysbujakera"
     },
     "6": {
       "id": "6",
-      "designation": "espace @zde0000",
-      "designation_short": "espace @zde0000",
       "justification": "C6 · hub @zde0000. Lexique distinctif (z vs reste) : —. 5 pubs hors RT.",
       "key_hashtags": [],
       "key_words": [],
@@ -292,12 +290,12 @@
       "n_users": 1341,
       "n_original_tweets": 5,
       "color": "#c4a574",
-      "hub": "zde0000"
+      "hub": "zde0000",
+      "qualif": "espace @zde0000",
+      "qualif_short": "espace @zde0000"
     },
     "1": {
       "id": "1",
-      "designation": "peur · gens · @resistance_sm",
-      "designation_short": "peur · gens · @resistance_sm",
       "justification": "C1 · hub @resistance_sm. Lexique distinctif (z vs reste) : peur, gens, hantavirus, covid. 138 pubs hors RT.",
       "key_hashtags": [],
       "key_words": [
@@ -337,12 +335,12 @@
       "n_users": 1061,
       "n_original_tweets": 138,
       "color": "#ff497c",
-      "hub": "resistance_sm"
+      "hub": "resistance_sm",
+      "qualif": "peur · gens · @resistance_sm",
+      "qualif_short": "peur · gens · @resistance_sm"
     },
     "14": {
       "id": "14",
-      "designation": "espace @nicolasberrod",
-      "designation_short": "espace @nicolasberrod",
       "justification": "C14 · hub @nicolasberrod. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -351,12 +349,12 @@
       "n_users": 759,
       "n_original_tweets": null,
       "color": "#00bd94",
-      "hub": "nicolasberrod"
+      "hub": "nicolasberrod",
+      "qualif": "espace @nicolasberrod",
+      "qualif_short": "espace @nicolasberrod"
     },
     "25": {
       "id": "25",
-      "designation": "espace @cerfiafr",
-      "designation_short": "espace @cerfiafr",
       "justification": "C25 · hub @cerfiafr. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -365,12 +363,12 @@
       "n_users": 637,
       "n_original_tweets": null,
       "color": "#b45309",
-      "hub": "cerfiafr"
+      "hub": "cerfiafr",
+      "qualif": "espace @cerfiafr",
+      "qualif_short": "espace @cerfiafr"
     },
     "39": {
       "id": "39",
-      "designation": "espace @n_arthaud",
-      "designation_short": "espace @n_arthaud",
       "justification": "C39 · hub @n_arthaud. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -379,12 +377,12 @@
       "n_users": 470,
       "n_original_tweets": null,
       "color": "#9aa3b5",
-      "hub": "n_arthaud"
+      "hub": "n_arthaud",
+      "qualif": "espace @n_arthaud",
+      "qualif_short": "espace @n_arthaud"
     },
     "9": {
       "id": "9",
-      "designation": "espace @omsrdcongo",
-      "designation_short": "espace @omsrdcongo",
       "justification": "C9 · hub @omsrdcongo. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -393,12 +391,12 @@
       "n_users": 329,
       "n_original_tweets": null,
       "color": "#00c1ff",
-      "hub": "omsrdcongo"
+      "hub": "omsrdcongo",
+      "qualif": "espace @omsrdcongo",
+      "qualif_short": "espace @omsrdcongo"
     },
     "33": {
       "id": "33",
-      "designation": "espace @lawrencekanyuka",
-      "designation_short": "espace @lawrencekanyuka",
       "justification": "C33 · hub @lawrencekanyuka. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -407,12 +405,12 @@
       "n_users": 177,
       "n_original_tweets": null,
       "color": "#73c000",
-      "hub": "lawrencekanyuka"
+      "hub": "lawrencekanyuka",
+      "qualif": "espace @lawrencekanyuka",
+      "qualif_short": "espace @lawrencekanyuka"
     },
     "21": {
       "id": "21",
-      "designation": "espace @tvanouvelles",
-      "designation_short": "espace @tvanouvelles",
       "justification": "C21 · hub @tvanouvelles. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -421,12 +419,12 @@
       "n_users": 166,
       "n_original_tweets": null,
       "color": "#ff8000",
-      "hub": "tvanouvelles"
+      "hub": "tvanouvelles",
+      "qualif": "espace @tvanouvelles",
+      "qualif_short": "espace @tvanouvelles"
     },
     "24": {
       "id": "24",
-      "designation": "espace @ldeclencheur",
-      "designation_short": "espace @ldeclencheur",
       "justification": "C24 · hub @ldeclencheur. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -435,12 +433,12 @@
       "n_users": 137,
       "n_original_tweets": null,
       "color": "#2563eb",
-      "hub": "ldeclencheur"
+      "hub": "ldeclencheur",
+      "qualif": "espace @ldeclencheur",
+      "qualif_short": "espace @ldeclencheur"
     },
     "40": {
       "id": "40",
-      "designation": "espace @1graindefolie",
-      "designation_short": "espace @1graindefolie",
       "justification": "C40 · hub @1graindefolie. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -449,7 +447,9 @@
       "n_users": 104,
       "n_original_tweets": null,
       "color": "#de81ff",
-      "hub": "1graindefolie"
+      "hub": "1graindefolie",
+      "qualif": "espace @1graindefolie",
+      "qualif_short": "espace @1graindefolie"
     }
   },
   "tag_accounts": {

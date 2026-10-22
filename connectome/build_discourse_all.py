@@ -80,14 +80,13 @@ def is_retweet(tweet_type: str, text: str) -> bool:
 
 
 def auto_designation(hub: str, key_hashtags: list[dict], key_words: list[dict]) -> str:
+    """Qualification panneau COMMUNAUTÉS — pas de # ni « espace @ » sur le graphe."""
     hub = (hub or "").lstrip("@")
-    if key_hashtags:
-        bits = [f"#{h['tag']}" for h in key_hashtags[:2]]
-        return f"{' · '.join(bits)} · @{hub}"
     if key_words:
-        bits = [w["word"] for w in key_words[:2]]
-        return f"{' · '.join(bits)} · @{hub}"
-    return f"espace @{hub}"
+        return " / ".join(w["word"] for w in key_words[:2])
+    if key_hashtags:
+        return " / ".join(h["tag"] for h in key_hashtags[:2])
+    return f"pôle @{hub}"
 
 
 def corpus_ids() -> list[str]:
@@ -255,8 +254,8 @@ def build_one(cid: str) -> Path | None:
 
         communities_out[str(mid)] = {
             "id": str(mid),
-            "designation": des,
-            "designation_short": short_label(des),
+            "qualif": des,
+            "qualif_short": short_label(des),
             "justification": just[:280],
             "key_hashtags": key_hashtags,
             "key_words": key_words,

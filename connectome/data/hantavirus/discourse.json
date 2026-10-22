@@ -10,8 +10,6 @@
   "communities": {
     "8": {
       "id": "8",
-      "designation": "#hantavirus · #paris · @alertesinfos",
-      "designation_short": "#hantavirus · #paris · @alertesinfos",
       "justification": "C8 · hub @alertesinfos. Lexique distinctif (z vs reste) : #hantavirus, #paris, #quotidien. 3050 pubs hors RT.",
       "key_hashtags": [
         {
@@ -72,12 +70,12 @@
       "n_users": 21655,
       "n_original_tweets": 3050,
       "color": "#73c000",
-      "hub": "alertesinfos"
+      "hub": "alertesinfos",
+      "qualif": "#hantavirus · #paris · @alertesinfos",
+      "qualif_short": "#hantavirus · #paris · @alertesinfos"
     },
     "4": {
       "id": "4",
-      "designation": "#cnews · #rn · @f_philippot",
-      "designation_short": "#cnews · #rn · @f_philippot",
       "justification": "C4 · hub @f_philippot. Lexique distinctif (z vs reste) : #cnews, #rn, #tf1, #rmc. 3857 pubs hors RT.",
       "key_hashtags": [
         {
@@ -158,12 +156,12 @@
       "n_users": 19075,
       "n_original_tweets": 3857,
       "color": "#ff8000",
-      "hub": "f_philippot"
+      "hub": "f_philippot",
+      "qualif": "#cnews · #rn · @f_philippot",
+      "qualif_short": "#cnews · #rn · @f_philippot"
     },
     "35": {
       "id": "35",
-      "designation": "los · ahora · @virginieperez15",
-      "designation_short": "los · ahora · @virginieperez15",
       "justification": "C35 · hub @virginieperez15. Lexique distinctif (z vs reste) : los, ahora, brote, del. 318 pubs hors RT.",
       "key_hashtags": [],
       "key_words": [
@@ -211,12 +209,12 @@
       "n_users": 15525,
       "n_original_tweets": 318,
       "color": "#2563EB",
-      "hub": "virginieperez15"
+      "hub": "virginieperez15",
+      "qualif": "los · ahora · @virginieperez15",
+      "qualif_short": "los · ahora · @virginieperez15"
     },
     "5": {
       "id": "5",
-      "designation": "#hantavirus · #psyop · @louisfouch3",
-      "designation_short": "#hantavirus · #psyop · @louisfouch3",
       "justification": "C5 · hub @louisfouch3. Lexique distinctif (z vs reste) : #hantavirus, #psyop, #vaccins, #ebola. 6317 pubs hors RT.",
       "key_hashtags": [
         {
@@ -297,12 +295,12 @@
       "n_users": 15380,
       "n_original_tweets": 6317,
       "color": "#de81ff",
-      "hub": "louisfouch3"
+      "hub": "louisfouch3",
+      "qualif": "#hantavirus · #psyop · @louisfouch3",
+      "qualif_short": "#hantavirus · #psyop · @louisfouch3"
     },
     "9": {
       "id": "9",
-      "designation": "#confinement · #canal16 · @bfmtv",
-      "designation_short": "#confinement · #canal16 · @bfmtv",
       "justification": "C9 · hub @bfmtv. Lexique distinctif (z vs reste) : #confinement, #canal16, #ggrmc, #hdpros. 18542 pubs hors RT.",
       "key_hashtags": [
         {
@@ -383,12 +381,12 @@
       "n_users": 12870,
       "n_original_tweets": 18542,
       "color": "#c4a574",
-      "hub": "bfmtv"
+      "hub": "bfmtv",
+      "qualif": "#confinement · #canal16 · @bfmtv",
+      "qualif_short": "#confinement · #canal16 · @bfmtv"
     },
     "0": {
       "id": "0",
-      "designation": "#qag · #franceinfo · @publicsenat",
-      "designation_short": "#qag · #franceinfo · @publicsenat",
       "justification": "C0 · hub @publicsenat. Lexique distinctif (z vs reste) : #qag, #franceinfo, #lci, #bfmtv. 946 pubs hors RT.",
       "key_hashtags": [
         {
@@ -469,12 +467,12 @@
       "n_users": 2948,
       "n_original_tweets": 946,
       "color": "#ff497c",
-      "hub": "publicsenat"
+      "hub": "publicsenat",
+      "qualif": "#qag · #franceinfo · @publicsenat",
+      "qualif_short": "#qag · #franceinfo · @publicsenat"
     },
     "41": {
       "id": "41",
-      "designation": "espace @ricardominute",
-      "designation_short": "espace @ricardominute",
       "justification": "C41 · hub @ricardominute. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -483,12 +481,12 @@
       "n_users": 969,
       "n_original_tweets": null,
       "color": "#00bd94",
-      "hub": "ricardominute"
+      "hub": "ricardominute",
+      "qualif": "espace @ricardominute",
+      "qualif_short": "espace @ricardominute"
     },
     "17": {
       "id": "17",
-      "designation": "espace @youtube",
-      "designation_short": "espace @youtube",
       "justification": "C17 · hub @youtube. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -497,12 +495,12 @@
       "n_users": 870,
       "n_original_tweets": null,
       "color": "#b45309",
-      "hub": "youtube"
+      "hub": "youtube",
+      "qualif": "espace @youtube",
+      "qualif_short": "espace @youtube"
     },
     "16": {
       "id": "16",
-      "designation": "espace @infamelecrack",
-      "designation_short": "espace @infamelecrack",
       "justification": "C16 · hub @infamelecrack. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -511,7 +509,9 @@
       "n_users": 862,
       "n_original_tweets": null,
       "color": "#9aa3b5",
-      "hub": "infamelecrack"
+      "hub": "infamelecrack",
+      "qualif": "espace @infamelecrack",
+      "qualif_short": "espace @infamelecrack"
     }
   },
   "tag_accounts": {

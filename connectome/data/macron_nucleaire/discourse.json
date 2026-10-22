@@ -10,8 +10,6 @@
   "communities": {
     "6": {
       "id": "6",
-      "designation": "#macron · #macrondestitution · @f_philippot",
-      "designation_short": "#macron · #macrondestitution · @f_philippot",
       "justification": "C6 · hub @f_philippot. Lexique distinctif (z vs reste) : #macron, #macrondestitution, #frexit, #municipales. 12675 pubs hors RT.",
       "key_hashtags": [
         {
@@ -92,12 +90,12 @@
       "n_users": 27032,
       "n_original_tweets": 12675,
       "color": "#73c000",
-      "hub": "f_philippot"
+      "hub": "f_philippot",
+      "qualif": "#macron · #macrondestitution · @f_philippot",
+      "qualif_short": "#macron · #macrondestitution · @f_philippot"
     },
     "9": {
       "id": "9",
-      "designation": "#lecornu · #hollande · @cerfiafr",
-      "designation_short": "#lecornu · #hollande · @cerfiafr",
       "justification": "C9 · hub @cerfiafr. Lexique distinctif (z vs reste) : #lecornu, #hollande, #macronie, #ps. 3442 pubs hors RT.",
       "key_hashtags": [
         {
@@ -178,12 +176,12 @@
       "n_users": 19191,
       "n_original_tweets": 3442,
       "color": "#ff8000",
-      "hub": "cerfiafr"
+      "hub": "cerfiafr",
+      "qualif": "#lecornu · #hollande · @cerfiafr",
+      "qualif_short": "#lecornu · #hollande · @cerfiafr"
     },
     "0": {
       "id": "0",
-      "designation": "#ukraine · #russia · @visegrad24",
-      "designation_short": "#ukraine · #russia · @visegrad24",
       "justification": "C0 · hub @visegrad24. Lexique distinctif (z vs reste) : #ukraine, #russia, #russian, #germany. 2703 pubs hors RT.",
       "key_hashtags": [
         {
@@ -264,12 +262,12 @@
       "n_users": 18526,
       "n_original_tweets": 2703,
       "color": "#2563EB",
-      "hub": "visegrad24"
+      "hub": "visegrad24",
+      "qualif": "#ukraine · #russia · @visegrad24",
+      "qualif_short": "#ukraine · #russia · @visegrad24"
     },
     "48": {
       "id": "48",
-      "designation": "#plusjamaisps · #starmer · @camille_moscow",
-      "designation_short": "#plusjamaisps · #starmer · @camille_moscow",
       "justification": "C48 · hub @camille_moscow. Lexique distinctif (z vs reste) : #plusjamaisps, #starmer, #boycottisrael, #vance. 6316 pubs hors RT.",
       "key_hashtags": [
         {
@@ -350,12 +348,12 @@
       "n_users": 17603,
       "n_original_tweets": 6316,
       "color": "#de81ff",
-      "hub": "camille_moscow"
+      "hub": "camille_moscow",
+      "qualif": "#plusjamaisps · #starmer · @camille_moscow",
+      "qualif_short": "#plusjamaisps · #starmer · @camille_moscow"
     },
     "21": {
       "id": "21",
-      "designation": "#gatewaypundit · #macron · @eve_barlow",
-      "designation_short": "#gatewaypundit · #macron · @eve_barlow",
       "justification": "C21 · hub @eve_barlow. Lexique distinctif (z vs reste) : #gatewaypundit, #macron, #israel. 3092 pubs hors RT.",
       "key_hashtags": [
         {
@@ -416,12 +414,12 @@
       "n_users": 17296,
       "n_original_tweets": 3092,
       "color": "#c4a574",
-      "hub": "eve_barlow"
+      "hub": "eve_barlow",
+      "qualif": "#gatewaypundit · #macron · @eve_barlow",
+      "qualif_short": "#gatewaypundit · #macron · @eve_barlow"
     },
     "1": {
       "id": "1",
-      "designation": "#macron · #nucleaire · @emmanuelmacron",
-      "designation_short": "#macron · #nucleaire · @emmanuelmacron",
       "justification": "C1 · hub @emmanuelmacron. Lexique distinctif (z vs reste) : #macron, #nucleaire, #lci, #rn. 13915 pubs hors RT.",
       "key_hashtags": [
         {
@@ -502,12 +500,12 @@
       "n_users": 14354,
       "n_original_tweets": 13915,
       "color": "#ff497c",
-      "hub": "emmanuelmacron"
+      "hub": "emmanuelmacron",
+      "qualif": "#macron · #nucleaire · @emmanuelmacron",
+      "qualif_short": "#macron · #nucleaire · @emmanuelmacron"
     },
     "17": {
       "id": "17",
-      "designation": "espace @radarhits",
-      "designation_short": "espace @radarhits",
       "justification": "C17 · hub @radarhits. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -516,12 +514,12 @@
       "n_users": 13558,
       "n_original_tweets": null,
       "color": "#00bd94",
-      "hub": "radarhits"
+      "hub": "radarhits",
+      "qualif": "espace @radarhits",
+      "qualif_short": "espace @radarhits"
     },
     "14": {
       "id": "14",
-      "designation": "espace @villgecrazylady",
-      "designation_short": "espace @villgecrazylady",
       "justification": "C14 · hub @villgecrazylady. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -530,12 +528,12 @@
       "n_users": 9793,
       "n_original_tweets": null,
       "color": "#b45309",
-      "hub": "villgecrazylady"
+      "hub": "villgecrazylady",
+      "qualif": "espace @villgecrazylady",
+      "qualif_short": "espace @villgecrazylady"
     },
     "19": {
       "id": "19",
-      "designation": "espace @grok",
-      "designation_short": "espace @grok",
       "justification": "C19 · hub @grok. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -544,12 +542,12 @@
       "n_users": 6217,
       "n_original_tweets": null,
       "color": "#9aa3b5",
-      "hub": "grok"
+      "hub": "grok",
+      "qualif": "espace @grok",
+      "qualif_short": "espace @grok"
     },
     "86": {
       "id": "86",
-      "designation": "espace @psyguy007",
-      "designation_short": "espace @psyguy007",
       "justification": "C86 · hub @psyguy007. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -558,12 +556,12 @@
       "n_users": 3544,
       "n_original_tweets": null,
       "color": "#00c1ff",
-      "hub": "psyguy007"
+      "hub": "psyguy007",
+      "qualif": "espace @psyguy007",
+      "qualif_short": "espace @psyguy007"
     },
     "97": {
       "id": "97",
-      "designation": "espace @davidlisnard",
-      "designation_short": "espace @davidlisnard",
       "justification": "C97 · hub @davidlisnard. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -572,7 +570,9 @@
       "n_users": 2880,
       "n_original_tweets": null,
       "color": "#73c000",
-      "hub": "davidlisnard"
+      "hub": "davidlisnard",
+      "qualif": "espace @davidlisnard",
+      "qualif_short": "espace @davidlisnard"
     }
   },
   "tag_accounts": {
