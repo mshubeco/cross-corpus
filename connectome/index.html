@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Connectomes — cross_corpus</title>
-  <!-- connectome-ui v20261022n : aide méthodologique ? -->
+  <!-- connectome-ui v20261022o : filtre # → liens (pas superposition) · sélection # partagée -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; color: #ccc; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
@@ -705,6 +705,8 @@ let discourseData = null;
 let viewMode = new URLSearchParams(location.search).get('view') === 'analyses' ? 'analyses' : 'graph';
 let selectedCommId = null;
 let activeHashtag = null;
+/** Dernier filtre # (réappliqué quand on touche Lumière liens / opacité). */
+let lastHighlightFilter = null;
 let nodeColorsBase = null;
 let nodeSizesBase = null;
 let lineColorsDimmed = false;
@@ -1108,10 +1110,7 @@ function renderHashPanel() {
       h.nComm ? `${h.nComm} communauté(s) distinctive(s)` : null,
       h.g2 ? `keyness z=${h.g2.toFixed(2)}` : null,
     ].filter(Boolean).join(' · ') || h.tag;
-    btn.addEventListener('click', () => {
-      if (activeHashtag === h.tag) clearHashtagFilter();
-      else setHashtagFilter(h.tag);
-    });
+    btn.addEventListener('click', () => toggleHashtagFilter(h.tag));
     hashListEl.appendChild(btn);
   }
   if (hashClearBtn) hashClearBtn.disabled = !activeHashtag;
@@ -1131,18 +1130,32 @@ function closeHashPanel() {
   hashPanelEl?.classList.remove('open');
 }
 
+/** Rafraîchit panneau # + communautés + fiche (même sélection active partout). */
+function refreshHashtagUi() {
+  renderHashPanel();
+  if (graphData) renderCommPanel(graphData);
+  if (selectedCommId != null) openEspaceFiche(selectedCommId);
+}
+
 function clearHashtagFilter() {
   activeHashtag = null;
+  lastHighlightFilter = null;
   applyNodeHighlight(null);
-  if (graphData) renderCommPanel(graphData);
-  renderHashPanel();
-  if (selectedCommId != null) openEspaceFiche(selectedCommId);
+  refreshHashtagUi();
+}
+
+function toggleHashtagFilter(tag) {
+  const t = tag ? String(tag).toLowerCase() : null;
+  if (!t) return;
+  if (activeHashtag === t) clearHashtagFilter();
+  else setHashtagFilter(t);
 }
 
 function setHashtagFilter(tag) {
   if (tag && !communityColorModeActive()) return;
   activeHashtag = tag ? String(tag).toLowerCase() : null;
   if (!activeHashtag) {
+    lastHighlightFilter = null;
     applyNodeHighlight(null);
   } else {
     const accounts = accountsForHashtag(activeHashtag);
@@ -1156,21 +1169,25 @@ function setHashtagFilter(tag) {
       }
     }
     // Highlight = comptes réels ; communautés seulement en secours (pas de CSV)
-    applyNodeHighlight({
+    const filter = {
       accounts,
       comms: accounts.size ? new Set() : comms,
       tag: activeHashtag,
       nAcc: Number(discourseData?.tag_n_accounts?.[activeHashtag]) || accounts.size,
-    });
-    if (selectedCommId == null && comms.size) {
-      selectedCommId = [...comms][0];
+    };
+    lastHighlightFilter = filter;
+    applyNodeHighlight(filter);
+    // Aligner la communauté ouverte sur un pôle où le # est distinctif
+    if (comms.size) {
+      const prefer = [...comms];
+      if (selectedCommId == null || !comms.has(Number(selectedCommId))) {
+        selectedCommId = prefer[0];
+      }
     }
   }
   if (viewMode !== 'analyses') setViewMode('analyses');
   else openHashPanel();
-  if (graphData) renderCommPanel(graphData);
-  if (selectedCommId != null) openEspaceFiche(selectedCommId);
-  else renderHashPanel();
+  refreshHashtagUi();
 }
 
 /** Couleur de surlignage # — distincte des palettes Louvain / RT. */
@@ -1186,16 +1203,29 @@ function applyNodeHighlight(filter) {
   const sizeAttr = pointsMesh.geometry.attributes.size;
   const n = graphData.nodes.length;
   if (!filter) {
+    lastHighlightFilter = null;
+    lineColorsDimmed = false;
     col.set(base);
     pointsMesh.geometry.attributes.color.needsUpdate = true;
     if (sizeAttr && nodeSizesBase) {
       sizeAttr.array.set(nodeSizesBase);
       sizeAttr.needsUpdate = true;
     }
-    if (lineMat && lineColorsBase) applyLinkLight(P.linkLight);
-    lineColorsDimmed = false;
+    // Restaurer la luminosité des liens (sans branche filtre #)
+    if (lineMat && lineColorsBase && lineGeo) {
+      const lc = lineGeo.attributes.color.array;
+      const k = P.linkLight;
+      for (let i = 0; i < lineColorsBase.length; i++) lc[i] = lineColorsBase[i] * k;
+      lineGeo.attributes.color.needsUpdate = true;
+      lineMat.opacity = k * P.opacity;
+      lineMat.visible = k > 0.0005;
+      if (compassEnabled) {
+        lineMat.opacity = Math.min(lineMat.opacity, P.linkLight * P.opacity * 0.28);
+      }
+    }
     return;
   }
+  lastHighlightFilter = filter;
   const accounts = filter.accounts || new Set();
   const comms = filter.comms || new Set();
   const preferAccounts = accounts.size > 0;
@@ -1225,37 +1255,42 @@ function applyNodeHighlight(filter) {
 
   if (lineMat && lineColorsBase && lineGeo) {
     const lc = lineGeo.attributes.color.array;
-    const baseL = lineColorsBase;
-    const linkK = Math.max(P.linkLight, 0.05);
+    // Intensité pilotée par le curseur « Lumière liens » — seuls les liens # restent allumés
+    const linkK = Math.max(P.linkLight, 0.02);
     const nVert = lc.length / 3;
-    if (lineEdgeA && lineEdgeB && lineEdgeA.length === nVert && nOn > 0) {
+    const hasEnds = lineEdgeA && lineEdgeB && lineEdgeA.length === nVert;
+    if (hasEnds && nOn > 0) {
       for (let v = 0, o = 0; v < nVert; v++, o += 3) {
         const a = lineEdgeA[v];
         const b = lineEdgeB[v];
-        // Lien visible si les deux extrémités sont matchées (sous-graphe #)
-        // sinon un seul bout : faible halo ; sinon éteint
         const ha = a >= 0 && onNode[a] > 0;
         const hb = b >= 0 && onNode[b] > 0;
-        let kMul = 0.03;
-        if (ha && hb) kMul = 1.35;
-        else if (ha || hb) kMul = 0.22;
         if (ha && hb) {
-          lc[o] = HASH_EDGE[0] * linkK * kMul;
-          lc[o + 1] = HASH_EDGE[1] * linkK * kMul;
-          lc[o + 2] = HASH_EDGE[2] * linkK * kMul;
+          // Sous-graphe # : remplace la lumière communauté (pas de superposition)
+          const k = linkK * 1.45;
+          lc[o] = HASH_EDGE[0] * k;
+          lc[o + 1] = HASH_EDGE[1] * k;
+          lc[o + 2] = HASH_EDGE[2] * k;
+        } else if (ha || hb) {
+          const k = linkK * 0.12;
+          lc[o] = HASH_EDGE[0] * k;
+          lc[o + 1] = HASH_EDGE[1] * k;
+          lc[o + 2] = HASH_EDGE[2] * k;
         } else {
-          lc[o] = baseL[o] * linkK * kMul;
-          lc[o + 1] = baseL[o + 1] * linkK * kMul;
-          lc[o + 2] = baseL[o + 2] * linkK * kMul;
+          // Éteint : pas de teinte Louvain résiduelle (AdditiveBlending)
+          lc[o] = 0;
+          lc[o + 1] = 0;
+          lc[o + 2] = 0;
         }
       }
-      lineMat.opacity = Math.min(0.6, P.opacity * 2.4);
+      lineMat.opacity = Math.min(0.72, Math.max(0.08, P.opacity * 2.6) * Math.max(linkK, 0.15));
     } else {
-      const dim = 0.1;
-      for (let i = 0; i < baseL.length; i++) lc[i] = baseL[i] * linkK * dim;
-      lineMat.opacity = linkK * P.opacity * 0.3;
+      // Pas d’index d’arêtes : éteint tout (évite faux « glow » communauté)
+      for (let i = 0; i < lc.length; i++) lc[i] = 0;
+      lineMat.opacity = 0.05;
     }
     lineGeo.attributes.color.needsUpdate = true;
+    lineMat.visible = P.linkLight > 0.0005;
     lineColorsDimmed = true;
   }
 }
@@ -1317,7 +1352,7 @@ function openEspaceFiche(commId) {
     espaceFicheEl.classList.remove('open');
   });
   espaceFicheEl.querySelectorAll('#ficheTags .tag-chip').forEach((btn) => {
-    btn.addEventListener('click', () => setHashtagFilter(btn.dataset.tag));
+    btn.addEventListener('click', () => toggleHashtagFilter(btn.dataset.tag));
   });
   document.querySelectorAll('#commList .comm-row').forEach((row) => {
     row.classList.toggle('selected', Number(row.dataset.commId) === selectedCommId);
@@ -1818,8 +1853,7 @@ function renderCommPanel(data) {
       btn.addEventListener('click', (ev) => {
         ev.stopPropagation();
         selectedCommId = Number(row.id);
-        setHashtagFilter(btn.dataset.tag);
-        openEspaceFiche(row.id);
+        toggleHashtagFilter(btn.dataset.tag);
       });
     });
     list.appendChild(el);
@@ -2344,13 +2378,9 @@ function applyLinkLight(level = P.linkLight) {
   const slider = document.getElementById('linkLight');
   if (slider && slider.value !== String(P.linkLight)) slider.value = String(P.linkLight);
   if (!lineGeo || !lineColorsBase || !lineMat) return;
-  if (lineColorsDimmed && activeHashtag) {
-    const col = lineGeo.attributes.color.array;
-    const dim = 0.18;
-    for (let i = 0; i < lineColorsBase.length; i++) col[i] = lineColorsBase[i] * P.linkLight * dim;
-    lineGeo.attributes.color.needsUpdate = true;
-    lineMat.opacity = P.linkLight * P.opacity * 0.45;
-    lineMat.visible = P.linkLight > 0.0005;
+  // Filtre # actif : le curseur module l’intensité du sous-graphe, sans restaurer Louvain
+  if (activeHashtag && lastHighlightFilter) {
+    applyNodeHighlight(lastHighlightFilter);
     return;
   }
   const col = lineGeo.attributes.color.array;
@@ -2566,12 +2596,17 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   if (activeHashtag) {
     const accounts = accountsForHashtag(activeHashtag);
     const comms = communitiesForHashtag(activeHashtag);
-    applyNodeHighlight({
+    const filter = {
       accounts,
       comms: accounts.size ? new Set() : comms,
       tag: activeHashtag,
-    });
-  } else applyNodeHighlight(null);
+    };
+    lastHighlightFilter = filter;
+    applyNodeHighlight(filter);
+  } else {
+    lastHighlightFilter = null;
+    applyNodeHighlight(null);
+  }
   return true;
 }
 
@@ -3041,6 +3076,7 @@ async function loadCorpus(corp) {
   currentCorpusId = corp.id;
   selectedCommId = null;
   activeHashtag = null;
+  lastHighlightFilter = null;
   espaceFicheEl?.classList.remove('open');
   if (viewMode !== 'analyses') closeHashPanel();
   updateGraphModeButtons();
