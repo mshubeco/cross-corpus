@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Connectomes — cross_corpus</title>
-  <!-- connectome-ui v20261022h : # ouvre panneau hashtags à sélectionner -->
+  <!-- connectome-ui v20261022i : Distinction RT/interactions + légende HUD -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; color: #ccc; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
@@ -90,7 +90,7 @@
     #hud {
       position: fixed; top: 12px; left: 12px; z-index: 5;
       background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 10px; padding: 12px 14px; width: 248px;
+      border-radius: 10px; padding: 12px 14px; width: 268px;
       font-size: 11px; color: #8b93a0;
     }
     #hud b, #commPanel b {
@@ -168,12 +168,12 @@
       font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase;
       color: #ffd59a; font-weight: 700; margin-bottom: 6px;
     }
-    #colorModeBtns { display: flex; gap: 5px; }
+    #colorModeBtns { display: flex; flex-direction: column; gap: 5px; }
     #colorModeBtns .color-btn {
-      flex: 1; border: 1px solid rgba(255,255,255,0.18);
+      width: 100%; border: 1px solid rgba(255,255,255,0.18);
       background: rgba(0,0,0,0.45); color: #d0d6e0;
-      border-radius: 6px; padding: 8px 6px; font-size: 11px; font-weight: 700;
-      cursor: pointer; line-height: 1.2;
+      border-radius: 6px; padding: 8px 8px; font-size: 11px; font-weight: 700;
+      cursor: pointer; line-height: 1.25; text-align: left;
     }
     #colorModeBtns .color-btn:hover { color: #fff; border-color: rgba(255,255,255,0.28); }
     #colorModeBtns .color-btn.active[data-mode="community"] {
@@ -182,7 +182,30 @@
     #colorModeBtns .color-btn.active[data-mode="rt_classes"] {
       color: #fff8e8; background: rgba(255,140,40,0.4); border-color: rgba(255,180,80,0.7);
     }
+    #rtColorLegend {
+      display: none; margin-top: 8px; padding-top: 8px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    #rtColorLegend.visible { display: block; }
+    #rtColorLegend .leg-title {
+      font-size: 9.5px; letter-spacing: 0.05em; text-transform: uppercase;
+      color: #e8c090; font-weight: 700; margin-bottom: 6px;
+    }
+    #rtColorLegend .leg-row {
+      display: flex; align-items: flex-start; gap: 8px;
+      margin-top: 5px; color: #b7c0cc; font-size: 10.5px; line-height: 1.3;
+    }
+    #rtColorLegend .sw {
+      width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; margin-top: 1px;
+      box-shadow: 0 0 8px rgba(255,255,255,0.12);
+    }
+    #rtColorLegend .sw.ix { background: #ff7a0d; box-shadow: 0 0 10px rgba(255,122,13,0.45); }
+    #rtColorLegend .sw.mix { background: #d947f2; box-shadow: 0 0 10px rgba(217,71,242,0.4); }
+    #rtColorLegend .sw.rt { background: #2a4a9a; box-shadow: 0 0 10px rgba(42,74,154,0.45); }
+    #rtColorLegend .leg-row b { color: #e8eef7; font-weight: 650; }
+    #rtColorLegend .leg-row .thr { color: #7a8494; font-weight: 500; }
     #edgeColorHint { margin-top: 6px; margin-bottom: 0; }
+    #edgeColorHint.hidden { display: none; }
     #exportBtn {
       margin-top: 10px; width: 100%; padding: 8px 10px; border: 0; border-radius: 6px;
       background: #1a4a7a; color: #e8eef7; font-size: 11px; font-weight: 600;
@@ -407,7 +430,7 @@
       <div id="graphMode" role="tablist" aria-label="Interactions du graphe">
         <button type="button" class="mode active" data-graph="all" id="graphModeAll">Toutes interactions</button>
         <button type="button" class="mode" data-graph="rt" id="graphModeRt">RT</button>
-        <button type="button" class="mode" data-graph="rt_classes" id="graphModeRtClasses" title="Couleur des liens selon part RT (≤30 % / mixte / ≥70 %)">Classes RT</button>
+        <button type="button" class="mode" data-graph="rt_classes" id="graphModeRtClasses" title="Couleur des liens : interactions (≤30 % RT) / mixtes / RT (≥70 %)">Distinction RT / interactions</button>
         <a id="analysesLink" class="mode mode-link" href="../analyses/ebola.html" title="Page analyses complète (nouvel onglet)" target="_blank" rel="noopener noreferrer">Analyses</a>
         <button type="button" class="mode mode-analyses" data-mode="analyses" id="hashModeBtn" title="Surligner le graphe par hashtag distinctif">#</button>
         <a id="fluxLink" class="mode mode-link" href="../flux-continu/?corpus=ebola" title="Flux continu (fenêtre 3j · FA2)">Flux continu</a>
@@ -434,13 +457,19 @@
   <aside id="hud">
     <b>Connectome</b>
     <div id="stats">—</div>
-    <div id="colorModeBlock" title="v20261022g">
+    <div id="colorModeBlock" title="v20261022i">
       <div class="cmlabel">Couleurs des liens</div>
       <div id="colorModeBtns" role="group" aria-label="Couleurs des liens">
         <button type="button" class="color-btn active" data-mode="community" id="hudColorCommunity">Communautés</button>
-        <button type="button" class="color-btn" data-mode="rt_classes" id="hudColorRtClasses">Classes RT</button>
+        <button type="button" class="color-btn" data-mode="rt_classes" id="hudColorRtClasses">Distinction RT / interactions</button>
       </div>
-      <div class="nav-hint" id="edgeColorHint">Ambre / magenta / bleu = part RT du lien</div>
+      <div id="rtColorLegend" aria-label="Légende Distinction RT / interactions">
+        <div class="leg-title">Légende des liens</div>
+        <div class="leg-row"><i class="sw ix" aria-hidden="true"></i><span><b>Interactions</b> · part RT ≤ 30&nbsp;%</span></div>
+        <div class="leg-row"><i class="sw mix" aria-hidden="true"></i><span><b>Mixtes</b> · 30–70&nbsp;% <span class="thr">RT</span></span></div>
+        <div class="leg-row"><i class="sw rt" aria-hidden="true"></i><span><b>RT</b> · part RT ≥ 70&nbsp;%</span></div>
+      </div>
+      <div class="nav-hint" id="edgeColorHint">Liens colorés par communauté des nœuds</div>
     </div>
     <div class="row"><span>Lumière liens</span><input id="linkLight" type="range" min="0" max="1" step="0.01" value="0.28"></div>
     <div class="row"><span>Bloom</span><input id="bloom" type="range" min="0" max="2.2" step="0.01" value="0.38"></div>
@@ -513,7 +542,7 @@ let currentCorpusId = null;
 let corporaList = [];
 const _graphParam = new URLSearchParams(location.search).get('graph');
 let graphMode = (_graphParam === 'rt' || _graphParam === 'rt_classes') ? _graphParam : 'all';
-/** Map "s|t" (indices du graphe ALL) → poids RT, pour le mode Classes RT. */
+/** Map "s|t" (indices du graphe ALL) → poids RT, pour Distinction RT / interactions. */
 let rtWeightByEdge = null;
 
 const RT_CLASS_IX_MAX = 0.30;
@@ -1357,13 +1386,15 @@ function updateGraphModeButtons() {
   document.querySelectorAll('#colorModeBtns .color-btn').forEach((b) => {
     b.classList.toggle('active', b.dataset.mode === modeKey);
   });
+  const legend = document.getElementById('rtColorLegend');
   const hint = document.getElementById('edgeColorHint');
+  const rtMode = graphMode === 'rt_classes';
+  legend?.classList.toggle('visible', rtMode);
   if (hint) {
-    hint.textContent = graphMode === 'rt_classes'
-      ? 'Ambre = interactions · magenta = mixtes · bleu = RT (≥70 %)'
-      : graphMode === 'rt'
-        ? 'Graphe RT seul · liens colorés par communauté'
-        : 'Liens colorés par communauté des nœuds';
+    hint.classList.toggle('hidden', rtMode);
+    hint.textContent = graphMode === 'rt'
+      ? 'Graphe RT seul · liens colorés par communauté'
+      : 'Liens colorés par communauté des nœuds';
   }
 }
 
@@ -1851,8 +1882,8 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   let modeLabel = data.meta?.interactions === 'rt' ? 'RT' : 'toutes interactions';
   if (graphMode === 'rt_classes') {
     modeLabel = rtWeightByEdge
-      ? 'classes RT (ambre / magenta / bleu)'
-      : 'classes RT indisponibles';
+      ? 'distinction RT / interactions'
+      : 'distinction RT / interactions indisponible';
   }
   document.getElementById('stats').textContent =
     `${modeLabel} · ${data.meta.n_nodes.toLocaleString('fr-FR')} nœuds · ${data.meta.n_edges.toLocaleString('fr-FR')} liens · ${P.strands}× hair`;
@@ -2313,7 +2344,7 @@ async function loadCorpus(corp) {
   syncCorpusUrl(corp.id);
   hideBootSplash();
   const modeBit = graphMode === 'rt' ? 'RT · '
-    : graphMode === 'rt_classes' ? 'Classes RT · ' : '';
+    : graphMode === 'rt_classes' ? 'Distinction RT/ix · ' : '';
   const cached = graphCache.has(cacheKeyFor(corp.id, graphMode));
   setGraphLoader({
     title: corp.label,
@@ -2376,7 +2407,7 @@ async function loadCorpus(corp) {
         if (!isCurrent()) return;
         rtWeightByEdge = buildRtWeightMap(data, rtData);
       } catch (err) {
-        console.warn('Classes RT indisponibles (graph_rt.json)', err);
+        console.warn('Distinction RT/interactions indisponible (graph_rt.json)', err);
         rtWeightByEdge = null;
       }
     }
@@ -2426,7 +2457,7 @@ async function loadCorpus(corp) {
     document.title = graphMode === 'rt'
       ? `Connectome RT — ${corp.label}`
       : graphMode === 'rt_classes'
-        ? `Connectome · Classes RT — ${corp.label}`
+        ? `Connectome · Distinction RT / interactions — ${corp.label}`
         : `Connectome — ${corp.label}`;
     hideGraphLoader();
     idle(600).then(() => warmBackgroundCaches(corp.id));
