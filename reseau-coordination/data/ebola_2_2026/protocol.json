@@ -1,0 +1,43 @@
+{
+  "corpus_id": "ebola_2_2026",
+  "label": "Ebola 2 · 2026",
+  "params": {
+    "alpha": 0.05,
+    "rule": "or",
+    "min_co_rt": 2,
+    "max_parent_rters": 80,
+    "pseudo_trunc": 100,
+    "seed": 42,
+    "fa2_iterations": 800
+  },
+  "citation": {
+    "short": "Serrano et al. 2009",
+    "full": "Serrano, M. Á., Boguñá, M., & Vespignani, A. (2009). Extracting the multiscale backbone of complex weighted networks. PNAS, 106(16), 6483–6488.",
+    "formula": "p_ij^(i) = (1 - w_ij/s_i)^(k_i-1) ; keep if p_u < α OR p_v < α"
+  },
+  "sources": [
+    {
+      "file": "Export_collecte_ebola_2_collect_20260922_175246_20260101-20260922_full_20260923_091544.csv",
+      "sha1_prefix": "016e3160f1b7ff50",
+      "bytes": 73511896
+    }
+  ],
+  "ingest_stats": {
+    "n_rows": 135603,
+    "n_rt": 88714,
+    "n_events": 88607,
+    "n_users": 29645,
+    "n_parents": 15000,
+    "n_real_parent": 39428,
+    "n_pseudo": 49286,
+    "n_skip": 0,
+    "pseudo_share": 0.555560565412449
+  },
+  "graph_stats": {
+    "n_edges_pre_serrano": 28457,
+    "n_edges_backbone": 787,
+    "n_nodes_backbone": 266
+  },
+  "generatedAt": "2026-10-22T09:49:41.303103+00:00",
+  "elapsed_s": 2.6
+}

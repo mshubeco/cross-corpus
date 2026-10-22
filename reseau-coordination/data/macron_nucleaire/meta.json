@@ -1,0 +1,71 @@
+{
+  "title": "Macron nucléaire · mars 2026",
+  "corpus_id": "macron_nucleaire",
+  "n_nodes": 272,
+  "n_edges": 870,
+  "n_edges_pre_serrano": 56531,
+  "layer": "co-RT",
+  "edgeDefinition": "parents retweetés en commun (distincts)",
+  "method": "Serrano disparity filter",
+  "alpha": 0.05,
+  "rule": "or",
+  "min_co_rt": 2,
+  "max_parent_rters": 80,
+  "formula": "p_ij^(i) = (1 - w_ij/s_i)^(k_i-1) ; keep if p_u < α OR p_v < α",
+  "citation": "Serrano, M. Á., Boguñá, M., & Vespignani, A. (2009). Extracting the multiscale backbone of complex weighted networks. PNAS, 106(16), 6483–6488.",
+  "vocabulary": "coordination d'amplification / backbone Serrano — pas une preuve d'inauthenticité",
+  "fa2_iterations": 800,
+  "layout_engine": "fa2_modified",
+  "topCommunities": [
+    {
+      "id": 0,
+      "hub": "pp75018_philou",
+      "color": "#73c000",
+      "n": 114
+    },
+    {
+      "id": 1,
+      "hub": "m75sylvie",
+      "color": "#ff8000",
+      "n": 55
+    },
+    {
+      "id": 2,
+      "hub": "talmoor56",
+      "color": "#2563eb",
+      "n": 48
+    },
+    {
+      "id": 3,
+      "hub": "soizicquem",
+      "color": "#de81ff",
+      "n": 27
+    },
+    {
+      "id": 4,
+      "hub": "aimeczen",
+      "color": "#c4a574",
+      "n": 13
+    },
+    {
+      "id": 5,
+      "hub": "protestmusica",
+      "color": "#ff497c",
+      "n": 3
+    },
+    {
+      "id": 6,
+      "hub": "la26701lagadec",
+      "color": "#00bd94",
+      "n": 2
+    },
+    {
+      "id": 7,
+      "hub": "cath_rn95",
+      "color": "#b45309",
+      "n": 2
+    }
+  ],
+  "generatedAt": "2026-10-22T09:49:54.318201+00:00",
+  "elapsed_s": 4.2
+}

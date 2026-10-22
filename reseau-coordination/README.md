@@ -1,0 +1,29 @@
+# Réseau de coordination
+
+Page sœur du [connectome](../connectome/) : graphe de **co-retweet** filtré par le filtre de disparité de **Serrano et al. 2009**.
+
+URL : `https://mshubeco.github.io/cross-corpus/reseau-coordination/?corpus=<id>`
+
+## Méthode
+
+| Paramètre | Valeur |
+|-----------|--------|
+| Couche | co-RT (parents retweetés en commun) |
+| Seuil candidats | `min_co_rt ≥ 2` |
+| Cap parent viral | ≤ 80 RTers (aligné MCA) |
+| Filtre | Serrano disparity, α = **0,05**, règle **OR** |
+| Formule | \(p_{ij}^{(i)} = (1 - w_{ij}/s_i)^{k_i-1}\) ; garder si \(p_u < \alpha\) ou \(p_v < \alpha\) |
+
+**Citation :** Serrano, M. Á., Boguñá, M., & Vespignani, A. (2009). Extracting the multiscale backbone of complex weighted networks. *PNAS*, 106(16), 6483–6488.
+
+Vocabulaire affiché : *coordination d’amplification / backbone* — **pas** une preuve d’inauthenticité.
+
+## Pipeline
+
+`Desktop/cross_corpus/pipelines/coordination_cort_serrano/`
+
+```bat
+py -3.13 scripts/build_corpus.py --all
+```
+
+Chaque corpus produit `data/<id>/graph.json`, `meta.json`, `protocol.json`.

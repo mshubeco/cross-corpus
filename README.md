@@ -15,6 +15,7 @@ Après push : **Settings → Pages → Deploy from branch `main` / root**.
 | Connectome HMPV FR | [`/connectome/?corpus=hmpv_fr`](https://mshubeco.github.io/cross-corpus/connectome/?corpus=hmpv_fr) |
 | Connectome Canicule | [`/connectome/?corpus=canicule`](https://mshubeco.github.io/cross-corpus/connectome/?corpus=canicule) |
 | Flux continu (tous corpus) | [`/flux-continu/`](https://mshubeco.github.io/cross-corpus/flux-continu/?corpus=ebola) — critères [HEAT flux continu](https://mshubeco.github.io/heat-flux-continu/) (fenêtre 3j · FA2 · Procrustes · Louvain) |
+| Réseau de coordination | [`/reseau-coordination/`](https://mshubeco.github.io/cross-corpus/reseau-coordination/?corpus=ebola) — co-RT + filtre de disparité Serrano et al. 2009 (α=0,05, OR) |
 | Flux intercommunautaires | [`/analyses/intercomm/`](https://mshubeco.github.io/cross-corpus/analyses/intercomm/ebola.html) |
 | Intersection 3 corpus santé | [`/analyses/health3_overlap.html`](https://mshubeco.github.io/cross-corpus/analyses/health3_overlap.html) |
 | Comptes MCA Track B | [`/analyses/comptes_selectionnes.html`](https://mshubeco.github.io/cross-corpus/analyses/comptes_selectionnes.html) |

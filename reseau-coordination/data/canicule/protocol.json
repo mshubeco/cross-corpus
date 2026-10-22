@@ -1,0 +1,48 @@
+{
+  "corpus_id": "canicule",
+  "label": "Canicule · mai–juin 2026",
+  "params": {
+    "alpha": 0.05,
+    "rule": "or",
+    "min_co_rt": 2,
+    "max_parent_rters": 80,
+    "pseudo_trunc": 100,
+    "seed": 42,
+    "fa2_iterations": 800
+  },
+  "citation": {
+    "short": "Serrano et al. 2009",
+    "full": "Serrano, M. Á., Boguñá, M., & Vespignani, A. (2009). Extracting the multiscale backbone of complex weighted networks. PNAS, 106(16), 6483–6488.",
+    "formula": "p_ij^(i) = (1 - w_ij/s_i)^(k_i-1) ; keep if p_u < α OR p_v < α"
+  },
+  "sources": [
+    {
+      "file": "Export_heat_full_20260630_firt_shot.csv",
+      "sha1_prefix": "7b8d136392622154",
+      "bytes": 328598671
+    },
+    {
+      "file": "Export_collecte_heat_P3_full_20260720.csv",
+      "sha1_prefix": "41dfea51fd9e83f6",
+      "bytes": 317329616
+    }
+  ],
+  "ingest_stats": {
+    "n_rows": 1840691,
+    "n_rt": 1302223,
+    "n_events": 1301640,
+    "n_users": 270634,
+    "n_parents": 62031,
+    "n_real_parent": 655232,
+    "n_pseudo": 646991,
+    "n_skip": 0,
+    "pseudo_share": 0.49683579540524164
+  },
+  "graph_stats": {
+    "n_edges_pre_serrano": 246102,
+    "n_edges_backbone": 3905,
+    "n_nodes_backbone": 1265
+  },
+  "generatedAt": "2026-10-22T09:50:59.459361+00:00",
+  "elapsed_s": 27.4
+}

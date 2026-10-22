@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Réseau de coordination — cross_corpus</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #000; color: #ccc;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+    #c { position: fixed; inset: 0; }
+    canvas { display: block; width: 100%; height: 100%; }
+    #labels { position: fixed; inset: 0; pointer-events: none; z-index: 2; overflow: hidden; }
+    .label {
+      position: absolute; transform: translate(-50%, -130%);
+      color: #fff; letter-spacing: 0.015em; font-size: 11px;
+      text-shadow: 0 0 6px rgba(0,0,0,0.85), 0 1px 2px rgba(0,0,0,0.7);
+      white-space: nowrap; opacity: 0.95; line-height: 1.05;
+      pointer-events: auto; cursor: pointer;
+    }
+    .label:hover { filter: brightness(1.15); }
+    #corpusNav {
+      position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 12;
+      display: flex; gap: 2px; flex-wrap: wrap; justify-content: center;
+      max-width: min(920px, calc(100vw - 560px));
+      padding: 3px; background: rgba(8,10,14,0.82); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px;
+    }
+    #corpusNav a {
+      border: 0; background: transparent; color: #b7c0cc; font: inherit; font-size: 11.5px; font-weight: 600;
+      padding: 6px 11px; border-radius: 999px; cursor: pointer; text-decoration: none; white-space: nowrap;
+    }
+    #corpusNav a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+    #corpusNav a.active { color: #fff; background: #2563eb; }
+    #corpusNav a.back {
+      color: #9aa3b0; font-weight: 550;
+      border-left: 1px solid rgba(255,255,255,0.14);
+      margin-left: 2px; padding-left: 12px; border-radius: 0 999px 999px 0;
+    }
+    #hud {
+      position: fixed; top: 12px; left: 12px; z-index: 5; width: 280px;
+      background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; padding: 12px 14px; font-size: 11px; color: #8b93a0;
+    }
+    #hud b {
+      color: #c5ccd6; font-weight: 600; display: block; margin-bottom: 4px;
+      font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    #hud .method {
+      color: #9bb07a; font-size: 10.5px; line-height: 1.35; margin-bottom: 8px;
+    }
+    #hud .note {
+      color: #6a7380; font-size: 10px; line-height: 1.4; margin-top: 8px;
+      border-top: 1px solid rgba(255,255,255,0.06); padding-top: 8px;
+    }
+    #stats { color: #c5ccd6; font-variant-numeric: tabular-nums; line-height: 1.55; }
+    .row { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+    .row span { width: 64px; flex-shrink: 0; }
+    .row input { flex: 1; accent-color: #8ab4ff; min-width: 0; }
+    a.hud-link {
+      display: inline-flex; margin-bottom: 10px; padding: 6px 10px; border-radius: 7px;
+      border: 1px solid rgba(255,255,255,0.12); background: rgba(37,99,235,0.14);
+      color: #c5d4f0; text-decoration: none; font-size: 11px; font-weight: 600;
+    }
+    a.hud-link:hover { background: rgba(37,99,235,0.28); color: #fff; }
+    #loading {
+      position: fixed; inset: 0; z-index: 20; display: grid; place-items: center;
+      background: #000; color: #9aa3b0; font-size: 12px;
+    }
+    #loading.hidden { display: none; }
+    #loadingCard {
+      min-width: min(340px, calc(100vw - 40px)); padding: 18px 20px;
+      border-radius: 14px; background: rgba(8,10,14,0.92);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    #loadingCard .t { color: #e8eef7; font-weight: 600; margin-bottom: 4px; }
+    #tooltip {
+      position: fixed; z-index: 15; pointer-events: none; display: none;
+      background: rgba(8,10,14,0.92); border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 8px; padding: 8px 10px; font-size: 11px; color: #e8eef7;
+    }
+  </style>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="loading" aria-live="polite">
+    <div id="loadingCard">
+      <div class="t">Réseau de coordination</div>
+      <div id="ldMsg">Préparation…</div>
+    </div>
+  </div>
+  <div id="c"></div>
+  <div id="labels"></div>
+  <nav id="corpusNav" aria-label="Corpus"></nav>
+  <aside id="hud">
+    <a class="hud-link" id="backConnectome" href="../connectome/">← Connectome</a>
+    <b>Réseau de coordination</b>
+    <div class="method">co-RT · Serrano α=0,05 (OR)</div>
+    <div id="stats">—</div>
+    <div class="row"><span>Lumière</span><input id="linkLight" type="range" min="0" max="1" step="0.01" value="0.35"></div>
+    <div class="row"><span>Opacité</span><input id="op" type="range" min="0" max="0.55" step="0.005" value="0.12"></div>
+    <div class="row"><span>Labels</span><input id="nLabels" type="range" min="0" max="80" step="1" value="36"></div>
+    <div class="note">
+      Backbone de disparité (Serrano et al. 2009). Signal de coordination d’amplification —
+      pas une preuve d’inauthenticité.
+    </div>
+  </aside>
+  <div id="tooltip"></div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+
+const wrap = document.getElementById('c');
+const labelsEl = document.getElementById('labels');
+const loading = document.getElementById('loading');
+const ldMsg = document.getElementById('ldMsg');
+const tip = document.getElementById('tooltip');
+const nav = document.getElementById('corpusNav');
+const statsEl = document.getElementById('stats');
+const backEl = document.getElementById('backConnectome');
+
+const P = { linkLight: 0.35, opacity: 0.12, nLabels: 36, bloom: 0.42 };
+
+let corpora = [];
+let currentId = null;
+let graph = null;
+let nodes = [];
+let edges = [];
+let scene, camera, renderer, controls, composer, bloomPass;
+let lineMat, pointsMesh, lineGeo;
+let animId = 0;
+
+function shortLabel(lab) {
+  return String(lab || '').split('·')[0].trim();
+}
+
+function xUrl(handle) {
+  const h = String(handle || '').replace(/^@/, '').trim();
+  return h ? `https://x.com/${encodeURIComponent(h)}` : null;
+}
+
+function lift(c, k = 1.15) {
+  return [(c[0] / 255) * k, (c[1] / 255) * k, (c[2] / 255) * k];
+}
+
+function initThree() {
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x000000);
+  camera = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 0.1, 20000);
+  camera.position.set(0, 0, 1100);
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setSize(innerWidth, innerHeight);
+  wrap.appendChild(renderer.domElement);
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.08;
+  controls.minDistance = 80;
+  controls.maxDistance = 4000;
+
+  composer = new EffectComposer(renderer);
+  composer.addPass(new RenderPass(scene, camera));
+  bloomPass = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), P.bloom, 0.4, 0.2);
+  composer.addPass(bloomPass);
+
+  window.addEventListener('resize', () => {
+    camera.aspect = innerWidth / innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth, innerHeight);
+    composer.setSize(innerWidth, innerHeight);
+  });
+
+  renderer.domElement.addEventListener('pointermove', onPointerMove);
+  renderer.domElement.addEventListener('click', onClick);
+  labelsEl.addEventListener('click', (e) => {
+    const el = e.target.closest('.label');
+    if (!el) return;
+    const u = xUrl(el.dataset.handle);
+    if (u) window.open(u, '_blank', 'noopener,noreferrer');
+  });
+
+  function loop() {
+    animId = requestAnimationFrame(loop);
+    controls.update();
+    composer.render();
+    updateLabels();
+  }
+  loop();
+}
+
+function clearScene() {
+  while (scene.children.length) scene.remove(scene.children[0]);
+  labelsEl.innerHTML = '';
+  lineGeo = null;
+  lineMat = null;
+  pointsMesh = null;
+}
+
+function buildScene(data) {
+  clearScene();
+  nodes = data.nodes || [];
+  edges = data.edges || [];
+  const maxW = Math.max(1, ...edges.map((e) => e.w || 1));
+  const positions = [];
+  const colors = [];
+  for (const e of edges) {
+    const a = nodes[e.s];
+    const b = nodes[e.t];
+    if (!a || !b) continue;
+    const ca = lift(a.c, 1.2);
+    const cb = lift(b.c, 1.2);
+    const wNorm = Math.pow(e.w / maxW, 0.45);
+    const bright = 0.35 + 0.55 * wNorm;
+    positions.push(a.x, a.y, 0, b.x, b.y, 0);
+    colors.push(
+      ca[0] * bright, ca[1] * bright, ca[2] * bright,
+      cb[0] * bright, cb[1] * bright, cb[2] * bright
+    );
+  }
+  lineGeo = new THREE.BufferGeometry();
+  lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  lineGeo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+  lineMat = new THREE.LineBasicMaterial({
+    vertexColors: true, transparent: true, opacity: P.opacity,
+    blending: THREE.AdditiveBlending, depthWrite: false,
+  });
+  const lines = new THREE.LineSegments(lineGeo, lineMat);
+  lines.frustumCulled = false;
+  scene.add(lines);
+
+  const n = nodes.length;
+  const nPos = new Float32Array(n * 3);
+  const nCol = new Float32Array(n * 3);
+  const nSize = new Float32Array(n);
+  const maxDeg = Math.max(1, ...nodes.map((x) => x.deg || 1));
+  for (let i = 0; i < n; i++) {
+    const nd = nodes[i];
+    nPos[i * 3] = nd.x;
+    nPos[i * 3 + 1] = nd.y;
+    nPos[i * 3 + 2] = 0.2;
+    const c = lift(nd.c, 1.12);
+    nCol[i * 3] = c[0]; nCol[i * 3 + 1] = c[1]; nCol[i * 3 + 2] = c[2];
+    nSize[i] = 3.5 + 10 * Math.sqrt((nd.deg || 1) / maxDeg);
+  }
+  const pGeo = new THREE.BufferGeometry();
+  pGeo.setAttribute('position', new THREE.BufferAttribute(nPos, 3));
+  pGeo.setAttribute('color', new THREE.BufferAttribute(nCol, 3));
+  pGeo.setAttribute('size', new THREE.BufferAttribute(nSize, 1));
+  const pMat = new THREE.ShaderMaterial({
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    uniforms: { uPR: { value: renderer.getPixelRatio() }, uAlpha: { value: 0.92 } },
+    vertexShader: `
+      attribute float size; attribute vec3 color; varying vec3 vC;
+      uniform float uPR;
+      void main() {
+        vC = color;
+        vec4 mv = modelViewMatrix * vec4(position,1.0);
+        gl_PointSize = size * uPR;
+        gl_Position = projectionMatrix * mv;
+      }`,
+    fragmentShader: `
+      varying vec3 vC; uniform float uAlpha;
+      void main() {
+        float d = length(gl_PointCoord - 0.5);
+        float a = smoothstep(0.45, 0.0, d) * uAlpha;
+        gl_FragColor = vec4(vC, a);
+        if (a < 0.01) discard;
+      }`,
+  });
+  pointsMesh = new THREE.Points(pGeo, pMat);
+  pointsMesh.frustumCulled = false;
+  scene.add(pointsMesh);
+
+  if (nodes.length) {
+    const xs = nodes.map((n) => n.x);
+    const ys = nodes.map((n) => n.y);
+    const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
+    const cy = (Math.min(...ys) + Math.max(...ys)) / 2;
+    controls.target.set(cx, cy, 0);
+    camera.position.set(cx, cy, 1100);
+  }
+  rebuildLabels();
+}
+
+function rebuildLabels() {
+  labelsEl.innerHTML = '';
+  const order = [...nodes.keys()].sort((a, b) => (nodes[b].deg || 0) - (nodes[a].deg || 0));
+  const take = order.slice(0, P.nLabels);
+  for (const i of take) {
+    const nd = nodes[i];
+    const el = document.createElement('div');
+    el.className = 'label';
+    el.textContent = '@' + (nd.l || '');
+    el.dataset.handle = nd.l || '';
+    el.dataset.i = String(i);
+    labelsEl.appendChild(el);
+  }
+}
+
+function updateLabels() {
+  const kids = labelsEl.children;
+  for (const el of kids) {
+    const i = Number(el.dataset.i);
+    const nd = nodes[i];
+    if (!nd) continue;
+    const v = new THREE.Vector3(nd.x, nd.y, 0.2).project(camera);
+    const x = (v.x * 0.5 + 0.5) * innerWidth;
+    const y = (-v.y * 0.5 + 0.5) * innerHeight;
+    if (v.z > 1 || x < -40 || y < -20 || x > innerWidth + 40 || y > innerHeight + 20) {
+      el.style.display = 'none';
+    } else {
+      el.style.display = 'block';
+      el.style.left = `${x}px`;
+      el.style.top = `${y}px`;
+    }
+  }
+}
+
+function worldFromClient(cx, cy) {
+  const rect = renderer.domElement.getBoundingClientRect();
+  const ndc = new THREE.Vector2(
+    ((cx - rect.left) / rect.width) * 2 - 1,
+    -((cy - rect.top) / rect.height) * 2 + 1
+  );
+  const ray = new THREE.Raycaster();
+  ray.setFromCamera(ndc, camera);
+  const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+  const hit = new THREE.Vector3();
+  ray.ray.intersectPlane(plane, hit);
+  return hit;
+}
+
+function nearestNode(wx, wy, maxDist = 28) {
+  let best = -1, bestD = maxDist * maxDist;
+  for (let i = 0; i < nodes.length; i++) {
+    const dx = nodes[i].x - wx, dy = nodes[i].y - wy;
+    const d = dx * dx + dy * dy;
+    if (d < bestD) { bestD = d; best = i; }
+  }
+  return best;
+}
+
+function onPointerMove(ev) {
+  const w = worldFromClient(ev.clientX, ev.clientY);
+  const i = nearestNode(w.x, w.y);
+  if (i < 0) { tip.style.display = 'none'; return; }
+  const nd = nodes[i];
+  tip.style.display = 'block';
+  tip.style.left = `${ev.clientX + 12}px`;
+  tip.style.top = `${ev.clientY + 12}px`;
+  tip.textContent = `@${nd.l} · deg ${nd.deg}`;
+}
+
+function onClick(ev) {
+  const w = worldFromClient(ev.clientX, ev.clientY);
+  const i = nearestNode(w.x, w.y, 36);
+  if (i < 0) return;
+  const u = xUrl(nodes[i].l);
+  if (u) window.open(u, '_blank', 'noopener,noreferrer');
+}
+
+function setStats(meta) {
+  const pre = meta.n_edges_pre_serrano != null ? meta.n_edges_pre_serrano.toLocaleString('fr-FR') : '—';
+  statsEl.innerHTML = [
+    `<div>${meta.title || currentId}</div>`,
+    `<div>Nœuds backbone · <b style="color:#e8eef7">${(meta.n_nodes || 0).toLocaleString('fr-FR')}</b></div>`,
+    `<div>Arêtes Serrano · <b style="color:#e8eef7">${(meta.n_edges || 0).toLocaleString('fr-FR')}</b></div>`,
+    `<div>Arêtes pré-filtre · ${pre}</div>`,
+  ].join('');
+}
+
+function renderNav() {
+  nav.innerHTML = '';
+  for (const c of corpora) {
+    const a = document.createElement('a');
+    a.href = `?corpus=${encodeURIComponent(c.id)}`;
+    a.textContent = shortLabel(c.label);
+    a.className = c.id === currentId ? 'active' : '';
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      loadCorpus(c.id);
+    });
+    nav.appendChild(a);
+  }
+  const back = document.createElement('a');
+  back.className = 'back';
+  back.href = `../connectome/?corpus=${encodeURIComponent(currentId || 'ebola')}`;
+  back.textContent = 'Connectome';
+  nav.appendChild(back);
+}
+
+async function loadCorpus(id) {
+  const corp = corpora.find((c) => c.id === id) || corpora[0];
+  if (!corp) {
+    ldMsg.textContent = 'Aucun corpus dans corpora.json';
+    return;
+  }
+  currentId = corp.id;
+  loading.classList.remove('hidden');
+  ldMsg.textContent = `Chargement · ${shortLabel(corp.label)}…`;
+  renderNav();
+  backEl.href = `../connectome/?corpus=${encodeURIComponent(currentId)}`;
+  history.replaceState({ corpus: currentId }, '', `?corpus=${encodeURIComponent(currentId)}`);
+  document.title = `Coordination · ${shortLabel(corp.label)}`;
+
+  try {
+    const res = await fetch(corp.graph);
+    if (!res.ok) throw new Error(`HTTP ${res.status} — lancez le pipeline build_corpus.py`);
+    graph = await res.json();
+    setStats(graph.meta || {});
+    const nE = (graph.edges || []).length;
+    const nN = (graph.nodes || []).length;
+    if (!nN || !nE) {
+      clearScene();
+      statsEl.innerHTML += `<div style="margin-top:8px;color:#c9b27a">Aucun backbone Serrano (0 arête après α=0,05). Corpus trop petit ou signal trop faible.</div>`;
+      loading.classList.add('hidden');
+      return;
+    }
+    buildScene(graph);
+    loading.classList.add('hidden');
+  } catch (err) {
+    ldMsg.textContent = String(err.message || err);
+  }
+}
+
+document.getElementById('linkLight').addEventListener('input', (e) => {
+  P.linkLight = Number(e.target.value);
+  if (bloomPass) bloomPass.strength = 0.2 + P.linkLight * 0.7;
+});
+document.getElementById('op').addEventListener('input', (e) => {
+  P.opacity = Number(e.target.value);
+  if (lineMat) lineMat.opacity = P.opacity;
+});
+document.getElementById('nLabels').addEventListener('input', (e) => {
+  P.nLabels = Number(e.target.value);
+  rebuildLabels();
+});
+
+async function boot() {
+  initThree();
+  const res = await fetch('corpora.json');
+  corpora = await res.json();
+  const q = new URLSearchParams(location.search).get('corpus');
+  const start = corpora.find((c) => c.id === q)?.id || corpora[0]?.id;
+  await loadCorpus(start);
+}
+
+boot().catch((e) => { ldMsg.textContent = String(e); });
+</script>
+</body>
+</html>

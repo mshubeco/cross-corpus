@@ -1,0 +1,71 @@
+{
+  "title": "Ebola 2 · 2026",
+  "corpus_id": "ebola_2_2026",
+  "n_nodes": 266,
+  "n_edges": 787,
+  "n_edges_pre_serrano": 28457,
+  "layer": "co-RT",
+  "edgeDefinition": "parents retweetés en commun (distincts)",
+  "method": "Serrano disparity filter",
+  "alpha": 0.05,
+  "rule": "or",
+  "min_co_rt": 2,
+  "max_parent_rters": 80,
+  "formula": "p_ij^(i) = (1 - w_ij/s_i)^(k_i-1) ; keep if p_u < α OR p_v < α",
+  "citation": "Serrano, M. Á., Boguñá, M., & Vespignani, A. (2009). Extracting the multiscale backbone of complex weighted networks. PNAS, 106(16), 6483–6488.",
+  "vocabulary": "coordination d'amplification / backbone Serrano — pas une preuve d'inauthenticité",
+  "fa2_iterations": 800,
+  "layout_engine": "fa2_modified",
+  "topCommunities": [
+    {
+      "id": 0,
+      "hub": "dhego_malobi",
+      "color": "#73c000",
+      "n": 113
+    },
+    {
+      "id": 1,
+      "hub": "victorkalala24",
+      "color": "#ff8000",
+      "n": 55
+    },
+    {
+      "id": 2,
+      "hub": "congo__6",
+      "color": "#2563eb",
+      "n": 40
+    },
+    {
+      "id": 3,
+      "hub": "nkashamael26354",
+      "color": "#de81ff",
+      "n": 14
+    },
+    {
+      "id": 4,
+      "hub": "joemondesi63736",
+      "color": "#c4a574",
+      "n": 12
+    },
+    {
+      "id": 5,
+      "hub": "alexand39740511",
+      "color": "#ff497c",
+      "n": 9
+    },
+    {
+      "id": 6,
+      "hub": "steveboshibashi",
+      "color": "#00bd94",
+      "n": 3
+    },
+    {
+      "id": 7,
+      "hub": "kandasanza",
+      "color": "#b45309",
+      "n": 3
+    }
+  ],
+  "generatedAt": "2026-10-22T09:49:41.303103+00:00",
+  "elapsed_s": 2.6
+}

@@ -1,0 +1,43 @@
+{
+  "corpus_id": "hantavirus",
+  "label": "Hantavirus · mai 2026",
+  "params": {
+    "alpha": 0.05,
+    "rule": "or",
+    "min_co_rt": 2,
+    "max_parent_rters": 80,
+    "pseudo_trunc": 100,
+    "seed": 42,
+    "fa2_iterations": 800
+  },
+  "citation": {
+    "short": "Serrano et al. 2009",
+    "full": "Serrano, M. Á., Boguñá, M., & Vespignani, A. (2009). Extracting the multiscale backbone of complex weighted networks. PNAS, 106(16), 6483–6488.",
+    "formula": "p_ij^(i) = (1 - w_ij/s_i)^(k_i-1) ; keep if p_u < α OR p_v < α"
+  },
+  "sources": [
+    {
+      "file": "Export_dl_corpus_hantavirus_fr_mai_2026_20260505-20260520_full_20260824_114316.csv",
+      "sha1_prefix": "d0b2978a56daf811",
+      "bytes": 159670091
+    }
+  ],
+  "ingest_stats": {
+    "n_rows": 427069,
+    "n_rt": 381182,
+    "n_events": 380889,
+    "n_users": 87066,
+    "n_parents": 11279,
+    "n_real_parent": 5096,
+    "n_pseudo": 376086,
+    "n_skip": 0,
+    "pseudo_share": 0.9866310581297123
+  },
+  "graph_stats": {
+    "n_edges_pre_serrano": 48738,
+    "n_edges_backbone": 549,
+    "n_nodes_backbone": 262
+  },
+  "generatedAt": "2026-10-22T09:49:48.210204+00:00",
+  "elapsed_s": 6.8
+}

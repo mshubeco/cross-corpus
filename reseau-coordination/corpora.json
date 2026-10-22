@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ebola",
+    "label": "Ebola · mai 2026",
+    "graph": "data/ebola/graph.json"
+  },
+  {
+    "id": "ebola_2_2026",
+    "label": "Ebola 2 · 2026",
+    "graph": "data/ebola_2_2026/graph.json"
+  },
+  {
+    "id": "hantavirus",
+    "label": "Hantavirus · mai 2026",
+    "graph": "data/hantavirus/graph.json"
+  },
+  {
+    "id": "mpox",
+    "label": "Mpox · 2023–2026",
+    "graph": "data/mpox/graph.json"
+  },
+  {
+    "id": "macron_nucleaire",
+    "label": "Macron nucléaire · mars 2026",
+    "graph": "data/macron_nucleaire/graph.json"
+  },
+  {
+    "id": "hmpv",
+    "label": "HMPV · 2025",
+    "graph": "data/hmpv/graph.json"
+  },
+  {
+    "id": "hmpv_fr",
+    "label": "HMPV FR · 2025",
+    "graph": "data/hmpv_fr/graph.json"
+  },
+  {
+    "id": "canicule",
+    "label": "Canicule · mai–juin 2026",
+    "graph": "data/canicule/graph.json"
+  }
+]

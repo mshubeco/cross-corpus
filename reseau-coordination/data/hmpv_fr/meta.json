@@ -1,0 +1,22 @@
+{
+  "title": "HMPV FR · 2025",
+  "corpus_id": "hmpv_fr",
+  "n_nodes": 0,
+  "n_edges": 0,
+  "n_edges_pre_serrano": 11,
+  "layer": "co-RT",
+  "edgeDefinition": "parents retweetés en commun (distincts)",
+  "method": "Serrano disparity filter",
+  "alpha": 0.05,
+  "rule": "or",
+  "min_co_rt": 2,
+  "max_parent_rters": 80,
+  "formula": "p_ij^(i) = (1 - w_ij/s_i)^(k_i-1) ; keep if p_u < α OR p_v < α",
+  "citation": "Serrano, M. Á., Boguñá, M., & Vespignani, A. (2009). Extracting the multiscale backbone of complex weighted networks. PNAS, 106(16), 6483–6488.",
+  "vocabulary": "coordination d'amplification / backbone Serrano — pas une preuve d'inauthenticité",
+  "fa2_iterations": 800,
+  "layout_engine": "fa2_modified",
+  "topCommunities": [],
+  "generatedAt": "2026-10-22T09:50:32.062753+00:00",
+  "elapsed_s": 0.0
+}

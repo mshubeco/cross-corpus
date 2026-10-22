@@ -1,0 +1,43 @@
+{
+  "corpus_id": "hmpv_fr",
+  "label": "HMPV FR · 2025",
+  "params": {
+    "alpha": 0.05,
+    "rule": "or",
+    "min_co_rt": 2,
+    "max_parent_rters": 80,
+    "pseudo_trunc": 100,
+    "seed": 42,
+    "fa2_iterations": 800
+  },
+  "citation": {
+    "short": "Serrano et al. 2009",
+    "full": "Serrano, M. Á., Boguñá, M., & Vespignani, A. (2009). Extracting the multiscale backbone of complex weighted networks. PNAS, 106(16), 6483–6488.",
+    "formula": "p_ij^(i) = (1 - w_ij/s_i)^(k_i-1) ; keep if p_u < α OR p_v < α"
+  },
+  "sources": [
+    {
+      "file": "Export_padmen_hmpv_fr_20250101-20250630_full.csv",
+      "sha1_prefix": "080fef0f60ce7e87",
+      "bytes": 506601
+    }
+  ],
+  "ingest_stats": {
+    "n_rows": 1245,
+    "n_rt": 683,
+    "n_events": 681,
+    "n_users": 618,
+    "n_parents": 109,
+    "n_real_parent": 0,
+    "n_pseudo": 683,
+    "n_skip": 0,
+    "pseudo_share": 1.0
+  },
+  "graph_stats": {
+    "n_edges_pre_serrano": 11,
+    "n_edges_backbone": 0,
+    "n_nodes_backbone": 0
+  },
+  "generatedAt": "2026-10-22T09:50:32.062753+00:00",
+  "elapsed_s": 0.0
+}
