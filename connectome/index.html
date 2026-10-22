@@ -1186,6 +1186,18 @@ function updateGraphModeButtons() {
     b.classList.toggle('active', b.dataset.graph === graphMode && viewMode !== 'analyses');
   });
   hashModeBtn?.classList.toggle('active', viewMode === 'analyses');
+  const sel = document.getElementById('edgeColorMode');
+  if (sel) {
+    sel.value = graphMode === 'rt_classes' ? 'rt_classes' : 'community';
+  }
+  const hint = document.getElementById('edgeColorHint');
+  if (hint) {
+    hint.textContent = graphMode === 'rt_classes'
+      ? 'Ambre = interactions · magenta = mixtes · bleu = RT (≥70 %)'
+      : graphMode === 'rt'
+        ? 'Graphe RT seul · liens colorés par communauté'
+        : 'Liens colorés par communauté des nœuds';
+  }
 }
 
 function setGraphMode(mode) {
@@ -1196,6 +1208,15 @@ function setGraphMode(mode) {
   updateGraphModeButtons();
   const corp = corporaList.find((c) => c.id === currentCorpusId) || corporaList[0];
   if (corp) loadCorpus(corp);
+}
+
+function setEdgeColorFromHud(value) {
+  if (value === 'rt_classes') {
+    setGraphMode('rt_classes');
+    return;
+  }
+  if (graphMode === 'rt_classes') setGraphMode('all');
+  else updateGraphModeButtons();
 }
 
 function syncCorpusUrl(corpusId) {
@@ -2374,6 +2395,9 @@ async function boot() {
   updateGraphModeButtons();
   document.querySelectorAll('#graphMode button.mode[data-graph]').forEach((b) => {
     b.addEventListener('click', () => setGraphMode(b.dataset.graph));
+  });
+  document.getElementById('edgeColorMode')?.addEventListener('change', (e) => {
+    setEdgeColorFromHud(e.target.value);
   });
   hashModeBtn?.addEventListener('click', () => {
     if (viewMode === 'analyses') setViewMode('graph');
