@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Réseau de coordination — cross_corpus</title>
-  <meta name="coord-build" content="2026-10-22-labels-pagerank-v1" />
+  <meta name="coord-build" content="2026-10-22-3d-temporal-v1" />
   <meta http-equiv="Cache-Control" content="no-cache" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -72,6 +72,16 @@
     }
     .color-modes button:hover { color: #e8eef7; background: rgba(255,255,255,0.06); }
     .color-modes button.active { color: #fff; background: rgba(37,99,235,0.45); }
+    .mode3d-row { display: flex; gap: 4px; margin-top: 8px; align-items: stretch; }
+    .mode3d-row button {
+      border: 0; border-radius: 6px; padding: 6px 8px; cursor: pointer;
+      background: rgba(255,255,255,0.04); color: #8b93a0; font: inherit; font-size: 10.5px; font-weight: 600;
+    }
+    .mode3d-row button:hover { color: #e8eef7; background: rgba(255,255,255,0.08); }
+    .mode3d-row button.active { color: #fff; background: rgba(115,192,0,0.35); }
+    .mode3d-row button:disabled { opacity: 0.35; cursor: not-allowed; }
+    #zModeBlock { margin-top: 6px; display: none; }
+    #zModeBlock.on { display: block; }
     a.hud-link {
       display: inline-flex; margin-bottom: 10px; padding: 6px 10px; border-radius: 7px;
       border: 1px solid rgba(255,255,255,0.12); background: rgba(37,99,235,0.14);
@@ -163,6 +173,20 @@
       <button type="button" class="active" data-color="coord" id="colorCoord" title="Partition Louvain du backbone Serrano">Coordination</button>
       <button type="button" data-color="base" id="colorBase" title="Louvain du connectome d’origine">Connectome</button>
     </div>
+    <div style="margin-top:10px;margin-bottom:2px;color:#c5ccd6;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;font-weight:600">Vue</div>
+    <div class="mode3d-row">
+      <button type="button" id="btn2d" class="active" title="Layout FA2 2D">2D</button>
+      <button type="button" id="btn3d" title="Extrusion temporelle sur Z">3D</button>
+    </div>
+    <div id="zModeBlock">
+      <div class="color-modes" role="tablist" aria-label="Axe Z temporel">
+        <button type="button" class="active" data-z="chrono" id="zChrono" title="Z = médiane(t_co) — chronologie">A · Chrono</button>
+        <button type="button" data-z="sync" id="zSync" title="Z = −médiane(Δt) — synchronicité">B · Sync</button>
+      </div>
+      <div id="zHint" style="margin-top:6px;color:#6a7380;font-size:10px;line-height:1.35">
+        A : tard = haut · B : co-RT synchrones = haut
+      </div>
+    </div>
     <div class="row"><span>Lumière</span><input id="linkLight" type="range" min="0" max="1" step="0.01" value="0.35"></div>
     <div class="row"><span>Opacité</span><input id="op" type="range" min="0" max="0.55" step="0.005" value="0.12"></div>
     <div class="row"><span>Labels</span><input id="nLabels" type="range" min="0" max="80" step="1" value="40"></div>
@@ -202,6 +226,9 @@ const labelHintEl = document.getElementById('labelHint');
 
 const P = { linkLight: 0.35, opacity: 0.12, nLabels: 40, bloom: 0.42 };
 let colorMode = 'coord';
+let mode3d = false;
+let zMode = 'chrono'; // chrono | sync
+let zSpan = 280;
 
 let corpora = [];
 let currentId = null;
@@ -215,6 +242,11 @@ let lineColorsBase = null;
 let frustum = 480;
 const FIT_PADDING = 1.45;
 let fitZoom = 1;
+
+const btn2d = document.getElementById('btn2d');
+const btn3d = document.getElementById('btn3d');
+const zModeBlock = document.getElementById('zModeBlock');
+const zHintEl = document.getElementById('zHint');
 
 let labelItems = [];
 let labelItemsBySize = [];
@@ -242,6 +274,80 @@ function nodeRgb(nd) {
   if (colorMode === 'base' && nd.c_base) return nd.c_base;
   if (nd.c_coord) return nd.c_coord;
   return nd.c || [140, 140, 150];
+}
+
+function nodeZ(nd) {
+  if (!mode3d) return 0;
+  const t = zMode === 'sync' ? (nd.z_sync ?? 0) : (nd.z_chrono ?? 0);
+  return (Number(t) || 0) * zSpan;
+}
+
+function computeZSpan(ns) {
+  if (!ns.length) return 280;
+  const xs = ns.map((n) => n.x);
+  const ys = ns.map((n) => n.y);
+  const span = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys), 1);
+  return Math.max(120, span * 0.35);
+}
+
+function applyGeometryZ() {
+  if (!pointsMesh || !nodes.length) return;
+  const pos = pointsMesh.geometry.attributes.position.array;
+  for (let i = 0; i < nodes.length; i++) {
+    pos[i * 3 + 2] = nodeZ(nodes[i]);
+  }
+  pointsMesh.geometry.attributes.position.needsUpdate = true;
+
+  if (lineGeo && edges.length) {
+    const lp = lineGeo.attributes.position.array;
+    let k = 0;
+    for (const e of edges) {
+      const a = nodes[e.s], b = nodes[e.t];
+      if (!a || !b) continue;
+      lp[k] = a.x; lp[k + 1] = a.y; lp[k + 2] = nodeZ(a);
+      lp[k + 3] = b.x; lp[k + 4] = b.y; lp[k + 5] = nodeZ(b);
+      k += 6;
+    }
+    lineGeo.attributes.position.needsUpdate = true;
+  }
+  for (const it of labelItems) {
+    if (it.nodeRef) it.z = nodeZ(it.nodeRef);
+  }
+  lastLabelCamKey = '';
+  sync3dControls();
+}
+
+function sync3dControls() {
+  if (!controls) return;
+  controls.enableRotate = !!mode3d;
+  btn2d.classList.toggle('active', !mode3d);
+  btn3d.classList.toggle('active', !!mode3d);
+  zModeBlock.classList.toggle('on', !!mode3d);
+  document.getElementById('zChrono')?.classList.toggle('active', zMode === 'chrono');
+  document.getElementById('zSync')?.classList.toggle('active', zMode === 'sync');
+  if (zHintEl) {
+    zHintEl.textContent = zMode === 'sync'
+      ? 'B · Synchronicité : Z = −médiane(Δt) normalisée — haut = co-RT plus synchrones'
+      : 'A · Chronologie : Z = médiane(t_co) normalisée — haut = activité co-RT plus tardive';
+  }
+}
+
+function setMode3d(on) {
+  mode3d = !!on;
+  applyGeometryZ();
+  if (mode3d) {
+    // Slight tilt so Z is readable
+    camera.position.y = controls.target.y - zSpan * 0.55;
+    camera.position.z = Math.max(420, zSpan * 1.4);
+    controls.update();
+  } else {
+    fitGraphToView(nodes);
+  }
+}
+
+function setZMode(mode) {
+  zMode = mode === 'sync' ? 'sync' : 'chrono';
+  applyGeometryZ();
 }
 function maxOf(arr, fn, d = 1) {
   let m = -Infinity;
@@ -288,6 +394,8 @@ function initThree() {
   controls.screenSpacePanning = true;
   controls.minZoom = 0.008;
   controls.maxZoom = 20;
+  controls.minPolarAngle = 0;
+  controls.maxPolarAngle = Math.PI;
   controls.target.set(0, 0, 0);
 
   composer = new EffectComposer(renderer);
@@ -517,7 +625,7 @@ function rebuildLabels() {
     });
     labelsEl.appendChild(el);
     labelItems.push({
-      el, text, nodeRef: node, x: node.x, y: node.y,
+      el, text, nodeRef: node, x: node.x, y: node.y, z: nodeZ(node),
       pr: node.pr, deg: item.deg, gephiSize: item.gephiSize, fontPx, t: mix,
       boxW: Math.max(28, text.length * fontPx * 0.55 + 12),
       boxH: fontPx * 1.35,
@@ -545,7 +653,7 @@ function layoutVisibleLabels(w, h) {
   const hitPad = overlapPadForZoom(z, fitZoom);
   const inView = [];
   for (const it of labelItemsBySize) {
-    _proj.set(it.x, it.y, 0).project(camera);
+    _proj.set(it.x, it.y, it.z || 0).project(camera);
     if (_proj.z > 1) continue;
     const cx = (_proj.x * 0.5 + 0.5) * w;
     const cy = (-_proj.y * 0.5 + 0.5) * h;
@@ -596,6 +704,7 @@ function buildScene(data) {
   clearScene();
   nodes = data.nodes || [];
   edges = data.edges || [];
+  zSpan = computeZSpan(nodes);
   const maxW = Math.max(1, ...edges.map((e) => e.w || 1));
   const positions = [];
   const colors = [];
@@ -604,7 +713,7 @@ function buildScene(data) {
     if (!a || !b) continue;
     const ca = lift(nodeRgb(a), 1.2), cb = lift(nodeRgb(b), 1.2);
     const bright = 0.35 + 0.55 * Math.pow(e.w / maxW, 0.45);
-    positions.push(a.x, a.y, 0, b.x, b.y, 0);
+    positions.push(a.x, a.y, nodeZ(a), b.x, b.y, nodeZ(b));
     colors.push(
       ca[0] * bright, ca[1] * bright, ca[2] * bright,
       cb[0] * bright, cb[1] * bright, cb[2] * bright
@@ -631,7 +740,7 @@ function buildScene(data) {
   const maxPr = Math.max(1e-12, ...nodes.map((x) => x.pr || 0));
   for (let i = 0; i < n; i++) {
     const nd = nodes[i];
-    nPos[i * 3] = nd.x; nPos[i * 3 + 1] = nd.y; nPos[i * 3 + 2] = 0.2;
+    nPos[i * 3] = nd.x; nPos[i * 3 + 1] = nd.y; nPos[i * 3 + 2] = nodeZ(nd);
     const c = lift(nodeRgb(nd), 1.12);
     nCol[i * 3] = c[0]; nCol[i * 3 + 1] = c[1]; nCol[i * 3 + 2] = c[2];
     const prNorm = Math.sqrt((nd.pr || 0) / maxPr);
@@ -668,6 +777,8 @@ function buildScene(data) {
 
   fitGraphToView(nodes);
   rebuildLabels();
+  sync3dControls();
+  if (mode3d) setMode3d(true);
 }
 
 function applyColorMode() {
@@ -735,10 +846,19 @@ function onPointerMove(ev) {
     ? `Louvain connectome ${nd.com_base ?? '—'}`
     : `Louvain coord ${nd.com ?? nd.com_coord ?? '—'}`;
   const prBit = nd.pr != null ? `PageRank ${Number(nd.pr).toExponential(2)}` : '';
+  let zBit = '';
+  if (mode3d) {
+    if (zMode === 'sync' && nd.dt_med != null) {
+      zBit = ` · Δt̃ ${Math.round(nd.dt_med)}s · z_sync ${Number(nd.z_sync || 0).toFixed(2)}`;
+    } else if (nd.t_co_med != null) {
+      const d = new Date(Number(nd.t_co_med) * 1000);
+      zBit = ` · t_co ${d.toISOString().slice(0, 10)} · z_chrono ${Number(nd.z_chrono || 0).toFixed(2)}`;
+    }
+  }
   tip.style.display = 'block';
   tip.style.left = `${ev.clientX + 12}px`;
   tip.style.top = `${ev.clientY + 12}px`;
-  tip.innerHTML = `<div>@${nd.l} · deg ${nd.deg}</div><div class="muted">${prBit}${prBit ? ' · ' : ''}${comLabel}</div>`;
+  tip.innerHTML = `<div>@${nd.l} · deg ${nd.deg}</div><div class="muted">${prBit}${prBit ? ' · ' : ''}${comLabel}${zBit}</div>`;
 }
 function onClick(ev) {
   const w = worldFromClient(ev.clientX, ev.clientY);
@@ -882,9 +1002,13 @@ document.getElementById('nLabels').addEventListener('input', (e) => {
   P.nLabels = Number(e.target.value);
   rebuildLabels();
 });
-document.querySelectorAll('.color-modes button').forEach((b) => {
+document.querySelectorAll('.color-modes button[data-color]').forEach((b) => {
   b.addEventListener('click', () => setColorMode(b.dataset.color));
 });
+btn2d?.addEventListener('click', () => setMode3d(false));
+btn3d?.addEventListener('click', () => setMode3d(true));
+document.getElementById('zChrono')?.addEventListener('click', () => setZMode('chrono'));
+document.getElementById('zSync')?.addEventListener('click', () => setZMode('sync'));
 
 async function boot() {
   initThree();

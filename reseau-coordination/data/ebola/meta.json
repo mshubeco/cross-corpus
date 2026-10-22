@@ -120,7 +120,28 @@
   ],
   "defaultColorMode": "coord",
   "n_base_matched": 33,
-  "enrichedAt": "2026-10-22T10:16:27.631649+00:00",
+  "enrichedAt": "2026-10-22T10:28:06.330471+00:00",
   "labelCentrality": "pagerank",
-  "labelCentralityDef": "PageRank pondéré (α=0,85, weight = co-RT Serrano) sur le backbone ; taille des labels et champ s dérivés de ce score"
+  "labelCentralityDef": "PageRank pondéré (α=0,85, weight = co-RT Serrano) sur le backbone ; taille des labels et champ s dérivés de ce score",
+  "zModes": {
+    "chrono": {
+      "id": "chrono",
+      "label": "A · Chronologie",
+      "field": "z_chrono",
+      "def": "Z = médiane(t_co) normalisée ; t_co = max(t_RT_u, t_RT_v) sur parents co-RT"
+    },
+    "sync": {
+      "id": "sync",
+      "label": "B · Synchronicité",
+      "field": "z_sync",
+      "def": "Z = −médiane(Δt) normalisée ; haut = co-RT plus synchrones"
+    }
+  },
+  "temporal": {
+    "n_users_with_ts": 33,
+    "n_edges_timed": 49,
+    "n_edges": 49,
+    "t_co_span_s": 247435.25,
+    "dt_med_global_s": 9589.0
+  }
 }
