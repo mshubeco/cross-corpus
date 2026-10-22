@@ -125,6 +125,21 @@
     }
     #corpusNav a:hover, #corpusNav button:hover { color: #fff; background: rgba(255,255,255,0.08); }
     #corpusNav a.active, #corpusNav button.active { color: #fff; background: #2563eb; }
+
+    #corpusNav a.back-connectome {
+      color: #9aa3b0; font-weight: 550;
+      border-left: 1px solid rgba(255,255,255,0.14);
+      margin-left: 2px; padding-left: 12px; border-radius: 0 999px 999px 0;
+    }
+    #corpusNav a.back-connectome:hover { color: #e8eef7; background: rgba(255,255,255,0.06); }
+    a.hud-connectome {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin: 0 0 10px; padding: 6px 10px; border-radius: 7px;
+      border: 1px solid rgba(255,255,255,0.12); background: rgba(37,99,235,0.14);
+      color: #c5d4f0; text-decoration: none; font-size: 11px; font-weight: 600;
+      width: fit-content; max-width: 100%;
+    }
+    a.hud-connectome:hover { background: rgba(37,99,235,0.28); color: #fff; border-color: rgba(96,165,250,0.45); }
   </style>
   <script type="importmap">
   {
@@ -140,6 +155,7 @@
   <nav id="corpusNav" aria-label="Corpus"></nav>
   <div id="c"></div>
   <aside id="hud">
+    <a id="hudConnectome" class="hud-connectome" href="../connectome/">← Connectome</a>
     <h1 id="hudTitle">Flux continu</h1>
     <div id="dayLabel">—</div>
     <div id="windowLabel">layout FA2 par fenêtre 3j · entrées/sorties lissées</div>
@@ -160,6 +176,7 @@
       <select id="colorMode">
         <option value="track">Track · fenêtre 3j</option>
         <option value="global" selected>Louvain global ALL</option>
+        <option value="rt_share">% RT · luminosité liens</option>
       </select>
     </div>
     <div class="row"><span>Périmètre</span>
@@ -295,6 +312,14 @@ let lineGeo = null;
 let linePos = null;
 let lineCol = null;
 let lineMat = null;
+let lineMesh = null;
+let dashGeo = null;
+let dashPos = null;
+let dashCol = null;
+let dashMat = null;
+let dashMesh = null;
+/** Seuil : au-delà, trait pointillé (dominante RT) ; en-dessous, trait plein. */
+const RT_DASH_FRAC = 0.55;
 let pointMesh = null;
 let pointGeo = null;
 let pointPos = null;
@@ -855,8 +880,24 @@ function globalShaderColorAt(idx) {
 }
 
 function nodeColorAt(idx, t) {
-  if (colorMode === 'global') return globalLouvainColorAt(idx);
+  // Mode % RT : nœuds restent en Louvain global ; seuls les liens changent.
+  if (colorMode === 'global' || colorMode === 'rt_share') return globalLouvainColorAt(idx);
   return trackColorAt(idx, t);
+}
+
+/** Couleur lien selon part RT : 0 % = clair / plein ; 100 % = sombre. */
+function rtShareEdgeColor(rtFrac) {
+  const t = clamp(rtFrac, 0, 1);
+  // ambre clair → bleu ardoise
+  const r = 0.92 * (1 - t) + 0.22 * t;
+  const g = 0.78 * (1 - t) + 0.28 * t;
+  const b = 0.42 * (1 - t) + 0.48 * t;
+  const lum = 1.05 * (1 - t) + 0.18 * t;
+  return [r * lum, g * lum, b * lum];
+}
+
+function usesNodeColorsForEdges() {
+  return colorMode !== 'rt_share';
 }
 
 function tightenFrameLayout(frame, factor = LAYOUT_TIGHTEN) {
@@ -1038,7 +1079,9 @@ function updatePositions(dt) {
       sn.tx = sn.x;
       sn.ty = sn.y;
       const rgb = nodeColorAt(sn.idx, t);
-      sn.color = colorMode === 'global' ? globalShaderColorAt(sn.idx) : lift(rgb, 1.35);
+      sn.color = (colorMode === 'global' || colorMode === 'rt_share')
+        ? globalShaderColorAt(sn.idx)
+        : lift(rgb, 1.35);
       continue;
     }
 
@@ -1070,7 +1113,9 @@ function updatePositions(dt) {
     }
 
     const rgb = nodeColorAt(sn.idx, t);
-    sn.color = colorMode === 'global' ? globalShaderColorAt(sn.idx) : lift(rgb, 1.35);
+    sn.color = (colorMode === 'global' || colorMode === 'rt_share')
+      ? globalShaderColorAt(sn.idx)
+      : lift(rgb, 1.35);
   }
 
 }
@@ -1149,6 +1194,20 @@ function initGraphics() {
   lineMesh = new THREE.LineSegments(lineGeo, lineMat);
   scene.add(lineMesh);
 
+  dashGeo = new THREE.BufferGeometry();
+  dashPos = new Float32Array(MAX_EDGES * 6);
+  dashCol = new Float32Array(MAX_EDGES * 6);
+  dashGeo.setAttribute('position', new THREE.BufferAttribute(dashPos, 3));
+  dashGeo.setAttribute('color', new THREE.BufferAttribute(dashCol, 3));
+  dashGeo.setDrawRange(0, 0);
+  dashMat = new THREE.LineDashedMaterial({
+    vertexColors: true, transparent: true, opacity: 0.12,
+    blending: THREE.AdditiveBlending, depthWrite: false,
+    dashSize: 6, gapSize: 5, scale: 1,
+  });
+  dashMesh = new THREE.LineSegments(dashGeo, dashMat);
+  scene.add(dashMesh);
+
   const n = nodes.length;
   pointGeo = new THREE.BufferGeometry();
   pointPos = new Float32Array(n * 3);
@@ -1210,7 +1269,10 @@ function rebuildEdges() {
   collectKeys(frames[i1]?.edges, keys1, i1);
 
   const add = (edges, dayIdx, wMul, otherKeys) => {
-    for (const [s, t, w] of edges || []) {
+    for (const e of edges || []) {
+      const s = Number(e[0]), t = Number(e[1]);
+      const w = Number(e[2]) || 1;
+      const wRt = Number(e[3]) || 0;
       if (isExcludedNode(s) || isExcludedNode(t)) continue;
       if (!isLiveInFrame(s, dayIdx) || !isLiveInFrame(t, dayIdx)) continue;
       const a = s < t ? s : t, b = s < t ? t : s;
@@ -1220,16 +1282,19 @@ function rebuildEdges() {
       if (f > 0.04 && otherKeys && !otherKeys.has(k)) {
         mul *= Math.pow(1 - f, 2.2) * 0.12;
       }
-      map.set(k, (map.get(k) || 0) + (Number(w) || 1) * mul);
+      const prev = map.get(k) || { w: 0, wRt: 0 };
+      prev.w += w * mul;
+      prev.wRt += wRt * mul;
+      map.set(k, prev);
     }
   };
   add(frames[i0]?.edges, i0, Math.pow(Math.max(0, 1 - f), 1.65), keys1);
   add(frames[i1]?.edges, i1, Math.pow(f, 0.85), keys0);
 
   edgeList = [...map.entries()]
-    .map(([k, w]) => {
+    .map(([k, v]) => {
       const [s, t] = k.split('|').map(Number);
-      return { s, t, w };
+      return { s, t, w: v.w, wRt: v.wRt, rtFrac: v.w > 0 ? v.wRt / v.w : 0 };
     })
     .sort((a, b) => b.w - a.w)
     .slice(0, MAX_EDGES);
@@ -1243,10 +1308,13 @@ function fadeSpeed() {
 function updateGraphics() {
   const opacity = parseFloat(document.getElementById('opacity').value);
   lineMat.opacity = opacity;
+  if (dashMat) dashMat.opacity = opacity;
   const edgeBright = parseFloat(document.getElementById('edgeBright').value);
   const nodeScale = parseFloat(document.getElementById('nodeScale').value);
+  const rtMode = colorMode === 'rt_share';
 
   let lp = 0, lc = 0, segCount = 0;
+  let dp = 0, dc = 0, dashCount = 0;
   const maxW = edgeList.length ? edgeList[0].w : 1;
 
   for (const e of edgeList) {
@@ -1265,23 +1333,49 @@ function updateGraphics() {
     const stretchFade = stretch > 1.4 ? clamp(1.3 - 0.35 * stretch, 0.25, 1) : 1;
     const settleFade = 0.55 + 0.45 * settle; // reste visible même en léger déplacement
     const wNorm = Math.pow(e.w / maxW, 0.45);
+    const rtFrac = clamp(e.rtFrac ?? 0, 0, 1);
     let bright = (0.25 + 0.75 * wNorm) * mix * settleFade * stretchFade * edgeBright;
+    if (rtMode) {
+      // Plus le lien est RT, plus la luminosité baisse (reply/quote/mention restent clairs).
+      bright *= (1.05 - 0.82 * rtFrac);
+    }
     if (highlightCohort251 && cohort251Idx.size) {
       const hit = cohort251Idx.has(e.s) || cohort251Idx.has(e.t);
       bright *= hit ? 1.35 : 0.08;
     }
     if (bright < 0.02) continue;
 
-    linePos[lp++] = a.x; linePos[lp++] = a.y; linePos[lp++] = 0;
-    linePos[lp++] = b.x; linePos[lp++] = b.y; linePos[lp++] = 0;
-    for (const c of [...a.color, ...b.color]) {
-      lineCol[lc++] = c * bright;
+    let colA, colB;
+    if (rtMode) {
+      const rgb = rtShareEdgeColor(rtFrac);
+      colA = colB = rgb;
+    } else {
+      colA = a.color;
+      colB = b.color;
     }
-    segCount++;
+
+    const useDash = rtMode && rtFrac >= RT_DASH_FRAC;
+    if (useDash) {
+      dashPos[dp++] = a.x; dashPos[dp++] = a.y; dashPos[dp++] = 0;
+      dashPos[dp++] = b.x; dashPos[dp++] = b.y; dashPos[dp++] = 0;
+      for (const c of [...colA, ...colB]) dashCol[dc++] = c * bright;
+      dashCount++;
+    } else {
+      linePos[lp++] = a.x; linePos[lp++] = a.y; linePos[lp++] = 0;
+      linePos[lp++] = b.x; linePos[lp++] = b.y; linePos[lp++] = 0;
+      for (const c of [...colA, ...colB]) lineCol[lc++] = c * bright;
+      segCount++;
+    }
   }
   lineGeo.setDrawRange(0, segCount * 2);
   lineGeo.attributes.position.needsUpdate = true;
   lineGeo.attributes.color.needsUpdate = true;
+  if (dashGeo) {
+    dashGeo.setDrawRange(0, dashCount * 2);
+    dashGeo.attributes.position.needsUpdate = true;
+    dashGeo.attributes.color.needsUpdate = true;
+    if (dashCount > 0) dashGeo.computeLineDistances();
+  }
 
   let visible = 0;
   for (let i = 0; i < simNodes.length; i++) {
@@ -1298,7 +1392,9 @@ function updateGraphics() {
     pointPos[i * 3] = sn.x;
     pointPos[i * 3 + 1] = sn.y;
     pointPos[i * 3 + 2] = 0;
-    let col = colorMode === 'global' ? globalShaderColorAt(sn.idx) : sn.color;
+    let col = (colorMode === 'global' || colorMode === 'rt_share')
+      ? globalShaderColorAt(sn.idx)
+      : sn.color;
     if (highlightCohort251 && inCohort && alphaVis > 0) {
       col = [
         Math.min(1.2, col[0] * 1.25 + 0.15),
@@ -1434,8 +1530,34 @@ function updateHUD(visible) {
   updateVolumeCursor();
 
   const tracks = dayIdx === i0 ? f0.tracks : f1.tracks;
-  if (colorMode === 'global') renderGlobalTracks();
+  if (colorMode === 'rt_share') renderRtShareLegend();
+  else if (colorMode === 'global') renderGlobalTracks();
   else renderTracks(tracks, f0.tracks, f1.tracks, f);
+}
+
+function renderRtShareLegend() {
+  const el = document.getElementById('trackList');
+  document.getElementById('tracksTitle').textContent = '% retweet des liens';
+  const bins = [
+    { label: '0–25 % RT · reply/quote/mention', frac: 0.12, dash: false },
+    { label: '25–55 % RT · mixte', frac: 0.4, dash: false },
+    { label: '55–80 % RT · pointillé', frac: 0.68, dash: true },
+    { label: '80–100 % RT · sombre', frac: 0.92, dash: true },
+  ];
+  el.innerHTML = bins.map((b) => {
+    const rgb = rtShareEdgeColor(b.frac).map((c) => Math.round(clamp(c, 0, 1) * 255));
+    const style = b.dash
+      ? `background: repeating-linear-gradient(90deg, rgb(${rgb}) 0 6px, transparent 6px 11px)`
+      : `background: rgb(${rgb})`;
+    return `<div class="track">
+      <div class="swatch" style="${style}; width:28px; border-radius:2px"></div>
+      <div class="track-name">${b.label}</div>
+      <div class="track-act">${Math.round(b.frac * 100)}%</div>
+    </div>`;
+  }).join('') + `<div class="track-share" style="margin-top:8px">
+    <span>Trait plein = dominante reply / quote / mention</span>
+  </div>
+  <div class="track-share"><span>Pointillé + sombre = dominante RT</span></div>`;
 }
 
 function initVolumeSeries() {
@@ -1694,6 +1816,28 @@ async function loadGlobalLouvain() {
   }
 }
 
+
+function connectomeHref(corpusId) {
+  return `../connectome/?corpus=${encodeURIComponent(corpusId || 'ebola')}`;
+}
+
+function syncConnectomeLinks(corpusId, label) {
+  const href = connectomeHref(corpusId);
+  const short = String(label || corpusId || 'corpus').split('·')[0].trim();
+  const navLink = document.getElementById('navConnectome');
+  if (navLink) {
+    navLink.href = href;
+    navLink.title = `Retour au connectome · ${short}`;
+    navLink.textContent = `← Connectome`;
+  }
+  const hudLink = document.getElementById('hudConnectome');
+  if (hudLink) {
+    hudLink.href = href;
+    hudLink.title = `Retour au connectome · ${short}`;
+    hudLink.textContent = `← Connectome · ${short}`;
+  }
+}
+
 async function loadCorporaNav() {
   const nav = document.getElementById('corpusNav');
   let corpora = [];
@@ -1706,13 +1850,19 @@ async function loadCorporaNav() {
   const params = new URLSearchParams(location.search);
   currentCorpusId = params.get('corpus') || (corpora[0] && corpora[0].id) || 'ebola';
   DATA_BASE = `data/${currentCorpusId}`;
+  const current = corpora.find((c) => c.id === currentCorpusId);
+  const label = (current && current.label) || currentCorpusId;
   nav.innerHTML = corpora.map((c) => {
     const active = c.id === currentCorpusId ? ' active' : '';
     return `<a class="${active.trim()}" href="?corpus=${encodeURIComponent(c.id)}">${c.label || c.id}</a>`;
   }).join('');
-  const connectome = `<a href="../connectome/?corpus=${encodeURIComponent(currentCorpusId)}">Connectome</a>`;
-  nav.insertAdjacentHTML('beforeend', connectome);
+  nav.insertAdjacentHTML(
+    'beforeend',
+    `<a id="navConnectome" class="back-connectome" href="${connectomeHref(currentCorpusId)}">← Connectome</a>`
+  );
+  syncConnectomeLinks(currentCorpusId, label);
 }
+
 
 async function init() {
   loading.textContent = 'Sélection corpus…';
@@ -1724,6 +1874,7 @@ async function init() {
   document.title = title;
   const hudTitle = document.getElementById('hudTitle');
   if (hudTitle) hudTitle.textContent = `${(manifest.meta && manifest.meta.corpus_id) || currentCorpusId} · flux continu`;
+  syncConnectomeLinks(currentCorpusId, (manifest.meta && manifest.meta.label) || title || currentCorpusId);
   const scrub = document.getElementById('scrub');
   scrub.max = Math.max(0, (manifest.frames || []).length - 1);
   initVolumeSeries();
@@ -1794,6 +1945,7 @@ async function init() {
   document.getElementById('edgeBright').addEventListener('input', refreshEdgeLook);
   document.getElementById('colorMode').addEventListener('change', (e) => {
     colorMode = e.target.value;
+    lastHudTick = 0;
     updatePositions(1);
     const visible = updateGraphics();
     updateHUD(visible);
