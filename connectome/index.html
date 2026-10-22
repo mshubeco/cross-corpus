@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Connectomes — cross_corpus</title>
-  <!-- connectome-ui v20261022i : Distinction RT/interactions + légende HUD -->
+  <!-- connectome-ui v20261022j : Distinction RT/interactions — luminosités rééquilibrées -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; color: #ccc; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
@@ -200,8 +200,8 @@
       box-shadow: 0 0 8px rgba(255,255,255,0.12);
     }
     #rtColorLegend .sw.ix { background: #ff7a0d; box-shadow: 0 0 10px rgba(255,122,13,0.45); }
-    #rtColorLegend .sw.mix { background: #d947f2; box-shadow: 0 0 10px rgba(217,71,242,0.4); }
-    #rtColorLegend .sw.rt { background: #2a4a9a; box-shadow: 0 0 10px rgba(42,74,154,0.45); }
+    #rtColorLegend .sw.mix { background: #e04dff; box-shadow: 0 0 10px rgba(224,77,255,0.45); }
+    #rtColorLegend .sw.rt { background: #4d8aff; box-shadow: 0 0 10px rgba(77,138,255,0.5); }
     #rtColorLegend .leg-row b { color: #e8eef7; font-weight: 650; }
     #rtColorLegend .leg-row .thr { color: #7a8494; font-weight: 500; }
     #edgeColorHint { margin-top: 6px; margin-bottom: 0; }
@@ -547,9 +547,10 @@ let rtWeightByEdge = null;
 
 const RT_CLASS_IX_MAX = 0.30;
 const RT_CLASS_RT_MIN = 0.70;
-const COL_INTERACT = [1.25, 0.48, 0.05];
-const COL_RETWEET = [0.12, 0.22, 0.48];
-const COL_MIXED = [0.85, 0.28, 0.95];
+/** Couleurs AdditiveBlending — luminosités proches pour lire les 3 classes (ix accentué, RT plus visible). */
+const COL_INTERACT = [1.2, 0.46, 0.06];
+const COL_RETWEET = [0.28, 0.48, 1.15];
+const COL_MIXED = [0.95, 0.32, 1.05];
 
 function rtEdgeClass(rtFrac) {
   const t = Math.max(0, Math.min(1, rtFrac || 0));
@@ -559,9 +560,10 @@ function rtEdgeClass(rtFrac) {
 }
 
 function rtClassStyle(cls) {
-  if (cls === 'ix') return { col: COL_INTERACT, lumMul: 2.2 };
-  if (cls === 'rt') return { col: COL_RETWEET, lumMul: 0.12 };
-  return { col: COL_MIXED, lumMul: 0.6 };
+  // Avant : ix 2.2 / mix 0.6 / rt 0.12 → voile bleu invisible. Cible ~ lisible à 3.
+  if (cls === 'ix') return { col: COL_INTERACT, lumMul: 1.35 };
+  if (cls === 'rt') return { col: COL_RETWEET, lumMul: 0.9 };
+  return { col: COL_MIXED, lumMul: 1.05 };
 }
 
 /** Aligne graph_rt.json → indices du graphe ALL via screen_name. */

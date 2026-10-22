@@ -400,9 +400,9 @@ let dashMesh = null;
 /** Mode classes ternaires (part RT) — contrastes forts (blending additif). */
 const RT_CLASS_IX_MAX = 0.30;  // ≤ 30 % RT → interactions
 const RT_CLASS_RT_MIN = 0.70;  // ≥ 70 % RT → retweets
-const COL_INTERACT = [1.25, 0.48, 0.05]; // orange saturé (devant)
-const COL_RETWEET = [0.12, 0.22, 0.48];  // bleu ardoise très sombre (halo)
-const COL_MIXED = [0.85, 0.28, 0.95];    // magenta (mixtes)
+const COL_INTERACT = [1.2, 0.46, 0.06];  // ambre
+const COL_RETWEET = [0.28, 0.48, 1.15];  // bleu lisible (plus de voile sombre)
+const COL_MIXED = [0.95, 0.32, 1.05];    // magenta
 const RT_LAYER_CAP = 9000;               // plafonner le voile RT pour éviter le lavage blanc
 let pointMesh = null;
 let pointGeo = null;
@@ -978,11 +978,10 @@ function rtEdgeClass(rtFrac) {
 }
 
 function rtClassStyle(cls) {
-  // Écart de luminosité volontairement large : les RT majoritaires ne doivent
-  // pas noyer les interactions en blending additif.
-  if (cls === 'ix') return { col: COL_INTERACT, lumMul: 2.35, thick: true };
-  if (cls === 'rt') return { col: COL_RETWEET, lumMul: 0.11, thick: false };
-  return { col: COL_MIXED, lumMul: 0.62, thick: false };
+  // Rééquilibré : les 3 classes restent lisibles (ix un peu accentué).
+  if (cls === 'ix') return { col: COL_INTERACT, lumMul: 1.35, thick: true };
+  if (cls === 'rt') return { col: COL_RETWEET, lumMul: 0.9, thick: false };
+  return { col: COL_MIXED, lumMul: 1.05, thick: false };
 }
 
 /** Offset perpendiculaire léger (épaisseur visuelle des interactions). */
