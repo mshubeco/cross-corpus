@@ -118,7 +118,7 @@
     "coord",
     "base"
   ],
-  "defaultColorMode": "coord",
+  "defaultColorMode": "base",
   "n_base_matched": 33,
   "enrichedAt": "2026-10-22T10:28:06.330471+00:00",
   "labelCentrality": "pagerank",
