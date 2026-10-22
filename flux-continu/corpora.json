@@ -1,9 +1,34 @@
 [
-  { "id": "ebola", "label": "Ebola" },
-  { "id": "ebola_2_2026", "label": "Ebola 2" },
-  { "id": "hantavirus", "label": "Hantavirus" },
-  { "id": "mpox", "label": "Mpox" },
-  { "id": "macron_nucleaire", "label": "Macron nucléaire" },
-  { "id": "hmpv", "label": "HMPV" },
-  { "id": "hmpv_fr", "label": "HMPV FR" }
+  {
+    "id": "ebola",
+    "label": "Ebola"
+  },
+  {
+    "id": "ebola_2_2026",
+    "label": "Ebola 2"
+  },
+  {
+    "id": "hantavirus",
+    "label": "Hantavirus"
+  },
+  {
+    "id": "mpox",
+    "label": "Mpox"
+  },
+  {
+    "id": "macron_nucleaire",
+    "label": "Macron nucléaire"
+  },
+  {
+    "id": "hmpv",
+    "label": "HMPV"
+  },
+  {
+    "id": "hmpv_fr",
+    "label": "HMPV FR"
+  },
+  {
+    "id": "canicule",
+    "label": "Canicule"
+  }
 ]
