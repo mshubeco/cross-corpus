@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Connectomes — cross_corpus</title>
-  <!-- connectome-ui v20261022k : # highlight ambre · # seulement en mode Communautés · Distinction HUD only -->
+  <!-- connectome-ui v20261022k : Distinction RT → bloom/labels=0 · # ambre · # seulement Communautés -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; color: #ccc; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
@@ -529,6 +529,12 @@ const P = {
   nLabels: 40,
   exposure: 0.72,
 };
+
+/** UI par défaut hors / dans Distinction RT / interactions. */
+const UI_DEFAULTS_COMMUNITY = { bloom: 0.38, nLabels: 40 };
+const UI_DEFAULTS_RT_CLASSES = { bloom: 0, nLabels: 0 };
+/** Snapshot bloom/labels avant d’entrer en rt_classes (pour restauration). */
+let savedCommunityUi = { bloom: null, nLabels: null };
 
 const tip = document.getElementById('tooltip');
 const tabsEl = document.getElementById('tabs');
@@ -1441,10 +1447,41 @@ function updateGraphModeButtons() {
   syncHashModeAvailability();
 }
 
+function applyBloom(v) {
+  P.bloom = Math.max(0, Math.min(2.2, Number(v) || 0));
+  const el = document.getElementById('bloom');
+  if (el) el.value = String(P.bloom);
+  bloomPass.strength = P.bloom;
+}
+
+function applyNLabels(v) {
+  P.nLabels = Math.max(0, Math.min(80, Math.round(Number(v) || 0)));
+  const el = document.getElementById('nLabels');
+  if (el) el.value = String(P.nLabels);
+  if (graphData) rebuildLabels();
+}
+
+/** En Distinction RT : bloom + labels au minimum ; sinon restaure les valeurs communautaires. */
+function syncUiDefaultsForGraphMode(nextMode, prevMode) {
+  if (nextMode === prevMode) return;
+  if (nextMode === 'rt_classes') {
+    savedCommunityUi = { bloom: P.bloom, nLabels: P.nLabels };
+    applyBloom(UI_DEFAULTS_RT_CLASSES.bloom);
+    applyNLabels(UI_DEFAULTS_RT_CLASSES.nLabels);
+    return;
+  }
+  if (prevMode === 'rt_classes') {
+    applyBloom(savedCommunityUi.bloom ?? UI_DEFAULTS_COMMUNITY.bloom);
+    applyNLabels(savedCommunityUi.nLabels ?? UI_DEFAULTS_COMMUNITY.nLabels);
+  }
+}
+
 function setGraphMode(mode) {
   if (mode !== 'rt' && mode !== 'all' && mode !== 'rt_classes') return;
   if (mode === graphMode && viewMode === 'graph') return;
+  const prevMode = graphMode;
   graphMode = mode;
+  syncUiDefaultsForGraphMode(mode, prevMode);
   if (viewMode === 'analyses') setViewMode('graph', { syncUrl: false });
   updateGraphModeButtons();
   const corp = corporaList.find((c) => c.id === currentCorpusId) || corporaList[0];
@@ -2606,15 +2643,24 @@ async function boot() {
     }
     applyLinkLight(P.linkLight);
     if (m.defaults?.bloom != null) {
-      P.bloom = m.defaults.bloom;
-      document.getElementById('bloom').value = String(P.bloom);
-      bloomPass.strength = P.bloom;
+      UI_DEFAULTS_COMMUNITY.bloom = m.defaults.bloom;
+      applyBloom(m.defaults.bloom);
     }
     if (m.defaults?.labels != null) {
-      P.nLabels = m.defaults.labels;
-      document.getElementById('nLabels').value = String(P.nLabels);
+      UI_DEFAULTS_COMMUNITY.nLabels = m.defaults.labels;
+      applyNLabels(m.defaults.labels);
     }
   } catch (_) { /* fallback list */ }
+
+  // Deep-link ?graph=rt_classes → bloom/labels au minimum dès le chargement
+  if (graphMode === 'rt_classes') {
+    savedCommunityUi = {
+      bloom: UI_DEFAULTS_COMMUNITY.bloom,
+      nLabels: UI_DEFAULTS_COMMUNITY.nLabels,
+    };
+    applyBloom(UI_DEFAULTS_RT_CLASSES.bloom);
+    applyNLabels(UI_DEFAULTS_RT_CLASSES.nLabels);
+  }
 
   corporaList = corpora;
   const health3 = document.getElementById('health3Link');
