@@ -298,7 +298,11 @@
   (function () {
     var p = new URLSearchParams(location.search);
     var id = (p.get('corpus') || 'ebola').toLowerCase();
-    var file = p.get('graph') === 'rt' ? 'graph_rt.json' : 'graph.json';
+    var g = p.get('graph');
+    var file = g === 'rt' ? 'graph_rt.json' : 'graph.json';
+    if (g === 'rt_classes') {
+      preload('./data/' + encodeURIComponent(id) + '/graph_rt.json');
+    }
     function preload(href) {
       var l = document.createElement('link');
       l.rel = 'preload';
@@ -1574,7 +1578,12 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   nodeColorsBase = new Float32Array(nCol);
   lineColorsDimmed = false;
 
-  const modeLabel = data.meta?.interactions === 'rt' ? 'RT' : 'toutes interactions';
+  let modeLabel = data.meta?.interactions === 'rt' ? 'RT' : 'toutes interactions';
+  if (graphMode === 'rt_classes') {
+    modeLabel = rtWeightByEdge
+      ? 'classes RT (ambre / magenta / bleu)'
+      : 'classes RT indisponibles';
+  }
   document.getElementById('stats').textContent =
     `${modeLabel} · ${data.meta.n_nodes.toLocaleString('fr-FR')} nœuds · ${data.meta.n_edges.toLocaleString('fr-FR')} liens · ${P.strands}× hair`;
   fitGraphToView(nodes);
@@ -2030,7 +2039,8 @@ async function loadCorpus(corp) {
   updateGraphModeButtons();
   syncCorpusUrl(corp.id);
   hideBootSplash();
-  const modeBit = graphMode === 'rt' ? 'RT · ' : '';
+  const modeBit = graphMode === 'rt' ? 'RT · '
+    : graphMode === 'rt_classes' ? 'Classes RT · ' : '';
   const cached = graphCache.has(cacheKeyFor(corp.id, graphMode));
   setGraphLoader({
     title: corp.label,
@@ -2047,7 +2057,8 @@ async function loadCorpus(corp) {
   try {
     const pubsPromise = graphMode === 'rt' ? Promise.resolve(null) : ensurePubStats(corp.id);
     const discPromise = ensureDiscourse(corp.id);
-    const data = await ensureGraphData(corp, graphMode, {
+    const fetchMode = graphMode === 'rt_classes' ? 'all' : graphMode;
+    const data = await ensureGraphData(corp, fetchMode, {
       onProgress: (p, received, total) => {
         if (!isCurrent()) return;
         if (p == null) {
@@ -2068,6 +2079,34 @@ async function loadCorpus(corp) {
       },
     });
     if (!isCurrent()) return;
+
+    rtWeightByEdge = null;
+    if (graphMode === 'rt_classes') {
+      setGraphLoader({
+        title: corp.label,
+        msg: 'Alignement poids RT…',
+        progress: 0.73,
+        indeterminate: true,
+      });
+      try {
+        const rtData = await ensureGraphData(corp, 'rt', {
+          onProgress: (p) => {
+            if (!isCurrent() || p == null) return;
+            setGraphLoader({
+              title: corp.label,
+              msg: 'Téléchargement graphe RT…',
+              progress: 0.72 + 0.08 * p,
+              indeterminate: false,
+            });
+          },
+        });
+        if (!isCurrent()) return;
+        rtWeightByEdge = buildRtWeightMap(data, rtData);
+      } catch (err) {
+        console.warn('Classes RT indisponibles (graph_rt.json)', err);
+        rtWeightByEdge = null;
+      }
+    }
 
     const [pubs, disc] = await Promise.all([pubsPromise, discPromise]);
     if (!isCurrent()) return;
@@ -2112,7 +2151,9 @@ async function loadCorpus(corp) {
 
     document.title = graphMode === 'rt'
       ? `Connectome RT — ${corp.label}`
-      : `Connectome — ${corp.label}`;
+      : graphMode === 'rt_classes'
+        ? `Connectome · Classes RT — ${corp.label}`
+        : `Connectome — ${corp.label}`;
     hideGraphLoader();
     idle(600).then(() => warmBackgroundCaches(corp.id));
   } catch (err) {
@@ -2268,7 +2309,8 @@ async function boot() {
 window.addEventListener('popstate', () => {
   if (!corporaList.length) return;
   const params = new URLSearchParams(location.search);
-  const nextMode = params.get('graph') === 'rt' ? 'rt' : 'all';
+  const g = params.get('graph');
+  const nextMode = (g === 'rt' || g === 'rt_classes') ? g : 'all';
   const nextView = params.get('view') === 'analyses' ? 'analyses' : 'graph';
   const corp = resolveCorpus(params.get('corpus')) || corporaList[0];
   const modeChanged = nextMode !== graphMode;
