@@ -280,17 +280,6 @@
       display: inline-block; margin-top: 8px; color: #8ab4ff; font-size: 10.5px; text-decoration: none;
     }
     #espaceFiche .fiche-ext:hover { text-decoration: underline; }
-    #hashFilterBar {
-      position: fixed; left: 50%; transform: translateX(-50%); top: 92px;
-      z-index: 11; display: none; flex-wrap: wrap; gap: 6px; justify-content: center;
-      max-width: min(720px, calc(100vw - 560px));
-      padding: 8px 10px; background: rgba(0,0,0,0.6);
-      border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;
-    }
-    #hashFilterBar.open { display: flex; }
-    #hashFilterBar .hf-label {
-      width: 100%; text-align: center; color: #6a7380; font-size: 10px; margin-bottom: 2px;
-    }
     #commList { max-height: min(340px, calc(100vh - 160px)); }
   </style>
   <script type="importmap">
@@ -341,13 +330,10 @@
         <button type="button" class="mode mode-analyses" data-mode="analyses" id="analysesModeBtn" title="Lexique distinctif des espaces">Analyses</button>
         <a id="analysesLink" class="mode mode-link" href="../analyses/ebola.html" title="Page analyses complète (nouvel onglet)" target="_blank" rel="noopener noreferrer">↗</a>
         <a id="fluxLink" class="mode mode-link" href="../flux-continu/?corpus=ebola" title="Flux continu (fenêtre 3j · FA2)">Flux continu</a>
+        <a id="coordLink" class="mode mode-link" href="../reseau-coordination/?corpus=ebola" title="Réseau de coordination (co-RT · Serrano α=0,05)">Réseau de coordination</a>
       </div>
     </div>
   </nav>
-  <div id="hashFilterBar" aria-label="Filtre hashtag-clé">
-    <div class="hf-label">Filtrer / surligner par hashtag distinctif (keyness)</div>
-    <div id="hashChips" class="comm-tags" style="justify-content:center;width:100%"></div>
-  </div>
   <div id="tooltip"></div>
   <aside id="espaceFiche" aria-live="polite"></aside>
   <aside id="hud">
@@ -414,8 +400,6 @@ const tabsEl = document.getElementById('tabs');
 const analysesLinkEl = document.getElementById('analysesLink');
 const analysesModeBtn = document.getElementById('analysesModeBtn');
 const espaceFicheEl = document.getElementById('espaceFiche');
-const hashFilterBarEl = document.getElementById('hashFilterBar');
-const hashChipsEl = document.getElementById('hashChips');
 let currentCorpusId = null;
 let corporaList = [];
 let graphMode = new URLSearchParams(location.search).get('graph') === 'rt' ? 'rt' : 'all';
@@ -739,56 +723,12 @@ function setViewMode(mode, { syncUrl = true } = {}) {
   viewMode = mode === 'analyses' ? 'analyses' : 'graph';
   analysesModeBtn?.classList.toggle('active', viewMode === 'analyses');
   if (viewMode === 'analyses') {
-    hashFilterBarEl?.classList.add('open');
-    renderHashChips();
     if (selectedCommId != null) openEspaceFiche(selectedCommId);
   } else {
-    hashFilterBarEl?.classList.remove('open');
     clearHashtagFilter();
     espaceFicheEl?.classList.remove('open');
   }
   if (syncUrl && currentCorpusId) syncCorpusUrl(currentCorpusId);
-}
-
-function renderHashChips(preferredCommId = selectedCommId) {
-  if (!hashChipsEl) return;
-  hashChipsEl.innerHTML = '';
-  const tags = [];
-  const seen = new Set();
-  const pushTag = (tag, g2) => {
-    const t = String(tag || '').toLowerCase();
-    if (!t || seen.has(t)) return;
-    seen.add(t);
-    tags.push({ tag: t, g2: g2 || 0 });
-  };
-  if (preferredCommId != null) {
-    const d = discourseFor(preferredCommId);
-    for (const h of d?.key_hashtags || []) pushTag(h.tag, h.g2);
-    if (!(d?.key_hashtags || []).length) {
-      for (const w of (d?.key_words || []).slice(0, 4)) pushTag(w.word, w.g2);
-    }
-  }
-  if (tags.length < 8 && discourseData?.communities) {
-    for (const d of Object.values(discourseData.communities)) {
-      for (const h of (d.key_hashtags || []).slice(0, 3)) pushTag(h.tag, h.g2);
-    }
-  }
-  tags.sort((a, b) => b.g2 - a.g2);
-  const clear = document.createElement('button');
-  clear.type = 'button';
-  clear.className = 'tag-chip' + (!activeHashtag ? ' active' : '');
-  clear.textContent = 'Tous';
-  clear.addEventListener('click', () => setHashtagFilter(null));
-  hashChipsEl.appendChild(clear);
-  for (const t of tags.slice(0, 12)) {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'tag-chip' + (activeHashtag === t.tag ? ' active' : '');
-    b.textContent = `#${t.tag}`;
-    b.title = `score ${t.g2}`;
-    b.addEventListener('click', () => setHashtagFilter(t.tag));
-    hashChipsEl.appendChild(b);
-  }
 }
 
 function accountsForHashtag(tag) {
@@ -804,7 +744,7 @@ function communitiesForHashtag(tag) {
 function clearHashtagFilter() {
   activeHashtag = null;
   applyNodeHighlight(null);
-  if (viewMode === 'analyses') renderHashChips();
+  if (graphData) renderCommPanel(graphData);
 }
 
 function setHashtagFilter(tag) {
@@ -816,8 +756,9 @@ function setHashtagFilter(tag) {
       comms: communitiesForHashtag(activeHashtag),
     });
   }
-  renderHashChips();
   if (viewMode !== 'analyses') setViewMode('analyses');
+  if (graphData) renderCommPanel(graphData);
+  if (selectedCommId != null) openEspaceFiche(selectedCommId);
 }
 
 function applyNodeHighlight(filter) {
@@ -915,7 +856,6 @@ function openEspaceFiche(commId) {
   document.querySelectorAll('#commList .comm-row').forEach((row) => {
     row.classList.toggle('selected', Number(row.dataset.commId) === selectedCommId);
   });
-  if (viewMode === 'analyses') renderHashChips(selectedCommId);
 }
 
 async function ensureDiscourse(corpusId) {
@@ -1164,6 +1104,11 @@ function syncCorpusSubTabs(corp) {
   if (fluxLinkEl) {
     fluxLinkEl.href = `../flux-continu/?corpus=${encodeURIComponent(id)}`;
     fluxLinkEl.title = `Flux continu · ${short}`;
+  }
+  const coordLinkEl = document.getElementById('coordLink');
+  if (coordLinkEl) {
+    coordLinkEl.href = `../reseau-coordination/?corpus=${encodeURIComponent(id)}`;
+    coordLinkEl.title = `Réseau de coordination · ${short}`;
   }
 }
 
@@ -1555,12 +1500,12 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   fitGraphToView(nodes);
   renderCommPanel(data);
   rebuildLabels();
-  if (activeHashtag) setHashtagFilter(activeHashtag);
-  else applyNodeHighlight(null);
-  if (viewMode === 'analyses') {
-    hashFilterBarEl?.classList.add('open');
-    renderHashChips();
-  }
+  if (activeHashtag) {
+    applyNodeHighlight({
+      accounts: accountsForHashtag(activeHashtag),
+      comms: communitiesForHashtag(activeHashtag),
+    });
+  } else applyNodeHighlight(null);
   return true;
 }
 
