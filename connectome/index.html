@@ -1098,6 +1098,15 @@ function communitiesForHashtag(tag) {
   return new Set((discourseData?.tag_communities?.[t] || []).map(Number));
 }
 
+/** Nb de chips # par communauté / fiche — suit le plafond « Afficher ». */
+function hashChipsPerCommunity() {
+  if (!hashShowLimit) return 12;
+  if (hashShowLimit <= 20) return 4;
+  if (hashShowLimit <= 40) return 6;
+  if (hashShowLimit <= 80) return 8;
+  return 12;
+}
+
 /** Agrège les # distinctifs du corpus (g2 max + effectifs comptes / communautés). */
 function listCorpusHashtags() {
   const byTag = new Map();
@@ -1124,6 +1133,13 @@ function listCorpusHashtags() {
     cur.nComm = (tc[t] || []).length;
   }
   return [...byTag.values()].sort((a, b) => {
+    if (hashSortMode === 'alpha') return a.tag.localeCompare(b.tag, 'fr');
+    if (hashSortMode === 'g2') {
+      if (b.g2 !== a.g2) return b.g2 - a.g2;
+      if (b.nAcc !== a.nAcc) return b.nAcc - a.nAcc;
+      return a.tag.localeCompare(b.tag, 'fr');
+    }
+    // nAcc (défaut)
     if (b.nAcc !== a.nAcc) return b.nAcc - a.nAcc;
     if (b.g2 !== a.g2) return b.g2 - a.g2;
     return a.tag.localeCompare(b.tag, 'fr');
@@ -1132,8 +1148,15 @@ function listCorpusHashtags() {
 
 function renderHashPanel() {
   if (!hashListEl) return;
-  const tags = listCorpusHashtags();
-  if (hashEmptyEl) hashEmptyEl.hidden = tags.length > 0;
+  const all = listCorpusHashtags();
+  const tags = hashShowLimit > 0 ? all.slice(0, hashShowLimit) : all;
+  const countEl = document.getElementById('hashCountLabel');
+  if (countEl) {
+    countEl.textContent = hashShowLimit > 0 && tags.length < all.length
+      ? `${tags.length} / ${all.length}`
+      : `${all.length}`;
+  }
+  if (hashEmptyEl) hashEmptyEl.hidden = all.length > 0;
   hashListEl.innerHTML = '';
   for (const h of tags) {
     const btn = document.createElement('button');
