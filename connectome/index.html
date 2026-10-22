@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Connectomes — cross_corpus</title>
-  <!-- connectome-ui v20261022j : Distinction RT/interactions — luminosités rééquilibrées -->
+  <!-- connectome-ui v20261022k : # highlight ambre · # seulement en mode Communautés · Distinction HUD only -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; color: #ccc; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
@@ -181,6 +181,10 @@
     }
     #colorModeBtns .color-btn.active[data-mode="rt_classes"] {
       color: #fff8e8; background: rgba(255,140,40,0.4); border-color: rgba(255,180,80,0.7);
+    }
+    #hashModeBtn[hidden] { display: none !important; }
+    #hashModeBtn:disabled {
+      opacity: 0.35; cursor: not-allowed; pointer-events: none;
     }
     #rtColorLegend {
       display: none; margin-top: 8px; padding-top: 8px;
@@ -430,9 +434,8 @@
       <div id="graphMode" role="tablist" aria-label="Interactions du graphe">
         <button type="button" class="mode active" data-graph="all" id="graphModeAll">Toutes interactions</button>
         <button type="button" class="mode" data-graph="rt" id="graphModeRt">RT</button>
-        <button type="button" class="mode" data-graph="rt_classes" id="graphModeRtClasses" title="Couleur des liens : interactions (≤30 % RT) / mixtes / RT (≥70 %)">Distinction RT / interactions</button>
         <a id="analysesLink" class="mode mode-link" href="../analyses/ebola.html" title="Page analyses complète (nouvel onglet)" target="_blank" rel="noopener noreferrer">Analyses</a>
-        <button type="button" class="mode mode-analyses" data-mode="analyses" id="hashModeBtn" title="Surligner le graphe par hashtag distinctif">#</button>
+        <button type="button" class="mode mode-analyses" data-mode="analyses" id="hashModeBtn" title="Surligner par hashtag (mode Communautés uniquement)">#</button>
         <a id="fluxLink" class="mode mode-link" href="../flux-continu/?corpus=ebola" title="Flux continu (fenêtre 3j · FA2)">Flux continu</a>
         <a id="coordLink" class="mode mode-link" href="../reseau-coordination/?corpus=ebola" title="Réseau de coordination · co-RT · Serrano α=0,05 (OR)">Coordination</a>
       </div>
@@ -457,7 +460,7 @@
   <aside id="hud">
     <b>Connectome</b>
     <div id="stats">—</div>
-    <div id="colorModeBlock" title="v20261022i">
+    <div id="colorModeBlock" title="v20261022k">
       <div class="cmlabel">Couleurs des liens</div>
       <div id="colorModeBtns" role="group" aria-label="Couleurs des liens">
         <button type="button" class="color-btn active" data-mode="community" id="hudColorCommunity">Communautés</button>
@@ -919,8 +922,9 @@ function discourseFor(commId) {
 }
 
 function setViewMode(mode, { syncUrl = true } = {}) {
+  if (mode === 'analyses' && !communityColorModeActive()) return;
   viewMode = mode === 'analyses' ? 'analyses' : 'graph';
-  hashModeBtn?.classList.toggle('active', viewMode === 'analyses');
+  hashModeBtn?.classList.toggle('active', viewMode === 'analyses' && communityColorModeActive());
   if (viewMode === 'analyses') {
     openHashPanel();
     if (selectedCommId != null) openEspaceFiche(selectedCommId);
@@ -1025,6 +1029,7 @@ function clearHashtagFilter() {
 }
 
 function setHashtagFilter(tag) {
+  if (tag && !communityColorModeActive()) return;
   activeHashtag = tag ? String(tag).toLowerCase() : null;
   if (!activeHashtag) {
     applyNodeHighlight(null);
@@ -1052,6 +1057,12 @@ function setHashtagFilter(tag) {
   else renderHashPanel();
 }
 
+/** Couleur de surlignage # — distincte des palettes Louvain / RT. */
+const HASH_HI = [1.0, 0.78, 0.12];       // ambre communauté matchée
+const HASH_HI_ACC = [1.0, 0.95, 0.45];   // ambre clair comptes connus
+const HASH_OFF = [0.07, 0.08, 0.10];     // fond assombri
+const HASH_EDGE = [1.0, 0.72, 0.08];
+
 function applyNodeHighlight(filter) {
   if (!pointsMesh || !nodeColorsBase || !graphData?.nodes) return;
   const col = pointsMesh.geometry.attributes.color.array;
@@ -1076,7 +1087,6 @@ function applyNodeHighlight(filter) {
   for (let i = 0; i < n; i++) {
     const nd = graphData.nodes[i];
     const sn = String(nd.l || '').toLowerCase().replace(/^@/, '');
-    // Priorité : toute la communauté où le # est distinctif (+ boost comptes connus)
     const inComm = comms.size > 0 && comms.has(Number(nd.com));
     const inAcc = accounts.size > 0 && accounts.has(sn);
     const on = inComm || inAcc;
@@ -1084,12 +1094,12 @@ function applyNodeHighlight(filter) {
       onNode[i] = inAcc ? 2 : 1;
       nOn++;
     }
-    const k = onNode[i] === 2 ? 1.85 : onNode[i] === 1 ? 1.35 : 0.045;
-    col[i * 3] = base[i * 3] * k;
-    col[i * 3 + 1] = base[i * 3 + 1] * k;
-    col[i * 3 + 2] = base[i * 3 + 2] * k;
+    const rgb = onNode[i] === 2 ? HASH_HI_ACC : onNode[i] === 1 ? HASH_HI : HASH_OFF;
+    col[i * 3] = rgb[0];
+    col[i * 3 + 1] = rgb[1];
+    col[i * 3 + 2] = rgb[2];
     if (sizeAttr && nodeSizesBase) {
-      const sm = onNode[i] === 2 ? 2.4 : onNode[i] === 1 ? 1.55 : 0.28;
+      const sm = onNode[i] === 2 ? 2.5 : onNode[i] === 1 ? 1.6 : 0.28;
       sizeAttr.array[i] = nodeSizesBase[i] * sm;
     }
   }
@@ -1106,16 +1116,21 @@ function applyNodeHighlight(filter) {
         const a = lineEdgeA[v];
         const b = lineEdgeB[v];
         const hit = (a >= 0 && onNode[a] > 0) || (b >= 0 && onNode[b] > 0);
-        const k = hit ? linkK * 1.2 : linkK * 0.05;
-        lc[o] = baseL[o] * k;
-        lc[o + 1] = baseL[o + 1] * k;
-        lc[o + 2] = baseL[o + 2] * k;
+        if (hit) {
+          lc[o] = HASH_EDGE[0] * linkK;
+          lc[o + 1] = HASH_EDGE[1] * linkK;
+          lc[o + 2] = HASH_EDGE[2] * linkK;
+        } else {
+          lc[o] = baseL[o] * linkK * 0.04;
+          lc[o + 1] = baseL[o + 1] * linkK * 0.04;
+          lc[o + 2] = baseL[o + 2] * linkK * 0.04;
+        }
       }
-      lineMat.opacity = Math.min(0.55, P.opacity * 2.2);
+      lineMat.opacity = Math.min(0.6, P.opacity * 2.4);
     } else {
-      const dim = 0.12;
+      const dim = 0.1;
       for (let i = 0; i < baseL.length; i++) lc[i] = baseL[i] * linkK * dim;
-      lineMat.opacity = linkK * P.opacity * 0.35;
+      lineMat.opacity = linkK * P.opacity * 0.3;
     }
     lineGeo.attributes.color.needsUpdate = true;
     lineColorsDimmed = true;
@@ -1379,15 +1394,40 @@ function analysesPageUrl(corpusId) {
   return new URL(`../analyses/${corpusId}.html`, import.meta.url).href;
 }
 
+/** Mode # disponible uniquement si couleurs des liens = Communautés. */
+function communityColorModeActive() {
+  return graphMode !== 'rt_classes';
+}
+
+function syncHashModeAvailability() {
+  const ok = communityColorModeActive();
+  if (hashModeBtn) {
+    hashModeBtn.hidden = !ok;
+    hashModeBtn.disabled = !ok;
+    hashModeBtn.title = ok
+      ? 'Surligner par hashtag distinctif'
+      : 'Passe en couleurs « Communautés » (panneau gauche) pour utiliser #';
+  }
+  if (!ok && viewMode === 'analyses') {
+    setViewMode('graph', { syncUrl: false });
+  }
+}
+
 function updateGraphModeButtons() {
   document.querySelectorAll('#graphMode button.mode[data-graph]').forEach((b) => {
     b.classList.toggle('active', b.dataset.graph === graphMode && viewMode !== 'analyses');
   });
-  hashModeBtn?.classList.toggle('active', viewMode === 'analyses');
+  hashModeBtn?.classList.toggle('active', viewMode === 'analyses' && communityColorModeActive());
   const modeKey = graphMode === 'rt_classes' ? 'rt_classes' : 'community';
   document.querySelectorAll('#colorModeBtns .color-btn').forEach((b) => {
     b.classList.toggle('active', b.dataset.mode === modeKey);
   });
+  // Distinction RT/interactions : panneau gauche, seulement sous Toutes interactions / RT
+  const colorBlock = document.getElementById('colorModeBlock');
+  if (colorBlock) {
+    const showColorHud = graphMode === 'all' || graphMode === 'rt' || graphMode === 'rt_classes';
+    colorBlock.style.display = showColorHud ? '' : 'none';
+  }
   const legend = document.getElementById('rtColorLegend');
   const hint = document.getElementById('edgeColorHint');
   const rtMode = graphMode === 'rt_classes';
@@ -1398,6 +1438,7 @@ function updateGraphModeButtons() {
       ? 'Graphe RT seul · liens colorés par communauté'
       : 'Liens colorés par communauté des nœuds';
   }
+  syncHashModeAvailability();
 }
 
 function setGraphMode(mode) {
@@ -2602,6 +2643,7 @@ async function boot() {
     b.addEventListener('click', () => setEdgeColorFromHud(b.dataset.mode));
   });
   hashModeBtn?.addEventListener('click', () => {
+    if (!communityColorModeActive()) return;
     if (viewMode === 'analyses') setViewMode('graph');
     else setViewMode('analyses');
     updateGraphModeButtons();
