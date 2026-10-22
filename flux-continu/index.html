@@ -397,12 +397,13 @@ let dashPos = null;
 let dashCol = null;
 let dashMat = null;
 let dashMesh = null;
-/** Mode classes ternaires (part RT de l'arête) — traits pleins. */
+/** Mode classes ternaires (part RT) — contrastes forts (blending additif). */
 const RT_CLASS_IX_MAX = 0.30;  // ≤ 30 % RT → interactions
 const RT_CLASS_RT_MIN = 0.70;  // ≥ 70 % RT → retweets
-const COL_INTERACT = [0.95, 0.82, 0.28]; // ambre
-const COL_RETWEET = [0.32, 0.52, 0.98];  // bleu (plus sombre via bright)
-const COL_MIXED = [0.62, 0.52, 0.78];    // gris-violet
+const COL_INTERACT = [1.25, 0.48, 0.05]; // orange saturé (devant)
+const COL_RETWEET = [0.12, 0.22, 0.48];  // bleu ardoise très sombre (halo)
+const COL_MIXED = [0.85, 0.28, 0.95];    // magenta (mixtes)
+const RT_LAYER_CAP = 9000;               // plafonner le voile RT pour éviter le lavage blanc
 let pointMesh = null;
 let pointGeo = null;
 let pointPos = null;
@@ -977,9 +978,21 @@ function rtEdgeClass(rtFrac) {
 }
 
 function rtClassStyle(cls) {
-  if (cls === 'ix') return { col: COL_INTERACT, lumMul: 1.15 };
-  if (cls === 'rt') return { col: COL_RETWEET, lumMul: 0.55 };
-  return { col: COL_MIXED, lumMul: 0.78 };
+  // Écart de luminosité volontairement large : les RT majoritaires ne doivent
+  // pas noyer les interactions en blending additif.
+  if (cls === 'ix') return { col: COL_INTERACT, lumMul: 2.35, thick: true };
+  if (cls === 'rt') return { col: COL_RETWEET, lumMul: 0.11, thick: false };
+  return { col: COL_MIXED, lumMul: 0.62, thick: false };
+}
+
+/** Offset perpendiculaire léger (épaisseur visuelle des interactions). */
+function edgeOffset(ax, ay, bx, by, side) {
+  const dx = bx - ax;
+  const dy = by - ay;
+  const len = Math.hypot(dx, dy) || 1;
+  const ox = (-dy / len) * side;
+  const oy = (dx / len) * side;
+  return [ax + ox, ay + oy, bx + ox, by + oy];
 }
 
 function tightenFrameLayout(frame, factor = LAYOUT_TIGHTEN) {
@@ -1405,44 +1418,87 @@ function updateGraphics() {
   const maxW = edgeList.length ? edgeList[0].w : 1;
   const classCounts = { ix: 0, rt: 0, mix: 0 };
 
-  for (const e of edgeList) {
-    const a = simNodes[e.s], b = simNodes[e.t];
-    if (!a || !b) continue;
-    const mix = Math.min(a.alpha, b.alpha);
-    if (mix < EDGE_ALPHA_MIN) continue;
-
-    // Léger masquage seulement si très étiré (anti-trainée), sans couper les liens du jour.
-    const settle = Math.min(nodeSettleFactor(a), nodeSettleFactor(b));
-    const len = Math.hypot(a.x - b.x, a.y - b.y);
-    const tlen = Math.hypot((a.tx ?? a.x) - (b.tx ?? b.x), (a.ty ?? a.y) - (b.ty ?? b.y));
-    const stretch = len / Math.max(tlen, 14);
-    if (stretch > EDGE_STRETCH_MAX && settle < 0.35) continue;
-
-    const stretchFade = stretch > 1.4 ? clamp(1.3 - 0.35 * stretch, 0.25, 1) : 1;
-    const settleFade = 0.55 + 0.45 * settle; // reste visible même en léger déplacement
-    let cohortMul = 1;
-    if (highlightCohort251 && cohort251Idx.size) {
-      const hit = cohort251Idx.has(e.s) || cohort251Idx.has(e.t);
-      cohortMul = hit ? 1.35 : 0.08;
-    }
-
-    const wNorm = Math.pow(e.w / maxW, 0.45);
-    let bright = (0.25 + 0.75 * wNorm) * mix * settleFade * stretchFade * edgeBright * cohortMul;
-    let colA = a.color;
-    let colB = b.color;
-
-    if (rtMode) {
+  if (rtMode) {
+    // Préparer les arêtes par classe, puis dessiner RT → mixtes → interactions
+    // (les interactions restent au premier plan, lisibles malgré un voile RT dense).
+    const buckets = { rt: [], mix: [], ix: [] };
+    for (const e of edgeList) {
+      const a = simNodes[e.s], b = simNodes[e.t];
+      if (!a || !b) continue;
+      const mixA = Math.min(a.alpha, b.alpha);
+      if (mixA < EDGE_ALPHA_MIN) continue;
+      const settle = Math.min(nodeSettleFactor(a), nodeSettleFactor(b));
+      const len = Math.hypot(a.x - b.x, a.y - b.y);
+      const tlen = Math.hypot((a.tx ?? a.x) - (b.tx ?? b.x), (a.ty ?? a.y) - (b.ty ?? b.y));
+      const stretch = len / Math.max(tlen, 14);
+      if (stretch > EDGE_STRETCH_MAX && settle < 0.35) continue;
+      const stretchFade = stretch > 1.4 ? clamp(1.3 - 0.35 * stretch, 0.25, 1) : 1;
+      const settleFade = 0.55 + 0.45 * settle;
+      let cohortMul = 1;
+      if (highlightCohort251 && cohort251Idx.size) {
+        const hit = cohort251Idx.has(e.s) || cohort251Idx.has(e.t);
+        cohortMul = hit ? 1.35 : 0.08;
+      }
       const cls = rtEdgeClass(e.rtFrac);
       classCounts[cls]++;
       const style = rtClassStyle(cls);
-      bright *= style.lumMul;
-      colA = colB = style.col;
+      const wNorm = Math.pow(e.w / maxW, 0.45);
+      const bright = (0.25 + 0.75 * wNorm) * mixA * settleFade * stretchFade
+        * edgeBright * cohortMul * style.lumMul;
+      if (bright < 0.015) continue;
+      buckets[cls].push({
+        ax: a.x, ay: a.y, bx: b.x, by: b.y,
+        col: style.col, bright, thick: style.thick, w: e.w,
+      });
     }
-    if (bright < 0.02) continue;
-    pushLineSeg(a.x, a.y, b.x, b.y, colA, colB, bright, state);
-    if (state.segCount >= MAX_LINE_SEGS) break;
+    // Plafonner le voile RT (garder les plus lourds) pour laisser respirer le squelette.
+    if (buckets.rt.length > RT_LAYER_CAP) {
+      buckets.rt.sort((u, v) => v.w - u.w);
+      buckets.rt.length = RT_LAYER_CAP;
+    }
+    const paint = (list) => {
+      for (const s of list) {
+        pushLineSeg(s.ax, s.ay, s.bx, s.by, s.col, s.col, s.bright, state);
+        if (s.thick) {
+          // Double trait = « épaisseur » sans LineWidth WebGL.
+          const [x0, y0, x1, y1] = edgeOffset(s.ax, s.ay, s.bx, s.by, 1.35);
+          pushLineSeg(x0, y0, x1, y1, s.col, s.col, s.bright * 0.85, state);
+        }
+        if (state.segCount >= MAX_LINE_SEGS) return;
+      }
+    };
+    paint(buckets.rt);
+    paint(buckets.mix);
+    paint(buckets.ix);
+    window.__rtClassCounts = classCounts;
+  } else {
+    for (const e of edgeList) {
+      const a = simNodes[e.s], b = simNodes[e.t];
+      if (!a || !b) continue;
+      const mix = Math.min(a.alpha, b.alpha);
+      if (mix < EDGE_ALPHA_MIN) continue;
+
+      const settle = Math.min(nodeSettleFactor(a), nodeSettleFactor(b));
+      const len = Math.hypot(a.x - b.x, a.y - b.y);
+      const tlen = Math.hypot((a.tx ?? a.x) - (b.tx ?? b.x), (a.ty ?? a.y) - (b.ty ?? b.y));
+      const stretch = len / Math.max(tlen, 14);
+      if (stretch > EDGE_STRETCH_MAX && settle < 0.35) continue;
+
+      const stretchFade = stretch > 1.4 ? clamp(1.3 - 0.35 * stretch, 0.25, 1) : 1;
+      const settleFade = 0.55 + 0.45 * settle;
+      let cohortMul = 1;
+      if (highlightCohort251 && cohort251Idx.size) {
+        const hit = cohort251Idx.has(e.s) || cohort251Idx.has(e.t);
+        cohortMul = hit ? 1.35 : 0.08;
+      }
+
+      const wNorm = Math.pow(e.w / maxW, 0.45);
+      const bright = (0.25 + 0.75 * wNorm) * mix * settleFade * stretchFade * edgeBright * cohortMul;
+      if (bright < 0.02) continue;
+      pushLineSeg(a.x, a.y, b.x, b.y, a.color, b.color, bright, state);
+      if (state.segCount >= MAX_LINE_SEGS) break;
+    }
   }
-  if (rtMode) window.__rtClassCounts = classCounts;
   lineGeo.setDrawRange(0, state.segCount * 2);
   lineGeo.attributes.position.needsUpdate = true;
   lineGeo.attributes.color.needsUpdate = true;
@@ -1640,8 +1696,9 @@ function renderRtShareLegend() {
       <div class="track-bar"><i style="width:${pct}%;background:rgb(${rgb})"></i></div>
     </div>`;
   }).join('') + `<div class="track-share" style="margin-top:8px">
-    <span>Traits pleins · teinte = classe · luminosité RT atténuée</span>
-  </div>`;
+    <span>Orange épais = interactions · magenta = mixtes · bleu sombre = RT (voile)</span>
+  </div>
+  <div class="track-share"><span>Ordre : RT derrière → interactions devant</span></div>`;
 }
 
 function initVolumeSeries() {
