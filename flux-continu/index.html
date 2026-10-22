@@ -230,7 +230,7 @@
       <select id="colorMode">
         <option value="track">Track · fenêtre 3j</option>
         <option value="global" selected>Louvain global ALL</option>
-        <option value="rt_share">Classes ternaires RT</option>
+        <option value="rt_share">Distinction RT / interactions</option>
       </select>
     </div>
     <div class="row"><span>Périmètre</span>
@@ -1675,7 +1675,7 @@ function updateHUD(visible) {
 
 function renderRtShareLegend() {
   const el = document.getElementById('trackList');
-  document.getElementById('tracksTitle').textContent = 'Classes ternaires · part RT';
+  document.getElementById('tracksTitle').textContent = 'Distinction RT / interactions';
   if (window.__rtWeightsReady === false) {
     el.innerHTML = `<div class="track-share" style="color:#f87171;line-height:1.45">
       <span>Données sans <b>weight_rt</b> (arêtes [s,t,w] seulement).

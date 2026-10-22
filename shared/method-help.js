@@ -145,7 +145,7 @@ const TOPICS = {
       <ul>
         <li><strong>Louvain global ALL</strong> — partition du connectome toutes-interactions (couleur stable dans le temps).</li>
         <li><strong>Track · fenêtre 3j</strong> — communautés locales suivies par similarité Jaccard (≥&nbsp;0,3) d’une frame à l’autre.</li>
-        <li><strong>Classes ternaires RT</strong> — coloration des <em>liens</em> selon la part RT (comme sur le connectome).</li>
+        <li><strong>Distinction RT / interactions</strong> — coloration des <em>liens</em> selon la part RT (comme sur le connectome).</li>
       </ul>
 
       <h3>Volume (barre basse)</h3>
