@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Réseau de coordination — cross_corpus</title>
-  <meta name="coord-build" content="2026-10-22-z-explain-nox" />
+  <meta name="coord-build" content="2026-10-22-linklight-fix" />
   <meta http-equiv="Cache-Control" content="no-cache" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -201,7 +201,7 @@
         La carte du bas (gauche–droite) reste « qui est lié à qui » ; la hauteur dit seulement <em>quand</em>.
       </div>
     </div>
-    <div class="row"><span>Lumière</span><input id="linkLight" type="range" min="0" max="1" step="0.01" value="0.35"></div>
+    <div class="row"><span>Lumière liens</span><input id="linkLight" type="range" min="0" max="1" step="0.01" value="0.35" title="0 = liens éteints · 1 = intensité max"></div>
     <div class="row"><span>Opacité</span><input id="op" type="range" min="0" max="0.55" step="0.005" value="0.12"></div>
     <div class="row"><span>Labels</span><input id="nLabels" type="range" min="0" max="80" step="1" value="40"></div>
     <div class="nav-hint" id="labelHint">
@@ -276,6 +276,22 @@ let lastLabelCamKey = '';
 function shortLabel(lab) {
   return String(lab || '').split('·')[0].trim();
 }
+
+/** Luminosité des liens : 0 = éteints, 1 = intensité max (couleurs × lumière × opacité). */
+function applyLinkLight(level = P.linkLight) {
+  P.linkLight = Math.max(0, Math.min(1, Number(level) || 0));
+  const slider = document.getElementById('linkLight');
+  if (slider && slider.value !== String(P.linkLight)) slider.value = String(P.linkLight);
+  if (bloomPass) bloomPass.strength = 0.12 + P.linkLight * 0.65;
+  if (!lineGeo || !lineColorsBase || !lineMat) return;
+  const col = lineGeo.attributes.color.array;
+  const k = P.linkLight;
+  for (let i = 0; i < lineColorsBase.length; i++) col[i] = lineColorsBase[i] * k;
+  lineGeo.attributes.color.needsUpdate = true;
+  lineMat.opacity = k * P.opacity;
+  lineMat.visible = k > 0.0005;
+}
+
 function lift(c, k = 1.15) {
   return [
     Math.min(1.05, (c[0] / 255) * k),
@@ -757,14 +773,16 @@ function buildScene(data) {
   lineGeo = new THREE.BufferGeometry();
   lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
   lineColorsBase = new Float32Array(colors);
-  lineGeo.setAttribute('color', new THREE.Float32BufferAttribute(lineColorsBase, 3));
+  // Copie séparée : applyLinkLight multiplie sans écraser la base
+  lineGeo.setAttribute('color', new THREE.Float32BufferAttribute(new Float32Array(colors), 3));
   lineMat = new THREE.LineBasicMaterial({
-    vertexColors: true, transparent: true, opacity: P.opacity,
+    vertexColors: true, transparent: true, opacity: P.linkLight * P.opacity,
     blending: THREE.AdditiveBlending, depthWrite: false,
   });
   const lines = new THREE.LineSegments(lineGeo, lineMat);
   lines.frustumCulled = false;
   scene.add(lines);
+  applyLinkLight(P.linkLight);
 
   const n = nodes.length;
   const vis = graphVisualScale(n);
@@ -838,7 +856,8 @@ function applyColorMode() {
       );
     }
     lineColorsBase = new Float32Array(colors);
-    lineGeo.setAttribute('color', new THREE.Float32BufferAttribute(lineColorsBase, 3));
+    lineGeo.setAttribute('color', new THREE.Float32BufferAttribute(new Float32Array(colors), 3));
+    applyLinkLight(P.linkLight);
   }
   rebuildLabels();
   renderDiscoursePanel();
@@ -1018,12 +1037,11 @@ async function loadCorpus(id) {
 }
 
 document.getElementById('linkLight').addEventListener('input', (e) => {
-  P.linkLight = Number(e.target.value);
-  if (bloomPass) bloomPass.strength = 0.2 + P.linkLight * 0.7;
+  applyLinkLight(Number(e.target.value));
 });
 document.getElementById('op').addEventListener('input', (e) => {
   P.opacity = Number(e.target.value);
-  if (lineMat) lineMat.opacity = P.opacity;
+  applyLinkLight(P.linkLight);
 });
 document.getElementById('nLabels').addEventListener('input', (e) => {
   P.nLabels = Number(e.target.value);
