@@ -111,8 +111,8 @@ const TOPICS = {
 
       <h3>Filtre d’affichage</h3>
       <ul>
-        <li><strong>Nœuds</strong> — ambre pour les comptes matchés ; le reste est assombri.</li>
-        <li><strong>Liens</strong> — fort si les <em>deux</em> extrémités matchent ; halo faible si une seule.</li>
+        <li><strong>Générateurs</strong> — comptes ayant publié le # ; liens <em>uniquement entre</em> ces comptes.</li>
+        <li><strong>Générateurs + cibles</strong> — idem + voisins d’interaction (ambre) ; liens touchant ≥1 générateur (fort / halo).</li>
         <li>Disponible uniquement lorsque les couleurs des liens sont en mode <strong>Communautés</strong> (pas Distinction RT).</li>
       </ul>
 
@@ -141,7 +141,7 @@ const TOPICS = {
 
       <h3>Filtre d’affichage</h3>
       <ul>
-        <li>Identique au mode # : nœuds ambre, liens fort / halo selon les extrémités matchées.</li>
+        <li>Mêmes portées que le mode # : <strong>Générateurs</strong> vs <strong>Générateurs + cibles</strong>.</li>
         <li>Fiche bas-droite : co-occurrents (même message) + parts par communauté (couleurs Louvain).</li>
       </ul>
 
