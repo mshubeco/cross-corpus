@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Réseau de coordination — cross_corpus</title>
-  <meta name="coord-build" content="2026-10-22-3d-orbit-v2" />
+  <meta name="coord-build" content="2026-10-22-z-explain-nox" />
   <meta http-equiv="Cache-Control" content="no-cache" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -18,9 +18,8 @@
       color: #fff; letter-spacing: 0.015em;
       text-shadow: 0 0 6px rgba(0,0,0,0.85), 0 1px 2px rgba(0,0,0,0.7);
       white-space: nowrap; opacity: 0.94; line-height: 1.05;
-      pointer-events: auto; cursor: pointer;
+      pointer-events: none; cursor: default;
     }
-    .label:hover { filter: brightness(1.15); }
     #corpusNav {
       position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 12;
       display: flex; gap: 2px; flex-wrap: wrap; justify-content: center;
@@ -82,6 +81,11 @@
     .mode3d-row button:disabled { opacity: 0.35; cursor: not-allowed; }
     #zModeBlock { margin-top: 6px; display: none; }
     #zModeBlock.on { display: block; }
+    #zHint {
+      margin-top: 8px; color: #9aa3b0; font-size: 11px; line-height: 1.45;
+      max-width: 100%;
+    }
+    #zHint strong { color: #d5dde8; font-weight: 600; }
     a.hud-link {
       display: inline-flex; margin-bottom: 10px; padding: 6px 10px; border-radius: 7px;
       border: 1px solid rgba(255,255,255,0.12); background: rgba(37,99,235,0.14);
@@ -180,22 +184,25 @@
     </div>
     <div id="zModeBlock">
       <div class="color-modes" role="tablist" aria-label="Axe Z temporel">
-        <button type="button" class="active" data-z="chrono" id="zChrono" title="Z = médiane(t_co) — chronologie">A · Chrono</button>
-        <button type="button" data-z="sync" id="zSync" title="Z = −médiane(Δt) — synchronicité">B · Sync</button>
+        <button type="button" class="active" data-z="chrono" id="zChrono" title="Hauteur = moment dans le temps">A · Chrono</button>
+        <button type="button" data-z="sync" id="zSync" title="Hauteur = rapidité à retweeter ensemble">B · Sync</button>
       </div>
-      <div id="zHint" style="margin-top:6px;color:#6a7380;font-size:10px;line-height:1.35">
-        A : tard = haut · B : co-RT synchrones = haut
+      <div id="zHint">
+        <strong>Chrono — lire la hauteur comme une frise</strong><br>
+        En bas : comptes qui ont surtout retweeté les mêmes messages <em>tôt</em> dans la période.
+        En haut : ceux qui l’ont fait <em>plus tard</em>.
+        La carte du bas (gauche–droite) reste « qui est lié à qui » ; la hauteur dit seulement <em>quand</em>.
       </div>
     </div>
     <div class="row"><span>Lumière</span><input id="linkLight" type="range" min="0" max="1" step="0.01" value="0.35"></div>
     <div class="row"><span>Opacité</span><input id="op" type="range" min="0" max="0.55" step="0.005" value="0.12"></div>
     <div class="row"><span>Labels</span><input id="nLabels" type="range" min="0" max="80" step="1" value="40"></div>
     <div class="nav-hint" id="labelHint">
-      Clic label → profil X · zoom → plus de labels · taille = PageRank (α=0,85, poids co-RT)
+      Survol → infos · zoom → plus de labels · taille = PageRank (poids co-RT)
     </div>
     <div class="note">
-      Backbone Serrano (2009). Labels : mêmes standards que le connectome (pool, révélation au zoom, anti-chevauchement) ;
-      taille ∝ PageRank pondéré sur le backbone.
+      Backbone Serrano (2009). Pas de lien vers X : lecture locale seulement.
+      Labels : taille ∝ PageRank pondéré sur le backbone.
     </div>
   </aside>
   <aside id="commPanel">
@@ -334,9 +341,17 @@ function sync3dControls() {
   document.getElementById('zChrono')?.classList.toggle('active', zMode === 'chrono');
   document.getElementById('zSync')?.classList.toggle('active', zMode === 'sync');
   if (zHintEl) {
-    zHintEl.textContent = zMode === 'sync'
-      ? 'B · Synchronicité : Z = −médiane(Δt) — haut = sync · clic-glissé = orbit'
-      : 'A · Chronologie : Z = médiane(t_co) — haut = tard · clic-glissé = orbit';
+    zHintEl.innerHTML = zMode === 'sync'
+      ? `<strong>Sync — lire la hauteur comme un chronomètre</strong><br>
+         En haut : comptes qui retweetent souvent le <em>même</em> contenu quasiment <em>en même temps</em>
+         (comme s’ils appuyaient ensemble).<br>
+         En bas : ils partagent encore les mêmes messages, mais avec plus de <em>décalage</em>.<br>
+         <span style="color:#6a7380">Clic-glissé = tourner la vue · molette = zoom</span>`
+      : `<strong>Chrono — lire la hauteur comme une frise</strong><br>
+         En bas : comptes qui ont surtout retweeté les mêmes messages <em>tôt</em> dans la période.<br>
+         En haut : ceux qui l’ont fait <em>plus tard</em>.<br>
+         La carte (gauche–droite) = « qui est lié à qui » ; la hauteur = seulement <em>quand</em>.<br>
+         <span style="color:#6a7380">Clic-glissé = tourner la vue · molette = zoom</span>`;
   }
 }
 
@@ -423,7 +438,6 @@ function initThree() {
 
   window.addEventListener('resize', onResize);
   renderer.domElement.addEventListener('pointermove', onPointerMove);
-  renderer.domElement.addEventListener('click', onClick);
 
   function loop() {
     requestAnimationFrame(loop);
@@ -633,14 +647,8 @@ function rebuildLabels() {
     el.style.textShadow = '0 0 6px rgba(0,0,0,0.85), 0 1px 2px rgba(0,0,0,0.75)';
     const pr = node.pr != null ? Number(node.pr) : null;
     el.title = pr != null
-      ? `${text} — PageRank ${pr.toExponential(2)} · deg ${node.deg} · clic : profil X`
-      : `${text} — deg ${node.deg} · clic : profil X`;
-    el.addEventListener('click', (ev) => {
-      ev.preventDefault();
-      ev.stopPropagation();
-      const u = xUrl(raw);
-      if (u) window.open(u, '_blank', 'noopener,noreferrer');
-    });
+      ? `${text} — PageRank ${pr.toExponential(2)} · deg ${node.deg}`
+      : `${text} — deg ${node.deg}`;
     labelsEl.appendChild(el);
     labelItems.push({
       el, text, nodeRef: node, x: node.x, y: node.y, z: nodeZ(node),
@@ -878,14 +886,6 @@ function onPointerMove(ev) {
   tip.style.top = `${ev.clientY + 12}px`;
   tip.innerHTML = `<div>@${nd.l} · deg ${nd.deg}</div><div class="muted">${prBit}${prBit ? ' · ' : ''}${comLabel}${zBit}</div>`;
 }
-function onClick(ev) {
-  const w = worldFromClient(ev.clientX, ev.clientY);
-  const i = nearestNode(w.x, w.y);
-  if (i < 0) return;
-  const u = xUrl(nodes[i].l);
-  if (u) window.open(u, '_blank', 'noopener,noreferrer');
-}
-
 function setStats(meta) {
   const pre = meta.n_edges_pre_serrano != null ? meta.n_edges_pre_serrano.toLocaleString('fr-FR') : '—';
   const match = meta.n_base_matched != null
@@ -903,7 +903,7 @@ function setStats(meta) {
   ].join('');
   if (meta.labelCentralityDef && labelHintEl) {
     labelHintEl.textContent =
-      `Clic label → profil X · zoom → plus de labels · taille = ${meta.labelCentrality || 'PageRank'} (${meta.labelCentralityDef.split(';')[0]})`;
+      `Survol → infos · zoom → plus de labels · taille = ${meta.labelCentrality || 'PageRank'} (${meta.labelCentralityDef.split(';')[0]})`;
   }
 }
 
