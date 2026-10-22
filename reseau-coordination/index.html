@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Réseau de coordination — cross_corpus</title>
-  <meta name="coord-build" content="2026-10-22-3d-temporal-v1" />
+  <meta name="coord-build" content="2026-10-22-3d-orbit-v2" />
   <meta http-equiv="Cache-Control" content="no-cache" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -207,7 +207,7 @@
 
 <script type="module">
 import * as THREE from 'three';
-import { MapControls } from 'three/addons/controls/MapControls.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
@@ -320,6 +320,14 @@ function applyGeometryZ() {
 function sync3dControls() {
   if (!controls) return;
   controls.enableRotate = !!mode3d;
+  // 3D : clic gauche = orbit ; 2D : clic gauche = pan (comme le connectome)
+  if (mode3d) {
+    controls.mouseButtons = { LEFT: THREE.MOUSE.ROTATE, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.PAN };
+    controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN };
+  } else {
+    controls.mouseButtons = { LEFT: THREE.MOUSE.PAN, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.PAN };
+    controls.touches = { ONE: THREE.TOUCH.PAN, TWO: THREE.TOUCH.DOLLY_PAN };
+  }
   btn2d.classList.toggle('active', !mode3d);
   btn3d.classList.toggle('active', !!mode3d);
   zModeBlock.classList.toggle('on', !!mode3d);
@@ -327,8 +335,8 @@ function sync3dControls() {
   document.getElementById('zSync')?.classList.toggle('active', zMode === 'sync');
   if (zHintEl) {
     zHintEl.textContent = zMode === 'sync'
-      ? 'B · Synchronicité : Z = −médiane(Δt) normalisée — haut = co-RT plus synchrones'
-      : 'A · Chronologie : Z = médiane(t_co) normalisée — haut = activité co-RT plus tardive';
+      ? 'B · Synchronicité : Z = −médiane(Δt) — haut = sync · clic-glissé = orbit'
+      : 'A · Chronologie : Z = médiane(t_co) — haut = tard · clic-glissé = orbit';
   }
 }
 
@@ -336,11 +344,16 @@ function setMode3d(on) {
   mode3d = !!on;
   applyGeometryZ();
   if (mode3d) {
-    // Slight tilt so Z is readable
-    camera.position.y = controls.target.y - zSpan * 0.55;
-    camera.position.z = Math.max(420, zSpan * 1.4);
+    const t = controls.target.clone();
+    // Vue oblique : hauteur Z lisible, orbit souris gauche autour du centre
+    camera.up.set(0, 0, 1);
+    camera.position.set(t.x, t.y - Math.max(280, zSpan * 1.1), Math.max(420, zSpan * 1.5));
+    controls.target.copy(t);
     controls.update();
   } else {
+    camera.up.set(0, 1, 0);
+    camera.position.set(controls.target.x, controls.target.y, 400);
+    controls.update();
     fitGraphToView(nodes);
   }
 }
@@ -387,16 +400,21 @@ function initThree() {
   renderer.setSize(innerWidth, innerHeight);
   wrap.appendChild(renderer.domElement);
 
-  controls = new MapControls(camera, renderer.domElement);
+  controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
-  controls.dampingFactor = 0.1;
+  controls.dampingFactor = 0.08;
   controls.enableRotate = false;
   controls.screenSpacePanning = true;
+  controls.enablePan = true;
   controls.minZoom = 0.008;
   controls.maxZoom = 20;
-  controls.minPolarAngle = 0;
-  controls.maxPolarAngle = Math.PI;
+  controls.minDistance = 40;
+  controls.maxDistance = 8000;
+  controls.minPolarAngle = 0.05;
+  controls.maxPolarAngle = Math.PI - 0.05;
   controls.target.set(0, 0, 0);
+  controls.mouseButtons = { LEFT: THREE.MOUSE.PAN, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.PAN };
+  controls.touches = { ONE: THREE.TOUCH.PAN, TWO: THREE.TOUCH.DOLLY_PAN };
 
   composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
