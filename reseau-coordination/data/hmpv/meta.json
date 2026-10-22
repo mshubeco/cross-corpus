@@ -93,6 +93,12 @@
       "label": "B · Synchronicité",
       "field": "z_sync",
       "def": "Z = −médiane(Δt) normalisée ; haut = co-RT plus synchrones"
+    },
+    "cross": {
+      "id": "cross",
+      "label": "Cross-corpus",
+      "field": "z_cross",
+      "def": "Z = n_cross / (n_corpora−1) ; n_cross = nb d'autres corpus où le compte est aussi sur le backbone Serrano du site"
     }
   },
   "temporal": {
@@ -101,5 +107,13 @@
     "n_edges": 8,
     "t_co_span_s": 597207.5,
     "dt_med_global_s": 1596.0
+  },
+  "crossCorpus": {
+    "nCorpora": 8,
+    "nMultiOnGraph": 0,
+    "histNCross": {
+      "0": 10
+    },
+    "generatedAt": "2026-10-22T12:23:56.438967+00:00"
   }
 }

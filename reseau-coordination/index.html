@@ -90,6 +90,14 @@
     .mode3d-row button:disabled { opacity: 0.35; cursor: not-allowed; }
     #zModeBlock { margin-top: 6px; display: none; }
     #zModeBlock.on { display: block; }
+    .z-mode-row { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+    .z-mode-row button {
+      flex: 1 1 auto; border: 0; border-radius: 6px; padding: 6px 7px; cursor: pointer;
+      background: rgba(255,255,255,0.04); color: #8b93a0; font: inherit; font-size: 10px; font-weight: 600;
+      min-width: 0;
+    }
+    .z-mode-row button:hover { color: #e8eef7; background: rgba(255,255,255,0.08); }
+    .z-mode-row button.active { color: #fff; background: rgba(138,180,255,0.32); }
     #zHint {
       margin-top: 8px; color: #9aa3b0; font-size: 11px; line-height: 1.45;
       max-width: 100%;
@@ -225,9 +233,15 @@
     <div style="margin-top:10px;margin-bottom:2px;color:#c5ccd6;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;font-weight:600">Vue</div>
     <div class="mode3d-row">
       <button type="button" id="btn2d" class="active" title="Layout FA2 2D">2D</button>
-      <button type="button" id="btn3d" title="Extrusion temporelle sur Z">3D</button>
+      <button type="button" id="btn3d" title="Extrusion 3D (axe Z configurable)">3D</button>
     </div>
     <div id="zModeBlock">
+      <div style="margin-top:8px;margin-bottom:2px;color:#c5ccd6;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;font-weight:600">Axe Z</div>
+      <div class="z-mode-row" id="zModeRow" role="group" aria-label="Mode de profondeur Z">
+        <button type="button" data-z="sync" class="active" title="Profondeur = synchronicité des co-RT">Sync</button>
+        <button type="button" data-z="chrono" title="Profondeur = chronologie des co-RT">Chrono</button>
+        <button type="button" data-z="cross" title="Profondeur = présence sur d'autres corpus du site">Cross-corpus</button>
+      </div>
       <div id="zHint" aria-live="polite"></div>
     </div>
     <div class="row"><span>Lumière liens</span><input id="linkLight" type="range" min="0" max="1" step="0.01" value="0.35" title="0 = liens éteints · 1 = intensité max"></div>
@@ -276,6 +290,8 @@ const labelHintEl = document.getElementById('labelHint');
 const P = { linkLight: 0.35, opacity: 0.12, nLabels: 40, bloom: 0.42 };
 let colorMode = 'base'; // défaut = mêmes couleurs Louvain que le connectome
 let mode3d = false;
+/** @type {'sync'|'chrono'|'cross'} */
+let zMode = 'sync';
 let zSpan = 280;
 
 let corpora = [];
@@ -296,6 +312,7 @@ let fitZoom = 1;
 const btn2d = document.getElementById('btn2d');
 const btn3d = document.getElementById('btn3d');
 const zModeBlock = document.getElementById('zModeBlock');
+const zModeRow = document.getElementById('zModeRow');
 const zHintEl = document.getElementById('zHint');
 
 let labelItems = [];
@@ -338,10 +355,33 @@ function nodeRgb(nd) {
   return nd.c || [140, 140, 150];
 }
 
+function zFieldForMode(mode = zMode) {
+  if (mode === 'chrono') return 'z_chrono';
+  if (mode === 'cross') return 'z_cross';
+  return 'z_sync';
+}
+
 function nodeZ(nd) {
   if (!mode3d) return 0;
-  const t = nd.z_sync ?? 0;
+  const t = nd[zFieldForMode()] ?? 0;
   return (Number(t) || 0) * zSpan;
+}
+
+function setZMode(mode) {
+  const next = mode === 'chrono' || mode === 'cross' ? mode : 'sync';
+  // Fallback si le champ manque sur ce corpus
+  if (next === 'chrono' && !nodes.some((n) => n.z_chrono != null)) {
+    zMode = 'sync';
+  } else if (next === 'cross' && !nodes.some((n) => n.z_cross != null || n.n_cross != null)) {
+    zMode = 'sync';
+  } else {
+    zMode = next;
+  }
+  zModeRow?.querySelectorAll('button[data-z]').forEach((b) => {
+    b.classList.toggle('active', b.dataset.z === zMode);
+  });
+  if (mode3d) applyGeometryZ();
+  else sync3dControls();
 }
 
 function computeZSpan(ns) {
@@ -393,15 +433,48 @@ function sync3dControls() {
   btn2d.classList.toggle('active', !mode3d);
   btn3d.classList.toggle('active', !!mode3d);
   zModeBlock.classList.toggle('on', !!mode3d);
+  zModeRow?.querySelectorAll('button[data-z]').forEach((b) => {
+    const id = b.dataset.z;
+    b.classList.toggle('active', id === zMode);
+    if (id === 'chrono') {
+      b.disabled = !nodes.some((n) => n.z_chrono != null);
+    } else if (id === 'cross') {
+      b.disabled = !nodes.some((n) => n.z_cross != null || n.n_cross != null);
+    } else {
+      b.disabled = false;
+    }
+  });
   if (zHintEl) {
-    zHintEl.innerHTML = `<strong>Profondeur (axe Z) = synchronicité des co-RT</strong>
-       <p style="margin:6px 0 0">Chaque compte est poussé dans la 3ᵉ dimension selon la <em>rapidité</em> de ses co-RT (pas selon une date du calendrier).</p>
-       <div class="z-axis">
-         <b>Profondeur faible</b><span>co-RT plus <em>décalés</em> (même contenus, mais pas au même moment)</span>
-         <b>Profondeur forte</b><span>co-RT très <em>synchrones</em> (même contenus, presque en même temps)</span>
-       </div>
-       Le plan du réseau (liens) reste « qui est lié à qui »&nbsp;; seule la profondeur encode le chronomètre d’écart.
-       <div class="z-note">Tournez la vue (clic-glissé) pour mieux sentir l’axe Z · ce n’est pas une distance géographique</div>`;
+    if (zMode === 'cross') {
+      const nCorp = (graph?.meta?.crossCorpus?.nCorpora)
+        || (corpora?.length)
+        || 8;
+      zHintEl.innerHTML = `<strong>Profondeur (axe Z) = coordination cross-corpus</strong>
+         <p style="margin:6px 0 0">Chaque compte est poussé selon le nombre d’<em>autres</em> corpus du site où il apparaît aussi sur le backbone Serrano (co-RT).</p>
+         <div class="z-axis">
+           <b>Profondeur faible</b><span>présent surtout ici (0 autre corpus)</span>
+           <b>Profondeur forte</b><span>présent sur plusieurs backbones (${nCorp}&nbsp;corpus du site)</span>
+         </div>
+         Z = n<sub>cross</sub> / (${nCorp}−1). Le plan XY reste la structure du corpus courant.
+         <div class="z-note">Tournez la vue · ce n’est pas une date ni une distance géographique</div>`;
+    } else if (zMode === 'chrono') {
+      zHintEl.innerHTML = `<strong>Profondeur (axe Z) = chronologie des co-RT</strong>
+         <p style="margin:6px 0 0">Médiane des instants de co-RT du compte, normalisée sur le corpus.</p>
+         <div class="z-axis">
+           <b>Profondeur faible</b><span>co-RT plus <em>tôt</em> dans la fenêtre</span>
+           <b>Profondeur forte</b><span>co-RT plus <em>tard</em> dans la fenêtre</span>
+         </div>
+         <div class="z-note">Tournez la vue (clic-glissé) pour lire l’axe Z</div>`;
+    } else {
+      zHintEl.innerHTML = `<strong>Profondeur (axe Z) = synchronicité des co-RT</strong>
+         <p style="margin:6px 0 0">Chaque compte est poussé selon la <em>rapidité</em> de ses co-RT (pas selon une date du calendrier).</p>
+         <div class="z-axis">
+           <b>Profondeur faible</b><span>co-RT plus <em>décalés</em> (même contenus, mais pas au même moment)</span>
+           <b>Profondeur forte</b><span>co-RT très <em>synchrones</em> (même contenus, presque en même temps)</span>
+         </div>
+         Le plan du réseau (liens) reste « qui est lié à qui »&nbsp;; seule la profondeur encode le chronomètre d’écart.
+         <div class="z-note">Tournez la vue (clic-glissé) pour mieux sentir l’axe Z · ce n’est pas une distance géographique</div>`;
+    }
   }
 }
 
@@ -954,12 +1027,24 @@ function onPointerMove(ev) {
     : `Louvain coord ${nd.com ?? nd.com_coord ?? '—'}`;
   const prBit = nd.pr != null ? `PageRank ${Number(nd.pr).toExponential(2)}` : '';
   let zBit = '';
-  if (mode3d && nd.dt_med != null) {
-    const sec = Math.round(nd.dt_med);
-    const zs = Number(nd.z_sync || 0);
-    const depth = zs >= 0.66 ? 'profondeur forte (sync)' : zs <= 0.33 ? 'profondeur faible (décalé)' : 'profondeur moyenne';
-    const gap = sec < 60 ? `${sec}s` : sec < 3600 ? `${Math.round(sec / 60)} min` : `${Math.round(sec / 3600)} h`;
-    zBit = ` · écart ~${gap} · ${depth}`;
+  if (mode3d) {
+    if (zMode === 'cross') {
+      const nc = Number(nd.n_cross) || 0;
+      const others = Array.isArray(nd.cross_corpora) ? nd.cross_corpora : [];
+      const depth = nc >= 3 ? 'profondeur forte' : nc >= 1 ? 'profondeur moyenne' : 'profondeur faible';
+      const list = others.length ? ` · ${others.join(', ')}` : '';
+      zBit = ` · ${nc} autre${nc > 1 ? 's' : ''} corpus${list} · ${depth}`;
+    } else if (zMode === 'chrono' && nd.z_chrono != null) {
+      const zc = Number(nd.z_chrono) || 0;
+      const depth = zc >= 0.66 ? 'tard' : zc <= 0.33 ? 'tôt' : 'milieu';
+      zBit = ` · chrono ${zc.toFixed(2)} · ${depth}`;
+    } else if (nd.dt_med != null) {
+      const sec = Math.round(nd.dt_med);
+      const zs = Number(nd.z_sync || 0);
+      const depth = zs >= 0.66 ? 'profondeur forte (sync)' : zs <= 0.33 ? 'profondeur faible (décalé)' : 'profondeur moyenne';
+      const gap = sec < 60 ? `${sec}s` : sec < 3600 ? `${Math.round(sec / 60)} min` : `${Math.round(sec / 3600)} h`;
+      zBit = ` · écart ~${gap} · ${depth}`;
+    }
   }
   const nNeigh = (adj[i] || []).length;
   const degBit = nNeigh
@@ -1120,6 +1205,12 @@ document.querySelectorAll('.color-modes button[data-color]').forEach((b) => {
 });
 btn2d?.addEventListener('click', () => setMode3d(false));
 btn3d?.addEventListener('click', () => setMode3d(true));
+zModeRow?.querySelectorAll('button[data-z]').forEach((b) => {
+  b.addEventListener('click', () => {
+    if (b.disabled) return;
+    setZMode(b.dataset.z);
+  });
+});
 
 async function boot() {
   initThree();

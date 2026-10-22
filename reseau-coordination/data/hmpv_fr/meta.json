@@ -18,5 +18,25 @@
   "layout_engine": "fa2_modified",
   "topCommunities": [],
   "generatedAt": "2026-10-22T09:50:32.062753+00:00",
-  "elapsed_s": 0.0
+  "elapsed_s": 0.0,
+  "zModes": {
+    "sync": {
+      "id": "sync",
+      "label": "Synchronicité",
+      "field": "z_sync",
+      "def": "Z = −médiane(Δt) normalisée ; haut = co-RT plus synchrones"
+    },
+    "cross": {
+      "id": "cross",
+      "label": "Cross-corpus",
+      "field": "z_cross",
+      "def": "Z = n_cross / (n_corpora−1) ; n_cross = nb d'autres corpus où le compte est aussi sur le backbone Serrano du site"
+    }
+  },
+  "crossCorpus": {
+    "nCorpora": 8,
+    "nMultiOnGraph": 0,
+    "histNCross": {},
+    "generatedAt": "2026-10-22T12:23:56.438967+00:00"
+  }
 }
