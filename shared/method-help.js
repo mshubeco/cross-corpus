@@ -193,18 +193,20 @@ const TOPICS = {
         Révélation progressive au zoom (mêmes standards que le connectome).</p>
 
       <h3>Vue 3D — comment lire la profondeur (axe Z)</h3>
-      <p>Le plan horizontal reste le réseau («&nbsp;qui est lié à qui&nbsp;»). La <strong>hauteur / profondeur</strong> ajoute une info temporelle&nbsp;:</p>
+      <p>Le plan du graphe reste «&nbsp;qui est lié à qui&nbsp;». La <strong>profondeur</strong> (3ᵉ axe) encode une info temporelle&nbsp;;
+        tournez la vue pour la sentir. On ne lit pas un «&nbsp;haut / bas&nbsp;» d’écran, mais une <em>profondeur faible → forte</em>&nbsp;:</p>
       <ul>
-        <li><strong>A · Chrono</strong> — hauteur = <em>quand</em> (médiane du moment des co-RT).
-          <strong>Bas = tôt</strong> dans la période du corpus · <strong>Haut = plus tard</strong>.
-          Comme une frise verticale posée sur la carte.</li>
-        <li><strong>B · Sync</strong> — hauteur = <em>à quelle vitesse</em> deux comptes retweetent le même contenu.
-          <strong>Haut = très synchrones</strong> (faible Δt) · <strong>Bas = plus décalés</strong>.
-          Ce n’est pas une date dans le calendrier, c’est un chronomètre d’écart.</li>
+        <li><strong>A · Chrono</strong> — la profondeur = <em>quand</em> (moment médian des co-RT).
+          <strong>Profondeur faible</strong> = co-RT plutôt précoces ·
+          <strong>Profondeur forte</strong> = co-RT plutôt tardifs dans la période du corpus.</li>
+        <li><strong>B · Sync</strong> — la profondeur = <em>à quelle vitesse</em> ils RT le même contenu.
+          <strong>Profondeur faible</strong> = plus décalés ·
+          <strong>Profondeur forte</strong> = très synchrones.
+          Ce n’est pas une date du calendrier, c’est un chronomètre d’écart.</li>
       </ul>
       <div class="mh-formula">Chrono : Z ∝ médiane(t<sub>co</sub>), t<sub>co</sub>=max(t<sub>RT u</sub>, t<sub>RT v</sub>)
 Sync : Z ∝ −médiane(Δt) entre les RT du même parent</div>
-      <p>La profondeur <strong>n’est pas</strong> une distance géographique ni une «&nbsp;importance&nbsp;» — seulement le temps (Chrono) ou la synchronicité (Sync).</p>
+      <p>La profondeur <strong>n’est pas</strong> une distance géographique ni une importance — seulement le temps (Chrono) ou la synchronicité (Sync).</p>
 
       <h3>Panel discursif</h3>
       <p>Hashtags / termes distinctifs (keyness G² ou z) sur publications <strong>hors RT</strong> des comptes du backbone,

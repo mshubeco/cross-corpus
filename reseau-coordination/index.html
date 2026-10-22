@@ -99,10 +99,14 @@
     }
     #zHint strong { color: #d5dde8; font-weight: 600; }
     #zHint .z-axis {
-      display: grid; grid-template-columns: 18px 1fr; gap: 4px 8px;
+      display: grid; grid-template-columns: auto 1fr; gap: 5px 10px;
       margin: 8px 0 6px; color: #c5ccd6; font-size: 10.5px;
+      align-items: start;
     }
-    #zHint .z-axis b { color: #8ab4ff; font-weight: 700; }
+    #zHint .z-axis b {
+      color: #8ab4ff; font-weight: 700; white-space: nowrap;
+      font-size: 10px; letter-spacing: 0.02em;
+    }
     #zHint .z-note { color: #6a7380; font-size: 10px; margin-top: 4px; }
     a.hud-link {
       display: inline-flex; margin-bottom: 10px; padding: 6px 10px; border-radius: 7px;
@@ -208,9 +212,9 @@
       <button type="button" id="btn3d" title="Extrusion temporelle sur Z">3D</button>
     </div>
     <div id="zModeBlock">
-      <div class="color-modes" role="tablist" aria-label="Axe Z temporel — profondeur">
-        <button type="button" class="active" data-z="chrono" id="zChrono" title="Profondeur = moment dans le temps (tôt en bas, tard en haut)">A · Chrono</button>
-        <button type="button" data-z="sync" id="zSync" title="Profondeur = rapidité à retweeter ensemble (sync en haut)">B · Sync</button>
+      <div class="color-modes" role="tablist" aria-label="Axe Z — profondeur temporelle">
+        <button type="button" class="active" data-z="chrono" id="zChrono" title="Profondeur = moment dans le temps (faible = tôt, forte = tard)">A · Chrono</button>
+        <button type="button" data-z="sync" id="zSync" title="Profondeur = rapidité à RT ensemble (faible = décalé, forte = synchrone)">B · Sync</button>
       </div>
       <div id="zHint" aria-live="polite"></div>
     </div>
@@ -380,20 +384,22 @@ function sync3dControls() {
   document.getElementById('zSync')?.classList.toggle('active', zMode === 'sync');
   if (zHintEl) {
     zHintEl.innerHTML = zMode === 'sync'
-      ? `<strong>Sync — la profondeur = « à quelle vitesse ils RT ensemble »</strong>
+      ? `<strong>Sync — lire la profondeur (axe Z)</strong>
+         <p style="margin:6px 0 0">Chaque compte est poussé dans la 3ᵉ dimension selon la <em>rapidité</em> de ses co-RT (pas selon une date du calendrier).</p>
          <div class="z-axis">
-           <b>↑</b><span><strong>Haut</strong> — co-RT très <em>synchrones</em> (même contenu, presque au même moment)</span>
-           <b>↓</b><span><strong>Bas</strong> — mêmes messages partagés, mais avec plus de <em>décalage</em> dans le temps</span>
+           <b>Profondeur faible</b><span>co-RT plus <em>décalés</em> (même contenus, mais pas au même moment)</span>
+           <b>Profondeur forte</b><span>co-RT très <em>synchrones</em> (même contenus, presque en même temps)</span>
          </div>
-         La carte (gauche–droite) reste « qui est lié à qui ». La hauteur ne dit pas <em>quand</em> dans la période, seulement s’ils agissent <em>ensemble rapidement</em>.
-         <div class="z-note">Clic-glissé = tourner · molette = zoom · la profondeur n’est pas une distance géographique</div>`
-      : `<strong>Chrono — la profondeur = « à quel moment dans la période »</strong>
+         Le plan du réseau (liens) reste « qui est lié à qui »&nbsp;; seule la profondeur encode le chronomètre d’écart.
+         <div class="z-note">Tournez la vue (clic-glissé) pour mieux sentir l’axe Z · ce n’est pas une distance géographique</div>`
+      : `<strong>Chrono — lire la profondeur (axe Z)</strong>
+         <p style="margin:6px 0 0">Chaque compte est poussé dans la 3ᵉ dimension selon le <em>moment</em> médian de ses co-RT dans la période du corpus.</p>
          <div class="z-axis">
-           <b>↑</b><span><strong>Haut</strong> — co-RT plutôt <em>tardifs</em> (plus tard dans la fenêtre du corpus)</span>
-           <b>↓</b><span><strong>Bas</strong> — co-RT plutôt <em>précoces</em> (plus tôt dans la période)</span>
+           <b>Profondeur faible</b><span>co-RT plutôt <em>précoces</em> (plus tôt dans la fenêtre)</span>
+           <b>Profondeur forte</b><span>co-RT plutôt <em>tardifs</em> (plus tard dans la fenêtre)</span>
          </div>
-         Imagine une frise verticale&nbsp;: le plan horizontal = le réseau (qui retweete avec qui) ; la hauteur = le <em>quand</em> médian de ces co-RT.
-         <div class="z-note">Clic-glissé = tourner · molette = zoom · la profondeur n’est pas une distance géographique</div>`;
+         Le plan du réseau (liens) reste « qui est lié à qui »&nbsp;; seule la profondeur encode le <em>quand</em>.
+         <div class="z-note">Tournez la vue (clic-glissé) pour mieux sentir l’axe Z · ce n’est pas une distance géographique</div>`;
   }
 }
 
@@ -921,13 +927,15 @@ function onPointerMove(ev) {
   if (mode3d) {
     if (zMode === 'sync' && nd.dt_med != null) {
       const sec = Math.round(nd.dt_med);
-      const syncLbl = sec <= 60 ? 'très synchrone' : sec <= 3600 ? 'assez proche' : 'plus décalé';
-      zBit = ` · Sync&nbsp;: écart médian ~${sec < 60 ? `${sec}s` : sec < 3600 ? `${Math.round(sec / 60)} min` : `${Math.round(sec / 3600)} h`} (${syncLbl})`;
+      const zs = Number(nd.z_sync || 0);
+      const depth = zs >= 0.66 ? 'profondeur forte (sync)' : zs <= 0.33 ? 'profondeur faible (décalé)' : 'profondeur moyenne';
+      const gap = sec < 60 ? `${sec}s` : sec < 3600 ? `${Math.round(sec / 60)} min` : `${Math.round(sec / 3600)} h`;
+      zBit = ` · Sync&nbsp;: écart ~${gap} · ${depth}`;
     } else if (nd.t_co_med != null) {
       const d = new Date(Number(nd.t_co_med) * 1000);
       const zc = Number(nd.z_chrono || 0);
-      const when = zc >= 0.66 ? 'plutôt tard' : zc <= 0.33 ? 'plutôt tôt' : 'milieu de période';
-      zBit = ` · Chrono&nbsp;: ${d.toISOString().slice(0, 10)} (${when})`;
+      const depth = zc >= 0.66 ? 'profondeur forte (tard)' : zc <= 0.33 ? 'profondeur faible (tôt)' : 'profondeur moyenne';
+      zBit = ` · Chrono&nbsp;: ${d.toISOString().slice(0, 10)} · ${depth}`;
     }
   }
   tip.style.display = 'block';
