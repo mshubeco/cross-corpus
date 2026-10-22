@@ -106,9 +106,44 @@
     .track-bar > i { display: block; height: 100%; background: #3b82f6; opacity: 0.85; transition: width 0.3s ease; }
     #loading {
       position: fixed; inset: 0; z-index: 20; display: grid; place-items: center;
-      background: #050505; color: #666; font-size: 13px;
+      background: #050505; color: #9aa3b0; font-size: 12px;
+      transition: opacity 0.2s ease;
     }
     #loading.hidden { display: none; }
+    #loadingCard {
+      min-width: min(360px, calc(100vw - 40px));
+      max-width: 420px; width: 100%;
+      padding: 18px 20px 16px;
+      border-radius: 14px;
+      background: rgba(8,10,14,0.92);
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+    }
+    #loadingCard .ld-title {
+      color: #e8eef7; font-weight: 600; font-size: 13px;
+      letter-spacing: 0.02em; margin-bottom: 4px;
+    }
+    #loadingCard .ld-msg {
+      color: #9aa3b0; font-size: 12px; line-height: 1.4;
+      font-variant-numeric: tabular-nums; min-height: 1.4em;
+    }
+    #loadingCard .ld-meta {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-top: 12px; font-size: 11px; color: #6a7380;
+      font-variant-numeric: tabular-nums;
+    }
+    #loadingCard .ld-meta strong { color: #c5ccd6; font-weight: 600; }
+    #loadingCard .ld-bar {
+      margin-top: 8px; height: 6px; border-radius: 999px;
+      background: rgba(255,255,255,0.08); overflow: hidden;
+    }
+    #loadingCard .ld-bar > i {
+      display: block; height: 100%; width: 0%; border-radius: 999px;
+      background: linear-gradient(90deg, #2563eb, #73c000);
+      transition: width 0.1s ease-out;
+    }
+    #loadingCard.ld-error .ld-title { color: #f87171; }
+    #loadingCard.ld-error .ld-bar > i { background: #f87171; }
     #legend {
       position: fixed; bottom: 118px; left: 12px; z-index: 5; font-size: 10px; color: #6b7585;
       background: rgba(8,10,14,0.7); padding: 8px 10px; border-radius: 8px; max-width: 420px; line-height: 1.4;
@@ -151,7 +186,19 @@
   </script>
 </head>
 <body>
-  <div id="loading">Chargement des snapshots…</div>
+  <div id="loading" aria-live="polite" aria-busy="true">
+    <div id="loadingCard">
+      <div class="ld-title" id="ldTitle">Flux continu</div>
+      <div class="ld-msg" id="ldMsg">Préparation…</div>
+      <div class="ld-meta">
+        <span id="ldDetail">—</span>
+        <strong id="ldPct">0 %</strong>
+      </div>
+      <div class="ld-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="ldBarWrap">
+        <i id="ldBar"></i>
+      </div>
+    </div>
+  </div>
   <nav id="corpusNav" aria-label="Corpus"></nav>
   <div id="c"></div>
   <aside id="hud">
@@ -216,7 +263,38 @@ import { MapControls } from 'three/addons/controls/MapControls.js';
 
 const wrap = document.getElementById('c');
 const loading = document.getElementById('loading');
+const ldTitle = document.getElementById('ldTitle');
+const ldMsg = document.getElementById('ldMsg');
+const ldDetail = document.getElementById('ldDetail');
+const ldPct = document.getElementById('ldPct');
+const ldBar = document.getElementById('ldBar');
+const ldBarWrap = document.getElementById('ldBarWrap');
+const loadingCard = document.getElementById('loadingCard');
 const labelsEl = document.getElementById('labels');
+
+/** @param {string} msg @param {number} p 0..1 @param {string} [detail] */
+function setLoader(msg, p, detail = '') {
+  loading.classList.remove('hidden');
+  loading.setAttribute('aria-busy', 'true');
+  if (loadingCard) loadingCard.classList.remove('ld-error');
+  const pct = Math.max(0, Math.min(100, Math.round((p ?? 0) * 100)));
+  if (ldMsg) ldMsg.textContent = msg;
+  if (ldDetail) ldDetail.textContent = detail || '—';
+  if (ldPct) ldPct.textContent = `${pct} %`;
+  if (ldBar) ldBar.style.width = `${pct}%`;
+  if (ldBarWrap) ldBarWrap.setAttribute('aria-valuenow', String(pct));
+}
+
+function hideLoader() {
+  loading.classList.add('hidden');
+  loading.setAttribute('aria-busy', 'false');
+}
+
+function failLoader(err) {
+  if (loadingCard) loadingCard.classList.add('ld-error');
+  if (ldTitle) ldTitle.textContent = 'Erreur de chargement';
+  setLoader(String(err?.message || err), 1, 'Échec');
+}
 
 const MAX_EDGES = 22000;
 const FADE_DAYS = 0.35;
@@ -1749,14 +1827,31 @@ function renderTracks(tracks, t0, t1, f) {
 }
 
 async function preloadFrames() {
-  frames = new Array(manifest.frames.length);
+  const n = manifest.frames.length;
+  frames = new Array(n);
   let done = 0;
+  let lastUi = 0;
+  const paint = (force = false) => {
+    const now = performance.now();
+    if (!force && now - lastUi < 40 && done < n) return;
+    lastUi = now;
+    const p = n ? done / n : 1;
+    // Snapshots = ~8 % → 88 % du chargement global
+    setLoader(
+      `Snapshots ${done.toLocaleString('fr-FR')} / ${n.toLocaleString('fr-FR')}`,
+      0.08 + 0.80 * p,
+      n ? `fenêtre 3j · jour ${manifest.frames[Math.min(done, n - 1)]?.day || '—'}` : ''
+    );
+  };
+  paint(true);
   await Promise.all(manifest.frames.map(async (meta, i) => {
     const res = await fetch(`${DATA_BASE}/${meta.file}`);
+    if (!res.ok) throw new Error(`Snapshot ${meta.file} HTTP ${res.status}`);
     frames[i] = await res.json();
     done++;
-    loading.textContent = `Chargement snapshots ${done}/${manifest.frames.length}…`;
+    paint(done === n);
   }));
+  paint(true);
 }
 
 function finalizeFrameLayouts() {
@@ -1865,30 +1960,39 @@ async function loadCorporaNav() {
 
 
 async function init() {
-  loading.textContent = 'Sélection corpus…';
+  setLoader('Sélection du corpus…', 0.02);
   await loadCorporaNav();
-  loading.textContent = 'Chargement manifest…';
+  if (ldTitle) ldTitle.textContent = `${currentCorpusId} · flux continu`;
+
+  setLoader('Chargement du manifest…', 0.05, currentCorpusId);
   manifest = await (await fetch(`${DATA_BASE}/manifest.json?v=${Date.now()}`, { cache: 'no-store' })).json();
   nodes = manifest.nodes || [];
   const title = (manifest.meta && manifest.meta.title) || currentCorpusId;
   document.title = title;
+  if (ldTitle) ldTitle.textContent = title;
   const hudTitle = document.getElementById('hudTitle');
   if (hudTitle) hudTitle.textContent = `${(manifest.meta && manifest.meta.corpus_id) || currentCorpusId} · flux continu`;
   syncConnectomeLinks(currentCorpusId, (manifest.meta && manifest.meta.label) || title || currentCorpusId);
   const scrub = document.getElementById('scrub');
   scrub.max = Math.max(0, (manifest.frames || []).length - 1);
   initVolumeSeries();
+  setLoader(
+    'Préparation des snapshots…',
+    0.08,
+    `${(manifest.frames || []).length} fenêtres · ${(nodes || []).length.toLocaleString('fr-FR')} nœuds`
+  );
 
   await preloadFrames();
 
-  loading.textContent = 'Chargement Louvain global…';
+  setLoader('Louvain global…', 0.90, 'couleurs communautés');
   await loadGlobalLouvain();
 
-  loading.textContent = 'Compactage layouts…';
+  setLoader('Compactage des layouts…', 0.94, 'FA2 · Procrustes');
   finalizeFrameLayouts();
   buildWindowMembership();
   lastEdgeKey = '';
 
+  setLoader('Initialisation du rendu…', 0.98);
   initSimNodes();
   initGraphics();
   setSimTime(0, true);
@@ -1897,6 +2001,7 @@ async function init() {
   const visible = updateGraphics();
   updateHUD(visible);
   drawVolumeChart();
+  setLoader('Prêt', 1, `${frames.length} snapshots`);
 
   scrub.addEventListener('input', (e) => {
     playing = false;
@@ -1964,7 +2069,7 @@ async function init() {
     if (e.key === 'ArrowLeft') { playing = false; setSimTime(simTime - 0.15, true); lastEdgeKey = ''; renderForCurrentTime(); }
   });
 
-  loading.classList.add('hidden');
+  hideLoader();
 }
 
 let lastTs = performance.now();
@@ -2001,7 +2106,7 @@ window.addEventListener('resize', () => {
 init().then(() => {
   animate(performance.now());
 }).catch(err => {
-  loading.textContent = 'Erreur: ' + err.message;
+  failLoader(err);
   console.error(err);
 });
   </script>
