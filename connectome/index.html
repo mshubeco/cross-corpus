@@ -1176,6 +1176,34 @@ function isLemmaMode() {
   return lexKind === 'lemma';
 }
 
+/** Stopwords FR/EN — filet UI (les discourse rebuildés filtrent déjà à la source). */
+const LEMMA_STOP = new Set([
+  'a','ai','ainsi','alors','apres','après','au','aucun','aucune','aussi','autre','autres','aux','avec','avoir','avant',
+  'c','ca','ça','car','ce','cela','celle','celles','celui','ces','cet','cette','ceux','chaque','chez','comme','comment','contre',
+  'd','dans','de','deja','déjà','depuis','des','donc','dont','du','elle','elles','en','encore','entre','est','et',
+  'etaient','étaient','etait','était','etre','être','eu','eux','ici','il','ils','je','jusque','jusqu','l','la','le','les',
+  'leur','leurs','lui','ma','mais','me','meme','même','mes','moi','moins','mon','ne','ni','non','nos','notre','nous',
+  'on','ont','ou','où','oui','par','parce','parmi','pas','pendant','peu','plus','plusieurs','pour','pourquoi','qu',
+  'quand','que','quel','quelle','quelles','quels','qui','quoi','s','sa','sans','se','sera','serait','ses','si','sien',
+  'soi','soit','sommes','son','sont','sous','suis','sur','t','ta','te','tel','telle','tes','toi','ton','toujours',
+  'tous','tout','toute','toutes','tres','très','trop','tu','un','une','vers','vos','votre','vous','y','via',
+  'faire','fais','fait','faite','faits','faites','font','fois','mettre','met','mets','mettent','mis','mise',
+  'peut','peux','peuvent','pouvoir','pourrait','doit','dois','doivent','devoir','faut','va','vais','vont','aller',
+  'voir','vois','voit','dire','dis','dit','savoir','sait','sais','prendre','prend','pris','donne','donner','venir',
+  'vient','reste','rester','passer','passe','arriver','arrive','bien','bon','bonne','jamais','rien','quelque','quelques',
+  'surtout','souvent','maintenant','enfin','ensuite','puis','sinon','voila','voilà','voici','etc','ok','juste','vraiment',
+  'assez','beaucoup','combien','gens','monde','temps','jours','ans','cause','ete','été','hui',
+  'the','and','for','with','this','that','are','was','were','been','have','has','had','not','you','your','from','they',
+  'their','what','when','where','which','who','how','why','about','into','after','before','most','more','some','any',
+  'all','also','than','then','there','here','just','like','can','could','would','should','will','new','first',
+  'http','https','www','amp',
+]);
+
+function isLemmaStop(w) {
+  const t = String(w || '').toLowerCase().trim();
+  return !t || t.length < 3 || LEMMA_STOP.has(t) || /^\d+$/.test(t);
+}
+
 function isBigramMode() {
   return isLemmaMode() && lemmaForm === 'bi';
 }
