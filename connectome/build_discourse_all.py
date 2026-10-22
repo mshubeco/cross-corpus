@@ -60,20 +60,54 @@ TOP_N_COM_FALLBACK = 14  # si pas de profils : pôles communities90
 TOKEN_RX = re.compile(r"[a-z0-9àâäéèêëïîôùûüçœæ]{3,}", re.I)
 URL_RX = re.compile(r"https?://\S+|t\.co/\S+|www\.\S+", re.I)
 MENTION_RX = re.compile(r"@\w+")
+# Stopwords FR + EN (formes courtes / grammaticales / verbes supports).
+# Appliqué à la tokenisation ET au filtrage des key_words / word_*.
 FR_STOP = {
-    "a", "ai", "alors", "apres", "après", "au", "aucun", "aucune", "aussi", "autre",
-    "autres", "aux", "avec", "avoir", "bon", "c", "ca", "car", "ce", "cela", "ces",
-    "cet", "cette", "ceux", "chaque", "chez", "comme", "comment", "contre", "d",
-    "dans", "de", "deja", "déjà", "depuis", "des", "donc", "dont", "du", "elle",
-    "elles", "en", "encore", "entre", "est", "et", "etaient", "etait", "etre",
-    "être", "eu", "eux", "fait", "faire", "fais", "faites", "fois", "font", "ici",
-    "il", "ils", "je", "juste", "l", "la", "le", "les", "leur", "leurs", "lui",
-    "ma", "mais", "me", "meme", "même", "mes", "moi", "mon", "ne", "ni", "nos",
-    "notre", "nous", "on", "ont", "ou", "où", "par", "pas", "plus", "pour", "qu",
-    "que", "qui", "quoi", "s", "sa", "sans", "se", "sera", "ses", "si", "sien",
-    "soi", "sommes", "son", "sont", "sous", "suis", "sur", "t", "ta", "te", "tes",
-    "toi", "ton", "tous", "tout", "toute", "toutes", "tres", "très", "tu", "un",
-    "une", "vos", "votre", "vous", "y", "via", "the", "and", "for", "http", "https",
+    # articles / prépositions / conjonctions / pronoms
+    "a", "ai", "ainsi", "alors", "apres", "après", "au", "aucun", "aucune", "aussi",
+    "autre", "autres", "aux", "avec", "avoir", "avant", "c", "ca", "ça", "car", "ce",
+    "cela", "celle", "celles", "celui", "ces", "cet", "cette", "ceux", "chaque",
+    "chez", "chezs", "comme", "comment", "contre", "d", "dans", "de", "deja", "déjà",
+    "depuis", "des", "donc", "dont", "du", "elle", "elles", "en", "encore", "entre",
+    "est", "et", "etaient", "étaient", "etait", "était", "etant", "étant", "etre",
+    "être", "eu", "eux", "ici", "il", "ils", "je", "jusque", "jusqu", "l", "la",
+    "le", "les", "leur", "leurs", "lui", "ma", "mais", "me", "meme", "même", "mes",
+    "mien", "mienne", "moi", "moins", "mon", "ne", "ni", "non", "nos", "notre",
+    "nous", "on", "ont", "ou", "où", "oui", "par", "parce", "parmi", "pas", "pendant",
+    "peu", "plus", "plusieurs", "pour", "pourquoi", "qu", "quand", "que", "quel",
+    "quelle", "quelles", "quels", "qui", "quoi", "s", "sa", "sans", "se", "sera",
+    "serait", "ses", "si", "sien", "soi", "soit", "sommes", "son", "sont", "sous",
+    "suis", "sur", "t", "ta", "tandis", "te", "tel", "telle", "tes", "toi", "ton",
+    "toujours", "tous", "tout", "toute", "toutes", "tres", "très", "trop", "tu",
+    "un", "une", "vers", "vos", "votre", "vous", "y", "via",
+    # verbes supports / auxiliaires / formes fréquentes
+    "avoir", "avais", "avait", "avons", "avez", "avaient", "ayant", "eu", "eue",
+    "etre", "être", "suis", "es", "sommes", "etes", "êtes", "etait", "étaient",
+    "sera", "seront", "serait", "faire", "fais", "fait", "faite", "faits", "faites",
+    "faisait", "font", "faites", "fois", "mettre", "met", "mets", "mettent", "mis",
+    "mise", "mises", "peut", "peux", "peuvent", "pouvoir", "pourrait", "pourrait",
+    "doit", "dois", "doivent", "devoir", "devrait", "faut", "falloir", "va", "vais",
+    "vas", "vont", "aller", "allaient", "allait", "voir", "vois", "voit", "voient",
+    "vu", "vue", "dire", "dis", "dit", "dite", "disent", "savoir", "sait", "sais",
+    "savent", "suis", "suivre", "prendre", "prend", "pris", "prise", "donne", "donner",
+    "donné", "venir", "vient", "venu", "tenir", "tient", "reste", "rester", "reste",
+    "passer", "passe", "passé", "arriver", "arrive", "partir", "parti", "semble",
+    "sembler", "fallait", "voudrais", "veut", "veux", "vouloir", "voulu",
+    # adverbes / interjections / fillers
+    "bien", "bon", "bonne", "jamais", "rien", "quelque", "quelques", "surtout",
+    "souvent", "parfois", "maintenant", "aujourd", "hui", "demain", "hier", "alors",
+    "enfin", "ensuite", "puis", "sinon", "toutefois", "cependant", "pourtant",
+    "néanmoins", "neanmoins", "voila", "voilà", "voici", "etc", "bah", "bon",
+    "hein", "oui", "non", "ok", "okay", "juste", "vraiment", "assez", "beaucoup",
+    "peu", "trop", "aussi", "encore", "deja", "déjà", "toujours", "jamais",
+    "pourquoi", "comment", "quand", "combien", "où", "ou",
+    # anglais (corpus mixtes / HMPV)
+    "the", "and", "for", "with", "this", "that", "are", "was", "were", "been",
+    "have", "has", "had", "not", "you", "your", "from", "they", "their", "what",
+    "when", "where", "which", "who", "whom", "how", "why", "about", "into", "over",
+    "after", "before", "most", "more", "some", "any", "all", "also", "than", "then",
+    "there", "here", "just", "like", "can", "could", "would", "should", "will",
+    "new", "first", "http", "https", "www", "amp",
 }
 
 CSV_BY_CORPUS: dict[str, Path] = {
@@ -124,13 +158,18 @@ def is_retweet(tweet_type: str, text: str) -> bool:
     return (text or "").lstrip().startswith("RT @")
 
 
+def is_stop_word(w: str) -> bool:
+    t = str(w or "").lower().strip()
+    return (not t) or t.isdigit() or t in FR_STOP or len(t) < 3
+
+
 def tokens(text: str) -> list[str]:
     t = URL_RX.sub(" ", text or "")
     t = MENTION_RX.sub(" ", t)
     t = t.replace("#", " ")
     out = []
     for m in TOKEN_RX.findall(t.lower()):
-        if m in FR_STOP or m.isdigit():
+        if is_stop_word(m):
             continue
         out.append(m)
     return out
@@ -558,8 +597,9 @@ def build_one(cid: str) -> Path | None:
             ]
             key_words = [
                 {"word": str(t["t"]).lower(), "g2": float(t.get("z") or 0)}
-                for t in (c.get("terms") or [])[:N_WORDS]
-            ]
+                for t in (c.get("terms") or [])
+                if not is_stop_word(str(t.get("t") or ""))
+            ][:N_WORDS]
             themes = {}
             if key_words:
                 mx = max(w["g2"] for w in key_words) or 1
@@ -622,6 +662,7 @@ def build_one(cid: str) -> Path | None:
             tag_communities[h["tag"]].add(mid)
             if not csv_file_ok and hub:
                 tag_accounts[h["tag"]].add(str(hub).lower())
+        key_words = [w for w in key_words if not is_stop_word(w.get("word"))]
         for w in key_words:
             word_communities[w["word"]].add(mid)
             if not csv_file_ok and hub:

@@ -68,8 +68,8 @@
           "g2": 19.68
         },
         {
-          "word": "juste",
-          "g2": 19.5
+          "word": "sujet",
+          "g2": 19.25
         }
       ],
       "themes": {
@@ -567,7 +567,7 @@
           "sn": "faordcongo",
           "text": "1/Projet régional #OneHealth – Grand_Virunga, 💰 @Pandemic_Fund et exécuté par @FAO, @UNICEF, @OMS, avec l’appui de #GVTC, #GD, #WWF, #IGCP : 3⃣2⃣ experts #RDC-#Rwanda–#Ouganda ont mis à #Mbarara, en #Ouganda, les plans de contingence de #Ebola, #FVR, #Mpox, #anthrax #OneHealth ht",
           "at": "2026-01-08",
-          "tag": "gvtc"
+          "tag": "ouganda"
         },
         {
           "sn": "alainromo1",
@@ -579,7 +579,7 @@
           "sn": "actionsanteasbl",
           "text": "Kasaï | Coordination humanitaire @Actionsanteasbl a pris part à la réunion du GT Nexus–ASSB à Tshikapa, en préparation de la mission d’évaluation prévue du 02–07 fév. 2026 à Bulape (Mweka). #GTASSB #Ebola #Kasaï #Humanitaire @OMSRDCONGO @OCHA_rdc @PAM_RDC @USAIDDRC @UEenRDC https",
           "at": "2026-01-15",
-          "tag": "gtassb"
+          "tag": "humanitaire"
         },
         {
           "sn": "omscentrafrique",
@@ -591,7 +591,7 @@
           "sn": "omscentrafrique",
           "text": "📢 La #RCA 🇨🇫 lance sa première campagne de #vaccination 💉préventive contre #Ebola à Ouango-Sao. Aucun cas d’Ebola 🦠 n’est signalé dans le pays. Initiative d’anticipation et de prévention. Financement @gavi | Appui @WHO et @UNICEF. #Prévention #SantéPublique #RCA #Ebola https://t.",
           "at": "2026-01-24",
-          "tag": "santépublique"
+          "tag": "prévention"
         }
       ],
       "n_users": 2944,
@@ -51203,9 +51203,6 @@
       6,
       11
     ],
-    "juste": [
-      12
-    ],
     "kinshasa": [
       11
     ],
@@ -51257,6 +51254,9 @@
     ],
     "site": [
       11
+    ],
+    "sujet": [
+      12
     ],
     "vaccinale": [
       12

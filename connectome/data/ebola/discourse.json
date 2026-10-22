@@ -133,16 +133,8 @@
           "g2": 5.34
         },
         {
-          "word": "assez",
-          "g2": 4.93
-        },
-        {
           "word": "medias",
           "g2": 4.48
-        },
-        {
-          "word": "passe",
-          "g2": 4.29
         },
         {
           "word": "peur",
@@ -151,14 +143,22 @@
         {
           "word": "mortel",
           "g2": 4.02
+        },
+        {
+          "word": "coup",
+          "g2": 3.69
+        },
+        {
+          "word": "temps",
+          "g2": 3.25
         }
       ],
       "themes": {
         "flop": 100.0,
         "hantavirus": 88.8,
         "marche": 73.8,
-        "assez": 68.1,
-        "medias": 61.9
+        "medias": 61.9,
+        "peur": 56.9
       },
       "samples": [
         {
@@ -199,8 +199,8 @@
     },
     "11": {
       "id": "11",
-      "qualif": "hantavirus / prend",
-      "qualif_short": "hantavirus / prend",
+      "qualif": "hantavirus / health",
+      "qualif_short": "hantavirus / health",
       "justification": "C11 · hub @le_parisien. Lexique distinctif (z vs reste) : #hantavirus, #oms. 1437 pubs hors RT.",
       "key_hashtags": [
         {
@@ -216,10 +216,6 @@
         {
           "word": "hantavirus",
           "g2": 24.95
-        },
-        {
-          "word": "prend",
-          "g2": 20.38
         },
         {
           "word": "health",
@@ -244,14 +240,18 @@
         {
           "word": "world",
           "g2": 8.28
+        },
+        {
+          "word": "congo",
+          "g2": 8.06
         }
       ],
       "themes": {
         "hantavirus": 100.0,
-        "prend": 81.7,
         "health": 42.9,
         "emergency": 39.0,
-        "ebola": 38.5
+        "ebola": 38.5,
+        "passons": 37.9
       },
       "samples": [
         {
@@ -391,13 +391,13 @@
           "sn": "pbeyok",
           "text": "🚨 L’Ouganda a confirmé une épidémie d’Ebola (souche Bundibugyo) le 15 mai à #Kampala. Le cas est importé de la RDC et le patient est décédé le 14 mai. Africa CDC signale aussi une épidémie en Ituri (RDC), déjà en alerte maximale. #Ebola #RDC #Ouganda https://t.co/Hq4qEvwv3L",
           "at": "2026-05-15",
-          "tag": "ebola"
+          "tag": "ouganda"
         },
         {
           "sn": "pbeyok",
           "text": "Ebola en #RDC 🇨🇩 : l’#OMS annonce un cas confirmé à Kinshasa, tandis que le ministère de la Santé et l’#INRB démentent la présence d’un malade dans la capitale. Confusion autour de la communication officielle ? #ebolardc #ebolaoutbreak #ebolavirus #ebolafight #drcnews https://t.c",
           "at": "2026-05-17",
-          "tag": "drcnews"
+          "tag": "ebolardc"
         },
         {
           "sn": "maozigabe",
@@ -4453,49 +4453,6 @@
       "zinfoslive",
       "zolaview_fr",
       "zoom_eco"
-    ],
-    "assez": [
-      "24hpujadas",
-      "acamusbzh",
-      "adammayo237",
-      "anncopeace",
-      "annelisebocquet",
-      "bfmtv",
-      "bitymoos",
-      "bobopopo67",
-      "cincinnatus63",
-      "clavierwrkspace",
-      "dogeksum",
-      "dutch_laur83348",
-      "ebolawarson",
-      "ellouun",
-      "gdusortom9010",
-      "guilletguillet3",
-      "hoaraugab22",
-      "hueykuang",
-      "jolux11",
-      "kaii_z2",
-      "kiki2laro",
-      "lacolitruche",
-      "lesarrasin56",
-      "letempsdesbises",
-      "malwarex532974",
-      "marseille_jeff",
-      "martinz_uncut",
-      "melyde2",
-      "niclechat",
-      "nikalaisavinien",
-      "paulnewmanfr",
-      "riqfredo",
-      "taradicale",
-      "thomas56533083",
-      "thrsemary1",
-      "vaalxeny",
-      "vaevix",
-      "verity_france",
-      "wargonm",
-      "yello777",
-      "yvesmene"
     ],
     "bunia": [
       "243afro12253",
@@ -10578,60 +10535,6 @@
       "whoafro",
       "youranonone"
     ],
-    "passe": [
-      "2nmnpb99k2",
-      "algeriactufoot_",
-      "carolina7angel",
-      "celinafour38337",
-      "cloutechristin2",
-      "dasblitzy",
-      "destinationsant",
-      "dogeksum",
-      "dwki159003",
-      "elsolobalador",
-      "ericmassaud",
-      "fcl6944",
-      "francepolitic",
-      "jackiemusique",
-      "james14512",
-      "jeannemarie1309",
-      "jimlyon89432074",
-      "jlgervaise",
-      "jos72080596",
-      "kevinarmour50",
-      "ladh",
-      "ladimaga",
-      "legros58033216",
-      "letempsdesbises",
-      "luctarricone",
-      "mapatriie",
-      "marc_doyer",
-      "mickaellaffont",
-      "mmtchi",
-      "mrbob96356203",
-      "nbouvieroff",
-      "nibelungen59",
-      "ossau164",
-      "patcyt77",
-      "paulnewmanfr",
-      "philippeclerc10",
-      "pngangambo",
-      "priska53229662",
-      "real_tmx",
-      "rec_news1",
-      "rol_oni",
-      "scabieuselily",
-      "sosso340340",
-      "soutientfd0",
-      "taxi_le66426",
-      "theotomini",
-      "thomas56533083",
-      "tradefutur",
-      "vanille_47",
-      "veroniqueb5799",
-      "virtssoft",
-      "youssefyamani"
-    ],
     "passons": [
       "26encolere",
       "cercle_aristote",
@@ -10824,57 +10727,6 @@
       "winniecoco8784",
       "ysys97410",
       "yvesgrand2"
-    ],
-    "prend": [
-      "1_saucisse",
-      "26encolere",
-      "777antoine777",
-      "alertesinfos",
-      "arnaudmercier",
-      "banounhelene",
-      "bastinor2022",
-      "cercle_aristote",
-      "chachoulgate",
-      "cloutechristin2",
-      "d3_mn8",
-      "davidyaute74",
-      "egase0731",
-      "erikloridan",
-      "fabricegino",
-      "fidaleothi35897",
-      "flm64230",
-      "freedom86738785",
-      "gato7284gato",
-      "jeff_vachon",
-      "jiane_lu",
-      "jtmmerde",
-      "kesserymamady",
-      "lacolitruche",
-      "latabledegaya",
-      "le_parisien",
-      "lemediapolitifr",
-      "leparisien_pol",
-      "malamafrance12",
-      "marcant19997211",
-      "michombero",
-      "mrrobot_3",
-      "mymosec",
-      "ngrandvaux",
-      "nmabou81332",
-      "patmacgoohan",
-      "plessesbastien1",
-      "politvque",
-      "pres_reine",
-      "psidinim",
-      "rochersylvette",
-      "sarahhrakm4",
-      "scoumoune12",
-      "sitoncoeur",
-      "slaverjim",
-      "spinest2017",
-      "victormurashi",
-      "vivianelamarle1",
-      "ysys97410"
     ],
     "rdc": [
       "1rtoure",
@@ -12116,7 +11968,6 @@
   },
   "word_n_accounts": {
     "afrique": 266,
-    "assez": 41,
     "bunia": 163,
     "conference": 1,
     "covid": 295,
@@ -12139,10 +11990,8 @@
     "nord": 131,
     "nulle": 5,
     "outbreak": 74,
-    "passe": 52,
     "passons": 3,
     "peur": 186,
-    "prend": 49,
     "rdc": 848,
     "sante": 8,
     "soigne": 13,
@@ -12155,14 +12004,17 @@
     "afrique": [
       1
     ],
-    "assez": [
-      2
-    ],
     "bunia": [
       12
     ],
     "conference": [
       3
+    ],
+    "congo": [
+      11
+    ],
+    "coup": [
+      2
     ],
     "covid": [
       1
@@ -12226,18 +12078,12 @@
     "outbreak": [
       11
     ],
-    "passe": [
-      2
-    ],
     "passons": [
       11
     ],
     "peur": [
       1,
       2
-    ],
-    "prend": [
-      11
     ],
     "rdc": [
       12
@@ -12247,6 +12093,9 @@
     ],
     "soigne": [
       3
+    ],
+    "temps": [
+      2
     ],
     "vaccin": [
       1
@@ -12310,44 +12159,6 @@
       {
         "word": "maladies",
         "n": 8
-      },
-      {
-        "word": "passe",
-        "n": 4
-      },
-      {
-        "word": "prend",
-        "n": 2
-      }
-    ],
-    "assez": [
-      {
-        "word": "ebola",
-        "n": 34
-      },
-      {
-        "word": "hantavirus",
-        "n": 18
-      },
-      {
-        "word": "covid",
-        "n": 9
-      },
-      {
-        "word": "flop",
-        "n": 3
-      },
-      {
-        "word": "mortel",
-        "n": 2
-      },
-      {
-        "word": "passe",
-        "n": 2
-      },
-      {
-        "word": "peur",
-        "n": 2
       }
     ],
     "bunia": [
@@ -12422,10 +12233,6 @@
         "n": 9
       },
       {
-        "word": "assez",
-        "n": 9
-      },
-      {
         "word": "afrique",
         "n": 8
       },
@@ -12455,6 +12262,10 @@
       },
       {
         "word": "soigne",
+        "n": 3
+      },
+      {
+        "word": "manipulation",
         "n": 3
       }
     ],
@@ -12554,14 +12365,6 @@
       {
         "word": "peur",
         "n": 5
-      },
-      {
-        "word": "assez",
-        "n": 3
-      },
-      {
-        "word": "passe",
-        "n": 2
       }
     ],
     "gens": [
@@ -12590,15 +12393,7 @@
         "n": 7
       },
       {
-        "word": "passe",
-        "n": 4
-      },
-      {
         "word": "ituri",
-        "n": 3
-      },
-      {
-        "word": "prend",
         "n": 3
       },
       {
@@ -12630,10 +12425,6 @@
       {
         "word": "ebola",
         "n": 684
-      },
-      {
-        "word": "prend",
-        "n": 257
       },
       {
         "word": "passons",
@@ -12686,6 +12477,10 @@
       {
         "word": "minutes",
         "n": 20
+      },
+      {
+        "word": "mai",
+        "n": 15
       }
     ],
     "health": [
@@ -13022,10 +12817,6 @@
         "n": 10
       },
       {
-        "word": "prend",
-        "n": 2
-      },
-      {
         "word": "peur",
         "n": 2
       }
@@ -13142,10 +12933,6 @@
         "n": 3
       },
       {
-        "word": "assez",
-        "n": 2
-      },
-      {
         "word": "gens",
         "n": 2
       }
@@ -13256,52 +13043,10 @@
         "n": 2
       }
     ],
-    "passe": [
-      {
-        "word": "ebola",
-        "n": 48
-      },
-      {
-        "word": "hantavirus",
-        "n": 16
-      },
-      {
-        "word": "peur",
-        "n": 7
-      },
-      {
-        "word": "afrique",
-        "n": 4
-      },
-      {
-        "word": "gens",
-        "n": 4
-      },
-      {
-        "word": "maladie",
-        "n": 2
-      },
-      {
-        "word": "covid",
-        "n": 2
-      },
-      {
-        "word": "assez",
-        "n": 2
-      },
-      {
-        "word": "flop",
-        "n": 2
-      }
-    ],
     "passons": [
       {
         "word": "hantavirus",
         "n": 235
-      },
-      {
-        "word": "prend",
-        "n": 234
       },
       {
         "word": "ebola",
@@ -13354,10 +13099,6 @@
         "n": 8
       },
       {
-        "word": "passe",
-        "n": 7
-      },
-      {
         "word": "maladie",
         "n": 7
       },
@@ -13368,44 +13109,10 @@
       {
         "word": "flop",
         "n": 5
-      }
-    ],
-    "prend": [
-      {
-        "word": "hantavirus",
-        "n": 257
       },
       {
-        "word": "passons",
-        "n": 234
-      },
-      {
-        "word": "ebola",
-        "n": 43
-      },
-      {
-        "word": "vaccin",
+        "word": "bunia",
         "n": 4
-      },
-      {
-        "word": "peur",
-        "n": 4
-      },
-      {
-        "word": "gens",
-        "n": 3
-      },
-      {
-        "word": "afrique",
-        "n": 2
-      },
-      {
-        "word": "covid",
-        "n": 2
-      },
-      {
-        "word": "marche",
-        "n": 2
       }
     ],
     "rdc": [
@@ -13556,16 +13263,16 @@
         "n": 6
       },
       {
-        "word": "prend",
-        "n": 4
-      },
-      {
         "word": "maladies",
         "n": 4
       },
       {
         "word": "nord",
         "n": 4
+      },
+      {
+        "word": "gens",
+        "n": 2
       }
     ],
     "vieux": [
@@ -13744,31 +13451,6 @@
       "89": 1,
       "936": 1,
       "970": 1
-    },
-    "assez": {
-      "11": 8,
-      "2": 6,
-      "3": 5,
-      "14": 2,
-      "26": 2,
-      "101": 1,
-      "12": 1,
-      "13": 1,
-      "15": 1,
-      "19": 1,
-      "21": 1,
-      "24": 1,
-      "241": 1,
-      "25": 1,
-      "250": 1,
-      "27": 1,
-      "312": 1,
-      "32": 1,
-      "39": 1,
-      "41": 1,
-      "51": 1,
-      "629": 1,
-      "835": 1
     },
     "bunia": {
       "12": 75,
@@ -16133,28 +15815,6 @@
       "8": 1,
       "818": 1
     },
-    "passe": {
-      "11": 14,
-      "2": 6,
-      "3": 6,
-      "12": 3,
-      "14": 3,
-      "19": 3,
-      "21": 2,
-      "25": 2,
-      "9": 2,
-      "1": 1,
-      "22": 1,
-      "24": 1,
-      "27": 1,
-      "30": 1,
-      "300": 1,
-      "301": 1,
-      "31": 1,
-      "407": 1,
-      "712": 1,
-      "831": 1
-    },
     "passons": {
       "2": 2,
       "11": 1
@@ -16202,25 +15862,6 @@
       "831": 1,
       "876": 1,
       "951": 1
-    },
-    "prend": {
-      "11": 18,
-      "2": 7,
-      "3": 5,
-      "14": 3,
-      "1": 2,
-      "12": 2,
-      "21": 2,
-      "1090": 1,
-      "1208": 1,
-      "1228": 1,
-      "128": 1,
-      "150": 1,
-      "19": 1,
-      "24": 1,
-      "25": 1,
-      "30": 1,
-      "46": 1
     },
     "rdc": {
       "12": 191,

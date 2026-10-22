@@ -56,12 +56,12 @@
           "g2": 9.75
         },
         {
-          "word": "hein",
-          "g2": 9.58
-        },
-        {
           "word": "gens",
           "g2": 9.09
+        },
+        {
+          "word": "coupe",
+          "g2": 8.88
         }
       ],
       "themes": {
@@ -209,7 +209,7 @@
           "sn": "defimediainfo",
           "text": "Possible épisode d'hantavirus sur un navire de croisière : ce que l'on sait https://t.co/kgBLsdjfM3 #Hantavirus #SantéPublique #Croisière #Infection #FoyerDInfection",
           "at": "2026-05-05",
-          "tag": "santépublique"
+          "tag": "croisière"
         },
         {
           "sn": "gdams70",
@@ -273,12 +273,12 @@
           "g2": 3.68
         },
         {
-          "word": "font",
-          "g2": 2.51
-        },
-        {
           "word": "autour",
           "g2": 2.41
+        },
+        {
+          "word": "ans",
+          "g2": 1.89
         }
       ],
       "themes": {
@@ -543,8 +543,8 @@
           "g2": 13.26
         },
         {
-          "word": "prend",
-          "g2": 12.62
+          "word": "contact",
+          "g2": 12.38
         }
       ],
       "themes": {
@@ -684,13 +684,13 @@
           "sn": "medi1news",
           "text": "L’hantavirus suscite l’inquiétude ces derniers jours… 🦠🚨 Comment les rongeurs🐀 peuvent-ils transmettre un virus potentiellement mortel sans contact direct ? ⚠️🤔 ❓ 👇Les détails 👇 https://t.co/RyV6njbemm #Santé #Hantavirus #Virus #Rongeurs",
           "at": "2026-05-05",
-          "tag": "santé"
+          "tag": "rongeurs"
         },
         {
           "sn": "medi1tvafrique",
           "text": "L’hantavirus suscite l’inquiétude ces derniers jours… 🦠🚨 Comment les rongeurs🐀 peuvent-ils transmettre un virus potentiellement mortel sans contact direct ? ⚠️🤔 ❓ 👇Les détails 👇 https://t.co/GZAwZGMlZL #Santé #Hantavirus #Virus #Rongeurs",
           "at": "2026-05-05",
-          "tag": "santé"
+          "tag": "rongeurs"
         },
         {
           "sn": "de_chardin",
@@ -16486,157 +16486,6 @@
       "zorglub597",
       "zukotvs"
     ],
-    "hein": [
-      "1_saucisse",
-      "_dvli",
-      "_ssskk4",
-      "acapradimonti",
-      "akhy_aladdin",
-      "alex49111",
-      "alyouxx",
-      "ambatanot",
-      "anansirekhmire",
-      "annelisebocquet",
-      "antoons22",
-      "asiatitude",
-      "avengerbroly",
-      "ben_glt",
-      "bento0607",
-      "billymontoyaxp",
-      "blazkolebarjo",
-      "boomerquebecois",
-      "byzance_cstyle",
-      "caminexistante",
-      "celia_danel",
-      "celloxcarribean",
-      "charlito_280",
-      "chiensurpris",
-      "chip_this_blade",
-      "chrismen67",
-      "clemrrr",
-      "cobramany",
-      "cortisquared",
-      "cwndkr04",
-      "dalbec2245",
-      "dhctxt",
-      "diagora000",
-      "didiermaisto",
-      "dimdestroya",
-      "dingo_ananas",
-      "dr_housse_2",
-      "drmayo_theone",
-      "dwwneo",
-      "dylanvrsm",
-      "enviedecanner2",
-      "eveilleurduco1",
-      "felzkk10",
-      "feradaes28012",
-      "flgoty",
-      "fr3d0_s1llyyy",
-      "francoisedegois",
-      "freakyulvy",
-      "free_nd_healthy",
-      "gariguette973",
-      "gaston_lab4ffe",
-      "goelandf",
-      "gotham77777",
-      "gr8awakeningqc",
-      "gregobiwan64",
-      "guidejv",
-      "h23christ",
-      "heyfifou",
-      "hxdjv_jm",
-      "imelozi",
-      "imxnn92ii",
-      "itsmycr",
-      "jawln__",
-      "jeanluc03187602",
-      "jinhosaure",
-      "jiraya666777",
-      "jpbm61736353",
-      "julienannecy74",
-      "justbelikejam",
-      "ka2sis_",
-      "kaelystrasza",
-      "kbbh24",
-      "keepcalmeplease",
-      "keevin_amg",
-      "kefran_off",
-      "kellytr4pstar",
-      "kokuran",
-      "lasteven04",
-      "lebayoyo",
-      "lolagtyy",
-      "lordmilory",
-      "lorianelafont",
-      "m_nguea",
-      "mabouyadesmers",
-      "maellyyys",
-      "maesenhess",
-      "malik2xt",
-      "maximetruman",
-      "mbatman93",
-      "mcmahonpascal",
-      "meya_off",
-      "mffffffff69",
-      "milesmorales225",
-      "miriiogv",
-      "misssocksplease",
-      "mkz560",
-      "monicagellerrr",
-      "monsterkillsb",
-      "mrsscotty_m",
-      "mynj74",
-      "naninouneno22",
-      "nellow__",
-      "nikop17",
-      "noragirl19",
-      "notoriousbignns",
-      "oktair6904",
-      "ory_nick",
-      "oumhi__",
-      "paparodiex",
-      "petit_jo_",
-      "politikosyt",
-      "poulin2012",
-      "pziims",
-      "quiquine5",
-      "rageuse55065",
-      "rawgo44958",
-      "redalevislard",
-      "rhyouk",
-      "romainm_ebbh",
-      "sabolephenix",
-      "sadiadetp",
-      "saiyanbio",
-      "sarahbaude656",
-      "seathiell",
-      "seife0712",
-      "shunmasumiyoshi",
-      "skyzeeer",
-      "soanange",
-      "somuchsmk",
-      "sotileam37",
-      "soxzz5",
-      "stilldnt178",
-      "strangerlorde",
-      "tatiann69922625",
-      "theradishhh7",
-      "thesubdiv",
-      "thomas_isotopie",
-      "tinitaxstssl",
-      "tmrrcmoi",
-      "topiramatee",
-      "twenty_m7",
-      "ummulfadal",
-      "user94750181117",
-      "vaalxeny",
-      "vs_derka",
-      "yoanbtd",
-      "yoshettee",
-      "ystem54",
-      "zorrolasco"
-    ],
     "homme": [
       "20minutes",
       "24hpujadas",
@@ -21839,236 +21688,6 @@
       "victor81505474",
       "will_nicks_off"
     ],
-    "prend": [
-      "1_saucisse",
-      "26encolere",
-      "3gypte",
-      "57_mtzz",
-      "777antoine777",
-      "90xbmarcus",
-      "_eliellie",
-      "achilledefrance",
-      "adebudiprabowo1",
-      "afpfr",
-      "alainpaulweber",
-      "alertes_info",
-      "alertesinfos",
-      "alextrique",
-      "allaguyandre",
-      "ambianie",
-      "andreigherman15",
-      "anitaanandmp",
-      "anma83340",
-      "anne16448821a",
-      "annevauzanges",
-      "annvanina",
-      "annyletellier",
-      "antho_93200",
-      "apresj20",
-      "arnaudmercier",
-      "auriollelily",
-      "awaismo18920469",
-      "azusland73162",
-      "b_catherine_b",
-      "banounhelene",
-      "barouwhyte",
-      "barraarianna",
-      "bbesoulle",
-      "beatrice_rosen",
-      "bendezone9",
-      "bernis_eli93658",
-      "beugniesisabel1",
-      "bfmtv",
-      "bordeldemeow",
-      "boulitanguy",
-      "bvoltaire",
-      "calvitonews",
-      "camille_moscow",
-      "caprixcx",
-      "categ01",
-      "cathyp43597",
-      "ccileenamarre",
-      "cgtnfrancais",
-      "chacho93332419",
-      "chachoulgate",
-      "charlottesarrah",
-      "christinepp27",
-      "chrysalide21000",
-      "ciomeiphilippe",
-      "clodgrand",
-      "cloutechristin2",
-      "cm0a_",
-      "conspiration",
-      "crocceljustine",
-      "cydick913",
-      "damien_syl66088",
-      "danilov70",
-      "davidyaute74",
-      "desinfologie",
-      "didiermaisto",
-      "djeliba3455",
-      "doctorananas",
-      "dom2419",
-      "domlarredo",
-      "dorie_marin",
-      "doussonmj1105",
-      "drakkartrading",
-      "dubreuilhmarcel",
-      "ecoudret41494",
-      "edelleuh",
-      "efaranchin",
-      "egase0731",
-      "elizabethb3089",
-      "ericprouze79187",
-      "europe1",
-      "f90194rob",
-      "f_philippot",
-      "fcl6944",
-      "fendlab85183451",
-      "ffasterbikerff",
-      "flm64230",
-      "fouragebernard",
-      "frammerychloe",
-      "franceinfo",
-      "francois94160",
-      "freedom86738785",
-      "fregono2",
-      "gabsoule",
-      "gasparddelydore",
-      "gdams70",
-      "gendarmerie",
-      "gichapdelaine",
-      "grandsachoir",
-      "guzthefuz",
-      "hantavirusfr",
-      "hothotzawalia",
-      "hsnn_190720",
-      "i60068",
-      "ilove3m",
-      "israelnews23",
-      "jaclinemouraud",
-      "jacqueline55130",
-      "jbsfom13",
-      "jc_dussse",
-      "jeanyvescapo",
-      "jfgino",
-      "jlassoie",
-      "jocreme92",
-      "jon_delorraine",
-      "jtmmerde",
-      "julien72058417",
-      "karimhacene",
-      "kesserymamady",
-      "kyzlechacal",
-      "la23946",
-      "labbe_tonniere2",
-      "laroture",
-      "latabledegaya",
-      "lci",
-      "le_figaro",
-      "le_parisien",
-      "lemediacontre7",
-      "lemediaen442",
-      "libertepeanuts",
-      "lightofthesea20",
-      "lilianer519950",
-      "louis57409",
-      "lpluton44",
-      "lunionga",
-      "maireinfo2",
-      "majorum1200",
-      "manondu301",
-      "manuelb19717263",
-      "marcant19997211",
-      "marieondin59838",
-      "mauchristelle",
-      "maxmad36",
-      "mcmahonpascal",
-      "media4o4",
-      "mekilecong91966",
-      "mercijlm",
-      "missteeq60",
-      "mohamdpartirapa",
-      "morandiniblog",
-      "moreauagathe3",
-      "moreaugabarain",
-      "moussyandre",
-      "mrrobot_3",
-      "mtnn_victor",
-      "murphy8664",
-      "mwidcoq",
-      "mymosec",
-      "myupter1",
-      "nanonowoo",
-      "narvic",
-      "nasi4444444",
-      "nicolasputsch",
-      "nionipardon",
-      "nmabou81332",
-      "noovoinfo",
-      "occitan_34",
-      "octofarmer",
-      "olivier_primeau",
-      "omarioofficiel",
-      "oobja",
-      "parismatch",
-      "pasdaccord7",
-      "pavraiment",
-      "phil99873",
-      "philoops23",
-      "phototangoo",
-      "politvque",
-      "poojabnf",
-      "ppre84581986",
-      "predatoutheure2",
-      "pres_reine",
-      "priiscyy971",
-      "prunot28",
-      "psidinim",
-      "pulsefrinfo",
-      "putschmediaoff",
-      "redkiraz",
-      "reous33yves",
-      "resistance_sm",
-      "rimiquen_dsm",
-      "rmcinfo",
-      "roboam18",
-      "rochersylvette",
-      "romneyscarecrow",
-      "rtlfrance",
-      "rwandan_pundit",
-      "sandra_r_25",
-      "sarahhrakm4",
-      "satochimood",
-      "scarine7",
-      "sgrsetup",
-      "sinedwarrior",
-      "sonic_urticant",
-      "soutientfd0",
-      "steffy2nice",
-      "sterenntorrpenn",
-      "stopwok",
-      "sudinfo_be",
-      "taradicale",
-      "tarasyama66353",
-      "taxi_le66426",
-      "tayo952",
-      "telestarmag",
-      "tf1info",
-      "thenext_bigshit",
-      "totum_19",
-      "trading6661",
-      "trublionj",
-      "tv5mondeinfo",
-      "universtennis",
-      "valexinsky",
-      "vivianelamarle1",
-      "whatsupdoc_mag",
-      "xavier33000",
-      "ysys97410",
-      "yvesgrand2",
-      "zut2retour"
-    ],
     "psychologique": [
       "adoufun",
       "alphaantho777",
@@ -23532,7 +23151,6 @@
     "flash": 58,
     "francais": 25,
     "gens": 716,
-    "hein": 149,
     "homme": 395,
     "hondius": 831,
     "info": 324,
@@ -23548,7 +23166,6 @@
     "passagers": 677,
     "peur": 1110,
     "philippot": 66,
-    "prend": 228,
     "psychologique": 33,
     "qag": 8,
     "rmc": 14,
@@ -23563,6 +23180,9 @@
     ],
     "amour": [
       8
+    ],
+    "ans": [
+      35
     ],
     "arnaque": [
       5
@@ -23581,6 +23201,12 @@
     ],
     "cnews": [
       4
+    ],
+    "contact": [
+      9
+    ],
+    "coupe": [
+      8
     ],
     "del": [
       35
@@ -23615,9 +23241,6 @@
     "flash": [
       8
     ],
-    "font": [
-      35
-    ],
     "francais": [
       9
     ],
@@ -23625,9 +23248,6 @@
       4
     ],
     "gens": [
-      8
-    ],
-    "hein": [
       8
     ],
     "homme": [
@@ -23674,9 +23294,6 @@
     ],
     "philippot": [
       4
-    ],
-    "prend": [
-      9
     ],
     "psychologique": [
       5
@@ -23770,10 +23387,6 @@
         "n": 6
       },
       {
-        "word": "prend",
-        "n": 6
-      },
-      {
         "word": "mesures",
         "n": 5
       },
@@ -23830,10 +23443,6 @@
       {
         "word": "homme",
         "n": 6
-      },
-      {
-        "word": "prend",
-        "n": 4
       },
       {
         "word": "mesures",
@@ -23932,8 +23541,8 @@
         "n": 21
       },
       {
-        "word": "prend",
-        "n": 16
+        "word": "lci",
+        "n": 15
       }
     ],
     "cnews": [
@@ -24066,10 +23675,6 @@
         "n": 5
       },
       {
-        "word": "prend",
-        "n": 5
-      },
-      {
         "word": "philippot",
         "n": 4
       },
@@ -24080,6 +23685,10 @@
       {
         "word": "vaccin",
         "n": 3
+      },
+      {
+        "word": "effets",
+        "n": 2
       }
     ],
     "ebola": [
@@ -24105,10 +23714,6 @@
       },
       {
         "word": "gens",
-        "n": 24
-      },
-      {
-        "word": "prend",
         "n": 24
       },
       {
@@ -24140,8 +23745,12 @@
         "n": 6
       },
       {
-        "word": "hein",
+        "word": "hondius",
         "n": 4
+      },
+      {
+        "word": "homme",
+        "n": 3
       }
     ],
     "echos": [
@@ -24274,10 +23883,6 @@
       {
         "word": "lfi",
         "n": 3
-      },
-      {
-        "word": "prend",
-        "n": 2
       }
     ],
     "francais": [
@@ -24324,10 +23929,6 @@
         "n": 10
       },
       {
-        "word": "hein",
-        "n": 9
-      },
-      {
         "word": "cnews",
         "n": 9
       },
@@ -24340,46 +23941,20 @@
         "n": 7
       },
       {
-        "word": "prend",
-        "n": 7
-      },
-      {
         "word": "autour",
         "n": 7
       },
       {
         "word": "direct",
         "n": 6
-      }
-    ],
-    "hein": [
-      {
-        "word": "gens",
-        "n": 9
       },
       {
-        "word": "cas",
-        "n": 8
+        "word": "hondius",
+        "n": 5
       },
       {
-        "word": "vaccin",
-        "n": 4
-      },
-      {
-        "word": "ebola",
-        "n": 4
-      },
-      {
-        "word": "homme",
-        "n": 3
-      },
-      {
-        "word": "oms",
-        "n": 3
-      },
-      {
-        "word": "peur",
-        "n": 3
+        "word": "lci",
+        "n": 5
       }
     ],
     "homme": [
@@ -24440,7 +24015,7 @@
         "n": 3
       },
       {
-        "word": "hein",
+        "word": "ebola",
         "n": 3
       }
     ],
@@ -24502,8 +24077,8 @@
         "n": 11
       },
       {
-        "word": "prend",
-        "n": 10
+        "word": "los",
+        "n": 8
       }
     ],
     "info": [
@@ -24564,8 +24139,8 @@
         "n": 5
       },
       {
-        "word": "prend",
-        "n": 5
+        "word": "stop",
+        "n": 3
       }
     ],
     "lci": [
@@ -24724,10 +24299,6 @@
         "n": 40
       },
       {
-        "word": "prend",
-        "n": 31
-      },
-      {
         "word": "direct",
         "n": 16
       },
@@ -24762,6 +24333,10 @@
       {
         "word": "qag",
         "n": 4
+      },
+      {
+        "word": "homme",
+        "n": 3
       }
     ],
     "oms": [
@@ -24822,8 +24397,8 @@
         "n": 28
       },
       {
-        "word": "prend",
-        "n": 17
+        "word": "homme",
+        "n": 14
       }
     ],
     "operation": [
@@ -24870,10 +24445,6 @@
         "n": 13
       },
       {
-        "word": "prend",
-        "n": 11
-      },
-      {
         "word": "peur",
         "n": 9
       },
@@ -24891,6 +24462,10 @@
       },
       {
         "word": "arnaque",
+        "n": 3
+      },
+      {
+        "word": "rmc",
         "n": 3
       }
     ],
@@ -24944,16 +24519,16 @@
         "n": 16
       },
       {
-        "word": "prend",
-        "n": 16
-      },
-      {
         "word": "homme",
         "n": 12
       },
       {
         "word": "zizi",
         "n": 11
+      },
+      {
+        "word": "direct",
+        "n": 10
       }
     ],
     "philippot": [
@@ -24984,68 +24559,6 @@
       {
         "word": "info",
         "n": 2
-      }
-    ],
-    "prend": [
-      {
-        "word": "mesures",
-        "n": 31
-      },
-      {
-        "word": "ebola",
-        "n": 24
-      },
-      {
-        "word": "oms",
-        "n": 17
-      },
-      {
-        "word": "cas",
-        "n": 16
-      },
-      {
-        "word": "peur",
-        "n": 16
-      },
-      {
-        "word": "vaccin",
-        "n": 13
-      },
-      {
-        "word": "passagers",
-        "n": 11
-      },
-      {
-        "word": "hondius",
-        "n": 10
-      },
-      {
-        "word": "gens",
-        "n": 7
-      },
-      {
-        "word": "arnaque",
-        "n": 6
-      },
-      {
-        "word": "direct",
-        "n": 5
-      },
-      {
-        "word": "info",
-        "n": 5
-      },
-      {
-        "word": "autour",
-        "n": 4
-      },
-      {
-        "word": "cnews",
-        "n": 3
-      },
-      {
-        "word": "homme",
-        "n": 3
       }
     ],
     "psychologique": [
@@ -25210,10 +24723,6 @@
         "n": 21
       },
       {
-        "word": "prend",
-        "n": 13
-      },
-      {
         "word": "hondius",
         "n": 12
       },
@@ -25236,6 +24745,10 @@
       {
         "word": "cnews",
         "n": 6
+      },
+      {
+        "word": "lci",
+        "n": 3
       }
     ],
     "zizi": [
@@ -26555,73 +26068,6 @@
       "90": 1,
       "900": 1,
       "936": 1
-    },
-    "hein": {
-      "8": 40,
-      "9": 24,
-      "5": 9,
-      "4": 7,
-      "41": 5,
-      "16": 3,
-      "0": 2,
-      "12": 2,
-      "10": 1,
-      "1017": 1,
-      "1094": 1,
-      "11": 1,
-      "1140": 1,
-      "1433": 1,
-      "1471": 1,
-      "1481": 1,
-      "173": 1,
-      "1762": 1,
-      "1768": 1,
-      "1804": 1,
-      "1812": 1,
-      "1935": 1,
-      "195": 1,
-      "2": 1,
-      "2010": 1,
-      "2072": 1,
-      "2137": 1,
-      "2221": 1,
-      "2334": 1,
-      "2390": 1,
-      "240": 1,
-      "25": 1,
-      "2518": 1,
-      "2522": 1,
-      "2640": 1,
-      "2663": 1,
-      "2696": 1,
-      "2887": 1,
-      "2889": 1,
-      "3033": 1,
-      "328": 1,
-      "3488": 1,
-      "35": 1,
-      "3604": 1,
-      "3629": 1,
-      "3657": 1,
-      "3713": 1,
-      "3871": 1,
-      "3944": 1,
-      "4055": 1,
-      "440": 1,
-      "4684": 1,
-      "4803": 1,
-      "4865": 1,
-      "4936": 1,
-      "4944": 1,
-      "4966": 1,
-      "552": 1,
-      "585": 1,
-      "635": 1,
-      "660": 1,
-      "69": 1,
-      "774": 1,
-      "913": 1,
-      "933": 1
     },
     "homme": {
       "9": 137,
@@ -28048,53 +27494,6 @@
       "3125": 1,
       "4178": 1,
       "5": 1
-    },
-    "prend": {
-      "9": 90,
-      "5": 43,
-      "4": 32,
-      "8": 12,
-      "2": 6,
-      "0": 2,
-      "12": 2,
-      "17": 2,
-      "19": 2,
-      "30": 2,
-      "10": 1,
-      "1072": 1,
-      "1264": 1,
-      "16": 1,
-      "169": 1,
-      "1927": 1,
-      "1954": 1,
-      "2173": 1,
-      "2230": 1,
-      "2235": 1,
-      "2466": 1,
-      "2701": 1,
-      "2832": 1,
-      "2836": 1,
-      "29": 1,
-      "338": 1,
-      "3411": 1,
-      "3494": 1,
-      "372": 1,
-      "3743": 1,
-      "41": 1,
-      "4124": 1,
-      "4206": 1,
-      "4275": 1,
-      "4591": 1,
-      "4730": 1,
-      "48": 1,
-      "4927": 1,
-      "4949": 1,
-      "506": 1,
-      "604": 1,
-      "640": 1,
-      "744": 1,
-      "772": 1,
-      "837": 1
     },
     "psychologique": {
       "5": 14,

@@ -38,21 +38,49 @@ N_SAMPLES = 5
 TOKEN_RX = re.compile(r"[a-z0-9àâäéèêëïîôùûüçœæ]{3,}", re.I)
 URL_RX = re.compile(r"https?://\S+|t\.co/\S+|www\.\S+", re.I)
 MENTION_RX = re.compile(r"@\w+")
+# Aligné sur build_discourse_all.FR_STOP (+ génériques canicule).
 FR_STOP = {
-    "a", "ai", "alors", "apres", "après", "au", "aucun", "aucune", "aussi", "autre",
-    "autres", "aux", "avec", "avoir", "bon", "c", "ca", "car", "ce", "cela", "ces",
-    "cet", "cette", "ceux", "chaque", "chez", "comme", "comment", "contre", "d",
-    "dans", "de", "deja", "déjà", "depuis", "des", "donc", "dont", "du", "elle",
-    "elles", "en", "encore", "entre", "est", "et", "etaient", "etait", "etre",
-    "être", "eu", "eux", "fait", "faire", "fais", "faites", "fois", "font", "ici",
-    "il", "ils", "je", "juste", "l", "la", "le", "les", "leur", "leurs", "lui",
-    "ma", "mais", "me", "meme", "même", "mes", "moi", "mon", "ne", "ni", "nos",
-    "notre", "nous", "on", "ont", "ou", "où", "par", "pas", "plus", "pour", "qu",
-    "que", "qui", "quoi", "s", "sa", "sans", "se", "sera", "ses", "si", "sien",
-    "soi", "sommes", "son", "sont", "sous", "suis", "sur", "t", "ta", "te", "tes",
-    "toi", "ton", "tous", "tout", "toute", "toutes", "tres", "très", "tu", "un",
-    "une", "vos", "votre", "vous", "y", "via", "the", "and", "for", "http", "https",
-    "canicule", "chaleur", "degres", "degrés",  # trop génériques corpus-wide
+    "a", "ai", "ainsi", "alors", "apres", "après", "au", "aucun", "aucune", "aussi",
+    "autre", "autres", "aux", "avec", "avoir", "avant", "c", "ca", "ça", "car", "ce",
+    "cela", "celle", "celles", "celui", "ces", "cet", "cette", "ceux", "chaque",
+    "chez", "comme", "comment", "contre", "d", "dans", "de", "deja", "déjà",
+    "depuis", "des", "donc", "dont", "du", "elle", "elles", "en", "encore", "entre",
+    "est", "et", "etaient", "étaient", "etait", "était", "etant", "étant", "etre",
+    "être", "eu", "eux", "ici", "il", "ils", "je", "jusque", "jusqu", "l", "la",
+    "le", "les", "leur", "leurs", "lui", "ma", "mais", "me", "meme", "même", "mes",
+    "moi", "moins", "mon", "ne", "ni", "non", "nos", "notre", "nous", "on", "ont",
+    "ou", "où", "oui", "par", "parce", "parmi", "pas", "pendant", "peu", "plus",
+    "plusieurs", "pour", "pourquoi", "qu", "quand", "que", "quel", "quelle",
+    "quelles", "quels", "qui", "quoi", "s", "sa", "sans", "se", "sera", "serait",
+    "ses", "si", "sien", "soi", "soit", "sommes", "son", "sont", "sous", "suis",
+    "sur", "t", "ta", "tandis", "te", "tel", "telle", "tes", "toi", "ton",
+    "toujours", "tous", "tout", "toute", "toutes", "tres", "très", "trop", "tu",
+    "un", "une", "vers", "vos", "votre", "vous", "y", "via",
+    "avais", "avait", "avons", "avez", "avaient", "ayant", "eue", "es", "etes",
+    "êtes", "seront", "faire", "fais", "fait", "faite", "faits", "faites",
+    "faisait", "font", "fois", "mettre", "met", "mets", "mettent", "mis", "mise",
+    "mises", "peut", "peux", "peuvent", "pouvoir", "pourrait", "doit", "dois",
+    "doivent", "devoir", "devrait", "faut", "falloir", "va", "vais", "vas", "vont",
+    "aller", "allaient", "allait", "voir", "vois", "voit", "voient", "vu", "vue",
+    "dire", "dis", "dit", "dite", "disent", "savoir", "sait", "sais", "savent",
+    "prendre", "prend", "pris", "prise", "donne", "donner", "donné", "venir",
+    "vient", "venu", "tenir", "tient", "reste", "rester", "passer", "passe",
+    "passé", "arriver", "arrive", "partir", "parti", "semble", "sembler",
+    "fallait", "veut", "veux", "vouloir", "voulu",
+    "bien", "bon", "bonne", "jamais", "rien", "quelque", "quelques", "surtout",
+    "souvent", "parfois", "maintenant", "demain", "hier", "enfin", "ensuite",
+    "puis", "sinon", "toutefois", "cependant", "pourtant", "néanmoins",
+    "neanmoins", "voila", "voilà", "voici", "etc", "bah", "hein", "ok", "okay",
+    "juste", "vraiment", "assez", "beaucoup", "combien",
+    "the", "and", "for", "with", "this", "that", "are", "was", "were", "been",
+    "have", "has", "had", "not", "you", "your", "from", "they", "their", "what",
+    "when", "where", "which", "who", "whom", "how", "why", "about", "into", "over",
+    "after", "before", "most", "more", "some", "any", "all", "also", "than", "then",
+    "there", "here", "just", "like", "can", "could", "would", "should", "will",
+    "new", "first", "http", "https", "www", "amp",
+    # trop génériques corpus-wide canicule
+    "canicule", "chaleur", "degres", "degrés", "été", "ete", "temps", "jours",
+    "ans", "gens", "monde", "cause",
 }
 
 LIMIT_FR = (
@@ -103,13 +131,18 @@ def is_retweet(tweet_type: str, text: str) -> bool:
     return (text or "").lstrip().lower().startswith("rt @")
 
 
+def is_stop_word(w: str) -> bool:
+    t = str(w or "").lower().strip()
+    return (not t) or t.isdigit() or t in FR_STOP or len(t) < 3
+
+
 def tokens(text: str) -> list[str]:
     t = URL_RX.sub(" ", text or "")
     t = MENTION_RX.sub(" ", t)
     t = t.replace("#", " ")
     out = []
     for m in TOKEN_RX.findall(t.lower()):
-        if m in FR_STOP or m.isdigit():
+        if is_stop_word(m):
             continue
         out.append(m)
     return out
@@ -270,6 +303,7 @@ def main() -> None:
             if z < Z_TERM:
                 continue
             key_words.append({"word": w, "g2": round(z, 2), "n": int(n_w)})
+        key_words = [x for x in key_words if not is_stop_word(x["word"])]
         key_words.sort(key=lambda d: d["g2"], reverse=True)
         key_words = [{"word": x["word"], "g2": x["g2"]} for x in key_words[:N_WORDS]]
 

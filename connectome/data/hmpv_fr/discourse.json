@@ -147,7 +147,7 @@
       "id": "7",
       "qualif": "hmpv / virus",
       "qualif_short": "hmpv / virus",
-      "justification": "C7 · hub @france24_fr. Lexique distinctif (z log-odds CSV vs autres pôles) : #chinavirus, #xofluza, #baloxavir, #antiviral. 21 pubs hors RT.",
+      "justification": "C7 · hub @france24_fr. Lexique distinctif (z log-odds CSV vs autres pôles) : #chinavirus, #xofluza, #antiviral, #baloxavir. 21 pubs hors RT.",
       "key_hashtags": [
         {
           "tag": "chinavirus",
@@ -158,19 +158,19 @@
           "g2": 1.54
         },
         {
-          "tag": "baloxavir",
-          "g2": 1.54
-        },
-        {
           "tag": "antiviral",
           "g2": 1.54
         },
         {
-          "tag": "europe",
+          "tag": "baloxavir",
           "g2": 1.54
         },
         {
           "tag": "téléchargement",
+          "g2": 1.54
+        },
+        {
+          "tag": "europe",
           "g2": 1.54
         },
         {
@@ -200,15 +200,15 @@
           "g2": 0.0
         },
         {
-          "word": "faut",
-          "g2": 0.0
-        },
-        {
           "word": "craindre",
           "g2": 0.0
         },
         {
           "word": "respiratoire",
+          "g2": 0.0
+        },
+        {
+          "word": "nord",
           "g2": 0.0
         }
       ],
@@ -516,7 +516,7 @@
           "sn": "asianews_fr",
           "text": "La #Chine 🇨🇳 est confrontée à une épidémie de métapneumovirus humain (HMPV) . #HMPV est un virus respiratoire qui provoque des infections bénignes similaires à un rhume. Aucune urgence officielle n'a été déclarée. 🎥@jist_news https://t.co/2OIPZsKpzt",
           "at": "2025-01-04",
-          "tag": "hmpv"
+          "tag": "chine"
         }
       ],
       "n_users": 27,
@@ -703,19 +703,31 @@
           "sn": "aixematrice",
           "text": "#chine 😡😡😡! Les premiers cas de métapneumovirus humain chinois (HMPV) ont été signalés à Hong Kong, suite à la déclaration par la Chine de l'état d'urgence sanitaire face à l'épidémie. ! Encore un nouveau Confinement prochainement 🤔🤔 #OMS #pandemie !! Laissez -nous https://t.co/w",
           "at": "2025-01-04",
-          "tag": "pandemie"
+          "tag": "chine"
+        },
+        {
+          "sn": "francersistanc1",
+          "text": "🚨ALERTE🚨En Asie, confirmation qu'ils sont en train de refaire le cinéma Covid en Chine sous le nom de HMPV (Human MetaPneumoVirus). Les hôpitaux se rempliraient et certains aéroports fermés ... La Chine 🇨🇳 déclare l'état d'urgence☣️⚡️☣️ https://t.co/2zFJSaHp6h https://t.co/1Jc5eF",
+          "at": "2025-01-04",
+          "tag": ""
+        },
+        {
+          "sn": "francersistanc1",
+          "text": "🚨🇨🇳GENOCIDE : Les premiers cas de métapneumovirus humain chinois (HMPV) ont été signalés à Hong Kong, après que la Chine a déclaré l'état d'urgence sanitaire lié à l'épidémie. 😷Le port du masque est progressivement rétabli dans certaines régions des États-Unis.🇺🇸 https://t.co/jEq",
+          "at": "2025-01-05",
+          "tag": ""
+        },
+        {
+          "sn": "aixematrice",
+          "text": "Bon ! Ben , c’est pour quand en France ? L'Inde signale ses premiers cas de virus #HMPV ; le gouvernement minimise la menace alors que les craintes liées au Covid-19 reviennent ! 🤔🤔‼️‼️#beaking. News. https://t.co/CqtFdu1jdI",
+          "at": "2025-01-06",
+          "tag": "hmpv"
         },
         {
           "sn": "aixematrice",
           "text": "Un petit réveil en musique et avec humour ! Passer une bonne semaine ! Est-ce la maladie X de L #oms ? 🔴‼️ Et c’est reparti ? #BREAKING , 🚨 Après 5 ans de la #pandémie de #COVID_19, la #Chine fait face à une nouvelle #épidémie d’un #virus appelé #HMPV (Human https://t.co/flhV46fy",
           "at": "2025-01-06",
-          "tag": "breaking"
-        },
-        {
-          "sn": "aixematrice",
-          "text": "🔴‼️ Et c’est reparti ? #BREAKING , 🚨 Après 5 ans de la #pandémie de #COVID_19, la #Chine fait face à une nouvelle #épidémie d’un #virus appelé #HMPV (Human Metapneumovirus), une infection respiratoire. Les hôpitaux sont saturés de cas de ce virus ! Et ça arrive ? Y a personne htt",
-          "at": "2025-01-06",
-          "tag": "épidémie"
+          "tag": "hmpv"
         }
       ],
       "n_users": 22,
@@ -753,14 +765,14 @@
       "id": "11",
       "qualif": "chine / nouvelle",
       "qualif_short": "chine / nouvelle",
-      "justification": "C11 · hub @mickaellaffont. Lexique distinctif (z log-odds CSV vs autres pôles) : #hmpv, #covid19. 3 pubs hors RT.",
+      "justification": "C11 · hub @mickaellaffont. Lexique distinctif (z log-odds CSV vs autres pôles) : #covid19, #hmpv. 3 pubs hors RT.",
       "key_hashtags": [
         {
-          "tag": "hmpv",
+          "tag": "covid19",
           "g2": 0.0
         },
         {
-          "tag": "covid19",
+          "tag": "hmpv",
           "g2": 0.0
         }
       ],
@@ -810,7 +822,7 @@
           "sn": "mickaellaffont",
           "text": "Il semblerait qu’une nouvelle épidémie de virus du métapneumovirus humain (#HMPV) se propage rapidement, en Chine 5 ans après la pandémie de #Covid19 https://t.co/O1Nb4nf6cX",
           "at": "2025-01-04",
-          "tag": "hmpv"
+          "tag": "covid19"
         }
       ],
       "n_users": 12,
@@ -2328,6 +2340,28 @@
       "sans_louise",
       "sylvaintekris"
     ],
+    "autorités": [
+      "100xcentobio",
+      "93_7_motivation",
+      "citizenbamba",
+      "defimediainfo",
+      "designche1",
+      "france24_fr",
+      "franceafrique23",
+      "globalvar_fr",
+      "hadejakeita",
+      "jack_gelos",
+      "julienm__",
+      "knizakenzaa",
+      "le_parisien",
+      "lecanape2",
+      "lexpressmaurice",
+      "queeriosity__",
+      "redkiraz",
+      "russo15091576",
+      "sadraquejean",
+      "schmerchris"
+    ],
     "aviaire": [
       "annelaurebeaud2",
       "bigdanbud",
@@ -2937,50 +2971,6 @@
       "ticheck_org",
       "woit_geopolitic",
       "ysssineyass"
-    ],
-    "faut": [
-      "__tiya_",
-      "alertes_info",
-      "businessnews_tn",
-      "cesarwazen",
-      "chat8890",
-      "chrislabaule",
-      "christophechay",
-      "defimediainfo",
-      "destinationsant",
-      "dimitribeghin",
-      "f24videos",
-      "fsaintilma_",
-      "gaby_chami",
-      "gustave213",
-      "hibaabdelli",
-      "i3ct3r",
-      "infolinfo",
-      "irisnews_",
-      "kasprzykremi",
-      "kcharlemag85405",
-      "khatorimoh44349",
-      "ledauphine",
-      "lehuffpost",
-      "lepoint",
-      "lesoir",
-      "lorientlejour",
-      "midilibre",
-      "mohhaafcb",
-      "pjlepine01",
-      "tannheimvs",
-      "torreseryc",
-      "vegasapologies"
-    ],
-    "flambée": [
-      "alapic974",
-      "hibaabdelli",
-      "kcharlemag85405",
-      "lepoint",
-      "medscapefrance",
-      "nicolasberrod",
-      "pjlepine01",
-      "tatiann69922625"
     ],
     "flash": [
       "archippenzimba",
@@ -3707,10 +3697,6 @@
       "var_actu",
       "vwazilenwes"
     ],
-    "marc": [
-      "levif",
-      "twist1961"
-    ],
     "metapneumovirus": [
       "aixematrice",
       "alme_yda",
@@ -3769,11 +3755,6 @@
       "sphyntus",
       "the88stevend",
       "vigicovid"
-    ],
-    "mettent": [
-      "annelaurebeaud2",
-      "chenuflorent",
-      "schmerchris"
     ],
     "mondiale": [
       "afropages",
@@ -3991,27 +3972,6 @@
       "ysssineyass",
       "zwhaendel48"
     ],
-    "non": [
-      "alapic974",
-      "annelaurebeaud2",
-      "benomar_adil74",
-      "c_a_g0101",
-      "cestassezcible",
-      "degeneral__",
-      "dizoxr2",
-      "dommajeur",
-      "fouragebernard",
-      "gavi_fr",
-      "libertesagesse",
-      "lupolynesia",
-      "medecin2famille",
-      "panda31808732",
-      "redkiraz",
-      "sans_louise",
-      "tatiann69922625",
-      "verif_tf1lci",
-      "zewala3"
-    ],
     "nord": [
       "alertes_info",
       "annelaurebeaud2",
@@ -4160,14 +4120,6 @@
       "ysssineyass",
       "zwhaendel48"
     ],
-    "origine": [
-      "7infoci",
-      "calamyjane",
-      "christophechay",
-      "eclairelutin",
-      "jack_gelos",
-      "midilibre"
-    ],
     "pandémie": [
       "afropages",
       "aixematrice",
@@ -4250,13 +4202,6 @@
       "georasia",
       "lematinpointma",
       "robin_des_lois"
-    ],
-    "pic": [
-      "alertes_info",
-      "c_a_g0101",
-      "gustave213",
-      "lehuffpost",
-      "tannheimvs"
     ],
     "pneumoniae": [
       "75secondes",
@@ -4406,14 +4351,6 @@
       "tboulboulva",
       "tessier_x"
     ],
-    "rappelle": [
-      "c_a_g0101",
-      "chineambmaroc",
-      "extinctionrush",
-      "frdouchain",
-      "maghrebactuinfo",
-      "redkiraz"
-    ],
     "recommençons": [
       "janyabadi"
     ],
@@ -4525,14 +4462,6 @@
       "redkiraz",
       "sefluctuat"
     ],
-    "rien": [
-      "bigdanbud",
-      "c_a_g0101",
-      "degeneral__",
-      "extinctionrush",
-      "kasprzykremi",
-      "stockho07541997"
-    ],
     "récession": [
       "janyabadi"
     ],
@@ -4618,18 +4547,10 @@
       "torreseryc",
       "vegasapologies"
     ],
-    "serait": [
-      "asianews_fr",
-      "bigdanbud",
-      "c_a_g0101",
-      "comefindme88x",
-      "georgsamel",
-      "kiddodig",
-      "le_liberaal",
-      "limportant_fr",
-      "redkiraz",
-      "tessier_x",
-      "zwhaendel48"
+    "savons": [
+      "chat8890",
+      "neveuxbertrand",
+      "watsonactu"
     ],
     "signalés": [
       "aixematrice",
@@ -4998,12 +4919,6 @@
       "y_dms_debah",
       "ysssineyass"
     ],
-    "vraiment": [
-      "hibaabdelli",
-      "kcharlemag85405",
-      "lepoint",
-      "pjlepine01"
-    ],
     "vrs": [
       "asm2boucliers",
       "astropierre",
@@ -5201,6 +5116,7 @@
     "appelé": 15,
     "augmentation": 19,
     "augmentent": 9,
+    "autorités": 20,
     "aviaire": 6,
     "avis": 3,
     "cas": 70,
@@ -5222,8 +5138,6 @@
     "enregistrée": 16,
     "epidémie": 3,
     "face": 36,
-    "faut": 32,
-    "flambée": 8,
     "flash": 2,
     "france": 13,
     "grippe": 59,
@@ -5243,9 +5157,7 @@
     "kong": 2,
     "laethem": 2,
     "maladies": 12,
-    "marc": 2,
     "metapneumovirus": 57,
-    "mettent": 3,
     "mondiale": 8,
     "mortel": 7,
     "mortelle": 2,
@@ -5255,18 +5167,15 @@
     "mystérieuse": 4,
     "médias": 13,
     "métapneumovirus": 130,
-    "non": 19,
     "nord": 16,
     "nouveau": 55,
     "nouvelle": 71,
-    "origine": 6,
     "pandémie": 36,
     "pandémies": 2,
     "panique": 9,
     "paniquer": 1,
     "pays": 18,
     "peur": 5,
-    "pic": 5,
     "pneumoniae": 12,
     "pneumonie": 8,
     "populations": 2,
@@ -5277,18 +5186,16 @@
     "provoquant": 17,
     "provoque": 14,
     "rapidement": 28,
-    "rappelle": 6,
     "recommençons": 1,
     "respiratoire": 57,
     "respiratoires": 32,
     "rhinovirus": 13,
-    "rien": 6,
     "récession": 1,
     "réseaux": 17,
     "sanitaire": 13,
     "sanitaires": 13,
     "santé": 31,
-    "serait": 11,
+    "savons": 3,
     "signalés": 2,
     "sociaux": 19,
     "submerge": 9,
@@ -5300,7 +5207,6 @@
     "van": 2,
     "virale": 7,
     "virus": 225,
-    "vraiment": 4,
     "vrs": 14,
     "yves": 2,
     "épidémie": 99,
@@ -5347,9 +5253,6 @@
     "enregistrée": [
       4
     ],
-    "faut": [
-      7
-    ],
     "grippe": [
       5
     ],
@@ -5387,6 +5290,9 @@
       4,
       5,
       11
+    ],
+    "nord": [
+      7
     ],
     "nouveau": [
       13
@@ -5460,7 +5366,7 @@
       },
       {
         "word": "covid",
-        "n": 25
+        "n": 26
       },
       {
         "word": "hmpv",
@@ -5472,14 +5378,14 @@
       },
       {
         "word": "face",
-        "n": 17
-      },
-      {
-        "word": "nouvelle",
-        "n": 17
+        "n": 18
       },
       {
         "word": "pandémie",
+        "n": 18
+      },
+      {
+        "word": "nouvelle",
         "n": 17
       },
       {
@@ -5491,12 +5397,12 @@
         "n": 12
       },
       {
-        "word": "cinq",
+        "word": "human",
         "n": 11
       },
       {
-        "word": "human",
-        "n": 10
+        "word": "cinq",
+        "n": 11
       },
       {
         "word": "metapneumovirus",
@@ -5556,23 +5462,23 @@
     "cas": [
       {
         "word": "hmpv",
-        "n": 53
+        "n": 55
       },
       {
         "word": "chine",
-        "n": 36
+        "n": 37
       },
       {
         "word": "métapneumovirus",
-        "n": 34
+        "n": 36
       },
       {
         "word": "humain",
-        "n": 32
+        "n": 34
       },
       {
         "word": "virus",
-        "n": 31
+        "n": 32
       },
       {
         "word": "augmentation",
@@ -5585,10 +5491,6 @@
       {
         "word": "été",
         "n": 9
-      },
-      {
-        "word": "faut",
-        "n": 8
       },
       {
         "word": "santé",
@@ -5607,50 +5509,54 @@
         "n": 7
       },
       {
+        "word": "inquiéter",
+        "n": 7
+      },
+      {
         "word": "premiers",
         "n": 6
       },
       {
-        "word": "inquiéter",
+        "word": "autorités",
         "n": 6
       }
     ],
     "chine": [
       {
         "word": "hmpv",
-        "n": 161
+        "n": 167
       },
       {
         "word": "virus",
-        "n": 147
+        "n": 150
       },
       {
         "word": "métapneumovirus",
-        "n": 106
+        "n": 108
       },
       {
         "word": "épidémie",
-        "n": 95
+        "n": 98
       },
       {
         "word": "humain",
-        "n": 84
+        "n": 87
       },
       {
         "word": "nouvelle",
-        "n": 64
+        "n": 66
       },
       {
         "word": "covid",
-        "n": 45
+        "n": 46
       },
       {
         "word": "nouveau",
-        "n": 36
+        "n": 37
       },
       {
         "word": "cas",
-        "n": 36
+        "n": 37
       },
       {
         "word": "ans",
@@ -5658,7 +5564,7 @@
       },
       {
         "word": "face",
-        "n": 27
+        "n": 28
       },
       {
         "word": "respiratoire",
@@ -5670,7 +5576,7 @@
       },
       {
         "word": "propage",
-        "n": 23
+        "n": 24
       },
       {
         "word": "été",
@@ -5680,7 +5586,7 @@
     "cinq": [
       {
         "word": "chine",
-        "n": 12
+        "n": 13
       },
       {
         "word": "ans",
@@ -5692,7 +5598,7 @@
       },
       {
         "word": "hmpv",
-        "n": 9
+        "n": 10
       },
       {
         "word": "augmentation",
@@ -5715,6 +5621,10 @@
         "n": 4
       },
       {
+        "word": "virus",
+        "n": 3
+      },
+      {
         "word": "sanitaires",
         "n": 3
       },
@@ -5733,10 +5643,6 @@
       {
         "word": "humain",
         "n": 2
-      },
-      {
-        "word": "nouveau",
-        "n": 2
       }
     ],
     "connu": [
@@ -5746,14 +5652,26 @@
       },
       {
         "word": "virus",
-        "n": 4
+        "n": 5
       },
       {
         "word": "panique",
-        "n": 4
+        "n": 5
       },
       {
         "word": "nouveau",
+        "n": 4
+      },
+      {
+        "word": "chine",
+        "n": 3
+      },
+      {
+        "word": "métapneumovirus",
+        "n": 3
+      },
+      {
+        "word": "humain",
         "n": 3
       },
       {
@@ -5765,23 +5683,11 @@
         "n": 3
       },
       {
-        "word": "chine",
-        "n": 2
-      },
-      {
-        "word": "métapneumovirus",
-        "n": 2
-      },
-      {
-        "word": "humain",
+        "word": "symptômes",
         "n": 2
       },
       {
         "word": "respiratoire",
-        "n": 2
-      },
-      {
-        "word": "non",
         "n": 2
       },
       {
@@ -5797,33 +5703,33 @@
         "n": 2
       },
       {
-        "word": "rien",
+        "word": "peur",
         "n": 2
       }
     ],
     "covid": [
       {
         "word": "hmpv",
-        "n": 48
+        "n": 49
       },
       {
         "word": "chine",
-        "n": 45
+        "n": 46
       },
       {
         "word": "virus",
-        "n": 37
+        "n": 38
       },
       {
         "word": "ans",
-        "n": 25
-      },
-      {
-        "word": "nouvelle",
-        "n": 21
+        "n": 26
       },
       {
         "word": "épidémie",
+        "n": 22
+      },
+      {
+        "word": "nouvelle",
         "n": 21
       },
       {
@@ -5832,7 +5738,7 @@
       },
       {
         "word": "pandémie",
-        "n": 17
+        "n": 18
       },
       {
         "word": "face",
@@ -5840,15 +5746,15 @@
       },
       {
         "word": "human",
-        "n": 15
+        "n": 16
+      },
+      {
+        "word": "grippe",
+        "n": 12
       },
       {
         "word": "appelé",
         "n": 12
-      },
-      {
-        "word": "grippe",
-        "n": 10
       },
       {
         "word": "cinq",
@@ -5864,10 +5770,6 @@
       }
     ],
     "craindre": [
-      {
-        "word": "faut",
-        "n": 5
-      },
       {
         "word": "hmpv",
         "n": 5
@@ -5906,119 +5808,61 @@
     "enregistrée": [
       {
         "word": "épidémie",
-        "n": 16
+        "n": 17
       },
       {
         "word": "été",
-        "n": 16
+        "n": 17
       },
       {
         "word": "chine",
-        "n": 16
+        "n": 17
       },
       {
         "word": "métapneumovirus",
-        "n": 16
+        "n": 17
+      },
+      {
+        "word": "virus",
+        "n": 3
       },
       {
         "word": "informateur",
         "n": 3
-      },
-      {
-        "word": "virus",
-        "n": 2
-      }
-    ],
-    "faut": [
-      {
-        "word": "chine",
-        "n": 22
-      },
-      {
-        "word": "virus",
-        "n": 19
-      },
-      {
-        "word": "hmpv",
-        "n": 18
-      },
-      {
-        "word": "inquiéter",
-        "n": 18
-      },
-      {
-        "word": "métapneumovirus",
-        "n": 13
-      },
-      {
-        "word": "humain",
-        "n": 13
-      },
-      {
-        "word": "cas",
-        "n": 8
-      },
-      {
-        "word": "vraiment",
-        "n": 6
-      },
-      {
-        "word": "grippe",
-        "n": 5
-      },
-      {
-        "word": "craindre",
-        "n": 5
-      },
-      {
-        "word": "flambée",
-        "n": 5
-      },
-      {
-        "word": "connaît",
-        "n": 4
-      },
-      {
-        "word": "pic",
-        "n": 4
-      },
-      {
-        "word": "mpvh",
-        "n": 4
-      },
-      {
-        "word": "propage",
-        "n": 4
       }
     ],
     "grippe": [
       {
         "word": "virus",
-        "n": 23
+        "n": 27
       },
       {
         "word": "hmpv",
-        "n": 23
+        "n": 26
       },
       {
         "word": "chine",
-        "n": 15
+        "n": 18
       },
       {
         "word": "covid",
-        "n": 10
+        "n": 12
       },
       {
         "word": "metapneumovirus",
-        "n": 9
+        "n": 10
       },
       {
         "word": "métapneumovirus",
-        "n": 9
+        "n": 10
       },
       {
         "word": "vrs",
         "n": 8
+      },
+      {
+        "word": "épidémie",
+        "n": 7
       },
       {
         "word": "symptômes",
@@ -6029,6 +5873,14 @@
         "n": 7
       },
       {
+        "word": "nouvelle",
+        "n": 6
+      },
+      {
+        "word": "humain",
+        "n": 6
+      },
+      {
         "word": "rhinovirus",
         "n": 6
       },
@@ -6037,54 +5889,42 @@
         "n": 5
       },
       {
-        "word": "nouvelle",
-        "n": 5
-      },
-      {
-        "word": "respiratoire",
-        "n": 5
-      },
-      {
-        "word": "faut",
-        "n": 5
-      },
-      {
-        "word": "humain",
+        "word": "état",
         "n": 5
       }
     ],
     "hmpv": [
       {
         "word": "virus",
-        "n": 200
+        "n": 205
       },
       {
         "word": "chine",
-        "n": 161
+        "n": 167
       },
       {
         "word": "métapneumovirus",
+        "n": 70
+      },
+      {
+        "word": "humain",
         "n": 67
       },
       {
         "word": "épidémie",
-        "n": 65
-      },
-      {
-        "word": "humain",
-        "n": 63
+        "n": 67
       },
       {
         "word": "nouvelle",
-        "n": 57
+        "n": 62
       },
       {
         "word": "cas",
-        "n": 53
+        "n": 55
       },
       {
         "word": "covid",
-        "n": 48
+        "n": 49
       },
       {
         "word": "nouveau",
@@ -6095,38 +5935,38 @@
         "n": 38
       },
       {
-        "word": "metapneumovirus",
+        "word": "symptômes",
         "n": 29
       },
       {
         "word": "face",
-        "n": 28
+        "n": 29
       },
       {
         "word": "human",
-        "n": 28
+        "n": 29
       },
       {
-        "word": "symptômes",
-        "n": 27
+        "word": "metapneumovirus",
+        "n": 29
       },
       {
         "word": "pandémie",
-        "n": 26
+        "n": 27
       }
     ],
     "humain": [
       {
         "word": "métapneumovirus",
-        "n": 120
+        "n": 122
       },
       {
         "word": "chine",
-        "n": 84
+        "n": 87
       },
       {
         "word": "hmpv",
-        "n": 63
+        "n": 67
       },
       {
         "word": "virus",
@@ -6134,23 +5974,27 @@
       },
       {
         "word": "cas",
-        "n": 32
+        "n": 34
       },
       {
         "word": "épidémie",
-        "n": 28
+        "n": 29
       },
       {
         "word": "nouvelle",
-        "n": 26
+        "n": 27
       },
       {
         "word": "inquiéter",
+        "n": 16
+      },
+      {
+        "word": "symptômes",
         "n": 15
       },
       {
         "word": "confrontée",
-        "n": 14
+        "n": 15
       },
       {
         "word": "rapidement",
@@ -6161,26 +6005,26 @@
         "n": 13
       },
       {
-        "word": "faut",
-        "n": 13
-      },
-      {
         "word": "mpvh",
         "n": 13
       },
       {
-        "word": "symptômes",
-        "n": 12
+        "word": "propage",
+        "n": 10
       },
       {
-        "word": "propage",
+        "word": "augmentation",
         "n": 10
       }
     ],
     "hôpitaux": [
       {
         "word": "chine",
-        "n": 18
+        "n": 20
+      },
+      {
+        "word": "épidémie",
+        "n": 16
       },
       {
         "word": "hmpv",
@@ -6188,18 +6032,26 @@
       },
       {
         "word": "virus",
-        "n": 12
-      },
-      {
-        "word": "épidémie",
-        "n": 12
+        "n": 13
       },
       {
         "word": "submerge",
-        "n": 7
+        "n": 9
       },
       {
         "word": "état",
+        "n": 8
+      },
+      {
+        "word": "crématoriums",
+        "n": 7
+      },
+      {
+        "word": "déclare",
+        "n": 6
+      },
+      {
+        "word": "urgence",
         "n": 6
       },
       {
@@ -6207,19 +6059,11 @@
         "n": 6
       },
       {
-        "word": "crématoriums",
-        "n": 5
-      },
-      {
-        "word": "déclare",
-        "n": 4
-      },
-      {
-        "word": "urgence",
-        "n": 4
-      },
-      {
         "word": "débordés",
+        "n": 4
+      },
+      {
+        "word": "grippe",
         "n": 4
       },
       {
@@ -6231,12 +6075,8 @@
         "n": 4
       },
       {
-        "word": "propage",
-        "n": 3
-      },
-      {
-        "word": "rappelle",
-        "n": 3
+        "word": "covid",
+        "n": 4
       }
     ],
     "inutile": [
@@ -6285,10 +6125,6 @@
         "n": 3
       },
       {
-        "word": "rien",
-        "n": 2
-      },
-      {
         "word": "nouveau",
         "n": 2
       },
@@ -6323,15 +6159,11 @@
         "n": 4
       },
       {
-        "word": "faut",
+        "word": "inquiéter",
         "n": 4
       },
       {
         "word": "hmpv",
-        "n": 3
-      },
-      {
-        "word": "inquiéter",
         "n": 3
       },
       {
@@ -6355,11 +6187,15 @@
         "n": 2
       },
       {
-        "word": "pneumonie",
+        "word": "symptômes",
         "n": 2
       },
       {
-        "word": "origine",
+        "word": "panique",
+        "n": 2
+      },
+      {
+        "word": "pneumonie",
         "n": 2
       }
     ],
@@ -6404,50 +6240,54 @@
     "métapneumovirus": [
       {
         "word": "humain",
-        "n": 120
+        "n": 122
       },
       {
         "word": "chine",
-        "n": 106
+        "n": 108
+      },
+      {
+        "word": "hmpv",
+        "n": 70
       },
       {
         "word": "virus",
         "n": 70
       },
       {
-        "word": "hmpv",
-        "n": 67
-      },
-      {
         "word": "épidémie",
-        "n": 47
+        "n": 48
       },
       {
         "word": "cas",
-        "n": 34
+        "n": 36
       },
       {
         "word": "nouvelle",
-        "n": 29
+        "n": 30
       },
       {
         "word": "été",
         "n": 24
       },
       {
+        "word": "enregistrée",
+        "n": 17
+      },
+      {
+        "word": "confrontée",
+        "n": 16
+      },
+      {
         "word": "nouveau",
         "n": 16
       },
       {
-        "word": "enregistrée",
+        "word": "inquiéter",
         "n": 16
       },
       {
-        "word": "confrontée",
-        "n": 15
-      },
-      {
-        "word": "inquiéter",
+        "word": "symptômes",
         "n": 15
       },
       {
@@ -6455,18 +6295,76 @@
         "n": 13
       },
       {
-        "word": "faut",
-        "n": 13
-      },
-      {
         "word": "mpvh",
         "n": 13
+      }
+    ],
+    "nord": [
+      {
+        "word": "chine",
+        "n": 14
+      },
+      {
+        "word": "hmpv",
+        "n": 12
+      },
+      {
+        "word": "augmentation",
+        "n": 8
+      },
+      {
+        "word": "cas",
+        "n": 7
+      },
+      {
+        "word": "virus",
+        "n": 5
+      },
+      {
+        "word": "cinq",
+        "n": 5
+      },
+      {
+        "word": "inquiète",
+        "n": 5
+      },
+      {
+        "word": "métapneumovirus",
+        "n": 5
+      },
+      {
+        "word": "autorités",
+        "n": 4
+      },
+      {
+        "word": "ans",
+        "n": 4
+      },
+      {
+        "word": "humain",
+        "n": 4
+      },
+      {
+        "word": "respiratoires",
+        "n": 3
+      },
+      {
+        "word": "covid",
+        "n": 3
+      },
+      {
+        "word": "inquiéter",
+        "n": 3
+      },
+      {
+        "word": "connaît",
+        "n": 3
       }
     ],
     "nouveau": [
       {
         "word": "virus",
-        "n": 47
+        "n": 49
       },
       {
         "word": "hmpv",
@@ -6474,7 +6372,7 @@
       },
       {
         "word": "chine",
-        "n": 36
+        "n": 37
       },
       {
         "word": "métapneumovirus",
@@ -6509,50 +6407,50 @@
         "n": 6
       },
       {
+        "word": "symptômes",
+        "n": 6
+      },
+      {
         "word": "nouvelle",
         "n": 5
       },
       {
+        "word": "propage",
+        "n": 5
+      },
+      {
         "word": "pays",
-        "n": 5
-      },
-      {
-        "word": "médias",
-        "n": 5
-      },
-      {
-        "word": "symptômes",
         "n": 5
       }
     ],
     "nouvelle": [
       {
         "word": "chine",
-        "n": 64
+        "n": 66
       },
       {
         "word": "hmpv",
-        "n": 57
+        "n": 62
       },
       {
         "word": "épidémie",
-        "n": 52
+        "n": 54
       },
       {
         "word": "virus",
-        "n": 46
+        "n": 49
       },
       {
         "word": "métapneumovirus",
-        "n": 29
+        "n": 30
       },
       {
         "word": "humain",
-        "n": 26
+        "n": 27
       },
       {
         "word": "pandémie",
-        "n": 24
+        "n": 26
       },
       {
         "word": "face",
@@ -6571,11 +6469,11 @@
         "n": 17
       },
       {
-        "word": "rapidement",
-        "n": 16
+        "word": "metapneumovirus",
+        "n": 17
       },
       {
-        "word": "metapneumovirus",
+        "word": "rapidement",
         "n": 16
       },
       {
@@ -6583,8 +6481,8 @@
         "n": 15
       },
       {
-        "word": "appelé",
-        "n": 13
+        "word": "human",
+        "n": 15
       }
     ],
     "pandémies": [
@@ -6632,14 +6530,18 @@
       },
       {
         "word": "virus",
-        "n": 6
+        "n": 7
       },
       {
         "word": "connu",
-        "n": 4
+        "n": 5
       },
       {
         "word": "nouveau",
+        "n": 4
+      },
+      {
+        "word": "métapneumovirus",
         "n": 3
       },
       {
@@ -6651,7 +6553,7 @@
         "n": 3
       },
       {
-        "word": "métapneumovirus",
+        "word": "chine",
         "n": 2
       },
       {
@@ -6680,10 +6582,6 @@
       },
       {
         "word": "laethem",
-        "n": 2
-      },
-      {
-        "word": "marc",
         "n": 2
       }
     ],
@@ -6828,7 +6726,7 @@
     "propage": [
       {
         "word": "chine",
-        "n": 23
+        "n": 24
       },
       {
         "word": "hmpv",
@@ -6836,7 +6734,7 @@
       },
       {
         "word": "virus",
-        "n": 18
+        "n": 19
       },
       {
         "word": "nouvelle",
@@ -6867,15 +6765,11 @@
         "n": 7
       },
       {
-        "word": "sanitaire",
-        "n": 4
-      },
-      {
         "word": "nouveau",
-        "n": 4
+        "n": 5
       },
       {
-        "word": "faut",
+        "word": "sanitaire",
         "n": 4
       },
       {
@@ -6884,6 +6778,10 @@
       },
       {
         "word": "hôpitaux",
+        "n": 3
+      },
+      {
+        "word": "pays",
         "n": 3
       }
     ],
@@ -6929,11 +6827,11 @@
         "n": 10
       },
       {
-        "word": "propageant",
-        "n": 7
+        "word": "symptômes",
+        "n": 8
       },
       {
-        "word": "symptômes",
+        "word": "propageant",
         "n": 7
       },
       {
@@ -6945,7 +6843,7 @@
         "n": 2
       },
       {
-        "word": "serait",
+        "word": "crise",
         "n": 2
       }
     ],
@@ -7017,6 +6915,10 @@
         "n": 9
       },
       {
+        "word": "réseaux",
+        "n": 8
+      },
+      {
         "word": "metapneumovirus",
         "n": 7
       },
@@ -7025,12 +6927,12 @@
         "n": 7
       },
       {
-        "word": "réseaux",
-        "n": 7
-      },
-      {
         "word": "sociaux",
         "n": 6
+      },
+      {
+        "word": "symptômes",
+        "n": 5
       },
       {
         "word": "human",
@@ -7043,16 +6945,12 @@
       {
         "word": "covid",
         "n": 5
-      },
-      {
-        "word": "cas",
-        "n": 5
       }
     ],
     "sanitaire": [
       {
         "word": "hmpv",
-        "n": 10
+        "n": 11
       },
       {
         "word": "chine",
@@ -7107,7 +7005,7 @@
         "n": 2
       },
       {
-        "word": "serait",
+        "word": "confrontée",
         "n": 2
       }
     ],
@@ -7134,6 +7032,10 @@
       },
       {
         "word": "multiples",
+        "n": 8
+      },
+      {
+        "word": "hmpv",
         "n": 7
       },
       {
@@ -7141,12 +7043,12 @@
         "n": 6
       },
       {
-        "word": "hmpv",
+        "word": "hôpitaux",
         "n": 6
       },
       {
-        "word": "hôpitaux",
-        "n": 4
+        "word": "crématoriums",
+        "n": 5
       },
       {
         "word": "mycoplasma",
@@ -7161,15 +7063,11 @@
         "n": 4
       },
       {
-        "word": "crématoriums",
+        "word": "grippe",
         "n": 3
       },
       {
         "word": "alerte",
-        "n": 2
-      },
-      {
-        "word": "mettent",
         "n": 2
       }
     ],
@@ -7177,6 +7075,10 @@
       {
         "word": "chine",
         "n": 7
+      },
+      {
+        "word": "nouvelle",
+        "n": 4
       },
       {
         "word": "hmpv",
@@ -7187,7 +7089,7 @@
         "n": 3
       },
       {
-        "word": "nouvelle",
+        "word": "covid",
         "n": 3
       },
       {
@@ -7211,10 +7113,6 @@
         "n": 2
       },
       {
-        "word": "covid",
-        "n": 2
-      },
-      {
         "word": "face",
         "n": 2
       },
@@ -7227,6 +7125,10 @@
         "n": 2
       },
       {
+        "word": "savons",
+        "n": 2
+      },
+      {
         "word": "virus",
         "n": 2
       }
@@ -7234,11 +7136,11 @@
     "virus": [
       {
         "word": "hmpv",
-        "n": 200
+        "n": 205
       },
       {
         "word": "chine",
-        "n": 147
+        "n": 150
       },
       {
         "word": "métapneumovirus",
@@ -7250,84 +7152,84 @@
       },
       {
         "word": "épidémie",
-        "n": 59
+        "n": 61
+      },
+      {
+        "word": "nouvelle",
+        "n": 49
       },
       {
         "word": "nouveau",
-        "n": 47
+        "n": 49
       },
       {
         "word": "respiratoire",
         "n": 46
       },
       {
-        "word": "nouvelle",
-        "n": 46
-      },
-      {
         "word": "covid",
-        "n": 37
+        "n": 38
       },
       {
         "word": "cas",
-        "n": 31
-      },
-      {
-        "word": "metapneumovirus",
-        "n": 26
+        "n": 32
       },
       {
         "word": "grippe",
-        "n": 23
+        "n": 27
+      },
+      {
+        "word": "metapneumovirus",
+        "n": 27
+      },
+      {
+        "word": "symptômes",
+        "n": 24
       },
       {
         "word": "face",
         "n": 22
       },
       {
-        "word": "symptômes",
-        "n": 21
-      },
-      {
-        "word": "ans",
-        "n": 21
+        "word": "pandémie",
+        "n": 22
       }
     ],
     "épidémie": [
       {
         "word": "chine",
-        "n": 95
+        "n": 98
       },
       {
         "word": "hmpv",
-        "n": 65
+        "n": 67
       },
       {
         "word": "virus",
-        "n": 59
+        "n": 61
       },
       {
         "word": "nouvelle",
-        "n": 52
+        "n": 54
       },
       {
         "word": "métapneumovirus",
-        "n": 47
+        "n": 48
       },
       {
         "word": "humain",
-        "n": 28
+        "n": 29
       },
       {
         "word": "covid",
-        "n": 21
-      },
-      {
-        "word": "face",
-        "n": 19
+        "n": 22
       },
       {
         "word": "confrontée",
+        "n": 20
+      },
+      {
+        "word": "face",
         "n": 19
       },
       {
@@ -7343,26 +7245,26 @@
         "n": 17
       },
       {
+        "word": "enregistrée",
+        "n": 17
+      },
+      {
+        "word": "hôpitaux",
+        "n": 16
+      },
+      {
         "word": "ans",
         "n": 16
-      },
-      {
-        "word": "enregistrée",
-        "n": 16
-      },
-      {
-        "word": "human",
-        "n": 15
       }
     ],
     "état": [
       {
         "word": "chine",
-        "n": 18
+        "n": 19
       },
       {
         "word": "virus",
-        "n": 17
+        "n": 18
       },
       {
         "word": "urgence",
@@ -7374,26 +7276,34 @@
       },
       {
         "word": "épidémie",
-        "n": 10
-      },
-      {
-        "word": "multiples",
-        "n": 7
+        "n": 12
       },
       {
         "word": "hmpv",
-        "n": 7
+        "n": 9
+      },
+      {
+        "word": "hôpitaux",
+        "n": 8
+      },
+      {
+        "word": "multiples",
+        "n": 8
       },
       {
         "word": "submerge",
         "n": 6
       },
       {
-        "word": "hôpitaux",
+        "word": "covid",
         "n": 6
       },
       {
-        "word": "covid",
+        "word": "crématoriums",
+        "n": 5
+      },
+      {
+        "word": "grippe",
         "n": 5
       },
       {
@@ -7407,14 +7317,6 @@
       {
         "word": "pneumoniae",
         "n": 4
-      },
-      {
-        "word": "grippe",
-        "n": 4
-      },
-      {
-        "word": "crématoriums",
-        "n": 3
       }
     ]
   },
@@ -7529,6 +7431,28 @@
       "341": 1,
       "345": 1,
       "94": 1
+    },
+    "autorités": {
+      "10": 1,
+      "191": 1,
+      "192": 1,
+      "197": 1,
+      "210": 1,
+      "222": 1,
+      "226": 1,
+      "256": 1,
+      "270": 1,
+      "294": 1,
+      "300": 1,
+      "308": 1,
+      "41": 1,
+      "42": 1,
+      "5": 1,
+      "59": 1,
+      "7": 1,
+      "78": 1,
+      "85": 1,
+      "9": 1
     },
     "aviaire": {
       "27": 1,
@@ -8073,39 +7997,6 @@
       "66": 1,
       "67": 1,
       "93": 1
-    },
-    "faut": {
-      "31": 4,
-      "18": 3,
-      "7": 3,
-      "58": 2,
-      "114": 1,
-      "121": 1,
-      "178": 1,
-      "180": 1,
-      "20": 1,
-      "228": 1,
-      "265": 1,
-      "277": 1,
-      "286": 1,
-      "291": 1,
-      "3": 1,
-      "319": 1,
-      "320": 1,
-      "37": 1,
-      "4": 1,
-      "41": 1,
-      "46": 1,
-      "83": 1,
-      "88": 1,
-      "94": 1
-    },
-    "flambée": {
-      "31": 4,
-      "10": 1,
-      "304": 1,
-      "5": 1,
-      "81": 1
     },
     "flash": {
       "246": 1,
@@ -8771,10 +8662,6 @@
       "55": 1,
       "78": 1
     },
-    "marc": {
-      "187": 1,
-      "310": 1
-    },
     "metapneumovirus": {
       "0": 2,
       "21": 2,
@@ -8831,11 +8718,6 @@
       "82": 1,
       "9": 1,
       "94": 1
-    },
-    "mettent": {
-      "239": 1,
-      "7": 1,
-      "85": 1
     },
     "mondiale": {
       "118": 1,
@@ -9029,26 +8911,6 @@
       "8": 1,
       "81": 1
     },
-    "non": {
-      "9": 2,
-      "10": 1,
-      "105": 1,
-      "15": 1,
-      "21": 1,
-      "218": 1,
-      "230": 1,
-      "231": 1,
-      "237": 1,
-      "245": 1,
-      "304": 1,
-      "32": 1,
-      "334": 1,
-      "345": 1,
-      "5": 1,
-      "7": 1,
-      "97": 1,
-      "98": 1
-    },
     "nord": {
       "10": 2,
       "18": 2,
@@ -9186,13 +9048,6 @@
       "9": 1,
       "93": 1
     },
-    "origine": {
-      "58": 2,
-      "149": 1,
-      "308": 1,
-      "4": 1,
-      "55": 1
-    },
     "pandémie": {
       "12": 4,
       "0": 1,
@@ -9272,11 +9127,6 @@
       "208": 1,
       "327": 1,
       "41": 1
-    },
-    "pic": {
-      "18": 3,
-      "20": 1,
-      "9": 1
     },
     "pneumoniae": {
       "1": 1,
@@ -9417,13 +9267,6 @@
       "71": 1,
       "8": 1
     },
-    "rappelle": {
-      "9": 2,
-      "153": 1,
-      "262": 1,
-      "331": 1,
-      "99": 1
-    },
     "recommençons": {
       "8": 1
     },
@@ -9530,14 +9373,6 @@
       "313": 1,
       "82": 1
     },
-    "rien": {
-      "10": 1,
-      "3": 1,
-      "43": 1,
-      "62": 1,
-      "9": 1,
-      "99": 1
-    },
     "récession": {
       "8": 1
     },
@@ -9617,15 +9452,10 @@
       "76": 1,
       "9": 1
     },
-    "serait": {
-      "12": 3,
-      "9": 2,
-      "248": 1,
-      "289": 1,
-      "344": 1,
-      "43": 1,
-      "8": 1,
-      "90": 1
+    "savons": {
+      "118": 1,
+      "296": 1,
+      "4": 1
     },
     "signalés": {
       "0": 2
@@ -9965,9 +9795,6 @@
       "85": 1,
       "94": 1,
       "95": 1
-    },
-    "vraiment": {
-      "31": 4
     },
     "vrs": {
       "10": 1,
