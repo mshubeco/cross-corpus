@@ -11,7 +11,8 @@
       "id": "ebola_2_2026",
       "label": "Ebola 2 · 2026",
       "phaseLabel": "Corpus entier · Ebola 2 FR (1 janv. – 22 sept. 2026)",
-      "connectomeData": "data/ebola_2_2026/graph.json"
+      "connectomeData": "data/ebola_2_2026/graph.json",
+      "discourseData": "data/ebola_2_2026/discourse.json"
     },
     {
       "id": "hantavirus",
@@ -42,6 +43,12 @@
       "label": "HMPV FR · 2025",
       "phaseLabel": "Corpus entier · HMPV PADMEN (FR seul, 1 janv. – 30 juin 2025)",
       "connectomeData": "data/hmpv_fr/graph.json"
+    },
+    {
+      "id": "canicule",
+      "label": "Canicule · mai–juin 2026",
+      "phaseLabel": "Corpus entier · Canicule HEAT (20 mai – 29 juin 2026)",
+      "connectomeData": "data/canicule/graph.json"
     }
   ],
   "defaults": {

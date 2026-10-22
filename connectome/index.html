@@ -208,6 +208,99 @@
       margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.06);
       color: #6a7380; font-size: 10px; line-height: 1.4;
     }
+    .mode.mode-analyses.active { color: #fff8e8; background: rgba(201,178,122,0.32); }
+    .comm-row {
+      cursor: pointer; border-radius: 6px; margin: 0 -4px; padding-left: 4px; padding-right: 4px;
+    }
+    .comm-row:hover { background: rgba(255,255,255,0.04); }
+    .comm-row.selected {
+      background: rgba(77,138,240,0.14);
+      box-shadow: inset 2px 0 0 #4d8af0;
+    }
+    .comm-desig {
+      color: #c9b27a; font-size: 10.5px; font-weight: 600; line-height: 1.3;
+      margin: 2px 0 4px;
+    }
+    .comm-tags { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0 2px; }
+    .tag-chip {
+      display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 4px;
+      background: rgba(255,255,255,0.06); color: #a8b0bc; border: 1px solid rgba(255,255,255,0.1);
+      cursor: pointer; font-variant-numeric: tabular-nums;
+    }
+    .tag-chip:hover { color: #e8eef7; border-color: rgba(201,178,122,0.55); background: rgba(201,178,122,0.12); }
+    .tag-chip.active {
+      color: #fff8e8; background: rgba(201,178,122,0.28);
+      border-color: rgba(232,210,140,0.75);
+    }
+    .comm-disc-size { color: #6a7380; font-size: 10px; margin-top: 3px; }
+    #espaceFiche {
+      position: fixed; right: 12px; bottom: 12px; z-index: 5;
+      width: min(340px, calc(100vw - 24px));
+      max-height: min(42vh, 400px);
+      overflow-y: auto;
+      background: rgba(0,0,0,0.72); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px; padding: 12px 14px;
+      font-size: 11px; color: #8b93a0; display: none;
+      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.2) transparent;
+    }
+    #espaceFiche.open { display: block; }
+    #espaceFiche .fiche-head {
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;
+      margin-bottom: 8px;
+    }
+    #espaceFiche .fiche-title { color: #e8eef7; font-weight: 700; font-size: 12.5px; line-height: 1.3; }
+    #espaceFiche .fiche-close {
+      border: 0; background: transparent; color: #6a7380; cursor: pointer;
+      font-size: 16px; line-height: 1; padding: 0 2px;
+    }
+    #espaceFiche .fiche-close:hover { color: #e8eef7; }
+    #espaceFiche .fiche-just { color: #9aa3b0; font-size: 10.5px; line-height: 1.4; margin-bottom: 10px; }
+    #espaceFiche h4 {
+      color: #c5ccd6; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase;
+      margin: 10px 0 5px; font-weight: 600;
+    }
+    #espaceFiche .lexique { display: flex; flex-wrap: wrap; gap: 4px; }
+    #espaceFiche .sample {
+      border-top: 1px solid rgba(255,255,255,0.06); padding: 7px 0; line-height: 1.4;
+    }
+    #espaceFiche .sample .meta { color: #6a7380; font-size: 10px; margin-bottom: 3px; }
+    #espaceFiche .sample .txt { color: #c5ccd6; font-size: 11px; }
+    #espaceFiche .themes { display: flex; flex-direction: column; gap: 4px; }
+    #espaceFiche .theme-row { display: grid; grid-template-columns: 1fr 36px; gap: 6px; align-items: center; }
+    #espaceFiche .theme-bar {
+      height: 4px; border-radius: 2px; background: rgba(255,255,255,0.08); overflow: hidden;
+    }
+    #espaceFiche .theme-bar > i { display: block; height: 100%; background: #4d8af0; border-radius: 2px; }
+    #espaceFiche .theme-pct { text-align: right; font-variant-numeric: tabular-nums; color: #6a7380; font-size: 10px; }
+    #espaceFiche .limit {
+      margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.08);
+      color: #5a6370; font-size: 10px; line-height: 1.35; font-style: italic;
+    }
+    #espaceFiche .fiche-ext {
+      display: inline-block; margin-top: 8px; color: #8ab4ff; font-size: 10.5px; text-decoration: none;
+    }
+    #espaceFiche .fiche-ext:hover { text-decoration: underline; }
+    #hashFilterBar {
+      position: fixed; left: 50%; transform: translateX(-50%); top: 92px;
+      z-index: 11; display: none; flex-wrap: wrap; gap: 6px; justify-content: center;
+      max-width: min(720px, calc(100vw - 560px));
+      padding: 8px 10px; background: rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;
+    }
+    #hashFilterBar.open { display: flex; }
+    #hashFilterBar .hf-label {
+      width: 100%; text-align: center; color: #6a7380; font-size: 10px; margin-bottom: 2px;
+    }
+    #commSoftLabels {
+      position: fixed; inset: 0; pointer-events: none; z-index: 3; overflow: hidden;
+    }
+    .comm-soft-label {
+      position: absolute; transform: translate(-50%, -50%);
+      font-size: 13px; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap;
+      text-shadow: 0 0 10px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8);
+      max-width: 220px; overflow: hidden; text-overflow: ellipsis;
+    }
+    #commList { max-height: min(340px, calc(100vh - 160px)); }
   </style>
   <script type="importmap">
   {
@@ -232,6 +325,7 @@
     }
     preload('./data/' + encodeURIComponent(id) + '/' + file);
     preload('./data/' + encodeURIComponent(id) + '/community_stats.json');
+    preload('./data/' + encodeURIComponent(id) + '/discourse.json');
     preload('./manifest.json');
   })();
   </script>
@@ -253,12 +347,19 @@
       <div id="graphMode" role="tablist" aria-label="Interactions du graphe">
         <button type="button" class="mode active" data-graph="all" id="graphModeAll">Toutes interactions</button>
         <button type="button" class="mode" data-graph="rt" id="graphModeRt">RT</button>
-        <a id="analysesLink" class="mode mode-link" href="../analyses/ebola.html" title="Analyses du corpus affiché">Analyses</a>
+        <button type="button" class="mode mode-analyses" data-mode="analyses" id="analysesModeBtn" title="Lexique distinctif des espaces">Analyses</button>
+        <a id="analysesLink" class="mode mode-link" href="../analyses/ebola.html" title="Page analyses complète (nouvel onglet)" target="_blank" rel="noopener noreferrer">↗</a>
         <a id="fluxLink" class="mode mode-link" href="../flux-continu/?corpus=ebola" title="Flux continu (fenêtre 3j · FA2)">Flux continu</a>
       </div>
     </div>
   </nav>
+  <div id="hashFilterBar" aria-label="Filtre hashtag-clé">
+    <div class="hf-label">Filtrer / surligner par hashtag distinctif (keyness)</div>
+    <div id="hashChips" class="comm-tags" style="justify-content:center;width:100%"></div>
+  </div>
+  <div id="commSoftLabels" aria-hidden="true"></div>
   <div id="tooltip"></div>
+  <aside id="espaceFiche" aria-live="polite"></aside>
   <aside id="hud">
     <b>Connectome</b>
     <div id="stats">—</div>
@@ -321,14 +422,28 @@ const P = {
 const tip = document.getElementById('tooltip');
 const tabsEl = document.getElementById('tabs');
 const analysesLinkEl = document.getElementById('analysesLink');
+const analysesModeBtn = document.getElementById('analysesModeBtn');
+const softLabelsEl = document.getElementById('commSoftLabels');
+const espaceFicheEl = document.getElementById('espaceFiche');
+const hashFilterBarEl = document.getElementById('hashFilterBar');
+const hashChipsEl = document.getElementById('hashChips');
 let currentCorpusId = null;
 let corporaList = [];
 let graphMode = new URLSearchParams(location.search).get('graph') === 'rt' ? 'rt' : 'all';
 const graphCache = new Map();
 const pubStatsCache = new Map();
+const discourseCache = new Map();
 const inflightFetches = new Map();
 let loadSeq = 0;
 let warmStarted = false;
+let discourseData = null;
+let viewMode = new URLSearchParams(location.search).get('view') === 'analyses' ? 'analyses' : 'graph';
+let selectedCommId = null;
+let activeHashtag = null;
+let nodeColorsBase = null;
+let lineColorsDimmed = false;
+const LIMIT_DEFAULT =
+  'Label opérationnel fondé sur lexique distinctif / structure / échantillons — pas une appartenance partisane des comptes ordinaires.';
 
 function hideBootSplash() {
   bootSplash?.classList.add('hidden');
@@ -617,6 +732,278 @@ let lineGeo = null;
 let lineColorsBase = null;
 let pointsMesh = null;
 let graphData = null;
+
+function escapeHtml(s) {
+  return String(s || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function discourseFor(commId) {
+  if (!discourseData?.communities) return null;
+  return discourseData.communities[String(commId)] || null;
+}
+
+function setViewMode(mode, { syncUrl = true } = {}) {
+  viewMode = mode === 'analyses' ? 'analyses' : 'graph';
+  analysesModeBtn?.classList.toggle('active', viewMode === 'analyses');
+  if (viewMode === 'analyses') {
+    hashFilterBarEl?.classList.add('open');
+    renderHashChips();
+    if (selectedCommId != null) openEspaceFiche(selectedCommId);
+  } else {
+    hashFilterBarEl?.classList.remove('open');
+    clearHashtagFilter();
+    espaceFicheEl?.classList.remove('open');
+  }
+  if (syncUrl && currentCorpusId) syncCorpusUrl(currentCorpusId);
+}
+
+function renderHashChips(preferredCommId = selectedCommId) {
+  if (!hashChipsEl) return;
+  hashChipsEl.innerHTML = '';
+  const tags = [];
+  const seen = new Set();
+  const pushTag = (tag, g2) => {
+    const t = String(tag || '').toLowerCase();
+    if (!t || seen.has(t)) return;
+    seen.add(t);
+    tags.push({ tag: t, g2: g2 || 0 });
+  };
+  if (preferredCommId != null) {
+    const d = discourseFor(preferredCommId);
+    for (const h of d?.key_hashtags || []) pushTag(h.tag, h.g2);
+    if (!(d?.key_hashtags || []).length) {
+      for (const w of (d?.key_words || []).slice(0, 4)) pushTag(w.word, w.g2);
+    }
+  }
+  if (tags.length < 8 && discourseData?.communities) {
+    for (const d of Object.values(discourseData.communities)) {
+      for (const h of (d.key_hashtags || []).slice(0, 3)) pushTag(h.tag, h.g2);
+    }
+  }
+  tags.sort((a, b) => b.g2 - a.g2);
+  const clear = document.createElement('button');
+  clear.type = 'button';
+  clear.className = 'tag-chip' + (!activeHashtag ? ' active' : '');
+  clear.textContent = 'Tous';
+  clear.addEventListener('click', () => setHashtagFilter(null));
+  hashChipsEl.appendChild(clear);
+  for (const t of tags.slice(0, 12)) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'tag-chip' + (activeHashtag === t.tag ? ' active' : '');
+    b.textContent = `#${t.tag}`;
+    b.title = `score ${t.g2}`;
+    b.addEventListener('click', () => setHashtagFilter(t.tag));
+    hashChipsEl.appendChild(b);
+  }
+}
+
+function accountsForHashtag(tag) {
+  const t = String(tag || '').toLowerCase();
+  return new Set((discourseData?.tag_accounts?.[t] || []).map((s) => String(s).toLowerCase()));
+}
+
+function communitiesForHashtag(tag) {
+  const t = String(tag || '').toLowerCase();
+  return new Set((discourseData?.tag_communities?.[t] || []).map(Number));
+}
+
+function clearHashtagFilter() {
+  activeHashtag = null;
+  applyNodeHighlight(null);
+  if (viewMode === 'analyses') renderHashChips();
+}
+
+function setHashtagFilter(tag) {
+  activeHashtag = tag ? String(tag).toLowerCase() : null;
+  if (!activeHashtag) applyNodeHighlight(null);
+  else {
+    applyNodeHighlight({
+      accounts: accountsForHashtag(activeHashtag),
+      comms: communitiesForHashtag(activeHashtag),
+    });
+  }
+  renderHashChips();
+  if (viewMode !== 'analyses') setViewMode('analyses');
+}
+
+function applyNodeHighlight(filter) {
+  if (!pointsMesh || !nodeColorsBase || !graphData?.nodes) return;
+  const col = pointsMesh.geometry.attributes.color.array;
+  const base = nodeColorsBase;
+  const n = graphData.nodes.length;
+  if (!filter) {
+    col.set(base);
+    pointsMesh.geometry.attributes.color.needsUpdate = true;
+    if (lineMat && lineColorsBase) applyLinkLight(P.linkLight);
+    lineColorsDimmed = false;
+    return;
+  }
+  const { accounts, comms } = filter;
+  for (let i = 0; i < n; i++) {
+    const nd = graphData.nodes[i];
+    const sn = String(nd.l || '').toLowerCase().replace(/^@/, '');
+    const on = accounts.size ? accounts.has(sn) : comms.has(Number(nd.com));
+    const k = on ? 1.35 : 0.08;
+    col[i * 3] = base[i * 3] * k;
+    col[i * 3 + 1] = base[i * 3 + 1] * k;
+    col[i * 3 + 2] = base[i * 3 + 2] * k;
+  }
+  pointsMesh.geometry.attributes.color.needsUpdate = true;
+  if (lineMat && lineColorsBase && lineGeo) {
+    const lc = lineGeo.attributes.color.array;
+    const dim = 0.18;
+    for (let i = 0; i < lineColorsBase.length; i++) lc[i] = lineColorsBase[i] * P.linkLight * dim;
+    lineGeo.attributes.color.needsUpdate = true;
+    lineMat.opacity = P.linkLight * P.opacity * 0.45;
+    lineColorsDimmed = true;
+  }
+}
+
+function openEspaceFiche(commId) {
+  const d = discourseFor(commId);
+  if (!espaceFicheEl || !d) {
+    espaceFicheEl?.classList.remove('open');
+    return;
+  }
+  selectedCommId = Number(commId);
+  const tagsSrc = (d.key_hashtags || []).length
+    ? d.key_hashtags
+    : (d.key_words || []).map((w) => ({ tag: w.word, g2: w.g2 }));
+  const tags = tagsSrc
+    .slice(0, 8)
+    .map((h) => `<button type="button" class="tag-chip${activeHashtag === h.tag ? ' active' : ''}" data-tag="${h.tag}" title="score ${h.g2}">#${h.tag}</button>`)
+    .join('');
+  const words = (d.key_words || [])
+    .slice(0, 8)
+    .map((w) => `<span class="tag-chip" title="score ${w.g2}">${w.word}</span>`)
+    .join('');
+  const themeEntries = Object.entries(d.themes || {}).sort((a, b) => b[1] - a[1]);
+  const maxT = themeEntries.length ? themeEntries[0][1] : 1;
+  const themesHtml = themeEntries.length
+    ? `<h4>Thèmes (termes distinctifs)</h4><div class="themes">${themeEntries
+        .map(
+          ([k, v]) =>
+            `<div class="theme-row"><div><div style="margin-bottom:2px;color:#9aa3b0">${escapeHtml(k)}</div><div class="theme-bar"><i style="width:${Math.max(2, (100 * v) / maxT)}%"></i></div></div><div class="theme-pct">${v}</div></div>`
+        )
+        .join('')}</div>`
+    : '';
+  const samplesHtml = (d.samples || [])
+    .slice(0, 5)
+    .map(
+      (s) =>
+        `<div class="sample"><div class="meta">@${escapeHtml(s.sn)}${s.at ? ` · ${escapeHtml(s.at)}` : ''}${s.tag ? ` · #${escapeHtml(s.tag)}` : ''}</div><div class="txt">${escapeHtml(s.text)}</div></div>`
+    )
+    .join('');
+  const limit = discourseData?.meta?.limit || LIMIT_DEFAULT;
+  const analysesHref = analysesLinkEl?.getAttribute('href') || '../analyses/';
+  espaceFicheEl.innerHTML = `
+    <div class="fiche-head">
+      <div class="fiche-title">C${d.id} — ${escapeHtml(d.designation_short || d.designation)}</div>
+      <button type="button" class="fiche-close" aria-label="Fermer">×</button>
+    </div>
+    <div class="fiche-just">${escapeHtml(d.justification || '')}</div>
+    <h4>Hashtags / signaux distinctifs</h4>
+    <div class="lexique" id="ficheTags">${tags || '—'}</div>
+    <h4>Mots-clés distinctifs</h4>
+    <div class="lexique">${words || '—'}</div>
+    ${themesHtml}
+    <h4>Extraits (non-RT)</h4>
+    ${samplesHtml || '<div class="sample"><div class="txt">Aucun échantillon</div></div>'}
+    <a class="fiche-ext" href="${analysesHref}" target="_blank" rel="noopener noreferrer">Ouvrir les analyses complètes ↗</a>
+    <div class="limit">${escapeHtml(limit)}</div>`;
+  espaceFicheEl.classList.add('open');
+  espaceFicheEl.querySelector('.fiche-close')?.addEventListener('click', () => {
+    espaceFicheEl.classList.remove('open');
+  });
+  espaceFicheEl.querySelectorAll('#ficheTags .tag-chip').forEach((btn) => {
+    btn.addEventListener('click', () => setHashtagFilter(btn.dataset.tag));
+  });
+  document.querySelectorAll('#commList .comm-row').forEach((row) => {
+    row.classList.toggle('selected', Number(row.dataset.commId) === selectedCommId);
+  });
+  if (viewMode === 'analyses') renderHashChips(selectedCommId);
+}
+
+function rebuildCommSoftLabels(data) {
+  if (!softLabelsEl) return;
+  softLabelsEl.innerHTML = '';
+  if (!data?.nodes?.length || !discourseData?.communities) return;
+  const byCom = new Map();
+  for (const n of data.nodes) {
+    const cid = n.com;
+    if (cid == null || cid < 0) continue;
+    if (!discourseData.communities[String(cid)]) continue;
+    if (!discourseFor(cid)?.designation_short) continue;
+    if (!byCom.has(cid)) byCom.set(cid, { sx: 0, sy: 0, w: 0 });
+    const b = byCom.get(cid);
+    const w = Math.sqrt(n.deg || 1);
+    b.sx += n.x * w;
+    b.sy += n.y * w;
+    b.w += w;
+  }
+  for (const [cid, b] of byCom) {
+    if (b.w <= 0) continue;
+    const d = discourseFor(cid);
+    if (!d) continue;
+    const el = document.createElement('div');
+    el.className = 'comm-soft-label';
+    el.dataset.x = String(b.sx / b.w);
+    el.dataset.y = String(b.sy / b.w);
+    el.textContent = d.designation_short || d.designation;
+    el.style.color = rgbCss(
+      data.nodes.find((n) => n.com === cid)?.c || [180, 180, 180],
+      0.62
+    );
+    softLabelsEl.appendChild(el);
+  }
+  projectCommSoftLabels();
+}
+
+function projectCommSoftLabels() {
+  if (!softLabelsEl?.children.length) return;
+  for (const el of softLabelsEl.children) {
+    const x = +el.dataset.x;
+    const y = +el.dataset.y;
+    _proj.set(x, y, 0).project(camera);
+    if (_proj.z > 1) {
+      el.style.display = 'none';
+      continue;
+    }
+    const cx = (_proj.x * 0.5 + 0.5) * innerWidth;
+    const cy = (-_proj.y * 0.5 + 0.5) * innerHeight;
+    if (cx < -40 || cx > innerWidth + 40 || cy < -20 || cy > innerHeight + 20) {
+      el.style.display = 'none';
+      continue;
+    }
+    el.style.display = 'block';
+    el.style.left = `${cx}px`;
+    el.style.top = `${cy}px`;
+  }
+}
+
+async function ensureDiscourse(corpusId) {
+  if (discourseCache.has(corpusId)) return discourseCache.get(corpusId);
+  try {
+    const url = new URL(`./data/${corpusId}/discourse.json`, import.meta.url);
+    url.searchParams.set('t', String(Date.now()));
+    const r = await fetch(url);
+    if (!r.ok) {
+      discourseCache.set(corpusId, null);
+      return null;
+    }
+    const disc = await r.json();
+    discourseCache.set(corpusId, disc);
+    return disc;
+  } catch (_) {
+    discourseCache.set(corpusId, null);
+    return null;
+  }
+}
 let labelItems = [];
 let labelItemsBySize = [];
 const _proj = new THREE.Vector3();
@@ -793,15 +1180,17 @@ function analysesPageUrl(corpusId) {
 }
 
 function updateGraphModeButtons() {
-  document.querySelectorAll('#graphMode .mode').forEach((b) => {
-    b.classList.toggle('active', b.dataset.graph === graphMode);
+  document.querySelectorAll('#graphMode button.mode[data-graph]').forEach((b) => {
+    b.classList.toggle('active', b.dataset.graph === graphMode && viewMode !== 'analyses');
   });
+  analysesModeBtn?.classList.toggle('active', viewMode === 'analyses');
 }
 
 function setGraphMode(mode) {
   if (mode !== 'rt' && mode !== 'all') return;
-  if (mode === graphMode) return;
+  if (mode === graphMode && viewMode === 'graph') return;
   graphMode = mode;
+  if (viewMode === 'analyses') setViewMode('graph', { syncUrl: false });
   updateGraphModeButtons();
   const corp = corporaList.find((c) => c.id === currentCorpusId) || corporaList[0];
   if (corp) loadCorpus(corp);
@@ -811,13 +1200,17 @@ function syncCorpusUrl(corpusId) {
   if (!corpusId) return;
   const url = new URL(location.href);
   const nextGraph = graphMode === 'rt' ? 'rt' : null;
+  const nextView = viewMode === 'analyses' ? 'analyses' : null;
   const sameCorpus = url.searchParams.get('corpus') === corpusId;
   const sameGraph = (url.searchParams.get('graph') || null) === nextGraph;
-  if (sameCorpus && sameGraph) return;
+  const sameView = (url.searchParams.get('view') || null) === nextView;
+  if (sameCorpus && sameGraph && sameView) return;
   url.searchParams.set('corpus', corpusId);
   if (nextGraph) url.searchParams.set('graph', nextGraph);
   else url.searchParams.delete('graph');
-  history.replaceState({ corpus: corpusId, graph: graphMode }, '', url);
+  if (nextView) url.searchParams.set('view', nextView);
+  else url.searchParams.delete('view');
+  history.replaceState({ corpus: corpusId, graph: graphMode, view: viewMode }, '', url);
 }
 
 function resolveCorpus(corpusParam) {
@@ -929,15 +1322,18 @@ function renderCommPanel(data) {
   const rtMode = data?.meta?.interactions === 'rt';
   const byPub = new Map((stats?.communities || []).map((c) => [Number(c.id), c]));
   const scrollHint = rows.length > 5 ? ' · défiler pour les suivantes' : '';
+  const discHint = discourseData ? ' · clic = fiche espace' : '';
   const pubHint = stats ? (rtMode ? ' · part = volume de RT' : ' · part = volume de publication') : '';
   const barTitle = rtMode ? 'Part du volume de RT' : 'Part du volume de publication du corpus';
-  sub.textContent = `${rows.length} communauté${rows.length > 1 ? 's' : ''} · ${coverage.toLocaleString('fr-FR')} % des nœuds · comptes par degré pondéré${pubHint}${scrollHint}`;
+  sub.textContent = `${rows.length} communauté${rows.length > 1 ? 's' : ''} · ${coverage.toLocaleString('fr-FR')} % des nœuds${discHint}${pubHint}${scrollHint}`;
   list.innerHTML = '';
   for (const row of rows) {
     const el = document.createElement('div');
-    el.className = 'comm-row';
+    el.className = 'comm-row' + (selectedCommId === Number(row.id) ? ' selected' : '');
+    el.dataset.commId = String(row.id);
+    const disc = discourseFor(row.id);
     const handles = (row.accounts || [])
-      .slice(0, 6)
+      .slice(0, 5)
       .map((a) => {
         const raw = String(a.l || '').replace(/^@/, '');
         if (!raw) return '';
@@ -955,13 +1351,54 @@ function renderCommPanel(data) {
     const bar = pubPct != null
       ? `<div class="comm-pubbar" title="${barTitle}"><i style="width:${Math.max(1, Math.min(100, pubPct))}%"></i></div>`
       : '';
+    const desig = disc
+      ? `<div class="comm-desig" title="${escapeHtml(disc.designation)}">${escapeHtml(disc.designation_short || disc.designation)}</div>`
+      : '';
+    const chipSrc = (disc?.key_hashtags || []).length
+      ? disc.key_hashtags
+      : (disc?.key_words || []).slice(0, 4).map((w) => ({ tag: w.word, g2: w.g2 }));
+    const tagHtml = chipSrc?.length
+      ? `<div class="comm-tags">${chipSrc
+          .slice(0, 4)
+          .map(
+            (h) =>
+              `<button type="button" class="tag-chip${activeHashtag === h.tag ? ' active' : ''}" data-tag="${h.tag}" title="score ${h.g2}">#${h.tag}</button>`
+          )
+          .join('')}</div>`
+      : '';
+    const sizeBit = disc
+      ? `<div class="comm-disc-size">${disc.n_users ? `${Number(disc.n_users).toLocaleString('fr-FR')} comptes` : ''}${
+          disc.n_original_tweets
+            ? ` · ${Number(disc.n_original_tweets).toLocaleString('fr-FR')} pubs hors RT`
+            : ''
+        }</div>`
+      : '';
     el.innerHTML = `
       <div class="comm-swatch" style="background:${row.color}"></div>
       <div>
         <div class="comm-head"><span>C${row.id}</span><span class="comm-metrics">${row.pct}% nœuds${pubBit}</span></div>
+        ${desig}
+        ${tagHtml}
         <div class="comm-accounts">${handles || '—'}</div>
+        ${sizeBit}
         ${bar}
       </div>`;
+    el.addEventListener('click', (ev) => {
+      if (ev.target.closest('a.handle')) return;
+      if (ev.target.closest('.tag-chip')) return;
+      selectedCommId = Number(row.id);
+      openEspaceFiche(row.id);
+      if (viewMode !== 'analyses') setViewMode('analyses');
+      else renderCommPanel(graphData);
+    });
+    el.querySelectorAll('.tag-chip').forEach((btn) => {
+      btn.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        selectedCommId = Number(row.id);
+        setHashtagFilter(btn.dataset.tag);
+        openEspaceFiche(row.id);
+      });
+    });
     list.appendChild(el);
   }
 }
@@ -1012,12 +1449,22 @@ function applyLinkLight(level = P.linkLight) {
   const slider = document.getElementById('linkLight');
   if (slider && slider.value !== String(P.linkLight)) slider.value = String(P.linkLight);
   if (!lineGeo || !lineColorsBase || !lineMat) return;
+  if (lineColorsDimmed && activeHashtag) {
+    const col = lineGeo.attributes.color.array;
+    const dim = 0.18;
+    for (let i = 0; i < lineColorsBase.length; i++) col[i] = lineColorsBase[i] * P.linkLight * dim;
+    lineGeo.attributes.color.needsUpdate = true;
+    lineMat.opacity = P.linkLight * P.opacity * 0.45;
+    lineMat.visible = P.linkLight > 0.0005;
+    return;
+  }
   const col = lineGeo.attributes.color.array;
   const k = P.linkLight;
   for (let i = 0; i < lineColorsBase.length; i++) col[i] = lineColorsBase[i] * k;
   lineGeo.attributes.color.needsUpdate = true;
   lineMat.opacity = k * P.opacity;
   lineMat.visible = k > 0.0005;
+  lineColorsDimmed = false;
 }
 
 async function buildGraph(data, { onProgress, isCurrent } = {}) {
@@ -1167,6 +1614,8 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   pointsMesh = new THREE.Points(pGeo, pMat);
   pointsMesh.frustumCulled = false;
   scene.add(pointsMesh);
+  nodeColorsBase = new Float32Array(nCol);
+  lineColorsDimmed = false;
 
   const modeLabel = data.meta?.interactions === 'rt' ? 'RT' : 'toutes interactions';
   document.getElementById('stats').textContent =
@@ -1174,6 +1623,13 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   fitGraphToView(nodes);
   renderCommPanel(data);
   rebuildLabels();
+  rebuildCommSoftLabels(data);
+  if (activeHashtag) setHashtagFilter(activeHashtag);
+  else applyNodeHighlight(null);
+  if (viewMode === 'analyses') {
+    hashFilterBarEl?.classList.add('open');
+    renderHashChips();
+  }
   return true;
 }
 
@@ -1606,12 +2062,16 @@ exportBtn.addEventListener('click', () => { exportPng(); });
   controls.update();
   composer.render();
   projectLabels();
+  projectCommSoftLabels();
 })();
 
 async function loadCorpus(corp) {
   const seq = ++loadSeq;
   const isCurrent = () => seq === loadSeq;
   currentCorpusId = corp.id;
+  selectedCommId = null;
+  activeHashtag = null;
+  espaceFicheEl?.classList.remove('open');
   updateGraphModeButtons();
   syncCorpusUrl(corp.id);
   hideBootSplash();
@@ -1631,6 +2091,7 @@ async function loadCorpus(corp) {
   prefetchAnalysesAssets(corp.id);
   try {
     const pubsPromise = graphMode === 'rt' ? Promise.resolve(null) : ensurePubStats(corp.id);
+    const discPromise = ensureDiscourse(corp.id);
     const data = await ensureGraphData(corp, graphMode, {
       onProgress: (p, received, total) => {
         if (!isCurrent()) return;
@@ -1653,11 +2114,16 @@ async function loadCorpus(corp) {
     });
     if (!isCurrent()) return;
 
-    const pubs = await pubsPromise;
+    const [pubs, disc] = await Promise.all([pubsPromise, discPromise]);
     if (!isCurrent()) return;
+    discourseData = disc;
     if (pubs) {
       data.meta = data.meta || {};
       data.meta.pubStats = pubs;
+    }
+    if (disc) {
+      data.meta = data.meta || {};
+      data.meta.discourse = disc;
     }
     setCommLoading(false);
 
@@ -1773,6 +2239,9 @@ async function boot() {
     { id: 'hantavirus', label: 'Hantavirus', connectomeData: './data/hantavirus/graph.json' },
     { id: 'mpox', label: 'Mpox', connectomeData: './data/mpox/graph.json' },
     { id: 'macron_nucleaire', label: 'Macron nucléaire', connectomeData: './data/macron_nucleaire/graph.json' },
+    { id: 'hmpv', label: 'HMPV · 2025', connectomeData: './data/hmpv/graph.json' },
+    { id: 'hmpv_fr', label: 'HMPV FR · 2025', connectomeData: './data/hmpv_fr/graph.json' },
+    { id: 'canicule', label: 'Canicule · mai–juin 2026', connectomeData: './data/canicule/graph.json' },
   ];
   try {
     const m = await fetch(new URL('./manifest.json', import.meta.url)).then((r) => r.json());
@@ -1815,10 +2284,15 @@ async function boot() {
     }, { passive: true });
     tabsEl.insertBefore(b, health3);
   }
-  // Deep-link: ?corpus=ebola&graph=rt
+  // Deep-link: ?corpus=ebola&graph=rt&view=analyses
   updateGraphModeButtons();
   document.querySelectorAll('#graphMode button.mode[data-graph]').forEach((b) => {
     b.addEventListener('click', () => setGraphMode(b.dataset.graph));
+  });
+  analysesModeBtn?.addEventListener('click', () => {
+    if (viewMode === 'analyses') setViewMode('graph');
+    else setViewMode('analyses');
+    updateGraphModeButtons();
   });
   analysesLinkEl?.addEventListener('pointerenter', () => {
     prefetchAnalysesAssets(currentCorpusId);
@@ -1827,17 +2301,25 @@ async function boot() {
   // Kick fetch immediately (overlaps with UI wiring); then render.
   const kick = ensureGraphData(start, graphMode).catch(() => null);
   ensurePubStats(start.id).catch(() => null);
+  ensureDiscourse(start.id).catch(() => null);
   await kick;
   await loadCorpus(start);
+  if (viewMode === 'analyses') {
+    setViewMode('analyses');
+    updateGraphModeButtons();
+  }
 }
 
 window.addEventListener('popstate', () => {
   if (!corporaList.length) return;
   const params = new URLSearchParams(location.search);
   const nextMode = params.get('graph') === 'rt' ? 'rt' : 'all';
+  const nextView = params.get('view') === 'analyses' ? 'analyses' : 'graph';
   const corp = resolveCorpus(params.get('corpus')) || corporaList[0];
   const modeChanged = nextMode !== graphMode;
+  const viewChanged = nextView !== viewMode;
   graphMode = nextMode;
+  if (viewChanged) setViewMode(nextView, { syncUrl: false });
   updateGraphModeButtons();
   if (modeChanged || corp.id !== currentCorpusId) loadCorpus(corp);
 });
