@@ -49,6 +49,9 @@ CSV_BY_CORPUS: dict[str, Path] = {
     ),
 }
 
+# Canicule : partition connectome ≠ profils intercomm → script dédié
+#   py -3 build_discourse_canicule.py
+
 
 def short_label(des: str, max_len: int = 48) -> str:
     s = re.sub(r"\s+", " ", (des or "").strip())

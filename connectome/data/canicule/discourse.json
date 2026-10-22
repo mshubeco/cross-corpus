@@ -3,166 +3,1701 @@
     "cluster": "Canicule · mai–juin 2026",
     "corpus": "canicule",
     "window": "2026-05-20 → 2026-06-29",
-    "source": "graph communities90 (hubs)",
-    "keyness": "désignation hub (profil lexique absent)",
+    "source": "graph.json communities90 + corpus_canicule CSV (keyness z)",
+    "keyness": "z log-odds pondéré vs autres pôles du connectome (Monroe et al. 2008)",
     "limit": "Label opérationnel fondé sur lexique distinctif (z) / structure / échantillons — pas une appartenance partisane des comptes ordinaires."
   },
   "communities": {
     "10": {
       "id": "10",
-      "designation": "espace @cowboywale",
-      "designation_short": "espace @cowboywale",
-      "justification": "C10 · hub @cowboywale. Profil lexique non enrichi pour ce pôle.",
-      "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "designation": "Divertissement / télé-réalité",
+      "designation_short": "Divertissement / télé-réalité",
+      "justification": "C10 · hub @cowboywale. Lexique distinctif (z log-odds vs autres pôles connectome) : #secretstory, #wow, #stop, #poupettekenza. 62,260 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "secretstory",
+          "g2": 37.62
+        },
+        {
+          "tag": "wow",
+          "g2": 17.97
+        },
+        {
+          "tag": "stop",
+          "g2": 12.61
+        },
+        {
+          "tag": "poupettekenza",
+          "g2": 11.8
+        },
+        {
+          "tag": "elle",
+          "g2": 10.24
+        },
+        {
+          "tag": "marhai",
+          "g2": 9.57
+        },
+        {
+          "tag": "merci",
+          "g2": 9.52
+        },
+        {
+          "tag": "folle",
+          "g2": 8.94
+        }
+      ],
+      "key_words": [
+        {
+          "word": "tellement",
+          "g2": 67.08
+        },
+        {
+          "word": "vais",
+          "g2": 57.15
+        },
+        {
+          "word": "wow",
+          "g2": 48.01
+        },
+        {
+          "word": "taff",
+          "g2": 47.47
+        },
+        {
+          "word": "trop",
+          "g2": 45.63
+        },
+        {
+          "word": "dormir",
+          "g2": 44.6
+        },
+        {
+          "word": "peux",
+          "g2": 44.55
+        },
+        {
+          "word": "pitié",
+          "g2": 44.5
+        }
+      ],
+      "themes": {
+        "tellement": 100.0,
+        "vais": 85.2,
+        "wow": 71.6,
+        "taff": 70.8,
+        "trop": 68.0
+      },
+      "samples": [
+        {
+          "sn": "nessutaro",
+          "text": "@yigaxe_v2 Continue comme ça et on va se prendre une clim",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "springfield_945",
+          "text": "Skima la bonne clim 🤣 ça c’est mon gars !! https://t.co/MpAqSsO3gS",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "kr93200",
+          "text": "@Densha004 La fan base est beaucoup trop solide là une LDC on peut pas rêver mieux on aura fini le jeu et on mettra une clim à tout le monde",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "arobasq",
+          "text": "Asteartea 19-5-26 #Prairial1er 🗓 Républicain jour de la #Luzerne reine des plantes fourragères grande résistance à la sécheresse richesse en protéines, vitamines et sels minéraux. 🏥 fatigue, asthénie, anémie, ostéoporose,spasmophilie, excès de cholestérol , asthme 💨. https://t.co",
+          "at": "2026-05-20",
+          "tag": "luzerne"
+        },
+        {
+          "sn": "lefunourien",
+          "text": "À partir de vendredi la température mdr. Les débardeurs que je vais lâcher",
+          "at": "2026-05-20",
+          "tag": ""
+        }
+      ],
       "n_users": 93154,
-      "n_original_tweets": 9,
+      "n_original_tweets": 62260,
       "color": "#ff497c",
       "hub": "cowboywale"
     },
     "0": {
       "id": "0",
-      "designation": "espace @sirafuera",
-      "designation_short": "espace @sirafuera",
-      "justification": "C0 · hub @sirafuera. Profil lexique non enrichi pour ce pôle.",
-      "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "designation": "Scepticisme climatique / complot",
+      "designation_short": "Scepticisme climatique / complot",
+      "justification": "C0 · hub @sirafuera. Lexique distinctif (z log-odds vs autres pôles connectome) : #ggrmc, #chemtrails, #europe1, #humour. 57,903 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "ggrmc",
+          "g2": 18.11
+        },
+        {
+          "tag": "chemtrails",
+          "g2": 17.97
+        },
+        {
+          "tag": "europe1",
+          "g2": 15.58
+        },
+        {
+          "tag": "humour",
+          "g2": 14.67
+        },
+        {
+          "tag": "barbut",
+          "g2": 13.98
+        },
+        {
+          "tag": "hdpros",
+          "g2": 13.42
+        },
+        {
+          "tag": "climatisation",
+          "g2": 11.67
+        },
+        {
+          "tag": "haarp",
+          "g2": 11.52
+        }
+      ],
+      "key_words": [
+        {
+          "word": "milliards",
+          "g2": 32.65
+        },
+        {
+          "word": "euthanasie",
+          "g2": 31.8
+        },
+        {
+          "word": "hôpitaux",
+          "g2": 31.51
+        },
+        {
+          "word": "français",
+          "g2": 29.01
+        },
+        {
+          "word": "argent",
+          "g2": 27.23
+        },
+        {
+          "word": "chemtrails",
+          "g2": 26.12
+        },
+        {
+          "word": "haarp",
+          "g2": 25.89
+        },
+        {
+          "word": "état",
+          "g2": 25.09
+        }
+      ],
+      "themes": {
+        "milliards": 100.0,
+        "euthanasie": 97.4,
+        "hôpitaux": 96.5,
+        "français": 88.9,
+        "argent": 83.4
+      },
+      "samples": [
+        {
+          "sn": "machaondetroie",
+          "text": "@silvano_trotta Chez moi il a neigé deux fois cette semaine, plu tous les jours depuis 15 jours. Il fait 2 ° le matin. La température ne dépasse pas 12° en journée. Les abeilles ne sortent pas des ruches. un mois de mai pourri. mais on va nous raconter que les nappes sont vides. ",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "abribus1er",
+          "text": "@silvano_trotta Le climat la secheresse bla bla depuis FIP paris année 75. Et comme leurs séquences durait 15mn on bouffait ça xxxx jours. Mine de rien le cerveau en prend des coup sur le moral. Tout ce qu' ils annonçaient en prévisions se sont averées inexactes Les Pol Pot de l'",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "belislemarc",
+          "text": "@LpdlcRamirez C’était juste aujourd’hui en Mauricie qu’il a fait chaud et humide ce n’est pas ma température préférée disons que j’aime mieux les températures normales pour l’été mais effectivement le poêle à bois et le café Chemineaud je m’en ennuie déjà !! Bonne soirée Carlos",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "dievouchkalau",
+          "text": "@CeJour_Histoire @FrenchyTerry Visité en 1999, en 2003 et en 2021 !",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "manu52498676",
+          "text": "@piquantesweetie La chaleur monte d'un cran mais pas sûr que cela soit du à la météo... Beau mercredi Sweetie 😘",
+          "at": "2026-05-20",
+          "tag": ""
+        }
+      ],
       "n_users": 60894,
-      "n_original_tweets": 420986,
+      "n_original_tweets": 57903,
       "color": "#73c000",
       "hub": "sirafuera"
     },
     "14": {
       "id": "14",
-      "designation": "espace @mickacorreia",
-      "designation_short": "espace @mickacorreia",
-      "justification": "C14 · hub @mickacorreia. Profil lexique non enrichi pour ce pôle.",
-      "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "designation": "Politique LFI × canicule",
+      "designation_short": "Politique LFI × canicule",
+      "justification": "C14 · hub @mickacorreia. Lexique distinctif (z log-odds vs autres pôles connectome) : #lfi, #canicule, #quotidien, #école. 39,317 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "lfi",
+          "g2": 18.57
+        },
+        {
+          "tag": "canicule",
+          "g2": 17.19
+        },
+        {
+          "tag": "quotidien",
+          "g2": 15.99
+        },
+        {
+          "tag": "école",
+          "g2": 12.87
+        },
+        {
+          "tag": "melenchon2027",
+          "g2": 12.17
+        },
+        {
+          "tag": "tiktok",
+          "g2": 11.62
+        },
+        {
+          "tag": "macron",
+          "g2": 10.53
+        },
+        {
+          "tag": "sciences",
+          "g2": 9.94
+        }
+      ],
+      "key_words": [
+        {
+          "word": "lfi",
+          "g2": 36.91
+        },
+        {
+          "word": "arnault",
+          "g2": 34.42
+        },
+        {
+          "word": "bateau",
+          "g2": 27.43
+        },
+        {
+          "word": "mélenchon",
+          "g2": 24.4
+        },
+        {
+          "word": "bernard",
+          "g2": 23.0
+        },
+        {
+          "word": "yann",
+          "g2": 22.57
+        },
+        {
+          "word": "droite",
+          "g2": 21.08
+        },
+        {
+          "word": "abris",
+          "g2": 20.49
+        }
+      ],
+      "themes": {
+        "lfi": 100.0,
+        "arnault": 93.3,
+        "bateau": 74.3,
+        "mélenchon": 66.1,
+        "bernard": 62.3
+      },
+      "samples": [
+        {
+          "sn": "cavsnationfra",
+          "text": "@JulienSut On a pris pire clim durant ces playoffs, je pense que ca ira mentalement.",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "zaboutine",
+          "text": "@leoleon2leau J'ai vécu les nouvelles ram actuelles, y'avait la clim c'était trop bien mais ça a duré 5 mois",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "frankhammam",
+          "text": "@corentin_keller @AnnieVersaire4 @Clemence_Guette Jacques Chirac s’est publiquement opposé à toute référence explicite aux racines chrétiennes dans la Constitution européenne au nom de la laïcité française. Sources : EU Observer 2003 Archives officielles de l’Élysée Débat sur le ",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "frankhammam",
+          "text": "@grok @jere0111 @AnnieVersaire4 @Clemence_Guette La question a été mal posé à Grok @grok Jacques Chirac s’est publiquement opposé à toute référence explicite aux racines chrétiennes dans la Constitution européenne au nom de la laïcité française. Sources : EU Observer 2003 Archive",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "mistherbe",
+          "text": "Et sans transition… la canicule 💀 https://t.co/eIrbPZ4Wd3",
+          "at": "2026-05-20",
+          "tag": ""
+        }
+      ],
       "n_users": 50447,
-      "n_original_tweets": 34,
+      "n_original_tweets": 39317,
       "color": "#de81ff",
       "hub": "mickacorreia"
     },
     "229": {
       "id": "229",
-      "designation": "espace @maclesggy",
-      "designation_short": "espace @maclesggy",
-      "justification": "C229 · hub @maclesggy. Profil lexique non enrichi pour ce pôle.",
-      "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "designation": "Débat climat / réchauffement",
+      "designation_short": "Débat climat / réchauffement",
+      "justification": "C229 · hub @maclesggy. Lexique distinctif (z log-odds vs autres pôles connectome) : #clim, #rechauffementclimatique, #climatisation, #école. 192,916 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "clim",
+          "g2": 31.98
+        },
+        {
+          "tag": "rechauffementclimatique",
+          "g2": 21.23
+        },
+        {
+          "tag": "climatisation",
+          "g2": 20.79
+        },
+        {
+          "tag": "école",
+          "g2": 20.7
+        },
+        {
+          "tag": "ecole",
+          "g2": 11.37
+        },
+        {
+          "tag": "var",
+          "g2": 11.12
+        },
+        {
+          "tag": "canicule",
+          "g2": 9.8
+        },
+        {
+          "tag": "adaptation",
+          "g2": 8.61
+        }
+      ],
+      "key_words": [
+        {
+          "word": "clim",
+          "g2": 101.7
+        },
+        {
+          "word": "isolation",
+          "g2": 51.0
+        },
+        {
+          "word": "chauffage",
+          "g2": 43.72
+        },
+        {
+          "word": "air",
+          "g2": 42.93
+        },
+        {
+          "word": "extérieur",
+          "g2": 37.32
+        },
+        {
+          "word": "anti",
+          "g2": 32.63
+        },
+        {
+          "word": "problème",
+          "g2": 32.58
+        },
+        {
+          "word": "pac",
+          "g2": 31.98
+        }
+      ],
+      "themes": {
+        "clim": 100.0,
+        "isolation": 50.1,
+        "chauffage": 43.0,
+        "air": 42.2,
+        "extérieur": 36.7
+      },
+      "samples": [
+        {
+          "sn": "cyril_amr",
+          "text": "@Footballogue Ou la plus grosse Clim de l’histoire de la coupe",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "capt_ad_hoc",
+          "text": "@Micode Si vous cherchez un sujet, @leboncoin continue de valider de nombreuses fausses annonces “pro” de bonimenteurs en transition énergétique malgré mes nombreux tickets! Phishing MaPrimeRenov, RGE, isolation, pompe à chaleur, solaire, photovoltaïque à 1€! 👀 my TL, +5ans d’ale",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "michelwelbeck",
+          "text": "@TrashTalk_fr Ça s'est joué à rien d'avoir une giga clim... Mais on sait que dans ce genre de scénario, c'est écrit, c'est pour les Knicks.",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "florencem40355",
+          "text": "Séance Nostalgie 🎂 📷 20 mai 1976, je prenais la pose avant de souffler mes 🕯️🕯️🕯️🕯️ Avec une incontournable tarte aux fraises de saison 😊😋 https://t.co/5eiWIhiFUV",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "roosclaude",
+          "text": "@BzezSensei @MartyMcFly_2nd @DouglasC_11 Moderne, on voit les bas fond et ça craint, mais sinon ils ont lumière chaleur commodités protection, c'est littéralement un monde où des créatures de la taille d'une montagne peuvent se lever et tout rasé sur leurs passages, ou des tomber",
+          "at": "2026-05-20",
+          "tag": ""
+        }
+      ],
       "n_users": 48567,
-      "n_original_tweets": 4,
+      "n_original_tweets": 192916,
       "color": "#ff8000",
       "hub": "maclesggy"
     },
     "546": {
       "id": "546",
-      "designation": "espace @bfmtv",
-      "designation_short": "espace @bfmtv",
-      "justification": "C546 · hub @bfmtv. Profil lexique non enrichi pour ce pôle.",
-      "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "designation": "Relais presse météo",
+      "designation_short": "Relais presse météo",
+      "justification": "C546 · hub @bfmtv. Lexique distinctif (z log-odds vs autres pôles connectome) : #chaleur, #météo, #vigilancerouge, #orages. 53,403 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "chaleur",
+          "g2": 28.88
+        },
+        {
+          "tag": "météo",
+          "g2": 22.3
+        },
+        {
+          "tag": "vigilancerouge",
+          "g2": 19.12
+        },
+        {
+          "tag": "orages",
+          "g2": 16.99
+        },
+        {
+          "tag": "vigilanceorange",
+          "g2": 16.48
+        },
+        {
+          "tag": "meteo",
+          "g2": 15.46
+        },
+        {
+          "tag": "températures",
+          "g2": 13.02
+        },
+        {
+          "tag": "news",
+          "g2": 12.99
+        }
+      ],
+      "key_words": [
+        {
+          "word": "vigilance",
+          "g2": 107.24
+        },
+        {
+          "word": "départements",
+          "g2": 73.03
+        },
+        {
+          "word": "france",
+          "g2": 71.64
+        },
+        {
+          "word": "rouge",
+          "g2": 70.7
+        },
+        {
+          "word": "orange",
+          "g2": 68.5
+        },
+        {
+          "word": "météo",
+          "g2": 66.0
+        },
+        {
+          "word": "juin",
+          "g2": 63.15
+        },
+        {
+          "word": "direct",
+          "g2": 61.73
+        }
+      ],
+      "themes": {
+        "vigilance": 100.0,
+        "départements": 68.1,
+        "france": 66.8,
+        "rouge": 65.9,
+        "orange": 63.9
+      },
+      "samples": [
+        {
+          "sn": "lachainemeteo",
+          "text": "🌡️📈🥵 La #chaleur est confirmée en fin de semaine, elle sera localement exceptionnelle pour une fin mai dans le sud-ouest avec des pointes possibles à 36°C dans les Landes. https://t.co/5W5s3VkEjs",
+          "at": "2026-05-20",
+          "tag": "chaleur"
+        }
+      ],
       "n_users": 22507,
-      "n_original_tweets": 16,
+      "n_original_tweets": 53403,
       "color": "#d2d2d2",
       "hub": "bfmtv"
     },
     "75": {
       "id": "75",
-      "designation": "espace @actufoot_",
-      "designation_short": "espace @actufoot_",
-      "justification": "C75 · hub @actufoot_. Profil lexique non enrichi pour ce pôle.",
-      "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "designation": "Sport (hors sujet canicule)",
+      "designation_short": "Sport (hors sujet canicule)",
+      "justification": "C75 · hub @actufoot_. Lexique distinctif (z log-odds vs autres pôles connectome) : #rolandgarros, #teamom, #fifaworldcup, #frairq. 16,828 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "rolandgarros",
+          "g2": 23.57
+        },
+        {
+          "tag": "teamom",
+          "g2": 16.87
+        },
+        {
+          "tag": "fifaworldcup",
+          "g2": 14.04
+        },
+        {
+          "tag": "frairq",
+          "g2": 13.89
+        },
+        {
+          "tag": "f1",
+          "g2": 13.25
+        },
+        {
+          "tag": "norfra",
+          "g2": 13.13
+        },
+        {
+          "tag": "messi",
+          "g2": 12.17
+        },
+        {
+          "tag": "om",
+          "g2": 11.54
+        }
+      ],
+      "key_words": [
+        {
+          "word": "match",
+          "g2": 57.79
+        },
+        {
+          "word": "can",
+          "g2": 44.8
+        },
+        {
+          "word": "maroc",
+          "g2": 44.44
+        },
+        {
+          "word": "finale",
+          "g2": 44.42
+        },
+        {
+          "word": "joueurs",
+          "g2": 38.1
+        },
+        {
+          "word": "matchs",
+          "g2": 37.02
+        },
+        {
+          "word": "sinner",
+          "g2": 36.62
+        },
+        {
+          "word": "coupe",
+          "g2": 34.57
+        }
+      ],
+      "themes": {
+        "match": 100.0,
+        "can": 77.5,
+        "maroc": 76.9,
+        "finale": 76.9,
+        "joueurs": 65.9
+      },
+      "samples": [
+        {
+          "sn": "chaouidz89",
+          "text": "@Krms95 Le seul trophée du Maroc depuis 1976 https://t.co/fjzzIh7b9E",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "chaouidz89",
+          "text": "@bhl212 Pas une CAN depuis 1976 🤣🤣🤣🫵🏽🫵🏽🫵🏽",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "caiouiou",
+          "text": "@MessiahYaniss16 - Penaldo n’a toujours pas de G/A en phase finale de coupe du monde et ne l’a toujours pas gagné - Mbappé n’a pas la LDC - Arsenal et l’Atletico n’ont pas la LDC - Haaland et Vinicius ont 0 coup franc - Le Paroc a toujours 0 trophée depuis 1976",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "ledunkdecastle",
+          "text": "@TrashTalk_fr C’est juste le coup de clim",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "diamantlugo",
+          "text": "@Cotedivoireoff_ Se sont les toilettes à l’entrée , l’odeur est insupportable. Franchement c’est mal entretenu en plus il fait chaud . Les Clim ne donnent pas , l’aspect général même n’est pas propre . C’est honteux hein , j’ai déjà fait la remarque là-bas .",
+          "at": "2026-05-20",
+          "tag": ""
+        }
+      ],
       "n_users": 18939,
-      "n_original_tweets": 3,
+      "n_original_tweets": 16828,
       "color": "#00bd94",
       "hub": "actufoot_"
     },
     "9": {
       "id": "9",
-      "designation": "espace @lecontempiateur",
-      "designation_short": "espace @lecontempiateur",
-      "justification": "C9 · hub @lecontempiateur. Profil lexique non enrichi pour ce pôle.",
-      "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "designation": "Alertes météo / Maghreb",
+      "designation_short": "Alertes météo / Maghreb",
+      "justification": "C9 · hub @lecontempiateur. Lexique distinctif (z log-odds vs autres pôles connectome) : #maroc, #alertemétéo, #nantes, #france. 813 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "maroc",
+          "g2": 21.04
+        },
+        {
+          "tag": "alertemétéo",
+          "g2": 14.26
+        },
+        {
+          "tag": "nantes",
+          "g2": 13.88
+        },
+        {
+          "tag": "france",
+          "g2": 1.9
+        }
+      ],
+      "key_words": [
+        {
+          "word": "provinces",
+          "g2": 24.49
+        },
+        {
+          "word": "coran",
+          "g2": 21.2
+        },
+        {
+          "word": "combattez",
+          "g2": 16.04
+        },
+        {
+          "word": "orageuses",
+          "g2": 15.85
+        },
+        {
+          "word": "croient",
+          "g2": 15.38
+        },
+        {
+          "word": "maroc",
+          "g2": 14.77
+        },
+        {
+          "word": "averses",
+          "g2": 14.48
+        },
+        {
+          "word": "juifs",
+          "g2": 13.16
+        }
+      ],
+      "themes": {
+        "provinces": 100.0,
+        "coran": 86.6,
+        "combattez": 65.5,
+        "orageuses": 64.7,
+        "croient": 62.8
+      },
+      "samples": [
+        {
+          "sn": "actu_nantes",
+          "text": "Le soleil et la chaleur sont enfin là ! Météo France annonce l'arrivée de l'été. Voici les prévisions à Nantes. https://t.co/3mg2QRCXfk via @actu_nantes",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "ledesk_ma",
+          "text": "Le Maroc entre dans une vague de chaleur jusqu’à la fin de la semaine https://t.co/ganSOckAXy via @LeDesk_ma #Maroc #LeDesk",
+          "at": "2026-05-20",
+          "tag": "ledesk"
+        },
+        {
+          "sn": "medi1tvafrique",
+          "text": "#Inde : plusieurs États en alerte face à une vague de chaleur sévère https://t.co/mYMdG06wX6",
+          "at": "2026-05-21",
+          "tag": "inde"
+        },
+        {
+          "sn": "medi1news",
+          "text": "#Inde : plusieurs États en alerte face à une vague de chaleur sévère https://t.co/rx0NrXmicp",
+          "at": "2026-05-21",
+          "tag": "inde"
+        },
+        {
+          "sn": "adrian_stunt",
+          "text": "Alizée Jacotay ~ c.2000- 2003. https://t.co/3K94ITbylc",
+          "at": "2026-05-21",
+          "tag": ""
+        }
+      ],
       "n_users": 10285,
-      "n_original_tweets": 12,
+      "n_original_tweets": 813,
       "color": "#5a5a5a",
       "hub": "lecontempiateur"
     },
     "161": {
       "id": "161",
-      "designation": "espace @tara__clay",
-      "designation_short": "espace @tara__clay",
-      "justification": "C161 · hub @tara__clay. Profil lexique non enrichi pour ce pôle.",
-      "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "designation": "Twitch / créateurs",
+      "designation_short": "Twitch / créateurs",
+      "justification": "C161 · hub @tara__clay. Lexique distinctif (z log-odds vs autres pôles connectome) : #twitch, #vtuberfr, #infotrafic, #vtuber. 16,490 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "twitch",
+          "g2": 16.06
+        },
+        {
+          "tag": "vtuberfr",
+          "g2": 14.5
+        },
+        {
+          "tag": "infotrafic",
+          "g2": 12.14
+        },
+        {
+          "tag": "vtuber",
+          "g2": 11.65
+        },
+        {
+          "tag": "twitchfr",
+          "g2": 10.66
+        },
+        {
+          "tag": "ps5",
+          "g2": 9.5
+        },
+        {
+          "tag": "live",
+          "g2": 7.79
+        },
+        {
+          "tag": "nintendo",
+          "g2": 7.53
+        }
+      ],
+      "key_words": [
+        {
+          "word": "stream",
+          "g2": 27.88
+        },
+        {
+          "word": "vais",
+          "g2": 24.92
+        },
+        {
+          "word": "courage",
+          "g2": 23.18
+        },
+        {
+          "word": "live",
+          "g2": 19.53
+        },
+        {
+          "word": "trop",
+          "g2": 19.5
+        },
+        {
+          "word": "jeu",
+          "g2": 19.41
+        },
+        {
+          "word": "cause",
+          "g2": 19.12
+        },
+        {
+          "word": "envie",
+          "g2": 18.12
+        }
+      ],
+      "themes": {
+        "stream": 100.0,
+        "vais": 89.4,
+        "courage": 83.1,
+        "live": 70.1,
+        "trop": 69.9
+      },
+      "samples": [
+        {
+          "sn": "mizuenergia",
+          "text": "@speedygonzesse J'aimerais bien mais problème : je ne supporte pas la chaleur et je n'ai pas de moyen de locomotion (pas les moyen) :')",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "mewaz007",
+          "text": "@ahl9 Coucou mister, oui on va passer de la pluie à la canicule 🤣 allez courage 💪 https://t.co/aoct18naDa",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "kc_evoo",
+          "text": "@nocti218 Tellement ! Même la sensation de chaleur/été est trop bien représenté !",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "paulbrousseturf",
+          "text": "@remace07 @Dreon_Aigri @DiegoFacchetti @slwhrr Exact. D'où les guillemets (on ne l'écrit d'ailleurs pas de la même façon puisqu'il s'agit plutôt d'une coordonnée). Une température négative non plus, ça n'existe pas. Et j'ai pas dit que la racine carrée d'un nombre avait du sens m",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "ahl9",
+          "text": "@JulianDemiautte oui et la chaleur arrive ! 😎",
+          "at": "2026-05-20",
+          "tag": ""
+        }
+      ],
       "n_users": 9664,
-      "n_original_tweets": 2,
+      "n_original_tweets": 16490,
       "color": "#5a5a5a",
       "hub": "tara__clay"
     },
     "88": {
       "id": "88",
-      "designation": "espace @dita_mersedes",
-      "designation_short": "espace @dita_mersedes",
-      "justification": "C88 · hub @dita_mersedes. Profil lexique non enrichi pour ce pôle.",
-      "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "designation": "#moneyslave · #nasdas · @dita_mersedes",
+      "designation_short": "#moneyslave · #nasdas · @dita_mersedes",
+      "justification": "C88 · hub @dita_mersedes. Lexique distinctif (z log-odds vs autres pôles connectome) : #moneyslave, #nasdas, #poupettekenza, #findom. 9,248 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "moneyslave",
+          "g2": 19.43
+        },
+        {
+          "tag": "nasdas",
+          "g2": 16.43
+        },
+        {
+          "tag": "poupettekenza",
+          "g2": 15.14
+        },
+        {
+          "tag": "findom",
+          "g2": 14.69
+        },
+        {
+          "tag": "soumis",
+          "g2": 11.98
+        },
+        {
+          "tag": "domina",
+          "g2": 10.4
+        },
+        {
+          "tag": "moneymiss",
+          "g2": 10.29
+        },
+        {
+          "tag": "atm",
+          "g2": 9.23
+        }
+      ],
+      "key_words": [
+        {
+          "word": "monter",
+          "g2": 52.19
+        },
+        {
+          "word": "belle",
+          "g2": 44.54
+        },
+        {
+          "word": "soumis",
+          "g2": 41.48
+        },
+        {
+          "word": "bisous",
+          "g2": 40.17
+        },
+        {
+          "word": "magnifique",
+          "g2": 39.72
+        },
+        {
+          "word": "pieds",
+          "g2": 37.28
+        },
+        {
+          "word": "envie",
+          "g2": 36.55
+        },
+        {
+          "word": "bonne",
+          "g2": 35.45
+        }
+      ],
+      "themes": {
+        "monter": 100.0,
+        "belle": 85.3,
+        "soumis": 79.5,
+        "bisous": 77.0,
+        "magnifique": 76.1
+      },
+      "samples": [
+        {
+          "sn": "mbuffles",
+          "text": "qui me baise cette nuit ? Je suis en chaleur 🥵 , a poils en dessous et toute mouillée 💦😉. Rt pour une surprise 😘. Dispo pour nudes , sexcam et réel 🔞. #hotgirl #salope #fontaine #sodomie https://t.co/poIjnbUlOq",
+          "at": "2026-05-20",
+          "tag": "fontaine"
+        },
+        {
+          "sn": "ano2492",
+          "text": "@big_pussy69 Ramène toi en dm et on vas s’organiser ça je vais m’occuper de te mamelles de truie mais aussi de tes trous de chienne en chaleur",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "gegep95",
+          "text": "Bonjour, premier coup de chaleur annoncé ☀️☀️☀️🔥👍😁🤩",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "buchychris46992",
+          "text": "@CoupleGirondin Oui chaleur et là",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "ieldemots",
+          "text": "@clivrette Merci 🙏j'ai hâte... Un peu de chaleur ça va faire du bien 🌞",
+          "at": "2026-05-20",
+          "tag": ""
+        }
+      ],
       "n_users": 7187,
-      "n_original_tweets": 46,
+      "n_original_tweets": 9248,
       "color": "#5a5a5a",
       "hub": "dita_mersedes"
     },
     "49": {
       "id": "49",
-      "designation": "espace @ruizvelvet92",
-      "designation_short": "espace @ruizvelvet92",
-      "justification": "C49 · hub @ruizvelvet92. Profil lexique non enrichi pour ce pôle.",
-      "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "designation": "#pmu · #francetv · @ruizvelvet92",
+      "designation_short": "#pmu · #francetv · @ruizvelvet92",
+      "justification": "C49 · hub @ruizvelvet92. Lexique distinctif (z log-odds vs autres pôles connectome) : #pmu, #francetv, #juin, #affaireconclue. 12,266 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "pmu",
+          "g2": 10.49
+        },
+        {
+          "tag": "francetv",
+          "g2": 9.19
+        },
+        {
+          "tag": "juin",
+          "g2": 9.06
+        },
+        {
+          "tag": "affaireconclue",
+          "g2": 8.97
+        },
+        {
+          "tag": "cholet",
+          "g2": 8.49
+        },
+        {
+          "tag": "bd",
+          "g2": 8.32
+        },
+        {
+          "tag": "photodujour",
+          "g2": 7.91
+        },
+        {
+          "tag": "paris12",
+          "g2": 7.41
+        }
+      ],
+      "key_words": [
+        {
+          "word": "bonjour",
+          "g2": 85.02
+        },
+        {
+          "word": "bisous",
+          "g2": 74.34
+        },
+        {
+          "word": "journée",
+          "g2": 56.66
+        },
+        {
+          "word": "bonne",
+          "g2": 55.8
+        },
+        {
+          "word": "belle",
+          "g2": 55.27
+        },
+        {
+          "word": "soin",
+          "g2": 53.57
+        },
+        {
+          "word": "merci",
+          "g2": 48.4
+        },
+        {
+          "word": "soirée",
+          "g2": 47.94
+        }
+      ],
+      "themes": {
+        "bonjour": 100.0,
+        "bisous": 87.4,
+        "journée": 66.6,
+        "bonne": 65.6,
+        "belle": 65.0
+      },
+      "samples": [
+        {
+          "sn": "dombeaud22",
+          "text": "Home from evening walk !! Température parfaite pour marcher ce soir https://t.co/W2yodETU1I",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "mariannelaurens",
+          "text": "@LanteigneManon @marie1h1 @VadnaisArmand @SimonMnard4 Pas la même température https://t.co/8lCJlEVzVL",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "alainbolduque",
+          "text": "@rbrtcormier Froid, ici. La clim !",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "tranquillo4648",
+          "text": "Bonjour à toutes et tous 💖🦄🏩🌺 La chaleur commence à arriver et j'espère que vous allez en profiter ☀️ Je vous souhaite un doux mercredi 🌄 parfumé de gaieté 🌹 et de sérénité 🕊️ Prenez soin de vous et des personnes seules ou fragiles 🙏 Kiss 💋🤍🩷💜💙🩵💚💛🧡❤️🌈 https://t.co/TQFVB4iZpX",
+          "at": "2026-05-20",
+          "tag": ""
+        },
+        {
+          "sn": "viedelajoconde",
+          "text": "La chaleur est enfin de retour https://t.co/t0ZItMmWvN",
+          "at": "2026-05-20",
+          "tag": ""
+        }
+      ],
       "n_users": 5798,
-      "n_original_tweets": 2,
+      "n_original_tweets": 12266,
       "color": "#5a5a5a",
       "hub": "ruizvelvet92"
     },
     "525": {
       "id": "525",
-      "designation": "espace @attevaurea",
-      "designation_short": "espace @attevaurea",
-      "justification": "C525 · hub @attevaurea. Profil lexique non enrichi pour ce pôle.",
+      "designation": "cause · chaud · @attevaurea",
+      "designation_short": "cause · chaud · @attevaurea",
+      "justification": "C525 · hub @attevaurea. Lexique distinctif (z log-odds vs autres pôles connectome) : cause, chaud, température. 256 pubs hors RT.",
       "key_hashtags": [],
-      "key_words": [],
-      "themes": {},
-      "samples": [],
+      "key_words": [
+        {
+          "word": "cause",
+          "g2": 4.94
+        },
+        {
+          "word": "chaud",
+          "g2": 2.11
+        },
+        {
+          "word": "température",
+          "g2": 1.94
+        }
+      ],
+      "themes": {
+        "cause": 100.0,
+        "chaud": 42.7,
+        "température": 39.3
+      },
+      "samples": [
+        {
+          "sn": "fiveromi",
+          "text": "@sibro_hb Quand ON est arrivé à Marineford mettre une clim la street sans souviens https://t.co/CdVTrkRilE",
+          "at": "2026-05-21",
+          "tag": ""
+        },
+        {
+          "sn": "fiveromi",
+          "text": "@sibro_hb Quand notre Capitaine SHANKS LE ROUX a mis une clim en Bluetooth a Jordzn bardella https://t.co/N9IoxFvJk0",
+          "at": "2026-05-21",
+          "tag": ""
+        },
+        {
+          "sn": "bokutosdiary",
+          "text": "Alors vous, c’est un exfoliant donc pas tout les jours et en + c’est à utiliser + le soir parce qu’avec le soleil et la chaleur ça va vous cramer la peau- https://t.co/NV9UcgaOJG",
+          "at": "2026-05-22",
+          "tag": ""
+        },
+        {
+          "sn": "geobanoff",
+          "text": "Non mais t’arrive à la salle t’as déjà la culotte qui colle à cause de la chaleur",
+          "at": "2026-05-22",
+          "tag": ""
+        },
+        {
+          "sn": "milesgrr_",
+          "text": "@cactus_chaleur C’est le nouveau compte de nonamejosuke..",
+          "at": "2026-05-23",
+          "tag": ""
+        }
+      ],
       "n_users": 5167,
-      "n_original_tweets": 3,
+      "n_original_tweets": 256,
       "color": "#5a5a5a",
       "hub": "attevaurea"
     }
   },
-  "tag_accounts": {},
-  "tag_communities": {}
+  "tag_accounts": {
+    "adaptation": [
+      "maclesggy"
+    ],
+    "affaireconclue": [
+      "ruizvelvet92"
+    ],
+    "alertemétéo": [
+      "lecontempiateur"
+    ],
+    "atm": [
+      "dita_mersedes"
+    ],
+    "barbut": [
+      "sirafuera"
+    ],
+    "bd": [
+      "ruizvelvet92"
+    ],
+    "bulletindalertemétéo": [
+      "medi1tv"
+    ],
+    "canicule": [
+      "maclesggy",
+      "mickacorreia"
+    ],
+    "chaleur": [
+      "bfmtv",
+      "lachainemeteo"
+    ],
+    "chemtrails": [
+      "sirafuera"
+    ],
+    "cholet": [
+      "ruizvelvet92"
+    ],
+    "clim": [
+      "maclesggy"
+    ],
+    "climatisation": [
+      "maclesggy",
+      "sirafuera"
+    ],
+    "domina": [
+      "dita_mersedes"
+    ],
+    "droitemolle": [
+      "charles817702"
+    ],
+    "ecole": [
+      "maclesggy"
+    ],
+    "elle": [
+      "cowboywale"
+    ],
+    "europe1": [
+      "sirafuera"
+    ],
+    "f1": [
+      "actufoot_"
+    ],
+    "fifaworldcup": [
+      "actufoot_"
+    ],
+    "findom": [
+      "dita_mersedes"
+    ],
+    "folle": [
+      "cowboywale"
+    ],
+    "fontaine": [
+      "mbuffles"
+    ],
+    "frairq": [
+      "actufoot_"
+    ],
+    "france": [
+      "lecontempiateur"
+    ],
+    "francetv": [
+      "ruizvelvet92"
+    ],
+    "gauchecaviar": [
+      "charles817702"
+    ],
+    "ggrmc": [
+      "sirafuera"
+    ],
+    "haarp": [
+      "sirafuera"
+    ],
+    "hdpros": [
+      "sirafuera"
+    ],
+    "health": [
+      "bienetrecentre"
+    ],
+    "himra": [
+      "vraiactuci"
+    ],
+    "hotgirl": [
+      "mbuffles"
+    ],
+    "humour": [
+      "sirafuera"
+    ],
+    "inde": [
+      "medi1news",
+      "medi1tvafrique"
+    ],
+    "infotrafic": [
+      "tara__clay"
+    ],
+    "juin": [
+      "ruizvelvet92"
+    ],
+    "ledesk": [
+      "ledesk_ma"
+    ],
+    "lfi": [
+      "mickacorreia"
+    ],
+    "lfi_tue": [
+      "charles817702"
+    ],
+    "live": [
+      "tara__clay"
+    ],
+    "luzerne": [
+      "arobasq"
+    ],
+    "macron": [
+      "mickacorreia"
+    ],
+    "mapinfographie": [
+      "map_information"
+    ],
+    "marhai": [
+      "cowboywale"
+    ],
+    "maroc": [
+      "lecontempiateur",
+      "ledesk_ma",
+      "medi1tv"
+    ],
+    "melenchon2027": [
+      "mickacorreia"
+    ],
+    "merci": [
+      "cowboywale"
+    ],
+    "messi": [
+      "actufoot_"
+    ],
+    "meteo": [
+      "bfmtv"
+    ],
+    "moneymiss": [
+      "dita_mersedes"
+    ],
+    "moneyslave": [
+      "dita_mersedes"
+    ],
+    "mtc": [
+      "bienetrecentre"
+    ],
+    "météo": [
+      "bfmtv"
+    ],
+    "nantes": [
+      "lecontempiateur"
+    ],
+    "nasdas": [
+      "dita_mersedes"
+    ],
+    "news": [
+      "bfmtv"
+    ],
+    "nintendo": [
+      "tara__clay"
+    ],
+    "norfra": [
+      "actufoot_"
+    ],
+    "om": [
+      "actufoot_"
+    ],
+    "orages": [
+      "bfmtv"
+    ],
+    "paris12": [
+      "ruizvelvet92"
+    ],
+    "photodujour": [
+      "ruizvelvet92"
+    ],
+    "pmu": [
+      "ruizvelvet92"
+    ],
+    "poupettekenza": [
+      "cowboywale",
+      "dita_mersedes"
+    ],
+    "prairial1er": [
+      "arobasq"
+    ],
+    "ps5": [
+      "tara__clay"
+    ],
+    "quotidien": [
+      "mickacorreia"
+    ],
+    "rapivoire": [
+      "vraiactuci"
+    ],
+    "rechauffementclimatique": [
+      "maclesggy"
+    ],
+    "rolandgarros": [
+      "actufoot_"
+    ],
+    "salope": [
+      "mbuffles"
+    ],
+    "sciences": [
+      "mickacorreia"
+    ],
+    "secretstory": [
+      "cowboywale"
+    ],
+    "soumis": [
+      "dita_mersedes"
+    ],
+    "stop": [
+      "cowboywale"
+    ],
+    "tcm": [
+      "bienetrecentre"
+    ],
+    "teamom": [
+      "actufoot_"
+    ],
+    "températures": [
+      "bfmtv"
+    ],
+    "tiktok": [
+      "mickacorreia"
+    ],
+    "twitch": [
+      "tara__clay"
+    ],
+    "twitchfr": [
+      "tara__clay"
+    ],
+    "var": [
+      "maclesggy"
+    ],
+    "vigilanceorange": [
+      "bfmtv"
+    ],
+    "vigilancerouge": [
+      "bfmtv"
+    ],
+    "vtuber": [
+      "tara__clay"
+    ],
+    "vtuberfr": [
+      "tara__clay"
+    ],
+    "wow": [
+      "cowboywale"
+    ],
+    "école": [
+      "maclesggy",
+      "mickacorreia"
+    ]
+  },
+  "tag_communities": {
+    "adaptation": [
+      229
+    ],
+    "affaireconclue": [
+      49
+    ],
+    "alertemétéo": [
+      9
+    ],
+    "atm": [
+      88
+    ],
+    "barbut": [
+      0
+    ],
+    "bd": [
+      49
+    ],
+    "canicule": [
+      14,
+      229
+    ],
+    "chaleur": [
+      546
+    ],
+    "chemtrails": [
+      0
+    ],
+    "cholet": [
+      49
+    ],
+    "clim": [
+      229
+    ],
+    "climatisation": [
+      0,
+      229
+    ],
+    "domina": [
+      88
+    ],
+    "ecole": [
+      229
+    ],
+    "elle": [
+      10
+    ],
+    "europe1": [
+      0
+    ],
+    "f1": [
+      75
+    ],
+    "fifaworldcup": [
+      75
+    ],
+    "findom": [
+      88
+    ],
+    "folle": [
+      10
+    ],
+    "frairq": [
+      75
+    ],
+    "france": [
+      9
+    ],
+    "francetv": [
+      49
+    ],
+    "ggrmc": [
+      0
+    ],
+    "haarp": [
+      0
+    ],
+    "hdpros": [
+      0
+    ],
+    "humour": [
+      0
+    ],
+    "infotrafic": [
+      161
+    ],
+    "juin": [
+      49
+    ],
+    "lfi": [
+      14
+    ],
+    "live": [
+      161
+    ],
+    "macron": [
+      14
+    ],
+    "marhai": [
+      10
+    ],
+    "maroc": [
+      9
+    ],
+    "melenchon2027": [
+      14
+    ],
+    "merci": [
+      10
+    ],
+    "messi": [
+      75
+    ],
+    "meteo": [
+      546
+    ],
+    "moneymiss": [
+      88
+    ],
+    "moneyslave": [
+      88
+    ],
+    "météo": [
+      546
+    ],
+    "nantes": [
+      9
+    ],
+    "nasdas": [
+      88
+    ],
+    "news": [
+      546
+    ],
+    "nintendo": [
+      161
+    ],
+    "norfra": [
+      75
+    ],
+    "om": [
+      75
+    ],
+    "orages": [
+      546
+    ],
+    "paris12": [
+      49
+    ],
+    "photodujour": [
+      49
+    ],
+    "pmu": [
+      49
+    ],
+    "poupettekenza": [
+      10,
+      88
+    ],
+    "ps5": [
+      161
+    ],
+    "quotidien": [
+      14
+    ],
+    "rechauffementclimatique": [
+      229
+    ],
+    "rolandgarros": [
+      75
+    ],
+    "sciences": [
+      14
+    ],
+    "secretstory": [
+      10
+    ],
+    "soumis": [
+      88
+    ],
+    "stop": [
+      10
+    ],
+    "teamom": [
+      75
+    ],
+    "températures": [
+      546
+    ],
+    "tiktok": [
+      14
+    ],
+    "twitch": [
+      161
+    ],
+    "twitchfr": [
+      161
+    ],
+    "var": [
+      229
+    ],
+    "vigilanceorange": [
+      546
+    ],
+    "vigilancerouge": [
+      546
+    ],
+    "vtuber": [
+      161
+    ],
+    "vtuberfr": [
+      161
+    ],
+    "wow": [
+      10
+    ],
+    "école": [
+      14,
+      229
+    ]
+  }
 }
