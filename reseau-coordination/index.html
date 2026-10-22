@@ -93,8 +93,17 @@
     #zHint {
       margin-top: 8px; color: #9aa3b0; font-size: 11px; line-height: 1.45;
       max-width: 100%;
+      padding: 8px 9px; border-radius: 8px;
+      background: rgba(138,180,255,0.07);
+      border: 1px solid rgba(138,180,255,0.16);
     }
     #zHint strong { color: #d5dde8; font-weight: 600; }
+    #zHint .z-axis {
+      display: grid; grid-template-columns: 18px 1fr; gap: 4px 8px;
+      margin: 8px 0 6px; color: #c5ccd6; font-size: 10.5px;
+    }
+    #zHint .z-axis b { color: #8ab4ff; font-weight: 700; }
+    #zHint .z-note { color: #6a7380; font-size: 10px; margin-top: 4px; }
     a.hud-link {
       display: inline-flex; margin-bottom: 10px; padding: 6px 10px; border-radius: 7px;
       border: 1px solid rgba(255,255,255,0.12); background: rgba(37,99,235,0.14);
@@ -199,16 +208,11 @@
       <button type="button" id="btn3d" title="Extrusion temporelle sur Z">3D</button>
     </div>
     <div id="zModeBlock">
-      <div class="color-modes" role="tablist" aria-label="Axe Z temporel">
-        <button type="button" class="active" data-z="chrono" id="zChrono" title="Hauteur = moment dans le temps">A · Chrono</button>
-        <button type="button" data-z="sync" id="zSync" title="Hauteur = rapidité à retweeter ensemble">B · Sync</button>
+      <div class="color-modes" role="tablist" aria-label="Axe Z temporel — profondeur">
+        <button type="button" class="active" data-z="chrono" id="zChrono" title="Profondeur = moment dans le temps (tôt en bas, tard en haut)">A · Chrono</button>
+        <button type="button" data-z="sync" id="zSync" title="Profondeur = rapidité à retweeter ensemble (sync en haut)">B · Sync</button>
       </div>
-      <div id="zHint">
-        <strong>Chrono — lire la hauteur comme une frise</strong><br>
-        En bas : comptes qui ont surtout retweeté les mêmes messages <em>tôt</em> dans la période.
-        En haut : ceux qui l’ont fait <em>plus tard</em>.
-        La carte du bas (gauche–droite) reste « qui est lié à qui » ; la hauteur dit seulement <em>quand</em>.
-      </div>
+      <div id="zHint" aria-live="polite"></div>
     </div>
     <div class="row"><span>Lumière liens</span><input id="linkLight" type="range" min="0" max="1" step="0.01" value="0.35" title="0 = liens éteints · 1 = intensité max"></div>
     <div class="row"><span>Opacité</span><input id="op" type="range" min="0" max="0.55" step="0.005" value="0.12"></div>
@@ -376,16 +380,20 @@ function sync3dControls() {
   document.getElementById('zSync')?.classList.toggle('active', zMode === 'sync');
   if (zHintEl) {
     zHintEl.innerHTML = zMode === 'sync'
-      ? `<strong>Sync — lire la hauteur comme un chronomètre</strong><br>
-         En haut : comptes qui retweetent souvent le <em>même</em> contenu quasiment <em>en même temps</em>
-         (comme s’ils appuyaient ensemble).<br>
-         En bas : ils partagent encore les mêmes messages, mais avec plus de <em>décalage</em>.<br>
-         <span style="color:#6a7380">Clic-glissé = tourner la vue · molette = zoom</span>`
-      : `<strong>Chrono — lire la hauteur comme une frise</strong><br>
-         En bas : comptes qui ont surtout retweeté les mêmes messages <em>tôt</em> dans la période.<br>
-         En haut : ceux qui l’ont fait <em>plus tard</em>.<br>
-         La carte (gauche–droite) = « qui est lié à qui » ; la hauteur = seulement <em>quand</em>.<br>
-         <span style="color:#6a7380">Clic-glissé = tourner la vue · molette = zoom</span>`;
+      ? `<strong>Sync — la profondeur = « à quelle vitesse ils RT ensemble »</strong>
+         <div class="z-axis">
+           <b>↑</b><span><strong>Haut</strong> — co-RT très <em>synchrones</em> (même contenu, presque au même moment)</span>
+           <b>↓</b><span><strong>Bas</strong> — mêmes messages partagés, mais avec plus de <em>décalage</em> dans le temps</span>
+         </div>
+         La carte (gauche–droite) reste « qui est lié à qui ». La hauteur ne dit pas <em>quand</em> dans la période, seulement s’ils agissent <em>ensemble rapidement</em>.
+         <div class="z-note">Clic-glissé = tourner · molette = zoom · la profondeur n’est pas une distance géographique</div>`
+      : `<strong>Chrono — la profondeur = « à quel moment dans la période »</strong>
+         <div class="z-axis">
+           <b>↑</b><span><strong>Haut</strong> — co-RT plutôt <em>tardifs</em> (plus tard dans la fenêtre du corpus)</span>
+           <b>↓</b><span><strong>Bas</strong> — co-RT plutôt <em>précoces</em> (plus tôt dans la période)</span>
+         </div>
+         Imagine une frise verticale&nbsp;: le plan horizontal = le réseau (qui retweete avec qui) ; la hauteur = le <em>quand</em> médian de ces co-RT.
+         <div class="z-note">Clic-glissé = tourner · molette = zoom · la profondeur n’est pas une distance géographique</div>`;
   }
 }
 
@@ -912,10 +920,14 @@ function onPointerMove(ev) {
   let zBit = '';
   if (mode3d) {
     if (zMode === 'sync' && nd.dt_med != null) {
-      zBit = ` · Δt̃ ${Math.round(nd.dt_med)}s · z_sync ${Number(nd.z_sync || 0).toFixed(2)}`;
+      const sec = Math.round(nd.dt_med);
+      const syncLbl = sec <= 60 ? 'très synchrone' : sec <= 3600 ? 'assez proche' : 'plus décalé';
+      zBit = ` · Sync&nbsp;: écart médian ~${sec < 60 ? `${sec}s` : sec < 3600 ? `${Math.round(sec / 60)} min` : `${Math.round(sec / 3600)} h`} (${syncLbl})`;
     } else if (nd.t_co_med != null) {
       const d = new Date(Number(nd.t_co_med) * 1000);
-      zBit = ` · t_co ${d.toISOString().slice(0, 10)} · z_chrono ${Number(nd.z_chrono || 0).toFixed(2)}`;
+      const zc = Number(nd.z_chrono || 0);
+      const when = zc >= 0.66 ? 'plutôt tard' : zc <= 0.33 ? 'plutôt tôt' : 'milieu de période';
+      zBit = ` · Chrono&nbsp;: ${d.toISOString().slice(0, 10)} (${when})`;
     }
   }
   tip.style.display = 'block';
