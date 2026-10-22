@@ -554,7 +554,7 @@
         Afficher les flux inter-pôles
       </label>
       <div class="nav-hint" id="compassHint" style="margin-top:6px;padding-top:0;border:0">
-        Épaisseur = intensité · halos = pôles · slider en bas
+        Épaisseur = intensité · contours = pôles · slider en bas
       </div>
     </div>
     <div class="nav-hint">Clic nœud/label → profil X · zoom → plus de labels</div>
@@ -1902,24 +1902,44 @@ function poleCentroids(nodes, poleIds) {
     a.y += n.y * w;
     a.n += w;
     a.deg += Number(n.deg) || 0;
-    a.pts.push(n.x, n.y);
+    a.pts.push(n.x, n.y, w);
   }
   const out = new Map();
   for (const [id, a] of acc) {
     if (a.n <= 0) continue;
     const cx = a.x / a.n;
     const cy = a.y / a.n;
-    // Rayon englobant ~92e percentile des distances au centroïde (halo communauté).
+    // Cœur du pôle : nœuds au-dessus du degré médian (évite le nuage périphérique).
+    const degs = [];
+    for (let i = 0; i < a.pts.length; i += 3) degs.push(a.pts[i + 2]);
+    degs.sort((u, v) => u - v);
+    const degMed = degs[Math.floor(degs.length * 0.5)] || 1;
     const dists = [];
-    for (let i = 0; i < a.pts.length; i += 2) {
+    for (let i = 0; i < a.pts.length; i += 3) {
+      if (a.pts[i + 2] < degMed) continue;
       dists.push(Math.hypot(a.pts[i] - cx, a.pts[i + 1] - cy));
     }
     dists.sort((u, v) => u - v);
-    const p92 = dists.length
-      ? dists[Math.min(dists.length - 1, Math.floor(dists.length * 0.92))]
-      : 8;
-    const r = Math.max(6, p92 * 1.12);
+    // ~60e percentile du cœur — cercle proportionné, pas englobant.
+    const p60 = dists.length
+      ? dists[Math.min(dists.length - 1, Math.floor(dists.length * 0.60))]
+      : 6;
+    const r = Math.max(4.5, p60 * 1.05);
     out.set(id, { x: cx, y: cy, deg: a.deg, r });
+  }
+  // Cap : ne pas empiéter sur le voisin le plus proche (cercles disjoints / à peine tangents).
+  const ids = [...out.keys()];
+  for (const id of ids) {
+    const c = out.get(id);
+    let nearest = Infinity;
+    for (const id2 of ids) {
+      if (id2 === id) continue;
+      const o = out.get(id2);
+      nearest = Math.min(nearest, Math.hypot(c.x - o.x, c.y - o.y));
+    }
+    if (Number.isFinite(nearest) && nearest > 0) {
+      c.r = Math.min(c.r, nearest * 0.36);
+    }
   }
   return out;
 }
@@ -2132,7 +2152,7 @@ function renderCompassDay() {
     ...(frame.in || [0]),
   );
 
-  // Halos de communauté + marqueur source/puits au centroïde
+  // Contours fins des pôles + point source/puits
   for (let i = 0; i < poles.length; i++) {
     const p = poles[i];
     const c = cents.get(Number(p.id));
@@ -2143,29 +2163,31 @@ function renderCompassDay() {
     const io = Math.min(1, (outV + inV) / maxIO);
     const rgb = hexToRgbArr(p.color);
     const col = new THREE.Color(rgb[0] / 255, rgb[1] / 255, rgb[2] / 255);
-    const R = c.r || 10;
+    const R = Math.max(3.5, c.r || 8);
+    // Trait fin absolu (pas un anneau épais proportionnel au rayon)
+    const stroke = Math.max(0.22, Math.min(0.42, R * 0.012));
 
-    // Halo soft (disque)
-    const halo = new THREE.Mesh(
-      new THREE.CircleGeometry(R, 48),
+    // Voile intérieur très léger
+    const veil = new THREE.Mesh(
+      new THREE.CircleGeometry(R, 64),
       new THREE.MeshBasicMaterial({
         color: col,
         transparent: true,
-        opacity: 0.10 + 0.10 * io,
+        opacity: 0.035 + 0.025 * io,
         depthWrite: false,
         side: THREE.DoubleSide,
       }),
     );
-    halo.position.set(c.x, c.y, 0.18);
-    group.add(halo);
+    veil.position.set(c.x, c.y, 0.16);
+    group.add(veil);
 
-    // Contour externe (circonscrit la communauté)
+    // Contour élégant
     const rim = new THREE.Mesh(
-      new THREE.RingGeometry(R * 0.92, R * 1.04, 64),
+      new THREE.RingGeometry(R - stroke * 0.5, R + stroke * 0.5, 96),
       new THREE.MeshBasicMaterial({
         color: col,
         transparent: true,
-        opacity: 0.55 + 0.30 * io,
+        opacity: 0.42 + 0.28 * io,
         side: THREE.DoubleSide,
         depthWrite: false,
       }),
@@ -2173,33 +2195,19 @@ function renderCompassDay() {
     rim.position.set(c.x, c.y, 0.22);
     group.add(rim);
 
-    // Anneau intérieur plus fin
-    const rimIn = new THREE.Mesh(
-      new THREE.RingGeometry(R * 0.55, R * 0.58, 48),
-      new THREE.MeshBasicMaterial({
-        color: col,
-        transparent: true,
-        opacity: 0.22,
-        side: THREE.DoubleSide,
-        depthWrite: false,
-      }),
-    );
-    rimIn.position.set(c.x, c.y, 0.23);
-    group.add(rimIn);
-
-    // Net marker (ambre = source, cyan = puits)
-    const netR = 1.4 + 2.2 * Math.min(1, Math.abs(net) / maxIO);
+    // Point net (ambre = source, cyan = puits) — discret
+    const netR = 0.55 + 0.85 * Math.min(1, Math.abs(net) / maxIO);
     const netCol = net >= 0 ? 0xf59e0b : 0x38bdf8;
     const disc = new THREE.Mesh(
-      new THREE.CircleGeometry(netR, 24),
+      new THREE.CircleGeometry(netR, 20),
       new THREE.MeshBasicMaterial({
         color: netCol,
         transparent: true,
-        opacity: 0.28 + 0.40 * Math.min(1, Math.abs(net) / maxIO),
+        opacity: 0.55 + 0.30 * Math.min(1, Math.abs(net) / maxIO),
         depthWrite: false,
       }),
     );
-    disc.position.set(c.x, c.y, 0.36);
+    disc.position.set(c.x, c.y, 0.38);
     group.add(disc);
   }
 
