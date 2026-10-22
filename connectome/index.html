@@ -1580,7 +1580,7 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   lineColorsBase = new Float32Array(colors);
   geo.setAttribute('color', new THREE.Float32BufferAttribute(lineColorsBase, 3));
   lineGeo = geo;
-  if (edgeAForVert.length === colors.length / 3) {
+  if (edgeAForVert && edgeAForVert.length === colors.length / 3) {
     lineEdgeA = Int32Array.from(edgeAForVert);
     lineEdgeB = Int32Array.from(edgeBForVert);
   } else {
