@@ -78,5 +78,7 @@
   ],
   "defaultColorMode": "coord",
   "n_base_matched": 10,
-  "enrichedAt": "2026-10-22T10:07:25.951657+00:00"
+  "enrichedAt": "2026-10-22T10:16:30.951899+00:00",
+  "labelCentrality": "pagerank",
+  "labelCentralityDef": "PageRank pondéré (α=0,85, weight = co-RT Serrano) sur le backbone ; taille des labels et champ s dérivés de ce score"
 }

@@ -23,6 +23,7 @@ Vocabulaire affiché : *coordination d’amplification / backbone* — **pas** u
 - **Louvain coordination** : partition Louvain sur le backbone Serrano (défaut)
 - **Louvain connectome** : couleurs du Louvain du connectome d’origine (projection par `screen_name`)
 - **Panel droit** : analyse discursive brève des clusters de coordination (hashtags / lexique G² sur pubs hors RT)
+- **Labels** : mêmes règles que le connectome (révélation progressive au zoom, anti-chevauchement) ; **taille ∝ PageRank** pondéré (α=0,85, weight = co-RT Serrano) sur le backbone
 
 ## Pipeline
 

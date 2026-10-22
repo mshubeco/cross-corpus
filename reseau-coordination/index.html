@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Réseau de coordination — cross_corpus</title>
-  <meta name="coord-build" content="2026-10-22-colors-v2" />
+  <meta name="coord-build" content="2026-10-22-labels-pagerank-v1" />
   <meta http-equiv="Cache-Control" content="no-cache" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -15,9 +15,9 @@
     #labels { position: fixed; inset: 0; pointer-events: none; z-index: 2; overflow: hidden; }
     .label {
       position: absolute; transform: translate(-50%, -130%);
-      color: #fff; letter-spacing: 0.015em; font-size: 11px;
+      color: #fff; letter-spacing: 0.015em;
       text-shadow: 0 0 6px rgba(0,0,0,0.85), 0 1px 2px rgba(0,0,0,0.7);
-      white-space: nowrap; opacity: 0.95; line-height: 1.05;
+      white-space: nowrap; opacity: 0.94; line-height: 1.05;
       pointer-events: auto; cursor: pointer;
     }
     .label:hover { filter: brightness(1.15); }
@@ -49,21 +49,19 @@
       color: #c5ccd6; font-weight: 600; display: block; margin-bottom: 4px;
       font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
     }
-    #hud .method {
-      color: #9bb07a; font-size: 10.5px; line-height: 1.35; margin-bottom: 8px;
-    }
+    #hud .method { color: #9bb07a; font-size: 10.5px; line-height: 1.35; margin-bottom: 8px; }
     #hud .note {
       color: #6a7380; font-size: 10px; line-height: 1.4; margin-top: 8px;
       border-top: 1px solid rgba(255,255,255,0.06); padding-top: 8px;
     }
+    #hud .nav-hint {
+      margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.06);
+      color: #6a7380; font-size: 10px; line-height: 1.4;
+    }
     #stats { color: #c5ccd6; font-variant-numeric: tabular-nums; line-height: 1.55; }
     .row { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
     .row span { width: 64px; flex-shrink: 0; }
-    .row input, .row select { flex: 1; accent-color: #8ab4ff; min-width: 0; }
-    .row select {
-      background: #111; color: #c5ccd6; border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 4px; padding: 4px 6px; font-size: 11px;
-    }
+    .row input { flex: 1; accent-color: #8ab4ff; min-width: 0; }
     .color-modes {
       display: flex; gap: 4px; margin-top: 8px; padding: 2px;
       background: rgba(255,255,255,0.04); border-radius: 8px;
@@ -134,6 +132,7 @@
       background: rgba(8,10,14,0.92); border: 1px solid rgba(255,255,255,0.14);
       border-radius: 8px; padding: 8px 10px; font-size: 11px; color: #e8eef7;
     }
+    #tooltip .muted { color: #8b93a0; font-size: 10.5px; margin-top: 3px; }
   </style>
   <script type="importmap">
   {
@@ -166,10 +165,13 @@
     </div>
     <div class="row"><span>Lumière</span><input id="linkLight" type="range" min="0" max="1" step="0.01" value="0.35"></div>
     <div class="row"><span>Opacité</span><input id="op" type="range" min="0" max="0.55" step="0.005" value="0.12"></div>
-    <div class="row"><span>Labels</span><input id="nLabels" type="range" min="0" max="80" step="1" value="36"></div>
+    <div class="row"><span>Labels</span><input id="nLabels" type="range" min="0" max="80" step="1" value="40"></div>
+    <div class="nav-hint" id="labelHint">
+      Clic label → profil X · zoom → plus de labels · taille = PageRank (α=0,85, poids co-RT)
+    </div>
     <div class="note">
-      Backbone Serrano (2009). Couleurs = Louvain du graphe de coordination, ou Louvain du connectome d’origine.
-      Lecture discursive exploratoire — pas une preuve d’inauthenticité.
+      Backbone Serrano (2009). Labels : mêmes standards que le connectome (pool, révélation au zoom, anti-chevauchement) ;
+      taille ∝ PageRank pondéré sur le backbone.
     </div>
   </aside>
   <aside id="commPanel">
@@ -181,7 +183,7 @@
 
 <script type="module">
 import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { MapControls } from 'three/addons/controls/MapControls.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
@@ -196,9 +198,10 @@ const statsEl = document.getElementById('stats');
 const backEl = document.getElementById('backConnectome');
 const commListEl = document.getElementById('commList');
 const commSubEl = document.getElementById('commSub');
+const labelHintEl = document.getElementById('labelHint');
 
-const P = { linkLight: 0.35, opacity: 0.12, nLabels: 36, bloom: 0.42 };
-let colorMode = 'coord'; // coord | base
+const P = { linkLight: 0.35, opacity: 0.12, nLabels: 40, bloom: 0.42 };
+let colorMode = 'coord';
 
 let corpora = [];
 let currentId = null;
@@ -209,70 +212,130 @@ let edges = [];
 let scene, camera, renderer, controls, composer, bloomPass;
 let lineMat, pointsMesh, lineGeo;
 let lineColorsBase = null;
-let nodeColorsBase = null;
+let frustum = 480;
+const FIT_PADDING = 1.45;
+let fitZoom = 1;
+
+let labelItems = [];
+let labelItemsBySize = [];
+const _proj = new THREE.Vector3();
+let lastLabelCamKey = '';
 
 function shortLabel(lab) {
   return String(lab || '').split('·')[0].trim();
 }
-
 function xUrl(handle) {
   const h = String(handle || '').replace(/^@/, '').trim();
   return h ? `https://x.com/${encodeURIComponent(h)}` : null;
 }
-
 function lift(c, k = 1.15) {
-  return [(c[0] / 255) * k, (c[1] / 255) * k, (c[2] / 255) * k];
+  return [
+    Math.min(1.05, (c[0] / 255) * k),
+    Math.min(1.05, (c[1] / 255) * k),
+    Math.min(1.05, (c[2] / 255) * k),
+  ];
 }
-
+function rgbCss(c) {
+  return `rgb(${c[0]|0},${c[1]|0},${c[2]|0})`;
+}
 function nodeRgb(nd) {
   if (colorMode === 'base' && nd.c_base) return nd.c_base;
   if (nd.c_coord) return nd.c_coord;
   return nd.c || [140, 140, 150];
 }
+function maxOf(arr, fn, d = 1) {
+  let m = -Infinity;
+  for (const x of arr) m = Math.max(m, fn(x));
+  return Number.isFinite(m) ? m : d;
+}
+function minOf(arr, fn, d = 1) {
+  let m = Infinity;
+  for (const x of arr) m = Math.min(m, fn(x));
+  return Number.isFinite(m) ? m : d;
+}
+function quantileSorted(arr, p) {
+  return arr[Math.max(0, Math.min(arr.length - 1, Math.floor(p * (arr.length - 1))))];
+}
+function coreBounds(ns, lo = 0.05, hi = 0.95) {
+  const xs = ns.map((n) => n.x).sort((a, b) => a - b);
+  const ys = ns.map((n) => n.y).sort((a, b) => a - b);
+  return {
+    minX: quantileSorted(xs, lo), maxX: quantileSorted(xs, hi),
+    minY: quantileSorted(ys, lo), maxY: quantileSorted(ys, hi),
+  };
+}
+function inCoreBounds(n, b, pad = 0.06) {
+  const mx = (b.maxX - b.minX) * pad;
+  const my = (b.maxY - b.minY) * pad;
+  return n.x >= b.minX - mx && n.x <= b.maxX + mx && n.y >= b.minY - my && n.y <= b.maxY + my;
+}
 
 function initThree() {
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x000000);
-  camera = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 0.1, 20000);
-  camera.position.set(0, 0, 1100);
+  const a = innerWidth / innerHeight;
+  camera = new THREE.OrthographicCamera(-frustum * a, frustum * a, frustum, -frustum, -2000, 2000);
+  camera.position.set(0, 0, 400);
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
   renderer.setSize(innerWidth, innerHeight);
   wrap.appendChild(renderer.domElement);
-  controls = new OrbitControls(camera, renderer.domElement);
+
+  controls = new MapControls(camera, renderer.domElement);
   controls.enableDamping = true;
-  controls.dampingFactor = 0.08;
-  controls.minDistance = 80;
-  controls.maxDistance = 4000;
+  controls.dampingFactor = 0.1;
+  controls.enableRotate = false;
+  controls.screenSpacePanning = true;
+  controls.minZoom = 0.008;
+  controls.maxZoom = 20;
+  controls.target.set(0, 0, 0);
 
   composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
   bloomPass = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), P.bloom, 0.4, 0.2);
   composer.addPass(bloomPass);
 
-  window.addEventListener('resize', () => {
-    camera.aspect = innerWidth / innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(innerWidth, innerHeight);
-    composer.setSize(innerWidth, innerHeight);
-  });
-
+  window.addEventListener('resize', onResize);
   renderer.domElement.addEventListener('pointermove', onPointerMove);
   renderer.domElement.addEventListener('click', onClick);
-  labelsEl.addEventListener('click', (e) => {
-    const el = e.target.closest('.label');
-    if (!el) return;
-    const u = xUrl(el.dataset.handle);
-    if (u) window.open(u, '_blank', 'noopener,noreferrer');
-  });
 
   function loop() {
     requestAnimationFrame(loop);
     controls.update();
     composer.render();
-    updateLabels();
+    projectLabels();
   }
   loop();
+}
+
+function onResize() {
+  const a = innerWidth / innerHeight;
+  camera.left = -frustum * a;
+  camera.right = frustum * a;
+  camera.top = frustum;
+  camera.bottom = -frustum;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+  composer.setSize(innerWidth, innerHeight);
+  lastLabelCamKey = '';
+}
+
+function fitGraphToView(ns) {
+  if (!ns?.length) return;
+  const b = coreBounds(ns, 0.05, 0.95);
+  const cx = (b.minX + b.maxX) * 0.5;
+  const cy = (b.minY + b.maxY) * 0.5;
+  const halfW = Math.max((b.maxX - b.minX) * 0.5, 1) * FIT_PADDING;
+  const halfH = Math.max((b.maxY - b.minY) * 0.5, 1) * FIT_PADDING;
+  const a = innerWidth / innerHeight;
+  const zoom = Math.min((frustum * a) / halfW, frustum / halfH);
+  camera.position.set(cx, cy, 400);
+  controls.target.set(cx, cy, 0);
+  camera.zoom = Math.max(controls.minZoom, Math.min(controls.maxZoom, zoom));
+  camera.updateProjectionMatrix();
+  controls.update();
+  fitZoom = camera.zoom;
+  lastLabelCamKey = '';
 }
 
 function clearScene() {
@@ -282,7 +345,251 @@ function clearScene() {
   lineMat = null;
   pointsMesh = null;
   lineColorsBase = null;
-  nodeColorsBase = null;
+  labelItems = [];
+  labelItemsBySize = [];
+  lastLabelCamKey = '';
+}
+
+function graphVisualScale(nNodes) {
+  if (nNodes < 2500) return { nodeBoost: 5.5, pointAlpha: 0.72, labelMinPx: 8, labelMaxPx: 15 };
+  if (nNodes < 12000) return { nodeBoost: 2.2, pointAlpha: 0.5, labelMinPx: 7, labelMaxPx: 22 };
+  return { nodeBoost: 1.0, pointAlpha: 0.35, labelMinPx: 7, labelMaxPx: 39 };
+}
+
+function labelPoolCap(nLabels, nNodes) {
+  if (nLabels <= 0 || nNodes <= 0) return 0;
+  return Math.min(nNodes, Math.max(nLabels * 16, 240), 1200);
+}
+function labelRevealCount(zoom, fitZ, overviewN, poolN) {
+  if (overviewN <= 0 || poolN <= 0) return 0;
+  const rel = (zoom || 0) / Math.max(fitZ, 1e-6);
+  if (rel < 1) return Math.max(0, Math.min(poolN, Math.round(overviewN * Math.max(0.4, rel))));
+  const t = Math.max(0, Math.min(1, Math.log2(rel) / 3));
+  return Math.min(poolN, Math.round(overviewN + (poolN - overviewN) * t));
+}
+function overlapPadForZoom(zoom, fitZ) {
+  const rel = (zoom || 0) / Math.max(fitZ, 1e-6);
+  if (rel >= 5) return 3;
+  if (rel >= 2.2) return 5;
+  return 8;
+}
+function labelOffsetOptions(bw, bh) {
+  return [
+    [0, 0], [0, -bh * 0.4], [0, bh * 0.5],
+    [bw * 0.4, 0], [-bw * 0.4, 0],
+    [bw * 0.3, -bh * 0.35], [-bw * 0.3, -bh * 0.35],
+    [bw * 0.3, bh * 0.4], [-bw * 0.3, bh * 0.4],
+  ];
+}
+
+/** Centralité pour labels = PageRank (champ pr) ; fallback s / deg. */
+function centralityOf(n) {
+  if (n.pr != null && n.pr > 0) return n.pr;
+  if (n.s != null) return n.s;
+  return Math.log1p(n.deg || 1);
+}
+
+function pickLabelPool(ns, overviewN) {
+  const poolCap = labelPoolCap(overviewN, ns.length);
+  if (poolCap <= 0) return [];
+  const scored = ns.map((n, i) => ({
+    node: n, i,
+    gephiSize: Math.max(n.s || centralityOf(n) || 1, 1e-6),
+    cent: centralityOf(n),
+    deg: n.deg || 0,
+    com: n.com ?? n.com_coord ?? -1,
+  }));
+  const byCom = new Map();
+  for (const s of scored) {
+    if (!byCom.has(s.com)) byCom.set(s.com, []);
+    byCom.get(s.com).push(s);
+  }
+  const comOrder = [...byCom.values()]
+    .map((arr) => {
+      arr.sort((a, b) => (b.cent - a.cent) || (b.gephiSize - a.gephiSize) || (b.deg - a.deg));
+      return {
+        arr,
+        mass: arr.reduce((sum, n) => sum + n.gephiSize * Math.log1p(n.deg || 1), 0),
+        size: arr.length,
+      };
+    })
+    .sort((a, b) => b.mass - a.mass);
+
+  const picked = new Map();
+  const take = (s) => {
+    if (picked.size >= poolCap) return false;
+    picked.set(s.i, s);
+    return picked.size < poolCap;
+  };
+  const mainComs = comOrder.filter((c) => c.size >= 2).slice(0, 120);
+  for (const c of mainComs) {
+    if (c.arr[0] && !take(c.arr[0])) break;
+  }
+  const totalMass = mainComs.reduce((sum, c) => sum + c.mass, 0) || 1;
+  for (const c of mainComs) {
+    const quota = Math.min(40, Math.max(2, Math.round(2 + (c.mass / totalMass) * poolCap * 0.5)));
+    for (let k = 0; k < quota && k < c.arr.length; k++) {
+      if (!take(c.arr[k])) break;
+    }
+    if (picked.size >= poolCap) break;
+  }
+  if (picked.size < poolCap && ns.length) {
+    const b = coreBounds(ns, 0.04, 0.96);
+    const cols = 16, rows = 16;
+    const dx = (b.maxX - b.minX) || 1;
+    const dy = (b.maxY - b.minY) || 1;
+    const cells = Array.from({ length: cols * rows }, () => []);
+    for (const s of scored) {
+      const n = s.node;
+      if (!inCoreBounds(n, b, 0.1)) continue;
+      let cx = Math.floor(((n.x - b.minX) / dx) * cols);
+      let cy = Math.floor(((n.y - b.minY) / dy) * rows);
+      cx = Math.max(0, Math.min(cols - 1, cx));
+      cy = Math.max(0, Math.min(rows - 1, cy));
+      cells[cy * cols + cx].push(s);
+    }
+    for (const cell of cells) {
+      cell.sort((a, b) => (b.cent - a.cent) || (b.deg - a.deg));
+      const per = cell.length > 80 ? 4 : 2;
+      for (let k = 0; k < per && k < cell.length; k++) {
+        if (!take(cell[k])) break;
+      }
+      if (picked.size >= poolCap) break;
+    }
+  }
+  if (picked.size < poolCap) {
+    const glob = [...scored].sort((a, b) => (b.cent - a.cent) || (b.deg - a.deg));
+    for (const s of glob) {
+      if (!take(s)) break;
+    }
+  }
+  return [...picked.values()];
+}
+
+function rebuildLabels() {
+  labelsEl.innerHTML = '';
+  labelItems = [];
+  labelItemsBySize = [];
+  lastLabelCamKey = '';
+  if (!nodes.length) return;
+
+  const pool = pickLabelPool(nodes, P.nLabels);
+  if (!pool.length) return;
+  const vis = graphVisualScale(nodes.length);
+  const sMin = minOf(pool, (n) => n.gephiSize, 1);
+  const sMax = maxOf(pool, (n) => n.gephiSize, 1);
+  const sSpan = Math.max(sMax - sMin, 1e-6);
+  const fontSpan = Math.max(vis.labelMaxPx - vis.labelMinPx, 1);
+  const ordered = [...pool].sort((a, b) => a.gephiSize - b.gephiSize);
+
+  for (const item of ordered) {
+    const node = item.node;
+    const raw = String(node.l || '').replace(/^@+/, '').trim();
+    if (!raw || /\s/.test(raw) || raw.startsWith('#')) continue;
+    const text = `@${raw}`;
+    const el = document.createElement('div');
+    el.className = 'label';
+    el.textContent = text;
+
+    const u = (item.gephiSize - sMin) / sSpan;
+    const t = Math.pow(u, 0.7);
+    const abs = Math.pow(item.gephiSize / sMax, 1.25);
+    const mix = 0.45 * t + 0.55 * abs;
+    const fontPx = Math.round(vis.labelMinPx + fontSpan * mix);
+
+    el.style.fontSize = `${fontPx}px`;
+    el.style.fontWeight = mix > 0.7 ? '700' : mix > 0.4 ? '600' : '500';
+    el.style.zIndex = String(Math.round(10 + 90 * mix));
+    el.style.opacity = '0.94';
+    el.style.display = 'none';
+    const displayC = nodeRgb(node);
+    el.style.color = rgbCss(displayC);
+    el.style.textShadow = '0 0 6px rgba(0,0,0,0.85), 0 1px 2px rgba(0,0,0,0.75)';
+    const pr = node.pr != null ? Number(node.pr) : null;
+    el.title = pr != null
+      ? `${text} — PageRank ${pr.toExponential(2)} · deg ${node.deg} · clic : profil X`
+      : `${text} — deg ${node.deg} · clic : profil X`;
+    el.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      const u = xUrl(raw);
+      if (u) window.open(u, '_blank', 'noopener,noreferrer');
+    });
+    labelsEl.appendChild(el);
+    labelItems.push({
+      el, text, nodeRef: node, x: node.x, y: node.y,
+      pr: node.pr, deg: item.deg, gephiSize: item.gephiSize, fontPx, t: mix,
+      boxW: Math.max(28, text.length * fontPx * 0.55 + 12),
+      boxH: fontPx * 1.35,
+      com: item.com, visible: false, ox: 0, oy: 0,
+    });
+  }
+  labelItemsBySize = [...labelItems].sort(
+    (a, b) => (b.gephiSize - a.gephiSize) || (b.deg - a.deg)
+  );
+}
+
+function labelScreenBox(cx, cy, boxW, boxH, ox, oy) {
+  const left = cx - boxW * 0.5 + ox;
+  const top = cy - boxH * 1.3 + oy;
+  return { left, top, right: left + boxW, bottom: top + boxH, w: boxW, h: boxH };
+}
+function boxesHit(a, b, pad = 6) {
+  return !(a.right + pad <= b.left || a.left - pad >= b.right
+    || a.bottom + pad <= b.top || a.top - pad >= b.bottom);
+}
+function layoutVisibleLabels(w, h) {
+  const z = camera.zoom || 1;
+  const budget = labelRevealCount(z, fitZoom, P.nLabels, labelItems.length);
+  if (budget <= 0 || !labelItemsBySize.length) return [];
+  const hitPad = overlapPadForZoom(z, fitZoom);
+  const inView = [];
+  for (const it of labelItemsBySize) {
+    _proj.set(it.x, it.y, 0).project(camera);
+    if (_proj.z > 1) continue;
+    const cx = (_proj.x * 0.5 + 0.5) * w;
+    const cy = (-_proj.y * 0.5 + 0.5) * h;
+    if (cx < -80 || cx > w + 80 || cy < -80 || cy > h + 80) continue;
+    inView.push({ it, cx, cy });
+  }
+  const placed = [];
+  const boxes = [];
+  for (const { it, cx, cy } of inView) {
+    if (placed.length >= budget) break;
+    for (const [ox, oy] of labelOffsetOptions(it.boxW, it.boxH)) {
+      const box = labelScreenBox(cx, cy, it.boxW, it.boxH, ox, oy);
+      if (box.right < 4 || box.left > w - 4 || box.bottom < 4 || box.top > h - 4) continue;
+      if (boxes.some((b) => boxesHit(box, b, hitPad))) continue;
+      placed.push({ it, cx, cy, ox, oy, box });
+      boxes.push(box);
+      break;
+    }
+  }
+  return placed;
+}
+function labelCamKey() {
+  return `${(camera.zoom || 0).toFixed(5)}|${camera.position.x.toFixed(2)}|${camera.position.y.toFixed(2)}|${innerWidth}|${innerHeight}|${P.nLabels}|${colorMode}`;
+}
+function projectLabels() {
+  if (!labelItems.length) return;
+  const key = labelCamKey();
+  if (key === lastLabelCamKey) return;
+  lastLabelCamKey = key;
+  const placed = layoutVisibleLabels(innerWidth, innerHeight);
+  const shown = new Set(placed.map((p) => p.it));
+  for (const p of placed) {
+    const it = p.it;
+    it.visible = true;
+    it.el.style.display = 'block';
+    it.el.style.left = `${p.cx + p.ox}px`;
+    it.el.style.top = `${p.cy + p.oy}px`;
+  }
+  for (const it of labelItems) {
+    if (!shown.has(it) && it.visible) {
+      it.visible = false;
+      it.el.style.display = 'none';
+    }
+  }
 }
 
 function buildScene(data) {
@@ -293,13 +600,10 @@ function buildScene(data) {
   const positions = [];
   const colors = [];
   for (const e of edges) {
-    const a = nodes[e.s];
-    const b = nodes[e.t];
+    const a = nodes[e.s], b = nodes[e.t];
     if (!a || !b) continue;
-    const ca = lift(nodeRgb(a), 1.2);
-    const cb = lift(nodeRgb(b), 1.2);
-    const wNorm = Math.pow(e.w / maxW, 0.45);
-    const bright = 0.35 + 0.55 * wNorm;
+    const ca = lift(nodeRgb(a), 1.2), cb = lift(nodeRgb(b), 1.2);
+    const bright = 0.35 + 0.55 * Math.pow(e.w / maxW, 0.45);
     positions.push(a.x, a.y, 0, b.x, b.y, 0);
     colors.push(
       ca[0] * bright, ca[1] * bright, ca[2] * bright,
@@ -319,27 +623,27 @@ function buildScene(data) {
   scene.add(lines);
 
   const n = nodes.length;
+  const vis = graphVisualScale(n);
   const nPos = new Float32Array(n * 3);
   const nCol = new Float32Array(n * 3);
   const nSize = new Float32Array(n);
   const maxDeg = Math.max(1, ...nodes.map((x) => x.deg || 1));
+  const maxPr = Math.max(1e-12, ...nodes.map((x) => x.pr || 0));
   for (let i = 0; i < n; i++) {
     const nd = nodes[i];
-    nPos[i * 3] = nd.x;
-    nPos[i * 3 + 1] = nd.y;
-    nPos[i * 3 + 2] = 0.2;
+    nPos[i * 3] = nd.x; nPos[i * 3 + 1] = nd.y; nPos[i * 3 + 2] = 0.2;
     const c = lift(nodeRgb(nd), 1.12);
     nCol[i * 3] = c[0]; nCol[i * 3 + 1] = c[1]; nCol[i * 3 + 2] = c[2];
-    nSize[i] = 3.5 + 10 * Math.sqrt((nd.deg || 1) / maxDeg);
+    const prNorm = Math.sqrt((nd.pr || 0) / maxPr);
+    nSize[i] = (0.4 + 2.2 * (prNorm || Math.sqrt((nd.deg || 1) / maxDeg))) * vis.nodeBoost;
   }
-  nodeColorsBase = new Float32Array(nCol);
   const pGeo = new THREE.BufferGeometry();
   pGeo.setAttribute('position', new THREE.BufferAttribute(nPos, 3));
   pGeo.setAttribute('color', new THREE.BufferAttribute(nCol, 3));
   pGeo.setAttribute('size', new THREE.BufferAttribute(nSize, 1));
   const pMat = new THREE.ShaderMaterial({
     transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
-    uniforms: { uPR: { value: renderer.getPixelRatio() }, uAlpha: { value: 0.92 } },
+    uniforms: { uPR: { value: renderer.getPixelRatio() }, uAlpha: { value: vis.pointAlpha } },
     vertexShader: `
       attribute float size; attribute vec3 color; varying vec3 vC;
       uniform float uPR;
@@ -362,39 +666,26 @@ function buildScene(data) {
   pointsMesh.frustumCulled = false;
   scene.add(pointsMesh);
 
-  if (nodes.length) {
-    const xs = nodes.map((n) => n.x);
-    const ys = nodes.map((n) => n.y);
-    const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
-    const cy = (Math.min(...ys) + Math.max(...ys)) / 2;
-    controls.target.set(cx, cy, 0);
-    camera.position.set(cx, cy, 1100);
-  }
+  fitGraphToView(nodes);
   rebuildLabels();
 }
 
 function applyColorMode() {
   if (!pointsMesh || !nodes.length) return;
-  const n = nodes.length;
   const nCol = pointsMesh.geometry.attributes.color.array;
-  const maxW = Math.max(1, ...edges.map((e) => e.w || 1));
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i < nodes.length; i++) {
     const c = lift(nodeRgb(nodes[i]), 1.12);
     nCol[i * 3] = c[0]; nCol[i * 3 + 1] = c[1]; nCol[i * 3 + 2] = c[2];
   }
   pointsMesh.geometry.attributes.color.needsUpdate = true;
-  nodeColorsBase = new Float32Array(nCol);
-
-  if (lineGeo && lineColorsBase) {
+  const maxW = Math.max(1, ...edges.map((e) => e.w || 1));
+  if (lineGeo) {
     const colors = [];
     for (const e of edges) {
-      const a = nodes[e.s];
-      const b = nodes[e.t];
+      const a = nodes[e.s], b = nodes[e.t];
       if (!a || !b) continue;
-      const ca = lift(nodeRgb(a), 1.2);
-      const cb = lift(nodeRgb(b), 1.2);
-      const wNorm = Math.pow(e.w / maxW, 0.45);
-      const bright = 0.35 + 0.55 * wNorm;
+      const ca = lift(nodeRgb(a), 1.2), cb = lift(nodeRgb(b), 1.2);
+      const bright = 0.35 + 0.55 * Math.pow(e.w / maxW, 0.45);
       colors.push(
         ca[0] * bright, ca[1] * bright, ca[2] * bright,
         cb[0] * bright, cb[1] * bright, cb[2] * bright
@@ -403,6 +694,7 @@ function applyColorMode() {
     lineColorsBase = new Float32Array(colors);
     lineGeo.setAttribute('color', new THREE.Float32BufferAttribute(lineColorsBase, 3));
   }
+  rebuildLabels();
   renderDiscoursePanel();
 }
 
@@ -414,53 +706,19 @@ function setColorMode(mode) {
   applyColorMode();
 }
 
-function rebuildLabels() {
-  labelsEl.innerHTML = '';
-  const order = [...nodes.keys()].sort((a, b) => (nodes[b].deg || 0) - (nodes[a].deg || 0));
-  for (const i of order.slice(0, P.nLabels)) {
-    const nd = nodes[i];
-    const el = document.createElement('div');
-    el.className = 'label';
-    el.textContent = '@' + (nd.l || '');
-    el.dataset.handle = nd.l || '';
-    el.dataset.i = String(i);
-    labelsEl.appendChild(el);
-  }
-}
-
-function updateLabels() {
-  for (const el of labelsEl.children) {
-    const nd = nodes[Number(el.dataset.i)];
-    if (!nd) continue;
-    const v = new THREE.Vector3(nd.x, nd.y, 0.2).project(camera);
-    const x = (v.x * 0.5 + 0.5) * innerWidth;
-    const y = (-v.y * 0.5 + 0.5) * innerHeight;
-    if (v.z > 1 || x < -40 || y < -20 || x > innerWidth + 40 || y > innerHeight + 20) {
-      el.style.display = 'none';
-    } else {
-      el.style.display = 'block';
-      el.style.left = `${x}px`;
-      el.style.top = `${y}px`;
-    }
-  }
-}
-
 function worldFromClient(cx, cy) {
   const rect = renderer.domElement.getBoundingClientRect();
-  const ndc = new THREE.Vector2(
-    ((cx - rect.left) / rect.width) * 2 - 1,
-    -((cy - rect.top) / rect.height) * 2 + 1
-  );
-  const ray = new THREE.Raycaster();
-  ray.setFromCamera(ndc, camera);
-  const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
-  const hit = new THREE.Vector3();
-  ray.ray.intersectPlane(plane, hit);
-  return hit;
+  const ndcX = ((cx - rect.left) / rect.width) * 2 - 1;
+  const ndcY = -((cy - rect.top) / rect.height) * 2 + 1;
+  return {
+    x: ndcX * (camera.right - camera.left) * 0.5 / camera.zoom + controls.target.x,
+    y: ndcY * (camera.top - camera.bottom) * 0.5 / camera.zoom + controls.target.y,
+  };
 }
-
-function nearestNode(wx, wy, maxDist = 28) {
-  let best = -1, bestD = maxDist * maxDist;
+function nearestNode(wx, wy) {
+  const hitR = 14 / camera.zoom;
+  const maxD = hitR * hitR;
+  let best = -1, bestD = maxD;
   for (let i = 0; i < nodes.length; i++) {
     const dx = nodes[i].x - wx, dy = nodes[i].y - wy;
     const d = dx * dx + dy * dy;
@@ -468,7 +726,6 @@ function nearestNode(wx, wy, maxDist = 28) {
   }
   return best;
 }
-
 function onPointerMove(ev) {
   const w = worldFromClient(ev.clientX, ev.clientY);
   const i = nearestNode(w.x, w.y);
@@ -477,15 +734,15 @@ function onPointerMove(ev) {
   const comLabel = colorMode === 'base'
     ? `Louvain connectome ${nd.com_base ?? '—'}`
     : `Louvain coord ${nd.com ?? nd.com_coord ?? '—'}`;
+  const prBit = nd.pr != null ? `PageRank ${Number(nd.pr).toExponential(2)}` : '';
   tip.style.display = 'block';
   tip.style.left = `${ev.clientX + 12}px`;
   tip.style.top = `${ev.clientY + 12}px`;
-  tip.textContent = `@${nd.l} · deg ${nd.deg} · ${comLabel}`;
+  tip.innerHTML = `<div>@${nd.l} · deg ${nd.deg}</div><div class="muted">${prBit}${prBit ? ' · ' : ''}${comLabel}</div>`;
 }
-
 function onClick(ev) {
   const w = worldFromClient(ev.clientX, ev.clientY);
-  const i = nearestNode(w.x, w.y, 36);
+  const i = nearestNode(w.x, w.y);
   if (i < 0) return;
   const u = xUrl(nodes[i].l);
   if (u) window.open(u, '_blank', 'noopener,noreferrer');
@@ -496,13 +753,20 @@ function setStats(meta) {
   const match = meta.n_base_matched != null
     ? `<div>Match Louvain connectome · ${(meta.n_base_matched || 0).toLocaleString('fr-FR')}/${(meta.n_nodes || 0).toLocaleString('fr-FR')}</div>`
     : '';
+  const cent = meta.labelCentralityDef
+    ? `<div style="margin-top:4px;color:#9aa3b0;font-size:10px;line-height:1.35">Centralité labels · ${meta.labelCentrality || 'pagerank'}</div>`
+    : '';
   statsEl.innerHTML = [
     `<div>${meta.title || currentId}</div>`,
     `<div>Nœuds backbone · <b style="color:#e8eef7">${(meta.n_nodes || 0).toLocaleString('fr-FR')}</b></div>`,
     `<div>Arêtes Serrano · <b style="color:#e8eef7">${(meta.n_edges || 0).toLocaleString('fr-FR')}</b></div>`,
     `<div>Arêtes pré-filtre · ${pre}</div>`,
-    match,
+    match, cent,
   ].join('');
+  if (meta.labelCentralityDef && labelHintEl) {
+    labelHintEl.textContent =
+      `Clic label → profil X · zoom → plus de labels · taille = ${meta.labelCentrality || 'PageRank'} (${meta.labelCentralityDef.split(';')[0]})`;
+  }
 }
 
 function renderDiscoursePanel() {
@@ -524,10 +788,9 @@ function renderDiscoursePanel() {
       </div>`).join('');
     return;
   }
-
   const coms = discourse?.communities || {};
   const rows = Object.values(coms).sort((a, b) => (b.n_users || 0) - (a.n_users || 0));
-  commSubEl.textContent = 'Hashtags / lexique distinctifs (G²) sur pubs hors RT des comptes du backbone — clusters Louvain du réseau de coordination.';
+  commSubEl.textContent = 'Hashtags / lexique distinctifs (G²) sur pubs hors RT — clusters Louvain du réseau de coordination.';
   if (!rows.length) {
     commListEl.innerHTML = '<div class="comm-brief">Pas encore d’analyse discursive pour ce corpus.</div>';
     return;
@@ -558,10 +821,7 @@ function renderNav() {
     a.href = `?corpus=${encodeURIComponent(c.id)}`;
     a.textContent = shortLabel(c.label);
     a.className = c.id === currentId ? 'active' : '';
-    a.addEventListener('click', (e) => {
-      e.preventDefault();
-      loadCorpus(c.id);
-    });
+    a.addEventListener('click', (e) => { e.preventDefault(); loadCorpus(c.id); });
     nav.appendChild(a);
   }
   const back = document.createElement('a');
@@ -573,10 +833,7 @@ function renderNav() {
 
 async function loadCorpus(id) {
   const corp = corpora.find((c) => c.id === id) || corpora[0];
-  if (!corp) {
-    ldMsg.textContent = 'Aucun corpus dans corpora.json';
-    return;
-  }
+  if (!corp) { ldMsg.textContent = 'Aucun corpus dans corpora.json'; return; }
   currentId = corp.id;
   loading.classList.remove('hidden');
   ldMsg.textContent = `Chargement · ${shortLabel(corp.label)}…`;
@@ -587,13 +844,13 @@ async function loadCorpus(id) {
 
   try {
     const res = await fetch(corp.graph);
-    if (!res.ok) throw new Error(`HTTP ${res.status} — lancez le pipeline build_corpus.py`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     graph = await res.json();
     discourse = null;
     try {
       const dr = await fetch(`data/${currentId}/discourse.json`);
       if (dr.ok) discourse = await dr.json();
-    } catch (_) { /* optional */ }
+    } catch (_) {}
 
     setStats(graph.meta || {});
     const nE = (graph.edges || []).length;
@@ -601,7 +858,7 @@ async function loadCorpus(id) {
     if (!nN || !nE) {
       clearScene();
       commListEl.innerHTML = '';
-      statsEl.innerHTML += `<div style="margin-top:8px;color:#c9b27a">Aucun backbone Serrano (0 arête après α=0,05).</div>`;
+      statsEl.innerHTML += `<div style="margin-top:8px;color:#c9b27a">Aucun backbone Serrano.</div>`;
       loading.classList.add('hidden');
       return;
     }
@@ -637,7 +894,6 @@ async function boot() {
   const start = corpora.find((c) => c.id === q)?.id || corpora[0]?.id;
   await loadCorpus(start);
 }
-
 boot().catch((e) => { ldMsg.textContent = String(e); });
 </script>
 </body>
