@@ -48,6 +48,10 @@
       color: #c5ccd6; font-weight: 600; display: block; margin-bottom: 4px;
       font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
     }
+    #hud .mh-title-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px;
+    }
+    #hud .mh-title-row b { margin-bottom: 0; }
     #hud .method { color: #9bb07a; font-size: 10.5px; line-height: 1.35; margin-bottom: 8px; }
     #hud .note {
       color: #6a7380; font-size: 10px; line-height: 1.4; margin-top: 8px;
@@ -169,7 +173,10 @@
   <nav id="corpusNav" aria-label="Corpus"></nav>
   <aside id="hud">
     <a class="hud-link" id="backConnectome" href="../connectome/">← Connectome</a>
-    <b>Réseau de coordination</b>
+    <div class="mh-title-row">
+      <b>Réseau de coordination</b>
+      <span id="methodHelpSlot"></span>
+    </div>
     <div class="method">co-RT · Serrano α=0,05 (OR)</div>
     <div id="stats">—</div>
     <div style="margin-top:10px;margin-bottom:2px;color:#c5ccd6;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;font-weight:600">Couleurs</div>
@@ -218,6 +225,12 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { initMethodHelp } from '../shared/method-help.js';
+
+initMethodHelp({
+  topic: 'coordination',
+  buttonParent: document.getElementById('methodHelpSlot') || document.getElementById('hud'),
+});
 
 const wrap = document.getElementById('c');
 const labelsEl = document.getElementById('labels');

@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Connectomes — cross_corpus</title>
-  <!-- connectome-ui v20261022m : barre modes (TI/RT/#) vs liens pages (Analyses/Flux/Coord) -->
+  <!-- connectome-ui v20261022n : aide méthodologique ? -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; color: #ccc; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
@@ -53,6 +53,7 @@
     #navTools {
       display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;
     }
+    #navTools .mh-btn { align-self: center; }
     #graphMode,
     #viewLinks {
       display: inline-flex; gap: 0; padding: 2px; align-items: center; flex-wrap: nowrap; justify-content: center;
@@ -516,6 +517,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { initMethodHelp } from '../shared/method-help.js';
 
 const wrap = document.getElementById('c');
 const labelsEl = document.getElementById('labels');
@@ -2708,6 +2710,15 @@ async function boot() {
   }
   // Deep-link: ?corpus=ebola&graph=rt&view=analyses
   updateGraphModeButtons();
+  initMethodHelp({
+    buttonParent: document.getElementById('navTools'),
+    showConnectomeTabs: true,
+    getTopic: () => {
+      if (viewMode === 'analyses') return 'connectome_hash';
+      if (graphMode === 'rt') return 'connectome_rt';
+      return 'connectome_all';
+    },
+  });
   document.querySelectorAll('#graphMode button.mode[data-graph]').forEach((b) => {
     b.addEventListener('click', () => setGraphMode(b.dataset.graph));
   });

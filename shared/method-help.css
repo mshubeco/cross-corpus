@@ -1,0 +1,138 @@
+/* Method help modal — cross-corpus */
+.mh-btn {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(8,10,14,0.72);
+  color: #c5ccd6;
+  font: 700 13px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+  transition: color .15s, border-color .15s, background .15s;
+}
+.mh-btn:hover, .mh-btn:focus-visible {
+  color: #fff; border-color: rgba(138,180,255,0.55);
+  background: rgba(37,99,235,0.35); outline: none;
+}
+.mh-btn[aria-expanded="true"] {
+  color: #e7f6cf; border-color: rgba(115,192,0,0.5);
+  background: rgba(115,192,0,0.22);
+}
+
+.mh-overlay {
+  position: fixed; inset: 0; z-index: 80;
+  background: rgba(0,0,0,0.62);
+  backdrop-filter: blur(3px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px 16px;
+  opacity: 0; pointer-events: none;
+  transition: opacity .18s ease;
+}
+.mh-overlay.open { opacity: 1; pointer-events: auto; }
+
+.mh-dialog {
+  width: min(720px, 100%);
+  max-height: min(88vh, 900px);
+  display: flex; flex-direction: column;
+  background: #0c1016;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 14px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.55);
+  color: #c5ccd6;
+  font: 13px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  transform: translateY(8px);
+  transition: transform .18s ease;
+}
+.mh-overlay.open .mh-dialog { transform: translateY(0); }
+
+.mh-head {
+  flex-shrink: 0;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.mh-kicker {
+  font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: #8ab4ff; font-weight: 700; margin-bottom: 4px;
+}
+.mh-title {
+  margin: 0; font-size: 17px; font-weight: 700; color: #e8eef7; line-height: 1.25;
+}
+.mh-close {
+  width: 32px; height: 32px; border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: transparent; color: #9aa3b0; font-size: 18px; cursor: pointer;
+}
+.mh-close:hover { color: #fff; background: rgba(255,255,255,0.06); }
+
+.mh-tabs {
+  flex-shrink: 0;
+  display: flex; flex-wrap: wrap; gap: 4px;
+  padding: 10px 14px 0;
+}
+.mh-tab {
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  color: #9aa3b0; font: 600 11px/1 inherit;
+  padding: 6px 10px; border-radius: 999px; cursor: pointer;
+}
+.mh-tab:hover { color: #e8eef7; }
+.mh-tab.active {
+  color: #e7f6cf; background: rgba(115,192,0,0.22);
+  border-color: rgba(115,192,0,0.45);
+}
+
+.mh-body {
+  flex: 1; overflow: auto;
+  padding: 14px 18px 20px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+.mh-body h3 {
+  margin: 18px 0 8px; font-size: 12px; letter-spacing: 0.06em;
+  text-transform: uppercase; color: #8ab4ff; font-weight: 700;
+}
+.mh-body h3:first-child { margin-top: 4px; }
+.mh-body p { margin: 0 0 10px; color: #b7c0cc; }
+.mh-body ul { margin: 0 0 10px; padding-left: 1.15em; color: #b7c0cc; }
+.mh-body li { margin: 0 0 5px; }
+.mh-body strong { color: #e8eef7; font-weight: 650; }
+.mh-formula {
+  margin: 8px 0 12px; padding: 10px 12px;
+  background: rgba(138,180,255,0.08);
+  border: 1px solid rgba(138,180,255,0.18);
+  border-radius: 8px;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 12px; color: #d7e3ff; line-height: 1.45;
+  overflow-x: auto;
+}
+.mh-params {
+  width: 100%; border-collapse: collapse; margin: 0 0 12px; font-size: 12px;
+}
+.mh-params th, .mh-params td {
+  text-align: left; padding: 6px 8px; border-top: 1px solid rgba(255,255,255,0.06);
+  vertical-align: top;
+}
+.mh-params th { color: #8b93a0; font-weight: 600; width: 38%; }
+.mh-params td { color: #d0d6e0; }
+.mh-cite {
+  margin: 10px 0 0; padding: 10px 12px;
+  border-left: 3px solid rgba(138,180,255,0.45);
+  background: rgba(255,255,255,0.03);
+  color: #9aa3b0; font-size: 12px; line-height: 1.45;
+}
+.mh-caveat {
+  margin: 14px 0 0; padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(201,178,122,0.1);
+  border: 1px solid rgba(201,178,122,0.28);
+  color: #e6d7a8; font-size: 12px; line-height: 1.45;
+}
+.mh-caveat strong { color: #ffe9b0; }
+
+@media (max-width: 560px) {
+  .mh-dialog { max-height: 92vh; }
+  .mh-title { font-size: 15px; }
+}
