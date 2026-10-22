@@ -2132,6 +2132,17 @@ async function init() {
   };
   document.getElementById('opacity').addEventListener('input', refreshEdgeLook);
   document.getElementById('edgeBright').addEventListener('input', refreshEdgeLook);
+  const refreshNodesAndLabels = () => {
+    lastHudTick = 0;
+    const visible = updateGraphics();
+    updateHUD(visible);
+    if (!playing) {
+      controls.update();
+      renderer.render(scene, camera);
+    }
+  };
+  document.getElementById('nLabels').addEventListener('input', refreshNodesAndLabels);
+  document.getElementById('nodeScale').addEventListener('input', refreshNodesAndLabels);
   document.getElementById('colorMode').addEventListener('change', (e) => {
     colorMode = e.target.value;
     lastHudTick = 0;
