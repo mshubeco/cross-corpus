@@ -24,10 +24,10 @@ Vocabulaire affiché : *coordination d’amplification / backbone* — **pas** u
 - **Louvain connectome** : couleurs du Louvain du connectome d’origine (projection par `screen_name`)
 - **Panel droit** : analyse discursive brève des clusters de coordination (hashtags / lexique G² sur pubs hors RT)
 - **Labels** : mêmes règles que le connectome (révélation progressive au zoom, anti-chevauchement) ; **taille ∝ PageRank** pondéré (α=0,85, weight = co-RT Serrano) sur le backbone
-- **Vue 3D** (bouton) : extrusion Z au choix
-  - **Sync** : \(Z \propto -\mathrm{médiane}(\Delta t)\) — profondeur forte = co-RT plus synchrones
-  - **Chrono** : \(Z \propto \mathrm{médiane}(t_{co})\) — profondeur = moment dans la fenêtre
-  - **Cross-corpus** : \(Z = n_{\mathrm{cross}}/(N-1)\) — \(n_{\mathrm{cross}}\) = nb d’autres corpus du site où le compte est aussi sur le backbone Serrano
+- **Vue 3D** (bouton) : **hauteur** sur Z (le plan Z=0 = bas de l’échelle, pas « plus profond »)
+  - **Sync · Δt** : \(Z \propto -\mathrm{médiane}(\Delta t)\) — haut = co-RT simultanés ; bas = décalés. *Pas* la date.
+  - **Chrono · date** : \(Z \propto \mathrm{médiane}(t_{co})\) — haut = fin de fenêtre ; bas = début. *Pas* l’écart Δt.
+  - **Cross-corpus** : \(Z = n_{\mathrm{cross}}/(N-1)\) — haut = présent sur d’autres backbones du site
 
 ## Pipeline
 

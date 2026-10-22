@@ -284,10 +284,10 @@
     </div>
     <div id="zModeBlock">
       <div style="margin-top:8px;margin-bottom:2px;color:#c5ccd6;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;font-weight:600">Axe Z</div>
-      <div class="z-mode-row" id="zModeRow" role="group" aria-label="Mode de profondeur Z">
-        <button type="button" data-z="sync" class="active" title="Profondeur = synchronicité des co-RT">Sync</button>
-        <button type="button" data-z="chrono" title="Profondeur = chronologie des co-RT">Chrono</button>
-        <button type="button" data-z="cross" title="Profondeur = présence sur d'autres corpus du site">Cross-corpus</button>
+      <div class="z-mode-row" id="zModeRow" role="group" aria-label="Grandeur encodée sur l'axe Z">
+        <button type="button" data-z="sync" class="active" title="Hauteur Z = écart temporel des co-RT (Δt) — pas la date">Sync · Δt</button>
+        <button type="button" data-z="chrono" title="Hauteur Z = moment dans la fenêtre du corpus — pas l'écart Δt">Chrono · date</button>
+        <button type="button" data-z="cross" title="Hauteur Z = nb d'autres corpus du site">Cross-corpus</button>
       </div>
       <div id="zHint" aria-live="polite"></div>
     </div>
@@ -455,26 +455,26 @@ function computeZSpan(ns) {
 function zAxisSemantics(mode = zMode) {
   if (mode === 'cross') {
     return {
-      title: 'Z · cross',
-      low: 'mono-corpus',
-      high: 'multi-corpus',
+      title: 'Hauteur Z · cross',
+      low: 'Z=0 · ici seulement',
+      high: 'haut Z · multi-corpus',
       mid: 'partagé',
       ticks: ['0', '½', 'max'],
     };
   }
   if (mode === 'chrono') {
     return {
-      title: 'Z · chrono',
-      low: 'tôt',
-      high: 'tard',
+      title: 'Hauteur Z · date',
+      low: 'Z=0 · tôt (début fenêtre)',
+      high: 'haut Z · tard (fin fenêtre)',
       mid: 'milieu',
       ticks: ['début', 'milieu', 'fin'],
     };
   }
   return {
-    title: 'Z · sync',
-    low: 'décalé',
-    high: 'synchrone',
+    title: 'Hauteur Z · Δt',
+    low: 'Z=0 · décalé (Δt grand)',
+    high: 'haut Z · synchrone (Δt petit)',
     mid: 'moyen',
     ticks: ['Δt↑', '·', 'Δt↓'],
   };
@@ -595,9 +595,10 @@ function rebuildAxes() {
 
   makeAxisHud('X · layout', 'ax-x', ox + lenXY * 1.05, oy, oz);
   makeAxisHud('Y · layout', 'ax-y', ox, oy + lenXY * 1.05, oz);
-  makeAxisHud(sem.title, 'ax-z', ox, oy, oz + lenZ * 1.12);
-  makeAxisHud(sem.low, 'ax-z ax-z-end', ox + lenXY * 0.12, oy, oz + lenZ * 0.02);
-  makeAxisHud(sem.high, 'ax-z ax-z-end', ox + lenXY * 0.12, oy, oz + lenZ * 0.98);
+  makeAxisHud('↑ ' + sem.title, 'ax-z', ox, oy, oz + lenZ * 1.12);
+  makeAxisHud(sem.low, 'ax-z ax-z-end', ox + lenXY * 0.14, oy, oz + lenZ * 0.02);
+  makeAxisHud(sem.high, 'ax-z ax-z-end', ox + lenXY * 0.14, oy, oz + lenZ * 0.98);
+  makeAxisHud('plan Z = 0', 'ax-z ax-z-end', ox + lenXY * 0.55, oy + lenXY * 0.08, oz);
 }
 
 function syncZRuler() {
@@ -693,31 +694,29 @@ function sync3dControls() {
       const nCorp = (graph?.meta?.crossCorpus?.nCorpora)
         || (corpora?.length)
         || 8;
-      zHintEl.innerHTML = `<strong>Profondeur (axe Z) = coordination cross-corpus</strong>
-         <p style="margin:6px 0 0">Chaque compte est poussé selon le nombre d’<em>autres</em> corpus du site où il apparaît aussi sur le backbone Serrano (co-RT).</p>
+      zHintEl.innerHTML = `<strong>Hauteur sur Z = présence cross-corpus</strong>
+         <p style="margin:6px 0 0"><em>Plus un compte est haut</em>, plus il apparaît aussi sur d’autres backbones Serrano du site. Le plan gris Z&nbsp;=&nbsp;0 n’est pas « plus profond »&nbsp;: c’est la base (0 autre corpus).</p>
          <div class="z-axis">
-           <b>Profondeur faible</b><span>présent surtout ici (0 autre corpus)</span>
-           <b>Profondeur forte</b><span>présent sur plusieurs backbones (${nCorp}&nbsp;corpus du site)</span>
+           <b>Bas (Z→0)</b><span>surtout ce corpus</span>
+           <b>Haut (Z↑)</b><span>multi-corpus (jusqu’à ${nCorp - 1} autres)</span>
          </div>
-         Z = n<sub>cross</sub> / (${nCorp}−1). Le plan XY reste la structure du corpus courant.
-         <div class="z-note">Tournez la vue · ce n’est pas une date ni une distance géographique</div>`;
+         <div class="z-note">XY = structure locale · Z = combien d’autres corpus</div>`;
     } else if (zMode === 'chrono') {
-      zHintEl.innerHTML = `<strong>Profondeur (axe Z) = chronologie des co-RT</strong>
-         <p style="margin:6px 0 0">Médiane des instants de co-RT du compte, normalisée sur le corpus.</p>
+      zHintEl.innerHTML = `<strong>Chrono · date dans la fenêtre</strong>
+         <p style="margin:6px 0 0">Encode <em>quand</em> (calendrier) le compte fait ses co-RT dans la fenêtre du corpus. <strong>Ce n’est pas</strong> l’écart Δt entre partenaires.</p>
          <div class="z-axis">
-           <b>Profondeur faible</b><span>co-RT plus <em>tôt</em> dans la fenêtre</span>
-           <b>Profondeur forte</b><span>co-RT plus <em>tard</em> dans la fenêtre</span>
+           <b>Bas (Z→0)</b><span>co-RT plutôt <em>en début</em> de fenêtre</span>
+           <b>Haut (Z↑)</b><span>co-RT plutôt <em>en fin</em> de fenêtre</span>
          </div>
-         <div class="z-note">Tournez la vue (clic-glissé) pour lire l’axe Z</div>`;
+         <div class="z-note">Question Chrono&nbsp;: « à quel moment de la période&nbsp;? » · pas « à quel point simultanés&nbsp;? »</div>`;
     } else {
-      zHintEl.innerHTML = `<strong>Profondeur (axe Z) = synchronicité des co-RT</strong>
-         <p style="margin:6px 0 0">Chaque compte est poussé selon la <em>rapidité</em> de ses co-RT (pas selon une date du calendrier).</p>
+      zHintEl.innerHTML = `<strong>Sync · écart Δt (pas la date)</strong>
+         <p style="margin:6px 0 0">Encode <em>à quel point les co-RT sont simultanés</em> entre partenaires (médiane des Δt). <strong>Ce n’est pas</strong> la position dans le calendrier.</p>
          <div class="z-axis">
-           <b>Profondeur faible</b><span>co-RT plus <em>décalés</em> (même contenus, mais pas au même moment)</span>
-           <b>Profondeur forte</b><span>co-RT très <em>synchrones</em> (même contenus, presque en même temps)</span>
+           <b>Bas (Z→0)</b><span>Δt grand · co-RT <em>décalés</em> (même contenus, moments différents)</span>
+           <b>Haut (Z↑)</b><span>Δt petit · co-RT <em>synchrones</em> (presque en même temps)</span>
          </div>
-         Le plan du réseau (liens) reste « qui est lié à qui »&nbsp;; seule la profondeur encode le chronomètre d’écart.
-         <div class="z-note">Tournez la vue (clic-glissé) pour mieux sentir l’axe Z · ce n’est pas une distance géographique</div>`;
+         <div class="z-note">Question Sync&nbsp;: « réagissent-ils ensemble&nbsp;? » · pas « tôt ou tard dans le corpus&nbsp;? »</div>`;
     }
   }
 }
@@ -1285,19 +1284,19 @@ function onPointerMove(ev) {
     if (zMode === 'cross') {
       const nc = Number(nd.n_cross) || 0;
       const others = Array.isArray(nd.cross_corpora) ? nd.cross_corpora : [];
-      const depth = nc >= 3 ? 'profondeur forte' : nc >= 1 ? 'profondeur moyenne' : 'profondeur faible';
+      const h = nc >= 3 ? 'haut Z' : nc >= 1 ? 'Z moyen' : 'bas Z (≈0)';
       const list = others.length ? ` · ${others.join(', ')}` : '';
-      zBit = ` · ${nc} autre${nc > 1 ? 's' : ''} corpus${list} · ${depth}`;
+      zBit = ` · ${nc} autre${nc > 1 ? 's' : ''} corpus${list} · ${h}`;
     } else if (zMode === 'chrono' && nd.z_chrono != null) {
       const zc = Number(nd.z_chrono) || 0;
-      const depth = zc >= 0.66 ? 'tard' : zc <= 0.33 ? 'tôt' : 'milieu';
-      zBit = ` · chrono ${zc.toFixed(2)} · ${depth}`;
+      const when = zc >= 0.66 ? 'tard (haut Z)' : zc <= 0.33 ? 'tôt (bas Z≈0)' : 'milieu de fenêtre';
+      zBit = ` · date ${zc.toFixed(2)} · ${when}`;
     } else if (nd.dt_med != null) {
       const sec = Math.round(nd.dt_med);
       const zs = Number(nd.z_sync || 0);
-      const depth = zs >= 0.66 ? 'profondeur forte (sync)' : zs <= 0.33 ? 'profondeur faible (décalé)' : 'profondeur moyenne';
+      const sync = zs >= 0.66 ? 'synchrone (haut Z)' : zs <= 0.33 ? 'décalé (bas Z≈0)' : 'sync moyenne';
       const gap = sec < 60 ? `${sec}s` : sec < 3600 ? `${Math.round(sec / 60)} min` : `${Math.round(sec / 3600)} h`;
-      zBit = ` · écart ~${gap} · ${depth}`;
+      zBit = ` · Δt ~${gap} · ${sync}`;
     }
   }
   const nNeigh = (adj[i] || []).length;
