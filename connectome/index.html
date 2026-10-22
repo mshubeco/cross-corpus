@@ -22,7 +22,7 @@
     #corpusNav {
       position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 12;
       display: flex; flex-direction: column; align-items: center; gap: 5px;
-      width: max-content; max-width: calc(100vw - 600px);
+      width: max-content; max-width: calc(100vw - 520px);
       background: transparent; border: 0; overflow: visible;
     }
     #tabs {
@@ -50,7 +50,8 @@
       display: flex; align-items: center; justify-content: center; gap: 0; flex-wrap: wrap;
     }
     #graphMode {
-      display: inline-flex; gap: 0; padding: 2px; align-items: center;
+      display: inline-flex; gap: 0; padding: 2px; align-items: center; flex-wrap: wrap; justify-content: center;
+      max-width: min(920px, calc(100vw - 40px));
       background: rgba(8,10,14,0.62);
       border: 1px solid rgba(255,255,255,0.1);
       border-radius: 999px;
@@ -65,7 +66,10 @@
     .mode.mode-link {
       color: #9aa3b0; font-weight: 550;
       border-left: 1px solid rgba(255,255,255,0.12);
-      margin-left: 1px; padding-left: 10px; border-radius: 0 999px 999px 0;
+      margin-left: 1px; padding-left: 10px; border-radius: 999px;
+    }
+    #graphMode > .mode-link:last-child {
+      border-radius: 0 999px 999px 0;
     }
     .mode.mode-link:hover { color: #fff; background: rgba(255,255,255,0.06); }
     .comm-metrics { color: #8b93a0; font-weight: 500; font-variant-numeric: tabular-nums; font-size: 10.5px; }
@@ -327,10 +331,11 @@
       <div id="graphMode" role="tablist" aria-label="Interactions du graphe">
         <button type="button" class="mode active" data-graph="all" id="graphModeAll">Toutes interactions</button>
         <button type="button" class="mode" data-graph="rt" id="graphModeRt">RT</button>
+        <button type="button" class="mode" data-graph="rt_classes" id="graphModeRtClasses" title="Couleur des liens selon part RT (≤30 % / mixte / ≥70 %)">Classes RT</button>
         <button type="button" class="mode mode-analyses" data-mode="analyses" id="analysesModeBtn" title="Lexique distinctif des espaces">Analyses</button>
         <a id="analysesLink" class="mode mode-link" href="../analyses/ebola.html" title="Page analyses complète (nouvel onglet)" target="_blank" rel="noopener noreferrer">↗</a>
         <a id="fluxLink" class="mode mode-link" href="../flux-continu/?corpus=ebola" title="Flux continu (fenêtre 3j · FA2)">Flux continu</a>
-        <a id="coordLink" class="mode mode-link" href="../reseau-coordination/?corpus=ebola" title="Réseau de coordination (co-RT · Serrano α=0,05)">Réseau de coordination</a>
+        <a id="coordLink" class="mode mode-link" href="../reseau-coordination/?corpus=ebola" title="Réseau de coordination · co-RT · Serrano α=0,05 (OR)">Coordination</a>
       </div>
     </div>
   </nav>
@@ -402,7 +407,60 @@ const analysesModeBtn = document.getElementById('analysesModeBtn');
 const espaceFicheEl = document.getElementById('espaceFiche');
 let currentCorpusId = null;
 let corporaList = [];
-let graphMode = new URLSearchParams(location.search).get('graph') === 'rt' ? 'rt' : 'all';
+const _graphParam = new URLSearchParams(location.search).get('graph');
+let graphMode = (_graphParam === 'rt' || _graphParam === 'rt_classes') ? _graphParam : 'all';
+/** Map "s|t" (indices du graphe ALL) → poids RT, pour le mode Classes RT. */
+let rtWeightByEdge = null;
+
+const RT_CLASS_IX_MAX = 0.30;
+const RT_CLASS_RT_MIN = 0.70;
+const COL_INTERACT = [1.25, 0.48, 0.05];
+const COL_RETWEET = [0.12, 0.22, 0.48];
+const COL_MIXED = [0.85, 0.28, 0.95];
+
+function rtEdgeClass(rtFrac) {
+  const t = Math.max(0, Math.min(1, rtFrac || 0));
+  if (t <= RT_CLASS_IX_MAX) return 'ix';
+  if (t >= RT_CLASS_RT_MIN) return 'rt';
+  return 'mix';
+}
+
+function rtClassStyle(cls) {
+  if (cls === 'ix') return { col: COL_INTERACT, lumMul: 2.2 };
+  if (cls === 'rt') return { col: COL_RETWEET, lumMul: 0.12 };
+  return { col: COL_MIXED, lumMul: 0.6 };
+}
+
+/** Aligne graph_rt.json → indices du graphe ALL via screen_name. */
+function buildRtWeightMap(allData, rtData) {
+  const nameTo = new Map();
+  (allData.nodes || []).forEach((n, i) => {
+    const l = String(n.l || n.id || '').toLowerCase();
+    if (l) nameTo.set(l, i);
+  });
+  const map = new Map();
+  const rtNodes = rtData.nodes || [];
+  for (const e of rtData.edges || []) {
+    const a = rtNodes[e.s];
+    const b = rtNodes[e.t];
+    if (!a || !b) continue;
+    const ia = nameTo.get(String(a.l || a.id || '').toLowerCase());
+    const ib = nameTo.get(String(b.l || b.id || '').toLowerCase());
+    if (ia == null || ib == null) continue;
+    const k = `${ia}|${ib}`;
+    map.set(k, (map.get(k) || 0) + (Number(e.w) || 0));
+  }
+  return map;
+}
+
+function edgeRtFrac(e, rtMap) {
+  if (!rtMap || !e) return 0;
+  let wr = rtMap.get(`${e.s}|${e.t}`);
+  if (wr == null) wr = rtMap.get(`${e.t}|${e.s}`) || 0;
+  const w = Number(e.w) || 0;
+  if (w <= 0) return 0;
+  return Math.min(1, wr / w);
+}
 const graphCache = new Map();
 const pubStatsCache = new Map();
 const discourseCache = new Map();
@@ -492,11 +550,13 @@ async function fetchJsonWithProgress(url, onProgress) {
 
 function graphUrlFor(corp, mode) {
   if (mode === 'rt') return new URL(`./data/${corp.id}/graph_rt.json`, import.meta.url);
+  // all + rt_classes partagent le graphe toutes-interactions
   return new URL(corp.connectomeData || `./data/${corp.id}/graph.json`, import.meta.url);
 }
 
 function cacheKeyFor(corpusId, mode) {
-  return `${corpusId}:${mode}`;
+  const m = mode === 'rt_classes' ? 'all' : mode;
+  return `${corpusId}:${m}`;
 }
 
 async function ensureGraphData(corp, mode, { onProgress, force = false } = {}) {
@@ -1059,7 +1119,7 @@ function updateGraphModeButtons() {
 }
 
 function setGraphMode(mode) {
-  if (mode !== 'rt' && mode !== 'all') return;
+  if (mode !== 'rt' && mode !== 'all' && mode !== 'rt_classes') return;
   if (mode === graphMode && viewMode === 'graph') return;
   graphMode = mode;
   if (viewMode === 'analyses') setViewMode('graph', { syncUrl: false });
@@ -1071,7 +1131,7 @@ function setGraphMode(mode) {
 function syncCorpusUrl(corpusId) {
   if (!corpusId) return;
   const url = new URL(location.href);
-  const nextGraph = graphMode === 'rt' ? 'rt' : null;
+  const nextGraph = (graphMode === 'rt' || graphMode === 'rt_classes') ? graphMode : null;
   const nextView = viewMode === 'analyses' ? 'analyses' : null;
   const sameCorpus = url.searchParams.get('corpus') === corpusId;
   const sameGraph = (url.searchParams.get('graph') || null) === nextGraph;
@@ -1355,6 +1415,7 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   const nodes = data.nodes;
   const edges = data.edges;
   const maxW = maxOf(edges, (e) => e.w || 0, 1);
+  const useRtClasses = graphMode === 'rt_classes' && rtWeightByEdge;
 
   // Auto-tune hair density for large graphs (GPU/RAM + call-stack)
   if (edges.length > 200_000) {
@@ -1374,20 +1435,39 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   const core = coreBounds(nodes, 0.05, 0.95);
   const CHUNK = edges.length > 100_000 ? 1800 : edges.length > 40_000 ? 2800 : 5000;
 
-  for (let ei = 0; ei < edges.length; ei++) {
+  // Ordre de dessin : RT (voile) → mixtes → interactions (devant).
+  let edgeOrder = edges;
+  if (useRtClasses) {
+    const rank = { rt: 0, mix: 1, ix: 2 };
+    edgeOrder = edges.map((e, i) => {
+      const cls = rtEdgeClass(edgeRtFrac(e, rtWeightByEdge));
+      return { e, i, cls, r: rank[cls] };
+    }).sort((a, b) => a.r - b.r || a.i - b.i);
+  }
+
+  const nDraw = edgeOrder.length;
+  for (let ei = 0; ei < nDraw; ei++) {
     if (!stillCurrent()) return false;
-    const e = edges[ei];
+    const item = useRtClasses ? edgeOrder[ei] : null;
+    const e = useRtClasses ? item.e : edgeOrder[ei];
     const a = nodes[e.s];
     const b = nodes[e.t];
     if (!a || !b) continue;
     // Skip long spokes to out-of-GEXF fallback nodes (they clip the viewport).
     if (!inCoreBounds(a, core) || !inCoreBounds(b, core)) continue;
 
-    const ca = lift(a.c, 1.18);
-    const cb = lift(b.c, 1.18);
+    let ca, cb, bright;
     const wNorm = Math.pow(e.w / maxW, 0.45);
-    // faint individual hair — density creates brightness
-    const bright = 0.28 + 0.55 * wNorm;
+    if (useRtClasses) {
+      const style = rtClassStyle(item.cls);
+      ca = style.col;
+      cb = style.col;
+      bright = (0.28 + 0.55 * wNorm) * style.lumMul;
+    } else {
+      ca = lift(a.c, 1.18);
+      cb = lift(b.c, 1.18);
+      bright = 0.28 + 0.55 * wNorm;
+    }
 
     for (let s = 0; s < P.strands; s++) {
       // outer strands slightly dimmer
@@ -1397,8 +1477,8 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
       for (let i = 0; i < n - 1; i++) {
         const t0 = i / (n - 1);
         const t1 = (i + 1) / (n - 1);
-        const c0 = lerp3(ca, cb, t0);
-        const c1 = lerp3(ca, cb, t1);
+        const c0 = useRtClasses ? ca : lerp3(ca, cb, t0);
+        const c1 = useRtClasses ? cb : lerp3(ca, cb, t1);
         positions.push(
           pts[i * 3], pts[i * 3 + 1], pts[i * 3 + 2],
           pts[(i + 1) * 3], pts[(i + 1) * 3 + 1], pts[(i + 1) * 3 + 2]
@@ -1410,7 +1490,7 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
       }
     }
     if (ei > 0 && ei % CHUNK === 0) {
-      onProgress?.(ei / edges.length);
+      onProgress?.(ei / nDraw);
       await new Promise((r) => setTimeout(r, 0));
     }
   }
