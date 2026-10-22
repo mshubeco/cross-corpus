@@ -137,6 +137,8 @@
     .comm-accounts .handle { color: inherit; }
     .row { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
     .row span { width: 58px; flex-shrink: 0; }
+    #discRow span { width: 64px; color: #c5ccd6; font-weight: 600; }
+    #discRow:not([hidden]) { display: flex; }
     .row input, .row select { flex: 1; accent-color: #8ab4ff; min-width: 0; }
     .row select {
       background: #111; color: #c5ccd6; border: 1px solid rgba(255,255,255,0.12);
@@ -262,15 +264,15 @@
   <aside id="hud">
     <b>Connectome</b>
     <div id="stats">—</div>
-    <div class="row"><span>Lumière liens</span><input id="linkLight" type="range" min="0" max="1" step="0.01" value="0.28"></div>
-    <div class="row"><span>Bloom</span><input id="bloom" type="range" min="0" max="2.2" step="0.01" value="0.38"></div>
-    <div class="row"><span>Opacité</span><input id="op" type="range" min="0" max="0.45" step="0.005" value="0.07"></div>
-    <div class="row"><span>Labels</span><input id="nLabels" type="range" min="0" max="80" step="1" value="40"></div>
     <div class="row" id="discRow" hidden>
       <span title="Calque discursif (LSA+Leiden β=0,5) · 0 = Louvain structurel · 1 = clusters discursifs">Discours</span>
       <input id="discAlpha" type="range" min="0" max="1" step="0.01" value="0" />
     </div>
     <div class="nav-hint" id="discHint" hidden style="margin-top:4px">Calque LSA · Leiden β=0,5 · top 12 pôles discursifs</div>
+    <div class="row"><span>Lumière liens</span><input id="linkLight" type="range" min="0" max="1" step="0.01" value="0.28"></div>
+    <div class="row"><span>Bloom</span><input id="bloom" type="range" min="0" max="2.2" step="0.01" value="0.38"></div>
+    <div class="row"><span>Opacité</span><input id="op" type="range" min="0" max="0.45" step="0.005" value="0.07"></div>
+    <div class="row"><span>Labels</span><input id="nLabels" type="range" min="0" max="80" step="1" value="40"></div>
     <div class="nav-hint">Clic nœud/label → profil X · zoom → plus de labels</div>
     <div class="row"><span>Export</span>
       <select id="exportSize">
@@ -628,6 +630,7 @@ let nodeColorsStruct = null;
 let nodeColorsDisc = null;
 let graphData = null;
 let discursiveLayer = null;
+let discLoadSeq = 0;
 let labelItems = [];
 let labelItemsBySize = [];
 const _proj = new THREE.Vector3();
@@ -636,9 +639,13 @@ let lastLabelCamKey = '';
 function setDiscControlsVisible(on, meta) {
   const row = document.getElementById('discRow');
   const hint = document.getElementById('discHint');
-  if (row) row.hidden = !on;
+  if (row) {
+    row.hidden = !on;
+    row.style.display = on ? 'flex' : 'none';
+  }
   if (hint) {
     hint.hidden = !on;
+    hint.style.display = on ? '' : 'none';
     if (on && meta) {
       hint.textContent = meta;
     }
@@ -675,15 +682,36 @@ function buildDiscColorMap(layer) {
 }
 
 async function loadDiscursiveLayer(corpusId) {
+  const seq = ++discLoadSeq;
+  const isCurrent = () => seq === discLoadSeq;
   discursiveLayer = null;
   setDiscControlsVisible(false);
-  if (corpusId !== 'ebola_2_2026') return null;
+  if (!corpusId) return null;
+  // Afficher tout de suite pour Ebola 2 (évite un HUD vide si le fetch traîne).
+  if (corpusId === 'ebola_2_2026') {
+    setDiscControlsVisible(true, 'Chargement du calque discursif…');
+  }
   try {
-    const url = new URL(`./data/${corpusId}/discursive_layer.json`, import.meta.url);
-    const r = await fetch(url);
-    if (!r.ok) return null;
+    // document.baseURI : plus fiable qu'import.meta.url (inline module + ?corpus=).
+    const url = new URL(`./data/${corpusId}/discursive_layer.json`, document.baseURI);
+    const r = await fetch(url.href, { cache: 'no-cache' });
+    if (!isCurrent()) return null;
+    if (r.status === 404) {
+      setDiscControlsVisible(false);
+      return null;
+    }
+    if (!r.ok) {
+      console.warn('[discours] HTTP', r.status, url.href);
+      setDiscControlsVisible(false);
+      return null;
+    }
     const layer = buildDiscColorMap(await r.json());
-    if (!Array.isArray(layer.labels) || !layer.labels.length) return null;
+    if (!isCurrent()) return null;
+    if (!Array.isArray(layer.labels) || !layer.labels.length) {
+      console.warn('[discours] labels manquants', url.href);
+      setDiscControlsVisible(false);
+      return null;
+    }
     discursiveLayer = layer;
     const topN = (layer.top || []).length;
     P.discAlpha = 0.55;
@@ -694,7 +722,10 @@ async function loadDiscursiveLayer(corpusId) {
       `Calque discursif · LSA+Leiden β=${layer.beta ?? 0.5} · top ${topN} pôles · glisser « Discours »`
     );
     return layer;
-  } catch (_) {
+  } catch (err) {
+    if (!isCurrent()) return null;
+    console.warn('[discours] load error', err);
+    setDiscControlsVisible(false);
     return null;
   }
 }
