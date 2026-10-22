@@ -3168,7 +3168,7 @@ async function loadCorpus(corp) {
     const nE = (data.edges || []).length;
     setGraphLoader({
       title: corp.label,
-      msg: `Construction 3D · ${nE.toLocaleString('fr-FR')} liens…`,
+      msg: `Tracé du réseau · ${nE.toLocaleString('fr-FR')} liens…`,
       progress: 0.74,
       indeterminate: false,
     });
@@ -3185,7 +3185,7 @@ async function loadCorpus(corp) {
         if (!isCurrent()) return;
         setGraphLoader({
           title: corp.label,
-          msg: `Construction 3D · ${Math.round(p * 100)} %`,
+          msg: `Tracé du réseau · ${Math.round(p * 100)} %`,
           progress: 0.74 + 0.26 * p,
           indeterminate: false,
         });
