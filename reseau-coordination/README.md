@@ -24,9 +24,8 @@ Vocabulaire affiché : *coordination d’amplification / backbone* — **pas** u
 - **Louvain connectome** : couleurs du Louvain du connectome d’origine (projection par `screen_name`)
 - **Panel droit** : analyse discursive brève des clusters de coordination (hashtags / lexique G² sur pubs hors RT)
 - **Labels** : mêmes règles que le connectome (révélation progressive au zoom, anti-chevauchement) ; **taille ∝ PageRank** pondéré (α=0,85, weight = co-RT Serrano) sur le backbone
-- **Vue 3D** (bouton) : extrusion Z temporelle
-  - **A · Chrono** : \(Z =\) médiane(\(t_{co}\)) normalisée — \(t_{co}=\max(t_{RT_u},t_{RT_v})\)
-  - **B · Sync** : \(Z = -\mathrm{médiane}(\Delta t)\) normalisée — haut = co-RT plus synchrones
+- **Vue 3D** (bouton) : extrusion Z = synchronicité des co-RT
+  - \(Z \propto -\mathrm{médiane}(\Delta t)\) — profondeur forte = co-RT plus synchrones ; profondeur faible = plus décalés
 
 ## Pipeline
 
