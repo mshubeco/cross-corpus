@@ -418,7 +418,12 @@
       height: 4px; border-radius: 2px; background: rgba(255,255,255,0.08); overflow: hidden;
     }
     #espaceFiche .theme-bar > i { display: block; height: 100%; background: #4d8af0; border-radius: 2px; }
-    #espaceFiche.hash-focus .theme-bar > i { background: #e8b43c; }
+    /* Couleur de barre = inline (couleur Louvain) ; ambre seulement si absente */
+    #espaceFiche.hash-focus .theme-bar > i:not([style*="background"]) { background: #e8b43c; }
+    #espaceFiche .theme-lab > span .comm-dot {
+      display: inline-block; width: 7px; height: 7px; border-radius: 2px;
+      margin-right: 5px; vertical-align: middle; flex-shrink: 0;
+    }
     #espaceFiche .theme-pct { text-align: right; font-variant-numeric: tabular-nums; color: #6a7380; font-size: 10px; }
     #espaceFiche .limit {
       margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.08);
@@ -1092,6 +1097,23 @@ function discourseFor(commId) {
   return discourseData.communities[String(commId)] || null;
 }
 
+/** Couleur Louvain d’une communauté (graphe → discourse → neutre). */
+function communityColor(commId) {
+  const id = Number(commId);
+  if (Number.isNaN(id)) return null;
+  const from90 = (graphData?.meta?.communities90 || []).find((c) => Number(c.id) === id);
+  if (from90?.color) return String(from90.color);
+  const disc = discourseFor(id);
+  if (disc?.color) return String(disc.color);
+  // Dernier recours : premier nœud de la communauté
+  if (graphData?.nodes) {
+    for (const nd of graphData.nodes) {
+      if (Number(nd.com) === id && nd.c) return String(nd.c);
+    }
+  }
+  return null;
+}
+
 function setViewMode(mode, { syncUrl = true } = {}) {
   if (mode === 'analyses' && !communityColorModeActive()) return;
   viewMode = mode === 'analyses' ? 'analyses' : 'graph';
@@ -1229,7 +1251,7 @@ function hashtagCommunityShare(tag) {
           n: nn,
           pct: 0,
           label: d?.qualif_short || d?.qualif || `C${id}`,
-          color: d?.color || null,
+          color: communityColor(cid),
         };
       })
       .filter((r) => r.n > 0)
@@ -1260,7 +1282,7 @@ function hashtagCommunityShare(tag) {
         n,
         pct: matched ? (100 * n) / matched : 0,
         label: d?.qualif_short || d?.qualif || `C${id}`,
-        color: d?.color || null,
+        color: communityColor(id),
       };
     })
     .sort((a, b) => b.n - a.n || a.id - b.id);
@@ -1623,13 +1645,13 @@ function openHashtagFiche(tag) {
   const shareHtml = topRows.length
     ? `<div class="themes">${topRows
         .map((r) => {
-          const barColor = r.color
-            ? `background:${escapeHtml(r.color)}`
-            : '';
+          const col = r.color || communityColor(r.id) || '#e8b43c';
+          const safe = escapeHtml(col);
+          const label = r.label && r.label !== `C${r.id}` ? ` — ${escapeHtml(r.label)}` : '';
           return `<div class="theme-row" title="C${r.id} · ${r.n.toLocaleString('fr-FR')} compte${r.n > 1 ? 's' : ''}">
             <div class="theme-lab">
-              <span>C${r.id} — ${escapeHtml(r.label)}</span>
-              <div class="theme-bar"><i style="width:${Math.max(2, (100 * r.pct) / maxPct)}%;${barColor}"></i></div>
+              <span><i class="comm-dot" style="background:${safe}"></i>C${r.id}${label}</span>
+              <div class="theme-bar"><i style="width:${Math.max(2, (100 * r.pct) / maxPct)}%;background:${safe}"></i></div>
             </div>
             <div class="theme-pct">${r.pct.toFixed(0)}%</div>
           </div>`;
