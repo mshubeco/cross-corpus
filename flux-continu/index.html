@@ -297,6 +297,8 @@ function failLoader(err) {
 }
 
 const MAX_EDGES = 22000;
+/** Segments de ligne max (arêtes RT pointillées = plusieurs segments). */
+const MAX_LINE_SEGS = MAX_EDGES * 5;
 const FADE_DAYS = 0.35;
 const MIN_NODE_SIZE_ACTIVE = 2.4;
 const MIN_NODE_SIZE_PASSIVE = 1.0;
@@ -1259,8 +1261,8 @@ function initSimNodes() {
 
 function initGraphics() {
   lineGeo = new THREE.BufferGeometry();
-  linePos = new Float32Array(MAX_EDGES * 6);
-  lineCol = new Float32Array(MAX_EDGES * 6);
+  linePos = new Float32Array(MAX_LINE_SEGS * 6);
+  lineCol = new Float32Array(MAX_LINE_SEGS * 6);
   lineGeo.setAttribute('position', new THREE.BufferAttribute(linePos, 3));
   lineGeo.setAttribute('color', new THREE.BufferAttribute(lineCol, 3));
   lineGeo.setDrawRange(0, 0);
@@ -1271,19 +1273,8 @@ function initGraphics() {
   lineMesh = new THREE.LineSegments(lineGeo, lineMat);
   scene.add(lineMesh);
 
-  dashGeo = new THREE.BufferGeometry();
-  dashPos = new Float32Array(MAX_EDGES * 6);
-  dashCol = new Float32Array(MAX_EDGES * 6);
-  dashGeo.setAttribute('position', new THREE.BufferAttribute(dashPos, 3));
-  dashGeo.setAttribute('color', new THREE.BufferAttribute(dashCol, 3));
-  dashGeo.setDrawRange(0, 0);
-  dashMat = new THREE.LineDashedMaterial({
-    vertexColors: true, transparent: true, opacity: 0.12,
-    blending: THREE.AdditiveBlending, depthWrite: false,
-    dashSize: 6, gapSize: 5, scale: 1,
-  });
-  dashMesh = new THREE.LineSegments(dashGeo, dashMat);
-  scene.add(dashMesh);
+  // Plus de LineDashedMaterial : computeLineDistances() chaque frame gelait la lecture.
+  dashGeo = dashPos = dashCol = dashMat = dashMesh = null;
 
   const n = nodes.length;
   pointGeo = new THREE.BufferGeometry();
@@ -1382,16 +1373,41 @@ function fadeSpeed() {
   return 3 + slider * 1.4;
 }
 
+function pushLineSeg(ax, ay, bx, by, colA, colB, bright, state) {
+  if (state.segCount >= MAX_LINE_SEGS) return false;
+  let { lp, lc } = state;
+  linePos[lp++] = ax; linePos[lp++] = ay; linePos[lp++] = 0;
+  linePos[lp++] = bx; linePos[lp++] = by; linePos[lp++] = 0;
+  for (const c of colA) lineCol[lc++] = c * bright;
+  for (const c of colB) lineCol[lc++] = c * bright;
+  state.lp = lp;
+  state.lc = lc;
+  state.segCount++;
+  return true;
+}
+
+/** Pointillés géométriques (sans LineDashedMaterial / computeLineDistances). */
+function pushDashedEdge(ax, ay, bx, by, colA, colB, bright, state) {
+  const cells = 6;
+  for (let i = 0; i < cells; i++) {
+    const t0 = i / cells;
+    const t1 = Math.min(1, t0 + 0.55 / cells);
+    const x0 = ax + (bx - ax) * t0;
+    const y0 = ay + (by - ay) * t0;
+    const x1 = ax + (bx - ax) * t1;
+    const y1 = ay + (by - ay) * t1;
+    if (!pushLineSeg(x0, y0, x1, y1, colA, colB, bright, state)) return;
+  }
+}
+
 function updateGraphics() {
   const opacity = parseFloat(document.getElementById('opacity').value);
   lineMat.opacity = opacity;
-  if (dashMat) dashMat.opacity = opacity;
   const edgeBright = parseFloat(document.getElementById('edgeBright').value);
   const nodeScale = parseFloat(document.getElementById('nodeScale').value);
   const rtMode = colorMode === 'rt_share';
 
-  let lp = 0, lc = 0, segCount = 0;
-  let dp = 0, dc = 0, dashCount = 0;
+  const state = { lp: 0, lc: 0, segCount: 0 };
   const maxW = edgeList.length ? edgeList[0].w : 1;
 
   for (const e of edgeList) {
@@ -1431,28 +1447,16 @@ function updateGraphics() {
       colB = b.color;
     }
 
-    const useDash = rtMode && rtFrac >= RT_DASH_FRAC;
-    if (useDash) {
-      dashPos[dp++] = a.x; dashPos[dp++] = a.y; dashPos[dp++] = 0;
-      dashPos[dp++] = b.x; dashPos[dp++] = b.y; dashPos[dp++] = 0;
-      for (const c of [...colA, ...colB]) dashCol[dc++] = c * bright;
-      dashCount++;
+    if (rtMode && rtFrac >= RT_DASH_FRAC) {
+      pushDashedEdge(a.x, a.y, b.x, b.y, colA, colB, bright, state);
     } else {
-      linePos[lp++] = a.x; linePos[lp++] = a.y; linePos[lp++] = 0;
-      linePos[lp++] = b.x; linePos[lp++] = b.y; linePos[lp++] = 0;
-      for (const c of [...colA, ...colB]) lineCol[lc++] = c * bright;
-      segCount++;
+      pushLineSeg(a.x, a.y, b.x, b.y, colA, colB, bright, state);
     }
+    if (state.segCount >= MAX_LINE_SEGS) break;
   }
-  lineGeo.setDrawRange(0, segCount * 2);
+  lineGeo.setDrawRange(0, state.segCount * 2);
   lineGeo.attributes.position.needsUpdate = true;
   lineGeo.attributes.color.needsUpdate = true;
-  if (dashGeo) {
-    dashGeo.setDrawRange(0, dashCount * 2);
-    dashGeo.attributes.position.needsUpdate = true;
-    dashGeo.attributes.color.needsUpdate = true;
-    if (dashCount > 0) dashGeo.computeLineDistances();
-  }
 
   let visible = 0;
   for (let i = 0; i < simNodes.length; i++) {
