@@ -4,7 +4,7 @@
 Sources (when available):
   - analyses/intercomm/<id>_profiles.json  → hashtags / terms (z)
   - connectome/data/<id>/graph.json        → communities90 + hubs
-  - optional CSV for samples (ebola_2_2026 only for now)
+  - CSV CocktailFusion → effectifs réels de comptes par # distinctif
 
 Désignations = panneau COMMUNAUTÉS uniquement (pas sur le graphe).
 """
@@ -24,6 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CONNECTOME = Path(__file__).resolve().parent
 PROFILES_DIR = ROOT / "analyses" / "intercomm"
 MANIFEST = CONNECTOME / "manifest.json"
+CROSS_CORPUS_EXPORTS = Path(r"C:\Users\th8992be\Desktop\cross_corpus")
 
 LIMIT_FR = (
     "Label opérationnel fondé sur lexique distinctif (z) / structure / échantillons — "
@@ -42,11 +43,24 @@ DESIGNATIONS: dict[str, dict[int, str]] = {
     },
 }
 
+# Cap liste stockée pour highlight (n réel = tag_n_accounts)
+TAG_ACCOUNTS_STORE_CAP = 15000
+
 CSV_BY_CORPUS: dict[str, Path] = {
     "ebola_2_2026": Path(
         r"C:\Users\th8992be\Downloads"
         r"\Export_collecte_ebola_2_collect_20260922_175246_20260101-20260922_full_20260923_091544.csv"
     ),
+    "ebola": CROSS_CORPUS_EXPORTS
+    / "Export_dl_ebola_corpus_ebola_fr_2014_2026_20260507-20260519_full_20260824_114335.csv",
+    "mpox": CROSS_CORPUS_EXPORTS
+    / "Export_dl_corpus_mpox_fr_dec2023_janv2026_20240613-20250113_full_20260824_113647.csv",
+    "hantavirus": CROSS_CORPUS_EXPORTS
+    / "Export_dl_corpus_hantavirus_fr_mai_2026_20260505-20260520_full_20260824_114316.csv",
+    "macron_nucleaire": CROSS_CORPUS_EXPORTS
+    / "Export_FF_corpus_macron_nucleaire_20260301-20260303_full_20260824_114345.csv",
+    "hmpv": CROSS_CORPUS_EXPORTS / "Export_padmen_hmpv_20250101-20250630_full.csv",
+    "hmpv_fr": CROSS_CORPUS_EXPORTS / "Export_padmen_hmpv_fr_20250101-20250630_full.csv",
 }
 
 # Canicule : partition connectome ≠ profils intercomm → script dédié
@@ -61,14 +75,15 @@ def short_label(des: str, max_len: int = 48) -> str:
     return (cut or s[: max_len - 3]) + "..."
 
 
-def parse_hashtags(val: str) -> list[str]:
-    if not val:
-        return []
-    out = []
-    for part in re.split(r"[,;\s]+", str(val)):
-        t = part.strip().lstrip("#").lower()
-        if t:
-            out.append(t)
+def parse_hashtags(val: str, text: str = "") -> set[str]:
+    out: set[str] = set()
+    if val:
+        for part in re.split(r"[,;\s]+", str(val)):
+            t = part.strip().lstrip("#").lower()
+            if t:
+                out.add(t)
+    if text:
+        out |= {h.lower() for h in re.findall(r"#(\w+)", text, flags=re.UNICODE)}
     return out
 
 
@@ -98,22 +113,24 @@ def corpus_ids() -> list[str]:
                 ids.append(str(c["id"]))
     if not ids:
         ids = [p.name for p in (CONNECTOME / "data").iterdir() if p.is_dir()]
-    return ids
+    # canicule = script dédié
+    return [i for i in ids if i != "canicule"]
 
 
-def collect_samples_from_csv(
+def collect_from_csv(
     csv_path: Path,
     sn_to_com: dict[str, int],
-    want_tags: dict[int, set[str]],
+    watch_tags: set[str],
+    sample_coms: set[int],
 ) -> tuple[dict[int, list[dict]], dict[str, set[str]], dict[int, int]]:
+    """Effectifs réels : comptes du graphe ayant publié (hors RT) chaque # surveillé."""
     samples_by_com: dict[int, list[dict]] = defaultdict(list)
     tag_accounts: dict[str, set[str]] = defaultdict(set)
     n_own_est: dict[int, int] = defaultdict(int)
-    all_watch: set[str] = set()
-    for s in want_tags.values():
-        all_watch |= s
+    if not watch_tags:
+        return samples_by_com, tag_accounts, n_own_est
 
-    print(f"  Streaming {csv_path.name}…", flush=True)
+    print(f"  Streaming {csv_path.name} · watch={len(watch_tags)} tags…", flush=True)
     with csv_path.open("r", encoding="utf-8", errors="replace", newline="") as f:
         reader = csv.DictReader(f)
         for i, row in enumerate(reader):
@@ -123,19 +140,21 @@ def collect_samples_from_csv(
             if not sn:
                 continue
             cid = sn_to_com.get(sn)
-            if cid is None or cid not in want_tags:
+            if cid is None:
                 continue
             text = row.get("text") or ""
             if is_retweet(row.get("tweet_type") or "", text):
                 continue
-            n_own_est[cid] += 1
-            tags = set(parse_hashtags(row.get("hashtag") or ""))
-            tags |= {h.lower() for h in re.findall(r"#(\w+)", text, flags=re.UNICODE)}
-            hit = tags & want_tags[cid]
+            if cid in sample_coms:
+                n_own_est[cid] += 1
+            tags = parse_hashtags(row.get("hashtag") or "", text)
+            hit = tags & watch_tags
             if not hit:
-                hit = tags & all_watch
-            if not hit:
-                if len(samples_by_com[cid]) < 2 and len(text.strip()) > 40:
+                if (
+                    cid in sample_coms
+                    and len(samples_by_com[cid]) < 2
+                    and len(text.strip()) > 40
+                ):
                     samples_by_com[cid].append(
                         {
                             "sn": sn,
@@ -145,10 +164,10 @@ def collect_samples_from_csv(
                         }
                     )
                 continue
-            tag = sorted(hit)[0]
             for t in hit:
                 tag_accounts[t].add(sn)
-            if len(samples_by_com[cid]) < 8:
+            if cid in sample_coms and len(samples_by_com[cid]) < 8:
+                tag = sorted(hit)[0]
                 samples_by_com[cid].append(
                     {
                         "sn": sn,
@@ -158,6 +177,19 @@ def collect_samples_from_csv(
                     }
                 )
     return samples_by_com, tag_accounts, n_own_est
+
+
+def pack_tag_accounts(
+    tag_accounts: dict[str, set[str]],
+) -> tuple[dict[str, list[str]], dict[str, int]]:
+    stored: dict[str, list[str]] = {}
+    counts: dict[str, int] = {}
+    for t, sns in sorted(tag_accounts.items()):
+        if not sns:
+            continue
+        counts[t] = len(sns)
+        stored[t] = sorted(sns)[:TAG_ACCOUNTS_STORE_CAP]
+    return stored, counts
 
 
 def build_one(cid: str) -> Path | None:
@@ -186,21 +218,30 @@ def build_one(cid: str) -> Path | None:
     c90_ids = [int(c["id"]) for c in c90]
     ordered_ids = list(dict.fromkeys([*by_id.keys(), *c90_ids[:14]]))
 
-    want_tags: dict[int, set[str]] = {}
+    watch_tags: set[str] = set()
     for mid, c in by_id.items():
-        tags = {str(h["t"]).lower() for h in (c.get("hashtags") or [])[:8]}
-        if not tags:
-            tags = {str(t["t"]).lower() for t in (c.get("terms") or [])[:3]}
-        want_tags[mid] = tags
+        for h in (c.get("hashtags") or [])[:8]:
+            watch_tags.add(str(h["t"]).lower())
+        if not (c.get("hashtags") or []):
+            for t in (c.get("terms") or [])[:3]:
+                watch_tags.add(str(t["t"]).lower())
 
     samples_by_com: dict[int, list[dict]] = defaultdict(list)
     tag_accounts: dict[str, set[str]] = defaultdict(set)
     n_own_est: dict[int, int] = defaultdict(int)
     csv_path = CSV_BY_CORPUS.get(cid)
-    if csv_path and csv_path.is_file() and want_tags:
-        samples_by_com, tag_accounts, n_own_est = collect_samples_from_csv(
-            csv_path, sn_to_com, want_tags
+    csv_ok = bool(csv_path and csv_path.is_file() and watch_tags)
+    if csv_ok:
+        samples_by_com, tag_accounts, n_own_est = collect_from_csv(
+            csv_path, sn_to_com, watch_tags, set(by_id.keys()) or set(ordered_ids)
         )
+        print(
+            f"  CSV effectifs: {sum(len(s) for s in tag_accounts.values()):,} "
+            f"compte·tag · {len(tag_accounts)} tags",
+            flush=True,
+        )
+    elif csv_path and not csv_path.is_file():
+        print(f"  WARN CSV manquant: {csv_path}", flush=True)
 
     overrides = DESIGNATIONS.get(cid) or {}
     communities_out: dict[str, dict] = {}
@@ -249,7 +290,8 @@ def build_one(cid: str) -> Path | None:
         des = overrides.get(mid) or auto_designation(str(hub), key_hashtags, key_words)
         for h in key_hashtags:
             tag_communities[h["tag"]].add(mid)
-            if hub:
+            # Fallback hubs seulement si pas de CSV (sinon effectifs réels déjà là)
+            if not csv_ok and hub:
                 tag_accounts[h["tag"]].add(str(hub).lower())
 
         communities_out[str(mid)] = {
@@ -267,28 +309,43 @@ def build_one(cid: str) -> Path | None:
             "hub": hub,
         }
 
+    # Ne garder que les tags distinctifs listés
+    keep = set(tag_communities.keys())
+    tag_accounts = {t: sns for t, sns in tag_accounts.items() if t in keep}
+    stored, counts = pack_tag_accounts(tag_accounts)
+
     window = None
     meta_g = graph.get("meta") or {}
     if meta_g.get("window"):
         window = meta_g["window"]
+
+    src_bits = []
+    if by_id:
+        src_bits.append(f"{cid}_profiles.json")
+    src_bits.append("graph communities90")
+    if csv_ok:
+        src_bits.append(f"CSV effectifs # ({csv_path.name})")
 
     payload = {
         "meta": {
             "cluster": meta_g.get("title") or cid,
             "corpus": cid,
             "window": window,
-            "source": (
-                f"{cid}_profiles.json + graph communities90"
-                if by_id
-                else "graph communities90 (hubs)"
-            ),
+            "source": " + ".join(src_bits),
             "keyness": "z log-odds (profiles intercomm) vs reste du graphe"
             if by_id
             else "désignation hub (profil lexique absent)",
+            "tag_accounts_def": (
+                "Comptes du graphe ayant publié hors RT au moins un message "
+                "portant le hashtag (champ hashtag + # dans le texte)."
+                if csv_ok
+                else "Fallback hubs (CSV absent)."
+            ),
             "limit": LIMIT_FR,
         },
         "communities": communities_out,
-        "tag_accounts": {t: sorted(sns) for t, sns in sorted(tag_accounts.items()) if sns},
+        "tag_accounts": stored,
+        "tag_n_accounts": counts,
         "tag_communities": {
             t: sorted(ids) for t, ids in sorted(tag_communities.items()) if ids
         },
@@ -299,7 +356,8 @@ def build_one(cid: str) -> Path | None:
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     print(
         f"  → {out.relative_to(CONNECTOME)} · "
-        f"{len(communities_out)} espaces · {len(payload['tag_accounts'])} tags",
+        f"{len(communities_out)} espaces · {len(stored)} tags · "
+        f"nAcc max={max(counts.values()) if counts else 0}",
         flush=True,
     )
     return out
@@ -314,12 +372,11 @@ def main() -> None:
         if p:
             done.append(cid)
 
-    # Update manifest discourseData pointers
     if MANIFEST.is_file():
         m = json.loads(MANIFEST.read_text(encoding="utf-8"))
         for c in m.get("corpora") or []:
             cid = c.get("id")
-            if cid in done:
+            if cid in done or cid == "canicule":
                 c["discourseData"] = f"data/{cid}/discourse.json"
         MANIFEST.write_text(
             json.dumps(m, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"

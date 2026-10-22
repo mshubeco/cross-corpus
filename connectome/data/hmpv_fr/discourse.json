@@ -3,13 +3,16 @@
     "cluster": "HMPV FR · 2025",
     "corpus": "hmpv_fr",
     "window": null,
-    "source": "graph communities90 (hubs)",
+    "source": "graph communities90",
     "keyness": "désignation hub (profil lexique absent)",
+    "tag_accounts_def": "Fallback hubs (CSV absent).",
     "limit": "Label opérationnel fondé sur lexique distinctif (z) / structure / échantillons — pas une appartenance partisane des comptes ordinaires."
   },
   "communities": {
     "1": {
       "id": "1",
+      "qualif": "pôle @75secondes",
+      "qualif_short": "pôle @75secondes",
       "justification": "C1 · hub @75secondes. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -18,12 +21,12 @@
       "n_users": 153,
       "n_original_tweets": 153,
       "color": "#73c000",
-      "hub": "75secondes",
-      "qualif": "espace @75secondes",
-      "qualif_short": "espace @75secondes"
+      "hub": "75secondes"
     },
     "2": {
       "id": "2",
+      "qualif": "pôle @francenews24",
+      "qualif_short": "pôle @francenews24",
       "justification": "C2 · hub @francenews24. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -32,12 +35,12 @@
       "n_users": 57,
       "n_original_tweets": 65,
       "color": "#ff8000",
-      "hub": "francenews24",
-      "qualif": "espace @francenews24",
-      "qualif_short": "espace @francenews24"
+      "hub": "francenews24"
     },
     "5": {
       "id": "5",
+      "qualif": "pôle @tatiann69922625",
+      "qualif_short": "pôle @tatiann69922625",
       "justification": "C5 · hub @tatiann69922625. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -46,12 +49,12 @@
       "n_users": 48,
       "n_original_tweets": 48,
       "color": "#c4a574",
-      "hub": "tatiann69922625",
-      "qualif": "espace @tatiann69922625",
-      "qualif_short": "espace @tatiann69922625"
+      "hub": "tatiann69922625"
     },
     "7": {
       "id": "7",
+      "qualif": "pôle @france24_fr",
+      "qualif_short": "pôle @france24_fr",
       "justification": "C7 · hub @france24_fr. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -60,12 +63,12 @@
       "n_users": 41,
       "n_original_tweets": 61,
       "color": "#de81ff",
-      "hub": "france24_fr",
-      "qualif": "espace @france24_fr",
-      "qualif_short": "espace @france24_fr"
+      "hub": "france24_fr"
     },
     "4": {
       "id": "4",
+      "qualif": "pôle @eclairelutin",
+      "qualif_short": "pôle @eclairelutin",
       "justification": "C4 · hub @eclairelutin. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -74,12 +77,12 @@
       "n_users": 30,
       "n_original_tweets": 38,
       "color": "#ff497c",
-      "hub": "eclairelutin",
-      "qualif": "espace @eclairelutin",
-      "qualif_short": "espace @eclairelutin"
+      "hub": "eclairelutin"
     },
     "10": {
       "id": "10",
+      "qualif": "pôle @le_parisien",
+      "qualif_short": "pôle @le_parisien",
       "justification": "C10 · hub @le_parisien. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -88,12 +91,12 @@
       "n_users": 30,
       "n_original_tweets": 38,
       "color": "#00bd94",
-      "hub": "le_parisien",
-      "qualif": "espace @le_parisien",
-      "qualif_short": "espace @le_parisien"
+      "hub": "le_parisien"
     },
     "3": {
       "id": "3",
+      "qualif": "pôle @kasprzykremi",
+      "qualif_short": "pôle @kasprzykremi",
       "justification": "C3 · hub @kasprzykremi. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -102,12 +105,12 @@
       "n_users": 30,
       "n_original_tweets": 32,
       "color": "#b45309",
-      "hub": "kasprzykremi",
-      "qualif": "espace @kasprzykremi",
-      "qualif_short": "espace @kasprzykremi"
+      "hub": "kasprzykremi"
     },
     "8": {
       "id": "8",
+      "qualif": "pôle @asianews_fr",
+      "qualif_short": "pôle @asianews_fr",
       "justification": "C8 · hub @asianews_fr. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -116,12 +119,12 @@
       "n_users": 27,
       "n_original_tweets": 28,
       "color": "#eab308",
-      "hub": "asianews_fr",
-      "qualif": "espace @asianews_fr",
-      "qualif_short": "espace @asianews_fr"
+      "hub": "asianews_fr"
     },
     "9": {
       "id": "9",
+      "qualif": "pôle @c_a_g0101",
+      "qualif_short": "pôle @c_a_g0101",
       "justification": "C9 · hub @c_a_g0101. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -130,12 +133,12 @@
       "n_users": 26,
       "n_original_tweets": 63,
       "color": "#2563eb",
-      "hub": "c_a_g0101",
-      "qualif": "espace @c_a_g0101",
-      "qualif_short": "espace @c_a_g0101"
+      "hub": "c_a_g0101"
     },
     "13": {
       "id": "13",
+      "qualif": "pôle @ngrandvaux",
+      "qualif_short": "pôle @ngrandvaux",
       "justification": "C13 · hub @ngrandvaux. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -144,12 +147,12 @@
       "n_users": 22,
       "n_original_tweets": 28,
       "color": "#a855f7",
-      "hub": "ngrandvaux",
-      "qualif": "espace @ngrandvaux",
-      "qualif_short": "espace @ngrandvaux"
+      "hub": "ngrandvaux"
     },
     "0": {
       "id": "0",
+      "qualif": "pôle @aixematrice",
+      "qualif_short": "pôle @aixematrice",
       "justification": "C0 · hub @aixematrice. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -158,12 +161,12 @@
       "n_users": 22,
       "n_original_tweets": 29,
       "color": "#00c1ff",
-      "hub": "aixematrice",
-      "qualif": "espace @aixematrice",
-      "qualif_short": "espace @aixematrice"
+      "hub": "aixematrice"
     },
     "17": {
       "id": "17",
+      "qualif": "pôle @cavousf5",
+      "qualif_short": "pôle @cavousf5",
       "justification": "C17 · hub @cavousf5. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -172,12 +175,12 @@
       "n_users": 17,
       "n_original_tweets": 17,
       "color": "#14b8a6",
-      "hub": "cavousf5",
-      "qualif": "espace @cavousf5",
-      "qualif_short": "espace @cavousf5"
+      "hub": "cavousf5"
     },
     "11": {
       "id": "11",
+      "qualif": "pôle @mickaellaffont",
+      "qualif_short": "pôle @mickaellaffont",
       "justification": "C11 · hub @mickaellaffont. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -186,12 +189,12 @@
       "n_users": 12,
       "n_original_tweets": 15,
       "color": "#f43f5e",
-      "hub": "mickaellaffont",
-      "qualif": "espace @mickaellaffont",
-      "qualif_short": "espace @mickaellaffont"
+      "hub": "mickaellaffont"
     },
     "23": {
       "id": "23",
+      "qualif": "pôle @bvoltaire",
+      "qualif_short": "pôle @bvoltaire",
       "justification": "C23 · hub @bvoltaire. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
@@ -200,11 +203,10 @@
       "n_users": 11,
       "n_original_tweets": 12,
       "color": "#d946ef",
-      "hub": "bvoltaire",
-      "qualif": "espace @bvoltaire",
-      "qualif_short": "espace @bvoltaire"
+      "hub": "bvoltaire"
     }
   },
   "tag_accounts": {},
+  "tag_n_accounts": {},
   "tag_communities": {}
 }

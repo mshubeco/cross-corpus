@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Connectomes — cross_corpus</title>
-  <!-- connectome-ui v20261022k : Distinction RT → bloom/labels=0 · # ambre · # seulement Communautés -->
+  <!-- connectome-ui v20261022l : effectifs # réels · highlight comptes+arêtes · # en Communautés only -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; color: #ccc; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
@@ -952,7 +952,7 @@ function communitiesForHashtag(tag) {
   return new Set((discourseData?.tag_communities?.[t] || []).map(Number));
 }
 
-/** Agrège les # distinctifs du corpus (g2 max + nb comptes / communautés). */
+/** Agrège les # distinctifs du corpus (g2 max + effectifs comptes / communautés). */
 function listCorpusHashtags() {
   const byTag = new Map();
   const bump = (tag, g2 = 0) => {
@@ -967,17 +967,19 @@ function listCorpusHashtags() {
     for (const h of c.key_hashtags || []) bump(h.tag, h.g2);
   }
   const ta = discourseData?.tag_accounts || {};
+  const tn = discourseData?.tag_n_accounts || {};
   const tc = discourseData?.tag_communities || {};
-  for (const t of new Set([...Object.keys(ta), ...Object.keys(tc)])) {
+  for (const t of new Set([...Object.keys(ta), ...Object.keys(tn), ...Object.keys(tc)])) {
     bump(t, 0);
     const cur = byTag.get(t);
     if (!cur) continue;
-    cur.nAcc = (ta[t] || []).length;
+    // Effectif réel (tag_n_accounts) ; sinon longueur de la liste stockée
+    cur.nAcc = Number(tn[t]) || (ta[t] || []).length || 0;
     cur.nComm = (tc[t] || []).length;
   }
   return [...byTag.values()].sort((a, b) => {
-    if (b.g2 !== a.g2) return b.g2 - a.g2;
     if (b.nAcc !== a.nAcc) return b.nAcc - a.nAcc;
+    if (b.g2 !== a.g2) return b.g2 - a.g2;
     return a.tag.localeCompare(b.tag, 'fr');
   });
 }
@@ -993,15 +995,15 @@ function renderHashPanel() {
     btn.className = 'tag-chip' + (activeHashtag === h.tag ? ' active' : '');
     btn.dataset.tag = h.tag;
     const meta = h.nAcc
-      ? `${h.nAcc.toLocaleString('fr-FR')} cptes`
+      ? `${h.nAcc.toLocaleString('fr-FR')} compte${h.nAcc > 1 ? 's' : ''}`
       : h.nComm
         ? `${h.nComm} comm.`
         : (h.g2 ? `z ${h.g2.toFixed(1)}` : '');
     btn.innerHTML = `#${escapeHtml(h.tag)}${meta ? `<span class="tag-meta">${escapeHtml(meta)}</span>` : ''}`;
     btn.title = [
+      h.nAcc ? `${h.nAcc.toLocaleString('fr-FR')} compte${h.nAcc > 1 ? 's' : ''} du graphe (hors RT)` : null,
+      h.nComm ? `${h.nComm} communauté(s) distinctive(s)` : null,
       h.g2 ? `keyness z=${h.g2.toFixed(2)}` : null,
-      h.nComm ? `${h.nComm} communauté(s)` : null,
-      h.nAcc ? `${h.nAcc} compte(s)` : null,
     ].filter(Boolean).join(' · ') || h.tag;
     btn.addEventListener('click', () => {
       if (activeHashtag === h.tag) clearHashtagFilter();
@@ -1050,8 +1052,13 @@ function setHashtagFilter(tag) {
         if (accounts.has(sn) && nd.com != null) comms.add(Number(nd.com));
       }
     }
-    applyNodeHighlight({ accounts, comms, tag: activeHashtag });
-    // Ouvre la 1ʳᵉ communauté distinctive si aucune sélection
+    // Highlight = comptes réels ; communautés seulement en secours (pas de CSV)
+    applyNodeHighlight({
+      accounts,
+      comms: accounts.size ? new Set() : comms,
+      tag: activeHashtag,
+      nAcc: Number(discourseData?.tag_n_accounts?.[activeHashtag]) || accounts.size,
+    });
     if (selectedCommId == null && comms.size) {
       selectedCommId = [...comms][0];
     }
@@ -1088,14 +1095,15 @@ function applyNodeHighlight(filter) {
   }
   const accounts = filter.accounts || new Set();
   const comms = filter.comms || new Set();
+  const preferAccounts = accounts.size > 0;
   const onNode = new Uint8Array(n);
   let nOn = 0;
   for (let i = 0; i < n; i++) {
     const nd = graphData.nodes[i];
     const sn = String(nd.l || '').toLowerCase().replace(/^@/, '');
-    const inComm = comms.size > 0 && comms.has(Number(nd.com));
     const inAcc = accounts.size > 0 && accounts.has(sn);
-    const on = inComm || inAcc;
+    const inComm = !preferAccounts && comms.size > 0 && comms.has(Number(nd.com));
+    const on = inAcc || inComm;
     if (on) {
       onNode[i] = inAcc ? 2 : 1;
       nOn++;
@@ -1105,7 +1113,7 @@ function applyNodeHighlight(filter) {
     col[i * 3 + 1] = rgb[1];
     col[i * 3 + 2] = rgb[2];
     if (sizeAttr && nodeSizesBase) {
-      const sm = onNode[i] === 2 ? 2.5 : onNode[i] === 1 ? 1.6 : 0.28;
+      const sm = onNode[i] === 2 ? 2.6 : onNode[i] === 1 ? 1.7 : 0.22;
       sizeAttr.array[i] = nodeSizesBase[i] * sm;
     }
   }
@@ -1121,15 +1129,21 @@ function applyNodeHighlight(filter) {
       for (let v = 0, o = 0; v < nVert; v++, o += 3) {
         const a = lineEdgeA[v];
         const b = lineEdgeB[v];
-        const hit = (a >= 0 && onNode[a] > 0) || (b >= 0 && onNode[b] > 0);
-        if (hit) {
-          lc[o] = HASH_EDGE[0] * linkK;
-          lc[o + 1] = HASH_EDGE[1] * linkK;
-          lc[o + 2] = HASH_EDGE[2] * linkK;
+        // Lien visible si les deux extrémités sont matchées (sous-graphe #)
+        // sinon un seul bout : faible halo ; sinon éteint
+        const ha = a >= 0 && onNode[a] > 0;
+        const hb = b >= 0 && onNode[b] > 0;
+        let kMul = 0.03;
+        if (ha && hb) kMul = 1.35;
+        else if (ha || hb) kMul = 0.22;
+        if (ha && hb) {
+          lc[o] = HASH_EDGE[0] * linkK * kMul;
+          lc[o + 1] = HASH_EDGE[1] * linkK * kMul;
+          lc[o + 2] = HASH_EDGE[2] * linkK * kMul;
         } else {
-          lc[o] = baseL[o] * linkK * 0.04;
-          lc[o + 1] = baseL[o + 1] * linkK * 0.04;
-          lc[o + 2] = baseL[o + 2] * linkK * 0.04;
+          lc[o] = baseL[o] * linkK * kMul;
+          lc[o + 1] = baseL[o + 1] * linkK * kMul;
+          lc[o + 2] = baseL[o + 2] * linkK * kMul;
         }
       }
       lineMat.opacity = Math.min(0.6, P.opacity * 2.4);
@@ -1800,8 +1814,8 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
 
   const positions = [];
   const colors = [];
-  // Index arêtes pour filtre # : désactivé sur très gros graphes (RAM)
-  const storeEdgeEnds = edges.length <= 220_000;
+  // Index arêtes pour filtre # (nécessaire aussi sur graphes >220k — ex. Macron)
+  const storeEdgeEnds = true;
   const edgeAForVert = storeEdgeEnds ? [] : null;
   const edgeBForVert = storeEdgeEnds ? [] : null;
   let seed = 1;
@@ -1971,9 +1985,12 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   renderCommPanel(data);
   rebuildLabels();
   if (activeHashtag) {
+    const accounts = accountsForHashtag(activeHashtag);
+    const comms = communitiesForHashtag(activeHashtag);
     applyNodeHighlight({
-      accounts: accountsForHashtag(activeHashtag),
-      comms: communitiesForHashtag(activeHashtag),
+      accounts,
+      comms: accounts.size ? new Set() : comms,
+      tag: activeHashtag,
     });
   } else applyNodeHighlight(null);
   return true;

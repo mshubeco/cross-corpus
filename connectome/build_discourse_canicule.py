@@ -190,6 +190,9 @@ def main() -> None:
             for w in tokens(text):
                 tok_c[cid][w] += 1
                 n_tok_c[cid] += 1
+            # Effectifs réels : tous les # utilisés (filtrés plus tard sur key tags)
+            for t in tags:
+                tag_accounts[t].add(sn)
             # keep a few samples (prefer tagged)
             if len(samples[cid]) < N_SAMPLES + 8:
                 tag0 = tags[0] if tags else ""
@@ -201,8 +204,6 @@ def main() -> None:
                         "tag": tag0,
                     }
                 )
-                for t in tags[:3]:
-                    tag_accounts[t].add(sn)
 
     # global counts over focus communities
     ht_all: Counter = Counter()
@@ -266,7 +267,6 @@ def main() -> None:
 
         for h in key_hashtags:
             tag_communities[h["tag"]].add(cid)
-            tag_accounts[h["tag"]].add(str(hub).lower())
 
         just = (
             f"C{cid} · hub @{hub}. Lexique distinctif (z log-odds vs autres pôles connectome) : "
@@ -298,19 +298,28 @@ def main() -> None:
             flush=True,
         )
 
+    keep = set(tag_communities.keys())
+    tag_accounts = {t: sns for t, sns in tag_accounts.items() if t in keep}
+    TAG_CAP = 15000
+    stored = {t: sorted(sns)[:TAG_CAP] for t, sns in sorted(tag_accounts.items()) if sns}
+    counts = {t: len(sns) for t, sns in tag_accounts.items() if sns}
+
     payload = {
         "meta": {
             "cluster": (graph.get("meta") or {}).get("title") or "Canicule",
             "corpus": "canicule",
             "window": (graph.get("meta") or {}).get("window"),
-            "source": "graph.json communities90 + corpus_canicule CSV (keyness z)",
+            "source": "graph.json communities90 + corpus_canicule CSV (keyness z + effectifs #)",
             "keyness": "z log-odds pondéré vs autres pôles du connectome (Monroe et al. 2008)",
+            "tag_accounts_def": (
+                "Comptes du graphe ayant publié hors RT au moins un message "
+                "portant le hashtag (champ hashtag + # dans le texte)."
+            ),
             "limit": LIMIT_FR,
         },
         "communities": communities_out,
-        "tag_accounts": {
-            t: sorted(sns)[:80] for t, sns in sorted(tag_accounts.items()) if sns
-        },
+        "tag_accounts": stored,
+        "tag_n_accounts": counts,
         "tag_communities": {
             t: sorted(ids) for t, ids in sorted(tag_communities.items()) if ids
         },
