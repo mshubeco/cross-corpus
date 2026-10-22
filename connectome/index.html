@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>Connectomes — cross_corpus</title>
+  <!-- connectome-ui v20261022c : pas de labels sémantiques sur le graphe -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; color: #ccc; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
@@ -212,6 +216,9 @@
       margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.06);
       color: #6a7380; font-size: 10px; line-height: 1.4;
     }
+    .mode.mode-analyses {
+      min-width: 2em; justify-content: center; font-weight: 700; letter-spacing: 0.02em;
+    }
     .mode.mode-analyses.active { color: #fff8e8; background: rgba(201,178,122,0.32); }
     .comm-row {
       cursor: pointer; border-radius: 6px; margin: 0 -4px; padding-left: 4px; padding-right: 4px;
@@ -336,8 +343,8 @@
         <button type="button" class="mode active" data-graph="all" id="graphModeAll">Toutes interactions</button>
         <button type="button" class="mode" data-graph="rt" id="graphModeRt">RT</button>
         <button type="button" class="mode" data-graph="rt_classes" id="graphModeRtClasses" title="Couleur des liens selon part RT (≤30 % / mixte / ≥70 %)">Classes RT</button>
-        <button type="button" class="mode mode-analyses" data-mode="analyses" id="analysesModeBtn" title="Lexique distinctif des espaces">Analyses</button>
-        <a id="analysesLink" class="mode mode-link" href="../analyses/ebola.html" title="Page analyses complète (nouvel onglet)" target="_blank" rel="noopener noreferrer">↗</a>
+        <a id="analysesLink" class="mode mode-link" href="../analyses/ebola.html" title="Page analyses complète (nouvel onglet)" target="_blank" rel="noopener noreferrer">Analyses</a>
+        <button type="button" class="mode mode-analyses" data-mode="analyses" id="hashModeBtn" title="Surligner le graphe par hashtag distinctif">#</button>
         <a id="fluxLink" class="mode mode-link" href="../flux-continu/?corpus=ebola" title="Flux continu (fenêtre 3j · FA2)">Flux continu</a>
         <a id="coordLink" class="mode mode-link" href="../reseau-coordination/?corpus=ebola" title="Réseau de coordination · co-RT · Serrano α=0,05 (OR)">Coordination</a>
       </div>
@@ -407,7 +414,7 @@ const P = {
 const tip = document.getElementById('tooltip');
 const tabsEl = document.getElementById('tabs');
 const analysesLinkEl = document.getElementById('analysesLink');
-const analysesModeBtn = document.getElementById('analysesModeBtn');
+const hashModeBtn = document.getElementById('hashModeBtn');
 const espaceFicheEl = document.getElementById('espaceFiche');
 let currentCorpusId = null;
 let corporaList = [];
@@ -785,7 +792,7 @@ function discourseFor(commId) {
 
 function setViewMode(mode, { syncUrl = true } = {}) {
   viewMode = mode === 'analyses' ? 'analyses' : 'graph';
-  analysesModeBtn?.classList.toggle('active', viewMode === 'analyses');
+  hashModeBtn?.classList.toggle('active', viewMode === 'analyses');
   if (viewMode === 'analyses') {
     if (selectedCommId != null) openEspaceFiche(selectedCommId);
   } else {
@@ -897,7 +904,7 @@ function openEspaceFiche(commId) {
   const analysesHref = analysesLinkEl?.getAttribute('href') || '../analyses/';
   espaceFicheEl.innerHTML = `
     <div class="fiche-head">
-      <div class="fiche-title">C${d.id} — ${escapeHtml(d.designation_short || d.designation)}</div>
+      <div class="fiche-title">C${d.id} — ${escapeHtml(d.qualif_short || d.qualif || '')}</div>
       <button type="button" class="fiche-close" aria-label="Fermer">×</button>
     </div>
     <div class="fiche-just">${escapeHtml(d.justification || '')}</div>
@@ -1119,7 +1126,7 @@ function updateGraphModeButtons() {
   document.querySelectorAll('#graphMode button.mode[data-graph]').forEach((b) => {
     b.classList.toggle('active', b.dataset.graph === graphMode && viewMode !== 'analyses');
   });
-  analysesModeBtn?.classList.toggle('active', viewMode === 'analyses');
+  hashModeBtn?.classList.toggle('active', viewMode === 'analyses');
 }
 
 function setGraphMode(mode) {
@@ -1292,8 +1299,8 @@ function renderCommPanel(data) {
     const bar = pubPct != null
       ? `<div class="comm-pubbar" title="${barTitle}"><i style="width:${Math.max(1, Math.min(100, pubPct))}%"></i></div>`
       : '';
-    const desig = disc
-      ? `<div class="comm-desig" title="${escapeHtml(disc.designation)}">${escapeHtml(disc.designation_short || disc.designation)}</div>`
+    const desig = disc?.qualif || disc?.qualif_short
+      ? `<div class="comm-desig" title="${escapeHtml(disc.qualif || '')}">${escapeHtml(disc.qualif_short || disc.qualif)}</div>`
       : '';
     const chipSrc = (disc?.key_hashtags || []).length
       ? disc.key_hashtags
@@ -1621,8 +1628,10 @@ function rebuildLabels() {
     const node = item.node;
     const el = document.createElement('div');
     el.className = 'label';
-    const raw = node.l || '';
-    const text = raw.startsWith('@') ? raw : `@${raw}`;
+    // Graphe = handles @ uniquement (jamais qualification / # / « espace »)
+    const raw = String(node.l || '').replace(/^@+/, '').trim();
+    if (!raw || /\s/.test(raw) || raw.startsWith('#')) continue;
+    const text = `@${raw}`;
     el.textContent = text;
 
     const u = (item.gephiSize - sMin) / sSpan;
@@ -2285,12 +2294,12 @@ async function boot() {
   document.querySelectorAll('#graphMode button.mode[data-graph]').forEach((b) => {
     b.addEventListener('click', () => setGraphMode(b.dataset.graph));
   });
-  analysesModeBtn?.addEventListener('click', () => {
+  hashModeBtn?.addEventListener('click', () => {
     if (viewMode === 'analyses') setViewMode('graph');
     else setViewMode('analyses');
     updateGraphModeButtons();
   });
-  analysesLinkEl?.addEventListener('pointerenter', () => {
+  hashModeBtn?.addEventListener('pointerenter', () => {
     prefetchAnalysesAssets(currentCorpusId);
   }, { passive: true });
   const start = resolveCorpus(new URLSearchParams(location.search).get('corpus')) || corpora[0];
