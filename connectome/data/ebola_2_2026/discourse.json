@@ -2,12 +2,9 @@
   "meta": {
     "cluster": "Ebola 2 · 2026",
     "corpus": "ebola_2_2026",
-    "window": [
-      "2026-01-01",
-      "2026-09-22"
-    ],
-    "source": "ebola_2_2026_profiles.json + export CSV",
-    "keyness": "z log-odds pondéré (profiles intercomm) vs reste du graphe",
+    "window": null,
+    "source": "ebola_2_2026_profiles.json + graph communities90",
+    "keyness": "z log-odds (profiles intercomm) vs reste du graphe",
     "limit": "Label opérationnel fondé sur lexique distinctif (z) / structure / échantillons — pas une appartenance partisane des comptes ordinaires."
   },
   "communities": {
@@ -15,7 +12,7 @@
       "id": "12",
       "designation": "Vaccino-critique / peurs épidémiques",
       "designation_short": "Vaccino-critique / peurs épidémiques",
-      "justification": "C12 · hub @banounhelene. Lexique distinctif (z log-odds vs reste du graphe) : #hantavirus, #covid, #rougeole, #peur. 2137 pubs hors RT dans le pôle.",
+      "justification": "C12 · hub @banounhelene. Lexique distinctif (z vs reste) : #hantavirus, #covid, #rougeole, #peur. 2137 pubs hors RT.",
       "key_hashtags": [
         {
           "tag": "hantavirus",
@@ -120,7 +117,7 @@
       "id": "15",
       "designation": "Alertes & viralité Ebola",
       "designation_short": "Alertes & viralité Ebola",
-      "justification": "C15 · hub @225kgst. Lexique distinctif (z log-odds vs reste du graphe) : ebola, vieux, sida, europe. 439 pubs hors RT dans le pôle.",
+      "justification": "C15 · hub @225kgst. Lexique distinctif (z vs reste) : ebola, vieux, sida, europe. 439 pubs hors RT.",
       "key_hashtags": [],
       "key_words": [
         {
@@ -204,7 +201,7 @@
       "id": "11",
       "designation": "Info RDC · Nord-Kivu",
       "designation_short": "Info RDC · Nord-Kivu",
-      "justification": "C11 · hub @stanysbujakera. Lexique distinctif (z log-odds vs reste du graphe) : #rdc, #ebola, #nordkivu, #rdc_sante. 11396 pubs hors RT dans le pôle.",
+      "justification": "C11 · hub @stanysbujakera. Lexique distinctif (z vs reste) : #rdc, #ebola, #nordkivu, #rdc_sante. 11396 pubs hors RT.",
       "key_hashtags": [
         {
           "tag": "rdc",
@@ -321,7 +318,7 @@
       "id": "16",
       "designation": "Relais presse / OMS",
       "designation_short": "Relais presse / OMS",
-      "justification": "C16 · hub @rfi. Lexique distinctif (z log-odds vs reste du graphe) : #rdcongo, #mayotte, #ebola, #virus. 3580 pubs hors RT dans le pôle.",
+      "justification": "C16 · hub @rfi. Lexique distinctif (z vs reste) : #rdcongo, #mayotte, #ebola, #virus. 3580 pubs hors RT.",
       "key_hashtags": [
         {
           "tag": "rdcongo",
@@ -438,7 +435,7 @@
       "id": "6",
       "designation": "Riposte sanitaire RDC",
       "designation_short": "Riposte sanitaire RDC",
-      "justification": "C6 · hub @com_mediasrdc. Lexique distinctif (z log-odds vs reste du graphe) : #bundibugyo, #insp, #ituri, #ebolardc. 8925 pubs hors RT dans le pôle.",
+      "justification": "C6 · hub @com_mediasrdc. Lexique distinctif (z vs reste) : #bundibugyo, #insp, #ituri, #ebolardc. 8925 pubs hors RT.",
       "key_hashtags": [
         {
           "tag": "bundibugyo",
@@ -555,7 +552,7 @@
       "id": "24",
       "designation": "Couverture conflit × Ebola",
       "designation_short": "Couverture conflit × Ebola",
-      "justification": "C24 · hub @arnaultraphael. Lexique distinctif (z log-odds vs reste du graphe) : #ebola. 226 pubs hors RT dans le pôle.",
+      "justification": "C24 · hub @arnaultraphael. Lexique distinctif (z vs reste) : #ebola. 226 pubs hors RT.",
       "key_hashtags": [
         {
           "tag": "ebola",
@@ -642,9 +639,9 @@
     },
     "41": {
       "id": "41",
-      "designation": "espace · @bfmtv",
-      "designation_short": "espace · @bfmtv",
-      "justification": "C41 · hub @bfmtv. Profil lexique non encore enrichi pour ce pôle.",
+      "designation": "espace @bfmtv",
+      "designation_short": "espace @bfmtv",
+      "justification": "C41 · hub @bfmtv. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
       "themes": {},
@@ -656,9 +653,9 @@
     },
     "59": {
       "id": "59",
-      "designation": "espace · @jennyoswald461",
-      "designation_short": "espace · @jennyoswald461",
-      "justification": "C59 · hub @jennyoswald461. Profil lexique non encore enrichi pour ce pôle.",
+      "designation": "espace @jennyoswald461",
+      "designation_short": "espace @jennyoswald461",
+      "justification": "C59 · hub @jennyoswald461. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
       "themes": {},
@@ -670,9 +667,9 @@
     },
     "50": {
       "id": "50",
-      "designation": "espace · @suminwajudith",
-      "designation_short": "espace · @suminwajudith",
-      "justification": "C50 · hub @suminwajudith. Profil lexique non encore enrichi pour ce pôle.",
+      "designation": "espace @suminwajudith",
+      "designation_short": "espace @suminwajudith",
+      "justification": "C50 · hub @suminwajudith. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
       "themes": {},
@@ -684,9 +681,9 @@
     },
     "54": {
       "id": "54",
-      "designation": "espace · @simarongongomba",
-      "designation_short": "espace · @simarongongomba",
-      "justification": "C54 · hub @simarongongomba. Profil lexique non encore enrichi pour ce pôle.",
+      "designation": "espace @simarongongomba",
+      "designation_short": "espace @simarongongomba",
+      "justification": "C54 · hub @simarongongomba. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
       "themes": {},
@@ -698,9 +695,9 @@
     },
     "47": {
       "id": "47",
-      "designation": "espace · @cathobro",
-      "designation_short": "espace · @cathobro",
-      "justification": "C47 · hub @cathobro. Profil lexique non encore enrichi pour ce pôle.",
+      "designation": "espace @cathobro",
+      "designation_short": "espace @cathobro",
+      "justification": "C47 · hub @cathobro. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
       "themes": {},
@@ -712,9 +709,9 @@
     },
     "26": {
       "id": "26",
-      "designation": "espace · @patrickmuyaya",
-      "designation_short": "espace · @patrickmuyaya",
-      "justification": "C26 · hub @patrickmuyaya. Profil lexique non encore enrichi pour ce pôle.",
+      "designation": "espace @patrickmuyaya",
+      "designation_short": "espace @patrickmuyaya",
+      "justification": "C26 · hub @patrickmuyaya. Profil lexique non enrichi pour ce pôle.",
       "key_hashtags": [],
       "key_words": [],
       "themes": {},
@@ -723,6 +720,34 @@
       "n_original_tweets": 9938,
       "color": "#ff8000",
       "hub": "patrickmuyaya"
+    },
+    "20": {
+      "id": "20",
+      "designation": "espace @_barbodoll_",
+      "designation_short": "espace @_barbodoll_",
+      "justification": "C20 · hub @_barbodoll_. Profil lexique non enrichi pour ce pôle.",
+      "key_hashtags": [],
+      "key_words": [],
+      "themes": {},
+      "samples": [],
+      "n_users": 618,
+      "n_original_tweets": 857,
+      "color": "#2563eb",
+      "hub": "_barbodoll_"
+    },
+    "2": {
+      "id": "2",
+      "designation": "espace @nath_yamb",
+      "designation_short": "espace @nath_yamb",
+      "justification": "C2 · hub @nath_yamb. Profil lexique non enrichi pour ce pôle.",
+      "key_hashtags": [],
+      "key_words": [],
+      "themes": {},
+      "samples": [],
+      "n_users": 539,
+      "n_original_tweets": 982,
+      "color": "#de81ff",
+      "hub": "nath_yamb"
     }
   },
   "tag_accounts": {

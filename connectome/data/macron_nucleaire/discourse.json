@@ -1,0 +1,816 @@
+{
+  "meta": {
+    "cluster": "Macron nucléaire · mars 2026",
+    "corpus": "macron_nucleaire",
+    "window": null,
+    "source": "macron_nucleaire_profiles.json + graph communities90",
+    "keyness": "z log-odds (profiles intercomm) vs reste du graphe",
+    "limit": "Label opérationnel fondé sur lexique distinctif (z) / structure / échantillons — pas une appartenance partisane des comptes ordinaires."
+  },
+  "communities": {
+    "6": {
+      "id": "6",
+      "designation": "#macron · #macrondestitution · @f_philippot",
+      "designation_short": "#macron · #macrondestitution · @f_philippot",
+      "justification": "C6 · hub @f_philippot. Lexique distinctif (z vs reste) : #macron, #macrondestitution, #frexit, #municipales. 12675 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "macron",
+          "g2": 15.2
+        },
+        {
+          "tag": "macrondestitution",
+          "g2": 10.02
+        },
+        {
+          "tag": "frexit",
+          "g2": 8.86
+        },
+        {
+          "tag": "municipales",
+          "g2": 7.72
+        },
+        {
+          "tag": "dati",
+          "g2": 6.77
+        },
+        {
+          "tag": "lr",
+          "g2": 6.7
+        },
+        {
+          "tag": "sarahknafo",
+          "g2": 6.16
+        },
+        {
+          "tag": "hdpros2",
+          "g2": 6.15
+        }
+      ],
+      "key_words": [
+        {
+          "word": "dati",
+          "g2": 24.09
+        },
+        {
+          "word": "francais",
+          "g2": 22.39
+        },
+        {
+          "word": "poste",
+          "g2": 22.01
+        },
+        {
+          "word": "macron",
+          "g2": 21.22
+        },
+        {
+          "word": "hauteur",
+          "g2": 19.72
+        },
+        {
+          "word": "destitution",
+          "g2": 18.7
+        },
+        {
+          "word": "allemagne",
+          "g2": 18.32
+        },
+        {
+          "word": "deputes",
+          "g2": 16.38
+        }
+      ],
+      "themes": {
+        "dati": 100.0,
+        "francais": 92.9,
+        "poste": 91.4,
+        "macron": 88.1,
+        "hauteur": 81.9
+      },
+      "samples": [],
+      "n_users": 27032,
+      "n_original_tweets": 12675,
+      "color": "#73c000",
+      "hub": "f_philippot"
+    },
+    "9": {
+      "id": "9",
+      "designation": "#lecornu · #hollande · @cerfiafr",
+      "designation_short": "#lecornu · #hollande · @cerfiafr",
+      "justification": "C9 · hub @cerfiafr. Lexique distinctif (z vs reste) : #lecornu, #hollande, #macronie, #ps. 3442 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "lecornu",
+          "g2": 7.28
+        },
+        {
+          "tag": "hollande",
+          "g2": 6.96
+        },
+        {
+          "tag": "macronie",
+          "g2": 6.96
+        },
+        {
+          "tag": "ps",
+          "g2": 5.49
+        },
+        {
+          "tag": "lr",
+          "g2": 5.05
+        },
+        {
+          "tag": "rn",
+          "g2": 4.35
+        },
+        {
+          "tag": "macron",
+          "g2": 3.33
+        },
+        {
+          "tag": "cnews",
+          "g2": 3.22
+        }
+      ],
+      "key_words": [
+        {
+          "word": "nucleaire",
+          "g2": 25.86
+        },
+        {
+          "word": "arme",
+          "g2": 18.51
+        },
+        {
+          "word": "pays",
+          "g2": 16.64
+        },
+        {
+          "word": "puissance",
+          "g2": 15.38
+        },
+        {
+          "word": "stp",
+          "g2": 14.74
+        },
+        {
+          "word": "bombe",
+          "g2": 13.51
+        },
+        {
+          "word": "juste",
+          "g2": 13.07
+        },
+        {
+          "word": "parle",
+          "g2": 11.99
+        }
+      ],
+      "themes": {
+        "nucleaire": 100.0,
+        "arme": 71.6,
+        "pays": 64.3,
+        "puissance": 59.5,
+        "stp": 57.0
+      },
+      "samples": [],
+      "n_users": 19191,
+      "n_original_tweets": 3442,
+      "color": "#ff8000",
+      "hub": "cerfiafr"
+    },
+    "0": {
+      "id": "0",
+      "designation": "#ukraine · #russia · @visegrad24",
+      "designation_short": "#ukraine · #russia · @visegrad24",
+      "justification": "C0 · hub @visegrad24. Lexique distinctif (z vs reste) : #ukraine, #russia, #russian, #germany. 2703 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "ukraine",
+          "g2": 12.0
+        },
+        {
+          "tag": "russia",
+          "g2": 11.82
+        },
+        {
+          "tag": "russian",
+          "g2": 8.58
+        },
+        {
+          "tag": "germany",
+          "g2": 8.52
+        },
+        {
+          "tag": "putin",
+          "g2": 8.1
+        },
+        {
+          "tag": "poland",
+          "g2": 6.6
+        },
+        {
+          "tag": "zelenskyy",
+          "g2": 5.88
+        },
+        {
+          "tag": "ukrainewar",
+          "g2": 5.88
+        }
+      ],
+      "key_words": [
+        {
+          "word": "nuclear",
+          "g2": 43.93
+        },
+        {
+          "word": "will",
+          "g2": 34.3
+        },
+        {
+          "word": "french",
+          "g2": 29.03
+        },
+        {
+          "word": "its",
+          "g2": 24.84
+        },
+        {
+          "word": "deterrence",
+          "g2": 22.8
+        },
+        {
+          "word": "germany",
+          "g2": 22.67
+        },
+        {
+          "word": "increase",
+          "g2": 22.63
+        },
+        {
+          "word": "warheads",
+          "g2": 22.6
+        }
+      ],
+      "themes": {
+        "nuclear": 100.0,
+        "will": 78.1,
+        "french": 66.1,
+        "its": 56.5,
+        "deterrence": 51.9
+      },
+      "samples": [],
+      "n_users": 18526,
+      "n_original_tweets": 2703,
+      "color": "#2563EB",
+      "hub": "visegrad24"
+    },
+    "48": {
+      "id": "48",
+      "designation": "#plusjamaisps · #starmer · @camille_moscow",
+      "designation_short": "#plusjamaisps · #starmer · @camille_moscow",
+      "justification": "C48 · hub @camille_moscow. Lexique distinctif (z vs reste) : #plusjamaisps, #starmer, #boycottisrael, #vance. 6316 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "plusjamaisps",
+          "g2": 11.71
+        },
+        {
+          "tag": "starmer",
+          "g2": 11.59
+        },
+        {
+          "tag": "boycottisrael",
+          "g2": 9.3
+        },
+        {
+          "tag": "vance",
+          "g2": 8.72
+        },
+        {
+          "tag": "ue",
+          "g2": 7.98
+        },
+        {
+          "tag": "modi",
+          "g2": 7.66
+        },
+        {
+          "tag": "freepalestine",
+          "g2": 7.54
+        },
+        {
+          "tag": "putin",
+          "g2": 6.44
+        }
+      ],
+      "key_words": [
+        {
+          "word": "melenchon",
+          "g2": 32.81
+        },
+        {
+          "word": "lfi",
+          "g2": 31.07
+        },
+        {
+          "word": "solution",
+          "g2": 26.28
+        },
+        {
+          "word": "massacre",
+          "g2": 26.1
+        },
+        {
+          "word": "arretez",
+          "g2": 26.08
+        },
+        {
+          "word": "soutiens",
+          "g2": 25.59
+        },
+        {
+          "word": "seule",
+          "g2": 24.95
+        },
+        {
+          "word": "soutien",
+          "g2": 23.67
+        }
+      ],
+      "themes": {
+        "melenchon": 100.0,
+        "lfi": 94.7,
+        "solution": 80.1,
+        "massacre": 79.5,
+        "arretez": 79.5
+      },
+      "samples": [],
+      "n_users": 17603,
+      "n_original_tweets": 6316,
+      "color": "#de81ff",
+      "hub": "camille_moscow"
+    },
+    "21": {
+      "id": "21",
+      "designation": "#gatewaypundit · #macron · @eve_barlow",
+      "designation_short": "#gatewaypundit · #macron · @eve_barlow",
+      "justification": "C21 · hub @eve_barlow. Lexique distinctif (z vs reste) : #gatewaypundit, #macron, #israel. 3092 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "gatewaypundit",
+          "g2": 5.4
+        },
+        {
+          "tag": "macron",
+          "g2": 2.02
+        },
+        {
+          "tag": "israel",
+          "g2": 1.76
+        }
+      ],
+      "key_words": [
+        {
+          "word": "starmer",
+          "g2": 46.55
+        },
+        {
+          "word": "his",
+          "g2": 35.97
+        },
+        {
+          "word": "they",
+          "g2": 28.86
+        },
+        {
+          "word": "has",
+          "g2": 27.52
+        },
+        {
+          "word": "what",
+          "g2": 24.53
+        },
+        {
+          "word": "their",
+          "g2": 24.51
+        },
+        {
+          "word": "like",
+          "g2": 23.87
+        },
+        {
+          "word": "him",
+          "g2": 23.27
+        }
+      ],
+      "themes": {
+        "starmer": 100.0,
+        "his": 77.3,
+        "they": 62.0,
+        "has": 59.1,
+        "what": 52.7
+      },
+      "samples": [],
+      "n_users": 17296,
+      "n_original_tweets": 3092,
+      "color": "#c4a574",
+      "hub": "eve_barlow"
+    },
+    "1": {
+      "id": "1",
+      "designation": "#macron · #nucleaire · @emmanuelmacron",
+      "designation_short": "#macron · #nucleaire · @emmanuelmacron",
+      "justification": "C1 · hub @emmanuelmacron. Lexique distinctif (z vs reste) : #macron, #nucleaire, #lci, #rn. 13915 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "macron",
+          "g2": 9.32
+        },
+        {
+          "tag": "nucleaire",
+          "g2": 7.63
+        },
+        {
+          "tag": "lci",
+          "g2": 7.25
+        },
+        {
+          "tag": "rn",
+          "g2": 6.85
+        },
+        {
+          "tag": "dissuasion",
+          "g2": 5.93
+        },
+        {
+          "tag": "taem",
+          "g2": 5.89
+        },
+        {
+          "tag": "lfi",
+          "g2": 5.84
+        },
+        {
+          "tag": "franceinfo",
+          "g2": 5.73
+        }
+      ],
+      "key_words": [
+        {
+          "word": "dissuasion",
+          "g2": 28.56
+        },
+        {
+          "word": "discours",
+          "g2": 19.9
+        },
+        {
+          "word": "francais",
+          "g2": 17.65
+        },
+        {
+          "word": "nucleaire",
+          "g2": 17.03
+        },
+        {
+          "word": "respect",
+          "g2": 13.29
+        },
+        {
+          "word": "europeens",
+          "g2": 13.15
+        },
+        {
+          "word": "avancee",
+          "g2": 12.95
+        },
+        {
+          "word": "francaise",
+          "g2": 12.9
+        }
+      ],
+      "themes": {
+        "dissuasion": 100.0,
+        "discours": 69.7,
+        "francais": 61.8,
+        "nucleaire": 59.6,
+        "respect": 46.5
+      },
+      "samples": [],
+      "n_users": 14354,
+      "n_original_tweets": 13915,
+      "color": "#ff497c",
+      "hub": "emmanuelmacron"
+    },
+    "17": {
+      "id": "17",
+      "designation": "espace @radarhits",
+      "designation_short": "espace @radarhits",
+      "justification": "C17 · hub @radarhits. Profil lexique non enrichi pour ce pôle.",
+      "key_hashtags": [],
+      "key_words": [],
+      "themes": {},
+      "samples": [],
+      "n_users": 13558,
+      "n_original_tweets": null,
+      "color": "#00bd94",
+      "hub": "radarhits"
+    },
+    "14": {
+      "id": "14",
+      "designation": "espace @villgecrazylady",
+      "designation_short": "espace @villgecrazylady",
+      "justification": "C14 · hub @villgecrazylady. Profil lexique non enrichi pour ce pôle.",
+      "key_hashtags": [],
+      "key_words": [],
+      "themes": {},
+      "samples": [],
+      "n_users": 9793,
+      "n_original_tweets": null,
+      "color": "#b45309",
+      "hub": "villgecrazylady"
+    },
+    "19": {
+      "id": "19",
+      "designation": "espace @grok",
+      "designation_short": "espace @grok",
+      "justification": "C19 · hub @grok. Profil lexique non enrichi pour ce pôle.",
+      "key_hashtags": [],
+      "key_words": [],
+      "themes": {},
+      "samples": [],
+      "n_users": 6217,
+      "n_original_tweets": null,
+      "color": "#9aa3b5",
+      "hub": "grok"
+    },
+    "86": {
+      "id": "86",
+      "designation": "espace @psyguy007",
+      "designation_short": "espace @psyguy007",
+      "justification": "C86 · hub @psyguy007. Profil lexique non enrichi pour ce pôle.",
+      "key_hashtags": [],
+      "key_words": [],
+      "themes": {},
+      "samples": [],
+      "n_users": 3544,
+      "n_original_tweets": null,
+      "color": "#00c1ff",
+      "hub": "psyguy007"
+    },
+    "97": {
+      "id": "97",
+      "designation": "espace @davidlisnard",
+      "designation_short": "espace @davidlisnard",
+      "justification": "C97 · hub @davidlisnard. Profil lexique non enrichi pour ce pôle.",
+      "key_hashtags": [],
+      "key_words": [],
+      "themes": {},
+      "samples": [],
+      "n_users": 2880,
+      "n_original_tweets": null,
+      "color": "#73c000",
+      "hub": "davidlisnard"
+    }
+  },
+  "tag_accounts": {
+    "boycottisrael": [
+      "camille_moscow"
+    ],
+    "cnews": [
+      "cerfiafr"
+    ],
+    "dati": [
+      "f_philippot"
+    ],
+    "dissuasion": [
+      "emmanuelmacron"
+    ],
+    "franceinfo": [
+      "emmanuelmacron"
+    ],
+    "freepalestine": [
+      "camille_moscow"
+    ],
+    "frexit": [
+      "f_philippot"
+    ],
+    "gatewaypundit": [
+      "eve_barlow"
+    ],
+    "germany": [
+      "visegrad24"
+    ],
+    "hdpros2": [
+      "f_philippot"
+    ],
+    "hollande": [
+      "cerfiafr"
+    ],
+    "israel": [
+      "eve_barlow"
+    ],
+    "lci": [
+      "emmanuelmacron"
+    ],
+    "lecornu": [
+      "cerfiafr"
+    ],
+    "lfi": [
+      "emmanuelmacron"
+    ],
+    "lr": [
+      "cerfiafr",
+      "f_philippot"
+    ],
+    "macron": [
+      "cerfiafr",
+      "emmanuelmacron",
+      "eve_barlow",
+      "f_philippot"
+    ],
+    "macrondestitution": [
+      "f_philippot"
+    ],
+    "macronie": [
+      "cerfiafr"
+    ],
+    "modi": [
+      "camille_moscow"
+    ],
+    "municipales": [
+      "f_philippot"
+    ],
+    "nucleaire": [
+      "emmanuelmacron"
+    ],
+    "plusjamaisps": [
+      "camille_moscow"
+    ],
+    "poland": [
+      "visegrad24"
+    ],
+    "ps": [
+      "cerfiafr"
+    ],
+    "putin": [
+      "camille_moscow",
+      "visegrad24"
+    ],
+    "rn": [
+      "cerfiafr",
+      "emmanuelmacron"
+    ],
+    "russia": [
+      "visegrad24"
+    ],
+    "russian": [
+      "visegrad24"
+    ],
+    "sarahknafo": [
+      "f_philippot"
+    ],
+    "starmer": [
+      "camille_moscow"
+    ],
+    "taem": [
+      "emmanuelmacron"
+    ],
+    "ue": [
+      "camille_moscow"
+    ],
+    "ukraine": [
+      "visegrad24"
+    ],
+    "ukrainewar": [
+      "visegrad24"
+    ],
+    "vance": [
+      "camille_moscow"
+    ],
+    "zelenskyy": [
+      "visegrad24"
+    ]
+  },
+  "tag_communities": {
+    "boycottisrael": [
+      48
+    ],
+    "cnews": [
+      9
+    ],
+    "dati": [
+      6
+    ],
+    "dissuasion": [
+      1
+    ],
+    "franceinfo": [
+      1
+    ],
+    "freepalestine": [
+      48
+    ],
+    "frexit": [
+      6
+    ],
+    "gatewaypundit": [
+      21
+    ],
+    "germany": [
+      0
+    ],
+    "hdpros2": [
+      6
+    ],
+    "hollande": [
+      9
+    ],
+    "israel": [
+      21
+    ],
+    "lci": [
+      1
+    ],
+    "lecornu": [
+      9
+    ],
+    "lfi": [
+      1
+    ],
+    "lr": [
+      6,
+      9
+    ],
+    "macron": [
+      1,
+      6,
+      9,
+      21
+    ],
+    "macrondestitution": [
+      6
+    ],
+    "macronie": [
+      9
+    ],
+    "modi": [
+      48
+    ],
+    "municipales": [
+      6
+    ],
+    "nucleaire": [
+      1
+    ],
+    "plusjamaisps": [
+      48
+    ],
+    "poland": [
+      0
+    ],
+    "ps": [
+      9
+    ],
+    "putin": [
+      0,
+      48
+    ],
+    "rn": [
+      1,
+      9
+    ],
+    "russia": [
+      0
+    ],
+    "russian": [
+      0
+    ],
+    "sarahknafo": [
+      6
+    ],
+    "starmer": [
+      48
+    ],
+    "taem": [
+      1
+    ],
+    "ue": [
+      48
+    ],
+    "ukraine": [
+      0
+    ],
+    "ukrainewar": [
+      0
+    ],
+    "vance": [
+      48
+    ],
+    "zelenskyy": [
+      0
+    ]
+  }
+}

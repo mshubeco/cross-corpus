@@ -1,0 +1,715 @@
+{
+  "meta": {
+    "cluster": "Hantavirus · mai 2026",
+    "corpus": "hantavirus",
+    "window": null,
+    "source": "hantavirus_profiles.json + graph communities90",
+    "keyness": "z log-odds (profiles intercomm) vs reste du graphe",
+    "limit": "Label opérationnel fondé sur lexique distinctif (z) / structure / échantillons — pas une appartenance partisane des comptes ordinaires."
+  },
+  "communities": {
+    "8": {
+      "id": "8",
+      "designation": "#hantavirus · #paris · @alertesinfos",
+      "designation_short": "#hantavirus · #paris · @alertesinfos",
+      "justification": "C8 · hub @alertesinfos. Lexique distinctif (z vs reste) : #hantavirus, #paris, #quotidien. 3050 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "hantavirus",
+          "g2": 8.38
+        },
+        {
+          "tag": "paris",
+          "g2": 6.68
+        },
+        {
+          "tag": "quotidien",
+          "g2": 5.15
+        }
+      ],
+      "key_words": [
+        {
+          "word": "flash",
+          "g2": 25.17
+        },
+        {
+          "word": "malgre",
+          "g2": 10.36
+        },
+        {
+          "word": "echos",
+          "g2": 10.19
+        },
+        {
+          "word": "amour",
+          "g2": 10.13
+        },
+        {
+          "word": "info",
+          "g2": 9.75
+        },
+        {
+          "word": "disputer",
+          "g2": 9.75
+        },
+        {
+          "word": "hein",
+          "g2": 9.58
+        },
+        {
+          "word": "gens",
+          "g2": 9.09
+        }
+      ],
+      "themes": {
+        "flash": 100.0,
+        "malgre": 41.2,
+        "echos": 40.5,
+        "amour": 40.2,
+        "info": 38.7
+      },
+      "samples": [],
+      "n_users": 21655,
+      "n_original_tweets": 3050,
+      "color": "#73c000",
+      "hub": "alertesinfos"
+    },
+    "4": {
+      "id": "4",
+      "designation": "#cnews · #rn · @f_philippot",
+      "designation_short": "#cnews · #rn · @f_philippot",
+      "justification": "C4 · hub @f_philippot. Lexique distinctif (z vs reste) : #cnews, #rn, #tf1, #rmc. 3857 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "cnews",
+          "g2": 8.16
+        },
+        {
+          "tag": "rn",
+          "g2": 7.8
+        },
+        {
+          "tag": "tf1",
+          "g2": 7.74
+        },
+        {
+          "tag": "rmc",
+          "g2": 7.62
+        },
+        {
+          "tag": "france2",
+          "g2": 7.25
+        },
+        {
+          "tag": "tiktok",
+          "g2": 6.19
+        },
+        {
+          "tag": "hdpros2",
+          "g2": 5.37
+        },
+        {
+          "tag": "bfmtv",
+          "g2": 5.36
+        }
+      ],
+      "key_words": [
+        {
+          "word": "philippot",
+          "g2": 9.82
+        },
+        {
+          "word": "manipuler",
+          "g2": 9.78
+        },
+        {
+          "word": "peur",
+          "g2": 9.68
+        },
+        {
+          "word": "cnews",
+          "g2": 9.5
+        },
+        {
+          "word": "francois",
+          "g2": 9.45
+        },
+        {
+          "word": "rmc",
+          "g2": 9.25
+        },
+        {
+          "word": "stop",
+          "g2": 9.13
+        },
+        {
+          "word": "elysee",
+          "g2": 8.28
+        }
+      ],
+      "themes": {
+        "philippot": 100.0,
+        "manipuler": 99.6,
+        "peur": 98.6,
+        "cnews": 96.7,
+        "francois": 96.2
+      },
+      "samples": [],
+      "n_users": 19075,
+      "n_original_tweets": 3857,
+      "color": "#ff8000",
+      "hub": "f_philippot"
+    },
+    "35": {
+      "id": "35",
+      "designation": "los · ahora · @virginieperez15",
+      "designation_short": "los · ahora · @virginieperez15",
+      "justification": "C35 · hub @virginieperez15. Lexique distinctif (z vs reste) : los, ahora, brote, del. 318 pubs hors RT.",
+      "key_hashtags": [],
+      "key_words": [
+        {
+          "word": "los",
+          "g2": 10.72
+        },
+        {
+          "word": "ahora",
+          "g2": 10.34
+        },
+        {
+          "word": "brote",
+          "g2": 9.66
+        },
+        {
+          "word": "del",
+          "g2": 8.98
+        },
+        {
+          "word": "homme",
+          "g2": 3.88
+        },
+        {
+          "word": "oms",
+          "g2": 3.68
+        },
+        {
+          "word": "font",
+          "g2": 2.51
+        },
+        {
+          "word": "autour",
+          "g2": 2.41
+        }
+      ],
+      "themes": {
+        "los": 100.0,
+        "ahora": 96.5,
+        "brote": 90.1,
+        "del": 83.8,
+        "homme": 36.2
+      },
+      "samples": [],
+      "n_users": 15525,
+      "n_original_tweets": 318,
+      "color": "#2563EB",
+      "hub": "virginieperez15"
+    },
+    "5": {
+      "id": "5",
+      "designation": "#hantavirus · #psyop · @louisfouch3",
+      "designation_short": "#hantavirus · #psyop · @louisfouch3",
+      "justification": "C5 · hub @louisfouch3. Lexique distinctif (z vs reste) : #hantavirus, #psyop, #vaccins, #ebola. 6317 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "hantavirus",
+          "g2": 17.96
+        },
+        {
+          "tag": "psyop",
+          "g2": 5.53
+        },
+        {
+          "tag": "vaccins",
+          "g2": 5.38
+        },
+        {
+          "tag": "ebola",
+          "g2": 5.38
+        },
+        {
+          "tag": "covid",
+          "g2": 4.61
+        },
+        {
+          "tag": "monkeypox",
+          "g2": 4.33
+        },
+        {
+          "tag": "bigpharma",
+          "g2": 4.24
+        },
+        {
+          "tag": "scam",
+          "g2": 4.22
+        }
+      ],
+      "key_words": [
+        {
+          "word": "operation",
+          "g2": 16.91
+        },
+        {
+          "word": "arnaque",
+          "g2": 14.59
+        },
+        {
+          "word": "speciale",
+          "g2": 13.11
+        },
+        {
+          "word": "psychologique",
+          "g2": 13.08
+        },
+        {
+          "word": "detruire",
+          "g2": 12.71
+        },
+        {
+          "word": "zizi",
+          "g2": 12.2
+        },
+        {
+          "word": "vaccin",
+          "g2": 12.07
+        },
+        {
+          "word": "effets",
+          "g2": 11.44
+        }
+      ],
+      "themes": {
+        "operation": 100.0,
+        "arnaque": 86.3,
+        "speciale": 77.5,
+        "psychologique": 77.4,
+        "detruire": 75.2
+      },
+      "samples": [],
+      "n_users": 15380,
+      "n_original_tweets": 6317,
+      "color": "#de81ff",
+      "hub": "louisfouch3"
+    },
+    "9": {
+      "id": "9",
+      "designation": "#confinement · #canal16 · @bfmtv",
+      "designation_short": "#confinement · #canal16 · @bfmtv",
+      "justification": "C9 · hub @bfmtv. Lexique distinctif (z vs reste) : #confinement, #canal16, #ggrmc, #hdpros. 18542 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "confinement",
+          "g2": 11.31
+        },
+        {
+          "tag": "canal16",
+          "g2": 6.04
+        },
+        {
+          "tag": "ggrmc",
+          "g2": 5.93
+        },
+        {
+          "tag": "hdpros",
+          "g2": 5.43
+        },
+        {
+          "tag": "europe1",
+          "g2": 5.05
+        },
+        {
+          "tag": "antivax",
+          "g2": 3.88
+        },
+        {
+          "tag": "bateau",
+          "g2": 3.75
+        },
+        {
+          "tag": "foutagedegueule",
+          "g2": 3.54
+        }
+      ],
+      "key_words": [
+        {
+          "word": "direct",
+          "g2": 19.05
+        },
+        {
+          "word": "passagers",
+          "g2": 16.94
+        },
+        {
+          "word": "hondius",
+          "g2": 15.06
+        },
+        {
+          "word": "cas",
+          "g2": 14.63
+        },
+        {
+          "word": "francais",
+          "g2": 14.04
+        },
+        {
+          "word": "ebola",
+          "g2": 13.28
+        },
+        {
+          "word": "mesures",
+          "g2": 13.26
+        },
+        {
+          "word": "prend",
+          "g2": 12.62
+        }
+      ],
+      "themes": {
+        "direct": 100.0,
+        "passagers": 88.9,
+        "hondius": 79.1,
+        "cas": 76.8,
+        "francais": 73.7
+      },
+      "samples": [],
+      "n_users": 12870,
+      "n_original_tweets": 18542,
+      "color": "#c4a574",
+      "hub": "bfmtv"
+    },
+    "0": {
+      "id": "0",
+      "designation": "#qag · #franceinfo · @publicsenat",
+      "designation_short": "#qag · #franceinfo · @publicsenat",
+      "justification": "C0 · hub @publicsenat. Lexique distinctif (z vs reste) : #qag, #franceinfo, #lci, #bfmtv. 946 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "qag",
+          "g2": 10.19
+        },
+        {
+          "tag": "franceinfo",
+          "g2": 7.91
+        },
+        {
+          "tag": "lci",
+          "g2": 6.34
+        },
+        {
+          "tag": "bfmtv",
+          "g2": 5.45
+        },
+        {
+          "tag": "mvhondius",
+          "g2": 5.06
+        },
+        {
+          "tag": "hondius",
+          "g2": 4.76
+        },
+        {
+          "tag": "covid",
+          "g2": 4.37
+        },
+        {
+          "tag": "hantavirus",
+          "g2": 3.97
+        }
+      ],
+      "key_words": [
+        {
+          "word": "qag",
+          "g2": 11.44
+        },
+        {
+          "word": "melenchon",
+          "g2": 9.0
+        },
+        {
+          "word": "ecologique",
+          "g2": 8.73
+        },
+        {
+          "word": "biodiversite",
+          "g2": 8.5
+        },
+        {
+          "word": "zoonoses",
+          "g2": 7.62
+        },
+        {
+          "word": "lfi",
+          "g2": 7.46
+        },
+        {
+          "word": "details",
+          "g2": 7.14
+        },
+        {
+          "word": "lci",
+          "g2": 6.78
+        }
+      ],
+      "themes": {
+        "qag": 100.0,
+        "melenchon": 78.7,
+        "ecologique": 76.3,
+        "biodiversite": 74.3,
+        "zoonoses": 66.6
+      },
+      "samples": [],
+      "n_users": 2948,
+      "n_original_tweets": 946,
+      "color": "#ff497c",
+      "hub": "publicsenat"
+    },
+    "41": {
+      "id": "41",
+      "designation": "espace @ricardominute",
+      "designation_short": "espace @ricardominute",
+      "justification": "C41 · hub @ricardominute. Profil lexique non enrichi pour ce pôle.",
+      "key_hashtags": [],
+      "key_words": [],
+      "themes": {},
+      "samples": [],
+      "n_users": 969,
+      "n_original_tweets": null,
+      "color": "#00bd94",
+      "hub": "ricardominute"
+    },
+    "17": {
+      "id": "17",
+      "designation": "espace @youtube",
+      "designation_short": "espace @youtube",
+      "justification": "C17 · hub @youtube. Profil lexique non enrichi pour ce pôle.",
+      "key_hashtags": [],
+      "key_words": [],
+      "themes": {},
+      "samples": [],
+      "n_users": 870,
+      "n_original_tweets": null,
+      "color": "#b45309",
+      "hub": "youtube"
+    },
+    "16": {
+      "id": "16",
+      "designation": "espace @infamelecrack",
+      "designation_short": "espace @infamelecrack",
+      "justification": "C16 · hub @infamelecrack. Profil lexique non enrichi pour ce pôle.",
+      "key_hashtags": [],
+      "key_words": [],
+      "themes": {},
+      "samples": [],
+      "n_users": 862,
+      "n_original_tweets": null,
+      "color": "#9aa3b5",
+      "hub": "infamelecrack"
+    }
+  },
+  "tag_accounts": {
+    "antivax": [
+      "bfmtv"
+    ],
+    "bateau": [
+      "bfmtv"
+    ],
+    "bfmtv": [
+      "f_philippot",
+      "publicsenat"
+    ],
+    "bigpharma": [
+      "louisfouch3"
+    ],
+    "canal16": [
+      "bfmtv"
+    ],
+    "cnews": [
+      "f_philippot"
+    ],
+    "confinement": [
+      "bfmtv"
+    ],
+    "covid": [
+      "louisfouch3",
+      "publicsenat"
+    ],
+    "ebola": [
+      "louisfouch3"
+    ],
+    "europe1": [
+      "bfmtv"
+    ],
+    "foutagedegueule": [
+      "bfmtv"
+    ],
+    "france2": [
+      "f_philippot"
+    ],
+    "franceinfo": [
+      "publicsenat"
+    ],
+    "ggrmc": [
+      "bfmtv"
+    ],
+    "hantavirus": [
+      "alertesinfos",
+      "louisfouch3",
+      "publicsenat"
+    ],
+    "hdpros": [
+      "bfmtv"
+    ],
+    "hdpros2": [
+      "f_philippot"
+    ],
+    "hondius": [
+      "publicsenat"
+    ],
+    "lci": [
+      "publicsenat"
+    ],
+    "monkeypox": [
+      "louisfouch3"
+    ],
+    "mvhondius": [
+      "publicsenat"
+    ],
+    "paris": [
+      "alertesinfos"
+    ],
+    "psyop": [
+      "louisfouch3"
+    ],
+    "qag": [
+      "publicsenat"
+    ],
+    "quotidien": [
+      "alertesinfos"
+    ],
+    "rmc": [
+      "f_philippot"
+    ],
+    "rn": [
+      "f_philippot"
+    ],
+    "scam": [
+      "louisfouch3"
+    ],
+    "tf1": [
+      "f_philippot"
+    ],
+    "tiktok": [
+      "f_philippot"
+    ],
+    "vaccins": [
+      "louisfouch3"
+    ]
+  },
+  "tag_communities": {
+    "antivax": [
+      9
+    ],
+    "bateau": [
+      9
+    ],
+    "bfmtv": [
+      0,
+      4
+    ],
+    "bigpharma": [
+      5
+    ],
+    "canal16": [
+      9
+    ],
+    "cnews": [
+      4
+    ],
+    "confinement": [
+      9
+    ],
+    "covid": [
+      0,
+      5
+    ],
+    "ebola": [
+      5
+    ],
+    "europe1": [
+      9
+    ],
+    "foutagedegueule": [
+      9
+    ],
+    "france2": [
+      4
+    ],
+    "franceinfo": [
+      0
+    ],
+    "ggrmc": [
+      9
+    ],
+    "hantavirus": [
+      0,
+      5,
+      8
+    ],
+    "hdpros": [
+      9
+    ],
+    "hdpros2": [
+      4
+    ],
+    "hondius": [
+      0
+    ],
+    "lci": [
+      0
+    ],
+    "monkeypox": [
+      5
+    ],
+    "mvhondius": [
+      0
+    ],
+    "paris": [
+      8
+    ],
+    "psyop": [
+      5
+    ],
+    "qag": [
+      0
+    ],
+    "quotidien": [
+      8
+    ],
+    "rmc": [
+      4
+    ],
+    "rn": [
+      4
+    ],
+    "scam": [
+      5
+    ],
+    "tf1": [
+      4
+    ],
+    "tiktok": [
+      4
+    ],
+    "vaccins": [
+      5
+    ]
+  }
+}

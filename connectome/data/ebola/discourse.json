@@ -1,0 +1,535 @@
+{
+  "meta": {
+    "cluster": "Ebola · mai 2026",
+    "corpus": "ebola",
+    "window": null,
+    "source": "ebola_profiles.json + graph communities90",
+    "keyness": "z log-odds (profiles intercomm) vs reste du graphe",
+    "limit": "Label opérationnel fondé sur lexique distinctif (z) / structure / échantillons — pas une appartenance partisane des comptes ordinaires."
+  },
+  "communities": {
+    "3": {
+      "id": "3",
+      "designation": "#hantavirus · #soudan · @caudehenrion",
+      "designation_short": "#hantavirus · #soudan · @caudehenrion",
+      "justification": "C3 · hub @caudehenrion. Lexique distinctif (z vs reste) : #hantavirus, #soudan, #rotavirus. 435 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "hantavirus",
+          "g2": 9.32
+        },
+        {
+          "tag": "soudan",
+          "g2": 5.27
+        },
+        {
+          "tag": "rotavirus",
+          "g2": 2.22
+        }
+      ],
+      "key_words": [
+        {
+          "word": "manipulation",
+          "g2": 10.15
+        },
+        {
+          "word": "zero",
+          "g2": 9.95
+        },
+        {
+          "word": "soigne",
+          "g2": 9.68
+        },
+        {
+          "word": "vieux",
+          "g2": 9.3
+        },
+        {
+          "word": "conference",
+          "g2": 8.63
+        },
+        {
+          "word": "nulle",
+          "g2": 8.6
+        },
+        {
+          "word": "maladies",
+          "g2": 8.53
+        },
+        {
+          "word": "minutes",
+          "g2": 8.26
+        }
+      ],
+      "themes": {
+        "manipulation": 100.0,
+        "zero": 98.0,
+        "soigne": 95.4,
+        "vieux": 91.6,
+        "conference": 85.0
+      },
+      "samples": [],
+      "n_users": 2819,
+      "n_original_tweets": 435,
+      "color": "#73c000",
+      "hub": "caudehenrion"
+    },
+    "2": {
+      "id": "2",
+      "designation": "#hantavirus · @didiermaisto",
+      "designation_short": "#hantavirus · @didiermaisto",
+      "justification": "C2 · hub @didiermaisto. Lexique distinctif (z vs reste) : #hantavirus. 251 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "hantavirus",
+          "g2": 3.29
+        }
+      ],
+      "key_words": [
+        {
+          "word": "flop",
+          "g2": 7.24
+        },
+        {
+          "word": "hantavirus",
+          "g2": 6.43
+        },
+        {
+          "word": "marche",
+          "g2": 5.34
+        },
+        {
+          "word": "assez",
+          "g2": 4.93
+        },
+        {
+          "word": "medias",
+          "g2": 4.48
+        },
+        {
+          "word": "passe",
+          "g2": 4.29
+        },
+        {
+          "word": "peur",
+          "g2": 4.12
+        },
+        {
+          "word": "mortel",
+          "g2": 4.02
+        }
+      ],
+      "themes": {
+        "flop": 100.0,
+        "hantavirus": 88.8,
+        "marche": 73.8,
+        "assez": 68.1,
+        "medias": 61.9
+      },
+      "samples": [],
+      "n_users": 1885,
+      "n_original_tweets": 251,
+      "color": "#ff8000",
+      "hub": "didiermaisto"
+    },
+    "11": {
+      "id": "11",
+      "designation": "#hantavirus · #oms · @le_parisien",
+      "designation_short": "#hantavirus · #oms · @le_parisien",
+      "justification": "C11 · hub @le_parisien. Lexique distinctif (z vs reste) : #hantavirus, #oms. 1437 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "hantavirus",
+          "g2": 3.17
+        },
+        {
+          "tag": "oms",
+          "g2": 2.04
+        }
+      ],
+      "key_words": [
+        {
+          "word": "hantavirus",
+          "g2": 24.95
+        },
+        {
+          "word": "prend",
+          "g2": 20.38
+        },
+        {
+          "word": "health",
+          "g2": 10.7
+        },
+        {
+          "word": "emergency",
+          "g2": 9.72
+        },
+        {
+          "word": "ebola",
+          "g2": 9.61
+        },
+        {
+          "word": "passons",
+          "g2": 9.45
+        },
+        {
+          "word": "outbreak",
+          "g2": 8.8
+        },
+        {
+          "word": "world",
+          "g2": 8.28
+        }
+      ],
+      "themes": {
+        "hantavirus": 100.0,
+        "prend": 81.7,
+        "health": 42.9,
+        "emergency": 39.0,
+        "ebola": 38.5
+      },
+      "samples": [],
+      "n_users": 1465,
+      "n_original_tweets": 1437,
+      "color": "#2563EB",
+      "hub": "le_parisien"
+    },
+    "12": {
+      "id": "12",
+      "designation": "#rdc · #ituri · @stanysbujakera",
+      "designation_short": "#rdc · #ituri · @stanysbujakera",
+      "justification": "C12 · hub @stanysbujakera. Lexique distinctif (z vs reste) : #rdc, #ituri, #bunia, #insp. 1444 pubs hors RT.",
+      "key_hashtags": [
+        {
+          "tag": "rdc",
+          "g2": 11.2
+        },
+        {
+          "tag": "ituri",
+          "g2": 6.08
+        },
+        {
+          "tag": "bunia",
+          "g2": 4.14
+        },
+        {
+          "tag": "insp",
+          "g2": 3.24
+        },
+        {
+          "tag": "prevenirebola",
+          "g2": 2.68
+        },
+        {
+          "tag": "inrb",
+          "g2": 2.54
+        },
+        {
+          "tag": "rdcongo",
+          "g2": 2.27
+        },
+        {
+          "tag": "goma",
+          "g2": 2.2
+        }
+      ],
+      "key_words": [
+        {
+          "word": "ituri",
+          "g2": 17.92
+        },
+        {
+          "word": "rdc",
+          "g2": 14.35
+        },
+        {
+          "word": "bunia",
+          "g2": 14.01
+        },
+        {
+          "word": "ministre",
+          "g2": 12.31
+        },
+        {
+          "word": "maladie",
+          "g2": 10.3
+        },
+        {
+          "word": "nord",
+          "g2": 10.11
+        },
+        {
+          "word": "sante",
+          "g2": 9.26
+        },
+        {
+          "word": "mai",
+          "g2": 9.1
+        }
+      ],
+      "themes": {
+        "ituri": 100.0,
+        "rdc": 80.1,
+        "bunia": 78.2,
+        "ministre": 68.7,
+        "maladie": 57.5
+      },
+      "samples": [],
+      "n_users": 1443,
+      "n_original_tweets": 1444,
+      "color": "#de81ff",
+      "hub": "stanysbujakera"
+    },
+    "6": {
+      "id": "6",
+      "designation": "espace @zde0000",
+      "designation_short": "espace @zde0000",
+      "justification": "C6 · hub @zde0000. Lexique distinctif (z vs reste) : —. 5 pubs hors RT.",
+      "key_hashtags": [],
+      "key_words": [],
+      "themes": {},
+      "samples": [],
+      "n_users": 1341,
+      "n_original_tweets": 5,
+      "color": "#c4a574",
+      "hub": "zde0000"
+    },
+    "1": {
+      "id": "1",
+      "designation": "peur · gens · @resistance_sm",
+      "designation_short": "peur · gens · @resistance_sm",
+      "justification": "C1 · hub @resistance_sm. Lexique distinctif (z vs reste) : peur, gens, hantavirus, covid. 138 pubs hors RT.",
+      "key_hashtags": [],
+      "key_words": [
+        {
+          "word": "peur",
+          "g2": 5.54
+        },
+        {
+          "word": "gens",
+          "g2": 3.53
+        },
+        {
+          "word": "hantavirus",
+          "g2": 3.23
+        },
+        {
+          "word": "covid",
+          "g2": 3.0
+        },
+        {
+          "word": "vaccin",
+          "g2": 2.07
+        },
+        {
+          "word": "afrique",
+          "g2": 1.85
+        }
+      ],
+      "themes": {
+        "peur": 100.0,
+        "gens": 63.7,
+        "hantavirus": 58.3,
+        "covid": 54.2,
+        "vaccin": 37.4
+      },
+      "samples": [],
+      "n_users": 1061,
+      "n_original_tweets": 138,
+      "color": "#ff497c",
+      "hub": "resistance_sm"
+    },
+    "14": {
+      "id": "14",
+      "designation": "espace @nicolasberrod",
+      "designation_short": "espace @nicolasberrod",
+      "justification": "C14 · hub @nicolasberrod. Profil lexique non enrichi pour ce pôle.",
+      "key_hashtags": [],
+      "key_words": [],
+      "themes": {},
+      "samples": [],
+      "n_users": 759,
+      "n_original_tweets": null,
+      "color": "#00bd94",
+      "hub": "nicolasberrod"
+    },
+    "25": {
+      "id": "25",
+      "designation": "espace @cerfiafr",
+      "designation_short": "espace @cerfiafr",
+      "justification": "C25 · hub @cerfiafr. Profil lexique non enrichi pour ce pôle.",
+      "key_hashtags": [],
+      "key_words": [],
+      "themes": {},
+      "samples": [],
+      "n_users": 637,
+      "n_original_tweets": null,
+      "color": "#b45309",
+      "hub": "cerfiafr"
+    },
+    "39": {
+      "id": "39",
+      "designation": "espace @n_arthaud",
+      "designation_short": "espace @n_arthaud",
+      "justification": "C39 · hub @n_arthaud. Profil lexique non enrichi pour ce pôle.",
+      "key_hashtags": [],
+      "key_words": [],
+      "themes": {},
+      "samples": [],
+      "n_users": 470,
+      "n_original_tweets": null,
+      "color": "#9aa3b5",
+      "hub": "n_arthaud"
+    },
+    "9": {
+      "id": "9",
+      "designation": "espace @omsrdcongo",
+      "designation_short": "espace @omsrdcongo",
+      "justification": "C9 · hub @omsrdcongo. Profil lexique non enrichi pour ce pôle.",
+      "key_hashtags": [],
+      "key_words": [],
+      "themes": {},
+      "samples": [],
+      "n_users": 329,
+      "n_original_tweets": null,
+      "color": "#00c1ff",
+      "hub": "omsrdcongo"
+    },
+    "33": {
+      "id": "33",
+      "designation": "espace @lawrencekanyuka",
+      "designation_short": "espace @lawrencekanyuka",
+      "justification": "C33 · hub @lawrencekanyuka. Profil lexique non enrichi pour ce pôle.",
+      "key_hashtags": [],
+      "key_words": [],
+      "themes": {},
+      "samples": [],
+      "n_users": 177,
+      "n_original_tweets": null,
+      "color": "#73c000",
+      "hub": "lawrencekanyuka"
+    },
+    "21": {
+      "id": "21",
+      "designation": "espace @tvanouvelles",
+      "designation_short": "espace @tvanouvelles",
+      "justification": "C21 · hub @tvanouvelles. Profil lexique non enrichi pour ce pôle.",
+      "key_hashtags": [],
+      "key_words": [],
+      "themes": {},
+      "samples": [],
+      "n_users": 166,
+      "n_original_tweets": null,
+      "color": "#ff8000",
+      "hub": "tvanouvelles"
+    },
+    "24": {
+      "id": "24",
+      "designation": "espace @ldeclencheur",
+      "designation_short": "espace @ldeclencheur",
+      "justification": "C24 · hub @ldeclencheur. Profil lexique non enrichi pour ce pôle.",
+      "key_hashtags": [],
+      "key_words": [],
+      "themes": {},
+      "samples": [],
+      "n_users": 137,
+      "n_original_tweets": null,
+      "color": "#2563eb",
+      "hub": "ldeclencheur"
+    },
+    "40": {
+      "id": "40",
+      "designation": "espace @1graindefolie",
+      "designation_short": "espace @1graindefolie",
+      "justification": "C40 · hub @1graindefolie. Profil lexique non enrichi pour ce pôle.",
+      "key_hashtags": [],
+      "key_words": [],
+      "themes": {},
+      "samples": [],
+      "n_users": 104,
+      "n_original_tweets": null,
+      "color": "#de81ff",
+      "hub": "1graindefolie"
+    }
+  },
+  "tag_accounts": {
+    "bunia": [
+      "stanysbujakera"
+    ],
+    "goma": [
+      "stanysbujakera"
+    ],
+    "hantavirus": [
+      "caudehenrion",
+      "didiermaisto",
+      "le_parisien"
+    ],
+    "inrb": [
+      "stanysbujakera"
+    ],
+    "insp": [
+      "stanysbujakera"
+    ],
+    "ituri": [
+      "stanysbujakera"
+    ],
+    "oms": [
+      "le_parisien"
+    ],
+    "prevenirebola": [
+      "stanysbujakera"
+    ],
+    "rdc": [
+      "stanysbujakera"
+    ],
+    "rdcongo": [
+      "stanysbujakera"
+    ],
+    "rotavirus": [
+      "caudehenrion"
+    ],
+    "soudan": [
+      "caudehenrion"
+    ]
+  },
+  "tag_communities": {
+    "bunia": [
+      12
+    ],
+    "goma": [
+      12
+    ],
+    "hantavirus": [
+      2,
+      3,
+      11
+    ],
+    "inrb": [
+      12
+    ],
+    "insp": [
+      12
+    ],
+    "ituri": [
+      12
+    ],
+    "oms": [
+      11
+    ],
+    "prevenirebola": [
+      12
+    ],
+    "rdc": [
+      12
+    ],
+    "rdcongo": [
+      12
+    ],
+    "rotavirus": [
+      3
+    ],
+    "soudan": [
+      3
+    ]
+  }
+}

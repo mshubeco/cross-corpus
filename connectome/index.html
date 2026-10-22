@@ -291,15 +291,6 @@
     #hashFilterBar .hf-label {
       width: 100%; text-align: center; color: #6a7380; font-size: 10px; margin-bottom: 2px;
     }
-    #commSoftLabels {
-      position: fixed; inset: 0; pointer-events: none; z-index: 3; overflow: hidden;
-    }
-    .comm-soft-label {
-      position: absolute; transform: translate(-50%, -50%);
-      font-size: 13px; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap;
-      text-shadow: 0 0 10px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8);
-      max-width: 220px; overflow: hidden; text-overflow: ellipsis;
-    }
     #commList { max-height: min(340px, calc(100vh - 160px)); }
   </style>
   <script type="importmap">
@@ -357,7 +348,6 @@
     <div class="hf-label">Filtrer / surligner par hashtag distinctif (keyness)</div>
     <div id="hashChips" class="comm-tags" style="justify-content:center;width:100%"></div>
   </div>
-  <div id="commSoftLabels" aria-hidden="true"></div>
   <div id="tooltip"></div>
   <aside id="espaceFiche" aria-live="polite"></aside>
   <aside id="hud">
@@ -423,7 +413,6 @@ const tip = document.getElementById('tooltip');
 const tabsEl = document.getElementById('tabs');
 const analysesLinkEl = document.getElementById('analysesLink');
 const analysesModeBtn = document.getElementById('analysesModeBtn');
-const softLabelsEl = document.getElementById('commSoftLabels');
 const espaceFicheEl = document.getElementById('espaceFiche');
 const hashFilterBarEl = document.getElementById('hashFilterBar');
 const hashChipsEl = document.getElementById('hashChips');
@@ -927,63 +916,6 @@ function openEspaceFiche(commId) {
     row.classList.toggle('selected', Number(row.dataset.commId) === selectedCommId);
   });
   if (viewMode === 'analyses') renderHashChips(selectedCommId);
-}
-
-function rebuildCommSoftLabels(data) {
-  if (!softLabelsEl) return;
-  softLabelsEl.innerHTML = '';
-  if (!data?.nodes?.length || !discourseData?.communities) return;
-  const byCom = new Map();
-  for (const n of data.nodes) {
-    const cid = n.com;
-    if (cid == null || cid < 0) continue;
-    if (!discourseData.communities[String(cid)]) continue;
-    if (!discourseFor(cid)?.designation_short) continue;
-    if (!byCom.has(cid)) byCom.set(cid, { sx: 0, sy: 0, w: 0 });
-    const b = byCom.get(cid);
-    const w = Math.sqrt(n.deg || 1);
-    b.sx += n.x * w;
-    b.sy += n.y * w;
-    b.w += w;
-  }
-  for (const [cid, b] of byCom) {
-    if (b.w <= 0) continue;
-    const d = discourseFor(cid);
-    if (!d) continue;
-    const el = document.createElement('div');
-    el.className = 'comm-soft-label';
-    el.dataset.x = String(b.sx / b.w);
-    el.dataset.y = String(b.sy / b.w);
-    el.textContent = d.designation_short || d.designation;
-    el.style.color = rgbCss(
-      data.nodes.find((n) => n.com === cid)?.c || [180, 180, 180],
-      0.62
-    );
-    softLabelsEl.appendChild(el);
-  }
-  projectCommSoftLabels();
-}
-
-function projectCommSoftLabels() {
-  if (!softLabelsEl?.children.length) return;
-  for (const el of softLabelsEl.children) {
-    const x = +el.dataset.x;
-    const y = +el.dataset.y;
-    _proj.set(x, y, 0).project(camera);
-    if (_proj.z > 1) {
-      el.style.display = 'none';
-      continue;
-    }
-    const cx = (_proj.x * 0.5 + 0.5) * innerWidth;
-    const cy = (-_proj.y * 0.5 + 0.5) * innerHeight;
-    if (cx < -40 || cx > innerWidth + 40 || cy < -20 || cy > innerHeight + 20) {
-      el.style.display = 'none';
-      continue;
-    }
-    el.style.display = 'block';
-    el.style.left = `${cx}px`;
-    el.style.top = `${cy}px`;
-  }
 }
 
 async function ensureDiscourse(corpusId) {
@@ -1623,7 +1555,6 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   fitGraphToView(nodes);
   renderCommPanel(data);
   rebuildLabels();
-  rebuildCommSoftLabels(data);
   if (activeHashtag) setHashtagFilter(activeHashtag);
   else applyNodeHighlight(null);
   if (viewMode === 'analyses') {
@@ -2062,7 +1993,6 @@ exportBtn.addEventListener('click', () => { exportPng(); });
   controls.update();
   composer.render();
   projectLabels();
-  projectCommSoftLabels();
 })();
 
 async function loadCorpus(corp) {

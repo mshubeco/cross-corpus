@@ -5,7 +5,8 @@
       "id": "ebola",
       "label": "Ebola · mai 2026",
       "phaseLabel": "Corpus entier · Ebola FR (fenêtre export)",
-      "connectomeData": "data/ebola/graph.json"
+      "connectomeData": "data/ebola/graph.json",
+      "discourseData": "data/ebola/discourse.json"
     },
     {
       "id": "ebola_2_2026",
@@ -18,37 +19,43 @@
       "id": "hantavirus",
       "label": "Hantavirus · mai 2026",
       "phaseLabel": "Corpus entier · Hantavirus FR mai 2026",
-      "connectomeData": "data/hantavirus/graph.json"
+      "connectomeData": "data/hantavirus/graph.json",
+      "discourseData": "data/hantavirus/discourse.json"
     },
     {
       "id": "mpox",
       "label": "Mpox · 2023–2026",
       "phaseLabel": "Corpus entier · Mpox FR déc. 2023 – janv. 2026",
-      "connectomeData": "data/mpox/graph.json"
+      "connectomeData": "data/mpox/graph.json",
+      "discourseData": "data/mpox/discourse.json"
     },
     {
       "id": "macron_nucleaire",
       "label": "Macron nucléaire · mars 2026",
       "phaseLabel": "Corpus entier · Macron nucléaire 1–3 mars 2026",
-      "connectomeData": "data/macron_nucleaire/graph.json"
+      "connectomeData": "data/macron_nucleaire/graph.json",
+      "discourseData": "data/macron_nucleaire/discourse.json"
     },
     {
       "id": "hmpv",
       "label": "HMPV · 2025",
       "phaseLabel": "Corpus entier · HMPV PADMEN (FR+EN, 1 janv. – 30 juin 2025)",
-      "connectomeData": "data/hmpv/graph.json"
+      "connectomeData": "data/hmpv/graph.json",
+      "discourseData": "data/hmpv/discourse.json"
     },
     {
       "id": "hmpv_fr",
       "label": "HMPV FR · 2025",
       "phaseLabel": "Corpus entier · HMPV PADMEN (FR seul, 1 janv. – 30 juin 2025)",
-      "connectomeData": "data/hmpv_fr/graph.json"
+      "connectomeData": "data/hmpv_fr/graph.json",
+      "discourseData": "data/hmpv_fr/discourse.json"
     },
     {
       "id": "canicule",
       "label": "Canicule · mai–juin 2026",
       "phaseLabel": "Corpus entier · Canicule HEAT (20 mai – 29 juin 2026)",
-      "connectomeData": "data/canicule/graph.json"
+      "connectomeData": "data/canicule/graph.json",
+      "discourseData": "data/canicule/discourse.json"
     }
   ],
   "defaults": {
