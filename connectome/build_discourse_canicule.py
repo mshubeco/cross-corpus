@@ -204,7 +204,16 @@ def main() -> None:
     word_accounts: dict[str, set[str]] = defaultdict(set)
     word_comm_accounts: dict[str, dict[int, set[str]]] = defaultdict(lambda: defaultdict(set))
     word_cooccur: dict[str, Counter] = defaultdict(Counter)
+    bg_c: dict[int, Counter] = defaultdict(Counter)
+    n_bg_c: Counter = Counter()
+    bigram_accounts: dict[str, set[str]] = defaultdict(set)
+    bigram_comm_accounts: dict[str, dict[int, set[str]]] = defaultdict(lambda: defaultdict(set))
+    bigram_communities: dict[str, set[int]] = defaultdict(set)
     N_COOC = 15
+    N_BIGRAMS = 8
+    BIGRAM_STORE_TOP = 120
+    MIN_BG_N = 3
+    Z_BG = 1.5
 
     print(f"Streaming {CSV.name}…", flush=True)
     with CSV.open("r", encoding="utf-8", errors="replace", newline="") as f:
@@ -241,6 +250,15 @@ def main() -> None:
                 n_tok_c[cid] += 1
                 word_accounts[w].add(sn)
                 word_comm_accounts[w][cid].add(sn)
+            bgs_msg = []
+            for i in range(len(toks) - 1):
+                bg = f"{toks[i]} {toks[i + 1]}"
+                bgs_msg.append(bg)
+                bg_c[cid][bg] += 1
+                n_bg_c[cid] += 1
+            for bg in dict.fromkeys(bgs_msg):
+                bigram_accounts[bg].add(sn)
+                bigram_comm_accounts[bg][cid].add(sn)
             wpair = uniq[:12]
             if len(wpair) >= 2:
                 for a_i, wa in enumerate(wpair):
@@ -262,11 +280,14 @@ def main() -> None:
     # global counts over focus communities
     ht_all: Counter = Counter()
     tok_all: Counter = Counter()
+    bg_all: Counter = Counter()
     for cid in focus_ids:
         ht_all.update(ht_c[cid])
         tok_all.update(tok_c[cid])
+        bg_all.update(bg_c[cid])
     n_ht_all = sum(n_ht_c.values()) or 1
     n_tok_all = sum(n_tok_c.values()) or 1
+    n_bg_all = sum(n_bg_c.values()) or 1
 
     communities_out: dict[str, dict] = {}
     tag_communities: dict[str, set[int]] = defaultdict(set)
@@ -307,6 +328,25 @@ def main() -> None:
         key_words.sort(key=lambda d: d["g2"], reverse=True)
         key_words = [{"word": x["word"], "g2": x["g2"]} for x in key_words[:N_WORDS]]
 
+        rest_bg = max(n_bg_all - int(n_bg_c[cid]), 1)
+        prior_bg = 80.0
+        key_bigrams = []
+        for bg, n_w in bg_c[cid].items():
+            if n_w < MIN_BG_N:
+                continue
+            prior = prior_bg * ((bg_all[bg] + 0.5) / (n_bg_all + 1))
+            z = weighted_log_odds(
+                n_w, int(n_bg_c[cid]) or 1, bg_all[bg] - n_w, rest_bg, prior, prior_bg
+            )
+            if z < Z_BG:
+                continue
+            key_bigrams.append({"bigram": bg, "g2": round(z, 2), "n": int(n_w)})
+        key_bigrams.sort(key=lambda d: d["g2"], reverse=True)
+        if not key_bigrams:
+            for bg, n_w in bg_c[cid].most_common(N_BIGRAMS):
+                key_bigrams.append({"bigram": bg, "g2": 0.0, "n": int(n_w)})
+        key_bigrams = [{"bigram": x["bigram"], "g2": x["g2"]} for x in key_bigrams[:N_BIGRAMS]]
+
         themes = {}
         if key_words:
             mx = max(w["g2"] for w in key_words) or 1
@@ -325,6 +365,8 @@ def main() -> None:
             tag_communities[h["tag"]].add(cid)
         for w in key_words:
             word_communities[w["word"]].add(cid)
+        for b in key_bigrams:
+            bigram_communities[b["bigram"]].add(cid)
 
         just = (
             f"C{cid} · hub @{hub}. Lexique distinctif (z log-odds vs autres pôles connectome) : "
@@ -343,6 +385,7 @@ def main() -> None:
             "justification": just[:280],
             "key_hashtags": [{"tag": h["tag"], "g2": h["g2"]} for h in key_hashtags],
             "key_words": key_words,
+            "key_bigrams": key_bigrams,
             "themes": themes,
             "samples": smp_out,
             "n_users": n_users_by.get(cid, 0),
@@ -414,11 +457,34 @@ def main() -> None:
         for w in sorted(keep_words_store)
     }
     word_comm_n = {w: row for w, row in word_comm_n.items() if row}
+    keep_bigrams = set(bigram_communities.keys())
+    ranked_bg = sorted(bigram_accounts.items(), key=lambda kv: -len(kv[1]))
+    top_bg = {bg for bg, _ in ranked_bg[:BIGRAM_STORE_TOP]}
+    keep_bg_store = keep_bigrams | top_bg
+    for bg in top_bg:
+        for cid, sns in (bigram_comm_accounts.get(bg) or {}).items():
+            if sns and cid in focus:
+                bigram_communities[bg].add(cid)
+    bigram_accounts = {bg: sns for bg, sns in bigram_accounts.items() if bg in keep_bg_store}
+    bigram_comm_n = {
+        bg: {
+            str(cid): len(sns)
+            for cid, sns in sorted(
+                (bigram_comm_accounts.get(bg) or {}).items(),
+                key=lambda kv: (-len(kv[1]), kv[0]),
+            )
+            if sns
+        }
+        for bg in sorted(keep_bg_store)
+    }
+    bigram_comm_n = {bg: row for bg, row in bigram_comm_n.items() if row}
     TAG_CAP = 15000
     stored = {t: sorted(sns)[:TAG_CAP] for t, sns in sorted(tag_accounts.items()) if sns}
     counts = {t: len(sns) for t, sns in tag_accounts.items() if sns}
     word_stored = {w: sorted(sns)[:TAG_CAP] for w, sns in sorted(word_accounts.items()) if sns}
     word_counts = {w: len(sns) for w, sns in word_accounts.items() if sns}
+    bg_stored = {bg: sorted(sns)[:TAG_CAP] for bg, sns in sorted(bigram_accounts.items()) if sns}
+    bg_counts = {bg: len(sns) for bg, sns in bigram_accounts.items() if sns}
 
     payload = {
         "meta": {
@@ -452,6 +518,12 @@ def main() -> None:
         },
         "word_cooccur": word_cooccur_out,
         "word_comm_n": word_comm_n,
+        "bigram_accounts": bg_stored,
+        "bigram_n_accounts": bg_counts,
+        "bigram_communities": {
+            b: sorted(ids) for b, ids in sorted(bigram_communities.items()) if ids
+        },
+        "bigram_comm_n": bigram_comm_n,
     }
     OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"Wrote {OUT}", flush=True)

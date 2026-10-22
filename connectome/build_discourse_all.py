@@ -49,13 +49,18 @@ DESIGNATIONS: dict[str, dict[int, str]] = {
 TAG_ACCOUNTS_STORE_CAP = 15000
 N_TAGS = 16          # # distinctifs / communauté (profils ou keyness CSV)
 N_WORDS = 8
+N_BIGRAMS = 8        # bigrammes distinctifs / communauté
 N_SAMPLES = 5
 N_COOC = 15          # top co-occurrents préchargés / tag
 MIN_HT_N = 3         # keyness CSV : min occurrences dans le pôle
 MIN_TERM_N = 8
+MIN_BG_N = 3
 Z_HT = 1.4
 Z_TERM = 1.7
+Z_BG = 1.5
 TOP_N_COM_FALLBACK = 14  # si pas de profils : pôles communities90
+# Cap panneau / stockage bigrammes (top global par comptes)
+BIGRAM_STORE_TOP = 120
 
 TOKEN_RX = re.compile(r"[a-z0-9àâäéèêëïîôùûüçœæ]{3,}", re.I)
 URL_RX = re.compile(r"https?://\S+|t\.co/\S+|www\.\S+", re.I)
@@ -235,6 +240,12 @@ def stream_csv_full(
     word_accounts: dict[str, set[str]] = defaultdict(set)
     word_comm_accounts: dict[str, dict[int, set[str]]] = defaultdict(lambda: defaultdict(set))
     word_cooccur: dict[str, Counter] = defaultdict(Counter)
+    bg_c: dict[int, Counter] = defaultdict(Counter)
+    n_bg_c: Counter = Counter()
+    bigram_accounts: dict[str, set[str]] = defaultdict(set)
+    bigram_comm_accounts: dict[str, dict[int, set[str]]] = defaultdict(
+        lambda: defaultdict(set)
+    )
     watch = {w.lower() for w in (watch_words or ())} or None
 
     print(f"  Streaming {csv_path.name} (full enrich)…", flush=True)
@@ -275,6 +286,16 @@ def stream_csv_full(
                 if watch is None or w in watch:
                     word_accounts[w].add(sn)
                     word_comm_accounts[w][cid].add(sn)
+            # Bigrammes consécutifs (formes déjà hors stopwords)
+            bgs_msg: list[str] = []
+            for i in range(len(toks) - 1):
+                bg = f"{toks[i]} {toks[i + 1]}"
+                bgs_msg.append(bg)
+                bg_c[cid][bg] += 1
+                n_bg_c[cid] += 1
+            for bg in dict.fromkeys(bgs_msg):
+                bigram_accounts[bg].add(sn)
+                bigram_comm_accounts[bg][cid].add(sn)
             # Co-oc lemmes : uniquement parmi watch (ou top formes si pas de watch)
             if watch is not None:
                 wpair = sorted(w for w in uniq if w in watch)
@@ -310,7 +331,52 @@ def stream_csv_full(
         "word_accounts": word_accounts,
         "word_comm_accounts": word_comm_accounts,
         "word_cooccur": word_cooccur,
+        "bg_c": bg_c,
+        "n_bg_c": n_bg_c,
+        "bigram_accounts": bigram_accounts,
+        "bigram_comm_accounts": bigram_comm_accounts,
     }
+
+
+def keyness_bigrams(
+    emit_ids: list[int],
+    bg_c: dict[int, Counter],
+    n_bg_c: Counter,
+    *,
+    min_n: int = MIN_BG_N,
+    z_min: float = Z_BG,
+) -> dict[int, list[dict]]:
+    universe = sorted(set(bg_c.keys()) | set(n_bg_c.keys()))
+    bg_all: Counter = Counter()
+    for cid in universe:
+        bg_all.update(bg_c.get(cid) or {})
+    n_all = sum(int(n_bg_c[c]) for c in universe) or 1
+    out: dict[int, list[dict]] = {}
+    for cid in emit_ids:
+        rest = max(n_all - int(n_bg_c[cid]), 1)
+        prior_scale = 80.0
+        local = bg_c.get(cid) or Counter()
+        scored = []
+        for bg, n_w in local.items():
+            if n_w < min_n:
+                continue
+            prior = prior_scale * ((bg_all[bg] + 0.5) / (n_all + 1))
+            z = weighted_log_odds(
+                n_w, int(n_bg_c[cid]) or 1, bg_all[bg] - n_w, rest, prior, prior_scale
+            )
+            if z < z_min:
+                continue
+            scored.append({"bigram": bg, "g2": round(z, 2), "n": int(n_w)})
+        scored.sort(key=lambda d: d["g2"], reverse=True)
+        if not scored:
+            for bg, n_w in local.most_common(N_BIGRAMS):
+                if n_w < 1:
+                    continue
+                scored.append({"bigram": bg, "g2": 0.0, "n": int(n_w)})
+        out[cid] = [
+            {"bigram": x["bigram"], "g2": x["g2"]} for x in scored[:N_BIGRAMS]
+        ]
+    return out
 
 
 def keyness_from_counts(
@@ -579,11 +645,27 @@ def build_one(cid: str) -> Path | None:
     communities_out: dict[str, dict] = {}
     tag_communities: dict[str, set[int]] = defaultdict(set)
     word_communities: dict[str, set[int]] = defaultdict(set)
+    bigram_communities: dict[str, set[int]] = defaultdict(set)
     tag_accounts: dict[str, set[str]] = defaultdict(set)
     word_accounts: dict[str, set[str]] = defaultdict(set)
+    bigram_accounts: dict[str, set[str]] = defaultdict(set)
+    bg_keyness: dict[int, list[dict]] = {}
     if enrich:
         tag_accounts = enrich["tag_accounts"]
         word_accounts = enrich["word_accounts"]
+        bigram_accounts = enrich["bigram_accounts"]
+        bg_keyness = keyness_bigrams(
+            ordered_ids,
+            enrich["bg_c"],
+            enrich["n_bg_c"],
+            min_n=1 if small_corpus else MIN_BG_N,
+            z_min=0.9 if small_corpus else Z_BG,
+        )
+        print(
+            f"  Bigrammes: {len(bigram_accounts)} uniques · "
+            f"{sum(len(v) for v in bg_keyness.values())} distinctifs",
+            flush=True,
+        )
 
     for mid in ordered_ids:
         c = by_id.get(mid)
@@ -667,6 +749,9 @@ def build_one(cid: str) -> Path | None:
             word_communities[w["word"]].add(mid)
             if not csv_file_ok and hub:
                 word_accounts[w["word"]].add(str(hub).lower())
+        key_bigrams = list(bg_keyness.get(mid) or [])
+        for b in key_bigrams:
+            bigram_communities[b["bigram"]].add(mid)
 
         communities_out[str(mid)] = {
             "id": str(mid),
@@ -675,6 +760,7 @@ def build_one(cid: str) -> Path | None:
             "justification": just[:280],
             "key_hashtags": key_hashtags,
             "key_words": key_words,
+            "key_bigrams": key_bigrams,
             "themes": themes,
             "samples": samples,
             "n_users": n_users,
@@ -685,10 +771,12 @@ def build_one(cid: str) -> Path | None:
 
     keep = set(tag_communities.keys())
     keep_words = set(word_communities.keys())
+    keep_bigrams = set(bigram_communities.keys())
     tag_cooccur: dict[str, list[dict]] = {}
     tag_comm_n: dict[str, dict[str, int]] = {}
     word_cooccur: dict[str, list[dict]] = {}
     word_comm_n: dict[str, dict[str, int]] = {}
+    bigram_comm_n: dict[str, dict[str, int]] = {}
     partner_need: set[str] = set()
     word_partner_need: set[str] = set()
     if enrich:
@@ -716,12 +804,34 @@ def build_one(cid: str) -> Path | None:
             for w, sns in word_accounts.items()
             if w in (keep_words | word_partner_need)
         }
+        # Bigrammes : distinctifs + top global par effectif (panneau Top 50)
+        ranked_bg = sorted(
+            bigram_accounts.items(), key=lambda kv: -len(kv[1])
+        )
+        top_bg = {bg for bg, _ in ranked_bg[:BIGRAM_STORE_TOP]}
+        keep_bg_store = keep_bigrams | top_bg
+        bigram_accounts = {
+            bg: sns for bg, sns in bigram_accounts.items() if bg in keep_bg_store
+        }
+        bigram_comm_n = pack_tag_comm_n(
+            enrich["bigram_comm_accounts"], keep_bg_store
+        )
+        # Compléter bigram_communities pour le top global (pôles où utilisés)
+        for bg in top_bg:
+            for com_id, sns in (enrich["bigram_comm_accounts"].get(bg) or {}).items():
+                if sns and com_id in ordered_ids:
+                    bigram_communities[bg].add(com_id)
     else:
         tag_accounts = {t: sns for t, sns in tag_accounts.items() if t in keep}
         word_accounts = {w: sns for w, sns in word_accounts.items() if w in keep_words}
+        bigram_accounts = {
+            bg: sns for bg, sns in bigram_accounts.items() if bg in keep_bigrams
+        }
+        bigram_comm_n = {}
 
     stored, counts = pack_tag_accounts(tag_accounts)
     word_stored, word_counts = pack_tag_accounts(word_accounts)
+    bg_stored, bg_counts = pack_tag_accounts(bigram_accounts)
 
     window = None
     meta_g = graph.get("meta") or {}
@@ -791,6 +901,12 @@ def build_one(cid: str) -> Path | None:
         },
         "word_cooccur": word_cooccur,
         "word_comm_n": word_comm_n,
+        "bigram_accounts": bg_stored,
+        "bigram_n_accounts": bg_counts,
+        "bigram_communities": {
+            b: sorted(ids) for b, ids in sorted(bigram_communities.items()) if ids
+        },
+        "bigram_comm_n": bigram_comm_n,
     }
     # drop null meta keys
     payload["meta"] = {k: v for k, v in payload["meta"].items() if v is not None}
@@ -801,9 +917,9 @@ def build_one(cid: str) -> Path | None:
     print(
         f"  → {out.relative_to(CONNECTOME)} · "
         f"{len(communities_out)} espaces · {len(keep)} # · {len(keep_words)} lemmes · "
-        f"cooc#={len(tag_cooccur)} coocL={len(word_cooccur)} · "
-        f"nAcc# max={max(counts.values()) if counts else 0} · "
-        f"nAccL max={max(word_counts.values()) if word_counts else 0}",
+        f"{len(bg_counts)} bigrammes · "
+        f"nAccL max={max(word_counts.values()) if word_counts else 0} · "
+        f"nAccBG max={max(bg_counts.values()) if bg_counts else 0}",
         flush=True,
     )
     return out

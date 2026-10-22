@@ -583,21 +583,17 @@
         <button type="button" data-scope="sources" title="Uniquement les comptes ayant publié le # / lemme, et les liens entre eux">Générateurs</button>
         <button type="button" data-scope="targets" class="active" title="Générateurs + voisins d’interaction (cibles) — comportement actuel élargi">Générateurs + cibles</button>
       </div>
+      <div class="hp-scope" id="lemmaFormBtns" role="group" aria-label="Forme lexicale" hidden>
+        <button type="button" data-form="uni" class="active" title="Formes simples (unigrammes)">Unigrammes</button>
+        <button type="button" data-form="bi" title="Top 50 bigrammes (paires de formes consécutives)">Bigrammes</button>
+      </div>
       <label>Tri
         <select id="hashSortMode" title="Ordre d’affichage">
           <option value="nAcc" selected>Comptes</option>
           <option value="alpha">A → Z</option>
         </select>
       </label>
-      <label>Afficher
-        <select id="hashShowLimit" title="Combien d’entrées lister">
-          <option value="20">Top 20</option>
-          <option value="40" selected>Top 40</option>
-          <option value="80">Top 80</option>
-          <option value="0">Tous</option>
-        </select>
-      </label>
-      <span class="hp-count" id="hashCountLabel"></span>
+      <span class="hp-count" id="hashCountLabel" title="Top 50 affiché">Top 50</span>
     </div>
     <div id="hashList"></div>
     <div id="hashEmpty" hidden>Aucun hashtag distinctif pour ce corpus.</div>
@@ -793,13 +789,17 @@ let activeLexeme = null;
 let activeHashtag = null;
 /** Tri / plafond d’affichage (# ou lemmes). */
 let hashSortMode = 'nAcc'; // nAcc | alpha
-let hashShowLimit = 40; // 0 = tous
+/** Plafond fixe du panneau (Top 50). */
+const HASH_SHOW_LIMIT = 50;
+let hashShowLimit = HASH_SHOW_LIMIT;
 /**
  * Portée du surlignage lexique :
  * - sources = comptes qui génèrent le #/lemme (+ liens entre eux)
  * - targets = générateurs + cibles d’interaction (voisinage) — défaut / actuel
  */
 let lexScope = 'targets'; // 'sources' | 'targets'
+/** En mode Lemme : unigrammes ou bigrammes. */
+let lemmaForm = 'uni'; // 'uni' | 'bi'
 /** Dernier filtre lexique (réappliqué quand on touche Lumière liens / opacité). */
 let lastHighlightFilter = null;
 let nodeColorsBase = null;
@@ -1176,6 +1176,28 @@ function isLemmaMode() {
   return lexKind === 'lemma';
 }
 
+function isBigramMode() {
+  return isLemmaMode() && lemmaForm === 'bi';
+}
+
+function syncLemmaFormButtons() {
+  const wrap = document.getElementById('lemmaFormBtns');
+  if (wrap) wrap.hidden = !isLemmaMode();
+  document.querySelectorAll('#lemmaFormBtns [data-form]').forEach((b) => {
+    b.classList.toggle('active', b.dataset.form === lemmaForm);
+  });
+}
+
+function setLemmaForm(form) {
+  const next = form === 'bi' ? 'bi' : 'uni';
+  if (lemmaForm === next) return;
+  lemmaForm = next;
+  syncLemmaFormButtons();
+  // Changer de forme : retirer le filtre actif (terme d’un autre type)
+  if (activeLexeme) clearLexemeFilter();
+  else renderHashPanel();
+}
+
 function lexMark(term) {
   const t = String(term || '');
   return isLemmaMode() ? t : `#${t}`;
@@ -1188,7 +1210,10 @@ function accountsForHashtag(tag) {
 
 function accountsForLemma(word) {
   const t = String(word || '').toLowerCase();
-  return new Set((discourseData?.word_accounts?.[t] || []).map((s) => String(s).toLowerCase()));
+  const bag = isBigramMode()
+    ? (discourseData?.bigram_accounts?.[t] || [])
+    : (discourseData?.word_accounts?.[t] || []);
+  return new Set(bag.map((s) => String(s).toLowerCase()));
 }
 
 function accountsForLexeme(term) {
@@ -1202,7 +1227,10 @@ function communitiesForHashtag(tag) {
 
 function communitiesForLemma(word) {
   const t = String(word || '').toLowerCase();
-  return new Set((discourseData?.word_communities?.[t] || []).map(Number));
+  const bag = isBigramMode()
+    ? (discourseData?.bigram_communities?.[t] || [])
+    : (discourseData?.word_communities?.[t] || []);
+  return new Set(bag.map(Number));
 }
 
 function communitiesForLexeme(term) {
@@ -1211,6 +1239,11 @@ function communitiesForLexeme(term) {
 
 function lexNAccounts(term) {
   const t = String(term || '').toLowerCase();
+  if (isBigramMode()) {
+    return Number(discourseData?.bigram_n_accounts?.[t])
+      || (discourseData?.bigram_accounts?.[t] || []).length
+      || 0;
+  }
   if (isLemmaMode()) {
     return Number(discourseData?.word_n_accounts?.[t])
       || (discourseData?.word_accounts?.[t] || []).length
@@ -1221,36 +1254,53 @@ function lexNAccounts(term) {
     || 0;
 }
 
-/** Nb de chips # par communauté / fiche — suit le plafond « Afficher ». */
+/** Nb de chips # / lemmes par communauté / fiche. */
 function hashChipsPerCommunity() {
-  if (!hashShowLimit) return 12;
-  if (hashShowLimit <= 20) return 4;
-  if (hashShowLimit <= 40) return 6;
-  if (hashShowLimit <= 80) return 8;
-  return 12;
+  return 6;
 }
 
-/** Agrège # ou lemmes distinctifs du corpus (g2 max + effectifs comptes). */
+/** Agrège #, lemmes ou bigrammes (g2 max + effectifs comptes). */
 function listCorpusLexemes() {
   const byKey = new Map();
   const bump = (key, g2 = 0) => {
-    const t = String(key || '').toLowerCase().replace(/^#/, '');
+    let t = String(key || '').toLowerCase().replace(/^#/, '').trim();
     if (!t) return;
+    if (isBigramMode()) {
+      const parts = t.split(/\s+/);
+      if (parts.length !== 2 || parts.some(isLemmaStop)) return;
+      t = `${parts[0]} ${parts[1]}`;
+    } else if (isLemmaMode() && isLemmaStop(t)) {
+      return;
+    }
     const cur = byKey.get(t) || { tag: t, g2: 0, nAcc: 0, nComm: 0 };
     cur.g2 = Math.max(cur.g2, Number(g2) || 0);
     byKey.set(t, cur);
   };
   const communities = discourseData?.communities || {};
   for (const c of Object.values(communities)) {
-    if (isLemmaMode()) {
+    if (isBigramMode()) {
+      for (const b of c.key_bigrams || []) bump(b.bigram, b.g2);
+    } else if (isLemmaMode()) {
       for (const w of c.key_words || []) bump(w.word, w.g2);
     } else {
       for (const h of c.key_hashtags || []) bump(h.tag, h.g2);
     }
   }
-  const ta = isLemmaMode() ? (discourseData?.word_accounts || {}) : (discourseData?.tag_accounts || {});
-  const tn = isLemmaMode() ? (discourseData?.word_n_accounts || {}) : (discourseData?.tag_n_accounts || {});
-  const tc = isLemmaMode() ? (discourseData?.word_communities || {}) : (discourseData?.tag_communities || {});
+  const ta = isBigramMode()
+    ? (discourseData?.bigram_accounts || {})
+    : isLemmaMode()
+      ? (discourseData?.word_accounts || {})
+      : (discourseData?.tag_accounts || {});
+  const tn = isBigramMode()
+    ? (discourseData?.bigram_n_accounts || {})
+    : isLemmaMode()
+      ? (discourseData?.word_n_accounts || {})
+      : (discourseData?.tag_n_accounts || {});
+  const tc = isBigramMode()
+    ? (discourseData?.bigram_communities || {})
+    : isLemmaMode()
+      ? (discourseData?.word_communities || {})
+      : (discourseData?.tag_communities || {});
   for (const t of new Set([...Object.keys(ta), ...Object.keys(tn), ...Object.keys(tc)])) {
     bump(t, 0);
     const cur = byKey.get(t);
@@ -1286,9 +1336,11 @@ function accountOverlap(a, b) {
 /** Top co-occurrents (# ou lemmes) — préchargés si dispo, sinon fallback comptes. */
 function cooccurringLexemes(term, limit = 12) {
   const t = String(term || '').toLowerCase().replace(/^#/, '');
-  const pre = isLemmaMode()
-    ? discourseData?.word_cooccur?.[t]
-    : discourseData?.tag_cooccur?.[t];
+  const pre = isBigramMode()
+    ? null // pas de cooc bigramme préchargée
+    : isLemmaMode()
+      ? discourseData?.word_cooccur?.[t]
+      : discourseData?.tag_cooccur?.[t];
   if (Array.isArray(pre) && pre.length) {
     const nBase = lexNAccounts(t) || accountsForLexeme(t).size || 1;
     return pre.slice(0, limit).map((h) => {
@@ -1339,9 +1391,11 @@ function cooccurringHashtags(tag, limit = 12) {
 function lexemeCommunityShare(term) {
   const t = String(term || '').toLowerCase().replace(/^#/, '');
   const totalAcc = lexNAccounts(t);
-  const pre = isLemmaMode()
-    ? discourseData?.word_comm_n?.[t]
-    : discourseData?.tag_comm_n?.[t];
+  const pre = isBigramMode()
+    ? discourseData?.bigram_comm_n?.[t]
+    : isLemmaMode()
+      ? discourseData?.word_comm_n?.[t]
+      : discourseData?.tag_comm_n?.[t];
   if (pre && typeof pre === 'object') {
     const rows = Object.entries(pre)
       .map(([id, n]) => {
@@ -1401,22 +1455,29 @@ function hashtagCommunityShare(tag) {
 
 function renderHashPanel() {
   if (!hashListEl) return;
+  syncLemmaFormButtons();
   if (hashTitleEl) {
-    hashTitleEl.textContent = isLemmaMode() ? 'Lemmes distinctifs' : 'Hashtags distinctifs';
+    hashTitleEl.textContent = isBigramMode()
+      ? 'Bigrammes distinctifs'
+      : isLemmaMode()
+        ? 'Lemmes distinctifs'
+        : 'Hashtags distinctifs';
   }
   const all = listCorpusLexemes();
-  const tags = hashShowLimit > 0 ? all.slice(0, hashShowLimit) : all;
+  const tags = all.slice(0, HASH_SHOW_LIMIT);
   const countEl = document.getElementById('hashCountLabel');
   if (countEl) {
-    countEl.textContent = hashShowLimit > 0 && tags.length < all.length
-      ? `${tags.length} / ${all.length}`
-      : `${all.length}`;
+    countEl.textContent = tags.length < all.length
+      ? `Top ${tags.length} / ${all.length}`
+      : `Top ${tags.length}`;
   }
   if (hashEmptyEl) {
     hashEmptyEl.hidden = all.length > 0;
-    hashEmptyEl.textContent = isLemmaMode()
-      ? 'Aucun lemme distinctif pour ce corpus.'
-      : 'Aucun hashtag distinctif pour ce corpus.';
+    hashEmptyEl.textContent = isBigramMode()
+      ? 'Aucun bigramme distinctif pour ce corpus.'
+      : isLemmaMode()
+        ? 'Aucun lemme distinctif pour ce corpus.'
+        : 'Aucun hashtag distinctif pour ce corpus.';
   }
   hashListEl.innerHTML = '';
   for (const h of tags) {
@@ -1429,7 +1490,7 @@ function renderHashPanel() {
       : h.nComm
         ? `${h.nComm} comm.`
         : (h.g2 ? `z ${h.g2.toFixed(1)}` : '');
-    const label = lexMark(h.tag);
+    const label = isBigramMode() ? h.tag : lexMark(h.tag);
     btn.innerHTML = `${escapeHtml(label)}${meta ? `<span class="tag-meta">${escapeHtml(meta)}</span>` : ''}`;
     btn.title = [
       h.nAcc ? `${h.nAcc.toLocaleString('fr-FR')} compte${h.nAcc > 1 ? 's' : ''} du graphe (hors RT)` : null,
@@ -1445,16 +1506,15 @@ function renderHashPanel() {
     const scopeHint = lexScope === 'sources'
       ? 'portée Générateurs (auteurs + liens entre eux)'
       : 'portée Générateurs + cibles (voisinage)';
+    const formHint = isBigramMode() ? 'bigrammes' : isLemmaMode() ? 'lemmes' : '#';
     if (activeLexeme) {
       const nAcc = lexNAccounts(activeLexeme);
-      const mark = lexMark(activeLexeme);
+      const mark = isBigramMode() ? activeLexeme : lexMark(activeLexeme);
       hashSubEl.textContent = nAcc
         ? `Filtre · ${mark} · ${nAcc.toLocaleString('fr-FR')} compte${nAcc > 1 ? 's' : ''} · ${scopeHint} — recliquer pour retirer`
         : `Filtre actif · ${mark} · ${scopeHint} — recliquer pour retirer`;
     } else {
-      hashSubEl.textContent = isLemmaMode()
-        ? `Clique un lemme · ${scopeHint}`
-        : `Clique un # · ${scopeHint}`;
+      hashSubEl.textContent = `Clique un ${formHint} · ${scopeHint} · Top ${HASH_SHOW_LIMIT}`;
     }
   }
 }
@@ -3957,8 +4017,12 @@ async function boot() {
     if (viewMode === 'analyses' && lexKind === kind) {
       setViewMode('graph');
     } else {
-      if (lexKind !== kind) clearLexemeFilter();
+      if (lexKind !== kind) {
+        clearLexemeFilter();
+        if (kind !== 'lemma') lemmaForm = 'uni';
+      }
       setViewMode('analyses', { lex: kind });
+      syncLemmaFormButtons();
     }
     updateGraphModeButtons();
   };
@@ -3973,14 +4037,14 @@ async function boot() {
     hashSortMode = e.target.value || 'nAcc';
     refreshHashtagUi();
   });
-  document.getElementById('hashShowLimit')?.addEventListener('change', (e) => {
-    hashShowLimit = Number(e.target.value) || 0;
-    refreshHashtagUi();
-  });
   document.querySelectorAll('#hashScopeBtns [data-scope]').forEach((b) => {
     b.addEventListener('click', () => setLexScope(b.dataset.scope));
   });
+  document.querySelectorAll('#lemmaFormBtns [data-form]').forEach((b) => {
+    b.addEventListener('click', () => setLemmaForm(b.dataset.form));
+  });
   syncLexScopeButtons();
+  syncLemmaFormButtons();
   const prefetchLex = () => {
     prefetchAnalysesAssets(currentCorpusId);
     ensureDiscourse(currentCorpusId).catch(() => {});

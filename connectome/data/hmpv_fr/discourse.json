@@ -18,6 +18,40 @@
       "justification": "C1 · hub @75secondes. Lexique distinctif (z log-odds CSV vs autres pôles) : —. 1 pubs hors RT.",
       "key_hashtags": [],
       "key_words": [],
+      "key_bigrams": [
+        {
+          "bigram": "urgence multiples",
+          "g2": 2.76
+        },
+        {
+          "bigram": "covid propagent",
+          "g2": 2.42
+        },
+        {
+          "bigram": "propagent rapidement",
+          "g2": 2.42
+        },
+        {
+          "bigram": "rapidement chine",
+          "g2": 2.42
+        },
+        {
+          "bigram": "multiples virus",
+          "g2": 2.33
+        },
+        {
+          "bigram": "pneumoniae covid",
+          "g2": 2.18
+        },
+        {
+          "bigram": "grippe hmpv",
+          "g2": 2.05
+        },
+        {
+          "bigram": "hmpv mycoplasma",
+          "g2": 2.05
+        }
+      ],
       "themes": {},
       "samples": [
         {
@@ -47,6 +81,40 @@
         {
           "word": "hmpv",
           "g2": 0.0
+        }
+      ],
+      "key_bigrams": [
+        {
+          "bigram": "info chine",
+          "g2": 3.0
+        },
+        {
+          "bigram": "hôpitaux submergés",
+          "g2": 3.0
+        },
+        {
+          "bigram": "pays confronté",
+          "g2": 2.91
+        },
+        {
+          "bigram": "enfants personnes",
+          "g2": 2.91
+        },
+        {
+          "bigram": "personnes âgées",
+          "g2": 2.75
+        },
+        {
+          "bigram": "continue propager",
+          "g2": 2.75
+        },
+        {
+          "bigram": "hmpv été",
+          "g2": 2.61
+        },
+        {
+          "bigram": "sars cov",
+          "g2": 2.47
         }
       ],
       "themes": {
@@ -105,6 +173,40 @@
           "g2": 0.0
         }
       ],
+      "key_bigrams": [
+        {
+          "bigram": "crématoriums virus",
+          "g2": 2.72
+        },
+        {
+          "bigram": "travers chine",
+          "g2": 2.72
+        },
+        {
+          "bigram": "faisant état",
+          "g2": 2.72
+        },
+        {
+          "bigram": "infection métapneumovirus",
+          "g2": 2.72
+        },
+        {
+          "bigram": "aiguës notamment",
+          "g2": 2.72
+        },
+        {
+          "bigram": "notamment grippe",
+          "g2": 2.72
+        },
+        {
+          "bigram": "hémisphère nord",
+          "g2": 2.72
+        },
+        {
+          "bigram": "grippe virus",
+          "g2": 2.59
+        }
+      ],
       "themes": {
         "hmpv": 1.0,
         "métapneumovirus": 1.0,
@@ -147,18 +249,10 @@
       "id": "7",
       "qualif": "hmpv / virus",
       "qualif_short": "hmpv / virus",
-      "justification": "C7 · hub @france24_fr. Lexique distinctif (z log-odds CSV vs autres pôles) : #chinavirus, #xofluza, #antiviral, #baloxavir. 21 pubs hors RT.",
+      "justification": "C7 · hub @france24_fr. Lexique distinctif (z log-odds CSV vs autres pôles) : #chinavirus, #baloxavir, #antiviral, #xofluza. 21 pubs hors RT.",
       "key_hashtags": [
         {
           "tag": "chinavirus",
-          "g2": 1.54
-        },
-        {
-          "tag": "xofluza",
-          "g2": 1.54
-        },
-        {
-          "tag": "antiviral",
           "g2": 1.54
         },
         {
@@ -166,11 +260,19 @@
           "g2": 1.54
         },
         {
-          "tag": "téléchargement",
+          "tag": "antiviral",
+          "g2": 1.54
+        },
+        {
+          "tag": "xofluza",
           "g2": 1.54
         },
         {
           "tag": "europe",
+          "g2": 1.54
+        },
+        {
+          "tag": "téléchargement",
           "g2": 1.54
         },
         {
@@ -212,6 +314,40 @@
           "g2": 0.0
         }
       ],
+      "key_bigrams": [
+        {
+          "bigram": "virus propage",
+          "g2": 4.41
+        },
+        {
+          "bigram": "propage chine",
+          "g2": 4.36
+        },
+        {
+          "bigram": "hmpv virus",
+          "g2": 2.99
+        },
+        {
+          "bigram": "nord chine",
+          "g2": 2.8
+        },
+        {
+          "bigram": "propagation virus",
+          "g2": 2.78
+        },
+        {
+          "bigram": "suite épidémie",
+          "g2": 2.18
+        },
+        {
+          "bigram": "signale premiers",
+          "g2": 2.18
+        },
+        {
+          "bigram": "hmpv gouvernement",
+          "g2": 2.18
+        }
+      ],
       "themes": {
         "hmpv": 1.0,
         "virus": 1.0,
@@ -248,7 +384,7 @@
           "sn": "annelaurebeaud2",
           "text": "L'Indonésie a commencé à surveiller les vols en provenance de Chine Malaisie en raison des inquiétudes s du à l'augmentation des infections au virus HMPV En Chine pharmacies augmenteraient les prix du médicament appelé #Xofluza, #antiviral dont l'ingrédient #baloxavir marboxil ht",
           "at": "2025-01-09",
-          "tag": "xofluza"
+          "tag": "baloxavir"
         }
       ],
       "n_users": 41,
@@ -299,6 +435,40 @@
         {
           "word": "métapneumovirus",
           "g2": 0.0
+        }
+      ],
+      "key_bigrams": [
+        {
+          "bigram": "chine chine",
+          "g2": 3.63
+        },
+        {
+          "bigram": "recrudescence maladies",
+          "g2": 3.63
+        },
+        {
+          "bigram": "chine connaît",
+          "g2": 3.54
+        },
+        {
+          "bigram": "hôpitaux crématoriums",
+          "g2": 2.9
+        },
+        {
+          "bigram": "submerge hôpitaux",
+          "g2": 2.8
+        },
+        {
+          "bigram": "maladies respiratoires",
+          "g2": 2.7
+        },
+        {
+          "bigram": "nouvelle pandémie",
+          "g2": 2.7
+        },
+        {
+          "bigram": "nouvelle infection",
+          "g2": 2.57
         }
       ],
       "themes": {
@@ -359,6 +529,40 @@
         {
           "word": "ans",
           "g2": 0.0
+        }
+      ],
+      "key_bigrams": [
+        {
+          "bigram": "hmpv connu",
+          "g2": 4.91
+        },
+        {
+          "bigram": "augmentation cas",
+          "g2": 4.21
+        },
+        {
+          "bigram": "nord chine",
+          "g2": 3.52
+        },
+        {
+          "bigram": "ans début",
+          "g2": 3.47
+        },
+        {
+          "bigram": "début pandémie",
+          "g2": 3.47
+        },
+        {
+          "bigram": "covid augmentation",
+          "g2": 3.47
+        },
+        {
+          "bigram": "hmpv inquiète",
+          "g2": 3.47
+        },
+        {
+          "bigram": "respiratoire répand",
+          "g2": 3.45
         }
       ],
       "themes": {
@@ -423,6 +627,40 @@
         {
           "word": "humain",
           "g2": 0.0
+        }
+      ],
+      "key_bigrams": [
+        {
+          "bigram": "appartient famille",
+          "g2": 2.98
+        },
+        {
+          "bigram": "provoque infections",
+          "g2": 2.98
+        },
+        {
+          "bigram": "derniers jours",
+          "g2": 2.98
+        },
+        {
+          "bigram": "virus connu",
+          "g2": 2.98
+        },
+        {
+          "bigram": "mpvh métapneumovirus",
+          "g2": 2.89
+        },
+        {
+          "bigram": "humain mpvh",
+          "g2": 2.23
+        },
+        {
+          "bigram": "symptômes toux",
+          "g2": 2.14
+        },
+        {
+          "bigram": "fièvre congestion",
+          "g2": 2.14
         }
       ],
       "themes": {
@@ -498,6 +736,40 @@
           "g2": 0.0
         }
       ],
+      "key_bigrams": [
+        {
+          "bigram": "sanitaire épidémie",
+          "g2": 2.76
+        },
+        {
+          "bigram": "travers pays",
+          "g2": 2.76
+        },
+        {
+          "bigram": "pays suscitant",
+          "g2": 2.76
+        },
+        {
+          "bigram": "inquiétudes mondiales",
+          "g2": 2.76
+        },
+        {
+          "bigram": "mondiales hindustan",
+          "g2": 2.76
+        },
+        {
+          "bigram": "hindustan times",
+          "g2": 2.76
+        },
+        {
+          "bigram": "respiratoire provoque",
+          "g2": 2.76
+        },
+        {
+          "bigram": "provoque infections",
+          "g2": 2.76
+        }
+      ],
       "themes": {
         "hmpv": 1.0,
         "virus": 1.0,
@@ -516,7 +788,7 @@
           "sn": "asianews_fr",
           "text": "La #Chine 🇨🇳 est confrontée à une épidémie de métapneumovirus humain (HMPV) . #HMPV est un virus respiratoire qui provoque des infections bénignes similaires à un rhume. Aucune urgence officielle n'a été déclarée. 🎥@jist_news https://t.co/2OIPZsKpzt",
           "at": "2025-01-04",
-          "tag": "chine"
+          "tag": "hmpv"
         }
       ],
       "n_users": 27,
@@ -539,6 +811,40 @@
         {
           "word": "cas",
           "g2": 2.69
+        }
+      ],
+      "key_bigrams": [
+        {
+          "bigram": "cas été",
+          "g2": 3.43
+        },
+        {
+          "bigram": "augmentation nombre",
+          "g2": 2.86
+        },
+        {
+          "bigram": "été signalé",
+          "g2": 2.86
+        },
+        {
+          "bigram": "mystérieux virus",
+          "g2": 2.86
+        },
+        {
+          "bigram": "nombre cas",
+          "g2": 2.8
+        },
+        {
+          "bigram": "cas hmpv",
+          "g2": 2.72
+        },
+        {
+          "bigram": "épidémie hmpv",
+          "g2": 2.6
+        },
+        {
+          "bigram": "virus chinois",
+          "g2": 2.45
         }
       ],
       "themes": {
@@ -602,6 +908,40 @@
           "g2": 0.0
         }
       ],
+      "key_bigrams": [
+        {
+          "bigram": "virus respiratoires",
+          "g2": 3.73
+        },
+        {
+          "bigram": "chine nouveau",
+          "g2": 3.61
+        },
+        {
+          "bigram": "épidémie virale",
+          "g2": 2.7
+        },
+        {
+          "bigram": "épidémie chine",
+          "g2": 2.7
+        },
+        {
+          "bigram": "virus identifié",
+          "g2": 2.7
+        },
+        {
+          "bigram": "mystérieuse épidémie",
+          "g2": 2.7
+        },
+        {
+          "bigram": "hôpitaux surpeuplés",
+          "g2": 2.22
+        },
+        {
+          "bigram": "sars cov",
+          "g2": 2.08
+        }
+      ],
       "themes": {
         "hmpv": 1.0,
         "chine": 1.0,
@@ -611,10 +951,34 @@
       },
       "samples": [
         {
+          "sn": "gengis9999",
+          "text": "La Chine est de nouveau confrontée à une nouvelle épidémie virale mystérieuse et mortelle, baptisée HMPV (métapneumovirus humain) Les médias sociaux sont inondés de vidéos d’hôpitaux surpeuplés. https://t.co/5LzgrZOjlA",
+          "at": "2025-01-05",
+          "tag": ""
+        },
+        {
+          "sn": "jeanbarbeau2",
+          "text": "Des informations fiables et utiles sur le HMPV venant de @NGrandvaux . Voir clair sur ce genre de rumeur. 👇👇👇 https://t.co/uSHFRf5mcN",
+          "at": "2025-01-07",
+          "tag": ""
+        },
+        {
+          "sn": "ngrandvaux",
+          "text": "5️⃣ Le HMPV n’est pas anodin, mais il n’y a aucune raison de comparer cette épidémie en Chine à l’émergence du SARS-CoV-2. ⚠️ Cependant, cela soulève une question importante : Devons-nous prendre des mesures pour limiter la propagation des virus respiratoires ?",
+          "at": "2025-01-07",
+          "tag": ""
+        },
+        {
+          "sn": "ngrandvaux",
+          "text": "3️⃣ Le HMPV est suivi par la vigie des virus respiratoires @INSPQ au Québec et au Canada. 📊 Pour les données au Québec: 🔗https://t.co/yc2sFD6drn (Prenez le temps de parcourir les différentes pages, car les analyses sont classées par milieux : cliniques/hôpitaux).",
+          "at": "2025-01-07",
+          "tag": ""
+        },
+        {
           "sn": "ngrandvaux",
           "text": "Petit thread sur l’éclosion virale signalée en Chine. 1️⃣L’éclosion est due au #metapneumovirus humain (#HMPV ), qui n’est PAS un nouveau virus. 👉 Identifié en 2001 (mais circulant probablement bien avant). 🔗 Référence : https://t.co/bi1GNDEl2A",
           "at": "2025-01-07",
-          "tag": "metapneumovirus"
+          "tag": "hmpv"
         }
       ],
       "n_users": 22,
@@ -626,14 +990,14 @@
       "id": "0",
       "qualif": "hmpv / chine",
       "qualif_short": "hmpv / chine",
-      "justification": "C0 · hub @aixematrice. Lexique distinctif (z log-odds CSV vs autres pôles) : #épidémie, #pandémie, #covid_19, #breaking. 6 pubs hors RT.",
+      "justification": "C0 · hub @aixematrice. Lexique distinctif (z log-odds CSV vs autres pôles) : #pandémie, #épidémie, #covid_19, #breaking. 6 pubs hors RT.",
       "key_hashtags": [
         {
-          "tag": "épidémie",
+          "tag": "pandémie",
           "g2": 2.48
         },
         {
-          "tag": "pandémie",
+          "tag": "épidémie",
           "g2": 2.48
         },
         {
@@ -691,6 +1055,40 @@
           "g2": 0.0
         }
       ],
+      "key_bigrams": [
+        {
+          "bigram": "premiers cas",
+          "g2": 4.41
+        },
+        {
+          "bigram": "chinois hmpv",
+          "g2": 3.6
+        },
+        {
+          "bigram": "urgence sanitaire",
+          "g2": 3.6
+        },
+        {
+          "bigram": "hmpv été",
+          "g2": 3.51
+        },
+        {
+          "bigram": "état urgence",
+          "g2": 3.1
+        },
+        {
+          "bigram": "hmpv human",
+          "g2": 2.84
+        },
+        {
+          "bigram": "covid chine",
+          "g2": 2.66
+        },
+        {
+          "bigram": "chine état",
+          "g2": 2.55
+        }
+      ],
       "themes": {
         "hmpv": 1.0,
         "chine": 1.0,
@@ -703,31 +1101,19 @@
           "sn": "aixematrice",
           "text": "#chine 😡😡😡! Les premiers cas de métapneumovirus humain chinois (HMPV) ont été signalés à Hong Kong, suite à la déclaration par la Chine de l'état d'urgence sanitaire face à l'épidémie. ! Encore un nouveau Confinement prochainement 🤔🤔 #OMS #pandemie !! Laissez -nous https://t.co/w",
           "at": "2025-01-04",
-          "tag": "chine"
-        },
-        {
-          "sn": "francersistanc1",
-          "text": "🚨ALERTE🚨En Asie, confirmation qu'ils sont en train de refaire le cinéma Covid en Chine sous le nom de HMPV (Human MetaPneumoVirus). Les hôpitaux se rempliraient et certains aéroports fermés ... La Chine 🇨🇳 déclare l'état d'urgence☣️⚡️☣️ https://t.co/2zFJSaHp6h https://t.co/1Jc5eF",
-          "at": "2025-01-04",
-          "tag": ""
-        },
-        {
-          "sn": "francersistanc1",
-          "text": "🚨🇨🇳GENOCIDE : Les premiers cas de métapneumovirus humain chinois (HMPV) ont été signalés à Hong Kong, après que la Chine a déclaré l'état d'urgence sanitaire lié à l'épidémie. 😷Le port du masque est progressivement rétabli dans certaines régions des États-Unis.🇺🇸 https://t.co/jEq",
-          "at": "2025-01-05",
-          "tag": ""
-        },
-        {
-          "sn": "aixematrice",
-          "text": "Bon ! Ben , c’est pour quand en France ? L'Inde signale ses premiers cas de virus #HMPV ; le gouvernement minimise la menace alors que les craintes liées au Covid-19 reviennent ! 🤔🤔‼️‼️#beaking. News. https://t.co/CqtFdu1jdI",
-          "at": "2025-01-06",
-          "tag": "hmpv"
+          "tag": "oms"
         },
         {
           "sn": "aixematrice",
           "text": "Un petit réveil en musique et avec humour ! Passer une bonne semaine ! Est-ce la maladie X de L #oms ? 🔴‼️ Et c’est reparti ? #BREAKING , 🚨 Après 5 ans de la #pandémie de #COVID_19, la #Chine fait face à une nouvelle #épidémie d’un #virus appelé #HMPV (Human https://t.co/flhV46fy",
           "at": "2025-01-06",
-          "tag": "hmpv"
+          "tag": "pandémie"
+        },
+        {
+          "sn": "aixematrice",
+          "text": "🔴‼️ Et c’est reparti ? #BREAKING , 🚨 Après 5 ans de la #pandémie de #COVID_19, la #Chine fait face à une nouvelle #épidémie d’un #virus appelé #HMPV (Human Metapneumovirus), une infection respiratoire. Les hôpitaux sont saturés de cas de ce virus ! Et ça arrive ? Y a personne htt",
+          "at": "2025-01-06",
+          "tag": "pandémie"
         }
       ],
       "n_users": 22,
@@ -747,6 +1133,40 @@
         }
       ],
       "key_words": [],
+      "key_bigrams": [
+        {
+          "bigram": "cause virus",
+          "g2": 3.11
+        },
+        {
+          "bigram": "fake news",
+          "g2": 3.11
+        },
+        {
+          "bigram": "rumeur reconfinement",
+          "g2": 1.09
+        },
+        {
+          "bigram": "reconfinement cause",
+          "g2": 1.09
+        },
+        {
+          "bigram": "hmpv fake",
+          "g2": 1.09
+        },
+        {
+          "bigram": "news million",
+          "g2": 1.09
+        },
+        {
+          "bigram": "million personnes",
+          "g2": 1.09
+        },
+        {
+          "bigram": "personnes laquelle",
+          "g2": 1.09
+        }
+      ],
       "themes": {},
       "samples": [
         {
@@ -765,14 +1185,14 @@
       "id": "11",
       "qualif": "chine / nouvelle",
       "qualif_short": "chine / nouvelle",
-      "justification": "C11 · hub @mickaellaffont. Lexique distinctif (z log-odds CSV vs autres pôles) : #covid19, #hmpv. 3 pubs hors RT.",
+      "justification": "C11 · hub @mickaellaffont. Lexique distinctif (z log-odds CSV vs autres pôles) : #hmpv, #covid19. 3 pubs hors RT.",
       "key_hashtags": [
         {
-          "tag": "covid19",
+          "tag": "hmpv",
           "g2": 0.0
         },
         {
-          "tag": "hmpv",
+          "tag": "covid19",
           "g2": 0.0
         }
       ],
@@ -810,6 +1230,40 @@
           "g2": 0.0
         }
       ],
+      "key_bigrams": [
+        {
+          "bigram": "virus métapneumovirus",
+          "g2": 3.09
+        },
+        {
+          "bigram": "pandémie covid19",
+          "g2": 2.93
+        },
+        {
+          "bigram": "symptômes type",
+          "g2": 2.78
+        },
+        {
+          "bigram": "type grippal",
+          "g2": 2.78
+        },
+        {
+          "bigram": "grippal covid",
+          "g2": 2.78
+        },
+        {
+          "bigram": "hmpv propageant",
+          "g2": 2.28
+        },
+        {
+          "bigram": "propageant rapidement",
+          "g2": 2.28
+        },
+        {
+          "bigram": "rapidement chine",
+          "g2": 2.28
+        }
+      ],
       "themes": {
         "chine": 1.0,
         "nouvelle": 1.0,
@@ -822,7 +1276,7 @@
           "sn": "mickaellaffont",
           "text": "Il semblerait qu’une nouvelle épidémie de virus du métapneumovirus humain (#HMPV) se propage rapidement, en Chine 5 ans après la pandémie de #Covid19 https://t.co/O1Nb4nf6cX",
           "at": "2025-01-04",
-          "tag": "covid19"
+          "tag": "hmpv"
         }
       ],
       "n_users": 12,
@@ -846,6 +1300,40 @@
         }
       ],
       "key_words": [],
+      "key_bigrams": [
+        {
+          "bigram": "santé virus",
+          "g2": 3.04
+        },
+        {
+          "bigram": "hmpv engendrer",
+          "g2": 2.89
+        },
+        {
+          "bigram": "engendrer nouvelle",
+          "g2": 2.89
+        },
+        {
+          "bigram": "respiratoire hmpv",
+          "g2": 2.51
+        },
+        {
+          "bigram": "nouvelle pandémie",
+          "g2": 2.1
+        },
+        {
+          "bigram": "chine virus",
+          "g2": 1.93
+        },
+        {
+          "bigram": "virus respiratoire",
+          "g2": 1.15
+        },
+        {
+          "bigram": "pandémie jacques",
+          "g2": 1.09
+        }
+      ],
       "themes": {},
       "samples": [
         {
@@ -9953,6 +10441,4971 @@
       "69": 1,
       "7": 1,
       "8": 1,
+      "9": 1
+    }
+  },
+  "bigram_accounts": {
+    "aiguës notamment": [
+      "omsrdcongo",
+      "tatiann69922625"
+    ],
+    "ans covid": [
+      "93_7_motivation",
+      "chat8890",
+      "designche1",
+      "franceinfo",
+      "hespressfr",
+      "jeanvige",
+      "knanouro"
+    ],
+    "ans début": [
+      "brutofficiel",
+      "le_parisien"
+    ],
+    "ans pandémie": [
+      "aixematrice",
+      "alapic974",
+      "alme_yda",
+      "badara_mbaye_",
+      "bnc_2012",
+      "djipylensmedia",
+      "etresouverain62",
+      "foucotak509",
+      "georasia",
+      "independante_fm",
+      "ingenieur243",
+      "jules4895985087",
+      "lirehaiti",
+      "lourau20e",
+      "mickaellaffont",
+      "ndaokals",
+      "remed_fey",
+      "ysssineyass"
+    ],
+    "appartient famille": [
+      "jyves94",
+      "kasprzykremi"
+    ],
+    "appelé hmpv": [
+      "aixematrice",
+      "alme_yda",
+      "badara_mbaye_",
+      "bnc_2012",
+      "citizenbamba",
+      "djipylensmedia",
+      "foucotak509",
+      "independante_fm",
+      "ingenieur243",
+      "jules4895985087",
+      "lirehaiti",
+      "ndaokals",
+      "remed_fey"
+    ],
+    "augmentation cas": [
+      "100xcentobio",
+      "abdelka11473079",
+      "alainfrnews",
+      "citizenbamba",
+      "coldoct",
+      "designche1",
+      "florentziac",
+      "france24_fr",
+      "globalvar_fr",
+      "infolinfo",
+      "inv3stir",
+      "le_parisien",
+      "son2baby"
+    ],
+    "augmentation nombre": [
+      "globalvar_fr",
+      "redkiraz"
+    ],
+    "autorités sanitaires": [
+      "100xcentobio",
+      "citizenbamba",
+      "designche1",
+      "france24_fr",
+      "globalvar_fr",
+      "hadejakeita",
+      "julienm__",
+      "le_parisien",
+      "lexpressmaurice",
+      "queeriosity__"
+    ],
+    "cas augmentent": [
+      "1966forever",
+      "f24videos",
+      "florentziac",
+      "irisnews_",
+      "leparisiensante",
+      "sans_louise",
+      "sylvaintekris"
+    ],
+    "cas chine": [
+      "100xcentobio",
+      "hibaabdelli",
+      "kcharlemag85405",
+      "lepoint",
+      "pjlepine01"
+    ],
+    "cas hmpv": [
+      "annelaurebeaud2",
+      "citizenbamba",
+      "designche1",
+      "florentziac",
+      "france24_fr",
+      "marochebdo",
+      "montesqieu1949",
+      "olivierrimmel",
+      "redkiraz"
+    ],
+    "cas métapneumovirus": [
+      "actuenvif",
+      "aixematrice",
+      "coldoct",
+      "defimediainfo",
+      "etresouverain62",
+      "flahault",
+      "francersistanc1",
+      "gavi_fr",
+      "inv3stir",
+      "lecanape2",
+      "son2baby",
+      "tatiann69922625",
+      "ysssineyass"
+    ],
+    "cas virus": [
+      "aixematrice",
+      "alme_yda",
+      "annelaurebeaud2",
+      "badara_mbaye_",
+      "bnc_2012",
+      "citizenbamba",
+      "djipylensmedia",
+      "foucotak509",
+      "globalvar_fr",
+      "independante_fm",
+      "ingenieur243",
+      "inter_lignes",
+      "kuna__fr",
+      "les2aa",
+      "ndaokals",
+      "remed_fey",
+      "reveil_algerie",
+      "tuniscopecom"
+    ],
+    "cas été": [
+      "alainfrnews",
+      "messirhamid",
+      "redkiraz"
+    ],
+    "cause virus": [
+      "cavousf5",
+      "verif_tf1lci"
+    ],
+    "chine chine": [
+      "chetteyous68942",
+      "eclairelutin",
+      "kero_on_x"
+    ],
+    "chine confrontée": [
+      "actuenvif",
+      "antoinetv_",
+      "archippenzimba",
+      "asianews_fr",
+      "byterin1",
+      "dimitribeghin",
+      "dutout_pas",
+      "etresouverain62",
+      "icgeopolitics",
+      "kleensamsonite",
+      "le_liberaal",
+      "mayumbiarcel",
+      "ngwaditenplar",
+      "rikardrene",
+      "sadraquejean",
+      "tessier_x",
+      "torreseryc",
+      "usernamedias_"
+    ],
+    "chine connaît": [
+      "dystoman",
+      "eclairelutin",
+      "globalvar_fr",
+      "julesjuliocesar"
+    ],
+    "chine déclare": [
+      "75secondes",
+      "alapic974",
+      "chenuflorent",
+      "cryptonomistfra",
+      "ebalemozindo",
+      "francersistanc1",
+      "freedomradiofr",
+      "jyves94",
+      "loubestal17",
+      "marielauredupon",
+      "peter_pan95",
+      "saraart4",
+      "silvano_trotta",
+      "ysssineyass"
+    ],
+    "chine face": [
+      "93_7_motivation",
+      "aixematrice",
+      "alme_yda",
+      "badara_mbaye_",
+      "bnc_2012",
+      "cdjerbal",
+      "chat8890",
+      "chetteyous68942",
+      "citizenbamba",
+      "djipylensmedia",
+      "drkayumba",
+      "flahault",
+      "foucotak509",
+      "independante_fm",
+      "ingenieur243",
+      "jules4895985087",
+      "lirehaiti",
+      "ndaokals",
+      "remed_fey",
+      "replik_cd_media",
+      "samuelmuaku",
+      "tessier_x",
+      "ticheck_org",
+      "ysssineyass"
+    ],
+    "chine hmpv": [
+      "annelaurebeaud2",
+      "irisnews_",
+      "lefebvreelodie6",
+      "mohhaafcb",
+      "shoyoo772",
+      "wmaarifa",
+      "y_dms_debah"
+    ],
+    "chine inquiéter": [
+      "christophechay",
+      "fsaintilma_",
+      "lehuffpost",
+      "lesoir",
+      "midilibre"
+    ],
+    "chine métapneumovirus": [
+      "dabultac",
+      "damienb51574501",
+      "doctissimo",
+      "jyves94",
+      "kasprzykremi",
+      "sans_louise",
+      "tboulboulva",
+      "thaivisafra",
+      "trustmyscience"
+    ],
+    "chine nouveau": [
+      "alapic974",
+      "arztdiego",
+      "gengis9999",
+      "haldol",
+      "hespressfr",
+      "irisnews_"
+    ],
+    "chine réseaux": [
+      "calamyjane",
+      "france24_fr",
+      "marcgozlan",
+      "psginna",
+      "seriatimfr"
+    ],
+    "chine virus": [
+      "actusante_100",
+      "actusante_net",
+      "brutofficiel",
+      "bvoltaire",
+      "colonelbigboss",
+      "dav214840",
+      "designche1",
+      "fab20674300",
+      "lntribune",
+      "montesqieu1949",
+      "olivier40121476",
+      "son2baby",
+      "sylvainebe54733",
+      "tekiano",
+      "vwazilenwes"
+    ],
+    "chine épidémie": [
+      "bernadette7432",
+      "chantalpecher4",
+      "chat8890",
+      "criver777",
+      "ecousszz",
+      "gaillar41755926",
+      "hadejakeita",
+      "hertweck4",
+      "hypnosisa61",
+      "krieger66362259",
+      "laroulotte173",
+      "luckylu32431232",
+      "margottonm68143",
+      "mariemarys06",
+      "rttr73818881"
+    ],
+    "chine état": [
+      "aixematrice",
+      "jeanvige"
+    ],
+    "chinois hmpv": [
+      "aixematrice",
+      "francersistanc1",
+      "redkiraz",
+      "truffertw"
+    ],
+    "cinq ans": [
+      "93_7_motivation",
+      "alapic974",
+      "brutofficiel",
+      "chetteyous68942",
+      "designche1",
+      "etresouverain62",
+      "france24_fr",
+      "franceinfo",
+      "georasia",
+      "hespressfr",
+      "inv3stir",
+      "knanouro",
+      "le_parisien",
+      "lourau20e",
+      "ysssineyass"
+    ],
+    "confrontée nouvelle": [
+      "actuenvif",
+      "antoinetv_",
+      "archippenzimba",
+      "asianews_fr",
+      "byterin1",
+      "cartesdumonde",
+      "dimitribeghin",
+      "dutout_pas",
+      "etresouverain62",
+      "gengis9999",
+      "icgeopolitics",
+      "kleensamsonite",
+      "le_liberaal",
+      "mayumbiarcel",
+      "ngwaditenplar",
+      "rikardrene",
+      "tessier_x",
+      "usernamedias_"
+    ],
+    "congestion écoulement": [
+      "alme_yda",
+      "badara_mbaye_",
+      "citizenbamba",
+      "djipylensmedia",
+      "foucotak509",
+      "ingenieur243",
+      "jules4895985087",
+      "lirehaiti"
+    ],
+    "continue propager": [
+      "francenews24",
+      "msn_quebec",
+      "redkiraz",
+      "stauguste69023"
+    ],
+    "covid augmentation": [
+      "designche1",
+      "le_parisien"
+    ],
+    "covid chine": [
+      "93_7_motivation",
+      "aixematrice",
+      "alme_yda",
+      "badara_mbaye_",
+      "bnc_2012",
+      "chetteyous68942",
+      "djipylensmedia",
+      "etresouverain62",
+      "foucotak509",
+      "franceinfo",
+      "francersistanc1",
+      "freedomradiofr",
+      "hespressfr",
+      "independante_fm",
+      "ingenieur243",
+      "inv3stir",
+      "jeanvige",
+      "jules4895985087",
+      "lemedia100filtr",
+      "lirehaiti",
+      "michaeldouayia",
+      "ndaokals",
+      "partoutatis77",
+      "remed_fey",
+      "soupedesques",
+      "tessier_x"
+    ],
+    "covid hmpv": [
+      "alhks67",
+      "calamyjane",
+      "chrislabaule",
+      "knanouro",
+      "myadstweets",
+      "sghc_french"
+    ],
+    "covid propagent": [
+      "75secondes",
+      "alapic974",
+      "ebalemozindo",
+      "loubestal17",
+      "marielauredupon",
+      "peter_pan95",
+      "saraart4",
+      "silvano_trotta"
+    ],
+    "crée situation": [
+      "actusante_100",
+      "actusante_net",
+      "colonelbigboss",
+      "fab20674300",
+      "montesqieu1949",
+      "sylvainebe54733"
+    ],
+    "crématoriums virus": [
+      "peter_pan95",
+      "saraart4"
+    ],
+    "derniers jours": [
+      "joeltarnawski",
+      "kasprzykremi"
+    ],
+    "début pandémie": [
+      "brutofficiel",
+      "le_parisien"
+    ],
+    "déclare état": [
+      "75secondes",
+      "alapic974",
+      "chenuflorent",
+      "cryptonomistfra",
+      "ebalemozindo",
+      "francersistanc1",
+      "freedomradiofr",
+      "jyves94",
+      "loubestal17",
+      "marielauredupon",
+      "peter_pan95",
+      "saraart4",
+      "silvano_trotta",
+      "ysssineyass"
+    ],
+    "enfants personnes": [
+      "francenews24",
+      "lemedia100filtr",
+      "michaeldouayia"
+    ],
+    "engendrer nouvelle": [
+      "bvoltaire",
+      "gfrancefrance",
+      "kiddodig",
+      "orphee45"
+    ],
+    "enregistrée chine": [
+      "_nonpossumus",
+      "bernadette7432",
+      "chantalpecher4",
+      "chat8890",
+      "criver777",
+      "ecousszz",
+      "gaillar41755926",
+      "hertweck4",
+      "hypnosisa61",
+      "joeltarnawski",
+      "krieger66362259",
+      "laroulotte173",
+      "luckylu32431232",
+      "margottonm68143",
+      "mariemarys06",
+      "rttr73818881"
+    ],
+    "face nouvelle": [
+      "aixematrice",
+      "alme_yda",
+      "badara_mbaye_",
+      "bnc_2012",
+      "cdjerbal",
+      "chat8890",
+      "chetteyous68942",
+      "citizenbamba",
+      "djipylensmedia",
+      "foucotak509",
+      "independante_fm",
+      "ingenieur243",
+      "jules4895985087",
+      "lirehaiti",
+      "ndaokals",
+      "remed_fey",
+      "replik_cd_media",
+      "samuelmuaku",
+      "tessier_x",
+      "ticheck_org",
+      "woit_geopolitic",
+      "ysssineyass"
+    ],
+    "faisant état": [
+      "julienm__",
+      "mathieu31359682"
+    ],
+    "fake news": [
+      "cavousf5",
+      "laurentopsomer"
+    ],
+    "fièvre congestion": [
+      "alme_yda",
+      "badara_mbaye_",
+      "citizenbamba",
+      "djipylensmedia",
+      "foucotak509",
+      "ingenieur243",
+      "jules4895985087",
+      "kasprzykremi",
+      "lirehaiti"
+    ],
+    "grippal covid": [
+      "icgeopolitics",
+      "kleensamsonite",
+      "rikardrene",
+      "tessier_x"
+    ],
+    "grippe aviaire": [
+      "annelaurebeaud2",
+      "bigdanbud",
+      "medscapefrance",
+      "mohhaafcb",
+      "onuinfo",
+      "schmerchris"
+    ],
+    "grippe covid": [
+      "actuenvif",
+      "byterin1",
+      "dimitribeghin",
+      "etresouverain62",
+      "julesjuliocesar",
+      "lupolynesia",
+      "redkiraz",
+      "robin_des_lois",
+      "samuelmuaku",
+      "sudinfo_be",
+      "tboulboulva"
+    ],
+    "grippe hmpv": [
+      "75secondes",
+      "alapic974",
+      "brutofficiel",
+      "chenuflorent",
+      "ebalemozindo",
+      "loubestal17",
+      "marielauredupon",
+      "peter_pan95",
+      "revolutionpacif",
+      "silvano_trotta",
+      "tessier_x",
+      "torreseryc"
+    ],
+    "grippe virus": [
+      "medecin2famille",
+      "redkiraz",
+      "saraart4"
+    ],
+    "hindustan times": [
+      "asianews_fr",
+      "le_liberaal"
+    ],
+    "hmpv chine": [
+      "adresansoso",
+      "alapic974",
+      "annelaurebeaud2",
+      "belidemagazine",
+      "c_a_g0101",
+      "designche1",
+      "eclairelutin",
+      "jack_gelos",
+      "jrmeferran85965",
+      "julienm__",
+      "lesoir",
+      "marochebdo",
+      "medi1tvafrique",
+      "medscapefrance",
+      "neveuxbertrand",
+      "vwazilenwes",
+      "woit_geopolitic"
+    ],
+    "hmpv connu": [
+      "degeneral__",
+      "globalvar_fr",
+      "tessier_x"
+    ],
+    "hmpv engendrer": [
+      "bvoltaire",
+      "gfrancefrance",
+      "kiddodig",
+      "orphee45"
+    ],
+    "hmpv fake": [
+      "cavousf5"
+    ],
+    "hmpv gouvernement": [
+      "aixematrice",
+      "annelaurebeaud2"
+    ],
+    "hmpv hmpvvirus": [
+      "benjamin_leduc_",
+      "kero_on_x",
+      "lefouparolier",
+      "nax_offi",
+      "sumitg71",
+      "thecongorx",
+      "ysssineyass"
+    ],
+    "hmpv human": [
+      "aixematrice",
+      "alme_yda",
+      "badara_mbaye_",
+      "belleemmerdeuse",
+      "bnc_2012",
+      "c_a_g0101",
+      "chetteyous68942",
+      "citizenbamba",
+      "djipylensmedia",
+      "drkayumba",
+      "foucotak509",
+      "francersistanc1",
+      "independante_fm",
+      "ingenieur243",
+      "jules4895985087",
+      "lemedia100filtr",
+      "lirehaiti",
+      "michaeldouayia",
+      "ndaokals",
+      "olivierrimmel",
+      "partoutatis77",
+      "remed_fey"
+    ],
+    "hmpv inquiète": [
+      "le_parisien",
+      "lntribune"
+    ],
+    "hmpv mycoplasma": [
+      "75secondes",
+      "alapic974",
+      "chenuflorent",
+      "cryptonomistfra",
+      "ebalemozindo",
+      "jyves94",
+      "loubestal17",
+      "marielauredupon",
+      "mathieu31359682",
+      "silvano_trotta",
+      "tessier_x",
+      "torreseryc"
+    ],
+    "hmpv métapneumovirus": [
+      "amalegafrancois",
+      "decarnols",
+      "gengis9999",
+      "maliactu",
+      "messirhamid",
+      "nomdidiou501075",
+      "redkiraz"
+    ],
+    "hmpv nord": [
+      "citizenbamba",
+      "coldoct",
+      "designche1",
+      "france24_fr",
+      "inv3stir"
+    ],
+    "hmpv nouveau": [
+      "alainfrnews",
+      "c_a_g0101",
+      "chineambmaroc",
+      "doctissimo",
+      "jindependant",
+      "judsonpierre",
+      "lome_actu",
+      "ngrandvaux"
+    ],
+    "hmpv propage": [
+      "alapic974",
+      "antoinetv_",
+      "asianews_fr",
+      "dav214840",
+      "dutout_pas",
+      "etresouverain62",
+      "joeltarnawski",
+      "julesjuliocesar",
+      "le_liberaal",
+      "lourau20e",
+      "mayumbiarcel",
+      "mickaellaffont",
+      "rikardrene",
+      "sghc_french",
+      "tboulboulva",
+      "usernamedias_"
+    ],
+    "hmpv propageant": [
+      "actuenvif",
+      "archippenzimba",
+      "byterin1",
+      "etresouverain62",
+      "icgeopolitics",
+      "kleensamsonite",
+      "ngwaditenplar",
+      "tessier_x"
+    ],
+    "hmpv virus": [
+      "1966forever",
+      "alertes_info",
+      "annelaurebeaud2",
+      "anti_macroniste",
+      "asianews_fr",
+      "aulnaycap",
+      "calamyjane",
+      "carolinelessar8",
+      "cesarwazen",
+      "destinationsant",
+      "dystoman",
+      "florentziac",
+      "france24_fr",
+      "francois_59_",
+      "gaby_chami",
+      "globalintel_",
+      "gustave213",
+      "hassahmed93",
+      "kenandogan1",
+      "knanouro",
+      "lehuffpost",
+      "leonnymedia",
+      "leparisiensante",
+      "lexpressmaurice",
+      "lorientlejour",
+      "marcgozlan",
+      "marchaas57",
+      "marochebdo",
+      "olivcim",
+      "psginna",
+      "samuelmuaku",
+      "sans_louise",
+      "seriatimfr",
+      "sylvaintekris",
+      "tannheimvs",
+      "torreseryc",
+      "walawpress",
+      "ysssineyass"
+    ],
+    "hmpv été": [
+      "aixematrice",
+      "annelaurebeaud2",
+      "francersistanc1",
+      "reveil_algerie",
+      "vinz_crt"
+    ],
+    "humain crée": [
+      "actusante_100",
+      "actusante_net",
+      "colonelbigboss",
+      "fab20674300",
+      "montesqieu1949",
+      "sylvainebe54733"
+    ],
+    "humain hmpv": [
+      "100xcentobio",
+      "1966forever",
+      "7infoci",
+      "abdelka11473079",
+      "actuenvif",
+      "aesinfos",
+      "alapic974",
+      "anti_macroniste",
+      "antoinetv_",
+      "archippenzimba",
+      "asianews_fr",
+      "byterin1",
+      "chat8890",
+      "coldoct",
+      "dimitribeghin",
+      "dystoman",
+      "etresouverain62",
+      "flangloi",
+      "francenews24",
+      "georgsamel",
+      "herodote1789",
+      "hespressfr",
+      "icgeopolitics",
+      "infointoxf24",
+      "inv3stir",
+      "jack_gelos",
+      "julesjuliocesar",
+      "julienm__",
+      "kasprzykremi",
+      "kiddodig",
+      "kleensamsonite",
+      "laboussolei",
+      "lehuffpost",
+      "leparisiensante",
+      "lexpressmaurice",
+      "limportant_fr",
+      "lourau20e",
+      "malkoomx00",
+      "mayumbiarcel",
+      "mickaellaffont",
+      "ngrandvaux",
+      "ngwaditenplar",
+      "nkazumba24880",
+      "olivier40121476",
+      "quang_phamqg",
+      "redkiraz",
+      "rikardrene",
+      "rtgglobin",
+      "sadraquejean",
+      "samuelmuaku",
+      "sans_louise",
+      "schmerchris",
+      "son2baby",
+      "sylvaintekris",
+      "tatiann69922625",
+      "tboulboulva",
+      "tessier_x",
+      "vwazilenwes",
+      "ysssineyass",
+      "zwhaendel48"
+    ],
+    "humain inquiéter": [
+      "hibaabdelli",
+      "kcharlemag85405",
+      "ledauphine",
+      "lepoint",
+      "pjlepine01",
+      "vegasapologies"
+    ],
+    "humain mpvh": [
+      "cmq_org",
+      "defimediainfo",
+      "destinationsant",
+      "egfoxdesign",
+      "gavi_fr",
+      "haldol",
+      "kasprzykremi",
+      "tatiann69922625"
+    ],
+    "human metapneumovirus": [
+      "aixematrice",
+      "alme_yda",
+      "andreabox0",
+      "artistehaki",
+      "badara_mbaye_",
+      "belleemmerdeuse",
+      "bnc_2012",
+      "c_a_g0101",
+      "catherinekat4",
+      "chetteyous68942",
+      "citizenbamba",
+      "djipylensmedia",
+      "drkayumba",
+      "foucotak509",
+      "francersistanc1",
+      "globalintel_",
+      "independante_fm",
+      "ingenieur243",
+      "irisnews_",
+      "jules4895985087",
+      "lemedia100filtr",
+      "lirehaiti",
+      "michaeldouayia",
+      "ndaokals",
+      "olivierrimmel",
+      "partoutatis77",
+      "remed_fey"
+    ],
+    "hémisphère nord": [
+      "omsrdcongo",
+      "tatiann69922625"
+    ],
+    "hôpitaux crématoriums": [
+      "chenuflorent",
+      "eclairelutin",
+      "marielauredupon",
+      "peter_pan95",
+      "saraart4",
+      "silvano_trotta",
+      "tessier_x",
+      "torreseryc"
+    ],
+    "hôpitaux saturés": [
+      "aixematrice",
+      "alme_yda",
+      "badara_mbaye_",
+      "bnc_2012",
+      "citizenbamba",
+      "djipylensmedia",
+      "foucotak509",
+      "independante_fm",
+      "ingenieur243",
+      "ndaokals",
+      "remed_fey",
+      "ysssineyass"
+    ],
+    "hôpitaux submergés": [
+      "dav214840",
+      "francenews24"
+    ],
+    "hôpitaux surpeuplés": [
+      "gengis9999",
+      "joeltarnawski",
+      "rtgglobin",
+      "tessier_x",
+      "vwazilenwes"
+    ],
+    "inde signale": [
+      "actuenvif",
+      "aixematrice",
+      "annelaurebeaud2",
+      "etresouverain62",
+      "les2aa"
+    ],
+    "infection métapneumovirus": [
+      "cgtnfrancais",
+      "julienm__"
+    ],
+    "infection respiratoire": [
+      "aixematrice",
+      "alme_yda",
+      "badara_mbaye_",
+      "bnc_2012",
+      "citizenbamba",
+      "djipylensmedia",
+      "foucotak509",
+      "independante_fm",
+      "ingenieur243",
+      "lirehaiti",
+      "ndaokals",
+      "remed_fey",
+      "sefluctuat"
+    ],
+    "infections respiratoires": [
+      "chineambmaroc",
+      "hespressfr",
+      "irisnews_",
+      "kasprzykremi",
+      "libertesagesse",
+      "neveuxbertrand",
+      "nicolasberrod",
+      "nicolasmortel",
+      "omsrdcongo",
+      "panda31808732",
+      "tatiann69922625"
+    ],
+    "info chine": [
+      "francenews24",
+      "ysssineyass"
+    ],
+    "inquiétudes mondiales": [
+      "asianews_fr",
+      "le_liberaal"
+    ],
+    "inquiétudes nouvelle": [
+      "andreabox0",
+      "georgsamel",
+      "kiddodig",
+      "limportant_fr",
+      "zwhaendel48"
+    ],
+    "maladies respiratoires": [
+      "93_7_motivation",
+      "abdelka11473079",
+      "belidemagazine",
+      "calamyjane",
+      "eclairelutin",
+      "franceafrique23",
+      "joeltarnawski",
+      "lecanape2",
+      "rtgglobin",
+      "var_actu",
+      "vwazilenwes"
+    ],
+    "metapneumovirus humain": [
+      "defimediainfo",
+      "fra_romel",
+      "franceafrique23",
+      "kero_on_x",
+      "laboussolei",
+      "ngrandvaux",
+      "onuinfo"
+    ],
+    "metapneumovirus infection": [
+      "aixematrice",
+      "alme_yda",
+      "badara_mbaye_",
+      "bnc_2012",
+      "citizenbamba",
+      "djipylensmedia",
+      "foucotak509",
+      "independante_fm",
+      "ingenieur243",
+      "lirehaiti",
+      "ndaokals",
+      "remed_fey"
+    ],
+    "million personnes": [
+      "cavousf5"
+    ],
+    "ministère santé": [
+      "awrasmedia",
+      "chat8890",
+      "defimediainfo",
+      "digitalradioone",
+      "fibladi",
+      "jindependant",
+      "redkiraz",
+      "reveil_algerie",
+      "soupedesques"
+    ],
+    "mondiales hindustan": [
+      "asianews_fr",
+      "le_liberaal"
+    ],
+    "mpvh métapneumovirus": [
+      "christophechay",
+      "kasprzykremi",
+      "midilibre"
+    ],
+    "multiples virus": [
+      "75secondes",
+      "alapic974",
+      "chenuflorent",
+      "ebalemozindo",
+      "jyves94",
+      "loubestal17",
+      "marielauredupon",
+      "silvano_trotta"
+    ],
+    "mycoplasma pneumoniae": [
+      "75secondes",
+      "alapic974",
+      "chenuflorent",
+      "cryptonomistfra",
+      "ebalemozindo",
+      "jyves94",
+      "loubestal17",
+      "marielauredupon",
+      "mathieu31359682",
+      "silvano_trotta",
+      "tessier_x",
+      "torreseryc"
+    ],
+    "mystérieuse épidémie": [
+      "haldol",
+      "redkiraz"
+    ],
+    "mystérieux virus": [
+      "msn_quebec",
+      "redkiraz"
+    ],
+    "métapneumovirus humain": [
+      "100xcentobio",
+      "1966forever",
+      "abdelka11473079",
+      "actuenvif",
+      "actusante_100",
+      "actusante_net",
+      "aesinfos",
+      "aixematrice",
+      "alainb5",
+      "alainfrnews",
+      "alapic974",
+      "amalegafrancois",
+      "anti_macroniste",
+      "antoinetv_",
+      "archippenzimba",
+      "asianews_fr",
+      "byterin1",
+      "calamyjane",
+      "cgtnfrancais",
+      "chat8890",
+      "christophechay",
+      "cmq_org",
+      "coldoct",
+      "colonelbigboss",
+      "dabultac",
+      "damienb51574501",
+      "decarnols",
+      "defimediainfo",
+      "destinationsant",
+      "dimitribeghin",
+      "doctissimo",
+      "dystoman",
+      "egfoxdesign",
+      "etresouverain62",
+      "fab20674300",
+      "fauxrejeandtb",
+      "flahault",
+      "flangloi",
+      "francenews24",
+      "francersistanc1",
+      "gavi_fr",
+      "gengis9999",
+      "georgsamel",
+      "hadejakeita",
+      "haldol",
+      "herodote1789",
+      "hespressfr",
+      "hibaabdelli",
+      "icgeopolitics",
+      "infointoxf24",
+      "inv3stir",
+      "jack_gelos",
+      "julesjuliocesar",
+      "julienm__",
+      "jyves94",
+      "kasprzykremi",
+      "kcharlemag85405",
+      "kiddodig",
+      "kleensamsonite",
+      "lecanape2",
+      "ledauphine",
+      "lehuffpost",
+      "leparisiensante",
+      "lepoint",
+      "lexpressmaurice",
+      "libe",
+      "limportant_fr",
+      "lourau20e",
+      "maliactu",
+      "malkoomx00",
+      "mayumbiarcel",
+      "medscapefrance",
+      "messirhamid",
+      "mickaellaffont",
+      "midilibre",
+      "montesqieu1949",
+      "mycow_eu",
+      "ngwaditenplar",
+      "nicolasberrod",
+      "nkazumba24880",
+      "nomdidiou501075",
+      "olivier40121476",
+      "omsrdcongo",
+      "onugeneve",
+      "pjlepine01",
+      "quang_phamqg",
+      "redkiraz",
+      "rikardrene",
+      "rtgglobin",
+      "sadraquejean",
+      "samuelmuaku",
+      "sans_louise",
+      "son2baby",
+      "sylvainebe54733",
+      "sylvaintekris",
+      "tatiann69922625",
+      "tboulboulva",
+      "tessier_x",
+      "thaivisafra",
+      "trustmyscience",
+      "univadisfr",
+      "vegasapologies",
+      "vwazilenwes",
+      "ysssineyass",
+      "zwhaendel48"
+    ],
+    "métapneumovirus été": [
+      "_nonpossumus",
+      "bernadette7432",
+      "chantalpecher4",
+      "chat8890",
+      "criver777",
+      "ecousszz",
+      "gaillar41755926",
+      "hertweck4",
+      "hypnosisa61",
+      "krieger66362259",
+      "laroulotte173",
+      "luckylu32431232",
+      "margottonm68143",
+      "mariemarys06",
+      "rttr73818881"
+    ],
+    "news million": [
+      "cavousf5"
+    ],
+    "nom hmpv": [
+      "belleemmerdeuse",
+      "chetteyous68942",
+      "djwsam14869",
+      "francersistanc1",
+      "freedomradiofr",
+      "partoutatis77"
+    ],
+    "nombre cas": [
+      "flangloi",
+      "redkiraz",
+      "woit_geopolitic"
+    ],
+    "nord chine": [
+      "alertes_info",
+      "annelaurebeaud2",
+      "citizenbamba",
+      "coldoct",
+      "designche1",
+      "france24_fr",
+      "gustave213",
+      "inv3stir",
+      "le_parisien",
+      "nicolasberrod",
+      "russo15091576",
+      "tannheimvs"
+    ],
+    "notamment grippe": [
+      "tatiann69922625",
+      "torreseryc"
+    ],
+    "nouveau confinement": [
+      "aixematrice",
+      "infolinfo",
+      "lome_actu",
+      "simarongongomba",
+      "verif_tf1lci"
+    ],
+    "nouveau virus": [
+      "7infoci",
+      "aesinfos",
+      "alainfrnews",
+      "alapic974",
+      "annelaurebeaud2",
+      "arztdiego",
+      "bigdanbud",
+      "c_a_g0101",
+      "chat8890",
+      "chineambmaroc",
+      "decarnols",
+      "drkayumba",
+      "franceafrique23",
+      "gavi_fr",
+      "georasia",
+      "globalvar_fr",
+      "haldol",
+      "irisnews_",
+      "jack_gelos",
+      "jeanvige",
+      "judsonpierre",
+      "kasprzykremi",
+      "kero_on_x",
+      "khatorimoh44349",
+      "laurentopsomer",
+      "leparrain_",
+      "maliactu",
+      "managerstn",
+      "ngrandvaux",
+      "onugeneve",
+      "pjlepine01",
+      "proguinee",
+      "sadraquejean",
+      "soupedesques",
+      "torreseryc",
+      "truffertw",
+      "y_dms_debah"
+    ],
+    "nouvelle infection": [
+      "chat8890",
+      "chetteyous68942"
+    ],
+    "nouvelle menace": [
+      "gavi_fr",
+      "lemedia100filtr",
+      "michaeldouayia",
+      "queeriosity__",
+      "tboulboulva"
+    ],
+    "nouvelle pandémie": [
+      "andreabox0",
+      "bvoltaire",
+      "chat8890",
+      "georgsamel",
+      "gfrancefrance",
+      "kiddodig",
+      "limportant_fr",
+      "orphee45",
+      "the88stevend",
+      "zwhaendel48"
+    ],
+    "nouvelle épidémie": [
+      "actuenvif",
+      "aixematrice",
+      "alapic974",
+      "alme_yda",
+      "antoinetv_",
+      "archippenzimba",
+      "badara_mbaye_",
+      "bnc_2012",
+      "byterin1",
+      "cartesdumonde",
+      "cdjerbal",
+      "citizenbamba",
+      "dav214840",
+      "dimitribeghin",
+      "djipylensmedia",
+      "dutout_pas",
+      "dystoman",
+      "etresouverain62",
+      "foucotak509",
+      "gengis9999",
+      "icgeopolitics",
+      "independante_fm",
+      "ingenieur243",
+      "jules4895985087",
+      "julesjuliocesar",
+      "kleensamsonite",
+      "lirehaiti",
+      "lourau20e",
+      "mayumbiarcel",
+      "mickaellaffont",
+      "ndaokals",
+      "ngwaditenplar",
+      "remed_fey",
+      "rikardrene",
+      "samuelmuaku",
+      "schmerchris",
+      "son2baby",
+      "soupedesques",
+      "tessier_x",
+      "ticheck_org",
+      "usernamedias_",
+      "woit_geopolitic",
+      "ysssineyass"
+    ],
+    "pandémie covid": [
+      "aixematrice",
+      "alme_yda",
+      "badara_mbaye_",
+      "bnc_2012",
+      "brutofficiel",
+      "djipylensmedia",
+      "etresouverain62",
+      "foucotak509",
+      "georasia",
+      "independante_fm",
+      "ingenieur243",
+      "jules4895985087",
+      "le_parisien",
+      "lirehaiti",
+      "ndaokals",
+      "remed_fey",
+      "zwhaendel48"
+    ],
+    "pandémie covid19": [
+      "alapic974",
+      "lourau20e",
+      "mickaellaffont"
+    ],
+    "pandémie jacques": [
+      "bvoltaire"
+    ],
+    "pays confronté": [
+      "alapic974",
+      "francenews24",
+      "lourau20e"
+    ],
+    "pays suscitant": [
+      "asianews_fr",
+      "le_liberaal"
+    ],
+    "personnes laquelle": [
+      "cavousf5"
+    ],
+    "personnes âgées": [
+      "francenews24",
+      "lemedia100filtr",
+      "michaeldouayia",
+      "sans_louise"
+    ],
+    "pleine expansion": [
+      "dabultac",
+      "georgsamel",
+      "kiddodig",
+      "limportant_fr",
+      "trustmyscience",
+      "zwhaendel48"
+    ],
+    "pneumoniae covid": [
+      "75secondes",
+      "alapic974",
+      "chenuflorent",
+      "cryptonomistfra",
+      "ebalemozindo",
+      "loubestal17",
+      "marielauredupon",
+      "mathieu31359682",
+      "silvano_trotta",
+      "tessier_x",
+      "torreseryc"
+    ],
+    "premier cas": [
+      "actuenvif",
+      "annelaurebeaud2",
+      "cgtnfrancais",
+      "etresouverain62",
+      "les2aa",
+      "redkiraz"
+    ],
+    "premiers cas": [
+      "aixematrice",
+      "annelaurebeaud2",
+      "francersistanc1",
+      "olivierrimmel"
+    ],
+    "propagation virus": [
+      "annelaurebeaud2",
+      "awrasmedia",
+      "mathieu31359682",
+      "ngrandvaux",
+      "olivier40121476"
+    ],
+    "propage chine": [
+      "alapic974",
+      "cesarwazen",
+      "gaby_chami",
+      "joeltarnawski",
+      "lorientlejour"
+    ],
+    "propage rapidement": [
+      "alapic974",
+      "antoinetv_",
+      "asianews_fr",
+      "etresouverain62",
+      "hassahmed93",
+      "julesjuliocesar",
+      "le_liberaal",
+      "lexpressmaurice",
+      "lourau20e",
+      "mayumbiarcel",
+      "mickaellaffont",
+      "rikardrene",
+      "samuelmuaku",
+      "tboulboulva",
+      "tessier_x"
+    ],
+    "propageant rapidement": [
+      "actuenvif",
+      "archippenzimba",
+      "byterin1",
+      "etresouverain62",
+      "icgeopolitics",
+      "kleensamsonite",
+      "ngwaditenplar",
+      "tessier_x"
+    ],
+    "propagent rapidement": [
+      "75secondes",
+      "alapic974",
+      "ebalemozindo",
+      "jyves94",
+      "marielauredupon",
+      "peter_pan95",
+      "saraart4",
+      "silvano_trotta"
+    ],
+    "provoquant symptômes": [
+      "actuenvif",
+      "antoinetv_",
+      "archippenzimba",
+      "byterin1",
+      "dimitribeghin",
+      "etresouverain62",
+      "globalintel_",
+      "icgeopolitics",
+      "kleensamsonite",
+      "mayumbiarcel",
+      "ngwaditenplar",
+      "rikardrene",
+      "tessier_x"
+    ],
+    "provoque infections": [
+      "asianews_fr",
+      "kasprzykremi"
+    ],
+    "provoque symptômes": [
+      "cmq_org",
+      "dystoman",
+      "julesjuliocesar",
+      "onugeneve",
+      "samuelmuaku",
+      "sudinfo_be",
+      "vwazilenwes"
+    ],
+    "rapidement chine": [
+      "75secondes",
+      "alapic974",
+      "ebalemozindo",
+      "jyves94",
+      "lexpressmaurice",
+      "marielauredupon",
+      "mickaellaffont",
+      "silvano_trotta"
+    ],
+    "rapidement provoquant": [
+      "actuenvif",
+      "antoinetv_",
+      "archippenzimba",
+      "byterin1",
+      "etresouverain62",
+      "icgeopolitics",
+      "kleensamsonite",
+      "mayumbiarcel",
+      "ngwaditenplar",
+      "rikardrene",
+      "tessier_x"
+    ],
+    "reconfinement cause": [
+      "cavousf5"
+    ],
+    "recrudescence maladies": [
+      "93_7_motivation",
+      "belidemagazine",
+      "eclairelutin"
+    ],
+    "respiratoire hmpv": [
+      "africanmanager",
+      "annelaurebeaud2",
+      "bvoltaire",
+      "gfrancefrance",
+      "kiddodig",
+      "orphee45",
+      "redkiraz"
+    ],
+    "respiratoire hôpitaux": [
+      "aixematrice",
+      "alme_yda",
+      "badara_mbaye_",
+      "bnc_2012",
+      "citizenbamba",
+      "djipylensmedia",
+      "foucotak509",
+      "independante_fm",
+      "ingenieur243",
+      "ndaokals",
+      "remed_fey"
+    ],
+    "respiratoire provoque": [
+      "anti_macroniste",
+      "asianews_fr"
+    ],
+    "respiratoire répand": [
+      "calamyjane",
+      "france24_fr",
+      "marcgozlan",
+      "psginna",
+      "seriatimfr"
+    ],
+    "rumeur reconfinement": [
+      "cavousf5"
+    ],
+    "répand chine": [
+      "calamyjane",
+      "france24_fr",
+      "marcgozlan",
+      "psginna",
+      "seriatimfr"
+    ],
+    "réseaux sociaux": [
+      "belidemagazine",
+      "calamyjane",
+      "carolinelessar8",
+      "france24_fr",
+      "jack_gelos",
+      "kenandogan1",
+      "knanouro",
+      "leonnymedia",
+      "libe",
+      "maliactu",
+      "marcgozlan",
+      "marochebdo",
+      "mycow_eu",
+      "psginna",
+      "schmerchris",
+      "seriatimfr"
+    ],
+    "sanitaire épidémie": [
+      "asianews_fr",
+      "le_liberaal"
+    ],
+    "santé virus": [
+      "bvoltaire",
+      "gfrancefrance",
+      "kiddodig"
+    ],
+    "sars cov": [
+      "astropierre",
+      "ngrandvaux",
+      "nicolasberrod",
+      "sefluctuat",
+      "torreseryc",
+      "vinz_crt"
+    ],
+    "saturés cas": [
+      "aixematrice",
+      "alme_yda",
+      "badara_mbaye_",
+      "bnc_2012",
+      "citizenbamba",
+      "djipylensmedia",
+      "foucotak509",
+      "independante_fm",
+      "ingenieur243",
+      "ndaokals",
+      "remed_fey",
+      "ysssineyass"
+    ],
+    "semblables grippe": [
+      "byterin1",
+      "dimitribeghin",
+      "dutout_pas",
+      "dystoman",
+      "etresouverain62",
+      "usernamedias_"
+    ],
+    "signale premiers": [
+      "aixematrice",
+      "annelaurebeaud2"
+    ],
+    "similaires covid": [
+      "antoinetv_",
+      "chat8890",
+      "jack_gelos",
+      "mayumbiarcel",
+      "sadraquejean",
+      "tessier_x"
+    ],
+    "situation épidémique": [
+      "actusante_100",
+      "actusante_net",
+      "colonelbigboss",
+      "fab20674300",
+      "montesqieu1949",
+      "sylvainebe54733"
+    ],
+    "submerge hôpitaux": [
+      "aesinfos",
+      "chenuflorent",
+      "eclairelutin",
+      "freedomradiofr",
+      "marielauredupon",
+      "peter_pan95",
+      "redkiraz",
+      "saraart4",
+      "silvano_trotta"
+    ],
+    "suite épidémie": [
+      "adresansoso",
+      "annelaurebeaud2"
+    ],
+    "suscite inquiétudes": [
+      "annelaurebeaud2",
+      "chat8890",
+      "laboussolei",
+      "lexpressmaurice",
+      "redkiraz"
+    ],
+    "symptômes semblables": [
+      "byterin1",
+      "dimitribeghin",
+      "dutout_pas",
+      "dystoman",
+      "etresouverain62",
+      "usernamedias_"
+    ],
+    "symptômes similaires": [
+      "cmq_org",
+      "globalintel_",
+      "jack_gelos",
+      "julesjuliocesar",
+      "sadraquejean",
+      "samuelmuaku",
+      "sudinfo_be",
+      "tboulboulva",
+      "tessier_x",
+      "vwazilenwes"
+    ],
+    "symptômes toux": [
+      "alme_yda",
+      "badara_mbaye_",
+      "citizenbamba",
+      "djipylensmedia",
+      "foucotak509",
+      "ingenieur243",
+      "jules4895985087",
+      "kasprzykremi",
+      "lirehaiti"
+    ],
+    "symptômes type": [
+      "icgeopolitics",
+      "kleensamsonite",
+      "rikardrene",
+      "tessier_x"
+    ],
+    "toux fièvre": [
+      "alme_yda",
+      "anti_macroniste",
+      "badara_mbaye_",
+      "citizenbamba",
+      "djipylensmedia",
+      "foucotak509",
+      "ingenieur243",
+      "jules4895985087",
+      "kasprzykremi",
+      "lemedia100filtr",
+      "lirehaiti",
+      "michaeldouayia"
+    ],
+    "travers chine": [
+      "peter_pan95",
+      "saraart4"
+    ],
+    "travers pays": [
+      "asianews_fr",
+      "le_liberaal"
+    ],
+    "type grippal": [
+      "icgeopolitics",
+      "kleensamsonite",
+      "rikardrene",
+      "tessier_x"
+    ],
+    "urgence multiples": [
+      "75secondes",
+      "alapic974",
+      "ebalemozindo",
+      "jyves94",
+      "loubestal17"
+    ],
+    "urgence sanitaire": [
+      "aixematrice",
+      "franceinfo",
+      "francersistanc1",
+      "torreseryc"
+    ],
+    "urgence épidémie": [
+      "chenuflorent",
+      "freedomradiofr",
+      "marielauredupon",
+      "peter_pan95",
+      "saraart4",
+      "silvano_trotta"
+    ],
+    "virus appelé": [
+      "7infoci",
+      "aixematrice",
+      "alme_yda",
+      "badara_mbaye_",
+      "bnc_2012",
+      "citizenbamba",
+      "djipylensmedia",
+      "foucotak509",
+      "independante_fm",
+      "ingenieur243",
+      "jules4895985087",
+      "lirehaiti",
+      "ndaokals",
+      "remed_fey"
+    ],
+    "virus chine": [
+      "1966forever",
+      "annelaurebeaud2",
+      "chat8890",
+      "dav214840",
+      "jyves94",
+      "kasprzykremi",
+      "leparisiensante",
+      "leparrain_",
+      "sans_louise",
+      "shoyoo772",
+      "sylvaintekris",
+      "torreseryc",
+      "walawpress",
+      "wmaarifa"
+    ],
+    "virus chinois": [
+      "c_a_g0101",
+      "jeanvige",
+      "pjlepine01",
+      "redkiraz",
+      "truffertw"
+    ],
+    "virus connu": [
+      "kasprzykremi",
+      "sadraquejean"
+    ],
+    "virus grippe": [
+      "75secondes",
+      "alapic974",
+      "annelaurebeaud2",
+      "astropierre",
+      "chenuflorent",
+      "drkayumba",
+      "ebalemozindo",
+      "loubestal17",
+      "marielauredupon",
+      "peter_pan95",
+      "saraart4",
+      "silvano_trotta"
+    ],
+    "virus hmpv": [
+      "actuenvif",
+      "actusante_100",
+      "actusante_net",
+      "aesinfos",
+      "afropages",
+      "aixematrice",
+      "alapic974",
+      "annelaurebeaud2",
+      "arztdiego",
+      "awrasmedia",
+      "bamarakoli",
+      "bandalungwa243",
+      "benomar_adil74",
+      "bigdanbud",
+      "businessnews_tn",
+      "cavousf5",
+      "chat8890",
+      "chineambmaroc",
+      "dav214840",
+      "decarnols",
+      "designche1",
+      "digitalradioone",
+      "djwsam14869",
+      "doctissimo",
+      "dutout_pas",
+      "dvnemk",
+      "eclairelutin",
+      "economiste_magh",
+      "eddie_poker",
+      "fibladi",
+      "fouragebernard",
+      "globalvar_fr",
+      "infokapitalis",
+      "inter_lignes",
+      "janyabadi",
+      "jeanvige",
+      "jindependant",
+      "jrmeferran85965",
+      "jyves94",
+      "kuna__fr",
+      "lematinpointma",
+      "les2aa",
+      "lesoir",
+      "levif",
+      "lntribune",
+      "lome_actu",
+      "maghrebactuinfo",
+      "maliactu",
+      "mathieu31359682",
+      "medecin2famille",
+      "medias24",
+      "messirhamid",
+      "msn_quebec",
+      "nathanp120710",
+      "neveuxbertrand",
+      "olivierjean16",
+      "proguinee",
+      "quicklyactunews",
+      "redkiraz",
+      "saraart4",
+      "simarongongomba",
+      "son2baby",
+      "stauguste69023",
+      "tekiano",
+      "tessier_x",
+      "thecongorx",
+      "tuniscopecom",
+      "tunisialphanews",
+      "twist1961",
+      "usernamedias_",
+      "verif_tf1lci",
+      "vwazilenwes",
+      "walawpress",
+      "webdo_tn",
+      "woit_geopolitic",
+      "wurby_jika"
+    ],
+    "virus identifié": [
+      "ngrandvaux",
+      "onugeneve"
+    ],
+    "virus méconnu": [
+      "actusante_100",
+      "actusante_net",
+      "fab20674300",
+      "montesqieu1949",
+      "sylvainebe54733"
+    ],
+    "virus métapneumovirus": [
+      "alainfrnews",
+      "alapic974",
+      "antoinetv_",
+      "archippenzimba",
+      "byterin1",
+      "colonelbigboss",
+      "etresouverain62",
+      "icgeopolitics",
+      "kleensamsonite",
+      "lourau20e",
+      "mayumbiarcel",
+      "mickaellaffont",
+      "ngwaditenplar",
+      "olivier40121476",
+      "rikardrene",
+      "tessier_x",
+      "ysssineyass"
+    ],
+    "virus propage": [
+      "alapic974",
+      "cesarwazen",
+      "gaby_chami",
+      "lorientlejour",
+      "samuelmuaku",
+      "torreseryc"
+    ],
+    "virus respiratoire": [
+      "7infoci",
+      "africanmanager",
+      "alainfrnews",
+      "annelaurebeaud2",
+      "anti_macroniste",
+      "asianews_fr",
+      "asm2boucliers",
+      "aulnaycap",
+      "bvoltaire",
+      "calamyjane",
+      "carolinelessar8",
+      "degeneral__",
+      "destinationsant",
+      "dystoman",
+      "france24_fr",
+      "francois_59_",
+      "gfrancefrance",
+      "globalintel_",
+      "herodote1789",
+      "infointoxf24",
+      "jack_gelos",
+      "jyves94",
+      "kenandogan1",
+      "khatorimoh44349",
+      "kiddodig",
+      "lemedia100filtr",
+      "lexpressmaurice",
+      "marcgozlan",
+      "marochebdo",
+      "medecin2famille",
+      "michaeldouayia",
+      "nkazumba24880",
+      "olivcim",
+      "orphee45",
+      "psginna",
+      "quang_phamqg",
+      "redkiraz",
+      "seriatimfr",
+      "tekiano",
+      "ysssineyass"
+    ],
+    "virus respiratoires": [
+      "ngrandvaux",
+      "russo15091576",
+      "sefluctuat"
+    ],
+    "virus symptômes": [
+      "alme_yda",
+      "badara_mbaye_",
+      "citizenbamba",
+      "djipylensmedia",
+      "foucotak509",
+      "haldol",
+      "independante_fm",
+      "ingenieur243",
+      "managerstn",
+      "medecin2famille"
+    ],
+    "écoulement nasal": [
+      "alme_yda",
+      "anti_macroniste",
+      "badara_mbaye_",
+      "citizenbamba",
+      "djipylensmedia",
+      "foucotak509",
+      "ingenieur243",
+      "jules4895985087",
+      "lirehaiti"
+    ],
+    "épidémie chine": [
+      "ngrandvaux",
+      "son2baby"
+    ],
+    "épidémie hmpv": [
+      "actusante_100",
+      "actusante_net",
+      "adresansoso",
+      "asianews_fr",
+      "c_a_g0101",
+      "cdjerbal",
+      "franceinfo",
+      "le_liberaal",
+      "lemedia100filtr",
+      "michaeldouayia",
+      "redkiraz"
+    ],
+    "épidémie métapneumovirus": [
+      "_nonpossumus",
+      "asianews_fr",
+      "bernadette7432",
+      "chantalpecher4",
+      "chat8890",
+      "criver777",
+      "dimitribeghin",
+      "dystoman",
+      "ecousszz",
+      "etresouverain62",
+      "francenews24",
+      "gaillar41755926",
+      "hadejakeita",
+      "hertweck4",
+      "hypnosisa61",
+      "julesjuliocesar",
+      "krieger66362259",
+      "laroulotte173",
+      "luckylu32431232",
+      "margottonm68143",
+      "mariemarys06",
+      "rtgglobin",
+      "rttr73818881",
+      "vwazilenwes"
+    ],
+    "épidémie submerge": [
+      "chenuflorent",
+      "freedomradiofr",
+      "marielauredupon",
+      "peter_pan95",
+      "saraart4",
+      "silvano_trotta"
+    ],
+    "épidémie virale": [
+      "gengis9999",
+      "redkiraz"
+    ],
+    "épidémie virus": [
+      "actuenvif",
+      "aixematrice",
+      "alapic974",
+      "alme_yda",
+      "antoinetv_",
+      "archippenzimba",
+      "badara_mbaye_",
+      "bnc_2012",
+      "byterin1",
+      "chat8890",
+      "citizenbamba",
+      "cryptonomistfra",
+      "dav214840",
+      "djipylensmedia",
+      "dutout_pas",
+      "eclairelutin",
+      "etresouverain62",
+      "foucotak509",
+      "icgeopolitics",
+      "independante_fm",
+      "ingenieur243",
+      "jules4895985087",
+      "jyves94",
+      "kleensamsonite",
+      "lirehaiti",
+      "lourau20e",
+      "mayumbiarcel",
+      "mickaellaffont",
+      "ndaokals",
+      "neveuxbertrand",
+      "ngwaditenplar",
+      "remed_fey",
+      "rikardrene",
+      "schmerchris",
+      "tessier_x",
+      "usernamedias_",
+      "ysssineyass"
+    ],
+    "état urgence": [
+      "75secondes",
+      "aixematrice",
+      "alapic974",
+      "chenuflorent",
+      "cryptonomistfra",
+      "ebalemozindo",
+      "franceinfo",
+      "francersistanc1",
+      "freedomradiofr",
+      "jeanvige",
+      "jyves94",
+      "loubestal17",
+      "marielauredupon",
+      "peter_pan95",
+      "saraart4",
+      "silvano_trotta",
+      "tessier_x",
+      "ysssineyass"
+    ],
+    "été enregistrée": [
+      "_nonpossumus",
+      "bernadette7432",
+      "chantalpecher4",
+      "chat8890",
+      "criver777",
+      "ecousszz",
+      "gaillar41755926",
+      "hertweck4",
+      "hypnosisa61",
+      "joeltarnawski",
+      "krieger66362259",
+      "laroulotte173",
+      "luckylu32431232",
+      "margottonm68143",
+      "mariemarys06",
+      "rttr73818881"
+    ],
+    "été signalé": [
+      "annelaurebeaud2",
+      "redkiraz"
+    ]
+  },
+  "bigram_n_accounts": {
+    "aiguës notamment": 2,
+    "ans covid": 7,
+    "ans début": 2,
+    "ans pandémie": 18,
+    "appartient famille": 2,
+    "appelé hmpv": 13,
+    "augmentation cas": 13,
+    "augmentation nombre": 2,
+    "autorités sanitaires": 10,
+    "cas augmentent": 7,
+    "cas chine": 5,
+    "cas hmpv": 9,
+    "cas métapneumovirus": 13,
+    "cas virus": 18,
+    "cas été": 3,
+    "cause virus": 2,
+    "chine chine": 3,
+    "chine confrontée": 18,
+    "chine connaît": 4,
+    "chine déclare": 14,
+    "chine face": 24,
+    "chine hmpv": 7,
+    "chine inquiéter": 5,
+    "chine métapneumovirus": 9,
+    "chine nouveau": 6,
+    "chine réseaux": 5,
+    "chine virus": 15,
+    "chine épidémie": 15,
+    "chine état": 2,
+    "chinois hmpv": 4,
+    "cinq ans": 15,
+    "confrontée nouvelle": 18,
+    "congestion écoulement": 8,
+    "continue propager": 4,
+    "covid augmentation": 2,
+    "covid chine": 26,
+    "covid hmpv": 6,
+    "covid propagent": 8,
+    "crée situation": 6,
+    "crématoriums virus": 2,
+    "derniers jours": 2,
+    "début pandémie": 2,
+    "déclare état": 14,
+    "enfants personnes": 3,
+    "engendrer nouvelle": 4,
+    "enregistrée chine": 16,
+    "face nouvelle": 22,
+    "faisant état": 2,
+    "fake news": 2,
+    "fièvre congestion": 9,
+    "grippal covid": 4,
+    "grippe aviaire": 6,
+    "grippe covid": 11,
+    "grippe hmpv": 12,
+    "grippe virus": 3,
+    "hindustan times": 2,
+    "hmpv chine": 17,
+    "hmpv connu": 3,
+    "hmpv engendrer": 4,
+    "hmpv fake": 1,
+    "hmpv gouvernement": 2,
+    "hmpv hmpvvirus": 7,
+    "hmpv human": 22,
+    "hmpv inquiète": 2,
+    "hmpv mycoplasma": 12,
+    "hmpv métapneumovirus": 7,
+    "hmpv nord": 5,
+    "hmpv nouveau": 8,
+    "hmpv propage": 16,
+    "hmpv propageant": 8,
+    "hmpv virus": 38,
+    "hmpv été": 5,
+    "humain crée": 6,
+    "humain hmpv": 60,
+    "humain inquiéter": 6,
+    "humain mpvh": 8,
+    "human metapneumovirus": 27,
+    "hémisphère nord": 2,
+    "hôpitaux crématoriums": 8,
+    "hôpitaux saturés": 12,
+    "hôpitaux submergés": 2,
+    "hôpitaux surpeuplés": 5,
+    "inde signale": 5,
+    "infection métapneumovirus": 2,
+    "infection respiratoire": 13,
+    "infections respiratoires": 11,
+    "info chine": 2,
+    "inquiétudes mondiales": 2,
+    "inquiétudes nouvelle": 5,
+    "maladies respiratoires": 11,
+    "metapneumovirus humain": 7,
+    "metapneumovirus infection": 12,
+    "million personnes": 1,
+    "ministère santé": 9,
+    "mondiales hindustan": 2,
+    "mpvh métapneumovirus": 3,
+    "multiples virus": 8,
+    "mycoplasma pneumoniae": 12,
+    "mystérieuse épidémie": 2,
+    "mystérieux virus": 2,
+    "métapneumovirus humain": 105,
+    "métapneumovirus été": 15,
+    "news million": 1,
+    "nom hmpv": 6,
+    "nombre cas": 3,
+    "nord chine": 12,
+    "notamment grippe": 2,
+    "nouveau confinement": 5,
+    "nouveau virus": 37,
+    "nouvelle infection": 2,
+    "nouvelle menace": 5,
+    "nouvelle pandémie": 10,
+    "nouvelle épidémie": 43,
+    "pandémie covid": 17,
+    "pandémie covid19": 3,
+    "pandémie jacques": 1,
+    "pays confronté": 3,
+    "pays suscitant": 2,
+    "personnes laquelle": 1,
+    "personnes âgées": 4,
+    "pleine expansion": 6,
+    "pneumoniae covid": 11,
+    "premier cas": 6,
+    "premiers cas": 4,
+    "propagation virus": 5,
+    "propage chine": 5,
+    "propage rapidement": 15,
+    "propageant rapidement": 8,
+    "propagent rapidement": 8,
+    "provoquant symptômes": 13,
+    "provoque infections": 2,
+    "provoque symptômes": 7,
+    "rapidement chine": 8,
+    "rapidement provoquant": 11,
+    "reconfinement cause": 1,
+    "recrudescence maladies": 3,
+    "respiratoire hmpv": 7,
+    "respiratoire hôpitaux": 11,
+    "respiratoire provoque": 2,
+    "respiratoire répand": 5,
+    "rumeur reconfinement": 1,
+    "répand chine": 5,
+    "réseaux sociaux": 16,
+    "sanitaire épidémie": 2,
+    "santé virus": 3,
+    "sars cov": 6,
+    "saturés cas": 12,
+    "semblables grippe": 6,
+    "signale premiers": 2,
+    "similaires covid": 6,
+    "situation épidémique": 6,
+    "submerge hôpitaux": 9,
+    "suite épidémie": 2,
+    "suscite inquiétudes": 5,
+    "symptômes semblables": 6,
+    "symptômes similaires": 10,
+    "symptômes toux": 9,
+    "symptômes type": 4,
+    "toux fièvre": 12,
+    "travers chine": 2,
+    "travers pays": 2,
+    "type grippal": 4,
+    "urgence multiples": 5,
+    "urgence sanitaire": 4,
+    "urgence épidémie": 6,
+    "virus appelé": 14,
+    "virus chine": 14,
+    "virus chinois": 5,
+    "virus connu": 2,
+    "virus grippe": 12,
+    "virus hmpv": 76,
+    "virus identifié": 2,
+    "virus méconnu": 5,
+    "virus métapneumovirus": 17,
+    "virus propage": 6,
+    "virus respiratoire": 40,
+    "virus respiratoires": 3,
+    "virus symptômes": 10,
+    "écoulement nasal": 9,
+    "épidémie chine": 2,
+    "épidémie hmpv": 11,
+    "épidémie métapneumovirus": 24,
+    "épidémie submerge": 6,
+    "épidémie virale": 2,
+    "épidémie virus": 37,
+    "état urgence": 18,
+    "été enregistrée": 16,
+    "été signalé": 2
+  },
+  "bigram_communities": {
+    "aiguës notamment": [
+      5
+    ],
+    "ans covid": [
+      4,
+      10
+    ],
+    "ans début": [
+      10
+    ],
+    "ans pandémie": [
+      0,
+      11
+    ],
+    "appartient famille": [
+      3
+    ],
+    "appelé hmpv": [
+      0
+    ],
+    "augmentation cas": [
+      7,
+      10
+    ],
+    "augmentation nombre": [
+      9
+    ],
+    "autorités sanitaires": [
+      5,
+      7,
+      10
+    ],
+    "cas hmpv": [
+      7,
+      9
+    ],
+    "cas métapneumovirus": [
+      0,
+      5
+    ],
+    "cas virus": [
+      0,
+      7
+    ],
+    "cas été": [
+      9
+    ],
+    "cause virus": [
+      17
+    ],
+    "chine chine": [
+      4
+    ],
+    "chine confrontée": [
+      8,
+      11
+    ],
+    "chine connaît": [
+      4
+    ],
+    "chine déclare": [
+      0,
+      1,
+      4,
+      5
+    ],
+    "chine face": [
+      0,
+      4
+    ],
+    "chine hmpv": [
+      7
+    ],
+    "chine métapneumovirus": [
+      3
+    ],
+    "chine nouveau": [
+      13
+    ],
+    "chine réseaux": [
+      7,
+      10
+    ],
+    "chine virus": [
+      23
+    ],
+    "chine épidémie": [
+      4
+    ],
+    "chine état": [
+      0
+    ],
+    "chinois hmpv": [
+      0
+    ],
+    "cinq ans": [
+      7,
+      10
+    ],
+    "confrontée nouvelle": [
+      8,
+      11,
+      13
+    ],
+    "continue propager": [
+      2
+    ],
+    "covid augmentation": [
+      10
+    ],
+    "covid chine": [
+      0,
+      10
+    ],
+    "covid propagent": [
+      1,
+      4,
+      5
+    ],
+    "crématoriums virus": [
+      5
+    ],
+    "derniers jours": [
+      3
+    ],
+    "début pandémie": [
+      10
+    ],
+    "déclare état": [
+      0,
+      1,
+      4,
+      5
+    ],
+    "enfants personnes": [
+      2
+    ],
+    "engendrer nouvelle": [
+      23
+    ],
+    "enregistrée chine": [
+      4
+    ],
+    "face nouvelle": [
+      0,
+      4
+    ],
+    "faisant état": [
+      5
+    ],
+    "fake news": [
+      17
+    ],
+    "fièvre congestion": [
+      3
+    ],
+    "grippal covid": [
+      11
+    ],
+    "grippe aviaire": [
+      7
+    ],
+    "grippe covid": [
+      9
+    ],
+    "grippe hmpv": [
+      1,
+      4
+    ],
+    "grippe virus": [
+      5
+    ],
+    "hindustan times": [
+      8
+    ],
+    "hmpv chine": [
+      4,
+      5,
+      7,
+      9
+    ],
+    "hmpv connu": [
+      10
+    ],
+    "hmpv engendrer": [
+      23
+    ],
+    "hmpv fake": [
+      17
+    ],
+    "hmpv gouvernement": [
+      7
+    ],
+    "hmpv human": [
+      0,
+      9
+    ],
+    "hmpv inquiète": [
+      10
+    ],
+    "hmpv mycoplasma": [
+      1,
+      4
+    ],
+    "hmpv métapneumovirus": [
+      9,
+      13
+    ],
+    "hmpv nord": [
+      7
+    ],
+    "hmpv nouveau": [
+      9,
+      13
+    ],
+    "hmpv propage": [
+      8,
+      11
+    ],
+    "hmpv propageant": [
+      11
+    ],
+    "hmpv virus": [
+      7,
+      8,
+      10
+    ],
+    "hmpv été": [
+      0,
+      2,
+      7
+    ],
+    "humain hmpv": [
+      2,
+      3,
+      4,
+      5,
+      8,
+      9,
+      11,
+      13
+    ],
+    "humain mpvh": [
+      3,
+      5,
+      13
+    ],
+    "human metapneumovirus": [
+      0,
+      9
+    ],
+    "hémisphère nord": [
+      5
+    ],
+    "hôpitaux crématoriums": [
+      4,
+      5
+    ],
+    "hôpitaux saturés": [
+      0
+    ],
+    "hôpitaux submergés": [
+      2
+    ],
+    "hôpitaux surpeuplés": [
+      13
+    ],
+    "inde signale": [
+      0,
+      7
+    ],
+    "infection métapneumovirus": [
+      5
+    ],
+    "infection respiratoire": [
+      0
+    ],
+    "infections respiratoires": [
+      3,
+      5,
+      10
+    ],
+    "info chine": [
+      2
+    ],
+    "inquiétudes mondiales": [
+      8
+    ],
+    "maladies respiratoires": [
+      4
+    ],
+    "metapneumovirus humain": [
+      13
+    ],
+    "metapneumovirus infection": [
+      0
+    ],
+    "million personnes": [
+      17
+    ],
+    "ministère santé": [
+      4,
+      9
+    ],
+    "mondiales hindustan": [
+      8
+    ],
+    "mpvh métapneumovirus": [
+      3
+    ],
+    "multiples virus": [
+      1,
+      4
+    ],
+    "mycoplasma pneumoniae": [
+      1,
+      4
+    ],
+    "mystérieuse épidémie": [
+      13
+    ],
+    "mystérieux virus": [
+      9
+    ],
+    "métapneumovirus humain": [
+      0,
+      2,
+      3,
+      4,
+      5,
+      7,
+      8,
+      9,
+      10,
+      11,
+      13
+    ],
+    "métapneumovirus été": [
+      4
+    ],
+    "news million": [
+      17
+    ],
+    "nom hmpv": [
+      0
+    ],
+    "nombre cas": [
+      9
+    ],
+    "nord chine": [
+      7,
+      10
+    ],
+    "notamment grippe": [
+      5
+    ],
+    "nouveau confinement": [
+      0,
+      7
+    ],
+    "nouveau virus": [
+      3,
+      4,
+      7,
+      9,
+      13
+    ],
+    "nouvelle infection": [
+      4
+    ],
+    "nouvelle pandémie": [
+      4,
+      23
+    ],
+    "nouvelle épidémie": [
+      0,
+      11,
+      13
+    ],
+    "pandémie covid": [
+      0,
+      10
+    ],
+    "pandémie covid19": [
+      11
+    ],
+    "pandémie jacques": [
+      23
+    ],
+    "pays confronté": [
+      2
+    ],
+    "pays suscitant": [
+      8
+    ],
+    "personnes laquelle": [
+      17
+    ],
+    "personnes âgées": [
+      2
+    ],
+    "pneumoniae covid": [
+      1,
+      4
+    ],
+    "premier cas": [
+      7,
+      9
+    ],
+    "premiers cas": [
+      0
+    ],
+    "propagation virus": [
+      7,
+      13
+    ],
+    "propage chine": [
+      7
+    ],
+    "propage rapidement": [
+      8,
+      11
+    ],
+    "propageant rapidement": [
+      11
+    ],
+    "propagent rapidement": [
+      1,
+      4,
+      5
+    ],
+    "provoquant symptômes": [
+      11
+    ],
+    "provoque infections": [
+      3,
+      8
+    ],
+    "rapidement chine": [
+      1,
+      4,
+      11
+    ],
+    "rapidement provoquant": [
+      11
+    ],
+    "reconfinement cause": [
+      17
+    ],
+    "recrudescence maladies": [
+      4
+    ],
+    "respiratoire hmpv": [
+      7,
+      9,
+      23
+    ],
+    "respiratoire hôpitaux": [
+      0
+    ],
+    "respiratoire provoque": [
+      8
+    ],
+    "respiratoire répand": [
+      7,
+      10
+    ],
+    "rumeur reconfinement": [
+      17
+    ],
+    "répand chine": [
+      7,
+      10
+    ],
+    "réseaux sociaux": [
+      7,
+      10
+    ],
+    "sanitaire épidémie": [
+      8
+    ],
+    "santé virus": [
+      23
+    ],
+    "sars cov": [
+      2,
+      10,
+      13
+    ],
+    "saturés cas": [
+      0
+    ],
+    "signale premiers": [
+      7
+    ],
+    "similaires covid": [
+      4
+    ],
+    "submerge hôpitaux": [
+      4,
+      5,
+      9
+    ],
+    "suite épidémie": [
+      7
+    ],
+    "suscite inquiétudes": [
+      4,
+      7,
+      9
+    ],
+    "symptômes toux": [
+      3
+    ],
+    "symptômes type": [
+      11
+    ],
+    "toux fièvre": [
+      3
+    ],
+    "travers chine": [
+      5
+    ],
+    "travers pays": [
+      8
+    ],
+    "type grippal": [
+      11
+    ],
+    "urgence multiples": [
+      1,
+      4
+    ],
+    "urgence sanitaire": [
+      0
+    ],
+    "urgence épidémie": [
+      5
+    ],
+    "virus appelé": [
+      0
+    ],
+    "virus chine": [
+      3,
+      4,
+      7
+    ],
+    "virus chinois": [
+      9
+    ],
+    "virus connu": [
+      3
+    ],
+    "virus grippe": [
+      1,
+      4,
+      5,
+      7
+    ],
+    "virus hmpv": [
+      0,
+      4,
+      5,
+      7,
+      8,
+      9,
+      17
+    ],
+    "virus identifié": [
+      13
+    ],
+    "virus métapneumovirus": [
+      11
+    ],
+    "virus propage": [
+      7
+    ],
+    "virus respiratoire": [
+      7,
+      8,
+      9,
+      10,
+      23
+    ],
+    "virus respiratoires": [
+      13
+    ],
+    "virus symptômes": [
+      13
+    ],
+    "épidémie chine": [
+      13
+    ],
+    "épidémie hmpv": [
+      8,
+      9,
+      10
+    ],
+    "épidémie métapneumovirus": [
+      2,
+      4,
+      8
+    ],
+    "épidémie submerge": [
+      5
+    ],
+    "épidémie virale": [
+      13
+    ],
+    "épidémie virus": [
+      0,
+      4,
+      11
+    ],
+    "état urgence": [
+      0,
+      1,
+      4,
+      5,
+      10
+    ],
+    "été enregistrée": [
+      4
+    ],
+    "été signalé": [
+      9
+    ]
+  },
+  "bigram_comm_n": {
+    "aiguës notamment": {
+      "5": 1,
+      "79": 1
+    },
+    "ans covid": {
+      "10": 1,
+      "112": 1,
+      "155": 1,
+      "195": 1,
+      "210": 1,
+      "270": 1,
+      "4": 1
+    },
+    "ans début": {
+      "10": 1,
+      "19": 1
+    },
+    "ans pandémie": {
+      "0": 1,
+      "107": 1,
+      "11": 1,
+      "139": 1,
+      "142": 1,
+      "150": 1,
+      "193": 1,
+      "264": 1,
+      "276": 1,
+      "299": 1,
+      "304": 1,
+      "318": 1,
+      "325": 1,
+      "326": 1,
+      "327": 1,
+      "33": 1,
+      "330": 1,
+      "66": 1
+    },
+    "appartient famille": {
+      "161": 1,
+      "3": 1
+    },
+    "appelé hmpv": {
+      "0": 1,
+      "139": 1,
+      "142": 1,
+      "150": 1,
+      "226": 1,
+      "276": 1,
+      "299": 1,
+      "318": 1,
+      "325": 1,
+      "326": 1,
+      "33": 1,
+      "330": 1,
+      "66": 1
+    },
+    "augmentation cas": {
+      "10": 1,
+      "101": 1,
+      "106": 1,
+      "169": 1,
+      "173": 1,
+      "192": 1,
+      "226": 1,
+      "256": 1,
+      "270": 1,
+      "290": 1,
+      "320": 1,
+      "69": 1,
+      "7": 1
+    },
+    "augmentation nombre": {
+      "192": 1,
+      "9": 1
+    },
+    "autorités sanitaires": {
+      "10": 1,
+      "192": 1,
+      "222": 1,
+      "226": 1,
+      "256": 1,
+      "270": 1,
+      "42": 1,
+      "5": 1,
+      "59": 1,
+      "7": 1
+    },
+    "cas augmentent": {
+      "101": 1,
+      "220": 1,
+      "251": 1,
+      "277": 1,
+      "341": 1,
+      "345": 1,
+      "94": 1
+    },
+    "cas chine": {
+      "31": 4,
+      "256": 1
+    },
+    "cas hmpv": {
+      "7": 2,
+      "101": 1,
+      "113": 1,
+      "226": 1,
+      "270": 1,
+      "28": 1,
+      "340": 1,
+      "9": 1
+    },
+    "cas métapneumovirus": {
+      "0": 2,
+      "103": 1,
+      "106": 1,
+      "107": 1,
+      "173": 1,
+      "237": 1,
+      "264": 1,
+      "290": 1,
+      "336": 1,
+      "41": 1,
+      "5": 1,
+      "78": 1
+    },
+    "cas virus": {
+      "0": 1,
+      "124": 1,
+      "138": 1,
+      "142": 1,
+      "150": 1,
+      "192": 1,
+      "203": 1,
+      "226": 1,
+      "238": 1,
+      "276": 1,
+      "299": 1,
+      "318": 1,
+      "325": 1,
+      "33": 1,
+      "330": 1,
+      "66": 1,
+      "68": 1,
+      "7": 1
+    },
+    "cas été": {
+      "189": 1,
+      "69": 1,
+      "9": 1
+    },
+    "cause virus": {
+      "17": 1,
+      "32": 1
+    },
+    "chine chine": {
+      "292": 1,
+      "4": 1,
+      "64": 1
+    },
+    "chine confrontée": {
+      "50": 2,
+      "107": 1,
+      "11": 1,
+      "151": 1,
+      "180": 1,
+      "232": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "294": 1,
+      "303": 1,
+      "336": 1,
+      "344": 1,
+      "40": 1,
+      "46": 1,
+      "65": 1,
+      "8": 1
+    },
+    "chine connaît": {
+      "146": 1,
+      "192": 1,
+      "4": 1,
+      "71": 1
+    },
+    "chine déclare": {
+      "0": 1,
+      "1": 1,
+      "101": 1,
+      "147": 1,
+      "161": 1,
+      "179": 1,
+      "239": 1,
+      "260": 1,
+      "264": 1,
+      "304": 1,
+      "306": 1,
+      "333": 1,
+      "4": 1,
+      "5": 1
+    },
+    "chine face": {
+      "0": 1,
+      "103": 1,
+      "139": 1,
+      "142": 1,
+      "150": 1,
+      "210": 1,
+      "226": 1,
+      "248": 1,
+      "264": 1,
+      "266": 1,
+      "269": 1,
+      "276": 1,
+      "292": 1,
+      "299": 1,
+      "318": 1,
+      "325": 1,
+      "326": 1,
+      "33": 1,
+      "330": 1,
+      "4": 1,
+      "51": 1,
+      "66": 1,
+      "67": 1,
+      "93": 1
+    },
+    "chine hmpv": {
+      "108": 1,
+      "199": 1,
+      "240": 1,
+      "280": 1,
+      "37": 1,
+      "7": 1,
+      "94": 1
+    },
+    "chine inquiéter": {
+      "58": 2,
+      "18": 1,
+      "265": 1,
+      "88": 1
+    },
+    "chine métapneumovirus": {
+      "156": 1,
+      "161": 1,
+      "224": 1,
+      "3": 1,
+      "315": 1,
+      "342": 1,
+      "345": 1,
+      "57": 1,
+      "76": 1
+    },
+    "chine nouveau": {
+      "13": 2,
+      "195": 1,
+      "304": 1,
+      "307": 1,
+      "94": 1
+    },
+    "chine réseaux": {
+      "10": 2,
+      "44": 1,
+      "55": 1,
+      "7": 1
+    },
+    "chine virus": {
+      "113": 2,
+      "106": 1,
+      "186": 1,
+      "19": 1,
+      "219": 1,
+      "23": 1,
+      "254": 1,
+      "268": 1,
+      "270": 1,
+      "281": 1,
+      "288": 1,
+      "314": 1,
+      "322": 1,
+      "56": 1
+    },
+    "chine épidémie": {
+      "25": 9,
+      "131": 1,
+      "14": 1,
+      "222": 1,
+      "328": 1,
+      "343": 1,
+      "4": 1
+    },
+    "chine état": {
+      "0": 1,
+      "155": 1
+    },
+    "chinois hmpv": {
+      "0": 2,
+      "242": 1,
+      "9": 1
+    },
+    "cinq ans": {
+      "10": 2,
+      "107": 1,
+      "112": 1,
+      "173": 1,
+      "19": 1,
+      "193": 1,
+      "195": 1,
+      "210": 1,
+      "264": 1,
+      "270": 1,
+      "292": 1,
+      "304": 1,
+      "327": 1,
+      "7": 1
+    },
+    "confrontée nouvelle": {
+      "50": 2,
+      "107": 1,
+      "11": 1,
+      "13": 1,
+      "151": 1,
+      "180": 1,
+      "232": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "303": 1,
+      "336": 1,
+      "344": 1,
+      "40": 1,
+      "47": 1,
+      "65": 1,
+      "8": 1
+    },
+    "congestion écoulement": {
+      "139": 1,
+      "142": 1,
+      "226": 1,
+      "276": 1,
+      "318": 1,
+      "326": 1,
+      "33": 1,
+      "330": 1
+    },
+    "continue propager": {
+      "164": 1,
+      "2": 1,
+      "201": 1,
+      "9": 1
+    },
+    "covid augmentation": {
+      "10": 1,
+      "270": 1
+    },
+    "covid chine": {
+      "0": 2,
+      "10": 1,
+      "107": 1,
+      "139": 1,
+      "142": 1,
+      "147": 1,
+      "150": 1,
+      "155": 1,
+      "171": 1,
+      "173": 1,
+      "195": 1,
+      "204": 1,
+      "210": 1,
+      "248": 1,
+      "276": 1,
+      "292": 1,
+      "299": 1,
+      "30": 1,
+      "318": 1,
+      "325": 1,
+      "326": 1,
+      "33": 1,
+      "330": 1,
+      "48": 1,
+      "66": 1
+    },
+    "covid hmpv": {
+      "102": 1,
+      "112": 1,
+      "172": 1,
+      "178": 1,
+      "287": 1,
+      "55": 1
+    },
+    "covid propagent": {
+      "1": 1,
+      "101": 1,
+      "260": 1,
+      "304": 1,
+      "306": 1,
+      "333": 1,
+      "4": 1,
+      "5": 1
+    },
+    "crée situation": {
+      "113": 2,
+      "186": 1,
+      "281": 1,
+      "288": 1,
+      "56": 1
+    },
+    "crématoriums virus": {
+      "306": 1,
+      "5": 1
+    },
+    "derniers jours": {
+      "207": 1,
+      "3": 1
+    },
+    "début pandémie": {
+      "10": 1,
+      "19": 1
+    },
+    "déclare état": {
+      "0": 1,
+      "1": 1,
+      "101": 1,
+      "147": 1,
+      "161": 1,
+      "179": 1,
+      "239": 1,
+      "260": 1,
+      "264": 1,
+      "304": 1,
+      "306": 1,
+      "333": 1,
+      "4": 1,
+      "5": 1
+    },
+    "enfants personnes": {
+      "171": 1,
+      "2": 1,
+      "30": 1
+    },
+    "engendrer nouvelle": {
+      "12": 1,
+      "200": 1,
+      "23": 1,
+      "272": 1
+    },
+    "enregistrée chine": {
+      "25": 9,
+      "131": 1,
+      "14": 1,
+      "207": 1,
+      "271": 1,
+      "328": 1,
+      "343": 1,
+      "4": 1
+    },
+    "face nouvelle": {
+      "0": 1,
+      "139": 1,
+      "142": 1,
+      "150": 1,
+      "226": 1,
+      "248": 1,
+      "264": 1,
+      "266": 1,
+      "276": 1,
+      "292": 1,
+      "299": 1,
+      "318": 1,
+      "325": 1,
+      "326": 1,
+      "33": 1,
+      "330": 1,
+      "4": 1,
+      "51": 1,
+      "54": 1,
+      "66": 1,
+      "67": 1,
+      "93": 1
+    },
+    "faisant état": {
+      "249": 1,
+      "5": 1
+    },
+    "fake news": {
+      "17": 1,
+      "88": 1
+    },
+    "fièvre congestion": {
+      "139": 1,
+      "142": 1,
+      "226": 1,
+      "276": 1,
+      "3": 1,
+      "318": 1,
+      "326": 1,
+      "33": 1,
+      "330": 1
+    },
+    "grippal covid": {
+      "11": 1,
+      "248": 1,
+      "40": 1,
+      "65": 1
+    },
+    "grippe aviaire": {
+      "27": 1,
+      "37": 1,
+      "43": 1,
+      "7": 1,
+      "81": 1,
+      "85": 1
+    },
+    "grippe covid": {
+      "107": 1,
+      "180": 1,
+      "185": 1,
+      "245": 1,
+      "247": 1,
+      "336": 1,
+      "342": 1,
+      "67": 1,
+      "71": 1,
+      "9": 1,
+      "95": 1
+    },
+    "grippe hmpv": {
+      "1": 1,
+      "101": 1,
+      "19": 1,
+      "239": 1,
+      "244": 1,
+      "248": 1,
+      "260": 1,
+      "304": 1,
+      "306": 1,
+      "333": 1,
+      "4": 1,
+      "46": 1
+    },
+    "grippe virus": {
+      "15": 1,
+      "5": 1,
+      "9": 1
+    },
+    "hindustan times": {
+      "344": 1,
+      "8": 1
+    },
+    "hmpv chine": {
+      "118": 1,
+      "184": 1,
+      "267": 1,
+      "270": 1,
+      "304": 1,
+      "308": 1,
+      "314": 1,
+      "340": 1,
+      "4": 1,
+      "5": 1,
+      "54": 1,
+      "6": 1,
+      "7": 1,
+      "74": 1,
+      "81": 1,
+      "88": 1,
+      "9": 1
+    },
+    "hmpv connu": {
+      "10": 1,
+      "192": 1,
+      "248": 1
+    },
+    "hmpv engendrer": {
+      "12": 1,
+      "200": 1,
+      "23": 1,
+      "272": 1
+    },
+    "hmpv fake": {
+      "17": 1
+    },
+    "hmpv gouvernement": {
+      "0": 1,
+      "7": 1
+    },
+    "hmpv hmpvvirus": {
+      "123": 1,
+      "137": 1,
+      "205": 1,
+      "264": 1,
+      "346": 1,
+      "63": 1,
+      "64": 1
+    },
+    "hmpv human": {
+      "0": 2,
+      "139": 1,
+      "141": 1,
+      "142": 1,
+      "150": 1,
+      "171": 1,
+      "226": 1,
+      "269": 1,
+      "276": 1,
+      "28": 1,
+      "292": 1,
+      "299": 1,
+      "30": 1,
+      "318": 1,
+      "325": 1,
+      "326": 1,
+      "33": 1,
+      "330": 1,
+      "48": 1,
+      "66": 1,
+      "9": 1
+    },
+    "hmpv inquiète": {
+      "10": 1,
+      "322": 1
+    },
+    "hmpv mycoplasma": {
+      "1": 1,
+      "101": 1,
+      "161": 1,
+      "179": 1,
+      "239": 1,
+      "248": 1,
+      "249": 1,
+      "260": 1,
+      "304": 1,
+      "333": 1,
+      "4": 1,
+      "46": 1
+    },
+    "hmpv métapneumovirus": {
+      "13": 1,
+      "189": 1,
+      "217": 1,
+      "263": 1,
+      "38": 1,
+      "72": 1,
+      "9": 1
+    },
+    "hmpv nord": {
+      "173": 1,
+      "226": 1,
+      "270": 1,
+      "290": 1,
+      "7": 1
+    },
+    "hmpv nouveau": {
+      "122": 1,
+      "128": 1,
+      "13": 1,
+      "262": 1,
+      "285": 1,
+      "69": 1,
+      "76": 1,
+      "9": 1
+    },
+    "hmpv propage": {
+      "50": 2,
+      "107": 1,
+      "11": 1,
+      "151": 1,
+      "172": 1,
+      "193": 1,
+      "207": 1,
+      "232": 1,
+      "268": 1,
+      "304": 1,
+      "342": 1,
+      "344": 1,
+      "40": 1,
+      "71": 1,
+      "8": 1
+    },
+    "hmpv propageant": {
+      "107": 1,
+      "11": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "303": 1,
+      "336": 1,
+      "65": 1
+    },
+    "hmpv virus": {
+      "7": 5,
+      "18": 3,
+      "10": 2,
+      "101": 1,
+      "112": 1,
+      "144": 1,
+      "146": 1,
+      "163": 1,
+      "176": 1,
+      "181": 1,
+      "182": 1,
+      "196": 1,
+      "20": 1,
+      "202": 1,
+      "220": 1,
+      "243": 1,
+      "251": 1,
+      "259": 1,
+      "264": 1,
+      "29": 1,
+      "291": 1,
+      "340": 1,
+      "341": 1,
+      "345": 1,
+      "35": 1,
+      "42": 1,
+      "44": 1,
+      "46": 1,
+      "55": 1,
+      "67": 1,
+      "8": 1
+    },
+    "hmpv été": {
+      "0": 2,
+      "2": 1,
+      "238": 1,
+      "7": 1
+    },
+    "humain crée": {
+      "113": 2,
+      "186": 1,
+      "281": 1,
+      "288": 1,
+      "56": 1
+    },
+    "humain hmpv": {
+      "12": 3,
+      "11": 2,
+      "5": 2,
+      "50": 2,
+      "106": 1,
+      "107": 1,
+      "13": 1,
+      "132": 1,
+      "146": 1,
+      "149": 1,
+      "169": 1,
+      "173": 1,
+      "18": 1,
+      "180": 1,
+      "193": 1,
+      "195": 1,
+      "2": 1,
+      "215": 1,
+      "219": 1,
+      "220": 1,
+      "243": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "251": 1,
+      "256": 1,
+      "258": 1,
+      "264": 1,
+      "289": 1,
+      "290": 1,
+      "294": 1,
+      "298": 1,
+      "3": 1,
+      "303": 1,
+      "304": 1,
+      "308": 1,
+      "313": 1,
+      "314": 1,
+      "336": 1,
+      "34": 1,
+      "341": 1,
+      "342": 1,
+      "345": 1,
+      "36": 1,
+      "4": 1,
+      "40": 1,
+      "42": 1,
+      "47": 1,
+      "65": 1,
+      "67": 1,
+      "71": 1,
+      "73": 1,
+      "8": 1,
+      "85": 1,
+      "9": 1
+    },
+    "humain inquiéter": {
+      "31": 4,
+      "114": 1,
+      "228": 1
+    },
+    "humain mpvh": {
+      "13": 1,
+      "194": 1,
+      "227": 1,
+      "237": 1,
+      "291": 1,
+      "3": 1,
+      "41": 1,
+      "5": 1
+    },
+    "human metapneumovirus": {
+      "0": 2,
+      "12": 1,
+      "139": 1,
+      "141": 1,
+      "142": 1,
+      "150": 1,
+      "171": 1,
+      "176": 1,
+      "226": 1,
+      "24": 1,
+      "269": 1,
+      "276": 1,
+      "28": 1,
+      "292": 1,
+      "299": 1,
+      "30": 1,
+      "318": 1,
+      "325": 1,
+      "326": 1,
+      "33": 1,
+      "330": 1,
+      "348": 1,
+      "48": 1,
+      "66": 1,
+      "9": 1,
+      "94": 1
+    },
+    "hémisphère nord": {
+      "5": 1,
+      "79": 1
+    },
+    "hôpitaux crématoriums": {
+      "101": 1,
+      "239": 1,
+      "248": 1,
+      "260": 1,
+      "306": 1,
+      "4": 1,
+      "46": 1,
+      "5": 1
+    },
+    "hôpitaux saturés": {
+      "0": 1,
+      "142": 1,
+      "150": 1,
+      "226": 1,
+      "264": 1,
+      "276": 1,
+      "299": 1,
+      "318": 1,
+      "325": 1,
+      "33": 1,
+      "330": 1,
+      "66": 1
+    },
+    "hôpitaux submergés": {
+      "2": 1,
+      "268": 1
+    },
+    "hôpitaux surpeuplés": {
+      "13": 1,
+      "207": 1,
+      "215": 1,
+      "248": 1,
+      "314": 1
+    },
+    "inde signale": {
+      "0": 1,
+      "107": 1,
+      "336": 1,
+      "68": 1,
+      "7": 1
+    },
+    "infection métapneumovirus": {
+      "338": 1,
+      "5": 1
+    },
+    "infection respiratoire": {
+      "0": 1,
+      "115": 1,
+      "142": 1,
+      "150": 1,
+      "226": 1,
+      "276": 1,
+      "299": 1,
+      "318": 1,
+      "325": 1,
+      "326": 1,
+      "33": 1,
+      "330": 1,
+      "66": 1
+    },
+    "infections respiratoires": {
+      "10": 1,
+      "118": 1,
+      "195": 1,
+      "21": 1,
+      "218": 1,
+      "223": 1,
+      "262": 1,
+      "3": 1,
+      "5": 1,
+      "79": 1,
+      "94": 1
+    },
+    "info chine": {
+      "2": 1,
+      "264": 1
+    },
+    "inquiétudes mondiales": {
+      "344": 1,
+      "8": 1
+    },
+    "inquiétudes nouvelle": {
+      "12": 4,
+      "289": 1
+    },
+    "maladies respiratoires": {
+      "169": 1,
+      "170": 1,
+      "184": 1,
+      "197": 1,
+      "207": 1,
+      "210": 1,
+      "215": 1,
+      "314": 1,
+      "4": 1,
+      "55": 1,
+      "78": 1
+    },
+    "metapneumovirus humain": {
+      "13": 1,
+      "134": 1,
+      "197": 1,
+      "27": 1,
+      "41": 1,
+      "64": 1,
+      "73": 1
+    },
+    "metapneumovirus infection": {
+      "0": 1,
+      "142": 1,
+      "150": 1,
+      "226": 1,
+      "276": 1,
+      "299": 1,
+      "318": 1,
+      "325": 1,
+      "326": 1,
+      "33": 1,
+      "330": 1,
+      "66": 1
+    },
+    "million personnes": {
+      "17": 1
+    },
+    "ministère santé": {
+      "128": 1,
+      "204": 1,
+      "211": 1,
+      "235": 1,
+      "238": 1,
+      "316": 1,
+      "4": 1,
+      "41": 1,
+      "9": 1
+    },
+    "mondiales hindustan": {
+      "344": 1,
+      "8": 1
+    },
+    "mpvh métapneumovirus": {
+      "58": 2,
+      "3": 1
+    },
+    "multiples virus": {
+      "1": 1,
+      "101": 1,
+      "161": 1,
+      "239": 1,
+      "260": 1,
+      "304": 1,
+      "333": 1,
+      "4": 1
+    },
+    "mycoplasma pneumoniae": {
+      "1": 1,
+      "101": 1,
+      "161": 1,
+      "179": 1,
+      "239": 1,
+      "248": 1,
+      "249": 1,
+      "260": 1,
+      "304": 1,
+      "333": 1,
+      "4": 1,
+      "46": 1
+    },
+    "mystérieuse épidémie": {
+      "13": 1,
+      "9": 1
+    },
+    "mystérieux virus": {
+      "164": 1,
+      "9": 1
+    },
+    "métapneumovirus humain": {
+      "31": 4,
+      "12": 3,
+      "0": 2,
+      "11": 2,
+      "113": 2,
+      "13": 2,
+      "5": 2,
+      "50": 2,
+      "58": 2,
+      "10": 1,
+      "103": 1,
+      "106": 1,
+      "107": 1,
+      "114": 1,
+      "132": 1,
+      "146": 1,
+      "156": 1,
+      "161": 1,
+      "169": 1,
+      "173": 1,
+      "18": 1,
+      "180": 1,
+      "186": 1,
+      "189": 1,
+      "193": 1,
+      "194": 1,
+      "195": 1,
+      "2": 1,
+      "209": 1,
+      "215": 1,
+      "217": 1,
+      "219": 1,
+      "220": 1,
+      "222": 1,
+      "224": 1,
+      "227": 1,
+      "228": 1,
+      "237": 1,
+      "243": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "251": 1,
+      "252": 1,
+      "256": 1,
+      "258": 1,
+      "26": 1,
+      "263": 1,
+      "264": 1,
+      "281": 1,
+      "282": 1,
+      "288": 1,
+      "289": 1,
+      "290": 1,
+      "291": 1,
+      "294": 1,
+      "298": 1,
+      "3": 1,
+      "303": 1,
+      "304": 1,
+      "308": 1,
+      "313": 1,
+      "314": 1,
+      "315": 1,
+      "329": 1,
+      "336": 1,
+      "338": 1,
+      "34": 1,
+      "341": 1,
+      "342": 1,
+      "345": 1,
+      "36": 1,
+      "38": 1,
+      "4": 1,
+      "40": 1,
+      "41": 1,
+      "42": 1,
+      "47": 1,
+      "55": 1,
+      "56": 1,
+      "57": 1,
+      "65": 1,
+      "67": 1,
+      "69": 1,
+      "7": 1,
+      "71": 1,
+      "72": 1,
+      "76": 1,
+      "78": 1,
+      "79": 1,
+      "8": 1,
+      "81": 1,
+      "9": 1
+    },
+    "métapneumovirus été": {
+      "25": 9,
+      "131": 1,
+      "14": 1,
+      "271": 1,
+      "328": 1,
+      "343": 1,
+      "4": 1
+    },
+    "news million": {
+      "17": 1
+    },
+    "nom hmpv": {
+      "0": 1,
+      "141": 1,
+      "147": 1,
+      "292": 1,
+      "48": 1,
+      "60": 1
+    },
+    "nombre cas": {
+      "313": 1,
+      "54": 1,
+      "9": 1
+    },
+    "nord chine": {
+      "10": 2,
+      "18": 2,
+      "7": 2,
+      "173": 1,
+      "191": 1,
+      "20": 1,
+      "226": 1,
+      "270": 1,
+      "290": 1
+    },
+    "notamment grippe": {
+      "46": 1,
+      "5": 1
+    },
+    "nouveau confinement": {
+      "0": 1,
+      "122": 1,
+      "32": 1,
+      "320": 1,
+      "7": 1
+    },
+    "nouveau virus": {
+      "13": 2,
+      "121": 1,
+      "149": 1,
+      "155": 1,
+      "192": 1,
+      "197": 1,
+      "204": 1,
+      "237": 1,
+      "242": 1,
+      "26": 1,
+      "262": 1,
+      "269": 1,
+      "280": 1,
+      "284": 1,
+      "285": 1,
+      "294": 1,
+      "3": 1,
+      "304": 1,
+      "307": 1,
+      "308": 1,
+      "31": 1,
+      "327": 1,
+      "332": 1,
+      "36": 1,
+      "38": 1,
+      "4": 1,
+      "43": 1,
+      "46": 1,
+      "49": 1,
+      "64": 1,
+      "69": 1,
+      "7": 1,
+      "72": 1,
+      "88": 1,
+      "9": 1,
+      "94": 1
+    },
+    "nouvelle infection": {
+      "292": 1,
+      "4": 1
+    },
+    "nouvelle menace": {
+      "171": 1,
+      "237": 1,
+      "30": 1,
+      "342": 1,
+      "59": 1
+    },
+    "nouvelle pandémie": {
+      "12": 4,
+      "200": 1,
+      "23": 1,
+      "272": 1,
+      "289": 1,
+      "347": 1,
+      "4": 1
+    },
+    "nouvelle épidémie": {
+      "11": 2,
+      "50": 2,
+      "0": 1,
+      "106": 1,
+      "107": 1,
+      "13": 1,
+      "139": 1,
+      "142": 1,
+      "146": 1,
+      "150": 1,
+      "151": 1,
+      "180": 1,
+      "193": 1,
+      "204": 1,
+      "226": 1,
+      "232": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "264": 1,
+      "268": 1,
+      "276": 1,
+      "299": 1,
+      "303": 1,
+      "304": 1,
+      "318": 1,
+      "325": 1,
+      "326": 1,
+      "33": 1,
+      "330": 1,
+      "336": 1,
+      "40": 1,
+      "47": 1,
+      "51": 1,
+      "54": 1,
+      "65": 1,
+      "66": 1,
+      "67": 1,
+      "71": 1,
+      "85": 1,
+      "93": 1
+    },
+    "pandémie covid": {
+      "0": 1,
+      "10": 1,
+      "107": 1,
+      "12": 1,
+      "139": 1,
+      "142": 1,
+      "150": 1,
+      "19": 1,
+      "276": 1,
+      "299": 1,
+      "318": 1,
+      "325": 1,
+      "326": 1,
+      "327": 1,
+      "33": 1,
+      "330": 1,
+      "66": 1
+    },
+    "pandémie covid19": {
+      "11": 1,
+      "193": 1,
+      "304": 1
+    },
+    "pandémie jacques": {
+      "23": 1
+    },
+    "pays confronté": {
+      "193": 1,
+      "2": 1,
+      "304": 1
+    },
+    "pays suscitant": {
+      "344": 1,
+      "8": 1
+    },
+    "personnes laquelle": {
+      "17": 1
+    },
+    "personnes âgées": {
+      "171": 1,
+      "2": 1,
+      "30": 1,
+      "345": 1
+    },
+    "pleine expansion": {
+      "12": 3,
+      "224": 1,
+      "289": 1,
+      "57": 1
+    },
+    "pneumoniae covid": {
+      "1": 1,
+      "101": 1,
+      "179": 1,
+      "239": 1,
+      "248": 1,
+      "249": 1,
+      "260": 1,
+      "304": 1,
+      "333": 1,
+      "4": 1,
+      "46": 1
+    },
+    "premier cas": {
+      "107": 1,
+      "336": 1,
+      "338": 1,
+      "68": 1,
+      "7": 1,
+      "9": 1
+    },
+    "premiers cas": {
+      "0": 2,
+      "28": 1,
+      "7": 1
+    },
+    "propagation virus": {
+      "13": 1,
+      "219": 1,
+      "249": 1,
+      "316": 1,
+      "7": 1
+    },
+    "propage chine": {
+      "7": 3,
+      "207": 1,
+      "304": 1
+    },
+    "propage rapidement": {
+      "50": 2,
+      "107": 1,
+      "11": 1,
+      "193": 1,
+      "196": 1,
+      "248": 1,
+      "304": 1,
+      "342": 1,
+      "344": 1,
+      "40": 1,
+      "42": 1,
+      "67": 1,
+      "71": 1,
+      "8": 1
+    },
+    "propageant rapidement": {
+      "107": 1,
+      "11": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "303": 1,
+      "336": 1,
+      "65": 1
+    },
+    "propagent rapidement": {
+      "1": 1,
+      "101": 1,
+      "161": 1,
+      "260": 1,
+      "304": 1,
+      "306": 1,
+      "4": 1,
+      "5": 1
+    },
+    "provoquant symptômes": {
+      "50": 2,
+      "107": 1,
+      "11": 1,
+      "176": 1,
+      "180": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "303": 1,
+      "336": 1,
+      "40": 1,
+      "65": 1
+    },
+    "provoque infections": {
+      "3": 1,
+      "8": 1
+    },
+    "provoque symptômes": {
+      "146": 1,
+      "194": 1,
+      "26": 1,
+      "314": 1,
+      "67": 1,
+      "71": 1,
+      "95": 1
+    },
+    "rapidement chine": {
+      "1": 1,
+      "101": 1,
+      "11": 1,
+      "161": 1,
+      "260": 1,
+      "304": 1,
+      "4": 1,
+      "42": 1
+    },
+    "rapidement provoquant": {
+      "50": 2,
+      "107": 1,
+      "11": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "303": 1,
+      "336": 1,
+      "40": 1,
+      "65": 1
+    },
+    "reconfinement cause": {
+      "17": 1
+    },
+    "recrudescence maladies": {
+      "184": 1,
+      "210": 1,
+      "4": 1
+    },
+    "respiratoire hmpv": {
+      "12": 1,
+      "200": 1,
+      "23": 1,
+      "272": 1,
+      "273": 1,
+      "7": 1,
+      "9": 1
+    },
+    "respiratoire hôpitaux": {
+      "0": 1,
+      "142": 1,
+      "150": 1,
+      "226": 1,
+      "276": 1,
+      "299": 1,
+      "318": 1,
+      "325": 1,
+      "33": 1,
+      "330": 1,
+      "66": 1
+    },
+    "respiratoire provoque": {
+      "243": 1,
+      "8": 1
+    },
+    "respiratoire répand": {
+      "10": 2,
+      "44": 1,
+      "55": 1,
+      "7": 1
+    },
+    "rumeur reconfinement": {
+      "17": 1
+    },
+    "répand chine": {
+      "10": 2,
+      "44": 1,
+      "55": 1,
+      "7": 1
+    },
+    "réseaux sociaux": {
+      "10": 2,
+      "7": 2,
+      "112": 1,
+      "182": 1,
+      "184": 1,
+      "259": 1,
+      "282": 1,
+      "29": 1,
+      "308": 1,
+      "340": 1,
+      "44": 1,
+      "55": 1,
+      "72": 1,
+      "85": 1
+    },
+    "sanitaire épidémie": {
+      "344": 1,
+      "8": 1
+    },
+    "santé virus": {
+      "12": 1,
+      "200": 1,
+      "23": 1
+    },
+    "sars cov": {
+      "10": 1,
+      "115": 1,
+      "13": 1,
+      "2": 1,
+      "46": 1,
+      "82": 1
+    },
+    "saturés cas": {
+      "0": 1,
+      "142": 1,
+      "150": 1,
+      "226": 1,
+      "264": 1,
+      "276": 1,
+      "299": 1,
+      "318": 1,
+      "325": 1,
+      "33": 1,
+      "330": 1,
+      "66": 1
+    },
+    "semblables grippe": {
+      "107": 1,
+      "146": 1,
+      "151": 1,
+      "180": 1,
+      "232": 1,
+      "247": 1
+    },
+    "signale premiers": {
+      "0": 1,
+      "7": 1
+    },
+    "similaires covid": {
+      "50": 2,
+      "248": 1,
+      "294": 1,
+      "308": 1,
+      "4": 1
+    },
+    "situation épidémique": {
+      "113": 2,
+      "186": 1,
+      "281": 1,
+      "288": 1,
+      "56": 1
+    },
+    "submerge hôpitaux": {
+      "101": 1,
+      "147": 1,
+      "239": 1,
+      "260": 1,
+      "306": 1,
+      "36": 1,
+      "4": 1,
+      "5": 1,
+      "9": 1
+    },
+    "suite épidémie": {
+      "6": 1,
+      "7": 1
+    },
+    "suscite inquiétudes": {
+      "4": 1,
+      "42": 1,
+      "7": 1,
+      "73": 1,
+      "9": 1
+    },
+    "symptômes semblables": {
+      "107": 1,
+      "146": 1,
+      "151": 1,
+      "180": 1,
+      "232": 1,
+      "247": 1
+    },
+    "symptômes similaires": {
+      "176": 1,
+      "194": 1,
+      "248": 1,
+      "294": 1,
+      "308": 1,
+      "314": 1,
+      "342": 1,
+      "67": 1,
+      "71": 1,
+      "95": 1
+    },
+    "symptômes toux": {
+      "139": 1,
+      "142": 1,
+      "226": 1,
+      "276": 1,
+      "3": 1,
+      "318": 1,
+      "326": 1,
+      "33": 1,
+      "330": 1
+    },
+    "symptômes type": {
+      "11": 1,
+      "248": 1,
+      "40": 1,
+      "65": 1
+    },
+    "toux fièvre": {
+      "139": 1,
+      "142": 1,
+      "171": 1,
+      "226": 1,
+      "243": 1,
+      "276": 1,
+      "3": 1,
+      "30": 1,
+      "318": 1,
+      "326": 1,
+      "33": 1,
+      "330": 1
+    },
+    "travers chine": {
+      "306": 1,
+      "5": 1
+    },
+    "travers pays": {
+      "344": 1,
+      "8": 1
+    },
+    "type grippal": {
+      "11": 1,
+      "248": 1,
+      "40": 1,
+      "65": 1
+    },
+    "urgence multiples": {
+      "1": 1,
+      "161": 1,
+      "304": 1,
+      "333": 1,
+      "4": 1
+    },
+    "urgence sanitaire": {
+      "0": 2,
+      "10": 1,
+      "46": 1
+    },
+    "urgence épidémie": {
+      "101": 1,
+      "147": 1,
+      "239": 1,
+      "260": 1,
+      "306": 1,
+      "5": 1
+    },
+    "virus appelé": {
+      "0": 1,
+      "139": 1,
+      "142": 1,
+      "149": 1,
+      "150": 1,
+      "226": 1,
+      "276": 1,
+      "299": 1,
+      "318": 1,
+      "325": 1,
+      "326": 1,
+      "33": 1,
+      "330": 1,
+      "66": 1
+    },
+    "virus chine": {
+      "144": 1,
+      "161": 1,
+      "199": 1,
+      "220": 1,
+      "240": 1,
+      "251": 1,
+      "268": 1,
+      "3": 1,
+      "341": 1,
+      "345": 1,
+      "4": 1,
+      "46": 1,
+      "49": 1,
+      "7": 1
+    },
+    "virus chinois": {
+      "9": 2,
+      "155": 1,
+      "242": 1,
+      "31": 1
+    },
+    "virus connu": {
+      "294": 1,
+      "3": 1
+    },
+    "virus grippe": {
+      "1": 1,
+      "101": 1,
+      "239": 1,
+      "260": 1,
+      "269": 1,
+      "304": 1,
+      "306": 1,
+      "333": 1,
+      "4": 1,
+      "5": 1,
+      "7": 1,
+      "82": 1
+    },
+    "virus hmpv": {
+      "4": 2,
+      "63": 2,
+      "7": 2,
+      "0": 1,
+      "106": 1,
+      "109": 1,
+      "113": 1,
+      "118": 1,
+      "120": 1,
+      "122": 1,
+      "124": 1,
+      "128": 1,
+      "130": 1,
+      "138": 1,
+      "144": 1,
+      "145": 1,
+      "15": 1,
+      "151": 1,
+      "155": 1,
+      "158": 1,
+      "161": 1,
+      "164": 1,
+      "17": 1,
+      "177": 1,
+      "186": 1,
+      "187": 1,
+      "188": 1,
+      "189": 1,
+      "192": 1,
+      "201": 1,
+      "203": 1,
+      "208": 1,
+      "211": 1,
+      "225": 1,
+      "230": 1,
+      "232": 1,
+      "235": 1,
+      "248": 1,
+      "249": 1,
+      "254": 1,
+      "262": 1,
+      "268": 1,
+      "270": 1,
+      "283": 1,
+      "284": 1,
+      "304": 1,
+      "307": 1,
+      "309": 1,
+      "310": 1,
+      "314": 1,
+      "316": 1,
+      "319": 1,
+      "32": 1,
+      "321": 1,
+      "322": 1,
+      "323": 1,
+      "331": 1,
+      "334": 1,
+      "336": 1,
+      "339": 1,
+      "36": 1,
+      "38": 1,
+      "43": 1,
+      "5": 1,
+      "54": 1,
+      "60": 1,
+      "68": 1,
+      "72": 1,
+      "74": 1,
+      "76": 1,
+      "8": 1,
+      "88": 1,
+      "9": 1
+    },
+    "virus identifié": {
+      "13": 1,
+      "26": 1
+    },
+    "virus méconnu": {
+      "113": 2,
+      "186": 1,
+      "281": 1,
+      "288": 1
+    },
+    "virus métapneumovirus": {
+      "11": 2,
+      "50": 2,
+      "107": 1,
+      "193": 1,
+      "219": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "264": 1,
+      "303": 1,
+      "304": 1,
+      "40": 1,
+      "56": 1,
+      "65": 1,
+      "69": 1
+    },
+    "virus propage": {
+      "7": 3,
+      "304": 1,
+      "46": 1,
+      "67": 1
+    },
+    "virus respiratoire": {
+      "10": 3,
+      "7": 2,
+      "116": 1,
+      "12": 1,
+      "121": 1,
+      "132": 1,
+      "146": 1,
+      "149": 1,
+      "15": 1,
+      "161": 1,
+      "171": 1,
+      "176": 1,
+      "181": 1,
+      "182": 1,
+      "200": 1,
+      "202": 1,
+      "23": 1,
+      "243": 1,
+      "254": 1,
+      "264": 1,
+      "272": 1,
+      "273": 1,
+      "29": 1,
+      "291": 1,
+      "298": 1,
+      "30": 1,
+      "308": 1,
+      "34": 1,
+      "340": 1,
+      "35": 1,
+      "42": 1,
+      "44": 1,
+      "47": 1,
+      "55": 1,
+      "69": 1,
+      "8": 1,
+      "9": 1
+    },
+    "virus respiratoires": {
+      "115": 1,
+      "13": 1,
+      "191": 1
+    },
+    "virus symptômes": {
+      "13": 1,
+      "142": 1,
+      "15": 1,
+      "150": 1,
+      "226": 1,
+      "276": 1,
+      "318": 1,
+      "33": 1,
+      "330": 1,
+      "332": 1
+    },
+    "écoulement nasal": {
+      "139": 1,
+      "142": 1,
+      "226": 1,
+      "243": 1,
+      "276": 1,
+      "318": 1,
+      "326": 1,
+      "33": 1,
+      "330": 1
+    },
+    "épidémie chine": {
+      "106": 1,
+      "13": 1
+    },
+    "épidémie hmpv": {
+      "9": 2,
+      "10": 1,
+      "113": 1,
+      "171": 1,
+      "186": 1,
+      "30": 1,
+      "344": 1,
+      "6": 1,
+      "8": 1,
+      "93": 1
+    },
+    "épidémie métapneumovirus": {
+      "25": 9,
+      "107": 1,
+      "131": 1,
+      "14": 1,
+      "146": 1,
+      "180": 1,
+      "2": 1,
+      "215": 1,
+      "222": 1,
+      "271": 1,
+      "314": 1,
+      "328": 1,
+      "343": 1,
+      "4": 1,
+      "71": 1,
+      "8": 1
+    },
+    "épidémie submerge": {
+      "101": 1,
+      "147": 1,
+      "239": 1,
+      "260": 1,
+      "306": 1,
+      "5": 1
+    },
+    "épidémie virale": {
+      "13": 1,
+      "9": 1
+    },
+    "épidémie virus": {
+      "11": 2,
+      "4": 2,
+      "50": 2,
+      "0": 1,
+      "107": 1,
+      "118": 1,
+      "139": 1,
+      "142": 1,
+      "150": 1,
+      "151": 1,
+      "161": 1,
+      "179": 1,
+      "193": 1,
+      "226": 1,
+      "232": 1,
+      "246": 1,
+      "247": 1,
+      "248": 1,
+      "264": 1,
+      "268": 1,
+      "276": 1,
+      "299": 1,
+      "303": 1,
+      "304": 1,
+      "318": 1,
+      "325": 1,
+      "326": 1,
+      "33": 1,
+      "330": 1,
+      "336": 1,
+      "40": 1,
+      "65": 1,
+      "66": 1,
+      "85": 1
+    },
+    "état urgence": {
+      "0": 2,
+      "1": 1,
+      "10": 1,
+      "101": 1,
+      "147": 1,
+      "155": 1,
+      "161": 1,
+      "179": 1,
+      "239": 1,
+      "248": 1,
+      "260": 1,
+      "264": 1,
+      "304": 1,
+      "306": 1,
+      "333": 1,
+      "4": 1,
+      "5": 1
+    },
+    "été enregistrée": {
+      "25": 9,
+      "131": 1,
+      "14": 1,
+      "207": 1,
+      "271": 1,
+      "328": 1,
+      "343": 1,
+      "4": 1
+    },
+    "été signalé": {
+      "7": 1,
       "9": 1
     }
   }
