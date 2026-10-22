@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Connectomes — cross_corpus</title>
-  <!-- connectome-ui v20261022g : Couleurs Classes RT — bloc HUD orange sous stats -->
+  <!-- connectome-ui v20261022h : # ouvre panneau hashtags à sélectionner -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; color: #ccc; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
@@ -324,6 +324,38 @@
       display: inline-block; margin-top: 8px; color: #8ab4ff; font-size: 10.5px; text-decoration: none;
     }
     #espaceFiche .fiche-ext:hover { text-decoration: underline; }
+    #hashPanel {
+      position: fixed; left: 12px; bottom: 12px; z-index: 6;
+      width: min(360px, calc(100vw - 24px));
+      max-height: min(46vh, 420px);
+      overflow: hidden;
+      display: none; flex-direction: column;
+      background: rgba(0,0,0,0.78); border: 1px solid rgba(201,178,122,0.35);
+      border-radius: 10px; padding: 12px 14px;
+      font-size: 11px; color: #8b93a0;
+      box-shadow: 0 10px 32px rgba(0,0,0,0.45);
+    }
+    #hashPanel.open { display: flex; }
+    #hashPanel .hp-head {
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;
+      margin-bottom: 8px; flex-shrink: 0;
+    }
+    #hashPanel .hp-title { color: #e8eef7; font-weight: 700; font-size: 12.5px; letter-spacing: 0.02em; }
+    #hashPanel .hp-sub { color: #6a7380; font-size: 10px; line-height: 1.35; margin-top: 3px; }
+    #hashPanel .hp-actions { display: flex; gap: 4px; align-items: center; }
+    #hashPanel .hp-clear, #hashPanel .hp-close {
+      border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04);
+      color: #a8b0bc; border-radius: 5px; padding: 4px 8px; font-size: 10px; cursor: pointer;
+    }
+    #hashPanel .hp-clear:hover, #hashPanel .hp-close:hover { color: #fff; border-color: rgba(255,255,255,0.28); }
+    #hashPanel .hp-clear:disabled { opacity: 0.4; cursor: default; }
+    #hashList {
+      overflow-y: auto; display: flex; flex-wrap: wrap; gap: 5px; align-content: flex-start;
+      padding-right: 2px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.2) transparent;
+    }
+    #hashList .tag-chip { font-size: 11px; padding: 4px 9px; }
+    #hashList .tag-meta { color: #6a7380; font-size: 9.5px; margin-left: 4px; font-weight: 500; }
+    #hashEmpty { color: #6a7380; font-size: 11px; line-height: 1.4; }
     #commList { max-height: min(340px, calc(100vh - 160px)); }
   </style>
   <script type="importmap">
@@ -385,6 +417,20 @@
   </nav>
   <div id="tooltip"></div>
   <aside id="espaceFiche" aria-live="polite"></aside>
+  <aside id="hashPanel" aria-live="polite" aria-label="Hashtags distinctifs">
+    <div class="hp-head">
+      <div>
+        <div class="hp-title">Hashtags distinctifs</div>
+        <div class="hp-sub" id="hashSub">Clique un # pour surligner les communautés / comptes qui l’utilisent</div>
+      </div>
+      <div class="hp-actions">
+        <button type="button" class="hp-clear" id="hashClearBtn" disabled title="Retirer le filtre">Effacer</button>
+        <button type="button" class="hp-close" id="hashCloseBtn" aria-label="Fermer">×</button>
+      </div>
+    </div>
+    <div id="hashList"></div>
+    <div id="hashEmpty" hidden>Aucun hashtag distinctif pour ce corpus.</div>
+  </aside>
   <aside id="hud">
     <b>Connectome</b>
     <div id="stats">—</div>
@@ -457,6 +503,12 @@ const tabsEl = document.getElementById('tabs');
 const analysesLinkEl = document.getElementById('analysesLink');
 const hashModeBtn = document.getElementById('hashModeBtn');
 const espaceFicheEl = document.getElementById('espaceFiche');
+const hashPanelEl = document.getElementById('hashPanel');
+const hashListEl = document.getElementById('hashList');
+const hashSubEl = document.getElementById('hashSub');
+const hashEmptyEl = document.getElementById('hashEmpty');
+const hashClearBtn = document.getElementById('hashClearBtn');
+const hashCloseBtn = document.getElementById('hashCloseBtn');
 let currentCorpusId = null;
 let corporaList = [];
 const _graphParam = new URLSearchParams(location.search).get('graph');
@@ -839,9 +891,11 @@ function setViewMode(mode, { syncUrl = true } = {}) {
   viewMode = mode === 'analyses' ? 'analyses' : 'graph';
   hashModeBtn?.classList.toggle('active', viewMode === 'analyses');
   if (viewMode === 'analyses') {
+    openHashPanel();
     if (selectedCommId != null) openEspaceFiche(selectedCommId);
   } else {
     clearHashtagFilter();
+    closeHashPanel();
     espaceFicheEl?.classList.remove('open');
   }
   if (syncUrl && currentCorpusId) syncCorpusUrl(currentCorpusId);
@@ -857,10 +911,86 @@ function communitiesForHashtag(tag) {
   return new Set((discourseData?.tag_communities?.[t] || []).map(Number));
 }
 
+/** Agrège les # distinctifs du corpus (g2 max + nb comptes / communautés). */
+function listCorpusHashtags() {
+  const byTag = new Map();
+  const bump = (tag, g2 = 0) => {
+    const t = String(tag || '').toLowerCase().replace(/^#/, '');
+    if (!t) return;
+    const cur = byTag.get(t) || { tag: t, g2: 0, nAcc: 0, nComm: 0 };
+    cur.g2 = Math.max(cur.g2, Number(g2) || 0);
+    byTag.set(t, cur);
+  };
+  const communities = discourseData?.communities || {};
+  for (const c of Object.values(communities)) {
+    for (const h of c.key_hashtags || []) bump(h.tag, h.g2);
+  }
+  const ta = discourseData?.tag_accounts || {};
+  const tc = discourseData?.tag_communities || {};
+  for (const t of new Set([...Object.keys(ta), ...Object.keys(tc)])) {
+    bump(t, 0);
+    const cur = byTag.get(t);
+    if (!cur) continue;
+    cur.nAcc = (ta[t] || []).length;
+    cur.nComm = (tc[t] || []).length;
+  }
+  return [...byTag.values()].sort((a, b) => {
+    if (b.g2 !== a.g2) return b.g2 - a.g2;
+    if (b.nAcc !== a.nAcc) return b.nAcc - a.nAcc;
+    return a.tag.localeCompare(b.tag, 'fr');
+  });
+}
+
+function renderHashPanel() {
+  if (!hashListEl) return;
+  const tags = listCorpusHashtags();
+  if (hashEmptyEl) hashEmptyEl.hidden = tags.length > 0;
+  hashListEl.innerHTML = '';
+  for (const h of tags) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'tag-chip' + (activeHashtag === h.tag ? ' active' : '');
+    btn.dataset.tag = h.tag;
+    const meta = h.nAcc
+      ? `${h.nAcc.toLocaleString('fr-FR')} cptes`
+      : h.nComm
+        ? `${h.nComm} comm.`
+        : (h.g2 ? `z ${h.g2.toFixed(1)}` : '');
+    btn.innerHTML = `#${escapeHtml(h.tag)}${meta ? `<span class="tag-meta">${escapeHtml(meta)}</span>` : ''}`;
+    btn.title = [
+      h.g2 ? `keyness z=${h.g2.toFixed(2)}` : null,
+      h.nComm ? `${h.nComm} communauté(s)` : null,
+      h.nAcc ? `${h.nAcc} compte(s)` : null,
+    ].filter(Boolean).join(' · ') || h.tag;
+    btn.addEventListener('click', () => {
+      if (activeHashtag === h.tag) clearHashtagFilter();
+      else setHashtagFilter(h.tag);
+    });
+    hashListEl.appendChild(btn);
+  }
+  if (hashClearBtn) hashClearBtn.disabled = !activeHashtag;
+  if (hashSubEl) {
+    hashSubEl.textContent = activeHashtag
+      ? `Filtre actif · #${activeHashtag} — recliquer pour retirer`
+      : 'Clique un # pour surligner les communautés / comptes qui l’utilisent';
+  }
+}
+
+function openHashPanel() {
+  renderHashPanel();
+  hashPanelEl?.classList.add('open');
+}
+
+function closeHashPanel() {
+  hashPanelEl?.classList.remove('open');
+}
+
 function clearHashtagFilter() {
   activeHashtag = null;
   applyNodeHighlight(null);
   if (graphData) renderCommPanel(graphData);
+  renderHashPanel();
+  if (selectedCommId != null) openEspaceFiche(selectedCommId);
 }
 
 function setHashtagFilter(tag) {
@@ -879,10 +1009,16 @@ function setHashtagFilter(tag) {
       }
     }
     applyNodeHighlight({ accounts, comms, tag: activeHashtag });
+    // Ouvre la 1ʳᵉ communauté distinctive si aucune sélection
+    if (selectedCommId == null && comms.size) {
+      selectedCommId = [...comms][0];
+    }
   }
   if (viewMode !== 'analyses') setViewMode('analyses');
+  else openHashPanel();
   if (graphData) renderCommPanel(graphData);
   if (selectedCommId != null) openEspaceFiche(selectedCommId);
+  else renderHashPanel();
 }
 
 function applyNodeHighlight(filter) {
@@ -2172,6 +2308,7 @@ async function loadCorpus(corp) {
   selectedCommId = null;
   activeHashtag = null;
   espaceFicheEl?.classList.remove('open');
+  if (viewMode !== 'analyses') closeHashPanel();
   updateGraphModeButtons();
   syncCorpusUrl(corp.id);
   hideBootSplash();
@@ -2255,6 +2392,7 @@ async function loadCorpus(corp) {
       data.meta = data.meta || {};
       data.meta.discourse = disc;
     }
+    if (viewMode === 'analyses') openHashPanel();
     setCommLoading(false);
 
     const nE = (data.edges || []).length;
@@ -2435,8 +2573,14 @@ async function boot() {
     else setViewMode('analyses');
     updateGraphModeButtons();
   });
+  hashClearBtn?.addEventListener('click', () => clearHashtagFilter());
+  hashCloseBtn?.addEventListener('click', () => {
+    setViewMode('graph');
+    updateGraphModeButtons();
+  });
   hashModeBtn?.addEventListener('pointerenter', () => {
     prefetchAnalysesAssets(currentCorpusId);
+    ensureDiscourse(currentCorpusId).catch(() => {});
   }, { passive: true });
   const start = resolveCorpus(new URLSearchParams(location.search).get('corpus')) || corpora[0];
   // Kick fetch immediately (overlaps with UI wiring); then render.
