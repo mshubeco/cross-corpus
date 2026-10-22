@@ -1664,6 +1664,14 @@ function updateHUD(visible) {
 function renderRtShareLegend() {
   const el = document.getElementById('trackList');
   document.getElementById('tracksTitle').textContent = 'Classes ternaires · part RT';
+  if (window.__rtWeightsReady === false) {
+    el.innerHTML = `<div class="track-share" style="color:#f87171;line-height:1.45">
+      <span>Données sans <b>weight_rt</b> (arêtes [s,t,w] seulement).
+      Tout est classé « interactions » — typologie RT indisponible.
+      Relancer <code>enrich_edge_rt.py</code> sur ce corpus.</span>
+    </div>`;
+    return;
+  }
   const counts = window.__rtClassCounts || { ix: 0, rt: 0, mix: 0 };
   const total = Math.max(1, counts.ix + counts.rt + counts.mix);
   const rows = [
@@ -1915,6 +1923,19 @@ async function preloadFrames() {
     paint(done === n);
   }));
   paint(true);
+  // Détecte les packs legacy sans weight_rt (tout tombe en « interactions »).
+  let hasRt = false;
+  let checked = 0;
+  for (const fr of frames) {
+    const eds = fr?.edges || [];
+    for (const e of eds) {
+      checked++;
+      if (Array.isArray(e) && e.length >= 4) { hasRt = true; break; }
+      if (checked > 40) break;
+    }
+    if (hasRt || checked > 40) break;
+  }
+  window.__rtWeightsReady = hasRt;
 }
 
 function finalizeFrameLayouts() {
