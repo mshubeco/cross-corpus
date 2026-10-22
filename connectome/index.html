@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Connectomes — cross_corpus</title>
-  <!-- connectome-ui v20261022p : filtre # liens strict (sous-graphe) + buffer couleurs isolé -->
+  <!-- connectome-ui v20261022q : filtre # = tous liens touchés (1 ou 2 bouts) -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; color: #ccc; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
@@ -1125,7 +1125,7 @@ function renderHashPanel() {
         || (discourseData?.tag_accounts?.[activeHashtag] || []).length
         || 0;
       hashSubEl.textContent = nAcc
-        ? `Filtre · #${activeHashtag} · ${nAcc.toLocaleString('fr-FR')} compte${nAcc > 1 ? 's' : ''} · liens internes seulement — recliquer pour retirer`
+        ? `Filtre · #${activeHashtag} · ${nAcc.toLocaleString('fr-FR')} compte${nAcc > 1 ? 's' : ''} · tous les liens touchés — recliquer pour retirer`
         : `Filtre actif · #${activeHashtag} — recliquer pour retirer`;
     } else {
       hashSubEl.textContent = 'Clique un # pour surligner les comptes / liens concernés';
@@ -1222,7 +1222,7 @@ function restoreLinkColorsFull() {
   }
 }
 
-/** Allume uniquement les arêtes dont les deux extrémités sont dans onNode. */
+/** Allume tous les liens touchant au moins un nœud matché (2 bouts fort, 1 bout halo). */
 function applyHashtagLinkFilter(onNode, nOn) {
   if (!lineMat || !lineGeo || !lineColorsBase) return;
   const lc = lineGeo.attributes.color.array;
@@ -1230,38 +1230,46 @@ function applyHashtagLinkFilter(onNode, nOn) {
   // Éteint tout d’abord (évite la superposition AdditiveBlending / Louvain)
   lc.fill(0);
 
+  const paintEdge = (v0, nV, mul) => {
+    const k = linkK * mul;
+    const r = HASH_EDGE[0] * k;
+    const g = HASH_EDGE[1] * k;
+    const b = HASH_EDGE[2] * k;
+    for (let v = 0; v < nV; v++) {
+      const o = (v0 + v) * 3;
+      lc[o] = r;
+      lc[o + 1] = g;
+      lc[o + 2] = b;
+    }
+  };
+
   let lit = 0;
   if (lineEdgeS && lineEdgeT && lineEdgeV0 && lineEdgeVCount && nOn > 0) {
     const nE = lineEdgeS.length;
     for (let ei = 0; ei < nE; ei++) {
       const s = lineEdgeS[ei];
       const t = lineEdgeT[ei];
-      if (s < 0 || t < 0 || !onNode[s] || !onNode[t]) continue;
+      if (s < 0 || t < 0) continue;
+      const ha = onNode[s] > 0;
+      const hb = onNode[t] > 0;
+      if (!ha && !hb) continue;
       lit++;
-      const v0 = lineEdgeV0[ei];
-      const nV = lineEdgeVCount[ei];
-      const k = linkK * 1.55;
-      for (let v = 0; v < nV; v++) {
-        const o = (v0 + v) * 3;
-        lc[o] = HASH_EDGE[0] * k;
-        lc[o + 1] = HASH_EDGE[1] * k;
-        lc[o + 2] = HASH_EDGE[2] * k;
-      }
+      paintEdge(lineEdgeV0[ei], lineEdgeVCount[ei], ha && hb ? 1.55 : 0.55);
     }
   } else if (lineEdgeA && lineEdgeB && nOn > 0) {
-    // Fallback ancien index par sommet — strict deux bouts
     const nVert = lc.length / 3;
     if (lineEdgeA.length === nVert) {
       for (let v = 0, o = 0; v < nVert; v++, o += 3) {
         const a = lineEdgeA[v];
         const b = lineEdgeB[v];
-        if (a >= 0 && b >= 0 && onNode[a] && onNode[b]) {
-          lit++;
-          const k = linkK * 1.55;
-          lc[o] = HASH_EDGE[0] * k;
-          lc[o + 1] = HASH_EDGE[1] * k;
-          lc[o + 2] = HASH_EDGE[2] * k;
-        }
+        const ha = a >= 0 && onNode[a] > 0;
+        const hb = b >= 0 && onNode[b] > 0;
+        if (!ha && !hb) continue;
+        lit++;
+        const k = linkK * (ha && hb ? 1.55 : 0.55);
+        lc[o] = HASH_EDGE[0] * k;
+        lc[o + 1] = HASH_EDGE[1] * k;
+        lc[o + 2] = HASH_EDGE[2] * k;
       }
     }
   }
