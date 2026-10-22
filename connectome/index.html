@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Connectomes — cross_corpus</title>
-  <!-- connectome-ui v20261022l : effectifs # réels · highlight comptes+arêtes · # en Communautés only -->
+  <!-- connectome-ui v20261022m : barre modes (TI/RT/#) vs liens pages (Analyses/Flux/Coord) -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; color: #ccc; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
@@ -51,14 +51,18 @@
     }
     .tab.tab-ext:hover { color: #e8eef7; background: rgba(255,255,255,0.06); }
     #navTools {
-      display: flex; align-items: center; justify-content: center; gap: 0; flex-wrap: wrap;
+      display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;
     }
-    #graphMode {
-      display: inline-flex; gap: 0; padding: 2px; align-items: center; flex-wrap: wrap; justify-content: center;
-      max-width: min(920px, calc(100vw - 40px));
+    #graphMode,
+    #viewLinks {
+      display: inline-flex; gap: 0; padding: 2px; align-items: center; flex-wrap: nowrap; justify-content: center;
       background: rgba(8,10,14,0.62);
       border: 1px solid rgba(255,255,255,0.1);
       border-radius: 999px;
+    }
+    #viewLinks {
+      border-color: rgba(255,255,255,0.08);
+      background: rgba(8,10,14,0.48);
     }
     .mode {
       border: 0; background: transparent; color: #8b93a0; font: inherit; font-size: 11px; font-weight: 600;
@@ -72,13 +76,16 @@
     }
     .mode.mode-link {
       color: #9aa3b0; font-weight: 550;
-      border-left: 1px solid rgba(255,255,255,0.12);
-      margin-left: 1px; padding-left: 10px; border-radius: 999px;
-    }
-    #graphMode > .mode-link:last-child {
-      border-radius: 0 999px 999px 0;
     }
     .mode.mode-link:hover { color: #fff; background: rgba(255,255,255,0.06); }
+    #viewLinks .mode-link + .mode-link {
+      border-left: 1px solid rgba(255,255,255,0.1);
+      border-radius: 0;
+      margin-left: 0;
+    }
+    #viewLinks .mode-link:first-child { border-radius: 999px 0 0 999px; }
+    #viewLinks .mode-link:last-child { border-radius: 0 999px 999px 0; }
+    #viewLinks .mode-link:only-child { border-radius: 999px; border-left: 0; }
     .comm-metrics { color: #8b93a0; font-weight: 500; font-variant-numeric: tabular-nums; font-size: 10.5px; }
     .comm-metrics .pub { color: #c9b27a; }
     .comm-pubbar {
@@ -431,11 +438,13 @@
       <a id="health3Link" class="tab tab-ext" href="../analyses/health3_overlap.html" target="_blank" rel="noopener noreferrer" title="Intersection des auteurs des 3 corpus santé">∩ 3 santé</a>
     </div>
     <div id="navTools">
-      <div id="graphMode" role="tablist" aria-label="Interactions du graphe">
+      <div id="graphMode" role="tablist" aria-label="Modes du connectome">
         <button type="button" class="mode active" data-graph="all" id="graphModeAll">Toutes interactions</button>
         <button type="button" class="mode" data-graph="rt" id="graphModeRt">RT</button>
-        <a id="analysesLink" class="mode mode-link" href="../analyses/ebola.html" title="Page analyses complète (nouvel onglet)" target="_blank" rel="noopener noreferrer">Analyses</a>
         <button type="button" class="mode mode-analyses" data-mode="analyses" id="hashModeBtn" title="Surligner par hashtag (mode Communautés uniquement)">#</button>
+      </div>
+      <div id="viewLinks" role="navigation" aria-label="Autres vues">
+        <a id="analysesLink" class="mode mode-link" href="../analyses/ebola.html" title="Page analyses complète (nouvel onglet)" target="_blank" rel="noopener noreferrer">Analyses</a>
         <a id="fluxLink" class="mode mode-link" href="../flux-continu/?corpus=ebola" title="Flux continu (fenêtre 3j · FA2)">Flux continu</a>
         <a id="coordLink" class="mode mode-link" href="../reseau-coordination/?corpus=ebola" title="Réseau de coordination · co-RT · Serrano α=0,05 (OR)">Coordination</a>
       </div>
