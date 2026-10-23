@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "layer": "coordination_louvain",
+    "method": "G2 keyness hashtags/words on non-RT texts of backbone accounts",
+    "vocabulary": "lecture discursive exploratoire — pas une preuve d'inauthenticité",
+    "n_tweets_scanned": 1,
+    "n_communities": 7,
+    "corpus": "hmpv_fr",
+    "generatedAt": "2026-10-23T22:28:36.518510+00:00"
+  },
+  "communities": {
+    "0": {
+      "id": 0,
+      "hub": "sheldonbicooper",
+      "n_users": 6,
+      "n_original_tweets": 0,
+      "color": "#73c000",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C0 (hub @sheldonbicooper, 6 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@sheldonbicooper"
+    },
+    "1": {
+      "id": 1,
+      "hub": "gatitac_lavraie",
+      "n_users": 4,
+      "n_original_tweets": 0,
+      "color": "#ff8000",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C1 (hub @gatitac_lavraie, 4 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@gatitac_lavraie"
+    },
+    "2": {
+      "id": 2,
+      "hub": "lesbiennedetoi",
+      "n_users": 3,
+      "n_original_tweets": 0,
+      "color": "#2563eb",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C2 (hub @lesbiennedetoi, 3 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@lesbiennedetoi"
+    },
+    "3": {
+      "id": 3,
+      "hub": "reffuveilles",
+      "n_users": 2,
+      "n_original_tweets": 0,
+      "color": "#de81ff",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C3 (hub @reffuveilles, 2 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@reffuveilles"
+    },
+    "4": {
+      "id": 4,
+      "hub": "icp3_zero",
+      "n_users": 2,
+      "n_original_tweets": 0,
+      "color": "#c4a574",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C4 (hub @icp3_zero, 2 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@icp3_zero"
+    },
+    "5": {
+      "id": 5,
+      "hub": "vincenttenn",
+      "n_users": 2,
+      "n_original_tweets": 0,
+      "color": "#ff497c",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C5 (hub @vincenttenn, 2 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@vincenttenn"
+    },
+    "6": {
+      "id": 6,
+      "hub": "selynetabone",
+      "n_users": 2,
+      "n_original_tweets": 0,
+      "color": "#00bd94",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C6 (hub @selynetabone, 2 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@selynetabone"
+    }
+  }
+}

@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-23T20:53:04.746818+00:00",
+  "generatedAt": "2026-10-23T22:28:35.321546+00:00",
   "n_corpora": 1,
   "results": [
     {
       "id": "hmpv_fr",
-      "n_nodes": 0,
-      "n_edges": 0,
-      "n_pre": 25
+      "n_nodes": 21,
+      "n_edges": 23,
+      "n_pre": 23
     }
   ]
 }

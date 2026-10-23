@@ -1,24 +1,166 @@
 {
   "title": "HMPV FR · 2025",
   "corpus_id": "hmpv_fr",
-  "n_nodes": 0,
-  "n_edges": 0,
-  "n_edges_pre_serrano": 25,
+  "n_nodes": 21,
+  "n_edges": 23,
+  "n_edges_pre_serrano": 23,
   "layer": "co-RT",
   "edgeDefinition": "parents retweetés en commun (distincts)",
-  "method": "Serrano disparity filter",
+  "method": "co-RT pré-Serrano (fallback : backbone α vide)",
   "alpha": 0.05,
   "rule": "or",
   "min_co_rt": 2,
   "max_parent_rters": 80,
+  "backboneFallback": true,
   "formula": "p_ij^(i) = (1 - w_ij/s_i)^(k_i-1) ; keep if p_u < α OR p_v < α",
   "citation": "Serrano, M. Á., Boguñá, M., & Vespignani, A. (2009). Extracting the multiscale backbone of complex weighted networks. PNAS, 106(16), 6483–6488.",
   "vocabulary": "coordination d'amplification / backbone Serrano — pas une preuve d'inauthenticité",
   "fa2_iterations": 800,
   "layout_engine": "fa2_modified",
-  "topCommunities": [],
-  "generatedAt": "2026-10-23T20:53:04.714085+00:00",
-  "elapsed_s": 0.2,
+  "topCommunities": [
+    {
+      "id": 0,
+      "hub": "sheldonbicooper",
+      "color": "#73c000",
+      "n": 6
+    },
+    {
+      "id": 1,
+      "hub": "gatitac_lavraie",
+      "color": "#ff8000",
+      "n": 4
+    },
+    {
+      "id": 2,
+      "hub": "lesbiennedetoi",
+      "color": "#2563eb",
+      "n": 3
+    },
+    {
+      "id": 3,
+      "hub": "reffuveilles",
+      "color": "#de81ff",
+      "n": 2
+    },
+    {
+      "id": 4,
+      "hub": "icp3_zero",
+      "color": "#c4a574",
+      "n": 2
+    },
+    {
+      "id": 5,
+      "hub": "vincenttenn",
+      "color": "#ff497c",
+      "n": 2
+    },
+    {
+      "id": 6,
+      "hub": "selynetabone",
+      "color": "#00bd94",
+      "n": 2
+    }
+  ],
+  "generatedAt": "2026-10-23T22:28:35.285852+00:00",
+  "elapsed_s": 0.4,
   "labelCentrality": "pagerank",
-  "labelCentralityDef": "PageRank pondéré (α=0,85, weight = co-RT Serrano) sur le backbone ; taille des labels et champ s dérivés de ce score"
+  "labelCentralityDef": "PageRank pondéré (α=0,85, weight = co-RT Serrano) sur le backbone ; taille des labels et champ s dérivés de ce score",
+  "topCommunitiesCoord": [
+    {
+      "id": 0,
+      "hub": "sheldonbicooper",
+      "color": "#73c000",
+      "n": 6
+    },
+    {
+      "id": 1,
+      "hub": "gatitac_lavraie",
+      "color": "#ff8000",
+      "n": 4
+    },
+    {
+      "id": 2,
+      "hub": "lesbiennedetoi",
+      "color": "#2563eb",
+      "n": 3
+    },
+    {
+      "id": 3,
+      "hub": "reffuveilles",
+      "color": "#de81ff",
+      "n": 2
+    },
+    {
+      "id": 4,
+      "hub": "icp3_zero",
+      "color": "#c4a574",
+      "n": 2
+    },
+    {
+      "id": 5,
+      "hub": "vincenttenn",
+      "color": "#ff497c",
+      "n": 2
+    },
+    {
+      "id": 6,
+      "hub": "selynetabone",
+      "color": "#00bd94",
+      "n": 2
+    }
+  ],
+  "topCommunitiesBase": [
+    {
+      "id": 0,
+      "hub": "sheldonbicooper",
+      "color": "#de81ff",
+      "n": 12
+    },
+    {
+      "id": 20,
+      "hub": "vincenttenn",
+      "color": "#ff497c",
+      "n": 4
+    },
+    {
+      "id": 16,
+      "hub": "eloy_sauvan",
+      "color": "#b45309",
+      "n": 3
+    },
+    {
+      "id": 7,
+      "hub": "reffuveilles",
+      "color": "#00bd94",
+      "n": 2
+    }
+  ],
+  "colorModes": [
+    "base",
+    "coord"
+  ],
+  "defaultColorMode": "base",
+  "n_base_matched": 21,
+  "enrichedAt": "2026-10-23T22:28:36.200263+00:00",
+  "zModes": {
+    "chrono": {
+      "id": "chrono",
+      "label": "A · Chronologie",
+      "field": "z_chrono",
+      "def": "Z = médiane(t_co) normalisée ; t_co = max(t_RT_u, t_RT_v) sur parents co-RT"
+    },
+    "sync": {
+      "id": "sync",
+      "label": "B · Synchronicité",
+      "field": "z_sync",
+      "def": "Z = −médiane(Δt) normalisée ; haut = co-RT plus synchrones"
+    }
+  },
+  "temporal": {
+    "n_users_with_ts": 21,
+    "n_edges_timed": 23,
+    "n_edges": 23,
+    "t_co_span_s": 1613905.5,
+    "dt_med_global_s": 19223.5
+  }
 }

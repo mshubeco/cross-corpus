@@ -18,26 +18,26 @@
   "sources": [
     {
       "file": "Export_padmen_hmpv_fr_20250101-20250630_full.csv",
-      "sha1_prefix": "dbdd0a867e4290cf",
-      "bytes": 1997046
+      "sha1_prefix": "486089522d803045",
+      "bytes": 2040916
     }
   ],
   "ingest_stats": {
     "n_rows": 2547,
     "n_rt": 1970,
-    "n_events": 1966,
+    "n_events": 1970,
     "n_users": 1675,
-    "n_parents": 147,
-    "n_real_parent": 0,
-    "n_pseudo": 1970,
+    "n_parents": 151,
+    "n_real_parent": 1970,
+    "n_pseudo": 0,
     "n_skip": 0,
-    "pseudo_share": 1.0
+    "pseudo_share": 0.0
   },
   "graph_stats": {
-    "n_edges_pre_serrano": 25,
-    "n_edges_backbone": 0,
-    "n_nodes_backbone": 0
+    "n_edges_pre_serrano": 23,
+    "n_edges_backbone": 23,
+    "n_nodes_backbone": 21
   },
-  "generatedAt": "2026-10-23T20:53:04.714085+00:00",
-  "elapsed_s": 0.2
+  "generatedAt": "2026-10-23T22:28:35.285852+00:00",
+  "elapsed_s": 0.4
 }
