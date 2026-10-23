@@ -2,12 +2,12 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Connectomes — cross_corpus</title>
-  <!-- connectome-ui v20261023a-hmpvDefaults : défauts lumière/opacité par corpus HMPV -->
+  <!-- connectome-ui v20261024-responsive : panneaux adaptatifs mobile/tablette -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; color: #ccc; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
@@ -500,6 +500,104 @@
     #hashList .tag-meta { color: #6a7380; font-size: 9.5px; margin-left: 4px; font-weight: 500; }
     #hashEmpty { color: #6a7380; font-size: 11px; line-height: 1.4; }
     #commList { max-height: min(340px, calc(100vh - 160px)); }
+
+    /* —— Responsive (tous corpus) —— */
+    #mobileBar {
+      display: none; position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%);
+      z-index: 20; gap: 6px; padding: 5px; align-items: center; justify-content: center;
+      background: rgba(8,10,14,0.88); border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 999px; box-shadow: 0 8px 28px rgba(0,0,0,0.45);
+    }
+    #mobileBar button {
+      border: 0; background: transparent; color: #b7c0cc; font: inherit; font-size: 12px; font-weight: 650;
+      padding: 8px 14px; border-radius: 999px; cursor: pointer; white-space: nowrap;
+      min-height: 40px; touch-action: manipulation;
+    }
+    #mobileBar button:hover, #mobileBar button.active { color: #fff; background: #2563eb; }
+    #mobileScrim {
+      display: none; position: fixed; inset: 0; z-index: 14;
+      background: rgba(0,0,0,0.45); border: 0; cursor: pointer;
+    }
+    #mobileScrim.show { display: block; }
+
+    @media (max-width: 1100px) {
+      #corpusNav {
+        max-width: calc(100vw - 24px); left: 12px; right: 12px; transform: none;
+        width: auto; align-items: stretch;
+      }
+      #tabs { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch; scrollbar-width: thin; max-width: 100%; }
+      #navTools { gap: 6px; }
+      .tab { font-size: 11.5px; padding: 6px 10px; }
+      .mode { font-size: 10.5px; padding: 4px 8px; }
+      #hud { width: min(248px, calc(50vw - 18px)); }
+      #commPanel { width: min(280px, calc(50vw - 18px)); }
+    }
+
+    @media (max-width: 820px) {
+      #mobileBar {
+        display: flex;
+        bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+        padding-left: calc(5px + env(safe-area-inset-left, 0px));
+        padding-right: calc(5px + env(safe-area-inset-right, 0px));
+      }
+      #corpusNav {
+        top: calc(8px + env(safe-area-inset-top, 0px));
+        gap: 4px;
+        padding-left: env(safe-area-inset-left, 0px);
+        padding-right: env(safe-area-inset-right, 0px);
+      }
+      #tabs { border-radius: 12px; padding: 2px; }
+      #navTools { flex-direction: column; align-items: stretch; gap: 4px; }
+      #graphMode, #viewLinks { width: 100%; justify-content: stretch; overflow-x: auto; }
+      .mode { flex: 1 0 auto; justify-content: center; min-height: 36px; }
+      #hud, #commPanel {
+        top: auto; bottom: 64px; left: 10px; right: 10px; width: auto;
+        max-height: min(58vh, 520px); overflow-y: auto;
+        transform: translateY(110%); opacity: 0; pointer-events: none;
+        transition: transform 0.22s ease, opacity 0.18s ease;
+        z-index: 16; -webkit-overflow-scrolling: touch;
+      }
+      #hud.drawer-open, #commPanel.drawer-open {
+        transform: translateY(0); opacity: 1; pointer-events: auto;
+      }
+      #commPanel { left: 10px; right: 10px; }
+      #commList { max-height: min(36vh, 280px); }
+      #hashPanel {
+        left: 10px; right: 10px; bottom: 64px; width: auto;
+        max-height: min(50vh, 420px); z-index: 16;
+      }
+      #espaceFiche {
+        left: 10px; right: 10px; bottom: 64px; width: auto;
+        max-height: min(50vh, 420px); z-index: 16;
+      }
+      #compassTimeline {
+        left: 10px; right: 10px; bottom: 64px; transform: none; width: auto;
+        flex-wrap: wrap; max-width: none; padding: 8px 10px;
+      }
+      #compassTimeline input[type="range"] { min-width: 120px; flex: 1 1 140px; }
+      #exportBtn { min-height: 40px; }
+      .row span { width: 72px; }
+      body.drawer-hud-open #mobileBar [data-panel="hud"],
+      body.drawer-comm-open #mobileBar [data-panel="comm"] { color: #fff; background: #2563eb; }
+    }
+
+    @media (max-width: 520px) {
+      #corpusNav { top: 6px; }
+      .tab { font-size: 11px; padding: 6px 9px; }
+      #hud, #commPanel, #hashPanel, #espaceFiche { bottom: 60px; padding: 10px 12px; }
+      #mobileBar { bottom: 8px; padding: 4px; gap: 4px; }
+      #mobileBar button { padding: 7px 11px; font-size: 11.5px; min-height: 38px; }
+      #graphLoader { min-width: 0; width: calc(100vw - 32px); }
+    }
+
+    @media (max-height: 520px) and (orientation: landscape) {
+      #corpusNav { top: 4px; }
+      #hud, #commPanel {
+        max-height: calc(100vh - 56px); bottom: 52px;
+      }
+      #mobileBar { bottom: 6px; }
+    }
   </style>
   <script type="importmap">
   {
@@ -552,6 +650,11 @@
   </div>
   <div id="c"></div>
   <div id="labels"></div>
+  <button type="button" id="mobileScrim" aria-label="Fermer les panneaux"></button>
+  <div id="mobileBar" role="toolbar" aria-label="Panneaux">
+    <button type="button" data-panel="hud" id="mobileHudBtn" aria-controls="hud" aria-expanded="false">Contrôles</button>
+    <button type="button" data-panel="comm" id="mobileCommBtn" aria-controls="commPanel" aria-expanded="false">Communautés</button>
+  </div>
   <nav id="corpusNav" aria-label="Navigation corpus">
     <div id="tabs" role="tablist" aria-label="Corpus">
       <a id="health3Link" class="tab tab-ext" href="../analyses/health3_overlap.html" target="_blank" rel="noopener noreferrer" title="Intersection des auteurs des 3 corpus santé">∩ 3 santé</a>
@@ -844,7 +947,7 @@ let lexScope = 'targets'; // 'sources' | 'targets'
 /** En mode Lemme : unigrammes ou bigrammes. */
 let lemmaForm = 'uni'; // 'uni' | 'bi'
 /** Build id (console + vérif cache). */
-const CONNECTOME_UI = '20261023a-hmpvDefaults';
+const CONNECTOME_UI = '20261024-responsive';
 /** Stopwords FR/EN — filet UI (discourse rebuildés filtrent déjà à la source). */
 const LEMMA_STOP = new Set([
   'a','ai','ainsi','alors','apres','après','au','aucun','aucune','aussi','autre','autres','aux','avec','avoir','avant',
@@ -4019,6 +4122,57 @@ function setupTooltip() {
   });
 }
 
+function setupMobileDrawers() {
+  const scrim = document.getElementById('mobileScrim');
+  const hud = document.getElementById('hud');
+  const comm = document.getElementById('commPanel');
+  const bar = document.getElementById('mobileBar');
+  if (!scrim || !hud || !comm || !bar) return;
+
+  const closeAll = () => {
+    hud.classList.remove('drawer-open');
+    comm.classList.remove('drawer-open');
+    document.body.classList.remove('drawer-hud-open', 'drawer-comm-open');
+    scrim.classList.remove('show');
+    bar.querySelectorAll('button[data-panel]').forEach((b) => {
+      b.classList.remove('active');
+      b.setAttribute('aria-expanded', 'false');
+    });
+  };
+
+  const openPanel = (which) => {
+    const openHud = which === 'hud';
+    hud.classList.toggle('drawer-open', openHud);
+    comm.classList.toggle('drawer-open', !openHud);
+    document.body.classList.toggle('drawer-hud-open', openHud);
+    document.body.classList.toggle('drawer-comm-open', !openHud);
+    scrim.classList.add('show');
+    bar.querySelectorAll('button[data-panel]').forEach((b) => {
+      const on = b.dataset.panel === which;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-expanded', on ? 'true' : 'false');
+    });
+  };
+
+  bar.querySelectorAll('button[data-panel]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const which = btn.dataset.panel;
+      const already =
+        (which === 'hud' && hud.classList.contains('drawer-open')) ||
+        (which === 'comm' && comm.classList.contains('drawer-open'));
+      if (already) closeAll();
+      else openPanel(which);
+    });
+  });
+  scrim.addEventListener('click', closeAll);
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeAll();
+  });
+  window.addEventListener('resize', () => {
+    if (window.matchMedia('(min-width: 821px)').matches) closeAll();
+  });
+}
+
 async function boot() {
   try {
     if ('serviceWorker' in navigator) {
@@ -4029,6 +4183,7 @@ async function boot() {
   console.info('[connectome]', CONNECTOME_UI);
   try { window.__CONNECTOME_UI__ = CONNECTOME_UI; } catch (_) { /* ignore */ }
   setupTooltip();
+  setupMobileDrawers();
   hideBootSplash();
   let corpora = [
     { id: 'ebola', label: 'Ebola', connectomeData: './data/ebola/graph.json' },
@@ -4041,7 +4196,9 @@ async function boot() {
     { id: 'canicule', label: 'Canicule · mai–juin 2026', connectomeData: './data/canicule/graph.json' },
   ];
   try {
-    const m = await fetch(new URL('./manifest.json', import.meta.url)).then((r) => r.json());
+    const manUrl = new URL('./manifest.json', import.meta.url);
+    manUrl.searchParams.set('v', CONNECTOME_UI);
+    const m = await fetch(manUrl, { cache: 'no-store' }).then((r) => r.json());
     if (m.corpora?.length) corpora = m.corpora;
     if (m.defaults) {
       if (m.defaults.linkLight != null) GLOBAL_VISUAL_DEFAULTS.linkLight = m.defaults.linkLight;
