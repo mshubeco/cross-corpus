@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Connectomes — cross_corpus</title>
-  <!-- connectome-ui v20261024-pubTypesDonut : mini donuts types de publication -->
+  <!-- connectome-ui v20261024-pubTypesHudOnly : donut types dans le panneau Contrôles seulement -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; color: #ccc; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
@@ -40,15 +40,10 @@
     .tab {
       border: 0; background: transparent; color: #b7c0cc; font: inherit; font-size: 12.5px; font-weight: 600;
       padding: 7px 13px; border-radius: 999px; cursor: pointer; white-space: nowrap;
-      text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+      text-decoration: none; display: inline-flex; align-items: center;
     }
     .tab:hover { color: #fff; background: rgba(255,255,255,0.08); }
     .tab.active { color: #fff; background: #2563eb; }
-    .tab .pub-donut {
-      flex: 0 0 auto; opacity: 0.88; filter: saturate(0.92) brightness(1.05);
-      pointer-events: none;
-    }
-    .tab.active .pub-donut { opacity: 1; filter: none; }
     .tab.tab-ext {
       color: #a8b0bc; font-weight: 550;
       border-left: 1px solid rgba(255,255,255,0.12);
@@ -987,7 +982,7 @@ let lexScope = 'targets'; // 'sources' | 'targets'
 /** En mode Lemme : unigrammes ou bigrammes. */
 let lemmaForm = 'uni'; // 'uni' | 'bi'
 /** Build id (console + vérif cache). */
-const CONNECTOME_UI = '20261024-pubTypesDonut';
+const CONNECTOME_UI = '20261024-pubTypesHudOnly';
 
 const PUB_TYPE_ORDER = [
   { key: 'original', label: 'Original', short: 'Orig.', color: '#8ecf4a' },
@@ -4362,15 +4357,7 @@ async function boot() {
     b.type = 'button';
     b.className = 'tab';
     b.dataset.id = corp.id;
-    const pt = pubTypesPayload(corp);
-    const tip = [corp.label, pubTypeTitle(pt)].filter(Boolean).join('\n');
-    if (tip) b.title = tip;
-    if (pt) {
-      b.innerHTML = `${pubTypeDonutSvg(pt.counts, { size: 14, hole: 0.52 })}<span class="tab-label"></span>`;
-      b.querySelector('.tab-label').textContent = corp.label;
-    } else {
-      b.textContent = corp.label;
-    }
+    b.textContent = corp.label;
     b.addEventListener('click', () => loadCorpus(corp));
     b.addEventListener('pointerenter', () => {
       // Soft warm on hover: current mode only.
