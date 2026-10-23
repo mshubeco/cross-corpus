@@ -11,8 +11,8 @@ Après push : **Settings → Pages → Deploy from branch `main` / root**.
 | Connectomes (accueil) | [`/connectome/`](https://mshubeco.github.io/cross-corpus/connectome/) |
 | Hub analyses (tous corpus) | [`/analyses/`](https://mshubeco.github.io/cross-corpus/analyses/) |
 | Redirection par corpus | [`/analyses/ebola.html`](https://mshubeco.github.io/cross-corpus/analyses/ebola.html) → `intercomm/ebola.html` (idem hantavirus, mpox, macron_nucleaire, ebola_2_2026, hmpv, hmpv_fr, canicule) |
-| Connectome HMPV | [`/connectome/?corpus=hmpv`](https://mshubeco.github.io/cross-corpus/connectome/?corpus=hmpv) |
-| Connectome HMPV FR | [`/connectome/?corpus=hmpv_fr`](https://mshubeco.github.io/cross-corpus/connectome/?corpus=hmpv_fr) |
+| Connectome HMPV | [`/connectome/?corpus=hmpv`](https://mshubeco.github.io/cross-corpus/connectome/?corpus=hmpv) — défauts : lumière liens 45 %, opacité 45 %, couleurs communautés |
+| Connectome HMPV FR | [`/connectome/?corpus=hmpv_fr`](https://mshubeco.github.io/cross-corpus/connectome/?corpus=hmpv_fr) — défauts : lumière liens 100 %, opacité 45 %, couleurs communautés |
 | Connectome Canicule | [`/connectome/?corpus=canicule`](https://mshubeco.github.io/cross-corpus/connectome/?corpus=canicule) |
 | Flux continu (tous corpus) | [`/flux-continu/`](https://mshubeco.github.io/cross-corpus/flux-continu/?corpus=ebola) — critères [HEAT flux continu](https://mshubeco.github.io/heat-flux-continu/) (fenêtre 3j · FA2 · Procrustes · Louvain) |
 | Réseau de coordination | [`/reseau-coordination/`](https://mshubeco.github.io/cross-corpus/reseau-coordination/?corpus=ebola) — co-RT + filtre de disparité Serrano et al. 2009 (α=0,05, OR) |

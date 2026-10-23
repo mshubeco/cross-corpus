@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Connectomes — cross_corpus</title>
-  <!-- connectome-ui v20261022t-lemmafix : LEMMA_STOP local au panneau + cache-bust -->
+  <!-- connectome-ui v20261023a-hmpvDefaults : défauts lumière/opacité par corpus HMPV -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; color: #ccc; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
@@ -601,7 +601,7 @@
   <aside id="hud">
     <b>Connectome</b>
     <div id="stats">—</div>
-    <div id="colorModeBlock" title="v20261022k">
+    <div id="colorModeBlock" title="v20261023a">
       <div class="cmlabel">Couleurs des liens</div>
       <div id="colorModeBtns" role="group" aria-label="Couleurs des liens">
         <button type="button" class="color-btn active" data-mode="community" id="hudColorCommunity">Communautés</button>
@@ -691,6 +691,43 @@ const P = {
   nLabels: 40,
   exposure: 0.72,
 };
+
+/** Défauts globaux (manifest.defaults) — fallback si le corpus n’a pas de defaults. */
+let GLOBAL_VISUAL_DEFAULTS = {
+  linkLight: P.linkLight,
+  opacity: P.opacity,
+  bloom: P.bloom,
+  labels: P.nLabels,
+};
+
+/**
+ * Applique lumière / opacité (et mode couleurs si demandé) pour un corpus.
+ * Les défauts corpus écrasent GLOBAL_VISUAL_DEFAULTS.
+ * @param {{ forceColorMode?: boolean }} opts — forceColorMode seulement au changement de corpus
+ *   (sinon on bloquerait le basculement manuel vers Distinction RT).
+ */
+function applyCorpusVisualDefaults(corp, opts = {}) {
+  const d = { ...GLOBAL_VISUAL_DEFAULTS, ...(corp?.defaults || {}) };
+  if (d.linkLight != null) {
+    P.linkLight = Math.max(0, Math.min(1, Number(d.linkLight)));
+    const el = document.getElementById('linkLight');
+    if (el) el.value = String(P.linkLight);
+  }
+  if (d.opacity != null) {
+    P.opacity = Math.max(0, Math.min(0.45, Number(d.opacity)));
+    const el = document.getElementById('op');
+    if (el) el.value = String(P.opacity);
+  }
+  applyLinkLight(P.linkLight);
+  // « Communautés » : sortir de Distinction RT sans relancer loadCorpus (évite récursion).
+  if (opts.forceColorMode && d.colorMode === 'community' && graphMode === 'rt_classes') {
+    const prev = graphMode;
+    graphMode = 'all';
+    syncUiDefaultsForGraphMode('all', prev);
+    updateGraphModeButtons();
+    syncCorpusUrl(corp?.id || currentCorpusId);
+  }
+}
 
 /** UI par défaut hors / dans Distinction RT / interactions. */
 const UI_DEFAULTS_COMMUNITY = { bloom: 0.38, nLabels: 40 };
@@ -801,7 +838,7 @@ let lexScope = 'targets'; // 'sources' | 'targets'
 /** En mode Lemme : unigrammes ou bigrammes. */
 let lemmaForm = 'uni'; // 'uni' | 'bi'
 /** Build id (console + vérif cache). */
-const CONNECTOME_UI = '20261022t-lemmafix';
+const CONNECTOME_UI = '20261023a-hmpvDefaults';
 /** Stopwords FR/EN — filet UI (discourse rebuildés filtrent déjà à la source). */
 const LEMMA_STOP = new Set([
   'a','ai','ainsi','alors','apres','après','au','aucun','aucune','aussi','autre','autres','aux','avec','avoir','avant',
@@ -3757,6 +3794,7 @@ exportBtn.addEventListener('click', () => { exportPng(); });
 async function loadCorpus(corp) {
   const seq = ++loadSeq;
   const isCurrent = () => seq === loadSeq;
+  const corpusChanged = currentCorpusId !== corp.id;
   currentCorpusId = corp.id;
   selectedCommId = null;
   activeLexeme = null;
@@ -3764,6 +3802,8 @@ async function loadCorpus(corp) {
   lastHighlightFilter = null;
   espaceFicheEl?.classList.remove('open', 'hash-focus');
   if (viewMode !== 'analyses') closeHashPanel();
+  // Défauts visuels uniquement à l’arrivée sur le corpus (pas à chaque bascule RT / mode).
+  if (corpusChanged) applyCorpusVisualDefaults(corp, { forceColorMode: true });
   updateGraphModeButtons();
   syncCorpusUrl(corp.id);
   hideBootSplash();
@@ -3984,22 +4024,21 @@ async function boot() {
   try {
     const m = await fetch(new URL('./manifest.json', import.meta.url)).then((r) => r.json());
     if (m.corpora?.length) corpora = m.corpora;
-    if (m.defaults?.linkLight != null) {
-      P.linkLight = m.defaults.linkLight;
-      document.getElementById('linkLight').value = String(P.linkLight);
-    }
-    if (m.defaults?.opacity != null) {
-      P.opacity = m.defaults.opacity;
-      document.getElementById('op').value = String(P.opacity);
-    }
-    applyLinkLight(P.linkLight);
-    if (m.defaults?.bloom != null) {
-      UI_DEFAULTS_COMMUNITY.bloom = m.defaults.bloom;
-      applyBloom(m.defaults.bloom);
-    }
-    if (m.defaults?.labels != null) {
-      UI_DEFAULTS_COMMUNITY.nLabels = m.defaults.labels;
-      applyNLabels(m.defaults.labels);
+    if (m.defaults) {
+      if (m.defaults.linkLight != null) GLOBAL_VISUAL_DEFAULTS.linkLight = m.defaults.linkLight;
+      if (m.defaults.opacity != null) GLOBAL_VISUAL_DEFAULTS.opacity = m.defaults.opacity;
+      if (m.defaults.bloom != null) {
+        GLOBAL_VISUAL_DEFAULTS.bloom = m.defaults.bloom;
+        UI_DEFAULTS_COMMUNITY.bloom = m.defaults.bloom;
+        applyBloom(m.defaults.bloom);
+      }
+      if (m.defaults.labels != null) {
+        GLOBAL_VISUAL_DEFAULTS.labels = m.defaults.labels;
+        UI_DEFAULTS_COMMUNITY.nLabels = m.defaults.labels;
+        applyNLabels(m.defaults.labels);
+      }
+      // Baseline globale ; le corpus de démarrage écrase via applyCorpusVisualDefaults.
+      applyCorpusVisualDefaults({ defaults: GLOBAL_VISUAL_DEFAULTS });
     }
   } catch (_) { /* fallback list */ }
 
