@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Connectomes — cross_corpus</title>
-  <!-- connectome-ui v20261024-responsive : panneaux adaptatifs mobile/tablette -->
+  <!-- connectome-ui v20261024-pubTypesDonut : mini donuts types de publication -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; color: #ccc; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
@@ -40,10 +40,15 @@
     .tab {
       border: 0; background: transparent; color: #b7c0cc; font: inherit; font-size: 12.5px; font-weight: 600;
       padding: 7px 13px; border-radius: 999px; cursor: pointer; white-space: nowrap;
-      text-decoration: none; display: inline-flex; align-items: center;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
     }
     .tab:hover { color: #fff; background: rgba(255,255,255,0.08); }
     .tab.active { color: #fff; background: #2563eb; }
+    .tab .pub-donut {
+      flex: 0 0 auto; opacity: 0.88; filter: saturate(0.92) brightness(1.05);
+      pointer-events: none;
+    }
+    .tab.active .pub-donut { opacity: 1; filter: none; }
     .tab.tab-ext {
       color: #a8b0bc; font-weight: 550;
       border-left: 1px solid rgba(255,255,255,0.12);
@@ -285,6 +290,34 @@
       letter-spacing: 0.01em; line-height: 1.35;
     }
     #hud .coverage:empty { display: none; }
+    #pubTypesBlock {
+      display: none; margin: 0 0 10px; padding: 8px 0 0;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    #pubTypesBlock.open { display: block; }
+    #pubTypesBlock .pt-label {
+      color: #7a8492; font-size: 10px; font-weight: 650; letter-spacing: 0.04em;
+      text-transform: uppercase; margin-bottom: 6px;
+    }
+    #pubTypesBlock .pt-row {
+      display: flex; align-items: center; gap: 10px;
+    }
+    #pubTypesBlock .pub-donut { flex: 0 0 auto; opacity: 0.95; }
+    #pubTypesLegend {
+      list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; flex: 1 1 auto;
+      min-width: 0;
+    }
+    #pubTypesLegend li {
+      display: flex; align-items: baseline; gap: 6px;
+      color: #9aa3b0; font-size: 10.5px; font-variant-numeric: tabular-nums;
+      line-height: 1.25;
+    }
+    #pubTypesLegend .sw {
+      width: 7px; height: 7px; border-radius: 50%; flex: 0 0 auto;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.35);
+    }
+    #pubTypesLegend .nm { color: #c4ccd6; font-weight: 550; min-width: 3.6em; }
+    #pubTypesLegend .pc { margin-left: auto; color: #8b93a0; }
     #hud .nav-hint {
       margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.06);
       color: #6a7380; font-size: 10px; line-height: 1.4;
@@ -709,6 +742,13 @@
   <aside id="hud">
     <b>Connectome</b>
     <div id="corpusCoverage" class="coverage" title="Période de couverture du corpus">—</div>
+    <div id="pubTypesBlock" aria-label="Types de publication">
+      <div class="pt-label">Types de publication</div>
+      <div class="pt-row">
+        <div id="pubTypesDonut"></div>
+        <ul id="pubTypesLegend"></ul>
+      </div>
+    </div>
     <div id="stats">—</div>
     <div id="colorModeBlock" title="v20261023a">
       <div class="cmlabel">Couleurs des liens</div>
@@ -947,7 +987,92 @@ let lexScope = 'targets'; // 'sources' | 'targets'
 /** En mode Lemme : unigrammes ou bigrammes. */
 let lemmaForm = 'uni'; // 'uni' | 'bi'
 /** Build id (console + vérif cache). */
-const CONNECTOME_UI = '20261024-responsive';
+const CONNECTOME_UI = '20261024-pubTypesDonut';
+
+const PUB_TYPE_ORDER = [
+  { key: 'original', label: 'Original', short: 'Orig.', color: '#8ecf4a' },
+  { key: 'retweet', label: 'Retweet', short: 'RT', color: '#ff9a3c' },
+  { key: 'reply', label: 'Réponse', short: 'Reply', color: '#5b8def' },
+  { key: 'quote', label: 'Citation', short: 'Quote', color: '#c98cff' },
+  { key: 'other', label: 'Autre', short: 'Autre', color: '#6a7380' },
+];
+
+function pubTypesPayload(corp) {
+  const pt = corp?.pubTypes;
+  if (!pt?.counts) return null;
+  return pt;
+}
+
+function pubTypeTitle(pt) {
+  if (!pt?.counts) return '';
+  const total = pt.total || Object.values(pt.counts).reduce((a, b) => a + (b || 0), 0);
+  return PUB_TYPE_ORDER
+    .filter((o) => (pt.counts[o.key] || 0) > 0)
+    .map((o) => {
+      const n = pt.counts[o.key] || 0;
+      const pct = pt.pct?.[o.key] ?? (total ? Math.round((1000 * n) / total) / 10 : 0);
+      return `${o.label} ${pct.toLocaleString('fr-FR')} % (${n.toLocaleString('fr-FR')})`;
+    })
+    .join(' · ');
+}
+
+function pubTypeDonutSvg(counts, { size = 16, hole = 0.58 } = {}) {
+  const total = PUB_TYPE_ORDER.reduce((s, o) => s + (counts?.[o.key] || 0), 0);
+  if (!total) {
+    return `<svg class="pub-donut" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" aria-hidden="true">`
+      + `<circle cx="${size / 2}" cy="${size / 2}" r="${size * 0.32}" fill="none" stroke="#3a424c" stroke-width="${size * 0.16}"/></svg>`;
+  }
+  const stroke = size * (1 - hole) / 2;
+  const r = (size - stroke) / 2;
+  const cx = size / 2;
+  const cy = size / 2;
+  const C = 2 * Math.PI * r;
+  let offset = 0;
+  const parts = [];
+  for (const o of PUB_TYPE_ORDER) {
+    const v = counts[o.key] || 0;
+    if (!v) continue;
+    const len = (v / total) * C;
+    parts.push(
+      `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${o.color}" stroke-width="${stroke.toFixed(2)}" `
+      + `stroke-dasharray="${len.toFixed(2)} ${(C - len).toFixed(2)}" stroke-dashoffset="${(-offset).toFixed(2)}" `
+      + `transform="rotate(-90 ${cx} ${cy})"/>`,
+    );
+    offset += len;
+  }
+  return `<svg class="pub-donut" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" aria-hidden="true">${parts.join('')}</svg>`;
+}
+
+function renderPubTypesHud(corp) {
+  const block = document.getElementById('pubTypesBlock');
+  const donutEl = document.getElementById('pubTypesDonut');
+  const legendEl = document.getElementById('pubTypesLegend');
+  if (!block || !donutEl || !legendEl) return;
+  const pt = pubTypesPayload(corp);
+  if (!pt) {
+    block.classList.remove('open');
+    donutEl.innerHTML = '';
+    legendEl.innerHTML = '';
+    block.removeAttribute('title');
+    return;
+  }
+  const total = pt.total || Object.values(pt.counts).reduce((a, b) => a + (b || 0), 0);
+  donutEl.innerHTML = pubTypeDonutSvg(pt.counts, { size: 36, hole: 0.55 });
+  legendEl.innerHTML = PUB_TYPE_ORDER
+    .filter((o) => (pt.counts[o.key] || 0) > 0)
+    .map((o) => {
+      const n = pt.counts[o.key] || 0;
+      const pct = pt.pct?.[o.key] ?? (total ? Math.round((1000 * n) / total) / 10 : 0);
+      return `<li title="${n.toLocaleString('fr-FR')} publications">`
+        + `<i class="sw" style="background:${o.color}" aria-hidden="true"></i>`
+        + `<span class="nm">${o.short}</span>`
+        + `<span class="pc">${pct.toLocaleString('fr-FR')}&nbsp;%</span>`
+        + `</li>`;
+    })
+    .join('');
+  block.title = pubTypeTitle(pt);
+  block.classList.add('open');
+}
 /** Stopwords FR/EN — filet UI (discourse rebuildés filtrent déjà à la source). */
 const LEMMA_STOP = new Set([
   'a','ai','ainsi','alors','apres','après','au','aucun','aucune','aussi','autre','autres','aux','avec','avoir','avant',
@@ -3918,6 +4043,7 @@ async function loadCorpus(corp) {
   currentCorpusId = corp.id;
   const covEl = document.getElementById('corpusCoverage');
   if (covEl) covEl.textContent = corpusCoverageText(corp);
+  renderPubTypesHud(corp);
   selectedCommId = null;
   activeLexeme = null;
   activeHashtag = null;
@@ -4236,7 +4362,15 @@ async function boot() {
     b.type = 'button';
     b.className = 'tab';
     b.dataset.id = corp.id;
-    b.textContent = corp.label;
+    const pt = pubTypesPayload(corp);
+    const tip = [corp.label, pubTypeTitle(pt)].filter(Boolean).join('\n');
+    if (tip) b.title = tip;
+    if (pt) {
+      b.innerHTML = `${pubTypeDonutSvg(pt.counts, { size: 14, hole: 0.52 })}<span class="tab-label"></span>`;
+      b.querySelector('.tab-label').textContent = corp.label;
+    } else {
+      b.textContent = corp.label;
+    }
     b.addEventListener('click', () => loadCorpus(corp));
     b.addEventListener('pointerenter', () => {
       // Soft warm on hover: current mode only.

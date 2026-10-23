@@ -1,0 +1,142 @@
+{
+  "generatedAt": "2026-10-23T22:50:06.779645+00:00",
+  "definition": "Proportion des publications du CSV CocktailFusion / HEAT par tweet_type (original, retweet, reply, quote).",
+  "corpora": {
+    "ebola_2_2026": {
+      "counts": {
+        "original": 44745,
+        "retweet": 88714,
+        "reply": 1579,
+        "quote": 565
+      },
+      "pct": {
+        "original": 33.0,
+        "retweet": 65.4,
+        "reply": 1.2,
+        "quote": 0.4
+      },
+      "total": 135603,
+      "unknownMappedAsOriginal": 0,
+      "source": "Export_collecte_ebola_2_collect_20260922_175246_20260101-20260922_full_20260923_091544.csv"
+    },
+    "ebola": {
+      "counts": {
+        "original": 6660,
+        "retweet": 24019,
+        "reply": 747,
+        "quote": 293
+      },
+      "pct": {
+        "original": 21.0,
+        "retweet": 75.7,
+        "reply": 2.4,
+        "quote": 0.9
+      },
+      "total": 31719,
+      "unknownMappedAsOriginal": 0,
+      "source": "Export_dl_ebola_corpus_ebola_fr_2014_2026_20260507-20260519_full_20260824_114335.csv"
+    },
+    "mpox": {
+      "counts": {
+        "original": 36207,
+        "retweet": 233773,
+        "reply": 3534,
+        "quote": 996
+      },
+      "pct": {
+        "original": 13.2,
+        "retweet": 85.2,
+        "reply": 1.3,
+        "quote": 0.4
+      },
+      "total": 274510,
+      "unknownMappedAsOriginal": 0,
+      "source": "Export_dl_corpus_mpox_fr_dec2023_janv2026_20240613-20250113_full_20260824_113647.csv"
+    },
+    "hantavirus": {
+      "counts": {
+        "original": 40609,
+        "retweet": 381182,
+        "reply": 3429,
+        "quote": 1849
+      },
+      "pct": {
+        "original": 9.5,
+        "retweet": 89.3,
+        "reply": 0.8,
+        "quote": 0.4
+      },
+      "total": 427069,
+      "unknownMappedAsOriginal": 0,
+      "source": "Export_dl_corpus_hantavirus_fr_mai_2026_20260505-20260520_full_20260824_114316.csv"
+    },
+    "macron_nucleaire": {
+      "counts": {
+        "original": 49319,
+        "retweet": 411191,
+        "reply": 12674,
+        "quote": 2473
+      },
+      "pct": {
+        "original": 10.4,
+        "retweet": 86.4,
+        "reply": 2.7,
+        "quote": 0.5
+      },
+      "total": 475657,
+      "unknownMappedAsOriginal": 20,
+      "source": "Export_FF_corpus_macron_nucleaire_20260301-20260303_full_20260824_114345.csv"
+    },
+    "hmpv": {
+      "counts": {
+        "original": 29026,
+        "retweet": 86487,
+        "reply": 8431,
+        "quote": 2182
+      },
+      "pct": {
+        "original": 23.0,
+        "retweet": 68.6,
+        "reply": 6.7,
+        "quote": 1.7
+      },
+      "total": 126126,
+      "unknownMappedAsOriginal": 0,
+      "source": "Export_padmen_hmpv_20250101-20250630_full.csv"
+    },
+    "hmpv_fr": {
+      "counts": {
+        "original": 409,
+        "retweet": 1970,
+        "reply": 101,
+        "quote": 67
+      },
+      "pct": {
+        "original": 16.1,
+        "retweet": 77.3,
+        "reply": 4.0,
+        "quote": 2.6
+      },
+      "total": 2547,
+      "unknownMappedAsOriginal": 0,
+      "source": "Export_padmen_hmpv_fr_20250101-20250630_full.csv"
+    },
+    "canicule": {
+      "counts": {
+        "original": 375211,
+        "retweet": 1302223,
+        "reply": 142453,
+        "quote": 20804
+      },
+      "pct": {
+        "original": 20.4,
+        "retweet": 70.7,
+        "reply": 7.7,
+        "quote": 1.1
+      },
+      "total": 1840691,
+      "unknownMappedAsOriginal": 0,
+      "source": "corpus_canicule_20260520_20260629.csv"
+    }
+  }
+}
