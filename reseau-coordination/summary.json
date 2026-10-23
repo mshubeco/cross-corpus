@@ -1,54 +1,12 @@
 {
-  "generatedAt": "2026-10-22T09:51:51.186954+00:00",
-  "n_corpora": 8,
+  "generatedAt": "2026-10-23T20:53:04.746818+00:00",
+  "n_corpora": 1,
   "results": [
-    {
-      "id": "ebola",
-      "n_nodes": 33,
-      "n_edges": 49,
-      "n_pre": 5098
-    },
-    {
-      "id": "ebola_2_2026",
-      "n_nodes": 266,
-      "n_edges": 787,
-      "n_pre": 28457
-    },
-    {
-      "id": "hantavirus",
-      "n_nodes": 262,
-      "n_edges": 549,
-      "n_pre": 48738
-    },
-    {
-      "id": "mpox",
-      "n_nodes": 156,
-      "n_edges": 186,
-      "n_pre": 27075
-    },
-    {
-      "id": "macron_nucleaire",
-      "n_nodes": 272,
-      "n_edges": 870,
-      "n_pre": 56531
-    },
-    {
-      "id": "hmpv",
-      "n_nodes": 10,
-      "n_edges": 8,
-      "n_pre": 13443
-    },
     {
       "id": "hmpv_fr",
       "n_nodes": 0,
       "n_edges": 0,
-      "n_pre": 11
-    },
-    {
-      "id": "canicule",
-      "n_nodes": 1265,
-      "n_edges": 3905,
-      "n_pre": 246102
+      "n_pre": 25
     }
   ]
 }
