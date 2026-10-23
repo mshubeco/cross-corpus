@@ -42,21 +42,21 @@
   </div>
   <script>
     const CORPORA = [
-      { id: "ebola", label: "Ebola · mai 2026" },
-      { id: "ebola_2_2026", label: "Ebola 2 · 2026" },
-      { id: "hantavirus", label: "Hantavirus · mai 2026" },
-      { id: "mpox", label: "Mpox · 2023–2026" },
-      { id: "macron_nucleaire", label: "Macron nucléaire · mars 2026" },
-      { id: "hmpv", label: "HMPV · 2025" },
-      { id: "hmpv_fr", label: "HMPV FR · 2025" },
-      { id: "canicule", label: "Canicule · mai–juin 2026" },
+      { id: "ebola", label: "Ebola · mai 2026", coverageLabel: "7 – 19 mai 2026" },
+      { id: "ebola_2_2026", label: "Ebola 2 · 2026", coverageLabel: "1 janv. – 22 sept. 2026" },
+      { id: "hantavirus", label: "Hantavirus · mai 2026", coverageLabel: "5 – 20 mai 2026" },
+      { id: "mpox", label: "Mpox · 2023–2026", coverageLabel: "13 juin 2024 – 13 janv. 2025" },
+      { id: "macron_nucleaire", label: "Macron nucléaire · mars 2026", coverageLabel: "1 – 3 mars 2026" },
+      { id: "hmpv", label: "HMPV · 2025", coverageLabel: "1 janv. – 30 juin 2025" },
+      { id: "hmpv_fr", label: "HMPV FR · 2025", coverageLabel: "1 janv. – 30 juin 2025" },
+      { id: "canicule", label: "Canicule · mai–juin 2026", coverageLabel: "20 mai – 29 juin 2026" },
     ];
     const list = document.getElementById("list");
     for (const c of CORPORA) {
       const a = document.createElement("a");
       a.className = "card";
       a.href = `./${encodeURIComponent(c.id)}.html`;
-      a.innerHTML = `<b>${c.label}</b><span>→ flux intercommunautaires · ./intercomm/${c.id}.html</span>`;
+      a.innerHTML = `<b>${c.label}</b><span>Couverture · ${c.coverageLabel}<br>→ flux intercommunautaires · ./intercomm/${c.id}.html</span>`;
       list.appendChild(a);
     }
     const q = new URLSearchParams(location.search).get("corpus");
