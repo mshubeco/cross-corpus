@@ -30,6 +30,9 @@
       display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px;
     }
     #hud .mh-title-row h1 { margin-bottom: 0; }
+    #hud .coverage {
+      margin: 2px 0 6px; color: #9aa3b0; font-size: 11px; font-weight: 600; line-height: 1.35;
+    }
     #dayLabel { font-size: 18px; font-weight: 600; color: #fff; margin: 4px 0 2px; }
     #windowLabel { color: #6b7585; font-size: 10px; margin-bottom: 10px; }
     .stat-row { display: flex; justify-content: space-between; margin: 3px 0; }
@@ -211,6 +214,7 @@
       <h1 id="hudTitle">Flux continu</h1>
       <span id="methodHelpSlot"></span>
     </div>
+    <div id="corpusCoverage" class="coverage" title="Période de couverture du corpus">—</div>
     <div id="dayLabel">—</div>
     <div id="windowLabel">layout FA2 par fenêtre 3j · entrées/sorties lissées</div>
     <div class="stat-row"><span>Nœuds journaliers</span><b id="sNodes">—</b></div>
@@ -2029,6 +2033,19 @@ function syncConnectomeLinks(corpusId, label) {
   }
 }
 
+let corporaList = [];
+
+function corpusCoverageText(corp, manifestMeta) {
+  if (corp?.coverageLabel) return `Couverture · ${corp.coverageLabel}`;
+  if (corp?.coverageStart && corp?.coverageEnd) {
+    return `Couverture · ${corp.coverageStart} → ${corp.coverageEnd}`;
+  }
+  const a = manifestMeta?.corpus_start;
+  const b = manifestMeta?.corpus_end;
+  if (a && b) return `Couverture · ${a} → ${b}`;
+  return '';
+}
+
 async function loadCorporaNav() {
   const nav = document.getElementById('corpusNav');
   let corpora = [];
@@ -2038,6 +2055,7 @@ async function loadCorporaNav() {
     corpora = [];
   }
   if (!Array.isArray(corpora)) corpora = corpora.corpora || [];
+  corporaList = corpora;
   const params = new URLSearchParams(location.search);
   currentCorpusId = params.get('corpus') || (corpora[0] && corpora[0].id) || 'ebola';
   DATA_BASE = `data/${currentCorpusId}`;
@@ -2052,6 +2070,8 @@ async function loadCorporaNav() {
     `<a id="navConnectome" class="back-connectome" href="${connectomeHref(currentCorpusId)}">← Connectome</a>`
   );
   syncConnectomeLinks(currentCorpusId, label);
+  const covEl = document.getElementById('corpusCoverage');
+  if (covEl) covEl.textContent = corpusCoverageText(current, null);
 }
 
 
@@ -2068,6 +2088,9 @@ async function init() {
   if (ldTitle) ldTitle.textContent = title;
   const hudTitle = document.getElementById('hudTitle');
   if (hudTitle) hudTitle.textContent = `${(manifest.meta && manifest.meta.corpus_id) || currentCorpusId} · flux continu`;
+  const currentCorp = corporaList.find((c) => c.id === currentCorpusId);
+  const covEl = document.getElementById('corpusCoverage');
+  if (covEl) covEl.textContent = corpusCoverageText(currentCorp, manifest.meta);
   syncConnectomeLinks(currentCorpusId, (manifest.meta && manifest.meta.label) || title || currentCorpusId);
   const scrub = document.getElementById('scrub');
   scrub.max = Math.max(0, (manifest.frames || []).length - 1);

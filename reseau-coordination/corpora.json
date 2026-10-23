@@ -2,41 +2,65 @@
   {
     "id": "ebola",
     "label": "Ebola · mai 2026",
+    "coverageStart": "2026-05-07",
+    "coverageEnd": "2026-05-19",
+    "coverageLabel": "7 – 19 mai 2026",
     "graph": "data/ebola/graph.json"
   },
   {
     "id": "ebola_2_2026",
     "label": "Ebola 2 · 2026",
+    "coverageStart": "2026-01-01",
+    "coverageEnd": "2026-09-22",
+    "coverageLabel": "1 janv. – 22 sept. 2026",
     "graph": "data/ebola_2_2026/graph.json"
   },
   {
     "id": "hantavirus",
     "label": "Hantavirus · mai 2026",
+    "coverageStart": "2026-05-05",
+    "coverageEnd": "2026-05-20",
+    "coverageLabel": "5 – 20 mai 2026",
     "graph": "data/hantavirus/graph.json"
   },
   {
     "id": "mpox",
     "label": "Mpox · 2023–2026",
+    "coverageStart": "2024-06-13",
+    "coverageEnd": "2025-01-13",
+    "coverageLabel": "13 juin 2024 – 13 janv. 2025",
     "graph": "data/mpox/graph.json"
   },
   {
     "id": "macron_nucleaire",
     "label": "Macron nucléaire · mars 2026",
+    "coverageStart": "2026-03-01",
+    "coverageEnd": "2026-03-03",
+    "coverageLabel": "1 – 3 mars 2026",
     "graph": "data/macron_nucleaire/graph.json"
   },
   {
     "id": "hmpv",
     "label": "HMPV · 2025",
+    "coverageStart": "2025-01-01",
+    "coverageEnd": "2025-06-30",
+    "coverageLabel": "1 janv. – 30 juin 2025",
     "graph": "data/hmpv/graph.json"
   },
   {
     "id": "hmpv_fr",
     "label": "HMPV FR · 2025",
+    "coverageStart": "2025-01-01",
+    "coverageEnd": "2025-06-30",
+    "coverageLabel": "1 janv. – 30 juin 2025",
     "graph": "data/hmpv_fr/graph.json"
   },
   {
     "id": "canicule",
     "label": "Canicule · mai–juin 2026",
+    "coverageStart": "2026-05-20",
+    "coverageEnd": "2026-06-29",
+    "coverageLabel": "20 mai – 29 juin 2026",
     "graph": "data/canicule/graph.json"
   }
 ]

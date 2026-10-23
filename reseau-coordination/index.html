@@ -52,6 +52,9 @@
       display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px;
     }
     #hud .mh-title-row b { margin-bottom: 0; }
+    #hud .coverage {
+      margin: 2px 0 6px; color: #9aa3b0; font-size: 11px; font-weight: 600; line-height: 1.35;
+    }
     #hud .method { color: #9bb07a; font-size: 10.5px; line-height: 1.35; margin-bottom: 8px; }
     #hud .note {
       color: #6a7380; font-size: 10px; line-height: 1.4; margin-top: 8px;
@@ -266,6 +269,7 @@
       <b>Réseau de coordination</b>
       <span id="methodHelpSlot"></span>
     </div>
+    <div id="corpusCoverage" class="coverage" title="Période de couverture du corpus">—</div>
     <div class="method">co-RT · Serrano α=0,05 (OR)</div>
     <div id="stats">—</div>
     <div style="margin-top:10px;margin-bottom:2px;color:#c5ccd6;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;font-weight:600">Couleurs</div>
@@ -1403,12 +1407,23 @@ function renderNav() {
   nav.appendChild(back);
 }
 
+function corpusCoverageText(corp) {
+  if (!corp) return '';
+  if (corp.coverageLabel) return `Couverture · ${corp.coverageLabel}`;
+  if (corp.coverageStart && corp.coverageEnd) {
+    return `Couverture · ${corp.coverageStart} → ${corp.coverageEnd}`;
+  }
+  return '';
+}
+
 async function loadCorpus(id) {
   const corp = corpora.find((c) => c.id === id) || corpora[0];
   if (!corp) { ldMsg.textContent = 'Aucun corpus dans corpora.json'; return; }
   currentId = corp.id;
   loading.classList.remove('hidden');
   ldMsg.textContent = `Chargement · ${shortLabel(corp.label)}…`;
+  const covEl = document.getElementById('corpusCoverage');
+  if (covEl) covEl.textContent = corpusCoverageText(corp);
   renderNav();
   backEl.href = `../connectome/?corpus=${encodeURIComponent(currentId)}`;
   history.replaceState({ corpus: currentId }, '', `?corpus=${encodeURIComponent(currentId)}`);

@@ -280,6 +280,11 @@
       cursor: pointer;
     }
     .comm-accounts a.handle:hover { color: #e8eef7; border-bottom-color: rgba(232,238,247,0.55); }
+    #hud .coverage {
+      margin: 4px 0 8px; color: #9aa3b0; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.01em; line-height: 1.35;
+    }
+    #hud .coverage:empty { display: none; }
     #hud .nav-hint {
       margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.06);
       color: #6a7380; font-size: 10px; line-height: 1.4;
@@ -600,6 +605,7 @@
   </aside>
   <aside id="hud">
     <b>Connectome</b>
+    <div id="corpusCoverage" class="coverage" title="Période de couverture du corpus">—</div>
     <div id="stats">—</div>
     <div id="colorModeBlock" title="v20261023a">
       <div class="cmlabel">Couleurs des liens</div>
@@ -3791,11 +3797,24 @@ exportBtn.addEventListener('click', () => { exportPng(); });
   projectLabels();
 })();
 
+function corpusCoverageText(corp) {
+  if (!corp) return '';
+  if (corp.coverageLabel) return `Couverture · ${corp.coverageLabel}`;
+  if (corp.coverageStart && corp.coverageEnd) {
+    return `Couverture · ${corp.coverageStart} → ${corp.coverageEnd}`;
+  }
+  const phase = String(corp.phaseLabel || '');
+  const m = phase.match(/\(([^)]+)\)\s*$/);
+  return m ? `Couverture · ${m[1]}` : '';
+}
+
 async function loadCorpus(corp) {
   const seq = ++loadSeq;
   const isCurrent = () => seq === loadSeq;
   const corpusChanged = currentCorpusId !== corp.id;
   currentCorpusId = corp.id;
+  const covEl = document.getElementById('corpusCoverage');
+  if (covEl) covEl.textContent = corpusCoverageText(corp);
   selectedCommId = null;
   activeLexeme = null;
   activeHashtag = null;

@@ -4,52 +4,92 @@
     {
       "id": "ebola",
       "label": "Ebola · mai 2026",
-      "phaseLabel": "Corpus entier · Ebola FR (fenêtre export)",
-      "connectomeData": "data/ebola/graph.json"
+      "phaseLabel": "Corpus entier · Ebola FR (7 – 19 mai 2026)",
+      "coverageStart": "2026-05-07",
+      "coverageEnd": "2026-05-19",
+      "coverageLabel": "7 – 19 mai 2026",
+      "connectomeData": "data/ebola/graph.json",
+      "discourseData": "data/ebola/discourse.json"
     },
     {
       "id": "ebola_2_2026",
       "label": "Ebola 2 · 2026",
       "phaseLabel": "Corpus entier · Ebola 2 FR (1 janv. – 22 sept. 2026)",
-      "connectomeData": "data/ebola_2_2026/graph.json"
+      "coverageStart": "2026-01-01",
+      "coverageEnd": "2026-09-22",
+      "coverageLabel": "1 janv. – 22 sept. 2026",
+      "connectomeData": "data/ebola_2_2026/graph.json",
+      "discourseData": "data/ebola_2_2026/discourse.json"
     },
     {
       "id": "hantavirus",
       "label": "Hantavirus · mai 2026",
-      "phaseLabel": "Corpus entier · Hantavirus FR mai 2026",
-      "connectomeData": "data/hantavirus/graph.json"
+      "phaseLabel": "Corpus entier · Hantavirus FR (5 – 20 mai 2026)",
+      "coverageStart": "2026-05-05",
+      "coverageEnd": "2026-05-20",
+      "coverageLabel": "5 – 20 mai 2026",
+      "connectomeData": "data/hantavirus/graph.json",
+      "discourseData": "data/hantavirus/discourse.json"
     },
     {
       "id": "mpox",
       "label": "Mpox · 2023–2026",
-      "phaseLabel": "Corpus entier · Mpox FR déc. 2023 – janv. 2026",
-      "connectomeData": "data/mpox/graph.json"
+      "phaseLabel": "Corpus entier · Mpox FR (13 juin 2024 – 13 janv. 2025)",
+      "coverageStart": "2024-06-13",
+      "coverageEnd": "2025-01-13",
+      "coverageLabel": "13 juin 2024 – 13 janv. 2025",
+      "connectomeData": "data/mpox/graph.json",
+      "discourseData": "data/mpox/discourse.json"
     },
     {
       "id": "macron_nucleaire",
       "label": "Macron nucléaire · mars 2026",
-      "phaseLabel": "Corpus entier · Macron nucléaire 1–3 mars 2026",
-      "connectomeData": "data/macron_nucleaire/graph.json"
+      "phaseLabel": "Corpus entier · Macron nucléaire (1 – 3 mars 2026)",
+      "coverageStart": "2026-03-01",
+      "coverageEnd": "2026-03-03",
+      "coverageLabel": "1 – 3 mars 2026",
+      "connectomeData": "data/macron_nucleaire/graph.json",
+      "discourseData": "data/macron_nucleaire/discourse.json"
     },
     {
       "id": "hmpv",
       "label": "HMPV · 2025",
       "phaseLabel": "Corpus entier · HMPV PADMEN (FR+EN, 1 janv. – 30 juin 2025)",
-      "connectomeData": "data/hmpv/graph.json"
-    },
-    {
-      "id": "canicule",
-      "label": "Canicule · mai–juin 2026",
-      "phaseLabel": "Corpus entier · Canicule HEAT (20 mai – 29 juin 2026)",
-      "connectomeData": "data/canicule/graph.json",
-      "discourseData": "data/canicule/discourse.json"
+      "coverageStart": "2025-01-01",
+      "coverageEnd": "2025-06-30",
+      "coverageLabel": "1 janv. – 30 juin 2025",
+      "connectomeData": "data/hmpv/graph.json",
+      "discourseData": "data/hmpv/discourse.json",
+      "defaults": {
+        "linkLight": 0.45,
+        "opacity": 0.45,
+        "colorMode": "community"
+      }
     },
     {
       "id": "hmpv_fr",
       "label": "HMPV FR · 2025",
       "phaseLabel": "Corpus entier · HMPV PADMEN (FR seul, 1 janv. – 30 juin 2025)",
+      "coverageStart": "2025-01-01",
+      "coverageEnd": "2025-06-30",
+      "coverageLabel": "1 janv. – 30 juin 2025",
       "connectomeData": "data/hmpv_fr/graph.json",
-      "discourseData": "data/hmpv_fr/discourse.json"
+      "discourseData": "data/hmpv_fr/discourse.json",
+      "defaults": {
+        "linkLight": 1,
+        "opacity": 0.45,
+        "colorMode": "community"
+      }
+    },
+    {
+      "id": "canicule",
+      "label": "Canicule · mai–juin 2026",
+      "phaseLabel": "Corpus entier · Canicule HEAT (20 mai – 29 juin 2026)",
+      "coverageStart": "2026-05-20",
+      "coverageEnd": "2026-06-29",
+      "coverageLabel": "20 mai – 29 juin 2026",
+      "connectomeData": "data/canicule/graph.json",
+      "discourseData": "data/canicule/discourse.json"
     }
   ],
   "defaults": {

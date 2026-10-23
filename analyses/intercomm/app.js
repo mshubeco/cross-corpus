@@ -2,14 +2,14 @@
 (function () {
   const CORPUS = window.INTERCOMM_CORPUS;
   const CORPORA = [
-    { id: "ebola", label: "Ebola" },
-    { id: "ebola_2_2026", label: "Ebola 2 · 2026" },
-    { id: "hantavirus", label: "Hantavirus" },
-    { id: "mpox", label: "Mpox" },
-    { id: "macron_nucleaire", label: "Macron nucléaire" },
-    { id: "hmpv", label: "HMPV · 2025" },
-    { id: "hmpv_fr", label: "HMPV FR · 2025" },
-    { id: "canicule", label: "Canicule · mai–juin 2026" },
+    { id: "ebola", label: "Ebola", coverageLabel: "7 – 19 mai 2026" },
+    { id: "ebola_2_2026", label: "Ebola 2 · 2026", coverageLabel: "1 janv. – 22 sept. 2026" },
+    { id: "hantavirus", label: "Hantavirus", coverageLabel: "5 – 20 mai 2026" },
+    { id: "mpox", label: "Mpox", coverageLabel: "13 juin 2024 – 13 janv. 2025" },
+    { id: "macron_nucleaire", label: "Macron nucléaire", coverageLabel: "1 – 3 mars 2026" },
+    { id: "hmpv", label: "HMPV · 2025", coverageLabel: "1 janv. – 30 juin 2025" },
+    { id: "hmpv_fr", label: "HMPV FR · 2025", coverageLabel: "1 janv. – 30 juin 2025" },
+    { id: "canicule", label: "Canicule · mai–juin 2026", coverageLabel: "20 mai – 29 juin 2026" },
   ];
 
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({
@@ -684,7 +684,11 @@
         <a class="fwd-link" href="#pole-profiles">Portrait des pôles ↓</a>
         <a class="fwd-link" href="#daily-top">Top 5 publications par jour ↓</a>
       </div>
-      <p class="subtitle">${esc(ph.phaseLabel || "")} · ${esc(pack.source || "")}. Même partition Louvain que le connectome (seed 42). Les parts de publication mesurent les tweets dont l’auteur appartient à la communauté.</p>
+      <p class="subtitle">${esc(ph.phaseLabel || "")}${(() => {
+        const cov = (CORPORA.find((c) => c.id === (pack.corpus?.id || CORPUS)) || {}).coverageLabel
+          || pack.corpus?.coverageLabel;
+        return cov ? ` · Couverture · ${esc(cov)}` : "";
+      })()} · ${esc(pack.source || "")}. Même partition Louvain que le connectome (seed 42). Les parts de publication mesurent les tweets dont l’auteur appartient à la communauté.</p>
       <div class="corpus-switch">${switcher}</div>
       <div class="kpi-row">
         <div class="kpi"><div class="v">${fmt(meta.n_tweets)}</div><div class="l">Tweets</div></div>
