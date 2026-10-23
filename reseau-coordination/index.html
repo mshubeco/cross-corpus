@@ -326,6 +326,7 @@ initMethodHelp({
   buttonParent: document.getElementById('methodHelpSlot') || document.getElementById('hud'),
 });
 
+const ASSET_V = '20261024c';
 const wrap = document.getElementById('c');
 const labelsEl = document.getElementById('labels');
 const axisLabelsEl = document.getElementById('axisLabels');
@@ -1416,6 +1417,12 @@ function corpusCoverageText(corp) {
   return '';
 }
 
+function bust(url) {
+  const u = String(url || '');
+  const sep = u.includes('?') ? '&' : '?';
+  return `${u}${sep}v=${ASSET_V}`;
+}
+
 async function loadCorpus(id) {
   const corp = corpora.find((c) => c.id === id) || corpora[0];
   if (!corp) { ldMsg.textContent = 'Aucun corpus dans corpora.json'; return; }
@@ -1423,29 +1430,36 @@ async function loadCorpus(id) {
   loading.classList.remove('hidden');
   ldMsg.textContent = `Chargement · ${shortLabel(corp.label)}…`;
   const covEl = document.getElementById('corpusCoverage');
-  if (covEl) covEl.textContent = corpusCoverageText(corp);
+  if (covEl) covEl.textContent = corpusCoverageText(corp) || 'Couverture · —';
   renderNav();
   backEl.href = `../connectome/?corpus=${encodeURIComponent(currentId)}`;
   history.replaceState({ corpus: currentId }, '', `?corpus=${encodeURIComponent(currentId)}`);
   document.title = `Coordination · ${shortLabel(corp.label)}`;
 
   try {
-    const res = await fetch(corp.graph);
+    const res = await fetch(bust(corp.graph), { cache: 'no-store' });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     graph = await res.json();
     discourse = null;
     try {
-      const dr = await fetch(`data/${currentId}/discourse.json`);
+      const dr = await fetch(bust(`data/${currentId}/discourse.json`), { cache: 'no-store' });
       if (dr.ok) discourse = await dr.json();
     } catch (_) {}
 
+    // Couverture : corpora.json en priorité, sinon meta du graphe
+    if (covEl) {
+      const fromMeta = graph?.meta?.coverageLabel
+        ? `Couverture · ${graph.meta.coverageLabel}`
+        : '';
+      covEl.textContent = corpusCoverageText(corp) || fromMeta || 'Couverture · —';
+    }
     setStats(graph.meta || {});
     const nE = (graph.edges || []).length;
     const nN = (graph.nodes || []).length;
     if (!nN || !nE) {
       clearScene();
       commListEl.innerHTML = '';
-      statsEl.innerHTML += `<div style="margin-top:8px;color:#c9b27a">Aucun backbone Serrano.</div>`;
+      statsEl.innerHTML += `<div style="margin-top:8px;color:#c9b27a">Aucun réseau de coordination (0 nœud / 0 arête après filtre). Hard-refresh si un graphe a été publié récemment (cache).</div>`;
       loading.classList.add('hidden');
       return;
     }
@@ -1482,7 +1496,7 @@ zModeRow?.querySelectorAll('button[data-z]').forEach((b) => {
 
 async function boot() {
   initThree();
-  const res = await fetch('corpora.json');
+  const res = await fetch(bust('corpora.json'), { cache: 'no-store' });
   corpora = await res.json();
   const q = new URLSearchParams(location.search).get('corpus');
   const start = corpora.find((c) => c.id === q)?.id || corpora[0]?.id;

@@ -1,6 +1,9 @@
 {
   "title": "HMPV FR · 2025",
   "corpus_id": "hmpv_fr",
+  "coverageStart": "2025-01-01",
+  "coverageEnd": "2025-06-30",
+  "coverageLabel": "1 janv. – 30 juin 2025",
   "n_nodes": 21,
   "n_edges": 23,
   "n_edges_pre_serrano": 23,
