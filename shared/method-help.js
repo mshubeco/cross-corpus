@@ -47,13 +47,16 @@ const TOPICS = {
       </table>
 
       <h3>Distinction RT / interactions (HUD)</h3>
-      <p>Option de <strong>coloration des liens</strong> (pas un autre graphe)&nbsp;: chaque arête du graphe toutes-interactions
-      est classée selon la part de RT dans son poids&nbsp;:</p>
+      <p><strong>Toujours sur l’onglet «&nbsp;Toutes interactions&nbsp;»</strong> — ce n’est <em>pas</em> le graphe RT
+      (onglet séparé «&nbsp;RT&nbsp;»). C’est une option de <strong>coloration des liens</strong> du même réseau
+      toutes-interactions&nbsp;: chaque arête est classée selon la part de RT dans son poids&nbsp;:</p>
       <table class="mh-params">
         <tr><th>Interactions</th><td>part RT ≤ 30&nbsp;%</td></tr>
         <tr><th>Mixtes</th><td>30–70&nbsp;% RT</td></tr>
         <tr><th>RT</th><td>part RT ≥ 70&nbsp;%</td></tr>
       </table>
+      <p>Topologie, nœuds et communautés restent ceux du mode Toutes interactions&nbsp;;
+      seul le rendu des arêtes change.</p>
 
       <div class="mh-caveat"><strong>Limites.</strong> Une communauté Louvain n’est pas une appartenance partisane.
         Les labels opérationnels du panneau discursif sont des <em>qualifications de pôles</em> (lexique distinctif), pas des étiquettes individuelles.</div>
@@ -81,6 +84,10 @@ const TOPICS = {
         <li>Repérer les <strong>circuits d’amplification</strong> (hubs RT, chaînes).</li>
         <li>Comparer avec le mode toutes-interactions pour voir ce que le RT structure vs le débat (reply/quote).</li>
       </ul>
+
+      <p>Ne pas confondre avec «&nbsp;Distinction RT / interactions&nbsp;» dans le HUD&nbsp;:
+      celle-ci colore les liens du graphe <strong>Toutes interactions</strong> selon la part RT —
+      ce n’est pas ce sous-graphe RT.</p>
 
       <div class="mh-caveat"><strong>Limites.</strong> Un RT n’implique pas un accord idéologique.
         Les comptes très suivis concentrent mécaniquement les RT (effet de popularité).</div>

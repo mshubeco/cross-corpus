@@ -203,6 +203,10 @@
       font-size: 9.5px; letter-spacing: 0.05em; text-transform: uppercase;
       color: #e8c090; font-weight: 700; margin-bottom: 6px;
     }
+    #rtColorLegend .leg-note {
+      font-size: 10.5px; line-height: 1.35; color: #c4b090; margin: 0 0 8px;
+    }
+    #colorModeScopeHint b { color: #e8eef7; font-weight: 650; }
     #rtColorLegend .leg-row {
       display: flex; align-items: flex-start; gap: 8px;
       margin-top: 5px; color: #b7c0cc; font-size: 10.5px; line-height: 1.3;
@@ -745,14 +749,19 @@
       </div>
     </div>
     <div id="stats">—</div>
-    <div id="colorModeBlock" title="v20261023a">
+    <div id="colorModeBlock" title="v20261024a">
       <div class="cmlabel">Couleurs des liens</div>
+      <div class="nav-hint" id="colorModeScopeHint" style="margin:0 0 6px;padding:0;border:0">
+        Sur le graphe <b>Toutes interactions</b> uniquement
+      </div>
       <div id="colorModeBtns" role="group" aria-label="Couleurs des liens">
         <button type="button" class="color-btn active" data-mode="community" id="hudColorCommunity">Communautés</button>
-        <button type="button" class="color-btn" data-mode="rt_classes" id="hudColorRtClasses">Distinction RT / interactions</button>
+        <button type="button" class="color-btn" data-mode="rt_classes" id="hudColorRtClasses"
+          title="Coloration des liens du graphe Toutes interactions selon la part RT (ce n’est pas le graphe RT)">Distinction RT / interactions</button>
       </div>
       <div id="rtColorLegend" aria-label="Légende Distinction RT / interactions">
-        <div class="leg-title">Légende des liens</div>
+        <div class="leg-title">Légende · graphe Toutes interactions</div>
+        <div class="leg-note">Même topologie que l’onglet «&nbsp;Toutes interactions&nbsp;» — pas le graphe RT. Seule la couleur des liens change (part RT par arête).</div>
         <div class="leg-row"><i class="sw ix" aria-hidden="true"></i><span><b>Interactions</b> · part RT ≤ 30&nbsp;%</span></div>
         <div class="leg-row"><i class="sw mix" aria-hidden="true"></i><span><b>Mixtes</b> · 30–70&nbsp;% <span class="thr">RT</span></span></div>
         <div class="leg-row"><i class="sw rt" aria-hidden="true"></i><span><b>RT</b> · part RT ≥ 70&nbsp;%</span></div>
@@ -2518,29 +2527,35 @@ function syncHashModeAvailability() {
 }
 
 function updateGraphModeButtons() {
+  // Distinction RT = coloration du graphe Toutes interactions (pas un 3e graphe).
+  // On garde l’onglet « Toutes interactions » actif pour éviter la confusion avec l’onglet RT.
   document.querySelectorAll('#graphMode button.mode[data-graph]').forEach((b) => {
-    b.classList.toggle('active', b.dataset.graph === graphMode && viewMode !== 'analyses');
+    const g = b.dataset.graph;
+    const tabActive = viewMode !== 'analyses' && (
+      g === graphMode
+      || (graphMode === 'rt_classes' && g === 'all')
+    );
+    b.classList.toggle('active', tabActive);
   });
   syncLexModeButtons();
   const modeKey = graphMode === 'rt_classes' ? 'rt_classes' : 'community';
   document.querySelectorAll('#colorModeBtns .color-btn').forEach((b) => {
     b.classList.toggle('active', b.dataset.mode === modeKey);
   });
-  // Distinction RT/interactions : panneau gauche, seulement sous Toutes interactions / RT
+  // HUD couleurs : uniquement sur le graphe Toutes interactions (all / rt_classes).
+  // L’onglet RT a sa propre topologie — pas de « Distinction RT » dessus.
+  const showColorHud = graphMode === 'all' || graphMode === 'rt_classes';
   const colorBlock = document.getElementById('colorModeBlock');
-  if (colorBlock) {
-    const showColorHud = graphMode === 'all' || graphMode === 'rt' || graphMode === 'rt_classes';
-    colorBlock.style.display = showColorHud ? '' : 'none';
-  }
+  if (colorBlock) colorBlock.style.display = showColorHud ? '' : 'none';
   const legend = document.getElementById('rtColorLegend');
   const hint = document.getElementById('edgeColorHint');
+  const scopeHint = document.getElementById('colorModeScopeHint');
   const rtMode = graphMode === 'rt_classes';
   legend?.classList.toggle('visible', rtMode);
+  if (scopeHint) scopeHint.style.display = showColorHud ? '' : 'none';
   if (hint) {
     hint.classList.toggle('hidden', rtMode);
-    hint.textContent = graphMode === 'rt'
-      ? 'Graphe RT seul · liens colorés par communauté'
-      : 'Liens colorés par communauté des nœuds';
+    hint.textContent = 'Liens colorés par communauté des nœuds';
   }
   syncHashModeAvailability();
 }
@@ -4051,7 +4066,7 @@ async function loadCorpus(corp) {
   syncCorpusUrl(corp.id);
   hideBootSplash();
   const modeBit = graphMode === 'rt' ? 'RT · '
-    : graphMode === 'rt_classes' ? 'Distinction RT/ix · ' : '';
+    : graphMode === 'rt_classes' ? 'Toutes interactions · Distinction RT/ix · ' : '';
   const cached = graphCache.has(cacheKeyFor(corp.id, graphMode));
   setGraphLoader({
     title: corp.label,
@@ -4169,7 +4184,7 @@ async function loadCorpus(corp) {
     document.title = graphMode === 'rt'
       ? `Connectome RT — ${corp.label}`
       : graphMode === 'rt_classes'
-        ? `Connectome · Distinction RT / interactions — ${corp.label}`
+        ? `Connectome · Toutes interactions (Distinction RT/ix) — ${corp.label}`
         : `Connectome — ${corp.label}`;
     hideGraphLoader();
     idle(600).then(() => warmBackgroundCaches(corp.id));
