@@ -807,7 +807,7 @@
     cloud: "Taille = fréquence dans les publications hors retweet du pôle (pas une comparaison aux autres). Les @mentions et URLs sont retirées.",
     terms: "Score z du log-odds pondéré (Monroe et al. 2008) : le terme est plus fréquent dans ce pôle que dans le reste du corpus. Seuil z ≥ 1,85 et au moins 8 occurrences.",
     cooc: `<div class="pp-note">
-        <p><strong>Quoi.</strong> Overlay comparatif : <em>les mêmes 32 mots, aux mêmes positions</em> sur les six pôles. Cercle creux = mot du vocabulaire global absent ou quasi absent ici. Trait = collocation dans ce pôle (NPMI). On lit les cartes les unes contre les autres, pas comme six graphes indépendants.</p>
+        <p><strong>Quoi.</strong> Overlay comparatif : <em>les mêmes mots, aux mêmes positions</em> sur les pôles affichés. Cercle creux = mot du vocabulaire global absent ou quasi absent ici. Trait = collocation dans ce pôle (NPMI). On lit les cartes les unes contre les autres, pas comme des graphes indépendants.</p>
         <p><strong>Méthode.</strong> Unité = <em>texte unique</em> (URLs et @ ôtés, 100 caractères), pas la ligne CSV : un titre YouTube recopié compte une fois. Score d’arête = NPMI (PMI normalisé, Bouma 2009), borné [−1, 1], seuil 0,12 et ≥ 3 textes uniques. Épaisseur des traits et taille des disques sont à <em>la même échelle</em> pour toutes les cartes (0 → 1 et part max du corpus).</p>
         <p><strong>Choix des mots.</strong> Top 32 du corpus entier par fréquence documentaire (textes uniques), après stopwords. Pas de shortlist par pôle : on ne sélectionne pas les mots qui avantagent une communauté. Ce qui change d’une carte à l’autre : les liens qui s’allument, et le remplissage des disques (part des textes uniques du pôle).</p>
       </div>`,
