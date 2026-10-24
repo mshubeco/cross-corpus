@@ -55,7 +55,8 @@
     }
     #navTools .mh-btn { align-self: center; }
     #graphMode,
-    #viewLinks {
+    #viewLinks,
+    #centralityMode {
       display: inline-flex; gap: 0; padding: 2px; align-items: center; flex-wrap: nowrap; justify-content: center;
       background: rgba(8,10,14,0.62);
       border: 1px solid rgba(255,255,255,0.1);
@@ -65,6 +66,21 @@
       border-color: rgba(255,255,255,0.08);
       background: rgba(8,10,14,0.48);
     }
+    #centralityMode {
+      border-color: rgba(125,160,220,0.22);
+      background: rgba(12,18,28,0.55);
+      max-width: min(96vw, 720px);
+      flex-wrap: wrap;
+      row-gap: 2px;
+    }
+    #centralityMode .cent-eyebrow {
+      font-size: 9.5px; letter-spacing: 0.06em; text-transform: uppercase;
+      color: #7a8aa0; font-weight: 700; padding: 0 8px 0 10px; white-space: nowrap;
+    }
+    #centralityMode .mode.cent.active {
+      color: #dceaff; background: rgba(77,138,255,0.32);
+    }
+    #centralityMode[hidden] { display: none !important; }
     .mode {
       border: 0; background: transparent; color: #8b93a0; font: inherit; font-size: 11px; font-weight: 600;
       padding: 4px 10px; border-radius: 999px; cursor: pointer; white-space: nowrap;
@@ -581,8 +597,10 @@
       }
       #tabs { border-radius: 12px; padding: 2px; }
       #navTools { flex-direction: column; align-items: stretch; gap: 4px; }
-      #graphMode, #viewLinks { width: 100%; justify-content: stretch; overflow-x: auto; }
+      #graphMode, #viewLinks, #centralityMode { width: 100%; justify-content: stretch; overflow-x: auto; }
+      #centralityMode { justify-content: flex-start; }
       .mode { flex: 1 0 auto; justify-content: center; min-height: 36px; }
+      #centralityMode .mode.cent { flex: 0 0 auto; }
       #hud, #commPanel {
         top: auto; bottom: 64px; left: 10px; right: 10px; width: auto;
         max-height: min(58vh, 520px); overflow-y: auto;
@@ -697,6 +715,14 @@
         <button type="button" class="mode" data-graph="rt" id="graphModeRt">RT</button>
         <button type="button" class="mode mode-analyses" data-mode="analyses" data-lex="hash" id="hashModeBtn" title="Surligner par hashtag (mode Communautés uniquement)">#</button>
         <button type="button" class="mode mode-analyses" data-mode="analyses" data-lex="lemma" id="lemmaModeBtn" title="Surligner par lemme / terme distinctif (mode Communautés uniquement)">Lemme</button>
+      </div>
+      <div id="centralityMode" role="tablist" aria-label="Centralité — taille des nœuds (layout inchangé)">
+        <span class="cent-eyebrow" title="Taille des nœuds / labels · positions ForceAtlas2 inchangées">Centralité</span>
+        <button type="button" class="mode cent" data-cent="in" title="Nombre d’arêtes entrantes">Degré In</button>
+        <button type="button" class="mode cent" data-cent="out" title="Nombre d’arêtes sortantes">Degré Out</button>
+        <button type="button" class="mode cent active" data-cent="w" title="Somme des poids incidents (in + out)">Degré pondéré</button>
+        <button type="button" class="mode cent" data-cent="pr" title="PageRank dirigé (amortissement 0,85)">PageRank</button>
+        <button type="button" class="mode cent" data-cent="eig" title="Vecteur propre sur graphe non orienté pondéré">Eigenvector</button>
       </div>
       <div id="viewLinks" role="navigation" aria-label="Autres vues">
         <a id="analysesLink" class="mode mode-link" href="../analyses/ebola.html" title="Page analyses complète (nouvel onglet)" target="_blank" rel="noopener noreferrer">Analyses</a>
@@ -905,8 +931,181 @@ let currentCorpusId = null;
 let corporaList = [];
 const _graphParam = new URLSearchParams(location.search).get('graph');
 let graphMode = (_graphParam === 'rt' || _graphParam === 'rt_classes') ? _graphParam : 'all';
+/** Centralité → taille des nœuds (positions FA2 inchangées). */
+const CENTRALITY_IDS = new Set(['in', 'out', 'w', 'pr', 'eig']);
+const _centParam = new URLSearchParams(location.search).get('cent');
+let centralityMode = CENTRALITY_IDS.has(_centParam) ? _centParam : 'w';
+const CENTRALITY_LABELS = {
+  in: 'Degré In',
+  out: 'Degré Out',
+  w: 'Degré pondéré',
+  pr: 'PageRank',
+  eig: 'Eigenvector',
+};
 /** Map "s|t" (indices du graphe ALL) → poids RT, pour Distinction RT / interactions. */
 let rtWeightByEdge = null;
+
+function nodeCentValue(n, mode = centralityMode) {
+  if (!n) return 0;
+  if (mode === 'in') return Number(n._cin) || 0;
+  if (mode === 'out') return Number(n._cout) || 0;
+  if (mode === 'pr') return Number(n._cpr != null ? n._cpr : n.pr) || 0;
+  if (mode === 'eig') return Number(n._ceig) || 0;
+  return Number(n._cw != null ? n._cw : n.deg) || 0;
+}
+
+/** Calcule In / Out / pondéré / PageRank / Eigenvector à partir des arêtes (layout inchangé). */
+function ensureNodeCentralities(data) {
+  if (!data?.nodes?.length || data._centOk) return data;
+  const nodes = data.nodes;
+  const edges = data.edges || [];
+  const n = nodes.length;
+  const cin = new Float64Array(n);
+  const cout = new Float64Array(n);
+  const sin = new Float64Array(n);
+  const sout = new Float64Array(n);
+  for (let i = 0; i < edges.length; i++) {
+    const e = edges[i];
+    const s = e.s | 0;
+    const t = e.t | 0;
+    if (s < 0 || t < 0 || s >= n || t >= n) continue;
+    const w = Number(e.w);
+    const ww = Number.isFinite(w) && w > 0 ? w : 1;
+    cout[s] += 1;
+    cin[t] += 1;
+    sout[s] += ww;
+    sin[t] += ww;
+  }
+  const nEdges = edges.length || 1;
+  const iters = n > 120_000 ? 14 : n > 40_000 ? 18 : 22;
+  // PageRank dirigé pondéré
+  const pr = new Float64Array(n);
+  {
+    const invN = 1 / n;
+    for (let i = 0; i < n; i++) pr[i] = invN;
+    const d = 0.85;
+    for (let it = 0; it < iters; it++) {
+      const next = new Float64Array(n);
+      let dangling = 0;
+      for (let i = 0; i < n; i++) {
+        if (sout[i] <= 0) dangling += pr[i];
+      }
+      const base = (1 - d) * invN + d * dangling * invN;
+      for (let i = 0; i < n; i++) next[i] = base;
+      for (let i = 0; i < edges.length; i++) {
+        const e = edges[i];
+        const s = e.s | 0;
+        const t = e.t | 0;
+        if (s < 0 || t < 0 || s >= n || t >= n || sout[s] <= 0) continue;
+        const w = Number(e.w);
+        const ww = Number.isFinite(w) && w > 0 ? w : 1;
+        next[t] += d * pr[s] * (ww / sout[s]);
+      }
+      for (let i = 0; i < n; i++) pr[i] = next[i];
+    }
+  }
+  // Eigenvector : graphe non orienté pondéré (symétrisé)
+  const eig = new Float64Array(n);
+  {
+    for (let i = 0; i < n; i++) eig[i] = 1 / Math.sqrt(n);
+    for (let it = 0; it < iters; it++) {
+      const y = new Float64Array(n);
+      for (let i = 0; i < edges.length; i++) {
+        const e = edges[i];
+        const s = e.s | 0;
+        const t = e.t | 0;
+        if (s < 0 || t < 0 || s >= n || t >= n) continue;
+        const w = Number(e.w);
+        const ww = Number.isFinite(w) && w > 0 ? w : 1;
+        y[s] += ww * eig[t];
+        y[t] += ww * eig[s];
+      }
+      let norm = 0;
+      for (let i = 0; i < n; i++) norm += y[i] * y[i];
+      norm = Math.sqrt(norm) || 1;
+      for (let i = 0; i < n; i++) eig[i] = y[i] / norm;
+    }
+    // Décalage positif pour éviter des tailles nulles
+    let emin = Infinity;
+    for (let i = 0; i < n; i++) if (eig[i] < emin) emin = eig[i];
+    if (emin < 0) {
+      for (let i = 0; i < n; i++) eig[i] -= emin;
+    }
+  }
+  for (let i = 0; i < n; i++) {
+    const nd = nodes[i];
+    nd._cin = cin[i];
+    nd._cout = cout[i];
+    nd._cw = sin[i] + sout[i];
+    nd._cpr = pr[i];
+    nd._ceig = eig[i];
+    // Si le fichier n’avait pas de PR, on le renseigne aussi
+    if (nd.pr == null || !(nd.pr > 0)) nd.pr = pr[i];
+  }
+  data._centOk = true;
+  data._centEdges = nEdges;
+  return data;
+}
+
+function formatCentValue(mode, v) {
+  const x = Number(v) || 0;
+  if (mode === 'pr' || mode === 'eig') return x.toExponential(2);
+  if (x >= 1000) return Math.round(x).toLocaleString('fr-FR');
+  return String(Math.round(x * 10) / 10);
+}
+
+/** Recalcule les tailles de points + labels selon centralityMode (sans toucher x/y). */
+function applyCentralitySizes({ rebuildLbl = true } = {}) {
+  if (!graphData?.nodes?.length || !pointsMesh) return;
+  const nodes = graphData.nodes;
+  const n = nodes.length;
+  const vis = graphVisualScale(n);
+  let maxV = 0;
+  for (let i = 0; i < n; i++) {
+    const v = nodeCentValue(nodes[i]);
+    if (v > maxV) maxV = v;
+  }
+  maxV = maxV > 0 ? maxV : 1;
+  const sizeAttr = pointsMesh.geometry.attributes.size;
+  const arr = sizeAttr?.array;
+  if (!arr || arr.length < n) return;
+  for (let i = 0; i < n; i++) {
+    const nd = nodes[i];
+    const v = nodeCentValue(nd);
+    nd._sizeMetric = v;
+    const sz = (0.4 + 2.2 * Math.sqrt(v / maxV)) * vis.nodeBoost;
+    arr[i] = sz;
+  }
+  sizeAttr.needsUpdate = true;
+  nodeSizesBase = new Float32Array(arr);
+  // Réappliquer un éventuel filtre # / lemme (tailles × sm)
+  if (lastHighlightFilter && (activeLexeme || lastHighlightFilter.tag)) {
+    applyNodeHighlight(lastHighlightFilter);
+  }
+  if (rebuildLbl) rebuildLabels();
+  updateCentralityButtons();
+}
+
+function updateCentralityButtons() {
+  const host = document.getElementById('centralityMode');
+  if (!host) return;
+  // Disponible sur Toutes interactions / RT / Distinction RT (même topologie FA2)
+  const show = graphMode === 'all' || graphMode === 'rt' || graphMode === 'rt_classes';
+  host.hidden = !show;
+  host.querySelectorAll('.mode.cent[data-cent]').forEach((b) => {
+    b.classList.toggle('active', b.dataset.cent === centralityMode);
+  });
+}
+
+function setCentralityMode(mode, { syncUrl = true } = {}) {
+  if (!CENTRALITY_IDS.has(mode) || mode === centralityMode) {
+    updateCentralityButtons();
+    return;
+  }
+  centralityMode = mode;
+  applyCentralitySizes({ rebuildLbl: true });
+  if (syncUrl) syncCorpusUrl(currentCorpusId);
+}
 
 const RT_CLASS_IX_MAX = 0.30;
 const RT_CLASS_RT_MIN = 0.70;
@@ -2382,13 +2581,16 @@ function pickLabelPool(nodes, overviewN) {
   const poolCap = labelPoolCap(overviewN, nodes.length);
   if (poolCap <= 0) return [];
 
-  const scored = nodes.map((n, i) => ({
-    node: n,
-    i,
-    gephiSize: Math.max(n.s || 1, 1),
-    deg: n.deg || 0,
-    com: n.com ?? -1,
-  }));
+  const scored = nodes.map((n, i) => {
+    const metric = nodeCentValue(n);
+    return {
+      node: n,
+      i,
+      gephiSize: Math.max(metric > 0 ? metric : (n.s || 1), 1e-12),
+      deg: n.deg || 0,
+      com: n.com ?? -1,
+    };
+  });
 
   const byCom = new Map();
   for (const s of scored) {
@@ -2558,6 +2760,7 @@ function updateGraphModeButtons() {
     hint.textContent = 'Liens colorés par communauté des nœuds';
   }
   syncHashModeAvailability();
+  updateCentralityButtons();
 }
 
 function applyBloom(v) {
@@ -2617,16 +2820,25 @@ function syncCorpusUrl(corpusId) {
   const nextView = viewMode === 'analyses'
     ? (lexKind === 'lemma' ? 'lemma' : 'hash')
     : null;
+  const nextCent = centralityMode !== 'w' ? centralityMode : null;
   const sameCorpus = url.searchParams.get('corpus') === corpusId;
   const sameGraph = (url.searchParams.get('graph') || null) === nextGraph;
   const sameView = (url.searchParams.get('view') || null) === nextView;
-  if (sameCorpus && sameGraph && sameView) return;
+  const sameCent = (url.searchParams.get('cent') || null) === nextCent;
+  if (sameCorpus && sameGraph && sameView && sameCent) return;
   url.searchParams.set('corpus', corpusId);
   if (nextGraph) url.searchParams.set('graph', nextGraph);
   else url.searchParams.delete('graph');
   if (nextView) url.searchParams.set('view', nextView);
   else url.searchParams.delete('view');
-  history.replaceState({ corpus: corpusId, graph: graphMode, view: nextView || 'graph' }, '', url);
+  if (nextCent) url.searchParams.set('cent', nextCent);
+  else url.searchParams.delete('cent');
+  history.replaceState({
+    corpus: corpusId,
+    graph: graphMode,
+    view: nextView || 'graph',
+    cent: centralityMode,
+  }, '', url);
 }
 
 function resolveCorpus(corpusParam) {
@@ -3488,13 +3700,19 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   scene.add(lines);
   applyLinkLight(P.linkLight);
 
-  // Hubs : taille / opacité adaptées à la densité du corpus (sinon illisibles sur petits graphes).
+  // Hubs : taille selon centralité choisie ; positions FA2 (x,y) inchangées.
+  ensureNodeCentralities(data);
   const n = nodes.length;
   const vis = graphVisualScale(n);
   const nPos = new Float32Array(n * 3);
   const nCol = new Float32Array(n * 3);
   const nSize = new Float32Array(n);
-  const maxDeg = maxOf(nodes, (x) => x.deg || 1, 1);
+  let maxCent = 0;
+  for (let i = 0; i < n; i++) {
+    const v = nodeCentValue(nodes[i]);
+    if (v > maxCent) maxCent = v;
+  }
+  maxCent = maxCent > 0 ? maxCent : 1;
   for (let i = 0; i < n; i++) {
     const nd = nodes[i];
     nPos[i * 3] = nd.x;
@@ -3504,7 +3722,9 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
     nCol[i * 3] = c[0];
     nCol[i * 3 + 1] = c[1];
     nCol[i * 3 + 2] = c[2];
-    nSize[i] = (0.4 + 2.2 * Math.sqrt((nd.deg || 1) / maxDeg)) * vis.nodeBoost;
+    const cv = nodeCentValue(nd);
+    nd._sizeMetric = cv;
+    nSize[i] = (0.4 + 2.2 * Math.sqrt(cv / maxCent)) * vis.nodeBoost;
     nd._displayC = nd.c;
   }
   const pGeo = new THREE.BufferGeometry();
@@ -3552,11 +3772,13 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
       ? 'distinction RT / interactions'
       : 'distinction RT / interactions indisponible';
   }
+  const centLbl = CENTRALITY_LABELS[centralityMode] || centralityMode;
   document.getElementById('stats').textContent =
-    `${modeLabel} · ${data.meta.n_nodes.toLocaleString('fr-FR')} nœuds · ${data.meta.n_edges.toLocaleString('fr-FR')} liens · ${P.strands}× hair`;
+    `${modeLabel} · taille ${centLbl} · ${data.meta.n_nodes.toLocaleString('fr-FR')} nœuds · ${data.meta.n_edges.toLocaleString('fr-FR')} liens · ${P.strands}× hair`;
   fitGraphToView(nodes);
   renderCommPanel(data);
   rebuildLabels();
+  updateCentralityButtons();
   if (activeLexeme) {
     const accounts = accountsForLexeme(activeLexeme);
     const comms = communitiesForLexeme(activeLexeme);
@@ -4149,6 +4371,17 @@ async function loadCorpus(corp) {
     setCommLoading(false);
 
     const nE = (data.edges || []).length;
+    if (!data._centOk) {
+      setGraphLoader({
+        title: corp.label,
+        msg: 'Centralités (In / Out / pondéré / PageRank / Eigenvector)…',
+        progress: 0.72,
+        indeterminate: true,
+      });
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+      if (!isCurrent()) return;
+      ensureNodeCentralities(data);
+    }
     setGraphLoader({
       title: corp.label,
       msg: `Tracé du réseau · ${nE.toLocaleString('fr-FR')} liens…`,
@@ -4243,9 +4476,13 @@ function setupTooltip() {
       return;
     }
     const handle = displayHandle(best.l);
+    const centLbl = CENTRALITY_LABELS[centralityMode] || 'Centralité';
+    const centVal = formatCentValue(centralityMode, nodeCentValue(best));
     tip.innerHTML =
       `<strong>${handle}</strong>` +
-      `<div class="muted">comm. C${best.com} · deg ${Math.round(best.deg || 0)} · PR ${(best.pr || 0).toExponential(2)}</div>` +
+      `<div class="muted">comm. C${best.com} · ${centLbl} ${centVal}`
+        + ` · In ${Math.round(best._cin || 0)} · Out ${Math.round(best._cout || 0)}`
+        + ` · PR ${(best._cpr != null ? best._cpr : best.pr || 0).toExponential(2)}</div>` +
       `<div class="hint">Clic → profil X</div>`;
     tip.style.display = 'block';
     tip.style.left = `${Math.min(ev.clientX + 14, innerWidth - 300)}px`;
@@ -4403,6 +4640,10 @@ async function boot() {
   document.querySelectorAll('#graphMode button.mode[data-graph]').forEach((b) => {
     b.addEventListener('click', () => setGraphMode(b.dataset.graph));
   });
+  document.querySelectorAll('#centralityMode .mode.cent[data-cent]').forEach((b) => {
+    b.addEventListener('click', () => setCentralityMode(b.dataset.cent));
+  });
+  updateCentralityButtons();
   document.querySelectorAll('#colorModeBtns .color-btn').forEach((b) => {
     b.addEventListener('click', () => setEdgeColorFromHud(b.dataset.mode));
   });
@@ -4466,10 +4707,17 @@ window.addEventListener('popstate', () => {
   const v = params.get('view');
   const nextView = (v === 'analyses' || v === 'hash' || v === 'lemma') ? 'analyses' : 'graph';
   const nextLex = v === 'lemma' ? 'lemma' : 'hash';
+  const c0 = params.get('cent');
+  const nextCent = CENTRALITY_IDS.has(c0) ? c0 : 'w';
   const corp = resolveCorpus(params.get('corpus')) || corporaList[0];
   const modeChanged = nextMode !== graphMode;
   const viewChanged = nextView !== viewMode || (nextView === 'analyses' && nextLex !== lexKind);
+  const centChanged = nextCent !== centralityMode;
   graphMode = nextMode;
+  if (centChanged) {
+    centralityMode = nextCent;
+    if (!modeChanged && graphData) applyCentralitySizes({ rebuildLbl: true });
+  }
   if (viewChanged) setViewMode(nextView, { syncUrl: false, lex: nextLex });
   updateGraphModeButtons();
   if (modeChanged || corp.id !== currentCorpusId) loadCorpus(corp);

@@ -39,6 +39,12 @@ const TOPICS = {
         ForceAtlas2, a continuous graph layout algorithm for handy network visualization.
         <em>PLOS ONE</em>.</div>
 
+      <h3>Centralité (taille des nœuds)</h3>
+      <p>Sous-choix sous les onglets graphe&nbsp;: <strong>Degré In</strong>, <strong>Degré Out</strong>,
+      <strong>Degré pondéré</strong> (somme des poids incidents), <strong>PageRank</strong> (dirigé, d=0,85),
+      <strong>Eigenvector</strong> (graphe non orienté pondéré). Les positions FA2 restent identiques&nbsp;;
+      seuls la taille des points et des labels changent. Compatible avec <strong>#</strong> et <strong>Lemme</strong>.</p>
+
       <h3>Métriques du panneau</h3>
       <table class="mh-params">
         <tr><th>Taille / %</th><td>Nombre de comptes dans la communauté Louvain et part du graphe.</td></tr>
@@ -78,6 +84,10 @@ const TOPICS = {
       <h3>Communautés &amp; layout</h3>
       <p>Même logique que «&nbsp;Toutes interactions&nbsp;»&nbsp;: <strong>Louvain</strong> + layout <strong>ForceAtlas2</strong>,
       mais calculés sur le graphe RT seul — les pôles peuvent donc différer du graphe complet.</p>
+
+      <h3>Centralité (taille des nœuds)</h3>
+      <p>Même sous-menu que sur Toutes interactions (In / Out / pondéré / PageRank / Eigenvector),
+      recalculé sur le sous-graphe RT. La spatialisation FA2 RT ne change pas.</p>
 
       <h3>À quoi ça sert</h3>
       <ul>
