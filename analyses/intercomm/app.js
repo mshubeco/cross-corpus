@@ -177,9 +177,21 @@
     return traces;
   }
 
+  function hasEngagementSeries(daily) {
+    return (daily?.series || []).some(
+      (s) => Array.isArray(s.engagement) && s.engagement.some((v) => Number(v) > 0),
+    );
+  }
+
   function plotActivity(el, daily, mode) {
     if (!el || !daily?.series?.length) return;
     const metric = mode === "engagement" ? "engagement" : "publications";
+    if (metric === "engagement" && !hasEngagementSeries(daily)) {
+      el.innerHTML = "<p class=\"hint\" style=\"padding:24px 8px;color:#9aa3b5\">"
+        + "Engagement non calculé pour ce corpus (séries absentes). "
+        + "Relancer <code>enrich_intercomm_media_activity.py</code>.</p>";
+      return;
+    }
     const hasMedia = (mode === "lines" || mode === "engagement") && mediaLayers(daily).length;
     const layoutExtra = {
       height: hasMedia ? 400 : 360,
