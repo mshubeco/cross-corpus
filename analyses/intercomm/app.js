@@ -662,16 +662,29 @@
     const edges = (ph.edges || []).slice(0, 30);
     if (!edges.length) return `<p class="hint">Aucun flux intercommunautaire (hors diagonale interne).</p>`;
     return edges.map((e) => {
-      const posts = (e.topPosts || []).slice(0, 4).map((p) =>
+      const nonRt = (e.topPosts || []).filter((p) => String(p.type || "").toLowerCase() !== "retweet");
+      const rtSamples = (e.topRtTargets || []).length
+        ? e.topRtTargets
+        : (e.topPosts || []).filter((p) => String(p.type || "").toLowerCase() === "retweet");
+      const sample = (nonRt.length ? nonRt : rtSamples).slice(0, 4);
+      const posts = sample.map((p) =>
         `<div class="post-text"><span class="flow-meta">@${esc(p.author)} → @${esc(p.target)} · ${esc(p.date)} · ${esc(p.type)}</span><br>${esc(p.text)}</div>`
       ).join("");
+      let emptyHint = "<p class='hint'>Pas d'exemples disponibles pour ce flux.</p>";
+      if (!sample.length && (e.rt || 0) > 0 && (e.nonRt || 0) === 0) {
+        emptyHint = `<p class='hint'>Flux 100&nbsp;% RT (${fmt(e.rt)}) — aucun extrait attaché.</p>`;
+      } else if (!sample.length && (e.nonRt || 0) === 0) {
+        emptyHint = "<p class='hint'>Pas d'exemples non-RT.</p>";
+      } else if (sample.length && !nonRt.length && rtSamples.length) {
+        // préfixe déjà dans chaque carte via type=retweet
+      }
       return `<details class="flow-item">
         <summary>
           <span class="dot" style="background:${esc(e.sourceColor)}"></span>
           <span class="flow-title">@${esc(e.sourceHub)} → @${esc(e.targetHub)}</span>
           <span class="flow-meta">${fmt(e.total)} · RT ${fmt(e.rt)} (${esc(e.rtPct)}%)</span>
         </summary>
-        <div class="flow-posts">${posts || "<p class='hint'>Pas d'exemples non-RT.</p>"}</div>
+        <div class="flow-posts">${posts || emptyHint}</div>
       </details>`;
     }).join("");
   }
