@@ -3,44 +3,230 @@
     "layer": "coordination_louvain",
     "method": "G2 keyness hashtags/words on non-RT texts of backbone accounts",
     "vocabulary": "lecture discursive exploratoire — pas une preuve d'inauthenticité",
-    "n_tweets_scanned": 1,
-    "n_communities": 3,
+    "n_tweets_scanned": 58,
+    "n_communities": 8,
     "corpus": "hmpv",
-    "generatedAt": "2026-10-22T10:28:18.017107+00:00"
+    "generatedAt": "2026-10-26T10:26:22.206853+00:00"
   },
   "communities": {
     "0": {
       "id": 0,
-      "hub": "usmedicalnews11",
-      "n_users": 5,
-      "n_original_tweets": 0,
+      "hub": "tanmoyofc",
+      "n_users": 9,
+      "n_original_tweets": 18,
       "color": "#73c000",
-      "key_hashtags": [],
-      "key_words": [],
-      "brief": "Cluster C0 (hub @usmedicalnews11, 5 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
-      "qualif_short": "@usmedicalnews11"
+      "key_hashtags": [
+        {
+          "tag": "hmpvvirus",
+          "g2": 13.07
+        },
+        {
+          "tag": "uttarpradesh",
+          "g2": 6.45
+        },
+        {
+          "tag": "lockdown",
+          "g2": 6.24
+        },
+        {
+          "tag": "savitribaiphule",
+          "g2": 4.28
+        },
+        {
+          "tag": "indvsaustest",
+          "g2": 4.28
+        }
+      ],
+      "key_words": [
+        {
+          "word": "modi",
+          "g2": 7.08
+        },
+        {
+          "word": "modi's",
+          "g2": 7.08
+        },
+        {
+          "word": "when",
+          "g2": 7.08
+        },
+        {
+          "word": "were",
+          "g2": 7.08
+        },
+        {
+          "word": "big",
+          "g2": 4.72
+        }
+      ],
+      "brief": "Cluster de coordination C0 (hub @tanmoyofc, 9 comptes). Hashtags distinctifs : #hmpvvirus · #uttarpradesh · #lockdown. Lexique : modi, modi's, when.",
+      "qualif_short": "#hmpvvirus · #uttarpradesh · #lockdown"
     },
     "1": {
       "id": 1,
-      "hub": "devendarmalodi2",
-      "n_users": 3,
-      "n_original_tweets": 0,
+      "hub": "usmedicalnews11",
+      "n_users": 8,
+      "n_original_tweets": 1,
       "color": "#ff8000",
       "key_hashtags": [],
-      "key_words": [],
-      "brief": "Cluster C1 (hub @devendarmalodi2, 3 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
-      "qualif_short": "@devendarmalodi2"
+      "key_words": [
+        {
+          "word": "well",
+          "g2": 8.2
+        },
+        {
+          "word": "doesn't",
+          "g2": 8.2
+        },
+        {
+          "word": "seem",
+          "g2": 8.2
+        },
+        {
+          "word": "simple",
+          "g2": 8.2
+        },
+        {
+          "word": "seems",
+          "g2": 8.2
+        }
+      ],
+      "brief": "Cluster de coordination C1 (hub @usmedicalnews11, 8 comptes). Hashtags distinctifs : lexique faible. Lexique : well, doesn't, seem.",
+      "qualif_short": "@usmedicalnews11"
     },
     "2": {
       "id": 2,
+      "hub": "marayabasil",
+      "n_users": 6,
+      "n_original_tweets": 22,
+      "color": "#2563eb",
+      "key_hashtags": [
+        {
+          "tag": "wef",
+          "g2": 11.7
+        },
+        {
+          "tag": "nwo",
+          "g2": 11.7
+        },
+        {
+          "tag": "elites",
+          "g2": 11.7
+        },
+        {
+          "tag": "who",
+          "g2": 10.77
+        },
+        {
+          "tag": "agenda2030",
+          "g2": 10.77
+        }
+      ],
+      "key_words": [
+        {
+          "word": "fear",
+          "g2": 24.05
+        },
+        {
+          "word": "but",
+          "g2": 17.58
+        },
+        {
+          "word": "nothing",
+          "g2": 15.97
+        },
+        {
+          "word": "else",
+          "g2": 15.97
+        },
+        {
+          "word": "sinister",
+          "g2": 15.97
+        }
+      ],
+      "brief": "Cluster de coordination C2 (hub @marayabasil, 6 comptes). Hashtags distinctifs : #wef · #nwo · #elites. Lexique : fear, but, nothing.",
+      "qualif_short": "#wef · #nwo · #elites"
+    },
+    "3": {
+      "id": 3,
+      "hub": "r_shankar_gowda",
+      "n_users": 3,
+      "n_original_tweets": 0,
+      "color": "#de81ff",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C3 (hub @r_shankar_gowda, 3 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@r_shankar_gowda"
+    },
+    "4": {
+      "id": 4,
+      "hub": "devendarmalodi2",
+      "n_users": 3,
+      "n_original_tweets": 0,
+      "color": "#c4a574",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C4 (hub @devendarmalodi2, 3 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@devendarmalodi2"
+    },
+    "5": {
+      "id": 5,
+      "hub": "ygjumi",
+      "n_users": 2,
+      "n_original_tweets": 0,
+      "color": "#ff497c",
+      "key_hashtags": [],
+      "key_words": [],
+      "brief": "Cluster C5 (hub @ygjumi, 2 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@ygjumi"
+    },
+    "6": {
+      "id": 6,
       "hub": "williansmerz",
       "n_users": 2,
       "n_original_tweets": 0,
-      "color": "#2563eb",
+      "color": "#00bd94",
       "key_hashtags": [],
       "key_words": [],
-      "brief": "Cluster C2 (hub @williansmerz, 2 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "brief": "Cluster C6 (hub @williansmerz, 2 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
       "qualif_short": "@williansmerz"
+    },
+    "7": {
+      "id": 7,
+      "hub": "coviddatareport",
+      "n_users": 2,
+      "n_original_tweets": 17,
+      "color": "#b45309",
+      "key_hashtags": [
+        {
+          "tag": "8211",
+          "g2": 12.67
+        }
+      ],
+      "key_words": [
+        {
+          "word": "hmpv",
+          "g2": 29.44
+        },
+        {
+          "word": "cases",
+          "g2": 21.37
+        },
+        {
+          "word": "positive",
+          "g2": 21.25
+        },
+        {
+          "word": "tests",
+          "g2": 15.14
+        },
+        {
+          "word": "first",
+          "g2": 12.1
+        }
+      ],
+      "brief": "Cluster de coordination C7 (hub @coviddatareport, 2 comptes). Hashtags distinctifs : #8211. Lexique : hmpv, cases, positive.",
+      "qualif_short": "#8211"
     }
   }
 }

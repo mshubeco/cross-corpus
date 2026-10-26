@@ -1,9 +1,6 @@
 {
   "title": "HMPV FR · 2025",
   "corpus_id": "hmpv_fr",
-  "coverageStart": "2025-01-01",
-  "coverageEnd": "2025-06-30",
-  "coverageLabel": "1 janv. – 30 juin 2025",
   "n_nodes": 21,
   "n_edges": 23,
   "n_edges_pre_serrano": 23,
@@ -41,7 +38,7 @@
     },
     {
       "id": 3,
-      "hub": "reffuveilles",
+      "hub": "selynetabone",
       "color": "#de81ff",
       "n": 2
     },
@@ -53,18 +50,18 @@
     },
     {
       "id": 5,
-      "hub": "vincenttenn",
+      "hub": "reffuveilles",
       "color": "#ff497c",
       "n": 2
     },
     {
       "id": 6,
-      "hub": "selynetabone",
+      "hub": "vincenttenn",
       "color": "#00bd94",
       "n": 2
     }
   ],
-  "generatedAt": "2026-10-23T22:28:35.285852+00:00",
+  "generatedAt": "2026-10-26T08:07:02.375433+00:00",
   "elapsed_s": 0.4,
   "labelCentrality": "pagerank",
   "labelCentralityDef": "PageRank pondéré (α=0,85, weight = co-RT Serrano) sur le backbone ; taille des labels et champ s dérivés de ce score",
@@ -89,7 +86,7 @@
     },
     {
       "id": 3,
-      "hub": "reffuveilles",
+      "hub": "selynetabone",
       "color": "#de81ff",
       "n": 2
     },
@@ -101,13 +98,13 @@
     },
     {
       "id": 5,
-      "hub": "vincenttenn",
+      "hub": "reffuveilles",
       "color": "#ff497c",
       "n": 2
     },
     {
       "id": 6,
-      "hub": "selynetabone",
+      "hub": "vincenttenn",
       "color": "#00bd94",
       "n": 2
     }
@@ -121,7 +118,7 @@
     },
     {
       "id": 20,
-      "hub": "vincenttenn",
+      "hub": "selynetabone",
       "color": "#ff497c",
       "n": 4
     },
@@ -144,7 +141,7 @@
   ],
   "defaultColorMode": "base",
   "n_base_matched": 21,
-  "enrichedAt": "2026-10-23T22:28:36.200263+00:00",
+  "enrichedAt": "2026-10-26T10:27:19.825955+00:00",
   "zModes": {
     "chrono": {
       "id": "chrono",

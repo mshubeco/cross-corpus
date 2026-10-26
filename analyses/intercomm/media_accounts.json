@@ -1,0 +1,2097 @@
+[
+  {
+    "corpus": "ebola",
+    "nAccounts": 41,
+    "totalPubs": 241,
+    "accounts": [
+      {
+        "l": "bfmtv",
+        "n": 26,
+        "name": "BFM",
+        "eng": 8757
+      },
+      {
+        "l": "cnews",
+        "n": 21,
+        "name": "CNEWS",
+        "eng": 6070
+      },
+      {
+        "l": "rfiafrique",
+        "n": 18,
+        "name": "RFI Afrique",
+        "eng": 432
+      },
+      {
+        "l": "franceinfo",
+        "n": 18,
+        "name": "franceinfo",
+        "eng": 1802
+      },
+      {
+        "l": "rfi",
+        "n": 16,
+        "name": "RFI",
+        "eng": 1343
+      },
+      {
+        "l": "le_parisien",
+        "n": 15,
+        "name": "Le Parisien",
+        "eng": 5532
+      },
+      {
+        "l": "france24afrique",
+        "n": 11,
+        "name": "FRANCE 24 Afrique",
+        "eng": 58
+      },
+      {
+        "l": "lci",
+        "n": 10,
+        "name": "LCI",
+        "eng": 1363
+      },
+      {
+        "l": "afpfr",
+        "n": 8,
+        "name": "Agence France-Presse",
+        "eng": 700
+      },
+      {
+        "l": "lexpress",
+        "n": 7,
+        "name": "L'Express",
+        "eng": 778
+      },
+      {
+        "l": "rtlfrance",
+        "n": 6,
+        "name": "RTL France",
+        "eng": 109
+      },
+      {
+        "l": "le_figaro",
+        "n": 6,
+        "name": "Le Figaro",
+        "eng": 253
+      },
+      {
+        "l": "france24_fr",
+        "n": 6,
+        "name": "FRANCE 24 Français",
+        "eng": 182
+      },
+      {
+        "l": "leparisiensante",
+        "n": 5,
+        "name": "Le Parisien | santé",
+        "eng": 4
+      },
+      {
+        "l": "lepoint",
+        "n": 5,
+        "name": "Le Point",
+        "eng": 108
+      },
+      {
+        "l": "rtlinfo",
+        "n": 5,
+        "name": "RTL info",
+        "eng": 79
+      },
+      {
+        "l": "rmcinfo",
+        "n": 4,
+        "name": "RMC",
+        "eng": 140
+      },
+      {
+        "l": "reuters",
+        "n": 4,
+        "name": "Reuters",
+        "eng": 429
+      },
+      {
+        "l": "leparisien_pol",
+        "n": 4,
+        "name": "Le Parisien | politique",
+        "eng": 5
+      },
+      {
+        "l": "lepointafrique",
+        "n": 4,
+        "name": "Le Point Afrique",
+        "eng": 6
+      },
+      {
+        "l": "20minutes",
+        "n": 4,
+        "name": "20 Minutes",
+        "eng": 104
+      },
+      {
+        "l": "afp",
+        "n": 4,
+        "name": "AFP News Agency",
+        "eng": 1490
+      },
+      {
+        "l": "bbcworld",
+        "n": 4,
+        "name": "BBC News (World)",
+        "eng": 12499
+      },
+      {
+        "l": "laprovence",
+        "n": 3,
+        "name": "La Provence",
+        "eng": 32
+      },
+      {
+        "l": "europe1",
+        "n": 3,
+        "name": "Europe 1",
+        "eng": 84
+      },
+      {
+        "l": "bbcnews",
+        "n": 3,
+        "name": "BBC News (UK)",
+        "eng": 597
+      },
+      {
+        "l": "publicsenat",
+        "n": 2,
+        "name": "Public Sénat",
+        "eng": 395
+      },
+      {
+        "l": "midilibre",
+        "n": 2,
+        "name": "Midi Libre",
+        "eng": 4
+      },
+      {
+        "l": "ap",
+        "n": 2,
+        "name": "The Associated Press",
+        "eng": 7153
+      },
+      {
+        "l": "tf1info",
+        "n": 2,
+        "name": "TF1Info",
+        "eng": 141
+      },
+      {
+        "l": "lyonne_fr",
+        "n": 2,
+        "name": "L'Yonne Républicaine",
+        "eng": 8
+      },
+      {
+        "l": "ladepechedumidi",
+        "n": 2,
+        "name": "La Dépêche du Midi",
+        "eng": 3
+      },
+      {
+        "l": "humanite_fr",
+        "n": 1,
+        "name": "L'Humanité",
+        "eng": 28
+      },
+      {
+        "l": "cnnbrk",
+        "n": 1,
+        "name": "CNN Breaking News",
+        "eng": 274
+      },
+      {
+        "l": "vosgesmatin",
+        "n": 1,
+        "name": "Vosges Matin",
+        "eng": 1
+      },
+      {
+        "l": "sudradio",
+        "n": 1,
+        "name": "Sud Radio",
+        "eng": 163
+      },
+      {
+        "l": "bbcafrique",
+        "n": 1,
+        "name": "BBC News Afrique",
+        "eng": 7
+      },
+      {
+        "l": "cnn",
+        "n": 1,
+        "name": "CNN",
+        "eng": 1070
+      },
+      {
+        "l": "lejdd",
+        "n": 1,
+        "name": "Le JDD",
+        "eng": 293
+      },
+      {
+        "l": "lejsl",
+        "n": 1,
+        "name": "Le Journal de Saône-et-Loire",
+        "eng": 4
+      },
+      {
+        "l": "lesechos",
+        "n": 1,
+        "name": "Les Echos",
+        "eng": 2
+      }
+    ],
+    "digital": {
+      "nAccounts": 6,
+      "totalPubs": 34,
+      "accounts": [
+        {
+          "l": "alertesinfos",
+          "n": 12,
+          "name": "AlertesInfos",
+          "eng": 69072
+        },
+        {
+          "l": "neticnews",
+          "n": 9,
+          "name": "Netic News",
+          "eng": 11
+        },
+        {
+          "l": "infosfrancaises",
+          "n": 4,
+          "name": "Infos Françaises",
+          "eng": 204
+        },
+        {
+          "l": "france_soir",
+          "n": 3,
+          "name": "France-Soir",
+          "eng": 11722
+        },
+        {
+          "l": "cerfiafr",
+          "n": 3,
+          "name": "Cerfia",
+          "eng": 7546
+        },
+        {
+          "l": "tocsin_media",
+          "n": 3,
+          "name": "Tocsin",
+          "eng": 661
+        }
+      ]
+    }
+  },
+  {
+    "corpus": "ebola_2_2026",
+    "nAccounts": 45,
+    "totalPubs": 779,
+    "accounts": [
+      {
+        "l": "rfi",
+        "n": 148,
+        "name": "RFI",
+        "eng": 5196
+      },
+      {
+        "l": "rfiafrique",
+        "n": 140,
+        "name": "RFI Afrique",
+        "eng": 3003
+      },
+      {
+        "l": "france24afrique",
+        "n": 138,
+        "name": "FRANCE 24 Afrique",
+        "eng": 1053
+      },
+      {
+        "l": "france24_fr",
+        "n": 94,
+        "name": "FRANCE 24 Français",
+        "eng": 3872
+      },
+      {
+        "l": "bfmtv",
+        "n": 25,
+        "name": "BFM",
+        "eng": 3802
+      },
+      {
+        "l": "leparisiensante",
+        "n": 21,
+        "name": "Le Parisien | santé",
+        "eng": 17
+      },
+      {
+        "l": "franceinfo",
+        "n": 19,
+        "name": "franceinfo",
+        "eng": 588
+      },
+      {
+        "l": "le_parisien",
+        "n": 18,
+        "name": "Le Parisien",
+        "eng": 2212
+      },
+      {
+        "l": "rtlfrance",
+        "n": 15,
+        "name": "RTL France",
+        "eng": 182
+      },
+      {
+        "l": "cnews",
+        "n": 15,
+        "name": "CNEWS",
+        "eng": 619
+      },
+      {
+        "l": "afpfr",
+        "n": 14,
+        "name": "Agence France-Presse",
+        "eng": 1035
+      },
+      {
+        "l": "lci",
+        "n": 14,
+        "name": "LCI",
+        "eng": 772
+      },
+      {
+        "l": "humanite_fr",
+        "n": 12,
+        "name": "L'Humanité",
+        "eng": 377
+      },
+      {
+        "l": "lepoint",
+        "n": 10,
+        "name": "Le Point",
+        "eng": 139
+      },
+      {
+        "l": "rtlinfo",
+        "n": 9,
+        "name": "RTL info",
+        "eng": 59
+      },
+      {
+        "l": "lepointafrique",
+        "n": 8,
+        "name": "Le Point Afrique",
+        "eng": 15
+      },
+      {
+        "l": "publicsenat",
+        "n": 7,
+        "name": "Public Sénat",
+        "eng": 47
+      },
+      {
+        "l": "laprovence",
+        "n": 6,
+        "name": "La Provence",
+        "eng": 53
+      },
+      {
+        "l": "sudradio",
+        "n": 6,
+        "name": "Sud Radio",
+        "eng": 58
+      },
+      {
+        "l": "ladepechedumidi",
+        "n": 6,
+        "name": "La Dépêche du Midi",
+        "eng": 5
+      },
+      {
+        "l": "le_figaro",
+        "n": 6,
+        "name": "Le Figaro",
+        "eng": 213
+      },
+      {
+        "l": "leparisien212",
+        "n": 5,
+        "name": "Lions Parisiens ⭐🌟🇲🇦",
+        "eng": 3
+      },
+      {
+        "l": "europe1",
+        "n": 4,
+        "name": "Europe 1",
+        "eng": 43
+      },
+      {
+        "l": "lesechos",
+        "n": 4,
+        "name": "Les Echos",
+        "eng": 40
+      },
+      {
+        "l": "leparisiensport",
+        "n": 3,
+        "name": "Le Parisien | sport",
+        "eng": 5
+      },
+      {
+        "l": "lexpress",
+        "n": 3,
+        "name": "L'Express",
+        "eng": 11
+      },
+      {
+        "l": "rmcsport",
+        "n": 3,
+        "name": "RMC Sport",
+        "eng": 596
+      },
+      {
+        "l": "bbcafrique",
+        "n": 3,
+        "name": "BBC News Afrique",
+        "eng": 42
+      },
+      {
+        "l": "leparisien_pol",
+        "n": 3,
+        "name": "Le Parisien | politique",
+        "eng": 2
+      },
+      {
+        "l": "midilibre",
+        "n": 2,
+        "name": "Midi Libre",
+        "eng": 13
+      },
+      {
+        "l": "rmcinfo",
+        "n": 2,
+        "name": "RMC",
+        "eng": 39
+      },
+      {
+        "l": "tf1info",
+        "n": 2,
+        "name": "TF1Info",
+        "eng": 26
+      },
+      {
+        "l": "franceculture",
+        "n": 2,
+        "name": "France Culture",
+        "eng": 0
+      },
+      {
+        "l": "lyonne_fr",
+        "n": 1,
+        "name": "L'Yonne Républicaine",
+        "eng": 8
+      },
+      {
+        "l": "lepointevents",
+        "n": 1,
+        "name": "Le Point Événements",
+        "eng": 3
+      },
+      {
+        "l": "lcp",
+        "n": 1,
+        "name": "LCP",
+        "eng": 16
+      },
+      {
+        "l": "lejdd",
+        "n": 1,
+        "name": "Le JDD",
+        "eng": 11
+      },
+      {
+        "l": "lalsace",
+        "n": 1,
+        "name": "Journal L'Alsace",
+        "eng": 1
+      },
+      {
+        "l": "lequipe",
+        "n": 1,
+        "name": "L'Équipe",
+        "eng": 87
+      },
+      {
+        "l": "reuters",
+        "n": 1,
+        "name": "Reuters",
+        "eng": 35
+      },
+      {
+        "l": "leparisienmatin",
+        "n": 1,
+        "name": "Le Parisien Matin",
+        "eng": 0
+      },
+      {
+        "l": "20minutes",
+        "n": 1,
+        "name": "20 Minutes",
+        "eng": 15
+      },
+      {
+        "l": "france24",
+        "n": 1,
+        "name": "FRANCE 24",
+        "eng": 3
+      },
+      {
+        "l": "france24_en",
+        "n": 1,
+        "name": "FRANCE 24 English",
+        "eng": 3
+      },
+      {
+        "l": "franceinter",
+        "n": 1,
+        "name": "France Inter",
+        "eng": 23
+      }
+    ],
+    "digital": {
+      "nAccounts": 7,
+      "totalPubs": 99,
+      "accounts": [
+        {
+          "l": "neticnews",
+          "n": 82,
+          "name": "Netic News",
+          "eng": 116
+        },
+        {
+          "l": "infosfrancaises",
+          "n": 7,
+          "name": "Infos Françaises",
+          "eng": 342
+        },
+        {
+          "l": "france_soir",
+          "n": 3,
+          "name": "France-Soir",
+          "eng": 1694
+        },
+        {
+          "l": "alertesinfos",
+          "n": 2,
+          "name": "AlertesInfos",
+          "eng": 15447
+        },
+        {
+          "l": "tocsin_media",
+          "n": 2,
+          "name": "Tocsin",
+          "eng": 119
+        },
+        {
+          "l": "brutofficiel",
+          "n": 2,
+          "name": "Brut FR",
+          "eng": 27
+        },
+        {
+          "l": "cerfiafr",
+          "n": 1,
+          "name": "Cerfia",
+          "eng": 495
+        }
+      ]
+    }
+  },
+  {
+    "corpus": "hantavirus",
+    "nAccounts": 75,
+    "totalPubs": 2469,
+    "accounts": [
+      {
+        "l": "bfmtv",
+        "n": 565,
+        "name": "BFM",
+        "eng": 52622
+      },
+      {
+        "l": "franceinfo",
+        "n": 228,
+        "name": "franceinfo",
+        "eng": 12128
+      },
+      {
+        "l": "cnews",
+        "n": 215,
+        "name": "CNEWS",
+        "eng": 37018
+      },
+      {
+        "l": "rtlfrance",
+        "n": 169,
+        "name": "RTL France",
+        "eng": 2414
+      },
+      {
+        "l": "europe1",
+        "n": 122,
+        "name": "Europe 1",
+        "eng": 4587
+      },
+      {
+        "l": "le_parisien",
+        "n": 109,
+        "name": "Le Parisien",
+        "eng": 18053
+      },
+      {
+        "l": "leparisiensante",
+        "n": 74,
+        "name": "Le Parisien | santé",
+        "eng": 30
+      },
+      {
+        "l": "sudradio",
+        "n": 63,
+        "name": "Sud Radio",
+        "eng": 5155
+      },
+      {
+        "l": "rmcinfo",
+        "n": 62,
+        "name": "RMC",
+        "eng": 1769
+      },
+      {
+        "l": "lci",
+        "n": 60,
+        "name": "LCI",
+        "eng": 15509
+      },
+      {
+        "l": "tf1info",
+        "n": 58,
+        "name": "TF1Info",
+        "eng": 2405
+      },
+      {
+        "l": "france24_fr",
+        "n": 56,
+        "name": "FRANCE 24 Français",
+        "eng": 1187
+      },
+      {
+        "l": "laprovence",
+        "n": 56,
+        "name": "La Provence",
+        "eng": 938
+      },
+      {
+        "l": "publicsenat",
+        "n": 55,
+        "name": "Public Sénat",
+        "eng": 18387
+      },
+      {
+        "l": "le_figaro",
+        "n": 55,
+        "name": "Le Figaro",
+        "eng": 5889
+      },
+      {
+        "l": "20minutes",
+        "n": 43,
+        "name": "20 Minutes",
+        "eng": 4942
+      },
+      {
+        "l": "afpfr",
+        "n": 37,
+        "name": "Agence France-Presse",
+        "eng": 3477
+      },
+      {
+        "l": "lepoint",
+        "n": 32,
+        "name": "Le Point",
+        "eng": 1446
+      },
+      {
+        "l": "rtlinfo",
+        "n": 30,
+        "name": "RTL info",
+        "eng": 328
+      },
+      {
+        "l": "gg_rmc",
+        "n": 30,
+        "name": "Les Grandes Gueules",
+        "eng": 6966
+      },
+      {
+        "l": "lcp",
+        "n": 29,
+        "name": "LCP",
+        "eng": 4469
+      },
+      {
+        "l": "rfi",
+        "n": 29,
+        "name": "RFI",
+        "eng": 1782
+      },
+      {
+        "l": "lexpress",
+        "n": 28,
+        "name": "L'Express",
+        "eng": 919
+      },
+      {
+        "l": "bfmpremiere",
+        "n": 24,
+        "name": "BFM Première",
+        "eng": 121
+      },
+      {
+        "l": "humanite_fr",
+        "n": 22,
+        "name": "L'Humanité",
+        "eng": 12086
+      },
+      {
+        "l": "lejdd",
+        "n": 20,
+        "name": "Le JDD",
+        "eng": 3492
+      },
+      {
+        "l": "leparisien_pol",
+        "n": 20,
+        "name": "Le Parisien | politique",
+        "eng": 26
+      },
+      {
+        "l": "lesechos",
+        "n": 14,
+        "name": "Les Echos",
+        "eng": 142
+      },
+      {
+        "l": "ladepechedumidi",
+        "n": 12,
+        "name": "La Dépêche du Midi",
+        "eng": 18
+      },
+      {
+        "l": "midilibre",
+        "n": 11,
+        "name": "Midi Libre",
+        "eng": 38
+      },
+      {
+        "l": "lyonne_fr",
+        "n": 10,
+        "name": "L'Yonne Républicaine",
+        "eng": 5
+      },
+      {
+        "l": "bfmmarseille",
+        "n": 9,
+        "name": "BFM Marseille Provence",
+        "eng": 85
+      },
+      {
+        "l": "bfmbusiness",
+        "n": 8,
+        "name": "BFM Business",
+        "eng": 1193
+      },
+      {
+        "l": "franceculture",
+        "n": 8,
+        "name": "France Culture",
+        "eng": 0
+      },
+      {
+        "l": "afp",
+        "n": 7,
+        "name": "AFP News Agency",
+        "eng": 1908
+      },
+      {
+        "l": "reuters",
+        "n": 7,
+        "name": "Reuters",
+        "eng": 1215
+      },
+      {
+        "l": "franceinter",
+        "n": 7,
+        "name": "France Inter",
+        "eng": 479
+      },
+      {
+        "l": "franceinfopro",
+        "n": 6,
+        "name": "franceinfo pro",
+        "eng": 55
+      },
+      {
+        "l": "ledauphine",
+        "n": 6,
+        "name": "Le Dauphiné Libéré",
+        "eng": 10
+      },
+      {
+        "l": "rfiafrique",
+        "n": 5,
+        "name": "RFI Afrique",
+        "eng": 117
+      },
+      {
+        "l": "bbcnews",
+        "n": 5,
+        "name": "BBC News (UK)",
+        "eng": 3694
+      },
+      {
+        "l": "leparisienmatin",
+        "n": 5,
+        "name": "Le Parisien Matin",
+        "eng": 0
+      },
+      {
+        "l": "lefigaro_sante",
+        "n": 5,
+        "name": "Le Figaro Santé",
+        "eng": 18
+      },
+      {
+        "l": "lalsace",
+        "n": 5,
+        "name": "Journal L'Alsace",
+        "eng": 9
+      },
+      {
+        "l": "leparisien_75",
+        "n": 4,
+        "name": "Le Parisien | Paris",
+        "eng": 150
+      },
+      {
+        "l": "bbcworld",
+        "n": 4,
+        "name": "BBC News (World)",
+        "eng": 12918
+      },
+      {
+        "l": "vosgesmatin",
+        "n": 3,
+        "name": "Vosges Matin",
+        "eng": 1
+      },
+      {
+        "l": "lejsl",
+        "n": 3,
+        "name": "Le Journal de Saône-et-Loire",
+        "eng": 0
+      },
+      {
+        "l": "lequipe",
+        "n": 2,
+        "name": "L'Équipe",
+        "eng": 2628
+      },
+      {
+        "l": "ap",
+        "n": 2,
+        "name": "The Associated Press",
+        "eng": 6244
+      },
+      {
+        "l": "bfmbourse",
+        "n": 2,
+        "name": "BFM Bourse",
+        "eng": 14
+      },
+      {
+        "l": "leparisien_95",
+        "n": 2,
+        "name": "Le Parisien | 95",
+        "eng": 2369
+      },
+      {
+        "l": "lepointevents",
+        "n": 2,
+        "name": "Le Point Événements",
+        "eng": 452
+      },
+      {
+        "l": "france24_en",
+        "n": 2,
+        "name": "FRANCE 24 English",
+        "eng": 63
+      },
+      {
+        "l": "cnn",
+        "n": 2,
+        "name": "CNN",
+        "eng": 2123
+      },
+      {
+        "l": "franceinfo_cult",
+        "n": 1,
+        "name": "franceinfo culture",
+        "eng": 2
+      },
+      {
+        "l": "bfmtech_",
+        "n": 1,
+        "name": "BFM Tech",
+        "eng": 0
+      },
+      {
+        "l": "ladepeche31",
+        "n": 1,
+        "name": "La Dépêche 31",
+        "eng": 142
+      },
+      {
+        "l": "leparisien_92",
+        "n": 1,
+        "name": "Le Parisien | 92",
+        "eng": 1
+      },
+      {
+        "l": "leparisien_94",
+        "n": 1,
+        "name": "Le Parisien | 94",
+        "eng": 0
+      },
+      {
+        "l": "leparisien_77",
+        "n": 1,
+        "name": "Le Parisien | 77",
+        "eng": 0
+      },
+      {
+        "l": "leparisien_91",
+        "n": 1,
+        "name": "Le Parisien | 91",
+        "eng": 3
+      },
+      {
+        "l": "leparisien_93",
+        "n": 1,
+        "name": "Le Parisien | 93",
+        "eng": 0
+      },
+      {
+        "l": "leparisien_78",
+        "n": 1,
+        "name": "Le Parisien | 78",
+        "eng": 1
+      },
+      {
+        "l": "leparisien_60",
+        "n": 1,
+        "name": "Le Parisien | 60",
+        "eng": 1
+      },
+      {
+        "l": "bfmcrypto",
+        "n": 1,
+        "name": "BFM Crypto",
+        "eng": 10
+      },
+      {
+        "l": "lefigarotv",
+        "n": 1,
+        "name": "Le Figaro TV",
+        "eng": 55
+      },
+      {
+        "l": "lepointgenius",
+        "n": 1,
+        "name": "Le Point Genius ☢️🔬🔭🧬⚡",
+        "eng": 42
+      },
+      {
+        "l": "bfmvar",
+        "n": 1,
+        "name": "BFM Toulon Var",
+        "eng": 0
+      },
+      {
+        "l": "rtl_infos",
+        "n": 1,
+        "name": "RTL Infos",
+        "eng": 2
+      },
+      {
+        "l": "leparisien_fdiv",
+        "n": 1,
+        "name": "Le Parisien | faits divers",
+        "eng": 0
+      },
+      {
+        "l": "bfmcotedazur",
+        "n": 1,
+        "name": "BFM Nice Côte d'Azur",
+        "eng": 8
+      },
+      {
+        "l": "afpfactuel",
+        "n": 1,
+        "name": "AFP Factuel 🔎",
+        "eng": 42
+      },
+      {
+        "l": "ladepeche_47",
+        "n": 1,
+        "name": "La Dépêche 47",
+        "eng": 0
+      },
+      {
+        "l": "bfm_normandie",
+        "n": 1,
+        "name": "BFM Normandie",
+        "eng": 8
+      }
+    ],
+    "digital": {
+      "nAccounts": 6,
+      "totalPubs": 194,
+      "accounts": [
+        {
+          "l": "alertesinfos",
+          "n": 95,
+          "name": "AlertesInfos",
+          "eng": 447490
+        },
+        {
+          "l": "cerfiafr",
+          "n": 37,
+          "name": "Cerfia",
+          "eng": 131944
+        },
+        {
+          "l": "tocsin_media",
+          "n": 30,
+          "name": "Tocsin",
+          "eng": 40464
+        },
+        {
+          "l": "infosfrancaises",
+          "n": 21,
+          "name": "Infos Françaises",
+          "eng": 1188
+        },
+        {
+          "l": "france_soir",
+          "n": 10,
+          "name": "France-Soir",
+          "eng": 27893
+        },
+        {
+          "l": "lemediatv",
+          "n": 1,
+          "name": "Le Média",
+          "eng": 7
+        }
+      ]
+    }
+  },
+  {
+    "corpus": "mpox",
+    "nAccounts": 59,
+    "totalPubs": 787,
+    "accounts": [
+      {
+        "l": "rfi",
+        "n": 60,
+        "name": "RFI",
+        "eng": 2928
+      },
+      {
+        "l": "bfmtv",
+        "n": 54,
+        "name": "BFM",
+        "eng": 7733
+      },
+      {
+        "l": "rfiafrique",
+        "n": 52,
+        "name": "RFI Afrique",
+        "eng": 1445
+      },
+      {
+        "l": "franceinfo",
+        "n": 47,
+        "name": "franceinfo",
+        "eng": 6508
+      },
+      {
+        "l": "france24_fr",
+        "n": 45,
+        "name": "FRANCE 24 Français",
+        "eng": 1445
+      },
+      {
+        "l": "le_parisien",
+        "n": 42,
+        "name": "Le Parisien",
+        "eng": 6787
+      },
+      {
+        "l": "cnews",
+        "n": 42,
+        "name": "CNEWS",
+        "eng": 13246
+      },
+      {
+        "l": "lexpress",
+        "n": 36,
+        "name": "L'Express",
+        "eng": 163
+      },
+      {
+        "l": "europe1",
+        "n": 29,
+        "name": "Europe 1",
+        "eng": 450
+      },
+      {
+        "l": "leparisiensante",
+        "n": 26,
+        "name": "Le Parisien | santé",
+        "eng": 14
+      },
+      {
+        "l": "tf1info",
+        "n": 25,
+        "name": "TF1Info",
+        "eng": 288
+      },
+      {
+        "l": "lemondefr",
+        "n": 24,
+        "name": "Le Monde",
+        "eng": 4426
+      },
+      {
+        "l": "lemonde_afrique",
+        "n": 23,
+        "name": "Le Monde Afrique",
+        "eng": 249
+      },
+      {
+        "l": "midilibre",
+        "n": 17,
+        "name": "Midi Libre",
+        "eng": 56
+      },
+      {
+        "l": "le_nouvelobs",
+        "n": 17,
+        "name": "Le Nouvel Obs",
+        "eng": 139
+      },
+      {
+        "l": "sudouest",
+        "n": 14,
+        "name": "Sud Ouest",
+        "eng": 49
+      },
+      {
+        "l": "rtlfrance",
+        "n": 14,
+        "name": "RTL France",
+        "eng": 176
+      },
+      {
+        "l": "laprovence",
+        "n": 13,
+        "name": "La Provence",
+        "eng": 59
+      },
+      {
+        "l": "lavoixdunord",
+        "n": 13,
+        "name": "La Voix du Nord",
+        "eng": 44
+      },
+      {
+        "l": "afpfr",
+        "n": 13,
+        "name": "Agence France-Presse",
+        "eng": 956
+      },
+      {
+        "l": "libe",
+        "n": 13,
+        "name": "Libération",
+        "eng": 679
+      },
+      {
+        "l": "lepoint",
+        "n": 11,
+        "name": "Le Point",
+        "eng": 148
+      },
+      {
+        "l": "courrierinter",
+        "n": 11,
+        "name": "Courrier inter",
+        "eng": 140
+      },
+      {
+        "l": "20minutes",
+        "n": 10,
+        "name": "20 Minutes",
+        "eng": 187
+      },
+      {
+        "l": "ladepechedumidi",
+        "n": 9,
+        "name": "La Dépêche du Midi",
+        "eng": 21
+      },
+      {
+        "l": "letelegramme",
+        "n": 9,
+        "name": "Le Télégramme",
+        "eng": 38
+      },
+      {
+        "l": "lesechos",
+        "n": 9,
+        "name": "Les Echos",
+        "eng": 65
+      },
+      {
+        "l": "franceinter",
+        "n": 8,
+        "name": "France Inter",
+        "eng": 4915
+      },
+      {
+        "l": "rmcinfo",
+        "n": 8,
+        "name": "RMC",
+        "eng": 68
+      },
+      {
+        "l": "lacroix",
+        "n": 7,
+        "name": "La Croix",
+        "eng": 30
+      },
+      {
+        "l": "lalsace",
+        "n": 7,
+        "name": "Journal L'Alsace",
+        "eng": 10
+      },
+      {
+        "l": "france24",
+        "n": 7,
+        "name": "FRANCE 24",
+        "eng": 0
+      },
+      {
+        "l": "rtlinfo",
+        "n": 6,
+        "name": "RTL info",
+        "eng": 50
+      },
+      {
+        "l": "ledauphine",
+        "n": 6,
+        "name": "Le Dauphiné Libéré",
+        "eng": 7
+      },
+      {
+        "l": "france24afrique",
+        "n": 5,
+        "name": "FRANCE 24 Afrique",
+        "eng": 61
+      },
+      {
+        "l": "sudradio",
+        "n": 5,
+        "name": "Sud Radio",
+        "eng": 456
+      },
+      {
+        "l": "lci",
+        "n": 5,
+        "name": "LCI",
+        "eng": 213
+      },
+      {
+        "l": "le_figaro",
+        "n": 5,
+        "name": "Le Figaro",
+        "eng": 859
+      },
+      {
+        "l": "humanite_fr",
+        "n": 4,
+        "name": "L'Humanité",
+        "eng": 428
+      },
+      {
+        "l": "bfmpremiere",
+        "n": 4,
+        "name": "BFM Première",
+        "eng": 5
+      },
+      {
+        "l": "rtl_infos",
+        "n": 3,
+        "name": "RTL Infos",
+        "eng": 1
+      },
+      {
+        "l": "bfmgrandlille",
+        "n": 3,
+        "name": "BFM Grand Lille",
+        "eng": 1
+      },
+      {
+        "l": "afpfactuel",
+        "n": 3,
+        "name": "AFP Factuel 🔎",
+        "eng": 258
+      },
+      {
+        "l": "lepointafrique",
+        "n": 2,
+        "name": "Le Point Afrique",
+        "eng": 8
+      },
+      {
+        "l": "lefigaro_sante",
+        "n": 2,
+        "name": "Le Figaro Santé",
+        "eng": 7
+      },
+      {
+        "l": "lejdd",
+        "n": 2,
+        "name": "Le JDD",
+        "eng": 125
+      },
+      {
+        "l": "bfmbusiness",
+        "n": 2,
+        "name": "BFM Business",
+        "eng": 20
+      },
+      {
+        "l": "lejsl",
+        "n": 2,
+        "name": "Le Journal de Saône-et-Loire",
+        "eng": 2
+      },
+      {
+        "l": "bbcafrique",
+        "n": 2,
+        "name": "BBC News Afrique",
+        "eng": 25
+      },
+      {
+        "l": "bfmlittoral",
+        "n": 2,
+        "name": "BFM Grand Littoral",
+        "eng": 0
+      },
+      {
+        "l": "bfmbourse",
+        "n": 1,
+        "name": "BFM Bourse",
+        "eng": 4
+      },
+      {
+        "l": "ladepecheaude",
+        "n": 1,
+        "name": "La Dépêche Aude",
+        "eng": 0
+      },
+      {
+        "l": "bfm_alsace",
+        "n": 1,
+        "name": "BFM Alsace",
+        "eng": 8
+      },
+      {
+        "l": "bfmparis",
+        "n": 1,
+        "name": "BFM Paris Île-de-France",
+        "eng": 1
+      },
+      {
+        "l": "challenges",
+        "n": 1,
+        "name": "Challenges",
+        "eng": 2
+      },
+      {
+        "l": "bfm_normandie",
+        "n": 1,
+        "name": "BFM Normandie",
+        "eng": 1
+      },
+      {
+        "l": "franceculture",
+        "n": 1,
+        "name": "France Culture",
+        "eng": 0
+      },
+      {
+        "l": "leparisien_60",
+        "n": 1,
+        "name": "Le Parisien | 60",
+        "eng": 1
+      },
+      {
+        "l": "lemonde_science",
+        "n": 1,
+        "name": "Le Monde Sciences",
+        "eng": 12
+      }
+    ],
+    "digital": {
+      "nAccounts": 9,
+      "totalPubs": 53,
+      "accounts": [
+        {
+          "l": "neticnews",
+          "n": 20,
+          "name": "Netic News",
+          "eng": 45
+        },
+        {
+          "l": "cerfiafr",
+          "n": 13,
+          "name": "Cerfia",
+          "eng": 131247
+        },
+        {
+          "l": "mediapart",
+          "n": 5,
+          "name": "Mediapart",
+          "eng": 276
+        },
+        {
+          "l": "infosfrancaises",
+          "n": 4,
+          "name": "Infos Françaises",
+          "eng": 992
+        },
+        {
+          "l": "tocsin_media",
+          "n": 4,
+          "name": "Tocsin",
+          "eng": 143
+        },
+        {
+          "l": "brutofficiel",
+          "n": 3,
+          "name": "Brut FR",
+          "eng": 176
+        },
+        {
+          "l": "france_soir",
+          "n": 2,
+          "name": "France-Soir",
+          "eng": 1975
+        },
+        {
+          "l": "alertesinfos",
+          "n": 1,
+          "name": "AlertesInfos",
+          "eng": 9692
+        },
+        {
+          "l": "mediapartblogs",
+          "n": 1,
+          "name": "Mediapart, le Club",
+          "eng": 0
+        }
+      ]
+    }
+  },
+  {
+    "corpus": "macron_nucleaire",
+    "nAccounts": 50,
+    "totalPubs": 423,
+    "accounts": [
+      {
+        "l": "bfmtv",
+        "n": 67,
+        "name": "BFM",
+        "eng": 10927
+      },
+      {
+        "l": "franceinfo",
+        "n": 34,
+        "name": "franceinfo",
+        "eng": 6144
+      },
+      {
+        "l": "europe1",
+        "n": 28,
+        "name": "Europe 1",
+        "eng": 2137
+      },
+      {
+        "l": "cnews",
+        "n": 23,
+        "name": "CNEWS",
+        "eng": 2881
+      },
+      {
+        "l": "lci",
+        "n": 23,
+        "name": "LCI",
+        "eng": 5825
+      },
+      {
+        "l": "rtlfrance",
+        "n": 17,
+        "name": "RTL France",
+        "eng": 647
+      },
+      {
+        "l": "sudradio",
+        "n": 17,
+        "name": "Sud Radio",
+        "eng": 237
+      },
+      {
+        "l": "publicsenat",
+        "n": 16,
+        "name": "Public Sénat",
+        "eng": 1378
+      },
+      {
+        "l": "lexpress",
+        "n": 15,
+        "name": "L'Express",
+        "eng": 78
+      },
+      {
+        "l": "le_parisien",
+        "n": 15,
+        "name": "Le Parisien",
+        "eng": 873
+      },
+      {
+        "l": "tf1info",
+        "n": 14,
+        "name": "TF1Info",
+        "eng": 806
+      },
+      {
+        "l": "lepoint",
+        "n": 14,
+        "name": "Le Point",
+        "eng": 1688
+      },
+      {
+        "l": "france24_fr",
+        "n": 10,
+        "name": "FRANCE 24 Français",
+        "eng": 2960
+      },
+      {
+        "l": "rmcinfo",
+        "n": 10,
+        "name": "RMC",
+        "eng": 247
+      },
+      {
+        "l": "le_figaro",
+        "n": 9,
+        "name": "Le Figaro",
+        "eng": 1115
+      },
+      {
+        "l": "letelegramme",
+        "n": 9,
+        "name": "Le Télégramme",
+        "eng": 33
+      },
+      {
+        "l": "afpfr",
+        "n": 7,
+        "name": "Agence France-Presse",
+        "eng": 1579
+      },
+      {
+        "l": "leparisien_pol",
+        "n": 7,
+        "name": "Le Parisien | politique",
+        "eng": 27
+      },
+      {
+        "l": "france24",
+        "n": 6,
+        "name": "FRANCE 24",
+        "eng": 51
+      },
+      {
+        "l": "lejdd",
+        "n": 6,
+        "name": "Le JDD",
+        "eng": 7966
+      },
+      {
+        "l": "bfmbusiness",
+        "n": 6,
+        "name": "BFM Business",
+        "eng": 399
+      },
+      {
+        "l": "ladepechedumidi",
+        "n": 5,
+        "name": "La Dépêche du Midi",
+        "eng": 21
+      },
+      {
+        "l": "vosgesmatin",
+        "n": 5,
+        "name": "Vosges Matin",
+        "eng": 6
+      },
+      {
+        "l": "ledauphine",
+        "n": 5,
+        "name": "Le Dauphiné Libéré",
+        "eng": 27
+      },
+      {
+        "l": "gg_rmc",
+        "n": 5,
+        "name": "Les Grandes Gueules",
+        "eng": 1096
+      },
+      {
+        "l": "france24_en",
+        "n": 4,
+        "name": "FRANCE 24 English",
+        "eng": 295
+      },
+      {
+        "l": "20minutes",
+        "n": 4,
+        "name": "20 Minutes",
+        "eng": 400
+      },
+      {
+        "l": "laprovence",
+        "n": 4,
+        "name": "La Provence",
+        "eng": 21
+      },
+      {
+        "l": "figarovox",
+        "n": 3,
+        "name": "FigaroVox",
+        "eng": 860
+      },
+      {
+        "l": "leparisienmatin",
+        "n": 3,
+        "name": "Le Parisien Matin",
+        "eng": 0
+      },
+      {
+        "l": "lefigarotv",
+        "n": 3,
+        "name": "Le Figaro TV",
+        "eng": 828
+      },
+      {
+        "l": "lalsace",
+        "n": 3,
+        "name": "Journal L'Alsace",
+        "eng": 4
+      },
+      {
+        "l": "rfi",
+        "n": 3,
+        "name": "RFI",
+        "eng": 221
+      },
+      {
+        "l": "lcp",
+        "n": 3,
+        "name": "LCP",
+        "eng": 1053
+      },
+      {
+        "l": "franceinter",
+        "n": 2,
+        "name": "France Inter",
+        "eng": 222
+      },
+      {
+        "l": "reuters",
+        "n": 2,
+        "name": "Reuters",
+        "eng": 326
+      },
+      {
+        "l": "midilibre",
+        "n": 2,
+        "name": "Midi Libre",
+        "eng": 59
+      },
+      {
+        "l": "francetv",
+        "n": 2,
+        "name": "France tv",
+        "eng": 17
+      },
+      {
+        "l": "leparisien_75",
+        "n": 1,
+        "name": "Le Parisien | Paris",
+        "eng": 8
+      },
+      {
+        "l": "leparisien_eco",
+        "n": 1,
+        "name": "Le Parisien | économie",
+        "eng": 0
+      },
+      {
+        "l": "cnn",
+        "n": 1,
+        "name": "CNN",
+        "eng": 3986
+      },
+      {
+        "l": "ap",
+        "n": 1,
+        "name": "The Associated Press",
+        "eng": 2067
+      },
+      {
+        "l": "rtl_today",
+        "n": 1,
+        "name": "RTL Today",
+        "eng": 0
+      },
+      {
+        "l": "lejsl",
+        "n": 1,
+        "name": "Le Journal de Saône-et-Loire",
+        "eng": 0
+      },
+      {
+        "l": "afp",
+        "n": 1,
+        "name": "AFP News Agency",
+        "eng": 95
+      },
+      {
+        "l": "rtlinfo",
+        "n": 1,
+        "name": "RTL info",
+        "eng": 23
+      },
+      {
+        "l": "rmcdecouverte",
+        "n": 1,
+        "name": "RMC Découverte",
+        "eng": 2
+      },
+      {
+        "l": "humanite_fr",
+        "n": 1,
+        "name": "L'Humanité",
+        "eng": 25
+      },
+      {
+        "l": "ladepeche82",
+        "n": 1,
+        "name": "La Dépêche 82",
+        "eng": 0
+      },
+      {
+        "l": "ladepeche_47",
+        "n": 1,
+        "name": "La Dépêche 47",
+        "eng": 1
+      }
+    ],
+    "digital": {
+      "nAccounts": 9,
+      "totalPubs": 57,
+      "accounts": [
+        {
+          "l": "tocsin_media",
+          "n": 14,
+          "name": "Tocsin",
+          "eng": 1699
+        },
+        {
+          "l": "alertesinfos",
+          "n": 13,
+          "name": "AlertesInfos",
+          "eng": 59643
+        },
+        {
+          "l": "cerfiafr",
+          "n": 8,
+          "name": "Cerfia",
+          "eng": 72435
+        },
+        {
+          "l": "infosfrancaises",
+          "n": 8,
+          "name": "Infos Françaises",
+          "eng": 790
+        },
+        {
+          "l": "impactmediafr",
+          "n": 6,
+          "name": "Impact",
+          "eng": 34279
+        },
+        {
+          "l": "france_soir",
+          "n": 3,
+          "name": "France-Soir",
+          "eng": 1190
+        },
+        {
+          "l": "brutofficiel",
+          "n": 2,
+          "name": "Brut FR",
+          "eng": 34
+        },
+        {
+          "l": "mediavenir",
+          "n": 2,
+          "name": "Mediavenir",
+          "eng": 34533
+        },
+        {
+          "l": "streetpress",
+          "n": 1,
+          "name": "StreetPress",
+          "eng": 16
+        }
+      ]
+    }
+  },
+  {
+    "corpus": "hmpv",
+    "nAccounts": 16,
+    "totalPubs": 1,
+    "accounts": [
+      {
+        "l": "lepoint",
+        "n": 3,
+        "name": "Le Point",
+        "eng": 0
+      },
+      {
+        "l": "leparisiensante",
+        "n": 2,
+        "name": "Le Parisien | santé",
+        "eng": 0
+      },
+      {
+        "l": "france24_fr",
+        "n": 2,
+        "name": "FRANCE 24 Français",
+        "eng": 0
+      },
+      {
+        "l": "le_parisien",
+        "n": 2,
+        "name": "Le Parisien",
+        "eng": 0
+      },
+      {
+        "l": "midilibre",
+        "n": 1,
+        "name": "Midi Libre",
+        "eng": 0
+      },
+      {
+        "l": "ledauphine",
+        "n": 1,
+        "name": "Le Dauphiné Libéré",
+        "eng": 0
+      },
+      {
+        "l": "tf1info",
+        "n": 1,
+        "name": "TF1Info",
+        "eng": 0
+      },
+      {
+        "l": "libe",
+        "n": 1,
+        "name": "Libération",
+        "eng": 0
+      },
+      {
+        "l": "franceinfo",
+        "n": 1,
+        "name": "franceinfo",
+        "eng": 0
+      },
+      {
+        "l": "bfmradio",
+        "n": 1,
+        "name": "BFM89.9",
+        "eng": 0
+      },
+      {
+        "l": "bbcworld",
+        "n": 1,
+        "name": "BBC News (World)",
+        "eng": 0
+      },
+      {
+        "l": "bbcnews",
+        "n": 1,
+        "name": "BBC News (UK)",
+        "eng": 0
+      },
+      {
+        "l": "afp",
+        "n": 1,
+        "name": "AFP News Agency",
+        "eng": 0
+      },
+      {
+        "l": "reuters",
+        "n": 1,
+        "name": "Reuters",
+        "eng": 0
+      },
+      {
+        "l": "france24_en",
+        "n": 1,
+        "name": "FRANCE 24 English",
+        "eng": 0
+      },
+      {
+        "l": "france24",
+        "n": 1,
+        "name": "FRANCE 24",
+        "eng": 0
+      }
+    ],
+    "digital": {
+      "nAccounts": 1,
+      "totalPubs": 0,
+      "accounts": [
+        {
+          "l": "brutofficiel",
+          "n": 1,
+          "name": "Brut FR",
+          "eng": 0
+        }
+      ]
+    }
+  },
+  {
+    "corpus": "hmpv_fr",
+    "nAccounts": 9,
+    "totalPubs": 1,
+    "accounts": [
+      {
+        "l": "lepoint",
+        "n": 3,
+        "name": "Le Point",
+        "eng": 0
+      },
+      {
+        "l": "le_parisien",
+        "n": 2,
+        "name": "Le Parisien",
+        "eng": 0
+      },
+      {
+        "l": "leparisiensante",
+        "n": 2,
+        "name": "Le Parisien | santé",
+        "eng": 0
+      },
+      {
+        "l": "france24_fr",
+        "n": 2,
+        "name": "FRANCE 24 Français",
+        "eng": 0
+      },
+      {
+        "l": "libe",
+        "n": 1,
+        "name": "Libération",
+        "eng": 0
+      },
+      {
+        "l": "ledauphine",
+        "n": 1,
+        "name": "Le Dauphiné Libéré",
+        "eng": 0
+      },
+      {
+        "l": "midilibre",
+        "n": 1,
+        "name": "Midi Libre",
+        "eng": 0
+      },
+      {
+        "l": "tf1info",
+        "n": 1,
+        "name": "TF1Info",
+        "eng": 0
+      },
+      {
+        "l": "franceinfo",
+        "n": 1,
+        "name": "franceinfo",
+        "eng": 0
+      }
+    ],
+    "digital": {
+      "nAccounts": 1,
+      "totalPubs": 0,
+      "accounts": [
+        {
+          "l": "brutofficiel",
+          "n": 1,
+          "name": "Brut FR",
+          "eng": 0
+        }
+      ]
+    }
+  }
+]

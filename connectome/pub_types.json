@@ -89,18 +89,18 @@
     },
     "hmpv": {
       "counts": {
-        "original": 29026,
-        "retweet": 86487,
-        "reply": 8431,
-        "quote": 2182
+        "original": 29038,
+        "retweet": 116398,
+        "reply": 8460,
+        "quote": 2186
       },
       "pct": {
-        "original": 23.0,
-        "retweet": 68.6,
-        "reply": 6.7,
-        "quote": 1.7
+        "original": 18.6,
+        "retweet": 74.6,
+        "reply": 5.4,
+        "quote": 1.4
       },
-      "total": 126126,
+      "total": 156082,
       "unknownMappedAsOriginal": 0,
       "source": "Export_padmen_hmpv_20250101-20250630_full.csv"
     },

@@ -6,7 +6,7 @@
     "n_tweets_scanned": 1,
     "n_communities": 7,
     "corpus": "hmpv_fr",
-    "generatedAt": "2026-10-23T22:28:36.518510+00:00"
+    "generatedAt": "2026-10-26T10:27:20.222749+00:00"
   },
   "communities": {
     "0": {
@@ -44,14 +44,14 @@
     },
     "3": {
       "id": 3,
-      "hub": "reffuveilles",
+      "hub": "selynetabone",
       "n_users": 2,
       "n_original_tweets": 0,
       "color": "#de81ff",
       "key_hashtags": [],
       "key_words": [],
-      "brief": "Cluster C3 (hub @reffuveilles, 2 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
-      "qualif_short": "@reffuveilles"
+      "brief": "Cluster C3 (hub @selynetabone, 2 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@selynetabone"
     },
     "4": {
       "id": 4,
@@ -66,25 +66,25 @@
     },
     "5": {
       "id": 5,
-      "hub": "vincenttenn",
+      "hub": "reffuveilles",
       "n_users": 2,
       "n_original_tweets": 0,
       "color": "#ff497c",
       "key_hashtags": [],
       "key_words": [],
-      "brief": "Cluster C5 (hub @vincenttenn, 2 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
-      "qualif_short": "@vincenttenn"
+      "brief": "Cluster C5 (hub @reffuveilles, 2 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@reffuveilles"
     },
     "6": {
       "id": 6,
-      "hub": "selynetabone",
+      "hub": "vincenttenn",
       "n_users": 2,
       "n_original_tweets": 0,
       "color": "#00bd94",
       "key_hashtags": [],
       "key_words": [],
-      "brief": "Cluster C6 (hub @selynetabone, 2 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
-      "qualif_short": "@selynetabone"
+      "brief": "Cluster C6 (hub @vincenttenn, 2 comptes) — peu de publications hors RT dans le corpus ; profil structurel seulement.",
+      "qualif_short": "@vincenttenn"
     }
   }
 }

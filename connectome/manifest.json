@@ -4,212 +4,52 @@
     {
       "id": "ebola",
       "label": "Ebola · mai 2026",
-      "phaseLabel": "Corpus entier · Ebola FR (7 – 19 mai 2026)",
-      "coverageStart": "2026-05-07",
-      "coverageEnd": "2026-05-19",
-      "coverageLabel": "7 – 19 mai 2026",
-      "connectomeData": "data/ebola/graph.json",
-      "discourseData": "data/ebola/discourse.json",
-      "pubTypes": {
-        "counts": {
-          "original": 6660,
-          "retweet": 24019,
-          "reply": 747,
-          "quote": 293
-        },
-        "pct": {
-          "original": 21.0,
-          "retweet": 75.7,
-          "reply": 2.4,
-          "quote": 0.9
-        },
-        "total": 31719
-      }
+      "phaseLabel": "Corpus entier · Ebola FR (fenêtre export)",
+      "connectomeData": "data/ebola/graph.json"
     },
     {
       "id": "ebola_2_2026",
       "label": "Ebola 2 · 2026",
       "phaseLabel": "Corpus entier · Ebola 2 FR (1 janv. – 22 sept. 2026)",
-      "coverageStart": "2026-01-01",
-      "coverageEnd": "2026-09-22",
-      "coverageLabel": "1 janv. – 22 sept. 2026",
-      "connectomeData": "data/ebola_2_2026/graph.json",
-      "discourseData": "data/ebola_2_2026/discourse.json",
-      "pubTypes": {
-        "counts": {
-          "original": 44745,
-          "retweet": 88714,
-          "reply": 1579,
-          "quote": 565
-        },
-        "pct": {
-          "original": 33.0,
-          "retweet": 65.4,
-          "reply": 1.2,
-          "quote": 0.4
-        },
-        "total": 135603
-      }
+      "connectomeData": "data/ebola_2_2026/graph.json"
     },
     {
       "id": "hantavirus",
       "label": "Hantavirus · mai 2026",
-      "phaseLabel": "Corpus entier · Hantavirus FR (5 – 20 mai 2026)",
-      "coverageStart": "2026-05-05",
-      "coverageEnd": "2026-05-20",
-      "coverageLabel": "5 – 20 mai 2026",
-      "connectomeData": "data/hantavirus/graph.json",
-      "discourseData": "data/hantavirus/discourse.json",
-      "pubTypes": {
-        "counts": {
-          "original": 40609,
-          "retweet": 381182,
-          "reply": 3429,
-          "quote": 1849
-        },
-        "pct": {
-          "original": 9.5,
-          "retweet": 89.3,
-          "reply": 0.8,
-          "quote": 0.4
-        },
-        "total": 427069
-      }
+      "phaseLabel": "Corpus entier · Hantavirus FR mai 2026",
+      "connectomeData": "data/hantavirus/graph.json"
     },
     {
       "id": "mpox",
       "label": "Mpox · 2023–2026",
-      "phaseLabel": "Corpus entier · Mpox FR (13 juin 2024 – 13 janv. 2025)",
-      "coverageStart": "2024-06-13",
-      "coverageEnd": "2025-01-13",
-      "coverageLabel": "13 juin 2024 – 13 janv. 2025",
-      "connectomeData": "data/mpox/graph.json",
-      "discourseData": "data/mpox/discourse.json",
-      "pubTypes": {
-        "counts": {
-          "original": 36207,
-          "retweet": 233773,
-          "reply": 3534,
-          "quote": 996
-        },
-        "pct": {
-          "original": 13.2,
-          "retweet": 85.2,
-          "reply": 1.3,
-          "quote": 0.4
-        },
-        "total": 274510
-      }
+      "phaseLabel": "Corpus entier · Mpox FR déc. 2023 – janv. 2026",
+      "connectomeData": "data/mpox/graph.json"
     },
     {
       "id": "macron_nucleaire",
       "label": "Macron nucléaire · mars 2026",
-      "phaseLabel": "Corpus entier · Macron nucléaire (1 – 3 mars 2026)",
-      "coverageStart": "2026-03-01",
-      "coverageEnd": "2026-03-03",
-      "coverageLabel": "1 – 3 mars 2026",
-      "connectomeData": "data/macron_nucleaire/graph.json",
-      "discourseData": "data/macron_nucleaire/discourse.json",
-      "pubTypes": {
-        "counts": {
-          "original": 49319,
-          "retweet": 411191,
-          "reply": 12674,
-          "quote": 2473
-        },
-        "pct": {
-          "original": 10.4,
-          "retweet": 86.4,
-          "reply": 2.7,
-          "quote": 0.5
-        },
-        "total": 475657
-      }
-    },
-    {
-      "id": "hmpv",
-      "label": "HMPV · 2025",
-      "phaseLabel": "Corpus entier · HMPV PADMEN (FR+EN, 1 janv. – 30 juin 2025)",
-      "coverageStart": "2025-01-01",
-      "coverageEnd": "2025-06-30",
-      "coverageLabel": "1 janv. – 30 juin 2025",
-      "connectomeData": "data/hmpv/graph.json",
-      "discourseData": "data/hmpv/discourse.json",
-      "defaults": {
-        "linkLight": 0.45,
-        "opacity": 0.45,
-        "colorMode": "community"
-      },
-      "pubTypes": {
-        "counts": {
-          "original": 29026,
-          "retweet": 86487,
-          "reply": 8431,
-          "quote": 2182
-        },
-        "pct": {
-          "original": 23.0,
-          "retweet": 68.6,
-          "reply": 6.7,
-          "quote": 1.7
-        },
-        "total": 126126
-      }
-    },
-    {
-      "id": "hmpv_fr",
-      "label": "HMPV FR · 2025",
-      "phaseLabel": "Corpus entier · HMPV PADMEN (FR seul, 1 janv. – 30 juin 2025)",
-      "coverageStart": "2025-01-01",
-      "coverageEnd": "2025-06-30",
-      "coverageLabel": "1 janv. – 30 juin 2025",
-      "connectomeData": "data/hmpv_fr/graph.json",
-      "discourseData": "data/hmpv_fr/discourse.json",
-      "defaults": {
-        "linkLight": 1,
-        "opacity": 0.45,
-        "colorMode": "community"
-      },
-      "pubTypes": {
-        "counts": {
-          "original": 409,
-          "retweet": 1970,
-          "reply": 101,
-          "quote": 67
-        },
-        "pct": {
-          "original": 16.1,
-          "retweet": 77.3,
-          "reply": 4.0,
-          "quote": 2.6
-        },
-        "total": 2547
-      }
+      "phaseLabel": "Corpus entier · Macron nucléaire 1–3 mars 2026",
+      "connectomeData": "data/macron_nucleaire/graph.json"
     },
     {
       "id": "canicule",
       "label": "Canicule · mai–juin 2026",
       "phaseLabel": "Corpus entier · Canicule HEAT (20 mai – 29 juin 2026)",
-      "coverageStart": "2026-05-20",
-      "coverageEnd": "2026-06-29",
-      "coverageLabel": "20 mai – 29 juin 2026",
       "connectomeData": "data/canicule/graph.json",
-      "discourseData": "data/canicule/discourse.json",
-      "pubTypes": {
-        "counts": {
-          "original": 375211,
-          "retweet": 1302223,
-          "reply": 142453,
-          "quote": 20804
-        },
-        "pct": {
-          "original": 20.4,
-          "retweet": 70.7,
-          "reply": 7.7,
-          "quote": 1.1
-        },
-        "total": 1840691
-      }
+      "discourseData": "data/canicule/discourse.json"
+    },
+    {
+      "id": "hmpv_fr",
+      "label": "HMPV FR · 2025",
+      "phaseLabel": "Corpus entier · HMPV PADMEN (FR seul, 1 janv. – 30 juin 2025)",
+      "connectomeData": "data/hmpv_fr/graph.json"
+    },
+    {
+      "id": "hmpv",
+      "label": "HMPV · 2025",
+      "phaseLabel": "Corpus entier · HMPV PADMEN (FR+EN, 1 janv. – 30 juin 2025)",
+      "connectomeData": "data/hmpv/graph.json",
+      "discourseData": "data/hmpv/discourse.json"
     }
   ],
   "defaults": {
