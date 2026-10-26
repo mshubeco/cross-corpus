@@ -1,14 +1,22 @@
 # Flux continu — cross-corpus
 
-Même interface et critères que [HEAT · flux continu](https://mshubeco.github.io/heat-flux-continu/) :
+Viewer : [flux-continu](https://mshubeco.github.io/cross-corpus/flux-continu/?corpus=ebola)
 
-- fenêtre glissante **3 jours**
-- interactions RT + reply + quote + mention
-- `min_edge_weight = 2`
-- layout **FA2 par frame** + Procrustes
-- tracks Louvain locaux (Jaccard ≥ 0,3)
-- couleurs **Louvain global** (partition connectome)
+## Temporalités
 
-URL : `https://mshubeco.github.io/cross-corpus/flux-continu/?corpus=<id>`
+| Mode | URL | Données | Comportement |
+| --- | --- | --- | --- |
+| **Fenêtre 3j (lissée)** — défaut | `?corpus=<id>` | `manifest.json` + `frames/` | Frame **D** = interactions **D−2 → D**. Un compte peut rester visible 1–2 j après son activité. |
+| **Journalier strict** | `?corpus=<id>&tempo=d1` | `manifest_daily.json` + `frames_daily/` | Frame **D** = interactions du **seul jour D**. |
 
-Pipeline : `Desktop/cross_corpus/pipelines/flux_w3/`
+Critères communs : RT + reply + quote + mention · FA2/frame + Procrustes · tracks Louvain (Jaccard ≥ 0,3) · couleurs Louvain global.
+
+## Régénération
+
+```bash
+cd Desktop/cross_corpus/pipelines/flux_w3
+# mode 3j (écrase frames/ + manifest.json)
+py -3.13 scripts/build_corpus_flux.py --all
+# mode journalier (écrit frames_daily/ + manifest_daily.json, sans toucher au 3j)
+py -3.13 scripts/build_corpus_flux.py --all --window-days 1
+```

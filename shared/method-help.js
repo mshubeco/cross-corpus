@@ -170,37 +170,44 @@ const TOPICS = {
 
   flux: {
     kicker: 'Flux continu',
-    title: 'Réseau dynamique — fenêtre glissante 3 jours',
+    title: 'Réseau dynamique — deux temporalités',
     html: `
       <h3>Objet</h3>
       <p>Animation du réseau d’interactions au fil du temps&nbsp;: qui entre / sort du débat, comment les pôles se déplacent.
       Aligné sur les critères HEAT «&nbsp;flux continu&nbsp;».</p>
 
+      <h3>Modes temporels (sélecteur «&nbsp;Temporalité&nbsp;»)</h3>
+      <table class="mh-params">
+        <tr><th>Fenêtre 3j (lissée)</th><td>Frame du jour <strong>D</strong> = interactions du <strong>D−2 au D</strong> (UTC).
+          Un compte reste visible tant qu’il a une arête dans cette fenêtre — donc parfois 1–2 jours <em>après</em> sa dernière activité réelle.</td></tr>
+        <tr><th>Journalier strict</th><td>Frame du jour <strong>D</strong> = interactions du <strong>seul jour D</strong>.
+          Un compte n’apparaît que s’il est actif ce jour-là. Nécessite <code>manifest_daily.json</code> (pipeline <code>--window-days 1</code>).</td></tr>
+      </table>
+
       <h3>Construction des frames</h3>
       <table class="mh-params">
-        <tr><th>Fenêtre</th><td>Glissante de <strong>3 jours</strong> (UTC).</td></tr>
         <tr><th>Interactions</th><td>RT + reply + quote + mention.</td></tr>
-        <tr><th>Seuil d’arête</th><td><code>min_edge_weight = 2</code> (au moins 2 interactions dans la fenêtre).</td></tr>
-        <tr><th>Layout</th><td><strong>ForceAtlas2</strong> recalculé <em>par frame</em>, puis aligné par <strong>Procrustes</strong> pour stabiliser la caméra.</td></tr>
+        <tr><th>Seuil d’arête</th><td><code>min_edge_weight = 2</code> en général (1 pour HMPV FR sparse).</td></tr>
+        <tr><th>Layout</th><td><strong>ForceAtlas2</strong> recalculé <em>par frame</em>, puis aligné par <strong>Procrustes</strong>.</td></tr>
       </table>
 
       <h3>Entrées / sorties</h3>
-      <p>Un compte «&nbsp;entre&nbsp;» lorsqu’il apparaît avec des arêtes dans la fenêtre courante ;
-      il «&nbsp;sort&nbsp;» lorsqu’il disparaît. Le fondu E/S est un lissage visuel (pas une métrique causale).</p>
+      <p>Un compte «&nbsp;entre&nbsp;» lorsqu’il apparaît avec des arêtes dans la fenêtre (ou le jour) courant ;
+      il «&nbsp;sort&nbsp;» lorsqu’il disparaît. Le fondu E/S est un lissage <em>visuel</em> seulement.</p>
 
       <h3>Couleurs</h3>
       <ul>
-        <li><strong>Louvain global ALL</strong> — partition du connectome toutes-interactions (couleur stable dans le temps).</li>
-        <li><strong>Track · fenêtre 3j</strong> — communautés locales suivies par similarité Jaccard (≥&nbsp;0,3) d’une frame à l’autre.</li>
-        <li><strong>Distinction RT / interactions</strong> — coloration des <em>liens</em> selon la part RT (comme sur le connectome).</li>
+        <li><strong>Louvain global ALL</strong> — partition du connectome toutes-interactions.</li>
+        <li><strong>Track · local</strong> — communautés locales (Jaccard ≥&nbsp;0,3) d’une frame à l’autre.</li>
+        <li><strong>Distinction RT / interactions</strong> — couleur des <em>liens</em> selon la part RT.</li>
       </ul>
 
       <h3>Volume (barre basse)</h3>
-      <p>Histogramme des <strong>publications / jour</strong> du corpus (source analyses intercomm), indépendant du graphe affiché.
-      Le curseur synchronise le jour de la fenêtre.</p>
+      <p>Histogramme des <strong>publications / jour</strong> du corpus, indépendant du graphe.
+      Le curseur synchronise le jour affiché.</p>
 
-      <div class="mh-caveat"><strong>Limites.</strong> Une fenêtre de 3 jours lisse les pics courts et peut fragmenter les communautés locales.
-        Le layout FA2 par frame n’est pas une trajectoire physique des acteurs — seulement une visualisation cohérente.</div>
+      <div class="mh-caveat"><strong>Limites.</strong> Le mode 3j lisse les pics courts. Le mode journalier est plus «&nbsp;fidèle&nbsp;» au calendrier mais plus saccadé.
+        Le layout FA2 n’est pas une trajectoire physique des acteurs.</div>
     `,
   },
 
