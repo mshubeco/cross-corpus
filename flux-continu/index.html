@@ -238,9 +238,9 @@
       </select>
     </div>
     <div class="row"><span>Périmètre</span>
-      <select id="scopeMode">
-        <option value="giant">Composante principale</option>
+      <select id="scopeMode" autocomplete="off">
         <option value="all" selected>Tous les nœuds du jour</option>
+        <option value="giant">Composante principale</option>
       </select>
     </div>
     <div class="row"><span>Fondu E/S</span><input id="dynamics" type="range" min="1" max="10" value="5" /></div>
@@ -2189,10 +2189,20 @@ async function init() {
       renderer.render(scene, camera);
     }
   });
-  document.getElementById('scopeMode').addEventListener('change', (e) => {
+  const scopeSel = document.getElementById('scopeMode');
+  scopeSel.addEventListener('change', (e) => {
     applyScopeMode(e.target.value);
   });
-  updateScopeLegend();
+  // Forcer le défaut (ignore restauration de formulaire / bfcache du navigateur).
+  const resolveScope = () =>
+    (new URLSearchParams(location.search).get('scope') === 'giant' ? 'giant' : 'all');
+  const enforceDefaultScope = () => {
+    const wanted = resolveScope();
+    scopeSel.value = wanted;
+    applyScopeMode(wanted);
+  };
+  enforceDefaultScope();
+  window.addEventListener('pageshow', enforceDefaultScope);
   window.addEventListener('keydown', (e) => {
     if (e.key === ' ') { e.preventDefault(); togglePlay(); }
     if (e.key === 'ArrowRight') { playing = false; setSimTime(simTime + 0.15, true); lastEdgeKey = ''; renderForCurrentTime(); }
