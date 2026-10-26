@@ -239,8 +239,8 @@
     </div>
     <div class="row"><span>Périmètre</span>
       <select id="scopeMode">
-        <option value="giant" selected>Composante principale</option>
-        <option value="all">Tous les nœuds du jour</option>
+        <option value="giant">Composante principale</option>
+        <option value="all" selected>Tous les nœuds du jour</option>
       </select>
     </div>
     <div class="row"><span>Fondu E/S</span><input id="dynamics" type="range" min="1" max="10" value="5" /></div>
@@ -251,7 +251,7 @@
     <h2 id="tracksTitle">Louvain global ALL (top 6)</h2>
     <div id="trackList"></div>
   </aside>
-  <div id="legend">Timeline · fenêtre 3j · composante principale · top 6 Louvain · FA2 · même critères que heat-flux-continu</div>
+  <div id="legend">Timeline · fenêtre 3j · tous les nœuds du jour · top 6 Louvain · FA2 · même critères que heat-flux-continu</div>
   <div id="scrubBar" aria-label="Défilement temporel">
     <div class="top">
       <div>
@@ -375,7 +375,7 @@ let nodeGlobalCid = null;
 let nodeGlobalRgb = null;
 let globalCommCounts = null;
 let colorMode = 'global';
-let scopeMode = 'giant'; // 'giant' | 'all'
+let scopeMode = 'all'; // 'giant' | 'all' — défaut : tous les nœuds du jour
 let volumeByStep = [];
 let volumeMax = 1;
 let peakStep = 0;
