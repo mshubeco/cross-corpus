@@ -715,6 +715,99 @@
     }).join("");
   }
 
+  const MACRO_TABS = [
+    { id: "overview", num: "1", label: "Vue d’ensemble", desc: "KPI, flux, graphes, interactions" },
+    { id: "poles", num: "2", label: "Portrait des pôles", desc: "Lexique, géo, amplification…" },
+    { id: "top5", num: "3", label: "Top 5 par communauté", desc: "Comptes & publications" },
+    { id: "daily", num: "4", label: "Top 5 par jour", desc: "Publications quotidiennes" },
+  ];
+  let activeMacro = "overview";
+
+  function macroTabsHtml() {
+    return `<nav class="macro-tabs" id="macro-tabs" role="tablist" aria-label="Sections de l’analyse">
+      ${MACRO_TABS.map((t) => `
+        <button type="button" class="macro-tab${t.id === "overview" ? " active" : ""}"
+          role="tab" id="macro-tab-${t.id}" aria-controls="macro-panel-${t.id}"
+          aria-selected="${t.id === "overview" ? "true" : "false"}"
+          data-macro="${t.id}">
+          <span class="macro-num" aria-hidden="true">${t.num}</span>
+          <span class="macro-copy">
+            <span class="macro-label">${t.label}</span>
+            <span class="macro-desc">${t.desc}</span>
+          </span>
+        </button>`).join("")}
+    </nav>
+    <p class="macro-hint">Quatre sections d’analyse — cliquez un onglet pour basculer (le contenu n’est pas perdu).</p>`;
+  }
+
+  function resizeVisiblePlots() {
+    if (!window.Plotly || !Plotly.Plots) return;
+    const panel = document.getElementById(`macro-panel-${activeMacro}`);
+    if (!panel) return;
+    panel.querySelectorAll(".js-plotly-plot").forEach((el) => {
+      try { Plotly.Plots.resize(el); } catch (_) { /* ignore */ }
+    });
+  }
+
+  function setMacroTab(id, { updateHash = true, scrollTop = true } = {}) {
+    if (!MACRO_TABS.some((t) => t.id === id)) id = "overview";
+    activeMacro = id;
+    document.querySelectorAll("#macro-tabs .macro-tab").forEach((btn) => {
+      const on = btn.dataset.macro === id;
+      btn.classList.toggle("active", on);
+      btn.setAttribute("aria-selected", on ? "true" : "false");
+    });
+    document.querySelectorAll(".macro-panel").forEach((panel) => {
+      const on = panel.id === `macro-panel-${id}`;
+      panel.hidden = !on;
+      panel.classList.toggle("is-active", on);
+    });
+    if (scrollTop) {
+      const tabs = document.getElementById("macro-tabs");
+      if (tabs) tabs.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+    if (updateHash) {
+      const params = new URLSearchParams(location.hash.startsWith("#") ? location.hash.slice(1) : "");
+      // conserver jour/semaine/tri du daily-top si présents
+      params.set("onglet", id);
+      if (id !== "daily") {
+        params.delete("jour");
+        params.delete("semaine");
+        // garder tri éventuellement, inoffensif
+      }
+      const qs = params.toString();
+      history.replaceState(null, "", qs ? `#${qs}` : "#");
+    }
+    requestAnimationFrame(() => {
+      resizeVisiblePlots();
+      if (id === "poles" && PP) renderProfiles();
+      if (id === "top5") renderAccounts();
+    });
+  }
+
+  function bindMacroTabs() {
+    const nav = document.getElementById("macro-tabs");
+    if (!nav || nav.dataset.bound) return;
+    nav.dataset.bound = "1";
+    nav.addEventListener("click", (ev) => {
+      const btn = ev.target.closest("[data-macro]");
+      if (!btn) return;
+      setMacroTab(btn.dataset.macro);
+    });
+  }
+
+  function resolveInitialMacro() {
+    const raw = location.hash.slice(1);
+    if (raw === "pole-profiles" || raw === "poles") return "poles";
+    if (raw === "daily-top" || raw === "daily") return "daily";
+    if (raw === "top5" || raw === "accounts") return "top5";
+    const params = new URLSearchParams(raw);
+    const onglet = params.get("onglet");
+    if (onglet && MACRO_TABS.some((t) => t.id === onglet)) return onglet;
+    if (params.has("jour") || params.has("semaine")) return "daily";
+    return "overview";
+  }
+
   function pageHtml(pack) {
     const ph = pack.phase;
     const meta = ph.structureMeta || {};
@@ -723,24 +816,21 @@
     const conn = `../../connectome/?corpus=${encodeURIComponent(id)}`;
     const analysesHub = `../${encodeURIComponent(id)}.html`;
     const analysesAll = `../cross_corpus_analyses.html?corpus=${encodeURIComponent(id)}`;
-    const switcher = CORPORA.map((c) =>
-      `<a href="./${c.id}.html"${c.id === id ? ' class="active"' : ""}>${esc(c.label)}</a>`
-    ).join("");
     return `
       <div class="page-header">
         <a class="back-link" href="${esc(conn)}">← Connectome ${esc(corp.label || id)}</a>
         <h1>Flux intercommunautaires · ${esc(corp.label || id)}</h1>
         <a class="fwd-link" href="${esc(analysesHub)}">Espace d’analyse</a>
         <a class="fwd-link" href="${esc(analysesAll)}">Vue corpus entier</a>
-        <a class="fwd-link" href="#pole-profiles">Portrait des pôles ↓</a>
-        <a class="fwd-link" href="#daily-top">Top 5 publications par jour ↓</a>
       </div>
       <p class="subtitle">${esc(ph.phaseLabel || "")}${(() => {
         const cov = (CORPORA.find((c) => c.id === (pack.corpus?.id || CORPUS)) || {}).coverageLabel
           || pack.corpus?.coverageLabel;
         return cov ? ` · Couverture · ${esc(cov)}` : "";
       })()} · ${esc(pack.source || "")}. Même partition Louvain que le connectome (seed 42). Les parts de publication mesurent les tweets dont l’auteur appartient à la communauté.</p>
-      <div class="corpus-switch">${switcher}</div>
+      ${macroTabsHtml()}
+
+      <section class="macro-panel is-active" id="macro-panel-overview" role="tabpanel" aria-labelledby="macro-tab-overview">
       <div class="kpi-row">
         <div class="kpi"><div class="v">${fmt(meta.n_tweets)}</div><div class="l">Tweets</div></div>
         <div class="kpi"><div class="v">${fmt(meta.n_users)}</div><div class="l">Utilisateurs</div></div>
@@ -761,7 +851,7 @@
       ${treemapSection(ph)}
       <div class="viz-box">
         <div class="viz-title">Volume quotidien · corpus entier</div>
-        <p class="hint">Cliquer sur une barre pour ouvrir le top 5 publications de ce jour.</p>
+        <p class="hint">Cliquer sur une barre pour ouvrir l’onglet <em>Top 5 par jour</em> sur cette date.</p>
         <div id="volume" class="volume-full-chart day-clickable"></div>
       </div>
       <div class="viz-box">
@@ -827,25 +917,36 @@
           <div class="heatmap-wrap">${heatmapTable(ph, "in")}</div>
         </div>
       </div>
-      ${profilesSectionHtml()}
-      <h2>Top 5 par communauté</h2>
-      <div class="howto-box">
-        <strong>Comment lire / utiliser ce bloc</strong>
-        <ol>
-          <li>Chaque carte = une communauté Louvain du top affiché (couleur + hub).</li>
-          <li>Les <strong>5 comptes</strong> sont le top 5 par <strong>interactions entrantes</strong> (in-strength). L’onglet PageRank reclasse selon la centralité, l’onglet Likes selon la somme des likes reçus sur les publications hors RT du compte.</li>
-          <li><strong>Ouvrir un compte</strong> pour voir ses <strong>5 publications</strong> les plus engageantes (likes + RT + replies + quotes). Uniquement les publications du compte, retweets exclus.</li>
-          <li>Les treemaps résument d’où viennent / où vont les flux de la communauté (source à gauche, cible à droite).</li>
-        </ol>
-      </div>
-      <div class="metric-tabs" id="metric-tabs">
-        <button type="button" class="metric-tab active" data-metric="inStrength">In-strength</button>
-        <button type="button" class="metric-tab" data-metric="pagerank">PageRank</button>
-        <button type="button" class="metric-tab" data-metric="likes">Likes</button>
-      </div>
-      <p class="hint" id="metric-hint">Classement : top 5 comptes par interactions entrantes</p>
-      <div class="comm-grid" id="accounts"></div>
-      ${dailyTopSectionHtml()}
+      </section>
+
+      <section class="macro-panel" id="macro-panel-poles" role="tabpanel" aria-labelledby="macro-tab-poles" hidden>
+        ${profilesSectionHtml()}
+      </section>
+
+      <section class="macro-panel" id="macro-panel-top5" role="tabpanel" aria-labelledby="macro-tab-top5" hidden>
+        <h2>Top 5 par communauté</h2>
+        <div class="howto-box">
+          <strong>Comment lire / utiliser ce bloc</strong>
+          <ol>
+            <li>Chaque carte = une communauté Louvain du top affiché (couleur + hub).</li>
+            <li>Les <strong>5 comptes</strong> sont le top 5 par <strong>interactions entrantes</strong> (in-strength). L’onglet PageRank reclasse selon la centralité, l’onglet Likes selon la somme des likes reçus sur les publications hors RT du compte.</li>
+            <li><strong>Ouvrir un compte</strong> pour voir ses <strong>5 publications</strong> les plus engageantes (likes + RT + replies + quotes). Uniquement les publications du compte, retweets exclus.</li>
+            <li>Les treemaps résument d’où viennent / où vont les flux de la communauté (source à gauche, cible à droite).</li>
+          </ol>
+        </div>
+        <div class="metric-tabs" id="metric-tabs" role="tablist" aria-label="Métrique de classement">
+          <button type="button" class="metric-tab active" role="tab" aria-selected="true" data-metric="inStrength">In-strength</button>
+          <button type="button" class="metric-tab" role="tab" aria-selected="false" data-metric="pagerank">PageRank</button>
+          <button type="button" class="metric-tab" role="tab" aria-selected="false" data-metric="likes">Likes</button>
+        </div>
+        <p class="hint" id="metric-hint">Classement : top 5 comptes par interactions entrantes</p>
+        <div class="comm-grid" id="accounts"></div>
+      </section>
+
+      <section class="macro-panel" id="macro-panel-daily" role="tabpanel" aria-labelledby="macro-tab-daily" hidden>
+        ${dailyTopSectionHtml()}
+      </section>
+
       <p class="subtitle" style="margin-top:28px">
         <a class="fwd-link" href="${esc(conn)}">Retour au connectome →</a>
       </p>
@@ -1537,6 +1638,7 @@
   function dtWriteHash(day) {
     if (!DT.data) return;
     const params = new URLSearchParams();
+    params.set("onglet", "daily");
     if (day) params.set("jour", day);
     else params.set("semaine", DT.data.weeks[DT.week].id);
     if (DT.mode === "likes") params.set("tri", "likes");
@@ -1544,6 +1646,8 @@
   }
 
   const dtScrolledIn = () => {
+    const panel = document.getElementById("macro-panel-daily");
+    if (panel && !panel.hidden) return true;
     const sec = document.getElementById("daily-top");
     return !!sec && sec.getBoundingClientRect().top < 0;
   };
@@ -1570,10 +1674,9 @@
   }
 
   function dtGoTo(day, smooth = true) {
+    setMacroTab("daily", { updateHash: false, scrollTop: true });
     if (!DT.data) {
       DT.pending = day;
-      const sec = document.getElementById("daily-top");
-      if (sec) sec.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
     }
     const wi = DT.weekOfDay[day];
@@ -1584,7 +1687,7 @@
       renderDailyTop();
     }
     dtMarkCurrent(day);
-    dtScrollToDay(day, smooth);
+    requestAnimationFrame(() => dtScrollToDay(day, smooth));
     dtWriteHash(day);
   }
 
@@ -1645,7 +1748,9 @@
     if (hashWeek >= 0) DT.week = hashWeek;
     renderDailyTop();
     if (target) dtGoTo(target, !!DT.pending);
-    else if (hashWeek >= 0 || location.hash === "#daily-top") document.getElementById("daily-top").scrollIntoView({ block: "start" });
+    else if (hashWeek >= 0 || location.hash === "#daily-top" || resolveInitialMacro() === "daily") {
+      setMacroTab("daily", { updateHash: false, scrollTop: true });
+    }
     DT.pending = null;
   }
 
@@ -1712,6 +1817,10 @@
       document.title = `Flux intercommunautaires — ${pack.corpus?.label || CORPUS}`;
       PHASE = pack.phase;
       root.innerHTML = pageHtml(pack);
+      bindMacroTabs();
+      const initialMacro = resolveInitialMacro();
+      // Overview stays visible for Plotly first paint unless deep-link asks otherwise.
+      if (initialMacro === "overview") setMacroTab("overview", { updateHash: false, scrollTop: false });
       const ph = pack.phase;
       const gd = ph.globalDistributions || {};
 
@@ -1740,6 +1849,11 @@
       document.querySelectorAll("#metric-tabs .metric-tab").forEach((btn) => {
         btn.addEventListener("click", () => {
           activeMetric = btn.dataset.metric;
+          document.querySelectorAll("#metric-tabs .metric-tab").forEach((b) => {
+            const on = b === btn;
+            b.classList.toggle("active", on);
+            b.setAttribute("aria-selected", on ? "true" : "false");
+          });
           renderAccounts();
         });
       });
@@ -1748,6 +1862,10 @@
       const [profiles, daily] = await Promise.all([profilesP, dailyP]);
       initProfiles(profiles || undefined);
       initDailyTop(daily || undefined);
+      if (initialMacro !== "overview") {
+        setMacroTab(initialMacro, { updateHash: false, scrollTop: false });
+      }
+      resizeVisiblePlots();
     } catch (err) {
       root.innerHTML = `<p class="err">Chargement impossible — ${esc(err)}. Servir le dossier via HTTP.</p>`;
     }
