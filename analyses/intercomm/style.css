@@ -64,7 +64,15 @@ details.flow-item[open] { border-color: var(--accent); }
 .flow-title { font-weight: 600; }
 .flow-meta { color: var(--muted); font-size: 0.78rem; }
 .flow-posts { padding: 0 12px 12px; border-top: 1px solid var(--border); }
+.flow-section { padding-top: 10px; }
+.flow-section + .flow-section { margin-top: 6px; border-top: 1px dashed var(--border); }
+.flow-section-title {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.02em;
+  text-transform: uppercase; color: var(--muted); margin: 0 0 4px;
+}
 .post-text { font-size: 0.8rem; white-space: pre-wrap; word-break: break-word; padding: 8px 0; }
+.flow-post-rt { border-left: 2px solid rgba(77, 138, 240, 0.55); padding-left: 8px; }
+.flow-post-ix { border-left: 2px solid rgba(120, 180, 120, 0.55); padding-left: 8px; }
 .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; display: inline-block; }
 .comm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 14px; }
 .comm-acct { padding-bottom: 10px; }

@@ -658,33 +658,59 @@
       <div class="treemap-grid">${cards}</div>`;
   }
 
+  function flowPostCard(p, { rtMode = false } = {}) {
+    const typ = String(p.type || "").toLowerCase();
+    if (rtMode) {
+      const rtN = p.rtCount != null ? Number(p.rtCount) : null;
+      const meta = [
+        `@${esc(p.target || p.contentAuthor || "?")}`,
+        p.date ? esc(p.date) : "",
+        rtN != null && rtN > 0 ? `${fmt(rtN)} RT dans ce flux` : "cible RT",
+      ].filter(Boolean).join(" · ");
+      return `<div class="post-text flow-post-rt"><span class="flow-meta">${meta}</span><br>${esc(p.text || "")}</div>`;
+    }
+    return `<div class="post-text flow-post-ix"><span class="flow-meta">@${esc(p.author)} → @${esc(p.target)} · ${esc(p.date)} · ${esc(typ || "interaction")}</span><br>${esc(p.text || "")}</div>`;
+  }
+
   function flowsHtml(ph) {
     const edges = (ph.edges || []).slice(0, 30);
     if (!edges.length) return `<p class="hint">Aucun flux intercommunautaire (hors diagonale interne).</p>`;
     return edges.map((e) => {
-      const nonRt = (e.topPosts || []).filter((p) => String(p.type || "").toLowerCase() !== "retweet");
-      const rtSamples = (e.topRtTargets || []).length
-        ? e.topRtTargets
-        : (e.topPosts || []).filter((p) => String(p.type || "").toLowerCase() === "retweet");
-      const sample = (nonRt.length ? nonRt : rtSamples).slice(0, 4);
-      const posts = sample.map((p) =>
-        `<div class="post-text"><span class="flow-meta">@${esc(p.author)} → @${esc(p.target)} · ${esc(p.date)} · ${esc(p.type)}</span><br>${esc(p.text)}</div>`
-      ).join("");
-      let emptyHint = "<p class='hint'>Pas d'exemples disponibles pour ce flux.</p>";
-      if (!sample.length && (e.rt || 0) > 0 && (e.nonRt || 0) === 0) {
-        emptyHint = `<p class='hint'>Flux 100&nbsp;% RT (${fmt(e.rt)}) — aucun extrait attaché.</p>`;
-      } else if (!sample.length && (e.nonRt || 0) === 0) {
-        emptyHint = "<p class='hint'>Pas d'exemples non-RT.</p>";
-      } else if (sample.length && !nonRt.length && rtSamples.length) {
-        // préfixe déjà dans chaque carte via type=retweet
-      }
+      const nonRt = (e.topPosts || [])
+        .filter((p) => {
+          const t = String(p.type || "").toLowerCase();
+          return t && t !== "retweet";
+        })
+        .slice(0, 4);
+      const rtSamples = (e.topRtTargets || [])
+        .filter((p) => String(p.type || "").toLowerCase() === "retweet" || p.rtCount != null || p.target)
+        .slice(0, 4);
+      const rtBlock = (e.rt || 0) > 0
+        ? `<div class="flow-section">
+            <div class="flow-section-title">Flux RT · ${fmt(e.rt)} (${esc(e.rtPct)}%)</div>
+            ${rtSamples.length
+              ? rtSamples.map((p) => flowPostCard(p, { rtMode: true })).join("")
+              : `<p class="hint">Aucune publication cible RT listée pour ce flux.</p>`}
+          </div>`
+        : "";
+      const ixBlock = (e.nonRt || 0) > 0 || nonRt.length
+        ? `<div class="flow-section">
+            <div class="flow-section-title">Flux interactions · reply / quote / mention${(e.nonRt || 0) > 0 ? ` · ${fmt(e.nonRt)}` : ""}</div>
+            ${nonRt.length
+              ? nonRt.map((p) => flowPostCard(p, { rtMode: false })).join("")
+              : `<p class="hint">Pas d'exemples reply / quote / mention (hors RT).</p>`}
+          </div>`
+        : `<div class="flow-section">
+            <div class="flow-section-title">Flux interactions · reply / quote / mention</div>
+            <p class="hint">Aucune interaction hors RT sur ce flux.</p>
+          </div>`;
       return `<details class="flow-item">
         <summary>
           <span class="dot" style="background:${esc(e.sourceColor)}"></span>
           <span class="flow-title">@${esc(e.sourceHub)} → @${esc(e.targetHub)}</span>
-          <span class="flow-meta">${fmt(e.total)} · RT ${fmt(e.rt)} (${esc(e.rtPct)}%)</span>
+          <span class="flow-meta">${fmt(e.total)} · RT ${fmt(e.rt)} (${esc(e.rtPct)}%) · ix ${fmt(e.nonRt || 0)}</span>
         </summary>
-        <div class="flow-posts">${posts || emptyHint}</div>
+        <div class="flow-posts">${rtBlock}${ixBlock}</div>
       </details>`;
     }).join("");
   }
@@ -785,7 +811,7 @@
         </div>
         <div class="side-box">
           <h2>Interactions principales</h2>
-          <p class="hint">${fmt((ph.edges || []).length)} flux croisés · exemples = reply / quote / mention</p>
+          <p class="hint">${fmt((ph.edges || []).length)} flux croisés · chaque flux sépare <strong>RT</strong> (publications cibles les plus retweetées) et <strong>interactions</strong> (reply / quote / mention, hors RT)</p>
           <div id="flows">${flowsHtml(ph)}</div>
         </div>
       </div>
