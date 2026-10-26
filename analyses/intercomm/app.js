@@ -734,24 +734,49 @@
         }).join("")
       : `<p class="hint">Aucun flux reply / quote / mention (hors RT) entre les pôles affichés.</p>`;
 
-    return `<div class="flows-split">
-      <div class="flows-pane flows-pane-rt">
-        <div class="flows-pane-head">
-          <span class="flows-pane-kicker">Bloc 1</span>
-          <h3 class="flows-pane-title">Flux RT</h3>
-          <p class="hint">Publications <strong>cibles</strong> les plus retweetées dans chaque flux · ${fmt(rtEdges.length)} flux</p>
-        </div>
+    return `<div class="flows-tabs-wrap" id="flows-tabs-wrap">
+      <div class="flows-tabs" role="tablist" aria-label="Type de flux">
+        <button type="button" class="flows-tab active" role="tab" aria-selected="true"
+          aria-controls="flows-panel-rt" id="flows-tab-rt" data-flows="rt">
+          <span class="flows-tab-label">Flux RT</span>
+          <span class="flows-tab-count">${fmt(rtEdges.length)}</span>
+        </button>
+        <button type="button" class="flows-tab" role="tab" aria-selected="false"
+          aria-controls="flows-panel-ix" id="flows-tab-ix" data-flows="ix">
+          <span class="flows-tab-label">Flux interactions</span>
+          <span class="flows-tab-count">${fmt(ixEdges.length)}</span>
+        </button>
+      </div>
+      <div class="flows-panel flows-pane-rt is-active" id="flows-panel-rt" role="tabpanel" aria-labelledby="flows-tab-rt">
+        <p class="hint">Publications <strong>cibles</strong> les plus retweetées dans chaque flux.</p>
         <div class="flows-pane-body">${rtList}</div>
       </div>
-      <div class="flows-pane flows-pane-ix">
-        <div class="flows-pane-head">
-          <span class="flows-pane-kicker">Bloc 2</span>
-          <h3 class="flows-pane-title">Flux interactions</h3>
-          <p class="hint">Reply / quote / mention <strong>uniquement</strong> (aucun RT) · ${fmt(ixEdges.length)} flux</p>
-        </div>
+      <div class="flows-panel flows-pane-ix" id="flows-panel-ix" role="tabpanel" aria-labelledby="flows-tab-ix" hidden>
+        <p class="hint">Reply / quote / mention <strong>uniquement</strong> (aucun RT).</p>
         <div class="flows-pane-body">${ixList}</div>
       </div>
     </div>`;
+  }
+
+  function bindFlowsTabs() {
+    const wrap = document.getElementById("flows-tabs-wrap");
+    if (!wrap || wrap.dataset.bound) return;
+    wrap.dataset.bound = "1";
+    wrap.addEventListener("click", (ev) => {
+      const btn = ev.target.closest("[data-flows]");
+      if (!btn) return;
+      const mode = btn.dataset.flows;
+      wrap.querySelectorAll(".flows-tab").forEach((b) => {
+        const on = b === btn;
+        b.classList.toggle("active", on);
+        b.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      wrap.querySelectorAll(".flows-panel").forEach((panel) => {
+        const on = panel.id === `flows-panel-${mode}`;
+        panel.hidden = !on;
+        panel.classList.toggle("is-active", on);
+      });
+    });
   }
 
   const MACRO_TABS = [
@@ -940,7 +965,7 @@
         </div>
         <div class="side-box">
           <h2>Interactions principales</h2>
-          <p class="hint">${fmt((ph.edges || []).length)} flux croisés au total — le panneau est <strong>coupé en deux blocs</strong> : RT à part, interactions (hors RT) à part.</p>
+          <p class="hint">${fmt((ph.edges || []).length)} flux croisés — choisissez l’onglet <strong>RT</strong> ou <strong>interactions</strong> (hors RT).</p>
           <div id="flows">${flowsHtml(ph)}</div>
         </div>
       </div>
@@ -1857,6 +1882,7 @@
       PHASE = pack.phase;
       root.innerHTML = pageHtml(pack);
       bindMacroTabs();
+      bindFlowsTabs();
       const initialMacro = resolveInitialMacro();
       // Overview stays visible for Plotly first paint unless deep-link asks otherwise.
       if (initialMacro === "overview") setMacroTab("overview", { updateHash: false, scrollTop: false });
