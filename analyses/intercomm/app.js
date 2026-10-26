@@ -662,57 +662,96 @@
     const typ = String(p.type || "").toLowerCase();
     if (rtMode) {
       const rtN = p.rtCount != null ? Number(p.rtCount) : null;
+      const who = p.contentAuthor || p.target || "?";
       const meta = [
-        `@${esc(p.target || p.contentAuthor || "?")}`,
+        `Publication cible · @${esc(who)}`,
         p.date ? esc(p.date) : "",
         rtN != null && rtN > 0 ? `${fmt(rtN)} RT dans ce flux` : "cible RT",
       ].filter(Boolean).join(" · ");
       return `<div class="post-text flow-post-rt"><span class="flow-meta">${meta}</span><br>${esc(p.text || "")}</div>`;
     }
-    return `<div class="post-text flow-post-ix"><span class="flow-meta">@${esc(p.author)} → @${esc(p.target)} · ${esc(p.date)} · ${esc(typ || "interaction")}</span><br>${esc(p.text || "")}</div>`;
+    const kind = typ === "original" ? "mention" : (typ || "interaction");
+    return `<div class="post-text flow-post-ix"><span class="flow-meta">@${esc(p.author)} → @${esc(p.target)} · ${esc(p.date)} · ${esc(kind)}</span><br>${esc(p.text || "")}</div>`;
+  }
+
+  function nonRtSamples(e) {
+    return (e.topPosts || [])
+      .filter((p) => {
+        const t = String(p.type || "").toLowerCase();
+        return t && t !== "retweet";
+      })
+      .slice(0, 4);
+  }
+
+  function rtSamplesOf(e) {
+    return (e.topRtTargets || [])
+      .filter((p) => p && (p.rtCount != null || p.target || String(p.type || "").toLowerCase() === "retweet"))
+      .slice(0, 4);
+  }
+
+  function flowEdgeSummary(e, mode) {
+    const meta = mode === "rt"
+      ? `${fmt(e.rt)} RT (${esc(e.rtPct)} % du flux)`
+      : `${fmt(e.nonRt || 0)} interactions hors RT`;
+    return `<summary>
+      <span class="dot" style="background:${esc(e.sourceColor)}"></span>
+      <span class="flow-title">@${esc(e.sourceHub)} → @${esc(e.targetHub)}</span>
+      <span class="flow-badge flow-badge-${mode}">${mode === "rt" ? "RT" : "ix"}</span>
+      <span class="flow-meta">${meta}</span>
+    </summary>`;
   }
 
   function flowsHtml(ph) {
     const edges = (ph.edges || []).slice(0, 30);
     if (!edges.length) return `<p class="hint">Aucun flux intercommunautaire (hors diagonale interne).</p>`;
-    return edges.map((e) => {
-      const nonRt = (e.topPosts || [])
-        .filter((p) => {
-          const t = String(p.type || "").toLowerCase();
-          return t && t !== "retweet";
-        })
-        .slice(0, 4);
-      const rtSamples = (e.topRtTargets || [])
-        .filter((p) => String(p.type || "").toLowerCase() === "retweet" || p.rtCount != null || p.target)
-        .slice(0, 4);
-      const rtBlock = (e.rt || 0) > 0
-        ? `<div class="flow-section">
-            <div class="flow-section-title">Flux RT · ${fmt(e.rt)} (${esc(e.rtPct)}%)</div>
-            ${rtSamples.length
-              ? rtSamples.map((p) => flowPostCard(p, { rtMode: true })).join("")
-              : `<p class="hint">Aucune publication cible RT listée pour ce flux.</p>`}
-          </div>`
-        : "";
-      const ixBlock = (e.nonRt || 0) > 0 || nonRt.length
-        ? `<div class="flow-section">
-            <div class="flow-section-title">Flux interactions · reply / quote / mention${(e.nonRt || 0) > 0 ? ` · ${fmt(e.nonRt)}` : ""}</div>
-            ${nonRt.length
-              ? nonRt.map((p) => flowPostCard(p, { rtMode: false })).join("")
-              : `<p class="hint">Pas d'exemples reply / quote / mention (hors RT).</p>`}
-          </div>`
-        : `<div class="flow-section">
-            <div class="flow-section-title">Flux interactions · reply / quote / mention</div>
-            <p class="hint">Aucune interaction hors RT sur ce flux.</p>
-          </div>`;
-      return `<details class="flow-item">
-        <summary>
-          <span class="dot" style="background:${esc(e.sourceColor)}"></span>
-          <span class="flow-title">@${esc(e.sourceHub)} → @${esc(e.targetHub)}</span>
-          <span class="flow-meta">${fmt(e.total)} · RT ${fmt(e.rt)} (${esc(e.rtPct)}%) · ix ${fmt(e.nonRt || 0)}</span>
-        </summary>
-        <div class="flow-posts">${rtBlock}${ixBlock}</div>
-      </details>`;
-    }).join("");
+
+    const rtEdges = edges.filter((e) => (e.rt || 0) > 0);
+    const ixEdges = edges.filter((e) => (e.nonRt || 0) > 0 || nonRtSamples(e).length > 0);
+
+    const rtList = rtEdges.length
+      ? rtEdges.map((e, i) => {
+          const samples = rtSamplesOf(e);
+          const body = samples.length
+            ? samples.map((p) => flowPostCard(p, { rtMode: true })).join("")
+            : `<p class="hint">Aucune publication cible RT listée pour ce flux.</p>`;
+          return `<details class="flow-item flow-item-rt"${i === 0 ? " open" : ""}>
+            ${flowEdgeSummary(e, "rt")}
+            <div class="flow-posts">${body}</div>
+          </details>`;
+        }).join("")
+      : `<p class="hint">Aucun flux RT entre les pôles affichés.</p>`;
+
+    const ixList = ixEdges.length
+      ? ixEdges.map((e, i) => {
+          const samples = nonRtSamples(e);
+          const body = samples.length
+            ? samples.map((p) => flowPostCard(p, { rtMode: false })).join("")
+            : `<p class="hint">Pas d’exemples reply / quote / mention pour ce flux.</p>`;
+          return `<details class="flow-item flow-item-ix"${i === 0 ? " open" : ""}>
+            ${flowEdgeSummary(e, "ix")}
+            <div class="flow-posts">${body}</div>
+          </details>`;
+        }).join("")
+      : `<p class="hint">Aucun flux reply / quote / mention (hors RT) entre les pôles affichés.</p>`;
+
+    return `<div class="flows-split">
+      <div class="flows-pane flows-pane-rt">
+        <div class="flows-pane-head">
+          <span class="flows-pane-kicker">Bloc 1</span>
+          <h3 class="flows-pane-title">Flux RT</h3>
+          <p class="hint">Publications <strong>cibles</strong> les plus retweetées dans chaque flux · ${fmt(rtEdges.length)} flux</p>
+        </div>
+        <div class="flows-pane-body">${rtList}</div>
+      </div>
+      <div class="flows-pane flows-pane-ix">
+        <div class="flows-pane-head">
+          <span class="flows-pane-kicker">Bloc 2</span>
+          <h3 class="flows-pane-title">Flux interactions</h3>
+          <p class="hint">Reply / quote / mention <strong>uniquement</strong> (aucun RT) · ${fmt(ixEdges.length)} flux</p>
+        </div>
+        <div class="flows-pane-body">${ixList}</div>
+      </div>
+    </div>`;
   }
 
   const MACRO_TABS = [
@@ -901,7 +940,7 @@
         </div>
         <div class="side-box">
           <h2>Interactions principales</h2>
-          <p class="hint">${fmt((ph.edges || []).length)} flux croisés · chaque flux sépare <strong>RT</strong> (publications cibles les plus retweetées) et <strong>interactions</strong> (reply / quote / mention, hors RT)</p>
+          <p class="hint">${fmt((ph.edges || []).length)} flux croisés au total — le panneau est <strong>coupé en deux blocs</strong> : RT à part, interactions (hors RT) à part.</p>
           <div id="flows">${flowsHtml(ph)}</div>
         </div>
       </div>
