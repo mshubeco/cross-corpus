@@ -127,10 +127,15 @@ a.handle:hover, a.link:hover { text-decoration: underline; }
 .heatmap-table td.rowhead { text-align: left; font-weight: 600; color: var(--text); background: var(--surface2); white-space: nowrap; }
 .heatmap-table td.cell { font-variant-numeric: tabular-nums; font-weight: 600; }
 .heatmap-table td.cell .raw { display: block; font-size: 0.62rem; font-weight: 400; opacity: 0.75; }
+.rt-table td.median, .rt-table th.median { background: rgba(77, 138, 240, 0.18); color: var(--text); }
+.rt-table td.rowhead .hub { margin-left: 4px; font-weight: 500; color: var(--muted); }
+.rt-kpis .v { font-size: 1.55rem; }
+.rt-kpis .kpi { min-width: 148px; }
+.rt-kpis .hint { margin: 6px 0 0; }
 .corpus-switch { display: none; } /* remplacé par .macro-tabs */
 .macro-tabs {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 10px;
   margin: 4px 0 10px;
   position: sticky;

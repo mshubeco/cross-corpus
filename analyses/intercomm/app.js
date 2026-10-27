@@ -784,6 +784,7 @@
     { id: "poles", num: "2", label: "Portrait des pôles", desc: "Lexique, géo, amplification…" },
     { id: "top5", num: "3", label: "Top 5 par communauté", desc: "Comptes & publications" },
     { id: "daily", num: "4", label: "Top 5 par jour", desc: "Publications quotidiennes" },
+    { id: "rtdist", num: "5", label: "Retweets reçus", desc: "Distribution et médiane" },
   ];
   let activeMacro = "overview";
 
@@ -793,7 +794,7 @@
         <button type="button" class="macro-tab${t.id === "overview" ? " active" : ""}"
           role="tab" id="macro-tab-${t.id}" aria-controls="macro-panel-${t.id}"
           aria-selected="${t.id === "overview" ? "true" : "false"}"
-          data-macro="${t.id}">
+          data-macro="${t.id}"${t.id === "rtdist" ? " hidden" : ""}>
           <span class="macro-num" aria-hidden="true">${t.num}</span>
           <span class="macro-copy">
             <span class="macro-label">${t.label}</span>
@@ -801,7 +802,7 @@
           </span>
         </button>`).join("")}
     </nav>
-    <p class="macro-hint">Quatre sections d’analyse — cliquez un onglet pour basculer (le contenu n’est pas perdu).</p>`;
+    <p class="macro-hint">Cliquez un onglet pour basculer (le contenu n’est pas perdu).</p>`;
   }
 
   function resizeVisiblePlots() {
@@ -846,6 +847,7 @@
       resizeVisiblePlots();
       if (id === "poles" && PP) renderProfiles();
       if (id === "top5") renderAccounts();
+      if (id === "rtdist" && RT) renderRtDist();
     });
   }
 
@@ -1009,6 +1011,10 @@
 
       <section class="macro-panel" id="macro-panel-daily" role="tabpanel" aria-labelledby="macro-tab-daily" hidden>
         ${dailyTopSectionHtml()}
+      </section>
+
+      <section class="macro-panel" id="macro-panel-rtdist" role="tabpanel" aria-labelledby="macro-tab-rtdist" hidden>
+        ${rtDistSectionHtml()}
       </section>
 
       <p class="subtitle" style="margin-top:28px">
@@ -1855,6 +1861,223 @@
       </section>`;
   }
 
+  /* ---------- Retweets reçus (fichier <corpus>_rt_dist.json) ---------- */
+  const RT_BIN_COLORS = [
+    "#3a4254", "#5c6b82", "#3d7ea6", "#2a9d8f", "#7cb342",
+    "#e6c229", "#e09a3a", "#e06a3a", "#d64545", "#c43b6e", "#8e44ad",
+  ];
+  let RT = null;
+  let rtMode = "share";
+  let rtRendered = false;
+
+  function fmtRt(n) {
+    if (n == null || Number.isNaN(Number(n))) return "—";
+    return Number(n).toLocaleString("fr-FR", { maximumFractionDigits: 2 });
+  }
+
+  function pct1(part, total) {
+    if (!total) return "—";
+    return `${(100 * part / total).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} %`;
+  }
+
+  function rtCommName(c) {
+    return c.hub ? `${c.label} · @${c.hub}` : (c.label || "Autres");
+  }
+
+  function rtDistSectionHtml() {
+    return `
+      <h2>Retweets reçus par publication</h2>
+      <div class="howto-box">
+        <strong>Comment lire cet onglet</strong>
+        <ol>
+          <li>Chaque publication compte une fois : tweet <strong>original</strong>, <strong>réponse</strong> ou <strong>citation</strong>. Les retweets sont exclus, leur compteur recopie celui du tweet d’origine.</li>
+          <li>La valeur est le <strong>retweet_count</strong> plateforme, relevé à la collecte.</li>
+          <li>La communauté est celle de l’<strong>auteur</strong> (même partition Louvain que le connectome). <em>Autres</em> regroupe les auteurs hors des pôles affichés.</li>
+          <li>La <strong>médiane</strong> inclut les publications à 0 retweet : c’est le niveau tel qu’au moins la moitié des publications du pôle est à ce nombre ou en dessous.</li>
+        </ol>
+      </div>
+      <p class="hint" id="rt-meta"></p>
+      <div class="hub-note" id="rt-median-note"></div>
+      <div class="kpi-row rt-kpis" id="rt-kpis"></div>
+      <div class="viz-box" id="rt-median-box" hidden>
+        <div class="viz-title">Médiane par communauté</div>
+        <div id="rt-median"></div>
+      </div>
+      <div class="viz-box">
+        <div class="viz-title">Distribution du nombre de retweets reçus</div>
+        <div class="metric-tabs" id="rt-mode-tabs" role="tablist" aria-label="Échelle de la distribution">
+          <button type="button" class="metric-tab active" role="tab" aria-selected="true" data-rtmode="share">Part des publications</button>
+          <button type="button" class="metric-tab" role="tab" aria-selected="false" data-rtmode="count">Effectifs</button>
+        </div>
+        <p class="hint" id="rt-stack-hint"></p>
+        <div id="rt-stack" class="activity-chart"></div>
+      </div>
+      <div class="viz-box">
+        <div class="viz-title">Médiane et résumé de la distribution</div>
+        <div class="heatmap-wrap" id="rt-table"></div>
+      </div>`;
+  }
+
+  function rtMedianNote(data) {
+    const comms = data.communities || [];
+    const overall = data.overall || {};
+    const corpus = overall.n
+      ? ` Médiane du corpus : ${fmtRt(overall.median)} (${fmt(overall.n)} publications).`
+      : "";
+    const allZero = comms.length > 0 && comms.every((c) => Number(c.median) === 0);
+    if (allZero) {
+      return `Médiane = 0 dans chaque communauté : au moins la moitié des publications n’a reçu aucun retweet.${corpus} Les pôles se distinguent par la part sans retweet et par la queue (moyenne, P90, maximum).`;
+    }
+    return `La médiane est le nombre de retweets tel qu’au moins la moitié des publications du pôle est à ce niveau ou en dessous.${corpus}`;
+  }
+
+  function rtKpisHtml(comms) {
+    return comms.map((c) => `
+      <div class="kpi" style="border-top:3px solid ${esc(c.color || "#9aa3b5")}">
+        <div class="v">${fmtRt(c.median)}</div>
+        <div class="l">médiane · ${esc(c.hub ? `@${c.hub}` : c.label)}</div>
+        <p class="hint">${pct1(c.nZero, c.n)} sans RT · moyenne ${fmtRt(c.mean)}</p>
+      </div>`).join("");
+  }
+
+  function rtTableHtml(comms) {
+    const rows = comms.map((c) => `
+      <tr>
+        <td class="rowhead"><span class="dot" style="background:${esc(c.color || "#9aa3b5")}"></span> ${esc(c.label)}${c.hub ? ` <span class="hub">@${esc(c.hub)}</span>` : ""}</td>
+        <td class="cell">${fmt(c.n)}</td>
+        <td class="cell median">${fmtRt(c.median)}</td>
+        <td class="cell">${fmtRt(c.mean)}</td>
+        <td class="cell">${fmtRt(c.p75)}</td>
+        <td class="cell">${fmtRt(c.p90)}</td>
+        <td class="cell">${fmtRt(c.p99)}</td>
+        <td class="cell">${fmt(c.max)}</td>
+        <td class="cell">${pct1(c.nZero, c.n)}</td>
+      </tr>`).join("");
+    return `<table class="heatmap-table rt-table">
+      <thead><tr>
+        <th>Communauté</th><th>Publications</th><th class="median">Médiane</th>
+        <th>Moyenne</th><th>P75</th><th>P90</th><th>P99</th><th>Max</th><th>Part à 0 RT</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+  }
+
+  function plotRtMedians(el, comms) {
+    if (!el) return;
+    const labels = comms.map(rtCommName);
+    Plotly.newPlot(el, [{
+      type: "bar",
+      orientation: "h",
+      y: labels,
+      x: comms.map((c) => Number(c.median) || 0),
+      marker: { color: comms.map((c) => c.color || "#9aa3b5") },
+      text: comms.map((c) => fmtRt(c.median)),
+      textposition: "outside",
+      cliponaxis: false,
+      hovertemplate: "%{y}<br>médiane %{x}<extra></extra>",
+    }], plotlyLayout({
+      height: Math.max(220, 42 * comms.length + 40),
+      margin: { t: 8, b: 40, l: 160, r: 48 },
+      xaxis: { gridcolor: "#2a3142", title: "retweets (médiane)", rangemode: "tozero" },
+      yaxis: { autorange: "reversed", gridcolor: "#2a3142" },
+    }), { responsive: true, displayModeBar: false });
+  }
+
+  function plotRtStack(el, data, mode) {
+    if (!el || !data) return;
+    const comms = data.communities || [];
+    const bins = data.bins || [];
+    const y = comms.map(rtCommName);
+    const share = mode !== "count";
+    const traces = bins.map((b, i) => {
+      const counts = comms.map((c) => Number((c.counts || [])[i]) || 0);
+      const x = share
+        ? comms.map((c, j) => (c.n ? 100 * counts[j] / c.n : 0))
+        : counts;
+      const customdata = counts.map((n, j) => {
+        const label = rtCommName(comms[j]);
+        return [label, fmt(n), pct1(n, comms[j].n)];
+      });
+      return {
+        type: "bar",
+        orientation: "h",
+        name: b.label,
+        y,
+        x,
+        marker: { color: RT_BIN_COLORS[i % RT_BIN_COLORS.length] },
+        customdata,
+        hovertemplate: "%{customdata[0]}<br>" + b.label + " retweet(s)<br>%{customdata[1]} publications · %{customdata[2]}<extra></extra>",
+      };
+    });
+    Plotly.newPlot(el, traces, plotlyLayout({
+      barmode: "stack",
+      height: Math.max(360, 48 * comms.length + 120),
+      margin: { t: 8, b: 88, l: 168, r: 16 },
+      xaxis: {
+        gridcolor: "#2a3142",
+        title: share ? "% des publications" : "publications",
+        rangemode: "tozero",
+      },
+      yaxis: { autorange: "reversed", gridcolor: "#2a3142" },
+      legend: { orientation: "h", y: -0.28, font: { size: 10 }, traceorder: "reversed" },
+    }), { responsive: true, displayModeBar: false });
+    const hint = document.getElementById("rt-stack-hint");
+    if (hint) {
+      hint.textContent = share
+        ? "Chaque barre fait 100 % des publications hors RT de la communauté. La classe 0 est la part sans aucun retweet."
+        : "Nombre de publications hors RT dans chaque classe de retweets reçus.";
+    }
+  }
+
+  function renderRtDist() {
+    if (!RT || rtRendered) return;
+    const comms = RT.communities || [];
+    if (!comms.length) return;
+    rtRendered = true;
+    const meta = document.getElementById("rt-meta");
+    if (meta) {
+      const o = RT.overall || {};
+      meta.textContent = o.n
+        ? `${fmt(o.n)} publications hors RT · ${pct1(o.nZero, o.n)} sans retweet · moyenne ${fmtRt(o.mean)}.`
+        : "";
+    }
+    const note = document.getElementById("rt-median-note");
+    if (note) note.textContent = rtMedianNote(RT);
+    const kpis = document.getElementById("rt-kpis");
+    if (kpis) kpis.innerHTML = rtKpisHtml(comms);
+    const box = document.getElementById("rt-median-box");
+    const allZero = comms.every((c) => Number(c.median) === 0);
+    if (box) box.hidden = allZero;
+    if (!allZero) plotRtMedians(document.getElementById("rt-median"), comms);
+    const table = document.getElementById("rt-table");
+    if (table) table.innerHTML = rtTableHtml(comms);
+    plotRtStack(document.getElementById("rt-stack"), RT, rtMode);
+    const tabs = document.getElementById("rt-mode-tabs");
+    if (tabs && !tabs.dataset.bound) {
+      tabs.dataset.bound = "1";
+      tabs.addEventListener("click", (ev) => {
+        const btn = ev.target.closest("[data-rtmode]");
+        if (!btn) return;
+        rtMode = btn.dataset.rtmode;
+        tabs.querySelectorAll(".metric-tab").forEach((b) => {
+          const on = b === btn;
+          b.classList.toggle("active", on);
+          b.setAttribute("aria-selected", on ? "true" : "false");
+        });
+        plotRtStack(document.getElementById("rt-stack"), RT, rtMode);
+      });
+    }
+  }
+
+  function initRtDist(data) {
+    if (!data || !Array.isArray(data.communities) || !data.communities.length) return false;
+    RT = data;
+    const tab = document.getElementById("macro-tab-rtdist");
+    if (tab) tab.hidden = false;
+    if (activeMacro === "rtdist") renderRtDist();
+    return true;
+  }
+
   function tick() {
     return new Promise((r) => requestAnimationFrame(() => setTimeout(r, 0)));
   }
@@ -1877,6 +2100,7 @@
       // Prefetch heavy secondary payloads while the main pack downloads.
       const profilesP = fetchJsonQuiet(`./${encodeURIComponent(CORPUS)}_profiles.json`).catch(() => null);
       const dailyP = fetchJsonQuiet(`./${encodeURIComponent(CORPUS)}_daily_top.json`).catch(() => null);
+      const rtP = fetchJsonQuiet(`./${encodeURIComponent(CORPUS)}_rt_dist.json`).catch(() => null);
       const pack = await fetchJsonQuiet(`./${encodeURIComponent(CORPUS)}.json`);
       document.title = `Flux intercommunautaires — ${pack.corpus?.label || CORPUS}`;
       PHASE = pack.phase;
@@ -1924,10 +2148,13 @@
       });
 
       // Section loaders already in HTML; hydrate when prefetch resolves.
-      const [profiles, daily] = await Promise.all([profilesP, dailyP]);
+      const [profiles, daily, rt] = await Promise.all([profilesP, dailyP, rtP]);
       initProfiles(profiles || undefined);
       initDailyTop(daily || undefined);
-      if (initialMacro !== "overview") {
+      const rtOk = initRtDist(rt);
+      if (initialMacro === "rtdist" && !rtOk) {
+        setMacroTab("overview", { updateHash: false, scrollTop: false });
+      } else if (initialMacro !== "overview") {
         setMacroTab(initialMacro, { updateHash: false, scrollTop: false });
       }
       resizeVisiblePlots();
