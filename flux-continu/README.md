@@ -9,6 +9,8 @@ Viewer : [flux-continu](https://mshubeco.github.io/cross-corpus/flux-continu/?co
 | **Fenêtre 3j (lissée)** — défaut | `?corpus=<id>` | `manifest.json` + `frames/` | Frame **D** = interactions **D−2 → D**. Un compte peut rester visible 1–2 j après son activité. |
 | **Journalier strict** | `?corpus=<id>&tempo=d1` | `manifest_daily.json` + `frames_daily/` | Frame **D** = interactions du **seul jour D**. |
 
+Disponible pour **tous** les corpus du sélecteur (ebola, ebola_2_2026, hantavirus, mpox, macron_nucleaire, hmpv, hmpv_fr, canicule). Les jours sans arête après filtre `min_edge_weight` sont omis (souvent moins de frames qu’en fenêtre 3j).
+
 Critères communs : RT + reply + quote + mention · FA2/frame + Procrustes · tracks Louvain (Jaccard ≥ 0,3) · couleurs Louvain global.
 
 ## Régénération
