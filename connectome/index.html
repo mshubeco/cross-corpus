@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Connectomes — cross_corpus</title>
-  <!-- connectome-ui v20261028-producers : centralité Producteurs (pubs hors RT) -->
+  <!-- connectome-ui v20261028-typology : macro-classes et catégories (persona du profil) -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -250,6 +250,44 @@
     #colorModeBtns .color-btn.active[data-mode="rt_classes"] {
       color: #fff8e8; background: rgba(255,140,40,0.4); border-color: rgba(255,180,80,0.7);
     }
+    #colorModeBtns .color-btn.active[data-mode="typo_macro"] {
+      color: #e7f0ff; background: rgba(37,99,235,0.38); border-color: rgba(96,165,250,0.75);
+    }
+    #colorModeBtns .color-btn.active[data-mode="typo_cat"] {
+      color: #f6efff; background: rgba(124,58,237,0.38); border-color: rgba(167,139,250,0.75);
+    }
+    #typoLegend {
+      display: none; margin-top: 8px; padding-top: 8px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      max-height: 280px; overflow: auto;
+    }
+    #typoLegend.visible { display: block; }
+    #typoLegend .leg-title {
+      font-size: 9.5px; letter-spacing: 0.05em; text-transform: uppercase;
+      color: #c9d7ee; font-weight: 700; margin-bottom: 6px;
+    }
+    #typoLegend .leg-note {
+      font-size: 10.5px; line-height: 1.35; color: #aeb6c2; margin: 0 0 8px;
+    }
+    #typoLegend .leg-row {
+      display: flex; align-items: flex-start; gap: 8px;
+      margin-top: 4px; color: #c5ccd6; font-size: 10.5px; line-height: 1.3;
+    }
+    #typoLegend .leg-row .n {
+      margin-left: auto; color: #8b93a0; font-variant-numeric: tabular-nums; flex-shrink: 0;
+    }
+    #typoLegend .sw {
+      width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; margin-top: 1px;
+    }
+    #typoLegend .swatch-row { display: flex; gap: 2px; flex-shrink: 0; margin-top: 2px; }
+    #typoLegend .swatch-row i {
+      width: 9px; height: 12px; border-radius: 2px; display: block;
+    }
+    #typoLegend .leg-macro {
+      margin-top: 8px; color: #8b93a0; font-size: 9px; letter-spacing: 0.05em;
+      text-transform: uppercase; font-weight: 700;
+    }
+    #typoLegend .leg-row.is-zero { opacity: 0.45; }
     #hashModeBtn[hidden], #lemmaModeBtn[hidden] { display: none !important; }
     #hashModeBtn:disabled, #lemmaModeBtn:disabled {
       opacity: 0.35; cursor: not-allowed; pointer-events: none;
@@ -369,6 +407,9 @@
     #tooltip.acct .acct-handle:hover { text-decoration: underline; }
     #tooltip.acct .acct-meta {
       margin-top: 5px; color: #8b93a0; font-size: 11.5px; line-height: 1.35;
+    }
+    #tooltip.acct .acct-typo {
+      margin-top: 3px; color: #d5deea; font-size: 12px; font-weight: 650; line-height: 1.3;
     }
     #tooltip.acct .acct-count {
       margin-top: 8px; color: #e4eaf2; font-size: 12.5px; font-weight: 650;
@@ -931,7 +972,7 @@
     </div>
     <div id="stats">—</div>
     <div id="colorModeBlock" title="v20261024a">
-      <div class="cmlabel">Couleurs des liens</div>
+      <div class="cmlabel">Couleurs du réseau</div>
       <div class="nav-hint" id="colorModeScopeHint" style="margin:0 0 6px;padding:0;border:0">
         Sur le graphe <b>Toutes interactions</b> uniquement
       </div>
@@ -939,7 +980,12 @@
         <button type="button" class="color-btn active" data-mode="community" id="hudColorCommunity">Communautés</button>
         <button type="button" class="color-btn" data-mode="rt_classes" id="hudColorRtClasses"
           title="Coloration des liens du graphe Toutes interactions selon la part RT (ce n’est pas le graphe RT)">Distinction RT / interactions</button>
+        <button type="button" class="color-btn" data-mode="typo_macro" id="hudColorTypoMacro"
+          title="Une teinte par macro-classe, dégradé entre les catégories de la même classe">Macro-classes</button>
+        <button type="button" class="color-btn" data-mode="typo_cat" id="hudColorTypoCat"
+          title="Une couleur distincte pour chacune des 20 catégories">Catégories</button>
       </div>
+      <div id="typoLegend" aria-label="Légende de la typologie des comptes"></div>
       <div id="rtColorLegend" aria-label="Légende Distinction RT / interactions">
         <div class="leg-title">Légende · graphe Toutes interactions</div>
         <div class="leg-note">Même topologie que l’onglet «&nbsp;Toutes interactions&nbsp;» — pas le graphe RT. Seule la couleur des liens change (part RT par arête).</div>
@@ -1086,6 +1132,14 @@ let currentCorpusId = null;
 let corporaList = [];
 const _graphParam = new URLSearchParams(location.search).get('graph');
 let graphMode = (_graphParam === 'rt' || _graphParam === 'rt_classes') ? _graphParam : 'all';
+/** Coloration du graphe Toutes interactions : communauté, ou typologie des comptes. */
+const _typoParam = new URLSearchParams(location.search).get('typo');
+let edgeColorMode = _typoParam === 'macro' ? 'typo_macro'
+  : _typoParam === 'cat' ? 'typo_cat'
+  : 'community';
+if ((edgeColorMode === 'typo_macro' || edgeColorMode === 'typo_cat') && graphMode === 'rt_classes') {
+  graphMode = 'all';
+}
 /** Centralité → taille des nœuds (positions FA2 inchangées). */
 const CENTRALITY_IDS = new Set(['in', 'out', 'w', 'pr', 'eig', 'prod']);
 const _centParam = new URLSearchParams(location.search).get('cent');
@@ -1393,7 +1447,7 @@ let lexScope = 'targets'; // 'sources' | 'targets'
 /** En mode Lemme : unigrammes ou bigrammes. */
 let lemmaForm = 'uni'; // 'uni' | 'bi'
 /** Build id (console + vérif cache). */
-const CONNECTOME_UI = '20261028-producers';
+const CONNECTOME_UI = '20261028-typology';
 
 const PUB_TYPE_ORDER = [
   { key: 'original', label: 'Original', short: 'Orig.', color: '#8ecf4a' },
@@ -2946,7 +3000,9 @@ function updateGraphModeButtons() {
     b.classList.toggle('active', tabActive);
   });
   syncLexModeButtons();
-  const modeKey = graphMode === 'rt_classes' ? 'rt_classes' : 'community';
+  const modeKey = graphMode === 'rt_classes'
+    ? 'rt_classes'
+    : (edgeColorMode === 'typo_macro' || edgeColorMode === 'typo_cat' ? edgeColorMode : 'community');
   document.querySelectorAll('#colorModeBtns .color-btn').forEach((b) => {
     b.classList.toggle('active', b.dataset.mode === modeKey);
   });
@@ -2959,10 +3015,12 @@ function updateGraphModeButtons() {
   const hint = document.getElementById('edgeColorHint');
   const scopeHint = document.getElementById('colorModeScopeHint');
   const rtMode = graphMode === 'rt_classes';
+  const typoOn = typologyActive();
   legend?.classList.toggle('visible', rtMode);
+  renderTypoLegend();
   if (scopeHint) scopeHint.style.display = showColorHud ? '' : 'none';
   if (hint) {
-    hint.classList.toggle('hidden', rtMode);
+    hint.classList.toggle('hidden', rtMode || typoOn);
     hint.textContent = 'Liens colorés par communauté des nœuds';
   }
   syncHashModeAvailability();
@@ -3010,13 +3068,299 @@ function setGraphMode(mode) {
   if (corp) loadCorpus(corp);
 }
 
+const TYPO_MACROS = [
+  { id: 'MED', label: 'Médias' },
+  { id: 'JOU', label: 'Journalisme' },
+  { id: 'POL', label: 'Politique' },
+  { id: 'ORG', label: 'Organisations' },
+  { id: 'SAV', label: 'Savoir' },
+  { id: 'NOT', label: 'Notoriété' },
+  { id: 'CIV', label: 'Société civile' },
+  { id: 'IND', label: 'Indéterminé' },
+];
+const TYPO_CATS = [
+  ['MED-HIST', 'Média historique', 'MED'],
+  ['MED-PURE', 'Média pure player', 'MED'],
+  ['MED-ALT', 'Média alternatif', 'MED'],
+  ['MED-ETAT', 'Média d’État étranger', 'MED'],
+  ['MED-ALERTE', 'Agrégateur d’alerte', 'MED'],
+  ['JOU-JOUR', 'Journaliste', 'JOU'],
+  ['JOU-EDIT', 'Éditorialiste', 'JOU'],
+  ['POL-ELU', 'Mandat politique', 'POL'],
+  ['POL-PARTI', 'Parti ou mouvement', 'POL'],
+  ['ORG-INST', 'Institution', 'ORG'],
+  ['ORG-SOC', 'Association ou syndicat', 'ORG'],
+  ['ORG-ENT', 'Entreprise', 'ORG'],
+  ['SAV-RECH', 'Recherche', 'SAV'],
+  ['SAV-EXP', 'Expertise', 'SAV'],
+  ['SAV-VERIF', 'Vérification', 'SAV'],
+  ['NOT-CELEB', 'Célébrité', 'NOT'],
+  ['NOT-CREA', 'Créateur', 'NOT'],
+  ['CIV-MIL', 'Militant', 'CIV'],
+  ['CIV-CIT', 'Citoyen', 'CIV'],
+  ['IND', 'Indéterminé', 'IND'],
+];
+const TYPO_CAT_LABEL = Object.fromEntries(TYPO_CATS.map(([code, label]) => [code, label]));
+const TYPO_MACRO_LABEL = Object.fromEntries(TYPO_MACROS.map((m) => [m.id, m.label]));
+const MACRO_MEMBERS = {
+  MED: ['MED-HIST', 'MED-PURE', 'MED-ETAT', 'MED-ALT', 'MED-ALERTE'],
+  JOU: ['JOU-JOUR', 'JOU-EDIT'],
+  POL: ['POL-ELU', 'POL-PARTI'],
+  ORG: ['ORG-INST', 'ORG-SOC', 'ORG-ENT'],
+  SAV: ['SAV-RECH', 'SAV-EXP', 'SAV-VERIF'],
+  NOT: ['NOT-CELEB', 'NOT-CREA'],
+  CIV: ['CIV-MIL', 'CIV-CIT'],
+  IND: ['IND'],
+};
+const MACRO_HUE = { MED: 221, JOU: 187, POL: 347, ORG: 28, SAV: 142, NOT: 326, CIV: 262, IND: 215 };
+const CAT_HEX = {
+  'MED-HIST': '#1d4ed8',
+  'MED-PURE': '#0ea5e9',
+  'MED-ALT': '#f97316',
+  'MED-ETAT': '#9f1239',
+  'MED-ALERTE': '#06b6d4',
+  'JOU-JOUR': '#0f766e',
+  'JOU-EDIT': '#2dd4bf',
+  'POL-ELU': '#e11d48',
+  'POL-PARTI': '#881337',
+  'ORG-INST': '#c2410c',
+  'ORG-SOC': '#4d7c0f',
+  'ORG-ENT': '#a16207',
+  'SAV-RECH': '#166534',
+  'SAV-EXP': '#22c55e',
+  'SAV-VERIF': '#84cc16',
+  'NOT-CELEB': '#db2777',
+  'NOT-CREA': '#d946ef',
+  'CIV-MIL': '#7c3aed',
+  'CIV-CIT': '#a78bfa',
+  IND: '#94a3b8',
+};
+const typologyCache = new Map();
+
+function hslToHex(h, s, l) {
+  const sat = s / 100;
+  const lig = l / 100;
+  const a = sat * Math.min(lig, 1 - lig);
+  const f = (n) => {
+    const k = (n + h / 30) % 12;
+    return lig - a * Math.max(-1, Math.min(k - 3, Math.min(9 - k, 1)));
+  };
+  const hex = (x) => Math.round(255 * x).toString(16).padStart(2, '0');
+  return `#${hex(f(0))}${hex(f(8))}${hex(f(4))}`;
+}
+
+function macroOfCode(code) {
+  if (!code || code === 'IND') return 'IND';
+  return code.slice(0, 3);
+}
+
+function macroShadeHex(code) {
+  const macro = macroOfCode(code);
+  const members = MACRO_MEMBERS[macro] || MACRO_MEMBERS.IND;
+  let i = members.indexOf(code);
+  if (i < 0) i = 0;
+  if (macro === 'IND') return hslToHex(215, 12, 64);
+  const t = members.length <= 1 ? 0.45 : i / (members.length - 1);
+  return hslToHex(MACRO_HUE[macro] ?? 220, 68, 30 + t * 36);
+}
+
+function typologyActive() {
+  return graphMode === 'all' && (edgeColorMode === 'typo_macro' || edgeColorMode === 'typo_cat');
+}
+
+function typoColorHex(code) {
+  if (edgeColorMode === 'typo_cat') return CAT_HEX[code] || CAT_HEX.IND;
+  return macroShadeHex(code || 'IND');
+}
+
+function codeForNode(node) {
+  const pack = typologyCache.get(currentCorpusId);
+  const h = normalizeHandle(node?.l);
+  if (!pack || !h) return 'IND';
+  return pack.a.get(h) || 'IND';
+}
+
+function typoFlagLabel(node) {
+  const pack = typologyCache.get(currentCorpusId);
+  const flag = pack?.f?.[normalizeHandle(node?.l)];
+  if (flag === 'public') return 'service public';
+  if (flag === 'local') return 'média local';
+  if (flag === 'ancien') return 'ancien mandat';
+  if (flag === 'parodie') return 'parodie signalée';
+  return '';
+}
+
+function typoCaption(node) {
+  const code = node?._typo || codeForNode(node);
+  const macro = TYPO_MACRO_LABEL[macroOfCode(code)] || '';
+  const cat = TYPO_CAT_LABEL[code] || code;
+  const flag = typoFlagLabel(node);
+  const core = macro === cat ? cat : `${macro} · ${cat}`;
+  return flag ? `${core} · ${flag}` : core;
+}
+
+async function ensureTypology(corpusId) {
+  if (typologyCache.has(corpusId)) return typologyCache.get(corpusId);
+  const url = new URL(`./data/${corpusId}/typology.json`, import.meta.url);
+  url.searchParams.set('v', CONNECTOME_UI);
+  let pack;
+  try {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error(String(res.status));
+    const data = await res.json();
+    pack = {
+      dated: data.dated || '',
+      note: data.note || '',
+      n: Number(data.n) || 0,
+      nBio: Number(data.n_bio) || 0,
+      a: new Map(Object.entries(data.a || {})),
+      f: data.f || {},
+      missing: false,
+    };
+  } catch (err) {
+    console.warn('[connectome] typologie', corpusId, err);
+    pack = { dated: '', note: '', n: 0, nBio: 0, a: new Map(), f: {}, missing: true };
+  }
+  typologyCache.set(corpusId, pack);
+  return pack;
+}
+
+function paintNodeColors(data) {
+  if (!data?.nodes) return;
+  if (!data._commSnap) {
+    for (const n of data.nodes) n._commC = n.c;
+    data._commSnap = true;
+  }
+  const on = typologyActive();
+  for (const n of data.nodes) {
+    if (!on) {
+      n.c = n._commC;
+      n._typo = '';
+      continue;
+    }
+    const code = codeForNode(n);
+    n._typo = code;
+    n.c = hexToRgbArr(typoColorHex(code));
+  }
+}
+
+function renderTypoLegend() {
+  const el = document.getElementById('typoLegend');
+  if (!el) return;
+  if (!typologyActive()) {
+    el.classList.remove('visible');
+    el.innerHTML = '';
+    return;
+  }
+  const counts = new Map();
+  for (const n of graphData?.nodes || []) {
+    const code = n._typo || 'IND';
+    counts.set(code, (counts.get(code) || 0) + 1);
+  }
+  const pack = typologyCache.get(currentCorpusId);
+  const macroMode = edgeColorMode === 'typo_macro';
+  const title = macroMode ? 'Légende · macro-classes' : 'Légende · catégories';
+  let note = pack?.missing
+    ? 'Fichier de typologie introuvable pour ce corpus. Tous les comptes restent indéterminés.'
+    : 'Chaque lien prend la couleur du compte d’origine. Persona revendiquée (nom, handle, bio) — pas le texte des tweets. Codage automatique du 28 oct. 2026, non validé par double codage.';
+  if (pack && !pack.missing && pack.n) {
+    note += ` Bio pour ${pack.nBio.toLocaleString('fr-FR')} comptes sur ${pack.n.toLocaleString('fr-FR')} dans l’export.`;
+  }
+  const rows = [];
+  if (macroMode) {
+    for (const macro of TYPO_MACROS) {
+      const members = MACRO_MEMBERS[macro.id] || ['IND'];
+      const n = members.reduce((s, code) => s + (counts.get(code) || 0), 0);
+      const shades = members.map((code) =>
+        `<i style="background:${escapeHtml(macroShadeHex(code))}"></i>`
+      ).join('');
+      rows.push(
+        `<div class="leg-row"><span class="swatch-row" aria-hidden="true">${shades}</span>`
+        + `<span>${escapeHtml(macro.label)}</span><span class="n">${n.toLocaleString('fr-FR')}</span></div>`
+      );
+    }
+  } else {
+    let prev = '';
+    for (const [code, label, macro] of TYPO_CATS) {
+      if (macro !== prev) {
+        rows.push(`<div class="leg-macro">${escapeHtml(TYPO_MACRO_LABEL[macro] || macro)}</div>`);
+        prev = macro;
+      }
+      const n = counts.get(code) || 0;
+      rows.push(
+        `<div class="leg-row${n ? '' : ' is-zero'}">`
+        + `<i class="sw" style="background:${escapeHtml(CAT_HEX[code] || CAT_HEX.IND)}"></i>`
+        + `<span>${escapeHtml(label)}</span><span class="n">${n.toLocaleString('fr-FR')}</span></div>`
+      );
+    }
+  }
+  el.innerHTML = `<div class="leg-title">${escapeHtml(title)}</div>`
+    + `<div class="leg-note">${escapeHtml(note)}</div>`
+    + rows.join('');
+  el.classList.add('visible');
+}
+
+async function recolorCurrentGraph() {
+  updateGraphModeButtons();
+  syncCorpusUrl(currentCorpusId);
+  if (graphMode !== 'all' || !graphData) return;
+  const seq = ++loadSeq;
+  const isCurrent = () => seq === loadSeq;
+  const corp = corporaList.find((c) => c.id === currentCorpusId);
+  if (edgeColorMode === 'typo_macro' || edgeColorMode === 'typo_cat') {
+    setGraphLoader({
+      title: corp?.label || 'Typologie',
+      msg: 'Lecture de la typologie…',
+      progress: 0.15,
+      indeterminate: true,
+    });
+    await ensureTypology(currentCorpusId);
+    if (!isCurrent()) return;
+  }
+  paintNodeColors(graphData);
+  const nE = (graphData.edges || []).length;
+  setGraphLoader({
+    title: corp?.label || 'Typologie',
+    msg: `Recoloriage · ${nE.toLocaleString('fr-FR')} liens…`,
+    progress: 0.4,
+    indeterminate: false,
+  });
+  const ok = await buildGraph(graphData, {
+    isCurrent,
+    onProgress: (p) => {
+      if (!isCurrent()) return;
+      setGraphLoader({
+        title: corp?.label || 'Typologie',
+        msg: `Recoloriage · ${Math.round(p * 100)} %`,
+        progress: 0.4 + 0.6 * p,
+        indeterminate: false,
+      });
+    },
+  });
+  if (ok && isCurrent()) hideGraphLoader();
+}
+
 function setEdgeColorFromHud(value) {
   if (value === 'rt_classes') {
+    if (graphMode === 'rt_classes') return;
+    edgeColorMode = 'community';
     setGraphMode('rt_classes');
     return;
   }
+  if (value === 'typo_macro' || value === 'typo_cat') {
+    if (graphMode === 'all' && edgeColorMode === value) return;
+    edgeColorMode = value;
+    if (graphMode !== 'all') {
+      setGraphMode('all');
+      return;
+    }
+    recolorCurrentGraph();
+    return;
+  }
+  if (graphMode === 'all' && edgeColorMode === 'community') return;
+  edgeColorMode = 'community';
   if (graphMode === 'rt_classes') setGraphMode('all');
-  else updateGraphModeButtons();
+  else recolorCurrentGraph();
 }
 
 function syncCorpusUrl(corpusId) {
@@ -3027,11 +3371,15 @@ function syncCorpusUrl(corpusId) {
     ? (lexKind === 'lemma' ? 'lemma' : 'hash')
     : null;
   const nextCent = centralityMode !== 'w' ? centralityMode : null;
+  const nextTypo = edgeColorMode === 'typo_macro' ? 'macro'
+    : edgeColorMode === 'typo_cat' ? 'cat'
+    : null;
   const sameCorpus = url.searchParams.get('corpus') === corpusId;
   const sameGraph = (url.searchParams.get('graph') || null) === nextGraph;
   const sameView = (url.searchParams.get('view') || null) === nextView;
   const sameCent = (url.searchParams.get('cent') || null) === nextCent;
-  if (sameCorpus && sameGraph && sameView && sameCent) return;
+  const sameTypo = (url.searchParams.get('typo') || null) === nextTypo;
+  if (sameCorpus && sameGraph && sameView && sameCent && sameTypo) return;
   url.searchParams.set('corpus', corpusId);
   if (nextGraph) url.searchParams.set('graph', nextGraph);
   else url.searchParams.delete('graph');
@@ -3039,6 +3387,8 @@ function syncCorpusUrl(corpusId) {
   else url.searchParams.delete('view');
   if (nextCent) url.searchParams.set('cent', nextCent);
   else url.searchParams.delete('cent');
+  if (nextTypo) url.searchParams.set('typo', nextTypo);
+  else url.searchParams.delete('typo');
   history.replaceState({
     corpus: corpusId,
     graph: graphMode,
@@ -3832,16 +4182,22 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
 
     let ca, cb, bright;
     const wNorm = Math.pow(e.w / maxW, 0.45);
+    const useTypoColors = typologyActive();
     if (useRtClasses) {
       const style = rtClassStyle(item.cls);
       ca = style.col;
       cb = style.col;
       bright = (0.28 + 0.55 * wNorm) * style.lumMul;
+    } else if (useTypoColors) {
+      ca = lift(a.c, 1.18);
+      cb = ca;
+      bright = 0.28 + 0.55 * wNorm;
     } else {
       ca = lift(a.c, 1.18);
       cb = lift(b.c, 1.18);
       bright = 0.28 + 0.55 * wNorm;
     }
+    const flatEdge = useRtClasses || useTypoColors;
 
     const vStart = positions.length / 3;
     for (let s = 0; s < P.strands; s++) {
@@ -3852,8 +4208,8 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
       for (let i = 0; i < n - 1; i++) {
         const t0 = i / (n - 1);
         const t1 = (i + 1) / (n - 1);
-        const c0 = useRtClasses ? ca : lerp3(ca, cb, t0);
-        const c1 = useRtClasses ? cb : lerp3(ca, cb, t1);
+        const c0 = flatEdge ? ca : lerp3(ca, cb, t0);
+        const c1 = flatEdge ? cb : lerp3(ca, cb, t1);
         positions.push(
           pts[i * 3], pts[i * 3 + 1], pts[i * 3 + 2],
           pts[(i + 1) * 3], pts[(i + 1) * 3 + 1], pts[(i + 1) * 3 + 2]
@@ -3977,6 +4333,8 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
     modeLabel = rtWeightByEdge
       ? 'distinction RT / interactions'
       : 'distinction RT / interactions indisponible';
+  } else if (typologyActive()) {
+    modeLabel = edgeColorMode === 'typo_macro' ? 'macro-classes' : 'catégories';
   }
   const centLbl = CENTRALITY_LABELS[centralityMode] || centralityMode;
   document.getElementById('stats').textContent =
@@ -3985,6 +4343,7 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   renderCommPanel(data);
   rebuildLabels();
   updateCentralityButtons();
+  renderTypoLegend();
   if (activeLexeme) {
     const accounts = accountsForLexeme(activeLexeme);
     const comms = communitiesForLexeme(activeLexeme);
@@ -4603,6 +4962,17 @@ async function loadCorpus(corp) {
     const prodMap = await prodPromise;
     if (!isCurrent()) return;
     if (prodMap) stampProducers(data, prodMap);
+    if (graphMode === 'all' && (edgeColorMode === 'typo_macro' || edgeColorMode === 'typo_cat')) {
+      setGraphLoader({
+        title: corp.label,
+        msg: 'Typologie des comptes…',
+        progress: 0.73,
+        indeterminate: true,
+      });
+      await ensureTypology(corp.id);
+      if (!isCurrent()) return;
+    }
+    paintNodeColors(data);
     setGraphLoader({
       title: corp.label,
       msg: `Tracé du réseau · ${nE.toLocaleString('fr-FR')} liens…`,
@@ -4840,7 +5210,12 @@ function renderPostCard(p, handle, rank) {
 function renderAccountCard(node) {
   const handle = normalizeHandle(node.l);
   const shown = displayHandle(node.l);
-  const color = communityColor(node.com) || '#8b93a0';
+  const color = typologyActive()
+    ? rgbCss(node.c)
+    : (communityColor(node.com) || '#8b93a0');
+  const typoLine = typologyActive()
+    ? `<div class="acct-typo">${escapeHtml(typoCaption(node))}</div>`
+    : '';
   const centLbl = CENTRALITY_LABELS[centralityMode] || 'Centralité';
   const centVal = formatCentValue(centralityMode, nodeCentValue(node));
   const profile = xProfileUrl(node.l);
@@ -4892,6 +5267,7 @@ function renderAccountCard(node) {
   tip.style.setProperty('--acct-accent', color);
   return `<div class="acct-head">
       <div class="acct-id"><i class="acct-dot" style="background:${escapeHtml(color)}"></i>${who}</div>
+      ${typoLine}
       <div class="acct-meta">${commBit}${escapeHtml(centLbl)} ${escapeHtml(centVal)}</div>
       <div class="acct-count" title="Classement : j’aime + retweets + réponses + citations. Texte intégral. Les retweets du compte ne sont pas listés.">${count}</div>
     </div>
@@ -4902,7 +5278,11 @@ function renderSimpleTip(node) {
   const handle = displayHandle(node.l);
   const centLbl = CENTRALITY_LABELS[centralityMode] || 'Centralité';
   const centVal = formatCentValue(centralityMode, nodeCentValue(node));
+  const typoBit = typologyActive()
+    ? `<div class="muted">${escapeHtml(typoCaption(node))}</div>`
+    : '';
   return `<strong>${escapeHtml(handle)}</strong>`
+    + typoBit
     + `<div class="muted">comm. C${escapeHtml(String(node.com ?? ''))} · ${escapeHtml(centLbl)} ${escapeHtml(centVal)}`
     + ` · In ${Math.round(node._cin || 0)} · Out ${Math.round(node._cout || 0)}`
     + ` · PR ${(node._cpr != null ? node._cpr : node.pr || 0).toExponential(2)}</div>`
@@ -5338,6 +5718,10 @@ window.addEventListener('popstate', () => {
   const modeChanged = nextMode !== graphMode;
   const viewChanged = nextView !== viewMode || (nextView === 'analyses' && nextLex !== lexKind);
   const centChanged = nextCent !== centralityMode;
+  const t = params.get('typo');
+  const nextEdge = t === 'macro' ? 'typo_macro' : t === 'cat' ? 'typo_cat' : 'community';
+  const edgeChanged = nextEdge !== edgeColorMode;
+  edgeColorMode = nextEdge;
   graphMode = nextMode;
   if (centChanged) {
     centralityMode = nextCent;
@@ -5346,6 +5730,7 @@ window.addEventListener('popstate', () => {
   if (viewChanged) setViewMode(nextView, { syncUrl: false, lex: nextLex });
   updateGraphModeButtons();
   if (modeChanged || corp.id !== currentCorpusId) loadCorpus(corp);
+  else if (edgeChanged) recolorCurrentGraph();
 });
 
 boot();
