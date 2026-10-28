@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Connectomes — cross_corpus</title>
-  <!-- connectome-ui v20261028-acctHoverAll : survol compte = publications, tous corpus -->
+  <!-- connectome-ui v20261028-producers : centralité Producteurs (pubs hors RT) -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -104,6 +104,9 @@
     }
     #centralityMode .mode.cent.active {
       color: #dceaff; background: rgba(77,138,255,0.32);
+    }
+    #centralityMode .mode.cent[data-cent="prod"].active {
+      color: #e7f6cf; background: rgba(115,192,0,0.4);
     }
     #centralityMode[hidden] { display: none !important; }
     .mode {
@@ -879,6 +882,7 @@
         <button type="button" class="mode cent active" data-cent="w" title="Somme des poids incidents (in + out)">Degré pondéré</button>
         <button type="button" class="mode cent" data-cent="pr" title="PageRank dirigé (amortissement 0,85)">PageRank</button>
         <button type="button" class="mode cent" data-cent="eig" title="Vecteur propre sur graphe non orienté pondéré">Eigenvector</button>
+        <button type="button" class="mode cent" data-cent="prod" title="Publications hors retweet (tweet, réponse, citation). Les comptes qui n’ont fait que retweeter restent petits.">Producteurs</button>
       </div>
     </div>
   </nav>
@@ -1083,7 +1087,7 @@ let corporaList = [];
 const _graphParam = new URLSearchParams(location.search).get('graph');
 let graphMode = (_graphParam === 'rt' || _graphParam === 'rt_classes') ? _graphParam : 'all';
 /** Centralité → taille des nœuds (positions FA2 inchangées). */
-const CENTRALITY_IDS = new Set(['in', 'out', 'w', 'pr', 'eig']);
+const CENTRALITY_IDS = new Set(['in', 'out', 'w', 'pr', 'eig', 'prod']);
 const _centParam = new URLSearchParams(location.search).get('cent');
 let centralityMode = CENTRALITY_IDS.has(_centParam) ? _centParam : 'w';
 const CENTRALITY_LABELS = {
@@ -1092,6 +1096,7 @@ const CENTRALITY_LABELS = {
   w: 'Degré pondéré',
   pr: 'PageRank',
   eig: 'Eigenvector',
+  prod: 'Producteurs',
 };
 /** Map "s|t" (indices du graphe ALL) → poids RT, pour Distinction RT / interactions. */
 let rtWeightByEdge = null;
@@ -1102,7 +1107,50 @@ function nodeCentValue(n, mode = centralityMode) {
   if (mode === 'out') return Number(n._cout) || 0;
   if (mode === 'pr') return Number(n._cpr != null ? n._cpr : n.pr) || 0;
   if (mode === 'eig') return Number(n._ceig) || 0;
+  if (mode === 'prod') return Number(n._cprod) || 0;
   return Number(n._cw != null ? n._cw : n.deg) || 0;
+}
+
+/** Rayon d’affichage. En mode Producteurs, un compte sans publication propre reste un point. */
+function nodeRadiusForCent(v, maxV, vis) {
+  const boost = vis.nodeBoost;
+  const denom = maxV > 0 ? maxV : 1;
+  if (centralityMode === 'prod') {
+    if (!(v > 0)) return 0.2 * boost;
+    return (1.25 + 3.6 * Math.sqrt(v / denom)) * boost;
+  }
+  return (0.4 + 2.2 * Math.sqrt(v / denom)) * boost;
+}
+
+const producersCache = new Map();
+
+async function ensureProducers(corpusId) {
+  if (producersCache.has(corpusId)) return producersCache.get(corpusId);
+  const url = new URL(`./data/${corpusId}/producers.json`, import.meta.url);
+  url.searchParams.set('v', CONNECTOME_UI);
+  try {
+    const r = await fetch(url);
+    if (!r.ok) throw new Error(String(r.status));
+    const data = await r.json();
+    const map = new Map();
+    for (const [h, n] of Object.entries(data?.pubs || {})) {
+      const c = Number(n) || 0;
+      if (c > 0) map.set(String(h).toLowerCase(), c);
+    }
+    producersCache.set(corpusId, map);
+    return map;
+  } catch (err) {
+    console.warn('[connectome] producteurs', corpusId, err);
+    producersCache.set(corpusId, null);
+    return null;
+  }
+}
+
+function stampProducers(data, map) {
+  if (!data?.nodes || !map) return;
+  for (const nd of data.nodes) {
+    nd._cprod = map.get(normalizeHandle(nd.l)) || 0;
+  }
 }
 
 /** Calcule In / Out / pondéré / PageRank / Eigenvector à partir des arêtes (layout inchangé). */
@@ -1201,6 +1249,7 @@ function ensureNodeCentralities(data) {
 function formatCentValue(mode, v) {
   const x = Number(v) || 0;
   if (mode === 'pr' || mode === 'eig') return x.toExponential(2);
+  if (mode === 'prod') return Math.round(x).toLocaleString('fr-FR');
   if (x >= 1000) return Math.round(x).toLocaleString('fr-FR');
   return String(Math.round(x * 10) / 10);
 }
@@ -1224,8 +1273,7 @@ function applyCentralitySizes({ rebuildLbl = true } = {}) {
     const nd = nodes[i];
     const v = nodeCentValue(nd);
     nd._sizeMetric = v;
-    const sz = (0.4 + 2.2 * Math.sqrt(v / maxV)) * vis.nodeBoost;
-    arr[i] = sz;
+    arr[i] = nodeRadiusForCent(v, maxV, vis);
   }
   sizeAttr.needsUpdate = true;
   nodeSizesBase = new Float32Array(arr);
@@ -1345,7 +1393,7 @@ let lexScope = 'targets'; // 'sources' | 'targets'
 /** En mode Lemme : unigrammes ou bigrammes. */
 let lemmaForm = 'uni'; // 'uni' | 'bi'
 /** Build id (console + vérif cache). */
-const CONNECTOME_UI = '20261028-acctHoverAll';
+const CONNECTOME_UI = '20261028-producers';
 
 const PUB_TYPE_ORDER = [
   { key: 'original', label: 'Original', short: 'Orig.', color: '#8ecf4a' },
@@ -2738,10 +2786,13 @@ function pickLabelPool(nodes, overviewN) {
 
   const scored = nodes.map((n, i) => {
     const metric = nodeCentValue(n);
+    const size = centralityMode === 'prod'
+      ? metric
+      : (metric > 0 ? metric : (n.s || 1));
     return {
       node: n,
       i,
-      gephiSize: Math.max(metric > 0 ? metric : (n.s || 1), 1e-12),
+      gephiSize: Math.max(size, 1e-12),
       deg: n.deg || 0,
       com: n.com ?? -1,
     };
@@ -3879,7 +3930,7 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
     nCol[i * 3 + 2] = c[2];
     const cv = nodeCentValue(nd);
     nd._sizeMetric = cv;
-    nSize[i] = (0.4 + 2.2 * Math.sqrt(cv / maxCent)) * vis.nodeBoost;
+    nSize[i] = nodeRadiusForCent(cv, maxCent, vis);
     nd._displayC = nd.c;
   }
   const pGeo = new THREE.BufferGeometry();
@@ -4471,6 +4522,7 @@ async function loadCorpus(corp) {
   try {
     const pubsPromise = graphMode === 'rt' ? Promise.resolve(null) : ensurePubStats(corp.id);
     const discPromise = ensureDiscourse(corp.id);
+    const prodPromise = ensureProducers(corp.id);
     const fetchMode = graphMode === 'rt_classes' ? 'all' : graphMode;
     const data = await ensureGraphData(corp, fetchMode, {
       onProgress: (p, received, total) => {
@@ -4548,6 +4600,9 @@ async function loadCorpus(corp) {
       if (!isCurrent()) return;
       ensureNodeCentralities(data);
     }
+    const prodMap = await prodPromise;
+    if (!isCurrent()) return;
+    if (prodMap) stampProducers(data, prodMap);
     setGraphLoader({
       title: corp.label,
       msg: `Tracé du réseau · ${nE.toLocaleString('fr-FR')} liens…`,
