@@ -363,7 +363,10 @@ const TOPICS = {
       <p><strong>Indéterminé</strong>&nbsp;: profil vide ou trop court, et publications absentes, trop peu nombreuses, ou sans cette pratique répétée.</p>
       <h3>Autres cas fréquents</h3>
       <ul>
-        <li>Médias&nbsp;: une enseigne déjà documentée, ou un compte qui se présente lui-même comme média, chaîne, agence de presse ou fil d’alerte (nom et bio, pas les messages). Une personne qui parle des médias, ou qui dit y travailler, ne devient pas un média pour autant. Times Now est une chaîne d’information, BRICS News un média en ligne qui dit ne pas être un compte gouvernemental, le fil covid19_disease un fil d’alerte sanitaire.</li>
+        <li>Médias&nbsp;: une enseigne déjà documentée, ou un compte qui se présente lui-même comme média, chaîne, agence de presse ou fil d’alerte (nom et bio, pas les messages). Une personne qui parle des médias, ou qui dit y travailler, ne devient pas un média pour autant. «&nbsp;Re-informations&nbsp;» au sens d’archives n’est pas un média de réinformation. Times Now est une chaîne d’information, BRICS News un média en ligne qui dit ne pas être un compte gouvernemental, le fil covid19_disease un fil d’alerte sanitaire.</li>
+        <li>Expertise&nbsp;: le mot «&nbsp;médecin&nbsp;», «&nbsp;microbiologiste&nbsp;» ou un titre voisin ne suffit pas. Le nom affiché doit identifier une personne (prénom et nom, ou «&nbsp;Dr&nbsp;» suivi d’un nom). Un pseudo, des initiales ou un handle qui porte le titre ne sont pas une preuve.</li>
+        <li>Organisation&nbsp;: «&nbsp;le collectif&nbsp;» ou «&nbsp;l’association&nbsp;», sans nom propre derrière, n’est pas une institution. On ne devine pas qu’un compte anonyme en est une.</li>
+        <li>Notoriété&nbsp;: une personnalité publique déjà nommée comme telle, quand aucun autre rôle n’est écrit dans la bio. Fabrice Di Vizio est dans ce cas.</li>
         <li>Ancien ministre, député ou maire&nbsp;: activité actuelle, avec le drapeau ancien. Le compte du parti n’est pas un élu.</li>
         <li>Porte-parole d’un parti&nbsp;: mandat politique. Le compte du parti&nbsp;: parti ou mouvement.</li>
       </ul>
