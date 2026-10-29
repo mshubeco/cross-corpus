@@ -193,7 +193,9 @@ const TOPICS = {
 
       <h3>Entrées / sorties</h3>
       <p>Un compte «&nbsp;entre&nbsp;» lorsqu’il apparaît avec des arêtes dans la fenêtre (ou le jour) courant ;
-      il «&nbsp;sort&nbsp;» lorsqu’il disparaît. Le fondu E/S est un lissage <em>visuel</em> seulement.</p>
+      il «&nbsp;sort&nbsp;» lorsqu’il disparaît. En fenêtre 3j, un fondu visuel relie deux frames.
+      En journalier strict, l’image reste sur le jour affiché, sans mélange avec le suivant.
+      Le survol d’un nom de compte ouvre ses publications les plus engageantes, comme dans le connectome.</p>
 
       <h3>Couleurs</h3>
       <ul>
@@ -275,7 +277,10 @@ const TOPICS = {
       ce que le compte dit être, pas ce que ses messages racontent, ni s’il est authentique.
       Huit macro-classes, vingt catégories. En cas de plusieurs rôles, l’ordre est fixe&nbsp;:
       mandat public, puis organisation, profession, notoriété, engagement, citoyen.
-      Un profil vide ou ambigu reste <strong>indéterminé</strong>.</p>
+      Un profil vide reste <strong>indéterminé</strong>, sauf si les publications propres du compte,
+      dans ce corpus, montrent une pratique militante répétée.
+      Un profil qui se dit militant, mais dont les messages ne portent pas cette pratique, est relu comme citoyen.
+      Les autres rôles ne sont pas déduits des tweets.</p>
       <p>Le principe vient de la technique DISARM <strong>T0097 Present Persona</strong>&nbsp;:
       coder l’identité présentée, et tenir à part l’authenticité, l’automatisation et le lien avec un État.</p>
       <div class="mh-cite">DISARM Foundation. Technique T0097, Present Persona.
@@ -350,11 +355,12 @@ const TOPICS = {
     kicker: 'Connectome · typologie des comptes',
     title: 'Comment les catégories ont été tranchées',
     html: `
-      <p>Codage automatique du <strong>28 octobre 2026</strong>. Une seule étiquette par compte, lue sur le profil&nbsp;: handle, nom affiché, et bio lorsqu’un export SQL en contient une. Le texte des tweets n’est pas lu.</p>
-      <p>Si plusieurs rôles sont revendiqués, le premier qui s’applique l’emporte&nbsp;: mandat ou fonction publique, puis organisation, profession, notoriété, engagement, citoyen. Profil vide ou sans indice&nbsp;: <strong>Indéterminé</strong>.</p>
+      <p>Codage automatique du <strong>28 octobre 2026</strong>, relu le <strong>29 octobre 2026</strong>. Une seule étiquette par compte. Le profil (handle, nom affiché, bio d’un export SQL) tranche d’abord. Les publications propres du corpus — messages originaux et réponses, pas les retweets ni les citations — ne relisent que trois issues&nbsp;: indéterminé, militant, citoyen.</p>
+      <p>Si plusieurs rôles sont revendiqués, le premier qui s’applique l’emporte&nbsp;: mandat ou fonction publique, puis organisation, profession, notoriété, engagement, citoyen. Un élu qui appelle à la grève reste un élu.</p>
       <h3>Citoyen et militant</h3>
-      <p><strong>Militant</strong> seulement si le nom ou le début de la bio dit «&nbsp;militant&nbsp;», «&nbsp;militante&nbsp;», «&nbsp;activiste&nbsp;» ou «&nbsp;activist&nbsp;», ou si la bio dit «&nbsp;je suis militant / activiste&nbsp;». Un mandat ou un métier déclaré passe avant. «&nbsp;Engagé&nbsp;», un hashtag de cause ou les tweets ne suffisent pas.</p>
-      <p><strong>Citoyen</strong>&nbsp;: une bio personnelle, sans ce mot et sans autre rôle public. Ce n’est pas un militant dont le profil ne le dit pas. Les deux n’ont pas la même teinte&nbsp;: violet pour le militant, jaune pour le citoyen, y compris dans les macro-classes.</p>
+      <p><strong>Militant</strong> si le nom ou le début de la bio dit «&nbsp;militant&nbsp;», «&nbsp;militante&nbsp;», «&nbsp;activiste&nbsp;» ou «&nbsp;activist&nbsp;», ou «&nbsp;je suis militant / activiste&nbsp;». Sans bio utile, le compte le devient aussi quand il a au moins quatre publications propres, dont au moins deux, et au moins 20&nbsp;%, portent une identité militante ou un appel à agir ensemble&nbsp;: pétition, grève, manifestation, «&nbsp;exigeons&nbsp;», «&nbsp;le gouvernement doit&nbsp;», «&nbsp;intolérable&nbsp;», «&nbsp;ça suffit&nbsp;», «&nbsp;rappelons que le gouvernement&nbsp;». Un avis isolé ne suffit pas.</p>
+      <p><strong>Citoyen</strong>&nbsp;: une bio personnelle, sans ce mot et sans autre rôle public, ou un profil militant dont au moins quatre publications propres ne contiennent aucun de ces indices. Ce n’est pas un militant dont on n’a pas assez de messages pour relire l’activité. Violet pour le militant, jaune pour le citoyen, y compris dans les macro-classes.</p>
+      <p><strong>Indéterminé</strong>&nbsp;: profil vide ou trop court, et publications absentes, trop peu nombreuses, ou sans cette pratique répétée.</p>
       <h3>Autres cas fréquents</h3>
       <ul>
         <li>Médias, partis et institutions déjà documentés&nbsp;: liste de référence, pas le contenu des messages.</li>

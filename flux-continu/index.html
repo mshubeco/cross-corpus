@@ -17,9 +17,78 @@
       color: #e7edf8;
       max-width: 240px; overflow: hidden; text-overflow: ellipsis;
       padding: 0 2px;
-      pointer-events: none;
+      pointer-events: auto;
+      cursor: pointer;
       line-height: 1.2;
     }
+    .label:hover { filter: brightness(1.25); }
+    #tooltip {
+      position: fixed; z-index: 40; display: none; pointer-events: none;
+      background: rgba(10,12,16,0.92); border: 1px solid rgba(255,255,255,0.12);
+      color: #e8eef7; font-size: 12px; padding: 8px 10px; border-radius: 8px;
+      max-width: 280px; line-height: 1.35;
+    }
+    #tooltip .muted { color: #8b93a0; font-size: 11px; }
+    #tooltip.acct {
+      pointer-events: auto; user-select: text; cursor: default;
+      width: min(432px, calc(100vw - 20px));
+      max-height: calc(100vh - 24px);
+      padding: 0; overflow: hidden; border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-top: 3px solid var(--acct-accent, #8b93a0);
+      background: rgba(12, 14, 18, 0.97);
+      box-shadow: 0 22px 56px rgba(0,0,0,0.58);
+      font-size: 13.5px; line-height: 1.45;
+    }
+    #tooltip.acct .acct-head {
+      padding: 13px 16px 12px; background: rgba(255,255,255,0.035);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    #tooltip.acct .acct-id { display: flex; align-items: center; gap: 8px; min-width: 0; }
+    #tooltip.acct .acct-dot {
+      width: 9px; height: 9px; border-radius: 50%; flex: none;
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.06);
+    }
+    #tooltip.acct .acct-handle {
+      color: #fff; font-weight: 650; font-size: 15.5px; text-decoration: none;
+      min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    #tooltip.acct .acct-handle:hover { text-decoration: underline; }
+    #tooltip.acct .acct-meta { margin-top: 5px; color: #8b93a0; font-size: 11.5px; }
+    #tooltip.acct .acct-count { margin-top: 8px; color: #e4eaf2; font-size: 12.5px; font-weight: 650; }
+    #tooltip.acct .acct-count span { color: #8b93a0; font-weight: 500; }
+    #tooltip.acct .acct-scroll {
+      overflow: auto; max-height: min(520px, calc(100vh - 220px));
+      padding: 8px 10px 12px; scrollbar-width: thin;
+    }
+    #tooltip.acct .ap {
+      margin: 6px 2px; padding: 12px 12px 10px; border-radius: 12px;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+    }
+    #tooltip.acct .ap-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    #tooltip.acct .ap-rank { color: #6e7784; font-size: 11px; font-weight: 700; }
+    #tooltip.acct .ap-type {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.055em; text-transform: uppercase;
+      padding: 3px 7px; border-radius: 999px;
+    }
+    #tooltip.acct .t-original { color: #c6eb8e; background: rgba(115,192,0,0.16); }
+    #tooltip.acct .t-reply { color: #b7ceff; background: rgba(37,99,235,0.24); }
+    #tooltip.acct .t-quote { color: #ebceff; background: rgba(222,129,255,0.18); }
+    #tooltip.acct time { color: #9aa3b2; font-size: 11.5px; white-space: nowrap; }
+    #tooltip.acct .ap-open { margin-left: auto; color: #9eb6d6; font-size: 11.5px; font-weight: 650; text-decoration: none; }
+    #tooltip.acct .ap-to { color: #9aa3b2; font-size: 12px; margin: 0 0 6px; }
+    #tooltip.acct .ap-text { margin: 0 0 10px; color: #f4f7fb; white-space: pre-wrap; overflow-wrap: anywhere; }
+    #tooltip.acct .ap-text a, #tooltip.acct .ap-to a { color: #8eb4ff; text-decoration: none; }
+    #tooltip.acct .ap-eng {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px; list-style: none; margin: 0; padding: 8px 0 0;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    #tooltip.acct .ap-eng li { display: flex; flex-direction: column; min-width: 0; }
+    #tooltip.acct .ap-eng b { font-size: 13px; color: #fff; }
+    #tooltip.acct .ap-eng span { font-size: 10px; color: #8b93a0; }
+    #tooltip.acct .ap-eng li.zero b, #tooltip.acct .ap-eng li.zero span { color: #5c6570; }
+    #tooltip.acct .acct-empty { margin: 0; padding: 14px 16px 16px; color: #d5dde6; }
     #hud {
       position: fixed; top: 12px; left: 12px; z-index: 5; width: 290px;
       background: rgba(8, 10, 14, 0.82); border: 1px solid rgba(255,255,255,0.08);
@@ -276,11 +345,12 @@
     <input id="scrub" type="range" min="0" max="40" value="0" step="0.01" />
   </div>
   <div id="labels"></div>
+  <div id="tooltip" role="tooltip"></div>
 
   <script type="module">
 import * as THREE from 'three';
 import { MapControls } from 'three/addons/controls/MapControls.js';
-import { initMethodHelp } from '../shared/method-help.js';
+import { initMethodHelp } from '../shared/method-help.js?v=20261029-flux-day';
 
 initMethodHelp({
   topic: 'flux',
@@ -747,6 +817,7 @@ function renderLabels(labelIdxs, t) {
       labelsEl.appendChild(el);
       labelEls.set(entry.idx, el);
     }
+    el.dataset.idx = String(entry.idx);
     styleLabelElement(el, entry, t);
   }
 }
@@ -822,7 +893,7 @@ function updateTempoChrome() {
   if (tempoMode === 'd1') {
     if (hint) {
       hint.innerHTML =
-        'Frame du jour <strong>D</strong> = interactions du <strong>seul jour D</strong>. Un compte n’apparaît que s’il est actif ce jour-là.';
+        'Frame du jour <strong>D</strong> = interactions du <strong>seul jour D</strong>. L’image ne se mélange pas au jour suivant. Un compte n’apparaît que s’il est actif ce jour-là.';
     }
     if (win) win.textContent = 'Journalier strict · activité du jour calendaire uniquement';
     if (nLbl) nLbl.textContent = 'Nœuds du jour';
@@ -1017,9 +1088,12 @@ function spawnOrbit(idx, t, ax, ay) {
 }
 
 function frameBlend(t) {
-  const i0 = clamp(Math.floor(t), 0, frames.length - 1);
-  const i1 = clamp(i0 + 1, 0, frames.length - 1);
-  return { i0, i1, f: t - i0 };
+  const last = Math.max(0, frames.length - 1);
+  const i0 = clamp(Math.floor(t), 0, last);
+  // Journalier strict : un jour calendaire à la fois, sans fondu vers le suivant.
+  if (tempoMode === 'd1') return { i0, i1: i0, f: 0 };
+  const i1 = clamp(i0 + 1, 0, last);
+  return { i0, i1, f: i1 === i0 ? 0 : t - i0 };
 }
 
 function trackColorAt(idx, t) {
@@ -1740,9 +1814,9 @@ function updateHUD(visible) {
   const winTxt = tempoMode === 'd1'
     ? `jour ${dayTxt} (strict)`
     : `fenêtre ${w0} → ${w1}`;
-  document.getElementById('windowLabel').textContent = hasFrameLayouts
-    ? `${winTxt} · morph FA2 ${d0} → ${d1}`
-    : `${winTxt} · layout union`;
+  document.getElementById('windowLabel').textContent = tempoMode === 'd1'
+    ? winTxt
+    : (hasFrameLayouts ? `${winTxt} · morph FA2 ${d0} → ${d1}` : `${winTxt} · layout union`);
 
   const dailyNodes = countDailyNodes(dayIdx);
   const dailyEdges = countDailyEdges(dayIdx);
@@ -2083,17 +2157,36 @@ function renderForCurrentTime() {
   renderer.render(scene, camera);
 }
 
-async function loadGlobalLouvain() {
-  const res = await fetch(`${DATA_BASE}/global_louvain.json?v=${Date.now()}`, { cache: 'no-store' });
-  if (!res.ok) throw new Error(`global_louvain.json HTTP ${res.status}`);
-  globalLouvain = await res.json();
+function alignGlobalLouvain() {
+  const by = globalLouvain?.by_handle;
+  const comms = globalLouvain?.meta?.communities || {};
+  const autres = [154, 163, 181];
+  if (by && typeof by === 'object') {
+    nodeGlobalCid = new Array(nodes.length);
+    nodeGlobalRgb = new Array(nodes.length);
+    for (let i = 0; i < nodes.length; i++) {
+      const id = String(nodes[i].resolved_id || nodes[i].id || '').toLowerCase();
+      const raw = by[id];
+      const cid = raw == null || raw < 0 ? -1 : Number(raw);
+      nodeGlobalCid[i] = cid;
+      nodeGlobalRgb[i] = (cid >= 0 && comms[String(cid)]?.rgb) || autres;
+    }
+    return;
+  }
   nodeGlobalCid = globalLouvain.cid || null;
   nodeGlobalRgb = globalLouvain.node_rgb || null;
   if (!nodeGlobalRgb || nodeGlobalRgb.length !== nodes.length) {
     throw new Error(
-      `global_louvain.json incompatible (${nodeGlobalRgb?.length ?? 0} couleurs vs ${nodes.length} nœuds) — relancer export_global_louvain.py puis Ctrl+F5`
+      `global_louvain.json incompatible (${nodeGlobalRgb?.length ?? 0} couleurs vs ${nodes.length} nœuds)`
     );
   }
+}
+
+async function loadGlobalLouvain() {
+  const res = await fetch(`${DATA_BASE}/global_louvain.json?v=${Date.now()}`, { cache: 'no-store' });
+  if (!res.ok) throw new Error(`global_louvain.json HTTP ${res.status}`);
+  globalLouvain = await res.json();
+  alignGlobalLouvain();
   globalCommCounts = new Map();
   for (let i = 0; i < nodeGlobalCid.length; i++) {
     const cid = nodeGlobalCid[i];
@@ -2167,6 +2260,290 @@ async function loadCorporaNav() {
 }
 
 
+function escapeHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, (c) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+  }[c]));
+}
+
+const tip = document.getElementById('tooltip');
+const POST_DATE_FMT = new Intl.DateTimeFormat('fr-FR', {
+  timeZone: 'Europe/Paris', day: 'numeric', month: 'short', year: 'numeric',
+  hour: '2-digit', minute: '2-digit',
+});
+let accountPostsPack;
+let accountPostsMode = 'single';
+let accountShardDir = 'posts';
+let accountShardNames = null;
+const accountShardCache = new Map();
+const accountShardInflight = new Map();
+let tipIdx = null;
+let tipPinned = false;
+let tipHideTimer = null;
+const tipAnchor = { x: 0, y: 0 };
+
+function postsFileUrl(rel) {
+  const url = new URL(`../connectome/data/${currentCorpusId}/${rel}`, import.meta.url);
+  url.searchParams.set('v', '20261029-flux-day');
+  return url;
+}
+
+function shardKey(handle) {
+  const ch = String(handle || '').charAt(0);
+  return /^[a-z]$/.test(ch) ? ch : '_';
+}
+
+function lookupAccount(handle) {
+  const h = String(handle || '').toLowerCase();
+  if (accountPostsPack == null) return accountPostsPack;
+  if (accountPostsMode !== 'shards') return accountPostsPack.accounts?.[h] || null;
+  const key = shardKey(h);
+  if (accountShardNames && !accountShardNames.has(key)) return null;
+  if (!accountShardCache.has(key)) return undefined;
+  return accountShardCache.get(key)[h] || null;
+}
+
+function ensureAccountShard(handle) {
+  const key = shardKey(String(handle || '').toLowerCase());
+  if (accountShardNames && !accountShardNames.has(key)) {
+    accountShardCache.set(key, {});
+    return;
+  }
+  if (accountShardCache.has(key) || accountShardInflight.has(key)) return;
+  const pending = fetch(postsFileUrl(`${accountShardDir}/${key}.json`))
+    .then((r) => (r.ok ? r.json() : { accounts: {} }))
+    .then((data) => {
+      accountShardCache.set(key, data?.accounts || {});
+      accountShardInflight.delete(key);
+      if (tipIdx != null && shardKey(nodeAccountName(tipIdx).toLowerCase()) === key) paintAccountTip(false);
+    })
+    .catch(() => {
+      accountShardCache.set(key, {});
+      accountShardInflight.delete(key);
+    });
+  accountShardInflight.set(key, pending);
+}
+
+function loadAccountPosts() {
+  accountPostsPack = undefined;
+  accountPostsMode = 'single';
+  accountShardNames = null;
+  accountShardCache.clear();
+  accountShardInflight.clear();
+  fetch(postsFileUrl('account_posts.json'))
+    .then((r) => (r.status === 404 ? null : r.json()))
+    .then((data) => {
+      if (data?.accounts) {
+        accountPostsMode = 'single';
+        accountPostsPack = data;
+        if (tipIdx != null) paintAccountTip(false);
+        return null;
+      }
+      return fetch(postsFileUrl('account_posts_index.json'));
+    })
+    .then((r) => (r && r.ok ? r.json() : null))
+    .then((index) => {
+      if (!index?.shards) {
+        if (accountPostsPack === undefined) accountPostsPack = null;
+        return;
+      }
+      accountPostsMode = 'shards';
+      accountShardDir = index.dir || 'posts';
+      accountShardNames = new Set(index.shards);
+      accountPostsPack = { meta: index.meta || {}, accounts: {} };
+      if (tipIdx != null) ensureAccountShard(nodeAccountName(tipIdx));
+    })
+    .catch(() => { accountPostsPack = null; });
+}
+
+function formatPostWhen(iso) {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
+  return POST_DATE_FMT.format(d).replace(',', ' ·');
+}
+
+function richText(raw) {
+  const esc = escapeHtml(raw);
+  return esc.split(/(https?:\/\/[^\s<]+)/g).map((part, i) => {
+    if (i % 2 === 1) {
+      const clean = part.replace(/[),.]+$/g, '');
+      return `<a href="${clean}" target="_blank" rel="noopener noreferrer">${clean}</a>${part.slice(clean.length)}`;
+    }
+    return part.replace(
+      /(^|[\s(])@([A-Za-z0-9_]{1,15})\b/g,
+      (m, pre, h) => `${pre}<a href="https://x.com/${encodeURIComponent(h)}" target="_blank" rel="noopener noreferrer">@${h}</a>`,
+    );
+  }).join('');
+}
+
+function renderPostCard(p, handle, rank) {
+  const type = p.type === 'reply' || p.type === 'quote' ? p.type : 'original';
+  const label = type === 'reply' ? 'Réponse' : type === 'quote' ? 'Citation' : 'Original';
+  const when = formatPostWhen(p.at);
+  const url = p.id ? `https://x.com/${encodeURIComponent(handle)}/status/${encodeURIComponent(p.id)}` : '';
+  const to = type === 'reply' && p.to
+    ? `<p class="ap-to">en réponse à <a href="https://x.com/${encodeURIComponent(p.to)}" target="_blank" rel="noopener noreferrer">@${escapeHtml(p.to)}</a></p>`
+    : '';
+  const metrics = [['lk', 'j’aime'], ['rt', 'RT'], ['rp', 'réponses'], ['qt', 'citations']].map(([key, name]) => {
+    const n = Number(p[key] || 0);
+    return `<li class="${n ? '' : 'zero'}"><b>${n.toLocaleString('fr-FR')}</b><span>${name}</span></li>`;
+  }).join('');
+  return `<article class="ap">
+    <div class="ap-top"><span class="ap-rank">${rank}</span><span class="ap-type t-${type}">${label}</span>
+    <time datetime="${escapeHtml(p.at || '')}">${escapeHtml(when)}</time>
+    ${url ? `<a class="ap-open" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">ouvrir</a>` : ''}</div>
+    ${to}<p class="ap-text">${richText(p.text || '')}</p><ul class="ap-eng">${metrics}</ul></article>`;
+}
+
+function renderAccountCard(idx) {
+  const handle = nodeAccountName(idx);
+  const shown = handle ? `@${handle}` : 'compte';
+  const { css } = labelColorFromCommunity(idx, simTime, 1);
+  const day = manifest?.days?.[currentDayIndex()] || '';
+  const deg = Math.round(degreeAt(idx, simTime) || 0);
+  const who = `<a class="acct-handle" href="https://x.com/${encodeURIComponent(handle)}" target="_blank" rel="noopener noreferrer">${escapeHtml(shown)}</a>`;
+  let count = 'Publications du compte';
+  let body = '<p class="acct-empty">Chargement des publications…</p>';
+  const rec = lookupAccount(handle);
+  if (accountPostsMode === 'shards' && rec === undefined) ensureAccountShard(handle);
+  if (accountPostsPack === null) {
+    count = 'Publications indisponibles';
+    body = '<p class="acct-empty">Le fichier des publications de ce corpus n’a pas pu être chargé.</p>';
+  } else if (rec === undefined) {
+    /* fragment en cours */
+  } else if (!rec) {
+    count = 'Aucune publication dans ce corpus';
+    body = '<p class="acct-empty">Ce compte n’a aucune publication dans l’export de ce corpus.</p>';
+  } else {
+    const pubs = Number(rec.pubs || 0);
+    const rts = Number(rec.rts || 0);
+    const posts = Array.isArray(rec.posts) ? rec.posts : [];
+    const rtBit = rts ? ` <span>· ${rts.toLocaleString('fr-FR')} retweet${rts > 1 ? 's' : ''}</span>` : '';
+    if (pubs > posts.length) count = `${posts.length} publications les plus engageantes <span>· ${pubs.toLocaleString('fr-FR')} dans le corpus</span>${rtBit}`;
+    else if (pubs > 0) count = `${pubs.toLocaleString('fr-FR')} publication${pubs > 1 ? 's' : ''}${rtBit}`;
+    else count = 'Aucune publication propre';
+    body = posts.length
+      ? `<div class="acct-scroll">${posts.map((p, i) => renderPostCard(p, handle, i + 1)).join('')}</div>`
+      : `<p class="acct-empty">Aucune publication propre dans ce corpus (tweet original, réponse ou citation).${rts ? ' Les retweets ne sont pas listés : leur texte est tronqué dans l’export.' : ''}</p>`;
+  }
+  tip.style.setProperty('--acct-accent', css);
+  return `<div class="acct-head"><div class="acct-id"><i class="acct-dot" style="background:${escapeHtml(css)}"></i>${who}</div>
+    <div class="acct-meta">${escapeHtml(day)} · degré ${deg.toLocaleString('fr-FR')}</div>
+    <div class="acct-count">${count}</div></div>${body}`;
+}
+
+function placeAccountCard(x, y) {
+  const margin = 12;
+  const gap = 18;
+  const w = tip.offsetWidth;
+  const h = tip.offsetHeight;
+  const candidates = [
+    { left: x + gap, top: y + gap },
+    { left: x - w - gap, top: y + gap },
+    { left: x + gap, top: y - h - gap },
+    { left: x - w - gap, top: y - h - gap },
+  ];
+  const fits = (p) => p.left >= margin && p.top >= margin
+    && p.left + w <= innerWidth - margin && p.top + h <= innerHeight - margin;
+  const pos = candidates.find(fits) || {
+    left: Math.max(margin, Math.min(x + gap, innerWidth - w - margin)),
+    top: Math.max(margin, Math.min(y + gap, innerHeight - h - margin)),
+  };
+  tip.style.left = `${Math.round(pos.left)}px`;
+  tip.style.top = `${Math.round(pos.top)}px`;
+}
+
+function paintAccountTip(place) {
+  if (tipIdx == null) return;
+  const prev = tip.querySelector('.acct-scroll')?.scrollTop || 0;
+  tip.classList.add('acct');
+  tip.innerHTML = renderAccountCard(tipIdx);
+  tip.style.display = 'block';
+  const sc = tip.querySelector('.acct-scroll');
+  if (sc) sc.scrollTop = prev;
+  if (place) placeAccountCard(tipAnchor.x, tipAnchor.y);
+}
+
+function hideAccountTip() {
+  if (tipHideTimer) { clearTimeout(tipHideTimer); tipHideTimer = null; }
+  tipPinned = false;
+  tip.style.display = 'none';
+  tip.classList.remove('acct');
+  tipIdx = null;
+}
+
+function scheduleHideTip() {
+  if (tipHideTimer || tipPinned) return;
+  tipHideTimer = setTimeout(() => {
+    tipHideTimer = null;
+    if (!tipPinned) hideAccountTip();
+  }, 280);
+}
+
+function showAccountTip(idx, x, y) {
+  if (idx == null || idx < 0) return;
+  if (tipHideTimer) { clearTimeout(tipHideTimer); tipHideTimer = null; }
+  tipAnchor.x = x;
+  tipAnchor.y = y;
+  if (tipIdx === idx && tip.style.display !== 'none') return;
+  tipIdx = idx;
+  paintAccountTip(true);
+}
+
+function labelIsShown(idx) {
+  const el = labelEls.get(idx);
+  return !!(el && el.style.display !== 'none');
+}
+
+function hitTestUnlabeledNode(x, y) {
+  let best = null;
+  let bestD = 18 * 18;
+  for (let i = 0; i < simNodes.length; i++) {
+    const sn = simNodes[i];
+    if (!sn || sn.alpha < 0.2 || labelIsShown(i)) continue;
+    const s = projectWorldToScreen(sn.x, sn.y);
+    if (!s) continue;
+    const d = (s.x - x) ** 2 + (s.y - y) ** 2;
+    if (d < bestD) { bestD = d; best = i; }
+  }
+  return best;
+}
+
+function setupAccountHover() {
+  if (!tip) return;
+  loadAccountPosts();
+  tip.addEventListener('pointerenter', () => { tipPinned = true; if (tipHideTimer) { clearTimeout(tipHideTimer); tipHideTimer = null; } });
+  tip.addEventListener('pointerleave', () => { tipPinned = false; scheduleHideTip(); });
+  tip.addEventListener('wheel', (ev) => ev.stopPropagation(), { passive: true });
+  labelsEl.addEventListener('pointerover', (ev) => {
+    const el = ev.target.closest?.('.label');
+    if (!el) return;
+    const idx = Number(el.dataset.idx);
+    if (!Number.isFinite(idx)) return;
+    showAccountTip(idx, ev.clientX, ev.clientY);
+  });
+  labelsEl.addEventListener('pointerout', (ev) => {
+    const el = ev.target.closest?.('.label');
+    if (!el) return;
+    const next = ev.relatedTarget;
+    if (next && (next.closest?.('.label') || next.closest?.('#tooltip'))) return;
+    scheduleHideTip();
+  });
+  renderer.domElement.addEventListener('mousemove', (ev) => {
+    if (tipPinned) return;
+    const idx = hitTestUnlabeledNode(ev.clientX, ev.clientY);
+    if (idx == null) {
+      if (tipIdx != null && !labelIsShown(tipIdx)) scheduleHideTip();
+      return;
+    }
+    showAccountTip(idx, ev.clientX, ev.clientY);
+  });
+  renderer.domElement.addEventListener('mouseleave', () => {
+    if (!tipPinned) scheduleHideTip();
+  });
+  window.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') hideAccountTip(); });
+}
+
 async function init() {
   setLoader('Sélection du corpus…', 0.02);
   tempoMode = resolveTempoFromUrl();
@@ -2217,7 +2594,7 @@ async function init() {
   setLoader('Initialisation du rendu…', 0.98);
   initSimNodes();
   initGraphics();
-  setSimTime(0, true);
+  setSimTime(tempoMode === 'd1' ? peakStep : 0, true);
   rebuildEdges();
   updatePositions(1);
   const visible = updateGraphics();
@@ -2238,7 +2615,7 @@ async function init() {
     playing = false;
     document.getElementById('btnPlay').textContent = '▶ Play';
     document.getElementById('btnPlay').classList.remove('active');
-    setSimTime(simTime - 0.5, true);
+    setSimTime(simTime - (tempoMode === 'd1' ? 1 : 0.5), true);
     lastEdgeKey = '';
     renderForCurrentTime();
   });
@@ -2246,7 +2623,7 @@ async function init() {
     playing = false;
     document.getElementById('btnPlay').textContent = '▶ Play';
     document.getElementById('btnPlay').classList.remove('active');
-    setSimTime(simTime + 0.5, true);
+    setSimTime(simTime + (tempoMode === 'd1' ? 1 : 0.5), true);
     lastEdgeKey = '';
     renderForCurrentTime();
   });
@@ -2309,7 +2686,10 @@ async function init() {
 
   const tempoSel = document.getElementById('tempoMode');
   if (tempoSel) {
-    tempoSel.value = tempoMode;
+    const enforceTempoSelect = () => { tempoSel.value = tempoMode; };
+    enforceTempoSelect();
+    window.addEventListener('pageshow', enforceTempoSelect);
+    setTimeout(enforceTempoSelect, 0);
     if (!dailyAvailable) {
       const opt = tempoSel.querySelector('option[value="d1"]');
       if (opt) opt.textContent = 'Journalier strict (indisponible)';
@@ -2319,12 +2699,16 @@ async function init() {
     });
   }
   updateTempoChrome();
+  lastHudTick = 0;
+  updateHUD(visible);
   window.addEventListener('keydown', (e) => {
     if (e.key === ' ') { e.preventDefault(); togglePlay(); }
-    if (e.key === 'ArrowRight') { playing = false; setSimTime(simTime + 0.15, true); lastEdgeKey = ''; renderForCurrentTime(); }
-    if (e.key === 'ArrowLeft') { playing = false; setSimTime(simTime - 0.15, true); lastEdgeKey = ''; renderForCurrentTime(); }
+    const hop = tempoMode === 'd1' ? 1 : 0.15;
+    if (e.key === 'ArrowRight') { playing = false; setSimTime(simTime + hop, true); lastEdgeKey = ''; renderForCurrentTime(); }
+    if (e.key === 'ArrowLeft') { playing = false; setSimTime(simTime - hop, true); lastEdgeKey = ''; renderForCurrentTime(); }
   });
 
+  setupAccountHover();
   hideLoader();
 }
 
