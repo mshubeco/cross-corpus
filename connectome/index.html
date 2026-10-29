@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Connectomes — cross_corpus</title>
-  <!-- connectome-ui v20261029-macro-panel : couleurs de macro-classe dans le panneau communautés -->
+  <!-- connectome-ui v20261029-activity : relecture militant / citoyen / indéterminé par les publications -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -44,12 +44,14 @@
       pointer-events: none;
     }
     #corpusNav > * { pointer-events: auto; }
+    /* Tous les corpus visibles : la barre s’adapte à la largeur et passe à la ligne, sans scroll interne. */
     #tabs {
-      display: flex; gap: 2px; flex-wrap: nowrap; justify-content: center; align-items: center;
+      display: flex; gap: 2px; flex-wrap: wrap; justify-content: center; align-items: center;
+      align-content: center;
       padding: 3px;
-      max-width: min(100%, 1100px);
-      overflow-x: auto; overflow-y: hidden;
-      -webkit-overflow-scrolling: touch; scrollbar-width: thin;
+      width: fit-content;
+      max-width: 100%;
+      overflow: visible;
       background: rgba(8,10,14,0.92);
       border: 1px solid rgba(255,255,255,0.14);
       border-radius: 999px;
@@ -59,6 +61,7 @@
       border: 0; background: transparent; color: #b7c0cc; font: inherit; font-size: 12.5px; font-weight: 600;
       padding: 7px 13px; border-radius: 999px; cursor: pointer; white-space: nowrap;
       text-decoration: none; display: inline-flex; align-items: center;
+      max-width: 100%;
     }
     .tab:hover { color: #fff; background: rgba(255,255,255,0.08); }
     .tab.active { color: #fff; background: #2563eb; }
@@ -817,7 +820,10 @@
         padding-left: max(8px, env(safe-area-inset-left, 0px));
         padding-right: max(8px, env(safe-area-inset-right, 0px));
       }
-      #tabs { max-width: 100%; border-radius: 12px; justify-content: flex-start; }
+      #tabs {
+        width: 100%; max-width: 100%; border-radius: 12px;
+        justify-content: center; overflow: visible;
+      }
       #navTools { width: 100%; align-items: stretch; gap: 4px; }
       #navToolsRow1 { flex-direction: column; align-items: stretch; gap: 4px; }
       #graphMode, #viewLinks, #centralityMode {
@@ -1078,7 +1084,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
-import { initMethodHelp } from '../shared/method-help.js?v=20261029-macro-panel';
+import { initMethodHelp } from '../shared/method-help.js?v=20261029-activity';
 
 const wrap = document.getElementById('c');
 const labelsEl = document.getElementById('labels');
@@ -1477,7 +1483,7 @@ let lexScope = 'targets'; // 'sources' | 'targets'
 /** En mode Lemme : unigrammes ou bigrammes. */
 let lemmaForm = 'uni'; // 'uni' | 'bi'
 /** Build id (console + vérif cache). */
-const CONNECTOME_UI = '20261029-macro-panel';
+const CONNECTOME_UI = '20261029-activity';
 
 const PUB_TYPE_ORDER = [
   { key: 'original', label: 'Original', short: 'Orig.', color: '#8ecf4a' },
