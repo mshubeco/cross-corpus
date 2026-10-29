@@ -4498,9 +4498,9 @@ function rebuildLabels() {
     el.addEventListener('pointerenter', (ev) => {
       showNodeTip(node, ev.clientX, ev.clientY);
     });
-    el.addEventListener('pointerleave', () => {
-      if (usesAccountCard()) scheduleHideTip();
-      else hideTipNow();
+    el.addEventListener('pointerleave', (ev) => {
+      if (!usesAccountCard()) { hideTipNow(); return; }
+      holdAccountCard(ev);
     });
     labelsEl.appendChild(el);
 
@@ -5110,7 +5110,10 @@ let tipNode = null;
 let tipNodeKey = null;
 let tipPinned = false;
 let tipHideTimer = null;
+let tipPtrGen = 0;
+let ptrGen = 0;
 const tipAnchor = { x: 0, y: 0 };
+const lastPtr = { x: 0, y: 0 };
 
 const POST_DATE_FMT = new Intl.DateTimeFormat('fr-FR', {
   timeZone: 'Europe/Paris',
@@ -5380,7 +5383,9 @@ function placeAccountCard(x, y) {
     { left: x + gap, top: y - h - gap },
     { left: x - w - gap, top: y - h - gap },
   ];
-  const fits = (p) => p.left >= margin && p.top >= topLimit
+  const missesPointer = (p) => p.left > x + 6 || p.left + w < x - 6 || p.top > y + 6 || p.top + h < y - 6;
+  const fits = (p) => missesPointer(p)
+    && p.left >= margin && p.top >= topLimit
     && p.left + w <= innerWidth - margin
     && p.top + h <= innerHeight - margin;
   let pos = candidates.find(fits);
@@ -5430,6 +5435,7 @@ function paintTip(node, place) {
       bindAccountScroll(sc);
     }
     if (place) placeAccountCard(tipAnchor.x, tipAnchor.y);
+    if (accountCardCovers(tipAnchor.x, tipAnchor.y)) holdAccountCard();
     return;
   }
   tip.classList.remove('acct');
@@ -5452,16 +5458,45 @@ function hideTipNow() {
   tipNodeKey = null;
 }
 
+function accountCardCovers(x, y) {
+  if (!tip || tip.style.display === 'none' || !tip.classList.contains('acct')) return false;
+  const r = tip.getBoundingClientRect();
+  return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+}
+
+function pointerOverAccountUi(x, y) {
+  const under = document.elementFromPoint(x, y);
+  if (!under) return false;
+  return tip.contains(under) || !!under.closest?.('.label');
+}
+
+function holdAccountCard(ev) {
+  const next = ev?.relatedTarget;
+  if (next && (tip.contains(next) || next.closest?.('.label'))) {
+    tipPinned = true;
+    cancelHideTip();
+    return;
+  }
+  const x = ev?.clientX ?? lastPtr.x;
+  const y = ev?.clientY ?? lastPtr.y;
+  if (accountCardCovers(x, y) || ptrGen === tipPtrGen) {
+    tipPinned = true;
+    cancelHideTip();
+    return;
+  }
+  scheduleHideTip();
+}
+
 function scheduleHideTip() {
   if (tipHideTimer || tipPinned) return;
   tipHideTimer = setTimeout(() => {
     tipHideTimer = null;
-    if (tipPinned) return;
+    if (tipPinned || pointerOverAccountUi(lastPtr.x, lastPtr.y)) return;
     tip.style.display = 'none';
     tip.classList.remove('acct');
     tipNode = null;
     tipNodeKey = null;
-  }, 280);
+  }, 640);
 }
 
 function cancelHideTip() {
@@ -5475,6 +5510,9 @@ function showNodeTip(node, x, y) {
   cancelHideTip();
   tipAnchor.x = x;
   tipAnchor.y = y;
+  lastPtr.x = x;
+  lastPtr.y = y;
+  tipPtrGen = ptrGen;
   const key = `${normalizeHandle(node.l)}|${node.com ?? ''}`;
   const same = tipNodeKey === key && tip.style.display !== 'none';
   tipNode = node;
@@ -5491,6 +5529,15 @@ function setupTooltip() {
   let hoverNode = null;
 
   renderer.domElement.style.cursor = 'grab';
+  window.addEventListener('pointermove', (ev) => {
+    lastPtr.x = ev.clientX;
+    lastPtr.y = ev.clientY;
+    ptrGen += 1;
+    if (!tipPinned || tip.style.display === 'none') return;
+    if (pointerOverAccountUi(ev.clientX, ev.clientY)) return;
+    tipPinned = false;
+    scheduleHideTip();
+  });
   tip.addEventListener('pointerenter', () => {
     tipPinned = true;
     cancelHideTip();
@@ -5539,8 +5586,9 @@ function setupTooltip() {
     if (!ptrDown) renderer.domElement.style.cursor = best ? 'pointer' : 'grab';
     if (ptrDown && usesAccountCard()) return;
     if (!best) {
-      if (usesAccountCard()) scheduleHideTip();
-      else hideTipNow();
+      if (usesAccountCard()) {
+        if (!pointerOverAccountUi(ev.clientX, ev.clientY)) scheduleHideTip();
+      } else hideTipNow();
       return;
     }
     showNodeTip(best, ev.clientX, ev.clientY);
