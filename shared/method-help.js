@@ -363,7 +363,7 @@ const TOPICS = {
       <p><strong>Indéterminé</strong>&nbsp;: profil vide ou trop court, et publications absentes, trop peu nombreuses, ou sans cette pratique répétée.</p>
       <h3>Autres cas fréquents</h3>
       <ul>
-        <li>Médias, partis et institutions déjà documentés&nbsp;: liste de référence, pas le contenu des messages.</li>
+        <li>Médias&nbsp;: une enseigne déjà documentée, ou un compte qui se présente lui-même comme média, chaîne, agence de presse ou fil d’alerte (nom et bio, pas les messages). Une personne qui parle des médias, ou qui dit y travailler, ne devient pas un média pour autant. Times Now est une chaîne d’information, BRICS News un média en ligne qui dit ne pas être un compte gouvernemental, le fil covid19_disease un fil d’alerte sanitaire.</li>
         <li>Ancien ministre, député ou maire&nbsp;: activité actuelle, avec le drapeau ancien. Le compte du parti n’est pas un élu.</li>
         <li>Porte-parole d’un parti&nbsp;: mandat politique. Le compte du parti&nbsp;: parti ou mouvement.</li>
       </ul>
