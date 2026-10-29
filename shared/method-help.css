@@ -99,6 +99,7 @@
 .mh-body ul { margin: 0 0 10px; padding-left: 1.15em; color: #b7c0cc; }
 .mh-body li { margin: 0 0 5px; }
 .mh-body strong { color: #e8eef7; font-weight: 650; }
+.mh-body a { color: #9ec1ff; text-underline-offset: 2px; }
 .mh-formula {
   margin: 8px 0 12px; padding: 10px 12px;
   background: rgba(138,180,255,0.08);

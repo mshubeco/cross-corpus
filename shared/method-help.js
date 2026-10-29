@@ -265,6 +265,106 @@ const TOPICS = {
         Cela n’établit ni intention concertée, ni inauthenticité, ni affiliation partisane des comptes ordinaires.</div>
     `,
   },
+
+  connectome_typo: {
+    kicker: 'Connectome · typologie des comptes',
+    title: 'Sur quelle littérature s’appuie le classement',
+    html: `
+      <h3>Ce que la couleur représente</h3>
+      <p>Les modes <strong>Macro-classes d’utilisateurs</strong> et <strong>Type d’utilisateurs</strong> colorent la <strong>persona revendiquée</strong>&nbsp;:
+      ce que le compte dit être, pas ce que ses messages racontent, ni s’il est authentique.
+      Huit macro-classes, vingt catégories. En cas de plusieurs rôles, l’ordre est fixe&nbsp;:
+      mandat public, puis organisation, profession, notoriété, engagement, citoyen.
+      Un profil vide ou ambigu reste <strong>indéterminé</strong>.</p>
+      <p>Le principe vient de la technique DISARM <strong>T0097 Present Persona</strong>&nbsp;:
+      coder l’identité présentée, et tenir à part l’authenticité, l’automatisation et le lien avec un État.</p>
+      <div class="mh-cite">DISARM Foundation. Technique T0097, Present Persona.
+        <a href="https://github.com/DISARMFoundation/DISARMframeworks/blob/main/generated_pages/techniques/T0097.md" target="_blank" rel="noopener noreferrer">DISARMframeworks</a>.</div>
+
+      <h3>Le socle : Lotan et al. (2011)</h3>
+      <p>La liste de référence pour les acteurs d’un réseau Twitter est celle de
+      <strong>Lotan, Graeff, Ananny, Gaffney, Pearce et boyd (2011)</strong>,
+      établie sur les révolutions tunisienne et égyptienne.
+      Elle distingue, dans une seule dimension, médias traditionnels, médias nés en ligne,
+      organisations non médiatiques, journalistes, blogueurs, militants, digerati,
+      acteurs politiques, célébrités, chercheurs, bots et autres.</p>
+      <p>La grille de 2026 reprend ces rôles et les sépare quand Lotan les mélangeait.
+      Chaque code se reconvertit vers <strong>une seule</strong> catégorie de 2011,
+      pour rester comparable à la littérature 2011-2020.
+      Les blogueurs n’ont plus de case propre&nbsp;: ils se répartissent selon le rôle actuel
+      (média alternatif, créateur, expert). Les bots ne sont plus une identité&nbsp;:
+      l’automatisation est une autre question (Gorwa et Guilbeault 2020).</p>
+      <div class="mh-cite">Lotan, G., Graeff, E., Ananny, M., Gaffney, D., Pearce, I., &amp; boyd, d. (2011).
+        The revolutions were tweeted: Information flows during the 2011 Tunisian and Egyptian revolutions.
+        <em>International Journal of Communication</em>, 5, 1375–1405.
+        <a href="https://ijoc.org/index.php/ijoc/article/view/1246" target="_blank" rel="noopener noreferrer">ijoc.org</a>.</div>
+      <div class="mh-cite">Gorwa, R., &amp; Guilbeault, D. (2020). Unpacking the social media bot: A typology to guide research and policy.
+        <em>Policy &amp; Internet</em>, 12(2), 225–248.
+        <a href="https://doi.org/10.1002/poi3.184" target="_blank" rel="noopener noreferrer">doi:10.1002/poi3.184</a>.</div>
+
+      <h3>Ce que chaque famille emprunte</h3>
+      <table class="mh-params">
+        <tr><th>Médias historiques, pure players, journalistes, élus et partis, chercheurs, célébrités, militants</th>
+          <td>Lotan et al. 2011. Le compte d’une rédaction et le compte personnel d’un journaliste ne reçoivent pas le même code.</td></tr>
+        <tr><th>Média alternatif</th>
+          <td>Holt, Figenschou et Frischlich (2019)&nbsp;: un média alternatif se définit par sa position face aux médias dominants, pas par une idéologie. Cointet et al. (2021) décrivent cet espace dans l’écosystème médiatique français.</td></tr>
+        <tr><th>Média d’État étranger</th>
+          <td>Rapport SEAE 2025 sur les manipulations de l’information d’origine étrangère. Le contrôle éditorial étatique se documente hors de la bio (RT, Sputnik, CGTN). France Télévisions et Radio France restent des médias historiques de service public.</td></tr>
+        <tr><th>Agrégateur d’alerte</th>
+          <td>Holton et Belair-Gagnon (2018) sur les acteurs périphériques de la production d’info. Le repérage des marques du type Cerfia, AlertesInfos ou Mediavenir s’appuie aussi sur une enquête de presse (L’ADN, 2023).</td></tr>
+        <tr><th>Éditorialiste, célébrité, créateur</th>
+          <td>Pew Research Center (2024) sépare le commentaire d’opinion, la notoriété acquise hors ligne et la notoriété construite sur les plateformes. Riedl, Lukito et Woolley (2023) précisent la figure de l’influenceur politique.</td></tr>
+        <tr><th>Institution, association, entreprise, expert, fact-check, citoyen</th>
+          <td>Sous-techniques de DISARM T0097 (institution, ONG, entreprise, expert, fact-checking, individu). La frontière personne / organisation suit Wood-Doughty, Mahajan et Dredze (2018).</td></tr>
+      </table>
+      <div class="mh-cite">Holt, K., Ustad Figenschou, T., &amp; Frischlich, L. (2019). Key dimensions of alternative news media.
+        <em>Digital Journalism</em>, 7(7), 860–869.
+        <a href="https://doi.org/10.1080/21670811.2019.1625715" target="_blank" rel="noopener noreferrer">doi:10.1080/21670811.2019.1625715</a>.</div>
+      <div class="mh-cite">Cointet, J.-P., Cardon, D., Mogoutov, A., Ooghe-Tabanou, B., Plique, G., &amp; Ramaciotti Morales, P. (2021).
+        Uncovering the structure of the French media ecosystem. IC2S2.
+        <a href="https://arxiv.org/abs/2107.12073" target="_blank" rel="noopener noreferrer">arXiv:2107.12073</a>.</div>
+      <div class="mh-cite">European External Action Service (2025). 3rd EEAS Report on Foreign Information Manipulation and Interference Threats.
+        <a href="https://www.eeas.europa.eu/eeas/3rd-eeas-report-foreign-information-manipulation-and-interference-threats-0_en" target="_blank" rel="noopener noreferrer">eeas.europa.eu</a>.</div>
+      <div class="mh-cite">Pew Research Center (2024, 8 octobre). Appendix A: Account classification instruction prompt.
+        <a href="https://www.pewresearch.org/data-labs/2024/10/08/appendix-a-account-classification-instruction-prompt-tiktok-2024/" target="_blank" rel="noopener noreferrer">pewresearch.org</a>.
+        Riedl, M. J., Lukito, J., &amp; Woolley, S. C. (2023). Political influencers on social media: An introduction.
+        <em>Social Media + Society</em>, 9(2).
+        <a href="https://doi.org/10.1177/20563051231177938" target="_blank" rel="noopener noreferrer">doi:10.1177/20563051231177938</a>.</div>
+      <div class="mh-cite">Wood-Doughty, Z., Mahajan, P., &amp; Dredze, M. (2018). Johns Hopkins or johnny-hopkins: Classifying individuals versus organizations on Twitter.
+        <em>PEOPLES Workshop</em>, ACL.
+        <a href="https://aclanthology.org/W18-1108/" target="_blank" rel="noopener noreferrer">aclanthology.org/W18-1108</a>.</div>
+
+      <h3>Comment c’est codé dans ce connectome</h3>
+      <p>Codage du <strong>28 octobre 2026</strong>. Indices lus&nbsp;: handle, nom affiché, et bio lorsqu’un export SQL en contient une.
+        Des listes de référence (rédactions, partis, institutions, médias d’État déjà documentés) complètent les profils peu bavards.
+        Le texte des tweets n’attribue pas la catégorie. Aucune publication récente n’est relue, contrairement au protocole Pew.</p>
+
+      <div class="mh-caveat"><strong>Ce que la couleur ne dit pas.</strong>
+        La grille n’a pas été double-codée. Krippendorff (2018) fixe α ≥ 0,667 avant d’en publier les résultats&nbsp;:
+        ce seuil n’est pas atteint. La couleur n’établit ni l’authenticité, ni un bot, ni une position dans le réseau.
+        Ces questions relèvent d’autres cadres (DISARM T0143, Gorwa et Guilbeault 2020, González-Bailón, Borge-Holthoefer et Moreno 2013) et ne sont pas peintes ici.</div>
+    `,
+  },
+
+  connectome_typo_rules: {
+    kicker: 'Connectome · typologie des comptes',
+    title: 'Comment les catégories ont été tranchées',
+    html: `
+      <p>Codage automatique du <strong>28 octobre 2026</strong>. Une seule étiquette par compte, lue sur le profil&nbsp;: handle, nom affiché, et bio lorsqu’un export SQL en contient une. Le texte des tweets n’est pas lu.</p>
+      <p>Si plusieurs rôles sont revendiqués, le premier qui s’applique l’emporte&nbsp;: mandat ou fonction publique, puis organisation, profession, notoriété, engagement, citoyen. Profil vide ou sans indice&nbsp;: <strong>Indéterminé</strong>.</p>
+      <h3>Citoyen et militant</h3>
+      <p><strong>Militant</strong> seulement si le nom ou le début de la bio dit «&nbsp;militant&nbsp;», «&nbsp;militante&nbsp;», «&nbsp;activiste&nbsp;» ou «&nbsp;activist&nbsp;», ou si la bio dit «&nbsp;je suis militant / activiste&nbsp;». Un mandat ou un métier déclaré passe avant. «&nbsp;Engagé&nbsp;», un hashtag de cause ou les tweets ne suffisent pas.</p>
+      <p><strong>Citoyen</strong>&nbsp;: une bio personnelle, sans ce mot et sans autre rôle public. Ce n’est pas un militant dont le profil ne le dit pas. Les deux n’ont pas la même teinte&nbsp;: violet pour le militant, jaune pour le citoyen, y compris dans les macro-classes.</p>
+      <h3>Autres cas fréquents</h3>
+      <ul>
+        <li>Médias, partis et institutions déjà documentés&nbsp;: liste de référence, pas le contenu des messages.</li>
+        <li>Ancien ministre, député ou maire&nbsp;: activité actuelle, avec le drapeau ancien. Le compte du parti n’est pas un élu.</li>
+        <li>Porte-parole d’un parti&nbsp;: mandat politique. Le compte du parti&nbsp;: parti ou mouvement.</li>
+      </ul>
+      <div class="mh-caveat"><strong>Ce que la couleur ne dit pas.</strong>
+        Pas de double codage. L’accord de Krippendorff n’a pas été mesuré. La couleur n’établit ni l’authenticité, ni un bot, ni une position dans le réseau.</div>
+    `,
+  },
 };
 
 const CONNECTOME_TABS = [
@@ -371,16 +471,27 @@ export function initMethodHelp(opts = {}) {
     }
   }
 
-  function open() {
-    const id = getTopic();
+  function setExpanded(on) {
+    const value = on ? 'true' : 'false';
+    helpBtn.setAttribute('aria-expanded', value);
+    const typoOpen = on && currentTopic === 'connectome_typo';
+    const rulesOpen = on && currentTopic === 'connectome_typo_rules';
+    document.getElementById('typoHelpBtn')?.setAttribute('aria-expanded', typoOpen ? 'true' : 'false');
+    document.getElementById('typoLegendHelp')?.setAttribute('aria-expanded', rulesOpen ? 'true' : 'false');
+  }
+
+  function open(forcedId) {
+    const explicit = typeof forcedId === 'string' && TOPICS[forcedId];
+    const id = explicit ? forcedId : getTopic();
+    tabsWrap.hidden = explicit ? true : !showTabs;
     renderTopic(TOPICS[id] ? id : 'connectome_all');
     overlay.classList.add('open');
-    helpBtn.setAttribute('aria-expanded', 'true');
+    setExpanded(true);
     closeBtn.focus();
   }
   function close() {
     overlay.classList.remove('open');
-    helpBtn.setAttribute('aria-expanded', 'false');
+    setExpanded(false);
     helpBtn.focus();
   }
 
@@ -414,7 +525,7 @@ export function initMethodHelp(opts = {}) {
     || document.body;
   parent.appendChild(helpBtn);
 
-  return { open, close, renderTopic, button: helpBtn };
+  return { open, close, renderTopic, button: helpBtn, topic: () => currentTopic };
 }
 
 export { TOPICS };
