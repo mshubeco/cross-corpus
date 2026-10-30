@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Connectomes — cross_corpus</title>
-  <!-- connectome-ui v20261029-activity : relecture militant / citoyen / indéterminé par les publications -->
+  <!-- connectome-ui v20261029-discours : cadrages discursifs HMPV dans Couleurs du réseau -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -268,6 +268,13 @@
     #colorModeBtns .color-btn.active[data-mode="typo_cat"] {
       color: #f6efff; background: rgba(124,58,237,0.38); border-color: rgba(167,139,250,0.75);
     }
+    #colorModeBtns .color-btn.active[data-mode="discours"] {
+      color: #fff6d8; background: rgba(240,193,74,0.28); border-color: rgba(240,193,74,0.75);
+    }
+    #colorModeBtns .color-btn.active[data-mode="pays"] {
+      color: #e7fff8; background: rgba(13,148,136,0.42); border-color: rgba(45,212,191,0.8);
+    }
+    #hudColorDiscours[hidden], #discourseHead[hidden] { display: none !important; }
     .typo-help-row {
       display: flex; align-items: center; justify-content: space-between; gap: 8px;
       margin: 8px 0 2px;
@@ -313,6 +320,55 @@
       text-transform: uppercase; font-weight: 700;
     }
     #typoLegend .leg-row.is-zero { opacity: 0.45; }
+    #discourseLegend {
+      display: none; margin-top: 8px; padding-top: 8px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      max-height: 360px; overflow: auto;
+    }
+    #discourseLegend.visible { display: block; }
+    #discourseLegend .leg-title {
+      font-size: 9.5px; letter-spacing: 0.05em; text-transform: uppercase;
+      color: #f0e2c0; font-weight: 700; margin-bottom: 6px;
+    }
+    #discourseLegend .leg-note {
+      font-size: 10.5px; line-height: 1.35; color: #c4bba6; margin: 0 0 8px;
+    }
+    #discourseLegend .leg-row {
+      display: flex; align-items: flex-start; gap: 8px;
+      margin-top: 5px; color: #d5dbe4; font-size: 10.5px; line-height: 1.3;
+    }
+    #discourseLegend .leg-row .hint {
+      display: block; color: #8b93a0; font-weight: 500; font-size: 10px;
+    }
+    #discourseLegend .leg-row .n {
+      margin-left: auto; color: #8b93a0; font-variant-numeric: tabular-nums; flex-shrink: 0;
+    }
+    #discourseLegend .sw {
+      width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; margin-top: 2px;
+    }
+    #geoLegend {
+      display: none; margin-top: 8px; padding-top: 8px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      max-height: 280px; overflow: auto;
+    }
+    #geoLegend.visible { display: block; }
+    #geoLegend .leg-title {
+      font-size: 9.5px; letter-spacing: 0.05em; text-transform: uppercase;
+      color: #b7efe4; font-weight: 700; margin-bottom: 6px;
+    }
+    #geoLegend .leg-note {
+      font-size: 10.5px; line-height: 1.35; color: #b7c4c0; margin: 0 0 8px;
+    }
+    #geoLegend .leg-row {
+      display: flex; align-items: flex-start; gap: 8px;
+      margin-top: 4px; color: #d5dbe4; font-size: 10.5px; line-height: 1.3;
+    }
+    #geoLegend .leg-row .n {
+      margin-left: auto; color: #8b93a0; font-variant-numeric: tabular-nums; flex-shrink: 0;
+    }
+    #geoLegend .sw {
+      width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; margin-top: 1px;
+    }
     #hashModeBtn[hidden], #lemmaModeBtn[hidden] { display: none !important; }
     #hashModeBtn:disabled, #lemmaModeBtn:disabled {
       opacity: 0.35; cursor: not-allowed; pointer-events: none;
@@ -1020,8 +1076,17 @@
           title="Une teinte par macro-classe d’utilisateurs, dégradé entre les types de la même classe">Macro-classes d’utilisateurs</button>
         <button type="button" class="color-btn" data-mode="typo_cat" id="hudColorTypoCat"
           title="Une couleur distincte pour chacun des 20 types d’utilisateurs">Type d’utilisateurs</button>
+        <button type="button" class="color-btn" data-mode="pays" id="hudColorPays"
+          title="Pays du lieu tagué sur le tweet, complété par le lieu déclaré du compte. S’ils diffèrent, le lieu du tweet est gardé.">Pays</button>
+        <div class="typo-help-row" id="discourseHead" hidden>
+          <span>Discours du corpus</span>
+        </div>
+        <button type="button" class="color-btn" data-mode="discours" id="hudColorDiscours" hidden
+          title="Couleur selon ce qui est dit, pas selon la communauté. Corpus HMPV.">Cadrages discursifs</button>
       </div>
+      <div id="discourseLegend" aria-label="Légende des cadrages discursifs"></div>
       <div id="typoLegend" aria-label="Légende de la typologie des comptes"></div>
+      <div id="geoLegend" aria-label="Légende des pays"></div>
       <div id="rtColorLegend" aria-label="Légende Distinction RT / interactions">
         <div class="leg-title">Légende · graphe Toutes interactions</div>
         <div class="leg-note">Même topologie que l’onglet «&nbsp;Toutes interactions&nbsp;» — pas le graphe RT. Seule la couleur des liens change (part RT par arête).</div>
@@ -1061,7 +1126,7 @@
     <div id="exportStatus"></div>
   </aside>
   <aside id="commPanel">
-    <b>Communautés</b>
+    <b id="commPanelTitle">Communautés</b>
     <div class="comm-loader" id="commLoader">Chargement des stats…</div>
     <div class="sub" id="commSub">—</div>
     <div id="commList"></div>
@@ -1172,8 +1237,10 @@ let graphMode = (_graphParam === 'rt' || _graphParam === 'rt_classes') ? _graphP
 const _typoParam = new URLSearchParams(location.search).get('typo');
 let edgeColorMode = _typoParam === 'macro' ? 'typo_macro'
   : _typoParam === 'cat' ? 'typo_cat'
+  : _typoParam === 'discours' ? 'discours'
+  : _typoParam === 'pays' ? 'pays'
   : 'community';
-if ((edgeColorMode === 'typo_macro' || edgeColorMode === 'typo_cat') && graphMode === 'rt_classes') {
+if ((edgeColorMode === 'typo_macro' || edgeColorMode === 'typo_cat' || edgeColorMode === 'discours' || edgeColorMode === 'pays') && graphMode === 'rt_classes') {
   graphMode = 'all';
 }
 /** Centralité → taille des nœuds (positions FA2 inchangées). */
@@ -1483,7 +1550,7 @@ let lexScope = 'targets'; // 'sources' | 'targets'
 /** En mode Lemme : unigrammes ou bigrammes. */
 let lemmaForm = 'uni'; // 'uni' | 'bi'
 /** Build id (console + vérif cache). */
-const CONNECTOME_UI = '20261029-activity';
+const CONNECTOME_UI = '20261030-pays';
 
 const PUB_TYPE_ORDER = [
   { key: 'original', label: 'Original', short: 'Orig.', color: '#8ecf4a' },
@@ -3038,7 +3105,12 @@ function updateGraphModeButtons() {
   syncLexModeButtons();
   const modeKey = graphMode === 'rt_classes'
     ? 'rt_classes'
-    : (edgeColorMode === 'typo_macro' || edgeColorMode === 'typo_cat' ? edgeColorMode : 'community');
+    : (edgeColorMode === 'typo_macro' || edgeColorMode === 'typo_cat' || edgeColorMode === 'discours' || edgeColorMode === 'pays'
+      ? edgeColorMode
+      : 'community');
+  const discAvail = currentCorpusId === 'hmpv';
+  document.getElementById('hudColorDiscours')?.toggleAttribute('hidden', !discAvail);
+  document.getElementById('discourseHead')?.toggleAttribute('hidden', !discAvail);
   document.querySelectorAll('#colorModeBtns .color-btn').forEach((b) => {
     b.classList.toggle('active', b.dataset.mode === modeKey);
   });
@@ -3052,12 +3124,18 @@ function updateGraphModeButtons() {
   const scopeHint = document.getElementById('colorModeScopeHint');
   const rtMode = graphMode === 'rt_classes';
   const typoOn = typologyActive();
+  const discOn = discourseActive();
+  const geoOn = geoActive();
   legend?.classList.toggle('visible', rtMode);
   renderTypoLegend();
+  renderDiscourseLegend();
+  renderGeoLegend();
   if (scopeHint) scopeHint.style.display = showColorHud ? '' : 'none';
   if (hint) {
-    hint.classList.toggle('hidden', rtMode || typoOn);
-    hint.textContent = 'Liens colorés par communauté des nœuds';
+    hint.classList.toggle('hidden', rtMode || typoOn || geoOn);
+    hint.textContent = discOn
+      ? 'Dégradé = deux cadrages se touchent. Gris = pas de cadre lisible.'
+      : 'Liens colorés par communauté des nœuds';
   }
   syncHashModeAvailability();
   updateCentralityButtons();
@@ -3293,6 +3371,167 @@ async function ensureTypology(corpusId) {
   return pack;
 }
 
+const GEO_NONE = '#3a4150';
+const GEO_HEX = {
+  FR: '#3b82f6', US: '#ef4444', CD: '#f59e0b', IN: '#f97316', GB: '#38bdf8',
+  CA: '#c4b5fd', BE: '#facc15', CH: '#fb7185', DE: '#fbbf24', ES: '#fb923c',
+  NG: '#22c55e', ZA: '#14b8a6', RW: '#a3e635', SN: '#2dd4bf', CM: '#06b6d4',
+  CI: '#0ea5e9', IT: '#4ade80', PT: '#84cc16', BR: '#16a34a', AU: '#eab308',
+  JP: '#e11d48', MA: '#c2410c', DZ: '#ea580c', TN: '#d97706', UG: '#84cc16',
+  KE: '#10b981', CG: '#fdba74', NL: '#f472b6', GH: '#4d7c0f', CN: '#dc2626',
+  RU: '#a78bfa', TR: '#be123c', PL: '#f9a8d4', MX: '#15803d', AR: '#67e8f9',
+  LU: '#93c5fd', IE: '#86efac', SE: '#fde68a', NO: '#bfdbfe', PS: '#166534',
+  LK: '#0f766e', NP: '#b45309',
+};
+const geoCache = new Map();
+
+function geoActive() {
+  return graphMode === 'all' && edgeColorMode === 'pays';
+}
+
+function geoColorHex(code) {
+  if (!code) return GEO_NONE;
+  if (GEO_HEX[code]) return GEO_HEX[code];
+  let h = 0;
+  for (let i = 0; i < code.length; i++) h = (h * 33 + code.charCodeAt(i)) % 360;
+  return hslToHex(h, 58, 54);
+}
+
+function geoLabel(code, pack) {
+  if (!code) return 'Non renseigné';
+  const row = (pack?.countries || []).find((c) => c.id === code);
+  return row?.label || code;
+}
+
+function geoCodeForNode(node) {
+  const pack = geoCache.get(currentCorpusId);
+  const h = normalizeHandle(node?.l);
+  if (!pack || pack.missing || !h) return '';
+  return pack.a.get(h) || '';
+}
+
+async function ensureGeo(corpusId) {
+  if (geoCache.has(corpusId)) return geoCache.get(corpusId);
+  const url = new URL(`./data/${corpusId}/geo_country.json`, import.meta.url);
+  url.searchParams.set('v', CONNECTOME_UI);
+  let pack;
+  try {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error(String(res.status));
+    const data = await res.json();
+    pack = {
+      rule: data.rule || '',
+      note: data.note || '',
+      n: Number(data.n) || 0,
+      nPlaceOnly: Number(data.n_place_only) || 0,
+      nProfileOnly: Number(data.n_profile_only) || 0,
+      nAgree: Number(data.n_agree) || 0,
+      nPlaceWins: Number(data.n_place_wins) || 0,
+      nNone: Number(data.n_none) || 0,
+      countries: Array.isArray(data.countries) ? data.countries : [],
+      a: new Map(Object.entries(data.a || {})),
+      missing: false,
+    };
+  } catch (err) {
+    console.warn('[connectome] pays', corpusId, err);
+    pack = {
+      rule: '', note: '', n: 0, countries: [], a: new Map(), missing: true,
+      nPlaceOnly: 0, nProfileOnly: 0, nAgree: 0, nPlaceWins: 0, nNone: 0,
+    };
+  }
+  geoCache.set(corpusId, pack);
+  return pack;
+}
+
+function renderGeoLegend() {
+  const el = document.getElementById('geoLegend');
+  if (!el) return;
+  if (!geoActive()) {
+    el.classList.remove('visible');
+    el.innerHTML = '';
+    return;
+  }
+  const pack = geoCache.get(currentCorpusId);
+  const counts = new Map();
+  let none = 0;
+  for (const n of graphData?.nodes || []) {
+    if (n._geo) counts.set(n._geo, (counts.get(n._geo) || 0) + 1);
+    else none += 1;
+  }
+  const missing = pack?.missing
+    ? '<div class="leg-note">Fichier de pays introuvable. Le réseau reste coloré par communauté.</div>'
+    : '';
+  const rows = (pack?.countries || []).map((c) => {
+    const n = counts.get(c.id) || c.n || 0;
+    if (!n) return '';
+    return `<div class="leg-row">`
+      + `<i class="sw" style="background:${escapeHtml(geoColorHex(c.id))}"></i>`
+      + `<span>${escapeHtml(c.label || c.id)}</span>`
+      + `<span class="n">${n.toLocaleString('fr-FR')}</span></div>`;
+  }).join('');
+  const gray = `<div class="leg-row">`
+    + `<i class="sw" style="background:${GEO_NONE}"></i>`
+    + `<span>Non renseigné</span>`
+    + `<span class="n">${none.toLocaleString('fr-FR')}</span></div>`;
+  const note = `<div class="leg-note">${escapeHtml(pack?.rule || '')}</div>`
+    + (pack?.note ? `<div class="leg-note">${escapeHtml(pack.note)}</div>` : '');
+  el.innerHTML = `<div class="leg-title">Légende · pays</div>${missing}${note}${rows}${gray}`;
+  el.classList.add('visible');
+}
+
+function renderGeoPanel(data) {
+  const list = document.getElementById('commList');
+  const sub = document.getElementById('commSub');
+  if (!list || !sub) return;
+  const pack = geoCache.get(currentCorpusId);
+  const counts = new Map();
+  const samples = new Map();
+  let none = 0;
+  const nodes = data?.nodes || [];
+  for (const n of nodes) {
+    const code = n._geo || '';
+    if (!code) {
+      none += 1;
+      continue;
+    }
+    counts.set(code, (counts.get(code) || 0) + 1);
+    if (!samples.has(code)) samples.set(code, []);
+    const bag = samples.get(code);
+    if (bag.length < 4 && n.l) bag.push(n.l);
+  }
+  const known = counts.size;
+  const filled = nodes.length - none;
+  const pct = nodes.length ? Math.round(100 * filled / nodes.length) : 0;
+  sub.textContent = pack?.missing
+    ? 'Pays indisponible pour ce corpus'
+    : `${known.toLocaleString('fr-FR')} pays · ${filled.toLocaleString('fr-FR')} comptes situés · ${pct.toLocaleString('fr-FR')} %`;
+  const order = (pack?.countries || []).filter((c) => counts.get(c.id));
+  list.innerHTML = '';
+  const paintRow = (code, label, n, handles) => {
+    const el = document.createElement('div');
+    el.className = 'comm-row';
+    const share = nodes.length ? Math.round(1000 * n / nodes.length) / 10 : 0;
+    const who = (handles || [])
+      .map((raw) => {
+        const href = xProfileUrl(raw);
+        const h = displayHandle(raw);
+        return `<a class="handle" href="${href}" target="_blank" rel="noopener noreferrer">${escapeHtml(h)}</a>`;
+      })
+      .join(', ');
+    el.innerHTML = `
+      <div class="comm-swatch" style="background:${geoColorHex(code)}"></div>
+      <div>
+        <div class="comm-head"><span>${escapeHtml(label)}</span><span class="comm-metrics">${n.toLocaleString('fr-FR')} · ${share.toLocaleString('fr-FR')} %</span></div>
+        <div class="comm-accounts">${who || '—'}</div>
+      </div>`;
+    list.appendChild(el);
+  };
+  for (const c of order) {
+    paintRow(c.id, c.label || c.id, counts.get(c.id) || 0, samples.get(c.id));
+  }
+  if (none) paintRow('', 'Non renseigné', none, []);
+}
+
 function paintNodeColors(data) {
   if (!data?.nodes) return;
   if (!data._commSnap) {
@@ -3300,16 +3539,126 @@ function paintNodeColors(data) {
     data._commSnap = true;
   }
   const on = typologyActive();
+  const discOn = discourseActive();
+  const geoOn = geoActive();
+  const pack = discOn ? discourseFrameCache.get(currentCorpusId) : null;
+  const geoPack = geoOn ? geoCache.get(currentCorpusId) : null;
   for (const n of data.nodes) {
-    if (!on) {
-      n.c = n._commC;
-      n._typo = '';
+    if (on) {
+      const code = codeForNode(n);
+      n._typo = code;
+      n._frame = '';
+      n._geo = '';
+      n.c = hexToRgbArr(typoColorHex(code));
       continue;
     }
-    const code = codeForNode(n);
-    n._typo = code;
-    n.c = hexToRgbArr(typoColorHex(code));
+    n._typo = '';
+    if (geoOn && geoPack && !geoPack.missing) {
+      const code = geoCodeForNode(n);
+      n._geo = code;
+      n._frame = '';
+      n.c = hexToRgbArr(geoColorHex(code));
+      continue;
+    }
+    n._geo = '';
+    if (discOn && pack && !pack.missing) {
+      const id = pack.a.get(normalizeHandle(n.l)) || '';
+      n._frame = id;
+      n.c = hexToRgbArr(discourseFrameColor(id, pack));
+      continue;
+    }
+    n._frame = '';
+    n.c = n._commC;
   }
+}
+
+const discourseFrameCache = new Map();
+const DISCOURSE_NONE_COLOR = '#3a4150';
+
+function discourseActive() {
+  return graphMode === 'all' && edgeColorMode === 'discours' && currentCorpusId === 'hmpv';
+}
+
+function discourseFrameColor(id, pack) {
+  if (!id) return DISCOURSE_NONE_COLOR;
+  const row = (pack?.frames || []).find((f) => f.id === id);
+  return row?.color || DISCOURSE_NONE_COLOR;
+}
+
+function discourseFrameLabel(id, pack) {
+  if (!id) return 'Sans cadre lisible';
+  const row = (pack?.frames || []).find((f) => f.id === id);
+  return row?.label || id;
+}
+
+async function ensureDiscourseFrames(corpusId) {
+  if (corpusId !== 'hmpv') {
+    return { frames: [], a: new Map(), missing: true, method: '' };
+  }
+  if (discourseFrameCache.has(corpusId)) return discourseFrameCache.get(corpusId);
+  const url = new URL(`./data/${corpusId}/discourse_frames.json`, import.meta.url);
+  url.searchParams.set('v', CONNECTOME_UI);
+  let pack;
+  try {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error(String(res.status));
+    const data = await res.json();
+    pack = {
+      frames: Array.isArray(data.frames) ? data.frames : [],
+      a: new Map(Object.entries(data.a || {})),
+      method: data.method || '',
+      mixed: Array.isArray(data.mixed) ? data.mixed : [],
+      nFromText: Number(data.nFromText) || 0,
+      nFromRelay: Number(data.nFromRelay) || 0,
+      nFromCommunity: Number(data.nFromCommunity) || 0,
+      missing: false,
+    };
+  } catch (err) {
+    console.warn('[connectome] discours', corpusId, err);
+    pack = { frames: [], a: new Map(), method: '', mixed: [], missing: true };
+  }
+  discourseFrameCache.set(corpusId, pack);
+  return pack;
+}
+
+function renderDiscourseLegend() {
+  const el = document.getElementById('discourseLegend');
+  if (!el) return;
+  if (!discourseActive()) {
+    el.classList.remove('visible');
+    el.innerHTML = '';
+    return;
+  }
+  const pack = discourseFrameCache.get(currentCorpusId);
+  const counts = new Map();
+  let none = 0;
+  for (const n of graphData?.nodes || []) {
+    if (n._frame) counts.set(n._frame, (counts.get(n._frame) || 0) + 1);
+    else none += 1;
+  }
+  const missing = pack?.missing
+    ? '<div class="leg-note">Fichier de cadrage introuvable. Le réseau reste coloré par communauté.</div>'
+    : '';
+  const rows = (pack?.frames || []).map((f) => {
+    const n = counts.get(f.id) || 0;
+    return `<div class="leg-row">`
+      + `<i class="sw" style="background:${escapeHtml(f.color)}"></i>`
+      + `<span><b>${escapeHtml(f.label)}</b><span class="hint">${escapeHtml(f.hint || '')}</span></span>`
+      + `<span class="n">${n.toLocaleString('fr-FR')}</span></div>`;
+  }).join('');
+  const gray = `<div class="leg-row">`
+    + `<i class="sw" style="background:${DISCOURSE_NONE_COLOR}"></i>`
+    + `<span><b>Sans cadre lisible</b><span class="hint">Textes qui ne s’accordent pas, ou aucun propos relayé</span></span>`
+    + `<span class="n">${none.toLocaleString('fr-FR')}</span></div>`;
+  const mixedRows = (pack?.mixed || []).map((line) =>
+    `<div class="leg-note">${escapeHtml(line)}</div>`
+  ).join('');
+  const mixedBlock = mixedRows
+    ? `<div class="leg-title">Communautés mêlées, même couleur refusée</div>${mixedRows}`
+    : '';
+  const note = `<div class="leg-note" title="${escapeHtml(pack?.method || '')}">Même couleur = même propos, y compris dans deux communautés. Le gris n’est pas une communauté à part.</div>`;
+  el.innerHTML = `<div class="leg-title">Légende · cadrages discursifs</div>${missing}${note}${rows}${gray}${mixedBlock}`;
+  el.classList.add('visible');
 }
 
 function renderTypoLegend() {
@@ -3383,6 +3732,26 @@ async function recolorCurrentGraph() {
     await ensureTypology(currentCorpusId);
     if (!isCurrent()) return;
   }
+  if (edgeColorMode === 'pays') {
+    setGraphLoader({
+      title: corp?.label || 'Pays',
+      msg: 'Lecture des pays…',
+      progress: 0.15,
+      indeterminate: true,
+    });
+    await ensureGeo(currentCorpusId);
+    if (!isCurrent()) return;
+  }
+  if (edgeColorMode === 'discours') {
+    setGraphLoader({
+      title: corp?.label || 'Discours',
+      msg: 'Lecture des cadrages discursifs…',
+      progress: 0.15,
+      indeterminate: true,
+    });
+    await ensureDiscourseFrames(currentCorpusId);
+    if (!isCurrent()) return;
+  }
   paintNodeColors(graphData);
   renderCommPanel(graphData);
   const nE = (graphData.edges || []).length;
@@ -3414,7 +3783,8 @@ function setEdgeColorFromHud(value) {
     setGraphMode('rt_classes');
     return;
   }
-  if (value === 'typo_macro' || value === 'typo_cat') {
+  if (value === 'typo_macro' || value === 'typo_cat' || value === 'discours' || value === 'pays') {
+    if (value === 'discours' && currentCorpusId !== 'hmpv') return;
     if (graphMode === 'all' && edgeColorMode === value) return;
     edgeColorMode = value;
     if (graphMode !== 'all') {
@@ -3440,6 +3810,8 @@ function syncCorpusUrl(corpusId) {
   const nextCent = centralityMode !== 'w' ? centralityMode : null;
   const nextTypo = edgeColorMode === 'typo_macro' ? 'macro'
     : edgeColorMode === 'typo_cat' ? 'cat'
+    : edgeColorMode === 'discours' ? 'discours'
+    : edgeColorMode === 'pays' ? 'pays'
     : null;
   const sameCorpus = url.searchParams.get('corpus') === corpusId;
   const sameGraph = (url.searchParams.get('graph') || null) === nextGraph;
@@ -3572,6 +3944,13 @@ function communitiesCovering90(data, target = 0.9) {
 function renderCommPanel(data) {
   const list = document.getElementById('commList');
   const sub = document.getElementById('commSub');
+  const title = document.getElementById('commPanelTitle');
+  if (geoActive()) {
+    if (title) title.textContent = 'Pays';
+    renderGeoPanel(data);
+    return;
+  }
+  if (title) title.textContent = 'Communautés';
   if (!list || !sub) return;
   const { rows, coverage } = communitiesCovering90(data);
   const stats = data?.meta?.pubStats;
@@ -3595,12 +3974,17 @@ function renderCommPanel(data) {
         if (!raw) return '';
         const h = `@${raw}`;
         const href = xProfileUrl(raw);
+        const framePack = discourseActive() ? discourseFrameCache.get(currentCorpusId) : null;
+        const frameOn = !!(framePack && !framePack.missing);
+        const frameId = frameOn ? (framePack.a.get(normalizeHandle(raw)) || '') : '';
         const code = typoCodeForHandle(raw);
-        const hex = accountTypoHex(code);
-        const kind = accountTypoLabel(code);
-        const title = code
-          ? `${typoCaption({ l: raw, _typo: code })} — ouvrir sur X`
-          : 'Ouvrir sur X';
+        const hex = frameOn ? discourseFrameColor(frameId, framePack) : accountTypoHex(code);
+        const kind = frameOn ? discourseFrameLabel(frameId, framePack) : accountTypoLabel(code);
+        const title = frameOn
+          ? `${discourseFrameLabel(frameId, framePack)} — ouvrir sur X`
+          : code
+            ? `${typoCaption({ l: raw, _typo: code })} — ouvrir sur X`
+            : 'Ouvrir sur X';
         const ink = hex ? readableTypoColor(hex) : '';
         const colorAttr = hex
           ? ` style="--acct-c:${escapeHtml(ink)};color:${escapeHtml(ink)}"`
@@ -4414,6 +4798,10 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
     modeLabel = rtWeightByEdge
       ? 'distinction RT / interactions'
       : 'distinction RT / interactions indisponible';
+  } else if (discourseActive()) {
+    modeLabel = 'cadrages discursifs';
+  } else if (geoActive()) {
+    modeLabel = 'pays';
   } else if (typologyActive()) {
     modeLabel = edgeColorMode === 'typo_macro' ? 'macro-classes d’utilisateurs' : 'type d’utilisateurs';
   }
@@ -4425,6 +4813,7 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   rebuildLabels();
   updateCentralityButtons();
   renderTypoLegend();
+  renderGeoLegend();
   if (activeLexeme) {
     const accounts = accountsForLexeme(activeLexeme);
     const comms = communitiesForLexeme(activeLexeme);
@@ -4928,6 +5317,7 @@ async function loadCorpus(corp) {
   const isCurrent = () => seq === loadSeq;
   const corpusChanged = currentCorpusId !== corp.id;
   currentCorpusId = corp.id;
+  if (edgeColorMode === 'discours' && corp.id !== 'hmpv') edgeColorMode = 'community';
   hideTipNow();
   loadAccountPosts(corp.id, seq);
   const covEl = document.getElementById('corpusCoverage');
@@ -5045,6 +5435,10 @@ async function loadCorpus(corp) {
     if (!isCurrent()) return;
     if (prodMap) stampProducers(data, prodMap);
     await typoPromise;
+    if (!isCurrent()) return;
+    if (edgeColorMode === 'discours') await ensureDiscourseFrames(corp.id);
+    if (!isCurrent()) return;
+    if (edgeColorMode === 'pays') await ensureGeo(corp.id);
     if (!isCurrent()) return;
     paintNodeColors(data);
     setGraphLoader({
@@ -5287,12 +5681,19 @@ function renderPostCard(p, handle, rank) {
 function renderAccountCard(node) {
   const handle = normalizeHandle(node.l);
   const shown = displayHandle(node.l);
-  const color = typologyActive()
+  const discPack = discourseActive() ? discourseFrameCache.get(currentCorpusId) : null;
+  const discOn = !!(discPack && !discPack.missing);
+  const geoOn = geoActive();
+  const color = typologyActive() || discOn || geoOn
     ? rgbCss(node.c)
     : (communityColor(node.com) || '#8b93a0');
   const typoLine = typologyActive()
     ? `<div class="acct-typo">${escapeHtml(typoCaption(node))}</div>`
-    : '';
+    : discOn
+      ? `<div class="acct-typo">${escapeHtml(discourseFrameLabel(node._frame, discPack))}</div>`
+      : geoOn
+        ? `<div class="acct-typo">${escapeHtml(geoLabel(node._geo, geoCache.get(currentCorpusId)))}</div>`
+        : '';
   const centLbl = CENTRALITY_LABELS[centralityMode] || 'Centralité';
   const centVal = formatCentValue(centralityMode, nodeCentValue(node));
   const profile = xProfileUrl(node.l);
@@ -5355,9 +5756,14 @@ function renderSimpleTip(node) {
   const handle = displayHandle(node.l);
   const centLbl = CENTRALITY_LABELS[centralityMode] || 'Centralité';
   const centVal = formatCentValue(centralityMode, nodeCentValue(node));
+  const discPack = discourseActive() ? discourseFrameCache.get(currentCorpusId) : null;
   const typoBit = typologyActive()
     ? `<div class="muted">${escapeHtml(typoCaption(node))}</div>`
-    : '';
+    : geoActive()
+      ? `<div class="muted">${escapeHtml(geoLabel(node._geo, geoCache.get(currentCorpusId)))}</div>`
+      : (discPack && !discPack.missing)
+        ? `<div class="muted">${escapeHtml(discourseFrameLabel(node._frame, discPack))}</div>`
+        : '';
   return `<strong>${escapeHtml(handle)}</strong>`
     + typoBit
     + `<div class="muted">comm. C${escapeHtml(String(node.com ?? ''))} · ${escapeHtml(centLbl)} ${escapeHtml(centVal)}`
@@ -5855,7 +6261,11 @@ window.addEventListener('popstate', () => {
   const viewChanged = nextView !== viewMode || (nextView === 'analyses' && nextLex !== lexKind);
   const centChanged = nextCent !== centralityMode;
   const t = params.get('typo');
-  const nextEdge = t === 'macro' ? 'typo_macro' : t === 'cat' ? 'typo_cat' : 'community';
+  const nextEdge = t === 'macro' ? 'typo_macro'
+    : t === 'cat' ? 'typo_cat'
+    : t === 'discours' ? 'discours'
+    : t === 'pays' ? 'pays'
+    : 'community';
   const edgeChanged = nextEdge !== edgeColorMode;
   edgeColorMode = nextEdge;
   graphMode = nextMode;
