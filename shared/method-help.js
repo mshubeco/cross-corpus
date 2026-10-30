@@ -374,6 +374,48 @@ const TOPICS = {
         Pas de double codage. L’accord de Krippendorff n’a pas été mesuré. La couleur n’établit ni l’authenticité, ni un bot, ni une position dans le réseau.</div>
     `,
   },
+
+  connectome_pays: {
+    kicker: 'Connectome · pays',
+    title: 'Comment le pays d’un compte est calculé',
+    html: `
+      <p>Codage du <strong>30 octobre 2026</strong>. Une couleur = un pays, pour un compte du graphe. Elle vient du lieu écrit sur le profil ou tagué sur le tweet. Les coordonnées GPS du téléphone ne sont pas lues&nbsp;: X ne les renvoie presque jamais.</p>
+
+      <h3>Deux textes, qui se complètent</h3>
+      <ul>
+        <li><strong>Lieu du tweet</strong> — le lieu tagué par l’auteur. On prend le pays de ce lieu s’il est rempli, sinon son libellé (ville, pays). X ne le renvoie que si le lieu a été tagué&nbsp;: il est presque toujours vide.</li>
+        <li><strong>Lieu déclaré</strong> — le champ libre du profil. C’est le même texte pour toutes les publications du compte.</li>
+      </ul>
+      <p>Chaque texte est traduit en code pays. Côté lieu du tweet, on garde le pays le plus fréquent parmi les tweets du compte. Côté profil, le pays le plus fréquent du texte déclaré. Si deux pays arrivent à égalité, ce côté ne donne rien.</p>
+
+      <h3>Lequel est gardé</h3>
+      <ul>
+        <li>Les deux existent et diffèrent&nbsp;: le lieu du tweet est gardé.</li>
+        <li>Les deux existent et désignent le même pays&nbsp;: ce pays.</li>
+        <li>Un seul des deux existe&nbsp;: celui-là.</li>
+        <li>Aucun des deux&nbsp;: le compte reste gris, «&nbsp;Non renseigné&nbsp;».</li>
+      </ul>
+
+      <h3>Comment une chaîne devient un pays</h3>
+      <p>D’abord un emoji drapeau, puis quelques écritures non latines (भारत → Inde, 日本 ou 東京 → Japon). Le texte est ensuite mis en minuscules, sans accents, et les tirets deviennent des espaces. On le coupe aux virgules et on lit <strong>de la droite vers la gauche</strong>&nbsp;: dans «&nbsp;Lyon, France&nbsp;», c’est France.</p>
+      <p>Un nom exact l’emporte&nbsp;: pays, grande ville, ou département français (01–95, 971–976, 2A, 2B). Sinon une expression, la plus longue d’abord («&nbsp;république démocratique du congo&nbsp;» avant «&nbsp;congo&nbsp;», «&nbsp;new mexico&nbsp;» avant «&nbsp;mexico&nbsp;»). Si le même segment contient deux pays, il est rejeté&nbsp;: «&nbsp;Entre Suisse et France&nbsp;» ne donne aucun pays. «&nbsp;Earth&nbsp;», un pronom, un nom de continent, ou une chaîne trop longue restent non lus.</p>
+      <p>«&nbsp;Congo&nbsp;» seul dans le profil est lu comme la RD Congo. «&nbsp;Congo&nbsp;» seul dans le lieu du tweet est lu comme la république du Congo. Les formes longues, Kinshasa et «&nbsp;RDC&nbsp;» vont à la RD Congo. Si les deux côtés divergent, le lieu du tweet l’emporte.</p>
+
+      <h3>D’où viennent les champs</h3>
+      <ul>
+        <li>Ebola, Ebola 2, Hantavirus, Mpox, Macron nucléaire&nbsp;: lieu du tweet et lieu déclaré dans l’export du corpus.</li>
+        <li>HMPV et HMPV FR&nbsp;: le lieu déclaré est dans les tables utilisateurs de la collecte. Il n’est pas dans le CSV d’analyse. Le lieu du tweet est le libellé de place de l’export, presque vide.</li>
+        <li>Canicule&nbsp;: le CSV qui a servi au graphe n’a pas ces colonnes. Elles sont lues dans l’export du 21 septembre 2026, restreint au 20 mai–29 juin, et rapprochées par pseudo. Cette fenêtre est plus courte que le graphe&nbsp;: beaucoup de comptes restent gris.</li>
+      </ul>
+
+      <h3>Les teintes</h3>
+      <p>Un continent, une teinte&nbsp;: Europe en bleu, Afrique en ambre, Amérique du Nord en rouge, Amérique du Sud en sarcelle, Asie en violet, Océanie en jaune-vert. Les pays présents dans le corpus sont classés par code ISO&nbsp;: le premier est le plus sombre, le dernier le plus clair. La Russie et Chypre sont en Europe, la Turquie et la Géorgie en Asie, les Caraïbes et l’Amérique centrale en Amérique du Nord. Un lien prend le dégradé entre les couleurs de ses deux extrémités.</p>
+      <p>La légende suit ce dégradé, groupée par continent. Le panneau de droite classe les pays par nombre de comptes, du plus grand au plus petit. À effectif égal, l’ordre est alphabétique. «&nbsp;Non renseigné&nbsp;» reste en bas.</p>
+
+      <div class="mh-caveat"><strong>Ce que la couleur ne dit pas.</strong>
+        Le lieu déclaré est un texte libre&nbsp;: une blague, une ville homonyme ou un champ vide ne deviennent pas une position. Le lieu tagué est rare. La couleur ne situe ni la personne, ni l’envoi du message.</div>
+    `,
+  },
 };
 
 const CONNECTOME_TABS = [
@@ -485,8 +527,11 @@ export function initMethodHelp(opts = {}) {
     helpBtn.setAttribute('aria-expanded', value);
     const typoOpen = on && currentTopic === 'connectome_typo';
     const rulesOpen = on && currentTopic === 'connectome_typo_rules';
+    const paysOpen = on && currentTopic === 'connectome_pays';
     document.getElementById('typoHelpBtn')?.setAttribute('aria-expanded', typoOpen ? 'true' : 'false');
     document.getElementById('typoLegendHelp')?.setAttribute('aria-expanded', rulesOpen ? 'true' : 'false');
+    document.getElementById('geoHelpBtn')?.setAttribute('aria-expanded', paysOpen ? 'true' : 'false');
+    document.getElementById('geoLegendHelp')?.setAttribute('aria-expanded', paysOpen ? 'true' : 'false');
   }
 
   function open(forcedId) {

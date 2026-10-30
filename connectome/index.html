@@ -353,8 +353,19 @@
     }
     #geoLegend.visible { display: block; }
     #geoLegend .leg-title {
+      display: flex; align-items: center; gap: 6px;
       font-size: 9.5px; letter-spacing: 0.05em; text-transform: uppercase;
       color: #b7efe4; font-weight: 700; margin-bottom: 6px;
+    }
+    #geoLegend .leg-title .mh-btn {
+      width: 18px; height: 18px; margin-left: auto; font-size: 11px; box-shadow: none;
+    }
+    .pays-help-row {
+      display: flex; align-items: stretch; gap: 5px;
+    }
+    .pays-help-row .color-btn { flex: 1; width: auto; }
+    .pays-help-row .mh-btn {
+      width: 28px; height: auto; align-self: stretch; font-size: 13px; box-shadow: none;
     }
     #geoLegend .leg-note {
       font-size: 10.5px; line-height: 1.35; color: #b7c4c0; margin: 0 0 8px;
@@ -1084,8 +1095,14 @@
           title="Une teinte par macro-classe d’utilisateurs, dégradé entre les types de la même classe">Macro-classes d’utilisateurs</button>
         <button type="button" class="color-btn" data-mode="typo_cat" id="hudColorTypoCat"
           title="Une couleur distincte pour chacun des 20 types d’utilisateurs">Type d’utilisateurs</button>
-        <button type="button" class="color-btn" data-mode="pays" id="hudColorPays"
-          title="Pays du lieu tagué sur le tweet, complété par le lieu déclaré du compte. S’ils diffèrent, le lieu du tweet est gardé.">Pays</button>
+        <div class="pays-help-row">
+          <button type="button" class="color-btn" data-mode="pays" id="hudColorPays"
+            title="Pays du lieu tagué sur le tweet, complété par le lieu déclaré du compte. S’ils diffèrent, le lieu du tweet est gardé.">Pays</button>
+          <button type="button" class="mh-btn" id="geoHelpBtn"
+            title="Comment le pays d’un compte est calculé"
+            aria-label="Comment le pays d’un compte est calculé"
+            aria-expanded="false" aria-controls="methodHelpOverlay">?</button>
+        </div>
         <div class="typo-help-row" id="discourseHead" hidden>
           <span>Discours du corpus</span>
         </div>
@@ -1157,7 +1174,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
-import { initMethodHelp } from '../shared/method-help.js?v=20261029-activity';
+import { initMethodHelp } from '../shared/method-help.js?v=20261030-pays-help';
 
 const wrap = document.getElementById('c');
 const labelsEl = document.getElementById('labels');
@@ -3544,7 +3561,9 @@ function renderGeoLegend() {
     + `<span class="n">${none.toLocaleString('fr-FR')}</span></div>`;
   const note = `<div class="leg-note">${escapeHtml(pack?.rule || '')}</div>`
     + (pack?.note ? `<div class="leg-note">${escapeHtml(pack.note)}</div>` : '');
-  el.innerHTML = `<div class="leg-title">Légende · pays</div>${missing}${note}${rows}${gray}`;
+  el.innerHTML = `<div class="leg-title"><span>Légende · pays</span>`
+    + `<button type="button" class="mh-btn" id="geoLegendHelp" title="Comment le pays est calculé" aria-label="Comment le pays d’un compte est calculé" aria-expanded="false" aria-controls="methodHelpOverlay">?</button></div>`
+    + `${missing}${note}${rows}${gray}`;
   el.classList.add('visible');
 }
 
@@ -6260,6 +6279,18 @@ async function boot() {
     const already = overlay?.classList.contains('open') && methodHelp.topic() === 'connectome_typo_rules';
     if (already) methodHelp.close();
     else methodHelp.open('connectome_typo_rules');
+  });
+  const openPaysHelp = (ev) => {
+    ev?.stopPropagation();
+    const overlay = document.getElementById('methodHelpOverlay');
+    const already = overlay?.classList.contains('open') && methodHelp.topic() === 'connectome_pays';
+    if (already) methodHelp.close();
+    else methodHelp.open('connectome_pays');
+  };
+  document.getElementById('geoHelpBtn')?.addEventListener('click', openPaysHelp);
+  document.getElementById('geoLegend')?.addEventListener('click', (ev) => {
+    if (!ev.target.closest('#geoLegendHelp')) return;
+    openPaysHelp(ev);
   });
   document.querySelectorAll('#graphMode button.mode[data-graph]').forEach((b) => {
     b.addEventListener('click', () => setGraphMode(b.dataset.graph));
