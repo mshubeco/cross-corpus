@@ -1558,7 +1558,7 @@ let lexScope = 'targets'; // 'sources' | 'targets'
 /** En mode Lemme : unigrammes ou bigrammes. */
 let lemmaForm = 'uni'; // 'uni' | 'bi'
 /** Build id (console + vérif cache). */
-const CONNECTOME_UI = '20261030-pays-d';
+const CONNECTOME_UI = '20261030-discours';
 
 const PUB_TYPE_ORDER = [
   { key: 'original', label: 'Original', short: 'Orig.', color: '#8ecf4a' },
@@ -4890,6 +4890,7 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   updateCentralityButtons();
   renderTypoLegend();
   renderGeoLegend();
+  renderDiscourseLegend();
   if (activeLexeme) {
     const accounts = accountsForLexeme(activeLexeme);
     const comms = communitiesForLexeme(activeLexeme);
