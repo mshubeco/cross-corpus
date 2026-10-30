@@ -1558,7 +1558,7 @@ let lexScope = 'targets'; // 'sources' | 'targets'
 /** En mode Lemme : unigrammes ou bigrammes. */
 let lemmaForm = 'uni'; // 'uni' | 'bi'
 /** Build id (console + vérif cache). */
-const CONNECTOME_UI = '20261030-pays-c';
+const CONNECTOME_UI = '20261030-pays-d';
 
 const PUB_TYPE_ORDER = [
   { key: 'original', label: 'Original', short: 'Orig.', color: '#8ecf4a' },
@@ -3574,7 +3574,14 @@ function renderGeoPanel(data) {
   sub.textContent = pack?.missing
     ? 'Pays indisponible pour ce corpus'
     : `${known.toLocaleString('fr-FR')} pays · ${filled.toLocaleString('fr-FR')} comptes situés · ${pct.toLocaleString('fr-FR')} %`;
-  const order = geoGroups(pack?.countries, counts);
+  const byId = new Map((pack?.countries || []).map((c) => [c.id, c]));
+  for (const id of counts.keys()) {
+    if (!byId.has(id)) byId.set(id, { id, label: id });
+  }
+  const ranked = [...byId.values()]
+    .map((c) => ({ id: c.id, label: c.label || c.id, n: counts.get(c.id) || 0 }))
+    .filter((c) => c.n > 0)
+    .sort((a, b) => b.n - a.n || a.label.localeCompare(b.label, 'fr'));
   list.innerHTML = '';
   const paintRow = (code, label, n, handles) => {
     const el = document.createElement('div');
@@ -3595,14 +3602,8 @@ function renderGeoPanel(data) {
       </div>`;
     list.appendChild(el);
   };
-  for (const group of order) {
-    const head = document.createElement('div');
-    head.className = 'geo-cont';
-    head.textContent = group.label;
-    list.appendChild(head);
-    for (const c of group.rows) {
-      paintRow(c.id, c.label || c.id, counts.get(c.id) || 0, samples.get(c.id));
-    }
+  for (const c of ranked) {
+    paintRow(c.id, c.label, c.n, samples.get(c.id));
   }
   if (none) paintRow('', 'Non renseigné', none, []);
 }
