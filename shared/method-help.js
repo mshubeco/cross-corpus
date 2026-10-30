@@ -416,28 +416,6 @@ const TOPICS = {
         Le lieu déclaré est un texte libre&nbsp;: une blague, une ville homonyme ou un champ vide ne deviennent pas une position. Le lieu tagué est rare. La couleur ne situe ni la personne, ni l’envoi du message.</div>
     `,
   },
-
-  connectome_reinert: {
-    kicker: 'Connectome · clustering discursif Reinert',
-    title: 'Comment les classes de vocabulaire sont calculées',
-    html: `
-      <p>Calcul du <strong>30 octobre 2026</strong>, sur HMPV, HMPV FR et la canicule. L’unité est la <strong>publication propre</strong>&nbsp;: tweet original, réponse ou citation. Le retweet ne vote pas.</p>
-      <h3>La classification</h3>
-      <p>Les textes d’une même langue forment un tableau binaire&nbsp;: une ligne par publication, une colonne par mot, 1 si le mot est présent. Les mots trop rares ou présents dans plus de 80&nbsp;% des textes sont retirés, ainsi que les mots outils. Une classification descendante coupe, à chaque pas, la plus grosse classe par le <strong>signe du premier axe</strong> de l’analyse factorielle des correspondances. La coupe s’arrête à huit classes, ou quand un des deux côtés devient trop petit. Le nom d’une classe est ses quatre mots les plus liés (khi-deux).</p>
-      <p>HMPV est classé à part en anglais et en français. HMPV FR et la canicule sont classés en français. La canicule lit l’export du 21 septembre 2026, du 20 mai au 29 juin, limité aux comptes du graphe.</p>
-      <h3>Du texte au compte</h3>
-      <p>Reinert classe des publications. Le nœud du graphe est un compte. On ne retient que la langue dans laquelle il a le plus de publications classées.</p>
-      <ul>
-        <li>Aucune publication classée&nbsp;: gris, «&nbsp;Sans classe&nbsp;».</li>
-        <li>Une seule&nbsp;: la classe de cette publication.</li>
-        <li>Deux ou plus&nbsp;: la classe la plus nombreuse, si elle atteint 70&nbsp;% et n’est pas à égalité avec une autre.</li>
-        <li>En dessous de 70&nbsp;%, ou à égalité&nbsp;: gris. Les textes ne s’accordent pas.</li>
-      </ul>
-      <p>Le relais par retweet n’entre pas dans ce décompte. Un lien prend le dégradé entre les couleurs de ses deux extrémités. Le panneau de droite classe les classes par nombre de comptes.</p>
-      <div class="mh-caveat"><strong>Ce que la couleur ne dit pas.</strong>
-        Une classe est un monde lexical, pas un cadrage nommé à l’avance. Elle ne dit pas l’intention du compte. Un texte très court, ou seulement repris en retweet, ne laisse pas de classe.</div>
-    `,
-  },
 };
 
 const CONNECTOME_TABS = [
@@ -554,9 +532,6 @@ export function initMethodHelp(opts = {}) {
     document.getElementById('typoLegendHelp')?.setAttribute('aria-expanded', rulesOpen ? 'true' : 'false');
     document.getElementById('geoHelpBtn')?.setAttribute('aria-expanded', paysOpen ? 'true' : 'false');
     document.getElementById('geoLegendHelp')?.setAttribute('aria-expanded', paysOpen ? 'true' : 'false');
-    const reinertOpen = on && currentTopic === 'connectome_reinert';
-    document.getElementById('reinertHelpBtn')?.setAttribute('aria-expanded', reinertOpen ? 'true' : 'false');
-    document.getElementById('reinertLegendHelp')?.setAttribute('aria-expanded', reinertOpen ? 'true' : 'false');
   }
 
   function open(forcedId) {
