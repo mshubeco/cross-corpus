@@ -369,6 +369,14 @@
     #geoLegend .sw {
       width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; margin-top: 1px;
     }
+    #geoLegend .leg-macro, #commList .geo-cont {
+      margin: 8px 0 2px;
+      color: #9aa8a4;
+      font-size: 9px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
     #hashModeBtn[hidden], #lemmaModeBtn[hidden] { display: none !important; }
     #hashModeBtn:disabled, #lemmaModeBtn:disabled {
       opacity: 0.35; cursor: not-allowed; pointer-events: none;
@@ -1550,7 +1558,7 @@ let lexScope = 'targets'; // 'sources' | 'targets'
 /** En mode Lemme : unigrammes ou bigrammes. */
 let lemmaForm = 'uni'; // 'uni' | 'bi'
 /** Build id (console + vérif cache). */
-const CONNECTOME_UI = '20261030-pays';
+const CONNECTOME_UI = '20261030-pays-c';
 
 const PUB_TYPE_ORDER = [
   { key: 'original', label: 'Original', short: 'Orig.', color: '#8ecf4a' },
@@ -3372,29 +3380,87 @@ async function ensureTypology(corpusId) {
 }
 
 const GEO_NONE = '#3a4150';
-const GEO_HEX = {
-  FR: '#3b82f6', US: '#ef4444', CD: '#f59e0b', IN: '#f97316', GB: '#38bdf8',
-  CA: '#c4b5fd', BE: '#facc15', CH: '#fb7185', DE: '#fbbf24', ES: '#fb923c',
-  NG: '#22c55e', ZA: '#14b8a6', RW: '#a3e635', SN: '#2dd4bf', CM: '#06b6d4',
-  CI: '#0ea5e9', IT: '#4ade80', PT: '#84cc16', BR: '#16a34a', AU: '#eab308',
-  JP: '#e11d48', MA: '#c2410c', DZ: '#ea580c', TN: '#d97706', UG: '#84cc16',
-  KE: '#10b981', CG: '#fdba74', NL: '#f472b6', GH: '#4d7c0f', CN: '#dc2626',
-  RU: '#a78bfa', TR: '#be123c', PL: '#f9a8d4', MX: '#15803d', AR: '#67e8f9',
-  LU: '#93c5fd', IE: '#86efac', SE: '#fde68a', NO: '#bfdbfe', PS: '#166534',
-  LK: '#0f766e', NP: '#b45309',
+const GEO_HUE = { EU: 214, AF: 36, NA: 352, SA: 168, AS: 276, OC: 98, XX: 220 };
+const GEO_CONT_LABEL = {
+  EU: 'Europe',
+  AF: 'Afrique',
+  NA: 'Amérique du Nord',
+  SA: 'Amérique du Sud',
+  AS: 'Asie',
+  OC: 'Océanie',
+  XX: 'Autre',
 };
+const GEO_CONT_ORDER = ['EU', 'AF', 'NA', 'SA', 'AS', 'OC', 'XX'];
+const GEO_CONTINENT = (() => {
+  const groups = {
+    EU: 'AL AD AT BY BE BA BG HR CY CZ DK EE FI FR DE GR HU IS IE IT XK LV LI LT LU MT MD MC ME NL MK NO PL PT RO RU SM RS SK SI ES SE CH UA GB VA',
+    AF: 'DZ AO BJ BW BF BI CV CM CF TD KM CG CD CI DJ EG GQ ER SZ ET GA GM GH GN GW KE LS LR LY MG MW ML MR MU MA MZ NA NE NG RW ST SN SC SL SO ZA SS SD TZ TG TN UG ZM ZW',
+    NA: 'AG BS BB BZ CA CR CU DM DO SV GD GT HT HN JM MX NI PA KN LC VC TT US',
+    SA: 'AR BO BR CL CO EC GY PY PE SR UY VE',
+    AS: 'AF AM AZ BH BD BT BN KH CN GE IN ID IR IQ IL JP JO KZ KW KG LA LB MY MV MN MM NP KP OM PK PS PH QA SA SG KR LK SY TW TJ TH TL TR TM AE UZ VN YE HK MO',
+    OC: 'AU FJ KI MH FM NR NZ PW PG WS SB TO TV VU',
+  };
+  const map = {};
+  for (const [cont, list] of Object.entries(groups)) {
+    for (const code of list.split(' ')) map[code] = cont;
+  }
+  return map;
+})();
 const geoCache = new Map();
 
 function geoActive() {
   return graphMode === 'all' && edgeColorMode === 'pays';
 }
 
+function geoContinent(code) {
+  return GEO_CONTINENT[code] || 'XX';
+}
+
+function buildGeoPalette(countries) {
+  const by = new Map();
+  for (const c of countries || []) {
+    const cont = geoContinent(c.id);
+    if (!by.has(cont)) by.set(cont, []);
+    by.get(cont).push(c.id);
+  }
+  const palette = new Map();
+  for (const [cont, ids] of by) {
+    ids.sort();
+    ids.forEach((id, i) => {
+      const t = ids.length <= 1 ? 0.42 : i / (ids.length - 1);
+      const hue = GEO_HUE[cont] ?? GEO_HUE.XX;
+      const sat = cont === 'XX' ? 8 : 76 - t * 16;
+      const lig = cont === 'XX' ? 48 : 32 + t * 42;
+      palette.set(id, hslToHex(hue, sat, lig));
+    });
+  }
+  return palette;
+}
+
 function geoColorHex(code) {
   if (!code) return GEO_NONE;
-  if (GEO_HEX[code]) return GEO_HEX[code];
-  let h = 0;
-  for (let i = 0; i < code.length; i++) h = (h * 33 + code.charCodeAt(i)) % 360;
-  return hslToHex(h, 58, 54);
+  const pack = geoCache.get(currentCorpusId);
+  const hex = pack?.palette?.get(code);
+  if (hex) return hex;
+  const cont = geoContinent(code);
+  return hslToHex(GEO_HUE[cont] ?? GEO_HUE.XX, cont === 'XX' ? 8 : 64, 48);
+}
+
+function geoGroups(countries, counts) {
+  const buckets = new Map();
+  for (const c of countries || []) {
+    const n = counts ? (counts.get(c.id) || 0) : (c.n || 0);
+    if (counts && !n) continue;
+    const cont = geoContinent(c.id);
+    if (!buckets.has(cont)) buckets.set(cont, []);
+    buckets.get(cont).push(c);
+  }
+  for (const rows of buckets.values()) {
+    rows.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  }
+  return GEO_CONT_ORDER
+    .filter((id) => buckets.has(id))
+    .map((id) => ({ id, label: GEO_CONT_LABEL[id] || id, rows: buckets.get(id) }));
 }
 
 function geoLabel(code, pack) {
@@ -3432,6 +3498,7 @@ async function ensureGeo(corpusId) {
       a: new Map(Object.entries(data.a || {})),
       missing: false,
     };
+    pack.palette = buildGeoPalette(pack.countries);
   } catch (err) {
     console.warn('[connectome] pays', corpusId, err);
     pack = {
@@ -3461,13 +3528,15 @@ function renderGeoLegend() {
   const missing = pack?.missing
     ? '<div class="leg-note">Fichier de pays introuvable. Le réseau reste coloré par communauté.</div>'
     : '';
-  const rows = (pack?.countries || []).map((c) => {
-    const n = counts.get(c.id) || c.n || 0;
-    if (!n) return '';
-    return `<div class="leg-row">`
-      + `<i class="sw" style="background:${escapeHtml(geoColorHex(c.id))}"></i>`
-      + `<span>${escapeHtml(c.label || c.id)}</span>`
-      + `<span class="n">${n.toLocaleString('fr-FR')}</span></div>`;
+  const rows = geoGroups(pack?.countries, counts).map((group) => {
+    const body = group.rows.map((c) => {
+      const n = counts.get(c.id) || c.n || 0;
+      return `<div class="leg-row">`
+        + `<i class="sw" style="background:${escapeHtml(geoColorHex(c.id))}"></i>`
+        + `<span>${escapeHtml(c.label || c.id)}</span>`
+        + `<span class="n">${n.toLocaleString('fr-FR')}</span></div>`;
+    }).join('');
+    return `<div class="leg-macro">${escapeHtml(group.label)}</div>${body}`;
   }).join('');
   const gray = `<div class="leg-row">`
     + `<i class="sw" style="background:${GEO_NONE}"></i>`
@@ -3505,7 +3574,7 @@ function renderGeoPanel(data) {
   sub.textContent = pack?.missing
     ? 'Pays indisponible pour ce corpus'
     : `${known.toLocaleString('fr-FR')} pays · ${filled.toLocaleString('fr-FR')} comptes situés · ${pct.toLocaleString('fr-FR')} %`;
-  const order = (pack?.countries || []).filter((c) => counts.get(c.id));
+  const order = geoGroups(pack?.countries, counts);
   list.innerHTML = '';
   const paintRow = (code, label, n, handles) => {
     const el = document.createElement('div');
@@ -3526,8 +3595,14 @@ function renderGeoPanel(data) {
       </div>`;
     list.appendChild(el);
   };
-  for (const c of order) {
-    paintRow(c.id, c.label || c.id, counts.get(c.id) || 0, samples.get(c.id));
+  for (const group of order) {
+    const head = document.createElement('div');
+    head.className = 'geo-cont';
+    head.textContent = group.label;
+    list.appendChild(head);
+    for (const c of group.rows) {
+      paintRow(c.id, c.label || c.id, counts.get(c.id) || 0, samples.get(c.id));
+    }
   }
   if (none) paintRow('', 'Non renseigné', none, []);
 }
