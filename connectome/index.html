@@ -274,6 +274,10 @@
     #colorModeBtns .color-btn.active[data-mode="pays"] {
       color: #e7fff8; background: rgba(13,148,136,0.42); border-color: rgba(45,212,191,0.8);
     }
+    #colorModeBtns .color-btn.active[data-mode="age"] {
+      color: #fff6e4; background: rgba(255,176,64,0.32); border-color: rgba(255,176,64,0.85);
+    }
+    #hudColorAge[hidden] { display: none !important; }
     #hudColorDiscours[hidden], #discourseHead[hidden] { display: none !important; }
     .typo-help-row {
       display: flex; align-items: center; justify-content: space-between; gap: 8px;
@@ -379,6 +383,36 @@
     }
     #geoLegend .sw {
       width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; margin-top: 1px;
+    }
+    #ageLegend {
+      display: none; margin-top: 8px; padding-top: 8px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    #ageLegend.visible { display: block; }
+    #ageLegend .leg-title {
+      font-size: 9.5px; letter-spacing: 0.05em; text-transform: uppercase;
+      color: #ffe3b0; font-weight: 700; margin-bottom: 6px;
+    }
+    #ageLegend .leg-note {
+      font-size: 10.5px; line-height: 1.35; color: #c4b8a4; margin: 0 0 8px;
+    }
+    #ageLegend .age-ramp {
+      height: 12px; border-radius: 6px; margin: 2px 0 4px;
+      background: linear-gradient(90deg, #5b7cff 0%, #3ecfb2 50%, #ffb040 100%);
+    }
+    #ageLegend .age-ticks {
+      display: flex; justify-content: space-between;
+      font-size: 9px; color: #8b93a0; margin-bottom: 8px;
+    }
+    #ageLegend .leg-row {
+      display: flex; align-items: center; gap: 8px;
+      margin-top: 5px; color: #d5dbe4; font-size: 10.5px;
+    }
+    #ageLegend .leg-row .n {
+      margin-left: auto; color: #8b93a0; font-variant-numeric: tabular-nums;
+    }
+    #ageLegend .sw {
+      width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0;
     }
     #geoLegend .leg-macro, #commList .geo-cont {
       margin: 8px 0 2px;
@@ -1103,6 +1137,8 @@
             aria-label="Comment le pays d’un compte est calculé"
             aria-expanded="false" aria-controls="methodHelpOverlay">?</button>
         </div>
+        <button type="button" class="color-btn" data-mode="age" id="hudColorAge"
+          title="Année de création reconstituée par l’identifiant Twitter. Bleu = ≤2010, or = comptes récents.">Âge des comptes</button>
         <div class="typo-help-row" id="discourseHead" hidden>
           <span>Discours du corpus</span>
         </div>
@@ -1112,6 +1148,7 @@
       <div id="discourseLegend" aria-label="Légende des cadrages discursifs"></div>
       <div id="typoLegend" aria-label="Légende de la typologie des comptes"></div>
       <div id="geoLegend" aria-label="Légende des pays"></div>
+      <div id="ageLegend" aria-label="Légende de l’âge des comptes"></div>
       <div id="rtColorLegend" aria-label="Légende Distinction RT / interactions">
         <div class="leg-title">Légende · graphe Toutes interactions</div>
         <div class="leg-note">Même topologie que l’onglet «&nbsp;Toutes interactions&nbsp;» — pas le graphe RT. Seule la couleur des liens change (part RT par arête).</div>
@@ -1264,8 +1301,9 @@ let edgeColorMode = _typoParam === 'macro' ? 'typo_macro'
   : _typoParam === 'cat' ? 'typo_cat'
   : _typoParam === 'discours' ? 'discours'
   : _typoParam === 'pays' ? 'pays'
+  : _typoParam === 'age' ? 'age'
   : 'community';
-if ((edgeColorMode === 'typo_macro' || edgeColorMode === 'typo_cat' || edgeColorMode === 'discours' || edgeColorMode === 'pays') && graphMode === 'rt_classes') {
+if ((edgeColorMode === 'typo_macro' || edgeColorMode === 'typo_cat' || edgeColorMode === 'discours' || edgeColorMode === 'pays' || edgeColorMode === 'age') && graphMode === 'rt_classes') {
   graphMode = 'all';
 }
 /** Centralité → taille des nœuds (positions FA2 inchangées). */
@@ -1575,7 +1613,7 @@ let lexScope = 'targets'; // 'sources' | 'targets'
 /** En mode Lemme : unigrammes ou bigrammes. */
 let lemmaForm = 'uni'; // 'uni' | 'bi'
 /** Build id (console + vérif cache). */
-const CONNECTOME_UI = '20261030-noreinert';
+const CONNECTOME_UI = '20261030-age-all';
 
 const PUB_TYPE_ORDER = [
   { key: 'original', label: 'Original', short: 'Orig.', color: '#8ecf4a' },
@@ -3130,7 +3168,7 @@ function updateGraphModeButtons() {
   syncLexModeButtons();
   const modeKey = graphMode === 'rt_classes'
     ? 'rt_classes'
-    : (edgeColorMode === 'typo_macro' || edgeColorMode === 'typo_cat' || edgeColorMode === 'discours' || edgeColorMode === 'pays'
+    : (edgeColorMode === 'typo_macro' || edgeColorMode === 'typo_cat' || edgeColorMode === 'discours' || edgeColorMode === 'pays' || edgeColorMode === 'age'
       ? edgeColorMode
       : 'community');
   const discAvail = currentCorpusId === 'hmpv';
@@ -3151,14 +3189,18 @@ function updateGraphModeButtons() {
   const typoOn = typologyActive();
   const discOn = discourseActive();
   const geoOn = geoActive();
+  const ageOn = ageActive();
   legend?.classList.toggle('visible', rtMode);
   renderTypoLegend();
   renderDiscourseLegend();
   renderGeoLegend();
+  renderAgeLegend();
   if (scopeHint) scopeHint.style.display = showColorHud ? '' : 'none';
   if (hint) {
     hint.classList.toggle('hidden', rtMode || typoOn || geoOn);
-    hint.textContent = discOn
+    hint.textContent = ageOn
+      ? 'Dégradé = un compte ancien relié à un compte récent. Gris = date inconnue.'
+      : discOn
       ? 'Dégradé = deux cadrages se touchent. Gris = pas de cadre lisible.'
       : 'Liens colorés par communauté des nœuds';
   }
@@ -3626,6 +3668,178 @@ function renderGeoPanel(data) {
   }
   if (none) paintRow('', 'Non renseigné', none, []);
 }
+const AGE_MIN = 2010;
+const AGE_MAX = 2026;
+const AGE_NONE = '#3a4150';
+const AGE_STOPS = [
+  [0, [91, 124, 255]],
+  [0.5, [62, 207, 178]],
+  [1, [255, 176, 64]],
+];
+const AGE_BINS = [
+  { label: '≤2010', lo: 2010, hi: 2010, at: 2010 },
+  { label: '2011–2015', lo: 2011, hi: 2015, at: 2013 },
+  { label: '2016–2018', lo: 2016, hi: 2018, at: 2017 },
+  { label: '2019–2021', lo: 2019, hi: 2021, at: 2020 },
+  { label: '2022–2023', lo: 2022, hi: 2023, at: 2022 },
+  { label: '2024–2026', lo: 2024, hi: 2026, at: 2025 },
+];
+const ageCache = new Map();
+
+function ageActive() {
+  return graphMode === 'all' && edgeColorMode === 'age';
+}
+
+function ageRgb(year) {
+  const y = Number(year) || 0;
+  if (!y) return hexToRgbArr(AGE_NONE);
+  const t = Math.max(0, Math.min(1, (y - AGE_MIN) / (AGE_MAX - AGE_MIN)));
+  let i = 0;
+  while (i < AGE_STOPS.length - 2 && t > AGE_STOPS[i + 1][0]) i += 1;
+  const [t0, c0] = AGE_STOPS[i];
+  const [t1, c1] = AGE_STOPS[i + 1];
+  const u = t1 === t0 ? 0 : (t - t0) / (t1 - t0);
+  return c0.map((v, k) => Math.round(v + (c1[k] - v) * u));
+}
+
+function ageHex(year) {
+  const [r, g, b] = ageRgb(year);
+  const h = (n) => n.toString(16).padStart(2, '0');
+  return `#${h(r)}${h(g)}${h(b)}`;
+}
+
+function ageCaption(year) {
+  const y = Number(year) || 0;
+  if (!y) return 'Date de création inconnue';
+  if (y <= AGE_MIN) return 'Compte créé ≤2010';
+  return `Compte créé en ${y}`;
+}
+
+async function ensureAge(corpusId) {
+  if (ageCache.has(corpusId)) return ageCache.get(corpusId);
+  const url = new URL(`./data/${corpusId}/account_age.json`, import.meta.url);
+  url.searchParams.set('v', CONNECTOME_UI);
+  let pack;
+  try {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error(String(res.status));
+    const data = await res.json();
+    pack = {
+      method: data.method || '',
+      nDated: Number(data.nDated) || 0,
+      nNone: Number(data.nNone) || 0,
+      a: new Map(Object.entries(data.a || {}).map(([k, v]) => [k, Number(v) || 0])),
+      missing: false,
+    };
+  } catch (err) {
+    console.warn('[connectome] âge', corpusId, err);
+    pack = { method: '', nDated: 0, nNone: 0, a: new Map(), missing: true };
+  }
+  ageCache.set(corpusId, pack);
+  return pack;
+}
+
+function ageBinOf(year) {
+  const y = Number(year) || 0;
+  if (!y) return null;
+  return AGE_BINS.find((b) => y >= b.lo && y <= b.hi) || null;
+}
+
+function renderAgeLegend() {
+  const el = document.getElementById('ageLegend');
+  if (!el) return;
+  if (!ageActive()) {
+    el.classList.remove('visible');
+    el.innerHTML = '';
+    return;
+  }
+  const pack = ageCache.get(currentCorpusId);
+  const counts = new Map();
+  let none = 0;
+  let other = 0;
+  for (const n of graphData?.nodes || []) {
+    const bin = ageBinOf(n._age);
+    if (bin) counts.set(bin.label, (counts.get(bin.label) || 0) + 1);
+    else if (n._age) other += 1;
+    else none += 1;
+  }
+  const missing = pack?.missing
+    ? '<div class="leg-note">Fichier d’âge introuvable. Le réseau reste coloré par communauté.</div>'
+    : '';
+  const rows = AGE_BINS.map((b) => {
+    const n = counts.get(b.label) || 0;
+    if (!n) return '';
+    return `<div class="leg-row">`
+      + `<i class="sw" style="background:${escapeHtml(ageHex(b.at))}"></i>`
+      + `<span>${escapeHtml(b.label)}</span>`
+      + `<span class="n">${n.toLocaleString('fr-FR')}</span></div>`;
+  }).join('');
+  const extra = other
+    ? `<div class="leg-row"><i class="sw" style="background:${escapeHtml(ageHex(2014))}"></i><span>Autre millésime</span><span class="n">${other.toLocaleString('fr-FR')}</span></div>`
+    : '';
+  const gray = `<div class="leg-row">`
+    + `<i class="sw" style="background:${AGE_NONE}"></i>`
+    + `<span>Non daté</span>`
+    + `<span class="n">${none.toLocaleString('fr-FR')}</span></div>`;
+  const note = `<div class="leg-note">Bleu = ≤2010, identifiant d’avant le snowflake, sans millésime fiable. Les années 2011 à 2015 ne s’en distinguent pas. Or = compte récent. Gris = compte absent de l’export.</div>`;
+  el.innerHTML = `<div class="leg-title">Légende · âge des comptes</div>${missing}${note}`
+    + `<div class="age-ramp" aria-hidden="true"></div>`
+    + `<div class="age-ticks"><span>≤2010</span><span>2018</span><span>2026</span></div>`
+    + `${rows}${extra}${gray}`;
+  el.classList.add('visible');
+}
+
+function renderAgePanel(data) {
+  const list = document.getElementById('commList');
+  const sub = document.getElementById('commSub');
+  if (!list || !sub) return;
+  const pack = ageCache.get(currentCorpusId);
+  const nodes = data?.nodes || [];
+  const groups = new Map();
+  let none = 0;
+  for (const n of nodes) {
+    const bin = ageBinOf(n._age);
+    if (!bin) {
+      if (!n._age) none += 1;
+      continue;
+    }
+    if (!groups.has(bin.label)) groups.set(bin.label, []);
+    groups.get(bin.label).push(n);
+  }
+  const dated = nodes.length - none;
+  const pct = nodes.length ? Math.round(100 * dated / nodes.length) : 0;
+  sub.textContent = pack?.missing
+    ? 'Âge indisponible pour ce corpus'
+    : `${dated.toLocaleString('fr-FR')} comptes datés · ${pct.toLocaleString('fr-FR')} %`;
+  list.innerHTML = '';
+  const paintRow = (label, hex, members) => {
+    const el = document.createElement('div');
+    el.className = 'comm-row';
+    const n = members.length;
+    const share = nodes.length ? Math.round(1000 * n / nodes.length) / 10 : 0;
+    const who = [...members]
+      .sort((a, b) => (b.deg || 0) - (a.deg || 0))
+      .slice(0, 4)
+      .map((node) => {
+        const href = xProfileUrl(node.l);
+        const h = displayHandle(node.l);
+        return `<a class="handle" href="${href}" target="_blank" rel="noopener noreferrer">${escapeHtml(h)}</a>`;
+      })
+      .join(', ');
+    el.innerHTML = `
+      <div class="comm-swatch" style="background:${hex}"></div>
+      <div>
+        <div class="comm-head"><span>${escapeHtml(label)}</span><span class="comm-metrics">${n.toLocaleString('fr-FR')} · ${share.toLocaleString('fr-FR')} %</span></div>
+        <div class="comm-accounts">${who || '—'}</div>
+      </div>`;
+    list.appendChild(el);
+  };
+  for (const bin of AGE_BINS) {
+    const members = groups.get(bin.label);
+    if (members?.length) paintRow(bin.label, ageHex(bin.at), members);
+  }
+  if (none) paintRow('Non daté', AGE_NONE, nodes.filter((n) => !n._age));
+}
 
 function paintNodeColors(data) {
   if (!data?.nodes) return;
@@ -3636,9 +3850,12 @@ function paintNodeColors(data) {
   const on = typologyActive();
   const discOn = discourseActive();
   const geoOn = geoActive();
+  const ageOn = ageActive();
   const pack = discOn ? discourseFrameCache.get(currentCorpusId) : null;
   const geoPack = geoOn ? geoCache.get(currentCorpusId) : null;
+  const agePack = ageOn ? ageCache.get(currentCorpusId) : null;
   for (const n of data.nodes) {
+    n._age = 0;
     if (on) {
       const code = codeForNode(n);
       n._typo = code;
@@ -3663,6 +3880,12 @@ function paintNodeColors(data) {
       continue;
     }
     n._frame = '';
+    if (ageOn && agePack && !agePack.missing) {
+      const y = agePack.a.get(normalizeHandle(n.l)) || 0;
+      n._age = y;
+      n.c = ageRgb(y);
+      continue;
+    }
     n.c = n._commC;
   }
 }
@@ -3837,6 +4060,16 @@ async function recolorCurrentGraph() {
     await ensureGeo(currentCorpusId);
     if (!isCurrent()) return;
   }
+  if (edgeColorMode === 'age') {
+    setGraphLoader({
+      title: corp?.label || 'Âge',
+      msg: 'Lecture de l’âge des comptes…',
+      progress: 0.15,
+      indeterminate: true,
+    });
+    await ensureAge(currentCorpusId);
+    if (!isCurrent()) return;
+  }
   if (edgeColorMode === 'discours') {
     setGraphLoader({
       title: corp?.label || 'Discours',
@@ -3878,7 +4111,7 @@ function setEdgeColorFromHud(value) {
     setGraphMode('rt_classes');
     return;
   }
-  if (value === 'typo_macro' || value === 'typo_cat' || value === 'discours' || value === 'pays') {
+  if (value === 'typo_macro' || value === 'typo_cat' || value === 'discours' || value === 'pays' || value === 'age') {
     if (value === 'discours' && currentCorpusId !== 'hmpv') return;
     if (graphMode === 'all' && edgeColorMode === value) return;
     edgeColorMode = value;
@@ -3907,6 +4140,7 @@ function syncCorpusUrl(corpusId) {
     : edgeColorMode === 'typo_cat' ? 'cat'
     : edgeColorMode === 'discours' ? 'discours'
     : edgeColorMode === 'pays' ? 'pays'
+    : edgeColorMode === 'age' ? 'age'
     : null;
   const sameCorpus = url.searchParams.get('corpus') === corpusId;
   const sameGraph = (url.searchParams.get('graph') || null) === nextGraph;
@@ -4043,6 +4277,11 @@ function renderCommPanel(data) {
   if (geoActive()) {
     if (title) title.textContent = 'Pays';
     renderGeoPanel(data);
+    return;
+  }
+  if (ageActive()) {
+    if (title) title.textContent = 'Âge des comptes';
+    renderAgePanel(data);
     return;
   }
   if (title) title.textContent = 'Communautés';
@@ -4897,6 +5136,8 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
     modeLabel = 'cadrages discursifs';
   } else if (geoActive()) {
     modeLabel = 'pays';
+  } else if (ageActive()) {
+    modeLabel = 'âge des comptes';
   } else if (typologyActive()) {
     modeLabel = edgeColorMode === 'typo_macro' ? 'macro-classes d’utilisateurs' : 'type d’utilisateurs';
   }
@@ -4909,6 +5150,7 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   updateCentralityButtons();
   renderTypoLegend();
   renderGeoLegend();
+  renderAgeLegend();
   renderDiscourseLegend();
   if (activeLexeme) {
     const accounts = accountsForLexeme(activeLexeme);
@@ -5536,6 +5778,8 @@ async function loadCorpus(corp) {
     if (!isCurrent()) return;
     if (edgeColorMode === 'pays') await ensureGeo(corp.id);
     if (!isCurrent()) return;
+    if (edgeColorMode === 'age') await ensureAge(corp.id);
+    if (!isCurrent()) return;
     paintNodeColors(data);
     setGraphLoader({
       title: corp.label,
@@ -5780,7 +6024,8 @@ function renderAccountCard(node) {
   const discPack = discourseActive() ? discourseFrameCache.get(currentCorpusId) : null;
   const discOn = !!(discPack && !discPack.missing);
   const geoOn = geoActive();
-  const color = typologyActive() || discOn || geoOn
+  const ageOn = ageActive();
+  const color = typologyActive() || discOn || geoOn || ageOn
     ? rgbCss(node.c)
     : (communityColor(node.com) || '#8b93a0');
   const typoLine = typologyActive()
@@ -5789,7 +6034,9 @@ function renderAccountCard(node) {
       ? `<div class="acct-typo">${escapeHtml(discourseFrameLabel(node._frame, discPack))}</div>`
       : geoOn
         ? `<div class="acct-typo">${escapeHtml(geoLabel(node._geo, geoCache.get(currentCorpusId)))}</div>`
-        : '';
+        : ageOn
+          ? `<div class="acct-typo">${escapeHtml(ageCaption(node._age))}</div>`
+          : '';
   const centLbl = CENTRALITY_LABELS[centralityMode] || 'Centralité';
   const centVal = formatCentValue(centralityMode, nodeCentValue(node));
   const profile = xProfileUrl(node.l);
@@ -5857,7 +6104,9 @@ function renderSimpleTip(node) {
     ? `<div class="muted">${escapeHtml(typoCaption(node))}</div>`
     : geoActive()
       ? `<div class="muted">${escapeHtml(geoLabel(node._geo, geoCache.get(currentCorpusId)))}</div>`
-      : (discPack && !discPack.missing)
+      : ageActive()
+        ? `<div class="muted">${escapeHtml(ageCaption(node._age))}</div>`
+        : (discPack && !discPack.missing)
         ? `<div class="muted">${escapeHtml(discourseFrameLabel(node._frame, discPack))}</div>`
         : '';
   return `<strong>${escapeHtml(handle)}</strong>`
@@ -6373,6 +6622,7 @@ window.addEventListener('popstate', () => {
     : t === 'cat' ? 'typo_cat'
     : t === 'discours' ? 'discours'
     : t === 'pays' ? 'pays'
+    : t === 'age' ? 'age'
     : 'community';
   const edgeChanged = nextEdge !== edgeColorMode;
   edgeColorMode = nextEdge;
