@@ -274,6 +274,10 @@
     #colorModeBtns .color-btn.active[data-mode="pays"] {
       color: #e7fff8; background: rgba(13,148,136,0.42); border-color: rgba(45,212,191,0.8);
     }
+    #colorModeBtns .color-btn.active[data-mode="reinert"] {
+      color: #f7ecff; background: rgba(155,93,229,0.4); border-color: rgba(196,155,255,0.8);
+    }
+    #reinertRow[hidden] { display: none !important; }
     #hudColorDiscours[hidden], #discourseHead[hidden] { display: none !important; }
     .typo-help-row {
       display: flex; align-items: center; justify-content: space-between; gap: 8px;
@@ -379,6 +383,36 @@
     }
     #geoLegend .sw {
       width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; margin-top: 1px;
+    }
+    #reinertLegend {
+      display: none; margin-top: 8px; padding-top: 8px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      max-height: 360px; overflow: auto;
+    }
+    #reinertLegend.visible { display: block; }
+    #reinertLegend .leg-title {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 9.5px; letter-spacing: 0.05em; text-transform: uppercase;
+      color: #ead7ff; font-weight: 700; margin-bottom: 6px;
+    }
+    #reinertLegend .leg-title .mh-btn {
+      width: 18px; height: 18px; margin-left: auto; font-size: 11px; box-shadow: none;
+    }
+    #reinertLegend .leg-note {
+      font-size: 10.5px; line-height: 1.35; color: #c4b8d4; margin: 0 0 8px;
+    }
+    #reinertLegend .leg-row {
+      display: flex; align-items: flex-start; gap: 8px;
+      margin-top: 5px; color: #d5dbe4; font-size: 10.5px; line-height: 1.3;
+    }
+    #reinertLegend .leg-row .hint {
+      display: block; color: #8b93a0; font-weight: 500; font-size: 10px;
+    }
+    #reinertLegend .leg-row .n {
+      margin-left: auto; color: #8b93a0; font-variant-numeric: tabular-nums; flex-shrink: 0;
+    }
+    #reinertLegend .sw {
+      width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; margin-top: 2px;
     }
     #geoLegend .leg-macro, #commList .geo-cont {
       margin: 8px 0 2px;
@@ -1103,6 +1137,14 @@
             aria-label="Comment le pays d’un compte est calculé"
             aria-expanded="false" aria-controls="methodHelpOverlay">?</button>
         </div>
+        <div class="pays-help-row" id="reinertRow" hidden>
+          <button type="button" class="color-btn" data-mode="reinert" id="hudColorReinert"
+            title="Classes de vocabulaire des publications propres. Un compte prend la classe majoritaire si elle atteint 70 %.">Clustering discursif Reinert</button>
+          <button type="button" class="mh-btn" id="reinertHelpBtn"
+            title="Comment le clustering discursif de Reinert est calculé"
+            aria-label="Comment le clustering discursif de Reinert est calculé"
+            aria-expanded="false" aria-controls="methodHelpOverlay">?</button>
+        </div>
         <div class="typo-help-row" id="discourseHead" hidden>
           <span>Discours du corpus</span>
         </div>
@@ -1112,6 +1154,7 @@
       <div id="discourseLegend" aria-label="Légende des cadrages discursifs"></div>
       <div id="typoLegend" aria-label="Légende de la typologie des comptes"></div>
       <div id="geoLegend" aria-label="Légende des pays"></div>
+      <div id="reinertLegend" aria-label="Légende du clustering discursif de Reinert"></div>
       <div id="rtColorLegend" aria-label="Légende Distinction RT / interactions">
         <div class="leg-title">Légende · graphe Toutes interactions</div>
         <div class="leg-note">Même topologie que l’onglet «&nbsp;Toutes interactions&nbsp;» — pas le graphe RT. Seule la couleur des liens change (part RT par arête).</div>
@@ -1174,7 +1217,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
-import { initMethodHelp } from '../shared/method-help.js?v=20261030-pays-help';
+import { initMethodHelp } from '../shared/method-help.js?v=20261030-reinert';
 
 const wrap = document.getElementById('c');
 const labelsEl = document.getElementById('labels');
@@ -1264,8 +1307,9 @@ let edgeColorMode = _typoParam === 'macro' ? 'typo_macro'
   : _typoParam === 'cat' ? 'typo_cat'
   : _typoParam === 'discours' ? 'discours'
   : _typoParam === 'pays' ? 'pays'
+  : _typoParam === 'reinert' ? 'reinert'
   : 'community';
-if ((edgeColorMode === 'typo_macro' || edgeColorMode === 'typo_cat' || edgeColorMode === 'discours' || edgeColorMode === 'pays') && graphMode === 'rt_classes') {
+if ((edgeColorMode === 'typo_macro' || edgeColorMode === 'typo_cat' || edgeColorMode === 'discours' || edgeColorMode === 'pays' || edgeColorMode === 'reinert') && graphMode === 'rt_classes') {
   graphMode = 'all';
 }
 /** Centralité → taille des nœuds (positions FA2 inchangées). */
@@ -1575,7 +1619,7 @@ let lexScope = 'targets'; // 'sources' | 'targets'
 /** En mode Lemme : unigrammes ou bigrammes. */
 let lemmaForm = 'uni'; // 'uni' | 'bi'
 /** Build id (console + vérif cache). */
-const CONNECTOME_UI = '20261030-discours';
+const CONNECTOME_UI = '20261030-reinert';
 
 const PUB_TYPE_ORDER = [
   { key: 'original', label: 'Original', short: 'Orig.', color: '#8ecf4a' },
@@ -3130,12 +3174,14 @@ function updateGraphModeButtons() {
   syncLexModeButtons();
   const modeKey = graphMode === 'rt_classes'
     ? 'rt_classes'
-    : (edgeColorMode === 'typo_macro' || edgeColorMode === 'typo_cat' || edgeColorMode === 'discours' || edgeColorMode === 'pays'
+    : (edgeColorMode === 'typo_macro' || edgeColorMode === 'typo_cat' || edgeColorMode === 'discours' || edgeColorMode === 'pays' || edgeColorMode === 'reinert'
       ? edgeColorMode
       : 'community');
   const discAvail = currentCorpusId === 'hmpv';
+  const reinertAvail = REINERT_CORPORA.has(currentCorpusId);
   document.getElementById('hudColorDiscours')?.toggleAttribute('hidden', !discAvail);
   document.getElementById('discourseHead')?.toggleAttribute('hidden', !discAvail);
+  document.getElementById('reinertRow')?.toggleAttribute('hidden', !reinertAvail);
   document.querySelectorAll('#colorModeBtns .color-btn').forEach((b) => {
     b.classList.toggle('active', b.dataset.mode === modeKey);
   });
@@ -3151,14 +3197,18 @@ function updateGraphModeButtons() {
   const typoOn = typologyActive();
   const discOn = discourseActive();
   const geoOn = geoActive();
+  const reinertOn = reinertActive();
   legend?.classList.toggle('visible', rtMode);
   renderTypoLegend();
   renderDiscourseLegend();
   renderGeoLegend();
+  renderReinertLegend();
   if (scopeHint) scopeHint.style.display = showColorHud ? '' : 'none';
   if (hint) {
     hint.classList.toggle('hidden', rtMode || typoOn || geoOn);
-    hint.textContent = discOn
+    hint.textContent = reinertOn
+      ? 'Dégradé = deux classes se touchent. Gris = textes en désaccord, ou aucune publication propre classée.'
+      : discOn
       ? 'Dégradé = deux cadrages se touchent. Gris = pas de cadre lisible.'
       : 'Liens colorés par communauté des nœuds';
   }
@@ -3429,6 +3479,14 @@ function geoActive() {
   return graphMode === 'all' && edgeColorMode === 'pays';
 }
 
+const REINERT_CORPORA = new Set(['hmpv', 'hmpv_fr', 'canicule']);
+const REINERT_NONE = '#3a4150';
+const reinertCache = new Map();
+
+function reinertActive() {
+  return graphMode === 'all' && edgeColorMode === 'reinert' && REINERT_CORPORA.has(currentCorpusId);
+}
+
 function geoContinent(code) {
   return GEO_CONTINENT[code] || 'XX';
 }
@@ -3627,6 +3685,159 @@ function renderGeoPanel(data) {
   if (none) paintRow('', 'Non renseigné', none, []);
 }
 
+function reinertLabel(id, pack) {
+  if (!id) return 'Sans classe';
+  const row = (pack?.frames || []).find((f) => f.id === id);
+  return row?.label || id;
+}
+
+function reinertColor(id, pack) {
+  if (!id) return REINERT_NONE;
+  const row = (pack?.frames || []).find((f) => f.id === id);
+  return row?.color || REINERT_NONE;
+}
+
+async function ensureReinert(corpusId) {
+  if (!REINERT_CORPORA.has(corpusId)) {
+    return { frames: [], a: new Map(), missing: true, method: '', note: '' };
+  }
+  if (reinertCache.has(corpusId)) return reinertCache.get(corpusId);
+  const url = new URL(`./data/${corpusId}/reinert.json`, import.meta.url);
+  url.searchParams.set('v', CONNECTOME_UI);
+  let pack;
+  try {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error(String(res.status));
+    const data = await res.json();
+    pack = {
+      frames: Array.isArray(data.frames) ? data.frames : [],
+      a: new Map(Object.entries(data.a || {})),
+      method: data.method || '',
+      note: data.note || '',
+      nMixed: Number(data.nMixed) || 0,
+      nNoText: Number(data.nNoText) || 0,
+      nPosts: Number(data.nPosts) || 0,
+      missing: false,
+    };
+  } catch (err) {
+    console.warn('[connectome] reinert', corpusId, err);
+    pack = { frames: [], a: new Map(), method: '', note: '', missing: true, nMixed: 0, nNoText: 0, nPosts: 0 };
+  }
+  reinertCache.set(corpusId, pack);
+  return pack;
+}
+
+function reinertCodeForNode(node) {
+  const pack = reinertCache.get(currentCorpusId);
+  const h = normalizeHandle(node?.l);
+  if (!pack || pack.missing || !h) return '';
+  return pack.a.get(h) || '';
+}
+
+function renderReinertLegend() {
+  const el = document.getElementById('reinertLegend');
+  if (!el) return;
+  if (!reinertActive()) {
+    el.classList.remove('visible');
+    el.innerHTML = '';
+    return;
+  }
+  const pack = reinertCache.get(currentCorpusId);
+  const counts = new Map();
+  let none = 0;
+  for (const n of graphData?.nodes || []) {
+    if (n._reinert) counts.set(n._reinert, (counts.get(n._reinert) || 0) + 1);
+    else none += 1;
+  }
+  const langs = new Set((pack?.frames || []).map((f) => f.lang).filter(Boolean));
+  const multi = langs.size > 1;
+  const missing = pack?.missing
+    ? '<div class="leg-note">Fichier Reinert introuvable. Le réseau reste coloré par communauté.</div>'
+    : '';
+  const rows = (pack?.frames || [])
+    .map((f) => ({ ...f, n: counts.get(f.id) || 0 }))
+    .filter((f) => f.n > 0)
+    .sort((a, b) => b.n - a.n || a.label.localeCompare(b.label, 'fr'))
+    .map((f) => {
+      const name = multi && f.lang ? `${f.lang === 'en' ? 'Anglais' : 'Français'} · ${f.label}` : f.label;
+      const words = (f.terms || []).slice(0, 6).map((t) => t.w).join(', ');
+      return `<div class="leg-row">`
+        + `<i class="sw" style="background:${escapeHtml(f.color)}"></i>`
+        + `<span><b>${escapeHtml(name)}</b><span class="hint">${escapeHtml(words)}</span></span>`
+        + `<span class="n">${f.n.toLocaleString('fr-FR')}</span></div>`;
+    }).join('');
+  const gray = `<div class="leg-row">`
+    + `<i class="sw" style="background:${REINERT_NONE}"></i>`
+    + `<span><b>Sans classe</b><span class="hint">Textes en désaccord, ou aucune publication propre classée</span></span>`
+    + `<span class="n">${none.toLocaleString('fr-FR')}</span></div>`;
+  const note = `<div class="leg-note">Publication propre, hors retweet. Classe gardée si elle atteint 70 % des textes du compte, sans égalité.</div>`
+    + (pack?.note ? `<div class="leg-note">${escapeHtml(pack.note)}</div>` : '');
+  el.innerHTML = `<div class="leg-title"><span>Légende · Reinert</span>`
+    + `<button type="button" class="mh-btn" id="reinertLegendHelp" title="Comment le clustering est calculé" aria-label="Comment le clustering discursif de Reinert est calculé" aria-expanded="false" aria-controls="methodHelpOverlay">?</button></div>`
+    + `${missing}${note}${rows}${gray}`;
+  el.classList.add('visible');
+}
+
+function renderReinertPanel(data) {
+  const list = document.getElementById('commList');
+  const sub = document.getElementById('commSub');
+  if (!list || !sub) return;
+  const pack = reinertCache.get(currentCorpusId);
+  const counts = new Map();
+  const samples = new Map();
+  let none = 0;
+  const nodes = data?.nodes || [];
+  for (const n of nodes) {
+    const code = n._reinert || '';
+    if (!code) {
+      none += 1;
+      continue;
+    }
+    counts.set(code, (counts.get(code) || 0) + 1);
+    if (!samples.has(code)) samples.set(code, []);
+    const bag = samples.get(code);
+    if (bag.length < 4 && n.l) bag.push(n.l);
+  }
+  const known = counts.size;
+  const filled = nodes.length - none;
+  const pct = nodes.length ? Math.round(100 * filled / nodes.length) : 0;
+  sub.textContent = pack?.missing
+    ? 'Clustering indisponible pour ce corpus'
+    : `${known.toLocaleString('fr-FR')} classes · ${filled.toLocaleString('fr-FR')} comptes classés · ${pct.toLocaleString('fr-FR')} %`;
+  const langs = new Set((pack?.frames || []).map((f) => f.lang).filter(Boolean));
+  const multi = langs.size > 1;
+  const ranked = (pack?.frames || [])
+    .map((f) => ({
+      id: f.id,
+      label: multi && f.lang ? `${f.lang === 'en' ? 'Anglais' : 'Français'} · ${f.label}` : (f.label || f.id),
+      n: counts.get(f.id) || 0,
+    }))
+    .filter((f) => f.n > 0)
+    .sort((a, b) => b.n - a.n || a.label.localeCompare(b.label, 'fr'));
+  list.innerHTML = '';
+  const paintRow = (code, label, n, handles) => {
+    const el = document.createElement('div');
+    el.className = 'comm-row';
+    const share = nodes.length ? Math.round(1000 * n / nodes.length) / 10 : 0;
+    const who = (handles || [])
+      .map((raw) => {
+        const href = xProfileUrl(raw);
+        const h = displayHandle(raw);
+        return `<a class="handle" href="${href}" target="_blank" rel="noopener noreferrer">${escapeHtml(h)}</a>`;
+      })
+      .join(', ');
+    el.innerHTML = `
+      <div class="comm-swatch" style="background:${reinertColor(code, pack)}"></div>
+      <div>
+        <div class="comm-head"><span>${escapeHtml(label)}</span><span class="comm-metrics">${n.toLocaleString('fr-FR')} · ${share.toLocaleString('fr-FR')} %</span></div>
+        <div class="comm-accounts">${who || '—'}</div>
+      </div>`;
+    list.appendChild(el);
+  };
+  for (const row of ranked) paintRow(row.id, row.label, row.n, samples.get(row.id));
+  if (none) paintRow('', 'Sans classe', none, []);
+}
+
 function paintNodeColors(data) {
   if (!data?.nodes) return;
   if (!data._commSnap) {
@@ -3636,14 +3847,17 @@ function paintNodeColors(data) {
   const on = typologyActive();
   const discOn = discourseActive();
   const geoOn = geoActive();
+  const reinertOn = reinertActive();
   const pack = discOn ? discourseFrameCache.get(currentCorpusId) : null;
   const geoPack = geoOn ? geoCache.get(currentCorpusId) : null;
+  const reinertPack = reinertOn ? reinertCache.get(currentCorpusId) : null;
   for (const n of data.nodes) {
     if (on) {
       const code = codeForNode(n);
       n._typo = code;
       n._frame = '';
       n._geo = '';
+      n._reinert = '';
       n.c = hexToRgbArr(typoColorHex(code));
       continue;
     }
@@ -3652,6 +3866,7 @@ function paintNodeColors(data) {
       const code = geoCodeForNode(n);
       n._geo = code;
       n._frame = '';
+      n._reinert = '';
       n.c = hexToRgbArr(geoColorHex(code));
       continue;
     }
@@ -3659,10 +3874,18 @@ function paintNodeColors(data) {
     if (discOn && pack && !pack.missing) {
       const id = pack.a.get(normalizeHandle(n.l)) || '';
       n._frame = id;
+      n._reinert = '';
       n.c = hexToRgbArr(discourseFrameColor(id, pack));
       continue;
     }
     n._frame = '';
+    if (reinertOn && reinertPack && !reinertPack.missing) {
+      const id = reinertCodeForNode(n);
+      n._reinert = id;
+      n.c = hexToRgbArr(reinertColor(id, reinertPack));
+      continue;
+    }
+    n._reinert = '';
     n.c = n._commC;
   }
 }
@@ -3847,6 +4070,16 @@ async function recolorCurrentGraph() {
     await ensureDiscourseFrames(currentCorpusId);
     if (!isCurrent()) return;
   }
+  if (edgeColorMode === 'reinert') {
+    setGraphLoader({
+      title: corp?.label || 'Reinert',
+      msg: 'Lecture du clustering discursif…',
+      progress: 0.15,
+      indeterminate: true,
+    });
+    await ensureReinert(currentCorpusId);
+    if (!isCurrent()) return;
+  }
   paintNodeColors(graphData);
   renderCommPanel(graphData);
   const nE = (graphData.edges || []).length;
@@ -3878,8 +4111,9 @@ function setEdgeColorFromHud(value) {
     setGraphMode('rt_classes');
     return;
   }
-  if (value === 'typo_macro' || value === 'typo_cat' || value === 'discours' || value === 'pays') {
+  if (value === 'typo_macro' || value === 'typo_cat' || value === 'discours' || value === 'pays' || value === 'reinert') {
     if (value === 'discours' && currentCorpusId !== 'hmpv') return;
+    if (value === 'reinert' && !REINERT_CORPORA.has(currentCorpusId)) return;
     if (graphMode === 'all' && edgeColorMode === value) return;
     edgeColorMode = value;
     if (graphMode !== 'all') {
@@ -3907,6 +4141,7 @@ function syncCorpusUrl(corpusId) {
     : edgeColorMode === 'typo_cat' ? 'cat'
     : edgeColorMode === 'discours' ? 'discours'
     : edgeColorMode === 'pays' ? 'pays'
+    : edgeColorMode === 'reinert' ? 'reinert'
     : null;
   const sameCorpus = url.searchParams.get('corpus') === corpusId;
   const sameGraph = (url.searchParams.get('graph') || null) === nextGraph;
@@ -4043,6 +4278,11 @@ function renderCommPanel(data) {
   if (geoActive()) {
     if (title) title.textContent = 'Pays';
     renderGeoPanel(data);
+    return;
+  }
+  if (reinertActive()) {
+    if (title) title.textContent = 'Reinert';
+    renderReinertPanel(data);
     return;
   }
   if (title) title.textContent = 'Communautés';
@@ -4895,6 +5135,8 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
       : 'distinction RT / interactions indisponible';
   } else if (discourseActive()) {
     modeLabel = 'cadrages discursifs';
+  } else if (reinertActive()) {
+    modeLabel = 'clustering discursif Reinert';
   } else if (geoActive()) {
     modeLabel = 'pays';
   } else if (typologyActive()) {
@@ -4910,6 +5152,7 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   renderTypoLegend();
   renderGeoLegend();
   renderDiscourseLegend();
+  renderReinertLegend();
   if (activeLexeme) {
     const accounts = accountsForLexeme(activeLexeme);
     const comms = communitiesForLexeme(activeLexeme);
@@ -5414,6 +5657,7 @@ async function loadCorpus(corp) {
   const corpusChanged = currentCorpusId !== corp.id;
   currentCorpusId = corp.id;
   if (edgeColorMode === 'discours' && corp.id !== 'hmpv') edgeColorMode = 'community';
+  if (edgeColorMode === 'reinert' && !REINERT_CORPORA.has(corp.id)) edgeColorMode = 'community';
   hideTipNow();
   loadAccountPosts(corp.id, seq);
   const covEl = document.getElementById('corpusCoverage');
@@ -5535,6 +5779,8 @@ async function loadCorpus(corp) {
     if (edgeColorMode === 'discours') await ensureDiscourseFrames(corp.id);
     if (!isCurrent()) return;
     if (edgeColorMode === 'pays') await ensureGeo(corp.id);
+    if (!isCurrent()) return;
+    if (edgeColorMode === 'reinert') await ensureReinert(corp.id);
     if (!isCurrent()) return;
     paintNodeColors(data);
     setGraphLoader({
@@ -5780,7 +6026,9 @@ function renderAccountCard(node) {
   const discPack = discourseActive() ? discourseFrameCache.get(currentCorpusId) : null;
   const discOn = !!(discPack && !discPack.missing);
   const geoOn = geoActive();
-  const color = typologyActive() || discOn || geoOn
+  const reinertPack = reinertActive() ? reinertCache.get(currentCorpusId) : null;
+  const reinertOn = !!(reinertPack && !reinertPack.missing);
+  const color = typologyActive() || discOn || geoOn || reinertOn
     ? rgbCss(node.c)
     : (communityColor(node.com) || '#8b93a0');
   const typoLine = typologyActive()
@@ -5789,7 +6037,9 @@ function renderAccountCard(node) {
       ? `<div class="acct-typo">${escapeHtml(discourseFrameLabel(node._frame, discPack))}</div>`
       : geoOn
         ? `<div class="acct-typo">${escapeHtml(geoLabel(node._geo, geoCache.get(currentCorpusId)))}</div>`
-        : '';
+        : reinertOn
+          ? `<div class="acct-typo">${escapeHtml(reinertLabel(node._reinert, reinertPack))}</div>`
+          : '';
   const centLbl = CENTRALITY_LABELS[centralityMode] || 'Centralité';
   const centVal = formatCentValue(centralityMode, nodeCentValue(node));
   const profile = xProfileUrl(node.l);
@@ -5853,11 +6103,14 @@ function renderSimpleTip(node) {
   const centLbl = CENTRALITY_LABELS[centralityMode] || 'Centralité';
   const centVal = formatCentValue(centralityMode, nodeCentValue(node));
   const discPack = discourseActive() ? discourseFrameCache.get(currentCorpusId) : null;
+  const reinertPack = reinertActive() ? reinertCache.get(currentCorpusId) : null;
   const typoBit = typologyActive()
     ? `<div class="muted">${escapeHtml(typoCaption(node))}</div>`
     : geoActive()
       ? `<div class="muted">${escapeHtml(geoLabel(node._geo, geoCache.get(currentCorpusId)))}</div>`
-      : (discPack && !discPack.missing)
+      : (reinertPack && !reinertPack.missing)
+        ? `<div class="muted">${escapeHtml(reinertLabel(node._reinert, reinertPack))}</div>`
+        : (discPack && !discPack.missing)
         ? `<div class="muted">${escapeHtml(discourseFrameLabel(node._frame, discPack))}</div>`
         : '';
   return `<strong>${escapeHtml(handle)}</strong>`
@@ -6292,6 +6545,18 @@ async function boot() {
     if (!ev.target.closest('#geoLegendHelp')) return;
     openPaysHelp(ev);
   });
+  const openReinertHelp = (ev) => {
+    ev?.stopPropagation();
+    const overlay = document.getElementById('methodHelpOverlay');
+    const already = overlay?.classList.contains('open') && methodHelp.topic() === 'connectome_reinert';
+    if (already) methodHelp.close();
+    else methodHelp.open('connectome_reinert');
+  };
+  document.getElementById('reinertHelpBtn')?.addEventListener('click', openReinertHelp);
+  document.getElementById('reinertLegend')?.addEventListener('click', (ev) => {
+    if (!ev.target.closest('#reinertLegendHelp')) return;
+    openReinertHelp(ev);
+  });
   document.querySelectorAll('#graphMode button.mode[data-graph]').forEach((b) => {
     b.addEventListener('click', () => setGraphMode(b.dataset.graph));
   });
@@ -6373,6 +6638,7 @@ window.addEventListener('popstate', () => {
     : t === 'cat' ? 'typo_cat'
     : t === 'discours' ? 'discours'
     : t === 'pays' ? 'pays'
+    : t === 'reinert' ? 'reinert'
     : 'community';
   const edgeChanged = nextEdge !== edgeColorMode;
   edgeColorMode = nextEdge;
