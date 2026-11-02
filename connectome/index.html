@@ -20,7 +20,61 @@
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; color: #ccc; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
     #c { position: fixed; inset: 0; }
     canvas { display: block; width: 100%; height: 100%; }
-    #labels { position: fixed; inset: 0; pointer-events: none; z-index: 2; overflow: hidden; }
+    #labels { position: fixed; inset: 0; pointer-events: none; z-index: 4; overflow: hidden; }
+    #portraits { position: fixed; inset: 0; pointer-events: none; z-index: 3; overflow: hidden; }
+    .portrait {
+      position: absolute; transform: translate(-50%, -50%);
+      border-radius: 50%; overflow: hidden; display: none;
+      pointer-events: auto; cursor: pointer;
+      background: #141820;
+      box-shadow:
+        0 0 0 2.5px var(--ring, #fff),
+        0 0 0 4px rgba(0,0,0,0.55),
+        0 8px 18px rgba(0,0,0,0.42);
+    }
+    .portrait img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      border-radius: 50%;
+    }
+    .portrait.is-fallback img { visibility: hidden; }
+    .portrait-fallback {
+      position: absolute; inset: 0; display: none;
+      align-items: center; justify-content: center;
+      color: #fff; font-weight: 700; letter-spacing: 0.01em;
+      background: var(--ring, #3a4458);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.45);
+    }
+    .portrait.is-fallback .portrait-fallback { display: flex; }
+    .portrait:hover {
+      box-shadow:
+        0 0 0 2.5px #fff,
+        0 0 0 5px var(--ring, #fff),
+        0 10px 22px rgba(0,0,0,0.5);
+    }
+    #hudPortraitBtn {
+      width: 100%; margin: 0 0 8px; position: relative;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(0,0,0,0.35); color: #d5dbe6;
+      border-radius: 6px; padding: 8px 8px 8px 30px;
+      font: inherit; font-size: 11px; font-weight: 700;
+      cursor: pointer; text-align: left; line-height: 1.25;
+    }
+    #hudPortraitBtn::before {
+      content: ""; position: absolute; left: 9px; top: 50%;
+      width: 13px; height: 13px; transform: translateY(-50%);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 32%, #fff 0 1.6px, transparent 2px),
+        linear-gradient(155deg, #9ec1ff, #d7b48a);
+      box-shadow: 0 0 0 1.5px rgba(255,255,255,0.75);
+    }
+    #hudPortraitBtn:hover { color: #fff; border-color: rgba(255,255,255,0.34); }
+    #hudPortraitBtn.active {
+      color: #fff; background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.62);
+    }
+    #portraitHint { margin: 0 0 8px; }
+    #portraitHint[hidden] { display: none !important; }
     .label {
       position: absolute; transform: translate(-50%, -130%);
       color: #fff; letter-spacing: 0.015em;
@@ -1030,6 +1084,7 @@
     <div class="gl-bar"><i id="glBar"></i></div>
   </div>
   <div id="c"></div>
+  <div id="portraits"></div>
   <div id="labels"></div>
   <button type="button" id="mobileScrim" aria-label="Fermer les panneaux"></button>
   <div id="mobileBar" role="toolbar" aria-label="Panneaux">
@@ -1112,6 +1167,11 @@
     <div id="stats">—</div>
     <div id="colorModeBlock" title="v20261024a">
       <div class="cmlabel">Couleurs du réseau</div>
+      <button type="button" id="hudPortraitBtn" aria-pressed="false"
+        title="Remplace les nœuds les plus centraux par leur photo de profil. Le zoom en révèle d’autres. L’anneau garde la couleur du mode actif.">
+        Portraits des comptes
+      </button>
+      <p class="nav-hint" id="portraitHint" hidden>Photo à la place du nœud · le zoom suit la centralité · anneau = couleur active</p>
       <div class="nav-hint" id="colorModeScopeHint" style="margin:0 0 6px;padding:0;border:0">
         Sur le graphe <b>Toutes interactions</b> uniquement
       </div>
@@ -1216,6 +1276,7 @@ import { initMethodHelp } from '../shared/method-help.js?v=20261030-noreinert';
 
 const wrap = document.getElementById('c');
 const labelsEl = document.getElementById('labels');
+const portraitsEl = document.getElementById('portraits');
 const bootSplash = document.getElementById('bootSplash');
 const graphLoader = document.getElementById('graphLoader');
 const glTitle = document.getElementById('glTitle');
@@ -1311,6 +1372,8 @@ if ((edgeColorMode === 'typo_macro' || edgeColorMode === 'typo_cat' || edgeColor
 const CENTRALITY_IDS = new Set(['in', 'out', 'w', 'pr', 'eig', 'prod']);
 const _centParam = new URLSearchParams(location.search).get('cent');
 let centralityMode = CENTRALITY_IDS.has(_centParam) ? _centParam : 'w';
+/** Photos de profil à la place des nœuds les plus centraux (combinable avec les couleurs). */
+let portraitMode = new URLSearchParams(location.search).get('portraits') === '1';
 const CENTRALITY_LABELS = {
   in: 'Degré In',
   out: 'Degré Out',
@@ -1501,6 +1564,8 @@ function applyCentralitySizes({ rebuildLbl = true } = {}) {
   // Réappliquer un éventuel filtre # / lemme (tailles × sm)
   if (lastHighlightFilter && (activeLexeme || lastHighlightFilter.tag)) {
     applyNodeHighlight(lastHighlightFilter);
+  } else {
+    rememberNodeSizes();
   }
   if (rebuildLbl) rebuildLabels();
   updateCentralityButtons();
@@ -1730,6 +1795,20 @@ function isLemmaStop(w) {
 let lastHighlightFilter = null;
 let nodeColorsBase = null;
 let nodeSizesBase = null;
+/** Tailles avant masquage des nœuds remplacés par un portrait. */
+let nodeSizesLive = null;
+let portraitGrid = null;
+let portraitRank = [];
+let portraitMaxCent = 1;
+let portraitRankDirty = true;
+let portraitMasked = new Set();
+let lastPortraitKey = '';
+/** Dernier placement de portraits (diamètres) pour dégager les labels. */
+let lastPortraitLayout = [];
+const portraitEls = new Map();
+const avatarCache = new Map();
+const avatarQueue = [];
+let avatarInflight = 0;
 let lineColorsDimmed = false;
 /** Index compact des arêtes dessinées : s, t, premier sommet, nb sommets. */
 let lineEdgeS = null;
@@ -2693,6 +2772,7 @@ function applyNodeHighlight(filter) {
       }
     }
     restoreLinkColorsFull();
+    rememberNodeSizes();
     return;
   }
 
@@ -2762,6 +2842,7 @@ function applyNodeHighlight(filter) {
   }
 
   applyHashtagLinkFilter(onNode, nOn, scope);
+  rememberNodeSizes();
 }
 
 function openEspaceFiche(commId) {
@@ -4148,7 +4229,9 @@ function syncCorpusUrl(corpusId) {
   const sameView = (url.searchParams.get('view') || null) === nextView;
   const sameCent = (url.searchParams.get('cent') || null) === nextCent;
   const sameTypo = (url.searchParams.get('typo') || null) === nextTypo;
-  if (sameCorpus && sameGraph && sameView && sameCent && sameTypo) return;
+  const nextPortraits = portraitMode ? '1' : null;
+  const samePortraits = (url.searchParams.get('portraits') || null) === nextPortraits;
+  if (sameCorpus && sameGraph && sameView && sameCent && sameTypo && samePortraits) return;
   url.searchParams.set('corpus', corpusId);
   if (nextGraph) url.searchParams.set('graph', nextGraph);
   else url.searchParams.delete('graph');
@@ -4158,6 +4241,8 @@ function syncCorpusUrl(corpusId) {
   else url.searchParams.delete('cent');
   if (nextTypo) url.searchParams.set('typo', nextTypo);
   else url.searchParams.delete('typo');
+  if (nextPortraits) url.searchParams.set('portraits', nextPortraits);
+  else url.searchParams.delete('portraits');
   history.replaceState({
     corpus: corpusId,
     graph: graphMode,
@@ -4935,6 +5020,7 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   labelsEl.innerHTML = '';
   labelItems = [];
   labelItemsBySize = [];
+  resetPortraitLayer();
 
   const nodes = data.nodes;
   const edges = data.edges;
@@ -5173,6 +5259,9 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
     lastHighlightFilter = null;
     applyNodeHighlight(null);
   }
+  buildPortraitGrid(nodes);
+  portraitRankDirty = true;
+  lastPortraitKey = '';
   return true;
 }
 
@@ -5301,7 +5390,9 @@ function layoutVisibleLabels(w, h) {
   const boxes = [];
   for (const { it, cx, cy } of inView) {
     if (placed.length >= budget) break;
-    for (const [ox, oy] of labelOffsetOptions(it.boxW, it.boxH)) {
+    const clearance = portraitClearance(it.nodeRef, it.boxH);
+    for (const [ox, oy0] of labelOffsetOptions(it.boxW, it.boxH)) {
+      const oy = oy0 - clearance;
       const box = labelScreenBox(cx, cy, it.boxW, it.boxH, ox, oy);
       if (box.right < 4 || box.left > w - 4 || box.bottom < 4 || box.top > h - 4) continue;
       if (boxes.some((b) => boxesHit(box, b, hitPad))) continue;
@@ -5340,6 +5431,481 @@ function projectLabels() {
       it.visible = false;
       it.el.style.display = 'none';
     }
+  }
+}
+
+/**
+ * Portraits : photos à la place des points, pour les comptes les plus centraux
+ * visibles. Le budget grandit avec le zoom ; le diamètre suit la centralité active.
+ * Le nuage de points fins ne change pas d’échelle.
+ */
+function resetPortraitLayer() {
+  portraitsEl?.replaceChildren();
+  portraitEls.clear();
+  portraitMasked = new Set();
+  portraitGrid = null;
+  portraitRank = [];
+  portraitMaxCent = 1;
+  portraitRankDirty = true;
+  lastPortraitKey = '';
+  lastPortraitLayout = [];
+  nodeSizesLive = null;
+}
+
+function portraitClearance(node, boxH) {
+  if (!portraitMode || !lastPortraitLayout.length || !node) return 0;
+  let d = 0;
+  for (let i = 0; i < lastPortraitLayout.length; i++) {
+    if (lastPortraitLayout[i].node === node) { d = lastPortraitLayout[i].d; break; }
+  }
+  if (!(d > 0)) return 0;
+  return Math.max(0, d * 0.5 + 8 - 0.3 * (boxH || 0));
+}
+
+function rememberNodeSizes() {
+  const arr = pointsMesh?.geometry?.attributes?.size?.array;
+  if (!arr) return;
+  if (!nodeSizesLive || nodeSizesLive.length !== arr.length) nodeSizesLive = new Float32Array(arr.length);
+  nodeSizesLive.set(arr);
+  portraitMasked = new Set();
+  portraitRankDirty = true;
+  lastPortraitKey = '';
+}
+
+function clearPortraitMask() {
+  const sizeAttr = pointsMesh?.geometry?.attributes?.size;
+  if (!sizeAttr || !nodeSizesLive) {
+    portraitMasked = new Set();
+    return;
+  }
+  const arr = sizeAttr.array;
+  for (const i of portraitMasked) {
+    if (i < nodeSizesLive.length) arr[i] = nodeSizesLive[i];
+  }
+  portraitMasked = new Set();
+  sizeAttr.needsUpdate = true;
+}
+
+function setPortraitMask(indices) {
+  const sizeAttr = pointsMesh?.geometry?.attributes?.size;
+  if (!sizeAttr || !nodeSizesLive) return;
+  const arr = sizeAttr.array;
+  const next = new Set(indices);
+  let changed = next.size !== portraitMasked.size;
+  if (!changed) {
+    for (const i of next) {
+      if (!portraitMasked.has(i)) { changed = true; break; }
+    }
+  }
+  if (!changed) return;
+  for (const i of portraitMasked) {
+    if (!next.has(i) && i < nodeSizesLive.length) arr[i] = nodeSizesLive[i];
+  }
+  for (const i of next) {
+    if (i < arr.length) arr[i] = 0;
+  }
+  portraitMasked = next;
+  sizeAttr.needsUpdate = true;
+}
+
+function buildPortraitGrid(nodes) {
+  if (!nodes?.length) { portraitGrid = null; return; }
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  for (let i = 0; i < nodes.length; i++) {
+    const n = nodes[i];
+    if (n.x < minX) minX = n.x;
+    if (n.y < minY) minY = n.y;
+    if (n.x > maxX) maxX = n.x;
+    if (n.y > maxY) maxY = n.y;
+  }
+  const cols = 56;
+  const rows = 56;
+  const spanX = Math.max(maxX - minX, 1e-6);
+  const spanY = Math.max(maxY - minY, 1e-6);
+  const cells = new Array(cols * rows);
+  for (let i = 0; i < cells.length; i++) cells[i] = [];
+  for (let i = 0; i < nodes.length; i++) {
+    const n = nodes[i];
+    const c = Math.min(cols - 1, Math.max(0, ((n.x - minX) / spanX) * cols | 0));
+    const r = Math.min(rows - 1, Math.max(0, ((n.y - minY) / spanY) * rows | 0));
+    cells[r * cols + c].push(i);
+  }
+  portraitGrid = { minX, minY, spanX, spanY, cols, rows, cells };
+}
+
+function portraitPassesFilter(node) {
+  const f = lastHighlightFilter;
+  if (!f) return true;
+  const sn = normalizeHandle(node.l);
+  if (f.accounts?.size) return f.accounts.has(sn);
+  if (f.comms?.size) return f.comms.has(Number(node.com));
+  return true;
+}
+
+function rebuildPortraitRank() {
+  portraitRankDirty = false;
+  const nodes = graphData?.nodes;
+  if (!nodes?.length) { portraitRank = []; portraitMaxCent = 1; return; }
+  let maxV = 0;
+  const rank = [];
+  for (let i = 0; i < nodes.length; i++) {
+    const v = nodeCentValue(nodes[i]);
+    nodes[i]._sizeMetric = v;
+    if (v > maxV) maxV = v;
+    if (portraitPassesFilter(nodes[i])) rank.push(i);
+  }
+  portraitMaxCent = maxV > 0 ? maxV : 1;
+  rank.sort((a, b) => (nodes[b]._sizeMetric - nodes[a]._sizeMetric));
+  portraitRank = rank;
+}
+
+function portraitBudget(rel) {
+  const r = Math.max(0, rel);
+  if (r < 1.15) return Math.max(8, Math.round(16 * Math.max(0.55, r)));
+  if (r < 2) return Math.round(16 + 24 * ((r - 1.15) / 0.85));
+  if (r < 4) return Math.round(40 + 50 * ((r - 2) / 2));
+  if (r < 8) return Math.round(90 + 70 * ((r - 4) / 4));
+  return 160;
+}
+
+function portraitDiameter(v, maxV, rel) {
+  const u = Math.sqrt(Math.max(0, v) / (maxV > 0 ? maxV : 1));
+  const z = Math.min(1.4, Math.max(0.82, Math.sqrt(Math.max(rel, 0.45))));
+  return Math.max(28, Math.min(76, 30 + 42 * u * z));
+}
+
+function portraitInitial(handle) {
+  const h = normalizeHandle(handle);
+  const m = h.match(/[a-z0-9]/i);
+  return (m ? m[0] : (h[0] || '?')).toUpperCase();
+}
+
+function viewWorldRect() {
+  const z = Math.max(camera.zoom || 1, 1e-6);
+  const halfW = ((camera.right - camera.left) * 0.5) / z;
+  const halfH = ((camera.top - camera.bottom) * 0.5) / z;
+  const pad = 0.04;
+  return {
+    x0: camera.position.x - halfW * (1 + pad),
+    x1: camera.position.x + halfW * (1 + pad),
+    y0: camera.position.y - halfH * (1 + pad),
+    y1: camera.position.y + halfH * (1 + pad),
+  };
+}
+
+function collectVisibleNodes(rect) {
+  const g = portraitGrid;
+  const nodes = graphData?.nodes;
+  if (!g || !nodes) return [];
+  const c0 = Math.max(0, Math.min(g.cols - 1, ((rect.x0 - g.minX) / g.spanX) * g.cols | 0));
+  const c1 = Math.max(0, Math.min(g.cols - 1, ((rect.x1 - g.minX) / g.spanX) * g.cols | 0));
+  const r0 = Math.max(0, Math.min(g.rows - 1, ((rect.y0 - g.minY) / g.spanY) * g.rows | 0));
+  const r1 = Math.max(0, Math.min(g.rows - 1, ((rect.y1 - g.minY) / g.spanY) * g.rows | 0));
+  const out = [];
+  for (let r = r0; r <= r1; r++) {
+    for (let c = c0; c <= c1; c++) {
+      const bucket = g.cells[r * g.cols + c];
+      for (let k = 0; k < bucket.length; k++) {
+        const i = bucket[k];
+        const n = nodes[i];
+        if (n.x < rect.x0 || n.x > rect.x1 || n.y < rect.y0 || n.y > rect.y1) continue;
+        if (!portraitPassesFilter(n)) continue;
+        out.push(i);
+      }
+    }
+  }
+  return out;
+}
+
+function selectPortraitCandidates(rect, rel, budget) {
+  const nodes = graphData.nodes;
+  const need = Math.max(budget * 12, 48);
+  if (rel >= 1.7 && portraitGrid) {
+    const local = collectVisibleNodes(rect);
+    if (local.length && local.length <= 6000) {
+      local.sort((a, b) => nodes[b]._sizeMetric - nodes[a]._sizeMetric);
+      return local;
+    }
+  }
+  const out = [];
+  const cap = rel < 1.7 ? Math.min(portraitRank.length, Math.max(900, need)) : portraitRank.length;
+  for (let k = 0; k < cap && out.length < need; k++) {
+    const i = portraitRank[k];
+    const n = nodes[i];
+    if (n.x < rect.x0 || n.x > rect.x1 || n.y < rect.y0 || n.y > rect.y1) continue;
+    out.push(i);
+  }
+  return out;
+}
+
+function layoutPortraits(w, h, zoomForScale, cssW) {
+  if (!portraitMode || !graphData?.nodes?.length || !portraitGrid) {
+    lastPortraitLayout = [];
+    return [];
+  }
+  if (portraitRankDirty) rebuildPortraitRank();
+  const z = zoomForScale ?? (camera.zoom || 1);
+  const rel = z / Math.max(fitZoom, 1e-6);
+  const budget = portraitBudget(rel);
+  const screenScale = cssW ? (w / Math.max(cssW, 1)) : 1;
+  const rect = viewWorldRect();
+  const candidates = selectPortraitCandidates(rect, rel, budget);
+  const nodes = graphData.nodes;
+  const placed = [];
+  const pad = 4 * screenScale;
+  for (let k = 0; k < candidates.length && placed.length < budget; k++) {
+    const i = candidates[k];
+    const node = nodes[i];
+    _proj.set(node.x, node.y, 0).project(camera);
+    if (_proj.z > 1) continue;
+    const cx = (_proj.x * 0.5 + 0.5) * w;
+    const cy = (-_proj.y * 0.5 + 0.5) * h;
+    const d = portraitDiameter(node._sizeMetric || 0, portraitMaxCent, rel) * screenScale;
+    if (cx < -d || cx > w + d || cy < -d || cy > h + d) continue;
+    let hit = false;
+    for (let p = 0; p < placed.length; p++) {
+      const o = placed[p];
+      const dx = cx - o.cx;
+      const dy = cy - o.cy;
+      const rr = (d + o.d) * 0.5 + pad;
+      if (dx * dx + dy * dy < rr * rr) { hit = true; break; }
+    }
+    if (hit) continue;
+    const u = Math.sqrt(Math.max(0, node._sizeMetric || 0) / portraitMaxCent);
+    placed.push({
+      i,
+      node,
+      cx,
+      cy,
+      d,
+      u,
+      color: rgbCss(node.c),
+      letter: portraitInitial(node.l),
+    });
+  }
+  lastPortraitLayout = placed;
+  return placed;
+}
+
+function hidePortraitEls(keep) {
+  for (const [i, rec] of portraitEls) {
+    if (!keep.has(i) && rec.el.style.display !== 'none') rec.el.style.display = 'none';
+  }
+}
+
+function pumpAvatars() {
+  while (avatarInflight < 8 && avatarQueue.length) {
+    const job = avatarQueue.shift();
+    avatarInflight += 1;
+    const img = new Image();
+    const cors = job.attempt === 0;
+    if (cors) img.crossOrigin = 'anonymous';
+    img.referrerPolicy = 'no-referrer';
+    img.decoding = 'async';
+    img.onload = () => {
+      avatarInflight -= 1;
+      if ((img.naturalWidth || 0) < 2) finishAvatar(job, null, false);
+      else finishAvatar(job, img, cors);
+      pumpAvatars();
+    };
+    img.onerror = () => {
+      avatarInflight -= 1;
+      if (job.attempt < 1) {
+        job.attempt += 1;
+        avatarQueue.push(job);
+      } else finishAvatar(job, null, false);
+      pumpAvatars();
+    };
+    img.src = `https://unavatar.io/x/${encodeURIComponent(job.h)}?fallback=false`;
+  }
+}
+
+function finishAvatar(job, img, exportSafe) {
+  if (img) {
+    job.rec.status = 'ok';
+    job.rec.img = img;
+    job.rec.exportSafe = exportSafe;
+  } else {
+    job.rec.status = 'fail';
+  }
+  const waiters = job.rec.waiters.splice(0);
+  for (const fn of waiters) fn(job.rec);
+}
+
+function requestAvatar(handle, cb) {
+  const h = normalizeHandle(handle);
+  if (!h) { cb({ status: 'fail' }); return; }
+  const hit = avatarCache.get(h);
+  if (hit && hit.status !== 'loading') { cb(hit); return; }
+  if (hit) { hit.waiters.push(cb); return; }
+  const rec = { status: 'loading', waiters: [cb], img: null, exportSafe: false };
+  avatarCache.set(h, rec);
+  avatarQueue.push({ h, rec, attempt: 0 });
+  pumpAvatars();
+}
+
+function bindAvatar(rec, handle) {
+  const h = normalizeHandle(handle);
+  if (rec.handle === h && (rec.state === 'ok' || rec.state === 'fail' || rec.state === 'loading')) return;
+  rec.handle = h;
+  rec.state = 'loading';
+  rec.letter.textContent = portraitInitial(h);
+  rec.el.classList.add('is-fallback');
+  requestAvatar(h, (res) => {
+    if (rec.handle !== h) return;
+    rec.state = res.status === 'ok' ? 'ok' : 'fail';
+    if (res.status === 'ok' && res.img) {
+      rec.imgEl.src = res.img.src;
+      rec.exportSafe = !!res.exportSafe;
+      rec.el.classList.remove('is-fallback');
+    }
+  });
+}
+
+function ensurePortraitEl(i, node) {
+  const existing = portraitEls.get(i);
+  if (existing) return existing;
+  const el = document.createElement('div');
+  el.className = 'portrait is-fallback';
+  const imgEl = document.createElement('img');
+  imgEl.alt = '';
+  imgEl.draggable = false;
+  const letter = document.createElement('span');
+  letter.className = 'portrait-fallback';
+  el.append(imgEl, letter);
+  const open = (ev) => {
+    ev.preventDefault();
+    ev.stopPropagation();
+    navigateFromNode(node);
+  };
+  el.addEventListener('click', open);
+  el.addEventListener('pointerenter', (ev) => showNodeTip(node, ev.clientX, ev.clientY));
+  el.addEventListener('pointerleave', (ev) => {
+    if (!usesAccountCard()) { hideTipNow(); return; }
+    holdAccountCard(ev);
+  });
+  el.addEventListener('wheel', (ev) => {
+    renderer.domElement.dispatchEvent(new WheelEvent('wheel', {
+      deltaY: ev.deltaY,
+      deltaX: ev.deltaX,
+      deltaMode: ev.deltaMode,
+      clientX: ev.clientX,
+      clientY: ev.clientY,
+      bubbles: true,
+      cancelable: true,
+    }));
+  }, { passive: true });
+  portraitsEl.appendChild(el);
+  const rec = { el, imgEl, letter, handle: '', state: '', exportSafe: false };
+  portraitEls.set(i, rec);
+  return rec;
+}
+
+function projectPortraits(force = false) {
+  if (!portraitsEl) return;
+  if (!portraitGrid) {
+    lastPortraitKey = '';
+    return;
+  }
+  const key = `${(camera.zoom || 0).toFixed(4)}|${camera.position.x.toFixed(2)}|${camera.position.y.toFixed(2)}|${innerWidth}|${innerHeight}|${portraitMode ? 1 : 0}|${centralityMode}`;
+  if (!force && key === lastPortraitKey) return;
+  lastPortraitKey = key;
+  if (!portraitMode) {
+    hidePortraitEls(new Set());
+    if (portraitMasked.size) clearPortraitMask();
+    return;
+  }
+  const placed = layoutPortraits(innerWidth, innerHeight);
+  const keep = new Set();
+  const mask = [];
+  for (const p of placed) {
+    keep.add(p.i);
+    mask.push(p.i);
+    const rec = ensurePortraitEl(p.i, p.node);
+    const handle = normalizeHandle(p.node.l);
+    rec.el.style.width = `${p.d}px`;
+    rec.el.style.height = `${p.d}px`;
+    rec.el.style.left = `${p.cx}px`;
+    rec.el.style.top = `${p.cy}px`;
+    rec.el.style.zIndex = String(20 + Math.round(p.u * 80));
+    rec.el.style.setProperty('--ring', p.color);
+    rec.letter.style.fontSize = `${Math.max(11, Math.round(p.d * 0.38))}px`;
+    rec.el.style.display = 'block';
+    rec.el.title = `@${handle} — clic : profil X`;
+    bindAvatar(rec, handle);
+  }
+  hidePortraitEls(keep);
+  setPortraitMask(mask);
+}
+
+function syncPortraitButton() {
+  const b = document.getElementById('hudPortraitBtn');
+  const hint = document.getElementById('portraitHint');
+  if (b) {
+    b.classList.toggle('active', portraitMode);
+    b.setAttribute('aria-pressed', portraitMode ? 'true' : 'false');
+  }
+  if (hint) hint.hidden = !portraitMode;
+}
+
+function setPortraitMode(on, { syncUrl = true } = {}) {
+  portraitMode = !!on;
+  syncPortraitButton();
+  lastPortraitKey = '';
+  lastLabelCamKey = '';
+  portraitRankDirty = true;
+  if (!portraitMode) {
+    lastPortraitLayout = [];
+    hidePortraitEls(new Set());
+    clearPortraitMask();
+  } else {
+    projectPortraits(true);
+  }
+  projectLabels();
+  if (syncUrl) syncCorpusUrl(currentCorpusId);
+}
+
+function drawPortraitGlyph(ctx, cx, cy, d, color, letter, img) {
+  const r = d * 0.5;
+  ctx.save();
+  ctx.shadowColor = 'rgba(0,0,0,0.45)';
+  ctx.shadowBlur = Math.max(4, d * 0.1);
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.fillStyle = '#111';
+  ctx.fill();
+  ctx.restore();
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.closePath();
+  ctx.clip();
+  if (img) ctx.drawImage(img, cx - r, cy - r, d, d);
+  else {
+    ctx.fillStyle = color;
+    ctx.fillRect(cx - r, cy - r, d, d);
+    ctx.fillStyle = '#fff';
+    ctx.font = `700 ${Math.max(12, Math.round(d * 0.4))}px "Helvetica Neue", Helvetica, Arial, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(letter, cx, cy + d * 0.02);
+  }
+  ctx.restore();
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = Math.max(2, d * 0.065);
+  ctx.stroke();
+}
+
+function drawPortraitsOnCtx(ctx, w, h, viewZoom, cssW) {
+  if (!portraitMode) return;
+  const placed = layoutPortraits(w, h, viewZoom, cssW);
+  for (const p of placed) {
+    const hdl = normalizeHandle(p.node.l);
+    const cached = avatarCache.get(hdl);
+    const img = cached?.status === 'ok' && cached.exportSafe ? cached.img : null;
+    drawPortraitGlyph(ctx, p.cx, p.cy, p.d, p.color, p.letter, img);
   }
 }
 
@@ -5446,7 +6012,9 @@ function drawLabelsOnCtx(ctx, w, h, scale) {
     const boxW = Math.max(28, text.length * fontPx * 0.55 + 12);
     const boxH = fontPx * 1.35;
 
-    for (const [ox, oy] of labelOffsetOptions(boxW, boxH)) {
+    const clearance = portraitClearance(it.nodeRef, boxH);
+    for (const [ox, oy0] of labelOffsetOptions(boxW, boxH)) {
+      const oy = oy0 - clearance;
       const box = labelScreenBox(cx, cy, boxW, boxH, ox, oy);
       if (box.right < 4 || box.left > w - 4 || box.bottom < 4 || box.top > h - 4) continue;
       if (placed.some((p) => boxesHit(box, p, hitPad))) continue;
@@ -5594,6 +6162,7 @@ async function exportPng() {
     ctx.putImageData(img, 0, 0);
 
     const labelScale = Math.max(bw, bh) / 1400;
+    drawPortraitsOnCtx(ctx, bw, bh, prev.zoom, prev.cssW);
     drawLabelsOnCtx(ctx, bw, bh, labelScale);
 
     exportStatus.textContent = `Encodage PNG ${bw}×${bh}…`;
@@ -5642,6 +6211,7 @@ exportBtn.addEventListener('click', () => { exportPng(); });
   if (exporting) return;
   controls.update();
   composer.render();
+  projectPortraits();
   projectLabels();
 })();
 
@@ -6557,6 +7127,10 @@ async function boot() {
   document.querySelectorAll('#colorModeBtns .color-btn').forEach((b) => {
     b.addEventListener('click', () => setEdgeColorFromHud(b.dataset.mode));
   });
+  document.getElementById('hudPortraitBtn')?.addEventListener('click', () => {
+    setPortraitMode(!portraitMode);
+  });
+  syncPortraitButton();
   const toggleLexMode = (kind) => {
     if (!communityColorModeActive()) return;
     if (viewMode === 'analyses' && lexKind === kind) {
@@ -6631,16 +7205,26 @@ window.addEventListener('popstate', () => {
     : t === 'age' ? 'age'
     : 'community';
   const edgeChanged = nextEdge !== edgeColorMode;
+  const nextPortraits = params.get('portraits') === '1';
+  const portraitsChanged = nextPortraits !== portraitMode;
   edgeColorMode = nextEdge;
   graphMode = nextMode;
+  if (portraitsChanged) portraitMode = nextPortraits;
   if (centChanged) {
     centralityMode = nextCent;
     if (!modeChanged && graphData) applyCentralitySizes({ rebuildLbl: true });
   }
   if (viewChanged) setViewMode(nextView, { syncUrl: false, lex: nextLex });
   updateGraphModeButtons();
+  if (portraitsChanged) {
+    syncPortraitButton();
+    lastPortraitKey = '';
+    portraitRankDirty = true;
+    if (!portraitMode) clearPortraitMask();
+  }
   if (modeChanged || corp.id !== currentCorpusId) loadCorpus(corp);
   else if (edgeChanged) recolorCurrentGraph();
+  else if (portraitsChanged) projectPortraits(true);
 });
 
 boot();
