@@ -16,6 +16,7 @@ Après push : **Settings → Pages → Deploy from branch `main` / root**.
 | Connectome Canicule | [`/connectome/?corpus=canicule`](https://mshubeco.github.io/cross-corpus/connectome/?corpus=canicule) |
 | Flux continu (tous corpus) | [`/flux-continu/`](https://mshubeco.github.io/cross-corpus/flux-continu/?corpus=ebola) — critères [HEAT flux continu](https://mshubeco.github.io/heat-flux-continu/) (fenêtre 3j · FA2 · Procrustes · Louvain) |
 | Réseau de coordination | [`/reseau-coordination/`](https://mshubeco.github.io/cross-corpus/reseau-coordination/?corpus=ebola) — co-RT + filtre de disparité Serrano et al. 2009 (α=0,05, OR) |
+| Collaboration temporelle | [`/collaboration-temporelle/`](https://mshubeco.github.io/cross-corpus/collaboration-temporelle/?corpus=ebola) — Iannucci, Muratore, Matakos & Kivelä, ICWSM 2026 : poids de Newman amorti par un délai exponentiel, quatre couches, Leiden multiplexe |
 | Flux intercommunautaires | [`/analyses/intercomm/`](https://mshubeco.github.io/cross-corpus/analyses/intercomm/ebola.html) — vue d’ensemble · portrait des pôles · top 5 communautés · top 5 / jour · retweets reçus (distribution et médiane, si `<corpus>_rt_dist.json` est présent) ; panneau flux : **RT** vs **interactions** (hors RT) |
 | Intersection 3 corpus santé | [`/analyses/health3_overlap.html`](https://mshubeco.github.io/cross-corpus/analyses/health3_overlap.html) |
 | Comptes MCA Track B | [`/analyses/comptes_selectionnes.html`](https://mshubeco.github.io/cross-corpus/analyses/comptes_selectionnes.html) |

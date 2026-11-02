@@ -1052,6 +1052,7 @@
           <a id="analysesLink" class="mode mode-link" href="../analyses/ebola.html" title="Page analyses complète (nouvel onglet)" target="_blank" rel="noopener noreferrer">Analyses</a>
           <a id="fluxLink" class="mode mode-link" href="../flux-continu/?corpus=ebola" title="Flux continu (fenêtre 3j · FA2)">Flux continu</a>
           <a id="coordLink" class="mode mode-link" href="../reseau-coordination/?corpus=ebola" title="Réseau de coordination · co-RT · Serrano α=0,05 (OR)">Coordination</a>
+          <a id="collabLink" class="mode mode-link" href="../collaboration-temporelle/?corpus=ebola" title="Collaboration temporelle multiplexe · Iannucci, Muratore, Matakos &amp; Kivelä, ICWSM 2026">Collaboration</a>
         </div>
       </div>
       <div id="centralityMode" role="tablist" aria-label="Centralité — taille des nœuds (layout inchangé)">
@@ -4189,6 +4190,11 @@ function syncCorpusSubTabs(corp) {
   if (coordLinkEl) {
     coordLinkEl.href = `../reseau-coordination/?corpus=${encodeURIComponent(id)}`;
     coordLinkEl.title = `Réseau de coordination · ${short}`;
+  }
+  const collabLinkEl = document.getElementById('collabLink');
+  if (collabLinkEl) {
+    collabLinkEl.href = `../collaboration-temporelle/?corpus=${encodeURIComponent(id)}`;
+    collabLinkEl.title = `Collaboration temporelle multiplexe · Iannucci et al. 2026 · ${short}`;
   }
 }
 
