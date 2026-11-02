@@ -182,7 +182,7 @@
       <li><b>Le poids de Newman, amorti.</b> Chaque délai ajoute exp(−β × délai) / (n − 1). n est le nombre de comptes distincts qui ont fait ce geste. Un hashtag utilisé par beaucoup pèse peu. β grand ne garde que les actes très proches ; β nul garde toutes les répétitions, quelle que soit l’heure.</li>
       <li><b>β est choisi par les données.</b> Pour chaque couche, on cherche le β entre 0 et 10 qui donne la modularité la plus haute (Leiden, γ = 1). Le délai dans l’exponentielle est en jours, comme dans le code des auteurs : sinon cet intervalle n’a pas de sens.</li>
       <li><b>Les couches ne sont pas additionnées.</b> Un même découpage en groupes est cherché sur les quatre graphes à la fois, en sommant leurs modularités. Un groupe peut donc s’appuyer sur le retweet dans une couche et sur le hashtag dans une autre, sans que les poids, qui ne sont pas sur la même échelle, soient mélangés avant coup.</li>
-      <li><b>Le dessin n’est pas la méthode.</b> Les positions viennent d’un ForceAtlas2, pour lire le graphe. La partition, elle, vient de l’étape 5. La taille et les noms suivent la force de collaboration, la somme des poids de Newman : les comptes les plus liés apparaissent d’abord. Le survol éclaire les comptes liés, indique le nombre de messages co-retweetés, et ouvre les publications.</li>
+      <li><b>Le dessin n’est pas la méthode.</b> Les positions servent à lire le graphe. La partition, elle, vient de l’étape 5. Sur la canicule, chaque groupe est disposé à part, puis les groupes sont écartés : les traits pâles relient deux groupes. La taille et les noms suivent la force de collaboration, la somme des poids de Newman. Le survol éclaire les comptes liés, indique le nombre de messages co-retweetés, et ouvre les publications.</li>
     </ol>
 
     <h2>La formule</h2>
@@ -274,7 +274,8 @@
     let lastY = 0;
     let seq = 0;
     let postsPack;
-    let rtPack = null;
+    let rtPack = undefined;
+    let rtLoading = false;
     let postsMode = "single";
     let shardNames = null;
     let shardDir = "posts";
@@ -307,6 +308,53 @@
       const last = Math.max(order.length - 1, 1);
       order.forEach((i, k) => { graph.nodes[i].rk = k / last; });
       buildAdj();
+      indexScene();
+    }
+
+    let shownIds = [];
+    let hitGrid = new Map();
+    let edgeGroups = [];
+    let scenePaths = null;
+    let sceneKey = "";
+    const HIT_CELL = 32;
+
+    function indexScene() {
+      shownIds = [];
+      hitGrid = new Map();
+      edgeGroups = [];
+      scenePaths = null;
+      sceneKey = "";
+      if (!graph) return;
+      for (let i = 0; i < graph.nodes.length; i++) {
+        if (!shownNode[i]) continue;
+        shownIds.push(i);
+        const n = graph.nodes[i];
+        const key = Math.floor(n.x / HIT_CELL) + "," + Math.floor(n.y / HIT_CELL);
+        let cell = hitGrid.get(key);
+        if (!cell) { cell = []; hitGrid.set(key, cell); }
+        cell.push(i);
+      }
+      const groups = new Map();
+      for (const e of graph.edges) {
+        if (!edgeOn(e)) continue;
+        const a = graph.nodes[e.s];
+        const b = graph.nodes[e.t];
+        const key = edgeKey(e, a, b);
+        let g = groups.get(key);
+        if (!g) {
+          g = { style: styleFor(key, a), intra: [], inter: [] };
+          groups.set(key, g);
+        }
+        (a.com === b.com ? g.intra : g.inter).push(e);
+      }
+      edgeGroups = [...groups.values()];
+    }
+
+    function styleFor(key, sample) {
+      if (key === "cross") return "rgba(210,210,210,0.85)";
+      if (LAYER_COLOR[key]) return LAYER_COLOR[key];
+      const rgb = sample && sample.c ? sample.c : [180, 180, 180];
+      return `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
     }
 
     function buildAdj() {
@@ -377,28 +425,20 @@
       return "cross";
     }
 
-    function bucketStyle(key) {
-      if (key === "cross") return "rgba(200,200,200,0.7)";
-      if (LAYER_COLOR[key]) return LAYER_COLOR[key];
-      const com = Number(key.slice(1));
-      const rgb = (graph.nodes.find((n) => n.com === com) || {}).c || [180, 180, 180];
-      return `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
-    }
-
-    function paintEdges(buckets, alpha, width) {
+    function strokeEdges(list, alpha, width) {
+      if (!list.length) return;
       ctx.globalAlpha = alpha;
       ctx.lineWidth = width / view.zoom;
-      for (const [key, edges] of buckets) {
-        ctx.beginPath();
-        ctx.strokeStyle = bucketStyle(key);
-        for (const e of edges) {
-          const a = graph.nodes[e.s];
-          const b = graph.nodes[e.t];
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-        }
-        ctx.stroke();
+      ctx.beginPath();
+      for (let i = 0; i < list.length; i++) {
+        const e = list[i];
+        const a = graph.nodes[e.s];
+        const b = graph.nodes[e.t];
+        if (focusCom != null && a.com !== focusCom && b.com !== focusCom) continue;
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
       }
+      ctx.stroke();
     }
 
     function screenOf(n) {
@@ -486,70 +526,143 @@
       }
     }
 
+    function ensureScenePaths() {
+      const key = layer + "|" + (focusCom ?? "-") + "|" + (hover ?? "-");
+      if (scenePaths && sceneKey === key) return scenePaths;
+      sceneKey = key;
+      const quiet = hover != null;
+      const focus = focusCom != null;
+      const hovering = hoverMask != null;
+      const edges = [];
+      for (let g = 0; g < edgeGroups.length; g++) {
+        const group = edgeGroups[g];
+        const inter = new Path2D();
+        const intra = new Path2D();
+        let nInter = 0;
+        let nIntra = 0;
+        for (let i = 0; i < group.inter.length; i++) {
+          const e = group.inter[i];
+          const a = graph.nodes[e.s];
+          const b = graph.nodes[e.t];
+          if (focus && a.com !== focusCom && b.com !== focusCom) continue;
+          inter.moveTo(a.x, a.y);
+          inter.lineTo(b.x, b.y);
+          nInter++;
+        }
+        for (let i = 0; i < group.intra.length; i++) {
+          const e = group.intra[i];
+          const a = graph.nodes[e.s];
+          const b = graph.nodes[e.t];
+          if (focus && a.com !== focusCom && b.com !== focusCom) continue;
+          intra.moveTo(a.x, a.y);
+          intra.lineTo(b.x, b.y);
+          nIntra++;
+        }
+        if (nInter) edges.push({ style: group.style, path: inter, alpha: quiet ? 0.045 : 0.16, width: 1 });
+        if (nIntra) edges.push({ style: group.style, path: intra, alpha: quiet ? 0.12 : 0.72, width: 1 });
+      }
+      let hot = null;
+      if (hover != null) {
+        hot = new Path2D();
+        const self = graph.nodes[hover];
+        const links = adj[hover] || [];
+        for (let i = 0; i < links.length; i++) {
+          const other = graph.nodes[links[i].i];
+          hot.moveTo(self.x, self.y);
+          hot.lineTo(other.x, other.y);
+        }
+      }
+      const dim = new Map();
+      const lit = new Map();
+      const rings = [];
+      for (let k = 0; k < shownIds.length; k++) {
+        const i = shownIds[k];
+        const n = graph.nodes[i];
+        const mark = hovering ? hoverMask[i] : 0;
+        const faded = (focus && n.com !== focusCom) || (hovering && mark === 0);
+        const bag = faded ? dim : lit;
+        const color = n.c[0] + "," + n.c[1] + "," + n.c[2];
+        let path = bag.get(color);
+        if (!path) { path = new Path2D(); bag.set(color, path); }
+        const r = nodeR(n);
+        path.moveTo(n.x + r, n.y);
+        path.arc(n.x, n.y, r, 0, Math.PI * 2);
+        if (mark > 0) rings.push(i);
+      }
+      scenePaths = { edges, hot, dim, lit, rings, quiet: hovering || focus };
+      return scenePaths;
+    }
+
     function draw() {
       ctx.setTransform(window.devicePixelRatio || 1, 0, 0, window.devicePixelRatio || 1, 0, 0);
       ctx.clearRect(0, 0, innerWidth, innerHeight);
       if (!graph) return;
+      const scene = ensureScenePaths();
       ctx.save();
       ctx.translate(innerWidth / 2, innerHeight / 2);
       ctx.scale(view.zoom, view.zoom);
       ctx.translate(view.x, view.y);
-      const cold = new Map();
-      const hot = new Map();
-      for (const e of graph.edges) {
-        if (!edgeOn(e)) continue;
-        const a = graph.nodes[e.s];
-        const b = graph.nodes[e.t];
-        if (focusCom != null && a.com !== focusCom && b.com !== focusCom) continue;
-        const key = edgeKey(e, a, b);
-        const incident = hoverMask && (hoverMask[e.s] === 2 || hoverMask[e.t] === 2);
-        const dest = incident ? hot : cold;
-        if (!dest.has(key)) dest.set(key, []);
-        dest.get(key).push(e);
+      for (let i = 0; i < scene.edges.length; i++) {
+        const e = scene.edges[i];
+        ctx.globalAlpha = e.alpha;
+        ctx.lineWidth = e.width / view.zoom;
+        ctx.strokeStyle = e.style;
+        ctx.stroke(e.path);
       }
-      paintEdges(cold, hover == null ? 0.55 : 0.07, 1);
-      if (hover != null) paintEdges(hot, 0.95, 1.8);
-      graph.nodes.forEach((n, i) => {
-        if (shownNode && !shownNode[i]) return;
-        const mark = hoverMask ? hoverMask[i] : 0;
-        let alpha = 0.95;
-        if (focusCom != null && n.com !== focusCom) alpha = 0.15;
-        if (hoverMask && mark === 0) alpha = Math.min(alpha, 0.05);
-        if (mark === 1) alpha = 1;
-        if (mark === 2) alpha = 1;
-        ctx.globalAlpha = alpha;
-        const r = nodeR(n);
+      if (scene.hot) {
+        ctx.globalAlpha = 0.95;
+        ctx.lineWidth = 1.8 / view.zoom;
+        ctx.strokeStyle = "#f4efe2";
+        ctx.stroke(scene.hot);
+      }
+      ctx.globalAlpha = scene.quiet ? 0.08 : 0.92;
+      for (const [color, path] of scene.dim) {
+        ctx.fillStyle = "rgb(" + color + ")";
+        ctx.fill(path);
+      }
+      ctx.globalAlpha = 0.96;
+      for (const [color, path] of scene.lit) {
+        ctx.fillStyle = "rgb(" + color + ")";
+        ctx.fill(path);
+      }
+      ctx.globalAlpha = 1;
+      for (let k = 0; k < scene.rings.length; k++) {
+        const i = scene.rings[k];
+        const n = graph.nodes[i];
+        const mark = hoverMask[i];
+        const ring = Math.max(nodeR(n), 5 / view.zoom);
         ctx.beginPath();
-        ctx.fillStyle = `rgb(${n.c[0]},${n.c[1]},${n.c[2]})`;
-        const ring = Math.max(r, 5 / view.zoom);
-        ctx.arc(n.x, n.y, mark === 2 ? ring * 1.45 : r, 0, Math.PI * 2);
-        ctx.fill();
-        if (mark > 0) {
-          ctx.beginPath();
-          ctx.arc(n.x, n.y, mark === 2 ? ring * 2.1 : ring * 1.55, 0, Math.PI * 2);
-          ctx.lineWidth = (mark === 2 ? 2.4 : 1.5) / view.zoom;
-          ctx.strokeStyle = mark === 2 ? "#ffffff" : "rgba(255,255,255,0.92)";
-          ctx.stroke();
-        }
-      });
+        ctx.arc(n.x, n.y, mark === 2 ? ring * 2.1 : ring * 1.55, 0, Math.PI * 2);
+        ctx.lineWidth = (mark === 2 ? 2.4 : 1.5) / view.zoom;
+        ctx.strokeStyle = mark === 2 ? "#ffffff" : "rgba(255,255,255,0.92)";
+        ctx.stroke();
+      }
       ctx.restore();
       ctx.globalAlpha = 1;
-      drawLabels();
-      ctx.globalAlpha = 1;
+      if (!drag) drawLabels();
     }
 
     function hit(px, py) {
-      if (!graph) return null;
+      if (!graph || !shownIds.length) return null;
       const w = world(px, py);
+      const slack = 12 / view.zoom;
+      const cx = Math.floor(w.x / HIT_CELL);
+      const cy = Math.floor(w.y / HIT_CELL);
+      const span = Math.max(1, Math.ceil((slack + 8) / HIT_CELL));
       let best = null;
       let bestD = Infinity;
-      const slack = 12 / view.zoom;
-      graph.nodes.forEach((n, i) => {
-        if (shownNode && !shownNode[i]) return;
-        const d = Math.hypot(n.x - w.x, n.y - w.y);
-        const reach = nodeR(n) + slack;
-        if (d <= reach && d < bestD) { bestD = d; best = i; }
-      });
+      for (let ix = cx - span; ix <= cx + span; ix++) {
+        for (let iy = cy - span; iy <= cy + span; iy++) {
+          const cell = hitGrid.get(ix + "," + iy);
+          if (!cell) continue;
+          for (let k = 0; k < cell.length; k++) {
+            const i = cell[k];
+            const n = graph.nodes[i];
+            const d = Math.hypot(n.x - w.x, n.y - w.y);
+            if (d <= nodeR(n) + slack && d < bestD) { bestD = d; best = i; }
+          }
+        }
+      }
       return best;
     }
 
@@ -626,8 +739,13 @@
       shardInflight.set(key, pending);
     }
 
+    function ensureRetweets() {
+      if (rtPack !== undefined || rtLoading) return;
+      rtLoading = true;
+      loadRetweets(current, seq);
+    }
+
     function loadRetweets(id, token) {
-      rtPack = undefined;
       fetch(`data/${encodeURIComponent(id)}/retweets.json`)
         .then((r) => {
           if (r.status === 404) return { accounts: {} };
@@ -636,11 +754,13 @@
         })
         .then((data) => {
           if (token !== seq) return;
+          rtLoading = false;
           rtPack = data && data.accounts ? data : { accounts: {} };
           refreshTip();
         })
         .catch(() => {
           if (token !== seq) return;
+          rtLoading = false;
           rtPack = { accounts: {} };
           refreshTip();
         });
@@ -820,6 +940,7 @@
       if (hover === i && tip.style.display !== "none") return;
       hover = i;
       rebuildHover();
+      ensureRetweets();
       paintTip(i, x, y, move);
       canvas.style.cursor = "pointer";
       draw();
@@ -991,6 +1112,7 @@
       layer = btn.getAttribute("data-layer");
       document.querySelectorAll("#layers button").forEach((b) => b.classList.toggle("active", b === btn));
       buildAdj();
+      indexScene();
       rebuildHover();
       refreshTip();
       draw();
@@ -1004,6 +1126,8 @@
       focusCom = null;
       hover = null;
       hoverMask = null;
+      rtPack = undefined;
+      rtLoading = false;
       tipPinned = false;
       tip.style.display = "none";
       graph = null;
@@ -1011,7 +1135,6 @@
       renderCorpora();
       draw();
       loadPosts(current, token);
-      loadRetweets(current, token);
       try {
         const [gRes, mRes] = await Promise.all([
           fetch(`data/${current}/graph.json`),
