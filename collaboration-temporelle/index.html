@@ -120,6 +120,7 @@
     #tip .t-original { color: #c6eb8e; background: rgba(115,192,0,0.16); }
     #tip .t-reply { color: #b7ceff; background: rgba(37,99,235,0.24); }
     #tip .t-quote { color: #ebceff; background: rgba(222,129,255,0.18); }
+    #tip .t-retweet { color: #e2b657; background: rgba(226,182,87,0.16); }
     #tip time { color: #9aa3b2; font-size: 11.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
     #tip .ap-open { margin-left: auto; color: #e2b657; font-size: 11.5px; font-weight: 650; text-decoration: none; }
     #tip .ap-open:hover { color: #fff; }
@@ -181,7 +182,7 @@
       <li><b>Le poids de Newman, amorti.</b> Chaque délai ajoute exp(−β × délai) / (n − 1). n est le nombre de comptes distincts qui ont fait ce geste. Un hashtag utilisé par beaucoup pèse peu. β grand ne garde que les actes très proches ; β nul garde toutes les répétitions, quelle que soit l’heure.</li>
       <li><b>β est choisi par les données.</b> Pour chaque couche, on cherche le β entre 0 et 10 qui donne la modularité la plus haute (Leiden, γ = 1). Le délai dans l’exponentielle est en jours, comme dans le code des auteurs : sinon cet intervalle n’a pas de sens.</li>
       <li><b>Les couches ne sont pas additionnées.</b> Un même découpage en groupes est cherché sur les quatre graphes à la fois, en sommant leurs modularités. Un groupe peut donc s’appuyer sur le retweet dans une couche et sur le hashtag dans une autre, sans que les poids, qui ne sont pas sur la même échelle, soient mélangés avant coup.</li>
-      <li><b>Le dessin n’est pas la méthode.</b> Les positions viennent d’un ForceAtlas2, pour lire le graphe. La partition, elle, vient de l’étape 5. Les noms apparaissent d’abord pour les comptes au poids le plus fort ; zoomer en révèle d’autres. Le survol éclaire les comptes liés et ouvre leurs publications.</li>
+      <li><b>Le dessin n’est pas la méthode.</b> Les positions viennent d’un ForceAtlas2, pour lire le graphe. La partition, elle, vient de l’étape 5. La taille et les noms suivent la force de collaboration, la somme des poids de Newman : les comptes les plus liés apparaissent d’abord. Le survol éclaire les comptes liés, indique le nombre de messages co-retweetés, et ouvre les publications.</li>
     </ol>
 
     <h2>La formule</h2>
@@ -273,6 +274,7 @@
     let lastY = 0;
     let seq = 0;
     let postsPack;
+    let rtPack = null;
     let postsMode = "single";
     let shardNames = null;
     let shardDir = "posts";
@@ -300,6 +302,10 @@
       });
       labelRank.sort((a, b) => (graph.nodes[b].s || 0) - (graph.nodes[a].s || 0));
       if (labelRank.length > 640) labelRank.length = 640;
+      const order = graph.nodes.map((_, i) => i);
+      order.sort((a, b) => (graph.nodes[a].s || 0) - (graph.nodes[b].s || 0) || a - b);
+      const last = Math.max(order.length - 1, 1);
+      order.forEach((i, k) => { graph.nodes[i].rk = k / last; });
       buildAdj();
     }
 
@@ -355,7 +361,14 @@
     }
 
     function nodeR(n) {
-      return 0.6 + 2.4 * Math.sqrt((n.s || 0) / (maxStrength || 1));
+      const rk = n.rk || 0;
+      return 0.42 + 5.4 * Math.pow(rk, 4);
+    }
+
+    function centralityPlace(n) {
+      const total = graph.nodes.length || 1;
+      const place = Math.max(1, Math.round((1 - (n.rk || 0)) * (total - 1)) + 1);
+      return { place, total };
     }
 
     function edgeKey(e, a, b) {
@@ -426,8 +439,8 @@
       if (focusCom != null && n.com !== focusCom && !(hoverMask && hoverMask[i])) return false;
       const p = screenOf(n);
       if (p.x < -80 || p.x > innerWidth + 80 || p.y < -40 || p.y > innerHeight + 80) return false;
-      const u = Math.sqrt((n.s || 0) / (maxStrength || 1));
-      const font = Math.round(11 + 9 * Math.pow(u, 0.65));
+      const u = n.rk || 0;
+      const font = Math.round(11 + 12 * Math.pow(u, 1.35));
       const text = "@" + String(n.l || "").split("·")[0].replace(/^@+/, "");
       const boxW = Math.max(28, text.length * font * 0.56 + 10);
       const boxH = font * 1.35;
@@ -439,7 +452,7 @@
         if (boxes.some((b) => boxesHit(box, b, pad))) continue;
         const dim = hoverMask && hoverMask[i] === 0;
         ctx.globalAlpha = dim ? 0.08 : (hoverMask && hoverMask[i] === 2 ? 1 : 0.96);
-        ctx.font = `${u > 0.55 ? 700 : u > 0.22 ? 600 : 500} ${font}px "Helvetica Neue", Helvetica, Arial, sans-serif`;
+        ctx.font = `${u > 0.92 ? 700 : u > 0.8 ? 600 : 500} ${font}px "Helvetica Neue", Helvetica, Arial, sans-serif`;
         ctx.textAlign = "center";
         ctx.textBaseline = "bottom";
         ctx.shadowColor = "rgba(0,0,0,0.85)";
@@ -570,11 +583,12 @@
 
     function layerBits(e) {
       const bits = [];
-      if (e.rt) bits.push("RT");
+      if (e.rtn) bits.push(`${Number(e.rtn).toLocaleString("fr-FR")} co-RT`);
+      else if (e.rt) bits.push("RT");
       if (e.ha) bits.push("#");
       if (e.me) bits.push("@");
       if (e.ur) bits.push("URL");
-      return bits.join(" ");
+      return bits.join(" · ");
     }
 
     function shardKey(handle) {
@@ -610,6 +624,26 @@
           shardInflight.delete(key);
         });
       shardInflight.set(key, pending);
+    }
+
+    function loadRetweets(id, token) {
+      rtPack = undefined;
+      fetch(`data/${encodeURIComponent(id)}/retweets.json`)
+        .then((r) => {
+          if (r.status === 404) return { accounts: {} };
+          if (!r.ok) throw new Error(String(r.status));
+          return r.json();
+        })
+        .then((data) => {
+          if (token !== seq) return;
+          rtPack = data && data.accounts ? data : { accounts: {} };
+          refreshTip();
+        })
+        .catch(() => {
+          if (token !== seq) return;
+          rtPack = { accounts: {} };
+          refreshTip();
+        });
     }
 
     function loadPosts(id, token) {
@@ -650,17 +684,19 @@
     }
 
     function postCard(p, handle, rank) {
-      const type = p.type === "reply" || p.type === "quote" ? p.type : "original";
-      const label = type === "reply" ? "Réponse" : type === "quote" ? "Citation" : "Original";
+      const type = p.type === "reply" || p.type === "quote" || p.type === "retweet" ? p.type : "original";
+      const label = type === "reply" ? "Réponse" : type === "quote" ? "Citation" : type === "retweet" ? "Retweet" : "Original";
       const when = p.at ? POST_DATE.format(new Date(p.at)).replace(",", " ·") : "";
       const url = p.id ? `https://x.com/${encodeURIComponent(handle)}/status/${encodeURIComponent(p.id)}` : "";
       const to = type === "reply" && p.to
         ? `<p class="ap-to">en réponse à <a href="https://x.com/${encodeURIComponent(p.to)}" target="_blank" rel="noopener noreferrer">@${escapeHtml(p.to)}</a></p>`
         : "";
-      const metrics = [["lk", "j’aime"], ["rt", "RT"], ["rp", "réponses"], ["qt", "citations"]].map(([key, name]) => {
-        const n = Number(p[key] || 0);
-        return `<li class="${n ? "" : "zero"}"><b>${n.toLocaleString("fr-FR")}</b><span>${name}</span></li>`;
-      }).join("");
+      const metrics = type === "retweet"
+        ? `<li><b>${Number(p.rt || 0).toLocaleString("fr-FR")}</b><span>reprises du message</span></li>`
+        : [["lk", "j’aime"], ["rt", "RT"], ["rp", "réponses"], ["qt", "citations"]].map(([key, name]) => {
+          const n = Number(p[key] || 0);
+          return `<li class="${n ? "" : "zero"}"><b>${n.toLocaleString("fr-FR")}</b><span>${name}</span></li>`;
+        }).join("");
       return `<article class="ap">
         <div class="ap-top">
           <span class="ap-rank">${rank}</span>
@@ -696,32 +732,41 @@
       const chips = neighbors.slice(0, 8).map((nb) => {
         const other = graph.nodes[nb.i];
         const bits = layerBits(nb.e);
-        return `<button type="button" data-nb="${nb.i}">${escapeHtml(displayHandle(other.l))}${bits ? `<i>· ${escapeHtml(bits)}</i>` : ""}</button>`;
+        return `<button type="button" data-nb="${nb.i}">${escapeHtml(displayHandle(other.l))}${bits ? `<i>${escapeHtml(bits)}</i>` : ""}</button>`;
       }).join("");
       const profile = `https://x.com/${encodeURIComponent(handle)}`;
+      const place = centralityPlace(n);
+      const force = Number(n.s || 0).toLocaleString("fr-FR", { maximumFractionDigits: 2 });
       let count = "Chargement des publications…";
       let body = `<p class="acct-empty">Chargement des publications…</p>`;
       const rec = lookupAccount(handle);
+      const echoed = rtPack && rtPack.accounts ? (rtPack.accounts[handle] || null) : rtPack === null ? null : undefined;
       if (postsMode === "shards" && rec === undefined) ensureShard(handle, seq);
-      if (postsPack === null) {
+      const ownPosts = rec && Array.isArray(rec.posts) ? rec.posts : [];
+      const echoPosts = echoed && Array.isArray(echoed.posts) ? echoed.posts : [];
+      if (ownPosts.length) {
+        const pubs = Number(rec.pubs || ownPosts.length);
+        const rts = Number(rec.rts || 0);
+        const rtBit = rts ? ` <span>· ${rts.toLocaleString("fr-FR")} retweet${rts > 1 ? "s" : ""}</span>` : "";
+        count = pubs > ownPosts.length
+          ? `${ownPosts.length} publications les plus engageantes <span>· ${pubs.toLocaleString("fr-FR")} dans le corpus</span>${rtBit}`
+          : `${pubs.toLocaleString("fr-FR")} publication${pubs > 1 ? "s" : ""}${rtBit}`;
+        body = `<div class="acct-scroll">${ownPosts.map((p, k) => postCard(p, handle, k + 1)).join("")}</div>`;
+      } else if (postsPack === null && echoed === null) {
         count = "Publications indisponibles";
         body = `<p class="acct-empty">Le fichier des publications de ce corpus n’a pas pu être chargé.</p>`;
-      } else if (rec === undefined) {
-        /* fragment en cours */
+      } else if (rec === undefined || echoed === undefined) {
+        /* fragment ou retweets encore en cours */
+      } else if (echoPosts.length) {
+        const rts = Number(rec && rec.rts || echoPosts.length);
+        count = `${echoPosts.length} retweet${echoPosts.length > 1 ? "s" : ""} affiché${echoPosts.length > 1 ? "s" : ""} <span>· ${rts.toLocaleString("fr-FR")} dans le corpus</span>`;
+        body = `<div class="acct-scroll">${echoPosts.map((p, k) => postCard(p, handle, k + 1)).join("")}</div>`;
       } else if (!rec) {
         count = "Aucune publication dans ce corpus";
-        body = `<p class="acct-empty">Ce compte n’a aucune publication propre dans l’export.</p>`;
+        body = `<p class="acct-empty">Ce compte n’a aucune ligne dans l’export : ni message propre, ni retweet.</p>`;
       } else {
-        const pubs = Number(rec.pubs || 0);
-        const rts = Number(rec.rts || 0);
-        const posts = Array.isArray(rec.posts) ? rec.posts : [];
-        const rtBit = rts ? ` <span>· ${rts.toLocaleString("fr-FR")} retweet${rts > 1 ? "s" : ""}</span>` : "";
-        if (pubs > posts.length) count = `${posts.length} publications les plus engageantes <span>· ${pubs.toLocaleString("fr-FR")} dans le corpus</span>${rtBit}`;
-        else if (pubs > 0) count = `${pubs.toLocaleString("fr-FR")} publication${pubs > 1 ? "s" : ""}${rtBit}`;
-        else count = "Aucune publication propre";
-        body = posts.length
-          ? `<div class="acct-scroll">${posts.map((p, k) => postCard(p, handle, k + 1)).join("")}</div>`
-          : `<p class="acct-empty">Aucune publication propre (original, réponse ou citation).${rts ? " Les retweets ne sont pas recopiés ici." : ""}</p>`;
+        count = "Aucune publication dans ce corpus";
+        body = `<p class="acct-empty">L’export ne contient pour ce compte ni original, ni réponse, ni citation, ni texte de retweet.</p>`;
       }
       tip.style.setProperty("--acct-accent", color);
       tip.classList.add("acct");
@@ -729,7 +774,7 @@
       tip.setAttribute("aria-label", `Publications de ${shown}`);
       tip.innerHTML = `<div class="acct-head">
           <div class="acct-id"><i class="acct-dot" style="background:${color}"></i><a class="acct-handle" href="${profile}" target="_blank" rel="noopener noreferrer">${escapeHtml(shown)}</a></div>
-          <div class="acct-meta">Groupe ${n.com} · poids ${Number(n.s || 0).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} · ${neighbors.length.toLocaleString("fr-FR")} compte${neighbors.length > 1 ? "s" : ""} lié${neighbors.length > 1 ? "s" : ""}</div>
+          <div class="acct-meta">Groupe ${n.com} · force de collaboration ${force} · rang ${place.place.toLocaleString("fr-FR")} / ${place.total.toLocaleString("fr-FR")} · ${neighbors.length.toLocaleString("fr-FR")} compte${neighbors.length > 1 ? "s" : ""} lié${neighbors.length > 1 ? "s" : ""}</div>
           ${chips ? `<div class="nb">${chips}</div>` : ""}
           <div class="acct-count">${count}</div>
         </div>${body}`;
@@ -966,6 +1011,7 @@
       renderCorpora();
       draw();
       loadPosts(current, token);
+      loadRetweets(current, token);
       try {
         const [gRes, mRes] = await Promise.all([
           fetch(`data/${current}/graph.json`),
