@@ -182,7 +182,7 @@
       <li><b>Le poids de Newman, amorti.</b> Chaque délai ajoute exp(−β × délai) / (n − 1). n est le nombre de comptes distincts qui ont fait ce geste. Un hashtag utilisé par beaucoup pèse peu. β grand ne garde que les actes très proches ; β nul garde toutes les répétitions, quelle que soit l’heure.</li>
       <li><b>β est choisi par les données.</b> Pour chaque couche, on cherche le β entre 0 et 10 qui donne la modularité la plus haute (Leiden, γ = 1). Le délai dans l’exponentielle est en jours, comme dans le code des auteurs : sinon cet intervalle n’a pas de sens.</li>
       <li><b>Les couches ne sont pas additionnées.</b> Un même découpage en groupes est cherché sur les quatre graphes à la fois, en sommant leurs modularités. Un groupe peut donc s’appuyer sur le retweet dans une couche et sur le hashtag dans une autre, sans que les poids, qui ne sont pas sur la même échelle, soient mélangés avant coup.</li>
-      <li><b>Le dessin n’est pas la méthode.</b> Les positions servent à lire le graphe. La partition, elle, vient de l’étape 5. Sur la canicule, chaque groupe est disposé à part, puis les groupes sont écartés : les traits pâles relient deux groupes. La taille et les noms suivent la force de collaboration, la somme des poids de Newman. Le survol éclaire les comptes liés, indique le nombre de messages co-retweetés, et ouvre les publications.</li>
+      <li><b>Le dessin n’est pas la méthode.</b> Les positions sont un ForceAtlas2 simple : les comptes liés s’attirent, les autres se repoussent, et l’attraction suit la distance. Pas de LinLog, pas de dissuasion des hubs. La partition, elle, vient de l’étape 5. Un co-retweet n’est tracé qu’à partir de 2 messages distincts en commun. Une seule reprise commune reste dans le calcul des groupes, mais elle n’est pas dessinée. La taille et les noms suivent la force de collaboration, la somme des poids de Newman. Le survol éclaire les comptes liés et ouvre les publications.</li>
     </ol>
 
     <h2>La formule</h2>
@@ -198,7 +198,7 @@
     <p>Le papier balaie β de 0 à 10 par pas de 0,01, avec un Leiden à chaque pas. Ici, une grille grosse puis fine classe les β avec 2 itérations de Leiden ; les trois meilleurs du dernier voisinage sont recalculés jusqu’à convergence. À qualité égale, le plus petit β est gardé.</p>
     <p>Un contenu partagé par plus de 150 comptes est laissé hors de la somme. Sur un message retweeté des dizaines de milliers de fois, écrire toutes les paires est impossible, et chaque paire pèserait au plus 1/150. Le nombre de contenus écartés est indiqué ci-dessus.</p>
         <p>Le papier cite la modularité multi-couches de Mucha et al. (2010), sans donner la force de couplage entre couches. On n’en invente pas une. L’optimisation utilisée (Leiden multiplexe, poids de couche égaux, γ = 1) impose une seule appartenance, commune aux couches, au lieu d’additionner les arêtes. La modularité peut aussi coller une grande part du corpus dans un seul groupe : c’est une limite que les auteurs signalent eux-mêmes.</p>
-    <p>Si une couche a trop d’arêtes pour l’écran, le tracé garde les plus lourdes. Les groupes, eux, sont ceux du graphe complet sous le plafond de 150 comptes.</p>
+    <p>Si une couche a trop d’arêtes pour l’écran, le tracé garde les plus lourdes. Les groupes, eux, sont ceux du graphe complet sous le plafond de 150 comptes. Le co-retweet affiché commence à 2 messages distincts partagés : en dessous, le lien existe pour la partition, il n’est pas dessiné.</p>
 
     <h2>Référence</h2>
     <p class="quiet">Iannucci, L., Muratore, E., Matakos, A., &amp; Kivelä, M. (2026). Detecting Coordinated Activities Through Temporal, Multiplex, and Collaborative Analysis. <i>Proceedings of the International AAAI Conference on Web and Social Media</i>, 20(1), 1063–1082. <a href="https://doi.org/10.1609/icwsm.v20i1.42682">doi:10.1609/icwsm.v20i1.42682</a> · code : <a href="https://github.com/letiziaia/time-aware-collaboration">letiziaia/time-aware-collaboration</a>. Newman (2001) pour le poids 1/(n−1) ; Mucha et al. (2010) pour la modularité multi-couches.</p>
@@ -208,7 +208,7 @@
     <nav id="corpora" class="pills" aria-label="Corpus"></nav>
     <div id="layers" class="pills" role="group" aria-label="Couche affichée">
       <button type="button" data-layer="all" class="active">Quatre couches</button>
-      <button type="button" data-layer="rt">Retweet</button>
+      <button type="button" data-layer="rt" title="Co-retweet dessiné à partir de 2 messages distincts en commun">Retweet</button>
       <button type="button" data-layer="ha">Hashtag</button>
       <button type="button" data-layer="me">Mention</button>
       <button type="button" data-layer="ur">URL</button>
@@ -231,6 +231,7 @@
     const tip = document.getElementById("tip");
     const LAYER_COLOR = { rt: "#7eb6ff", ha: "#e2b657", me: "#f0a0c0", ur: "#7ddec8" };
     const LAYER_NAME = { rt: "Retweet", ha: "Hashtag", me: "Mention", ur: "URL" };
+    const CO_RT_MIN = 2;
 
     let corpora = [];
     let current = "ebola";
@@ -293,6 +294,7 @@
       labelRank = [];
       if (!graph) return;
       for (const e of graph.edges) {
+        if (!edgeOn(e)) continue;
         shownNode[e.s] = 1;
         shownNode[e.t] = 1;
       }
@@ -403,8 +405,13 @@
       };
     }
 
+    function rtShown(e) {
+      return (e.rt || 0) > 0 && (e.rtn || 0) >= CO_RT_MIN;
+    }
+
     function edgeOn(e) {
-      if (layer === "all") return true;
+      if (layer === "rt") return rtShown(e);
+      if (layer === "all") return rtShown(e) || (e.ha || 0) > 0 || (e.me || 0) > 0 || (e.ur || 0) > 0;
       return (e[layer] || 0) > 0;
     }
 
@@ -1058,12 +1065,12 @@
       const disp = method.display || {};
       box.innerHTML = `<dl>${rows}
         <dt>Multiplexe</dt><dd>${fmt(mx.n_nodes)} comptes · ${fmt(mx.n_communities)} groupes · ${fmt(mx.n_singletons)} comptes seuls</dd>
-        <dt>Tracé</dt><dd>${fmt(disp.n_edges_drawn)} arêtes affichées${disp.edges_truncated ? " (les plus lourdes de chaque couche)" : ""}</dd>
+        <dt>Tracé</dt><dd>${fmt(disp.n_edges_drawn)} arêtes affichées${disp.edges_truncated ? " (les plus lourdes de chaque couche)" : ""}. Co-retweet dessiné à partir de ${CO_RT_MIN} messages distincts. Positions : ForceAtlas2 simple.</dd>
       </dl>${curves}`;
       const q = mx.Q_shared || {};
       const bits = Object.entries(q).map(([k, v]) => `${LAYER_NAME[k] || k} ${fmt(v)}`);
       document.getElementById("hudmini").textContent =
-        `${method.label} · ${fmt(mx.n_nodes)} comptes dans le multiplexe` + (bits.length ? ` · modularité partagée ${bits.join(" · ")}` : "");
+        `${method.label} · ${fmt(mx.n_nodes)} comptes dans le multiplexe` + (bits.length ? ` · modularité partagée ${bits.join(" · ")}` : "") + ` · ForceAtlas2 simple · co-retweet à partir de ${CO_RT_MIN} messages`;
     }
 
     function renderComms() {
