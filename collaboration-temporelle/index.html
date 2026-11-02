@@ -71,11 +71,70 @@
       border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px;
     }
     #tip {
-      position: fixed; z-index: 6; display: none; pointer-events: none;
-      background: rgba(8,9,12,0.92); border: 1px solid var(--line); border-radius: 8px;
-      padding: 8px 10px; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      font-size: 12px; color: var(--ink);
+      position: fixed; z-index: 8; display: none; pointer-events: none;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: #e8eef7;
     }
+    #tip.acct {
+      pointer-events: auto; user-select: text; cursor: default;
+      width: min(432px, calc(100vw - 20px));
+      max-height: calc(100vh - 24px);
+      padding: 0; overflow: hidden; border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-top: 3px solid var(--acct-accent, #e2b657);
+      background: rgba(12, 14, 18, 0.97);
+      box-shadow: 0 22px 56px rgba(0,0,0,0.58);
+      font-size: 13.5px; line-height: 1.45;
+    }
+    #tip .acct-head { padding: 13px 16px 12px; background: rgba(255,255,255,0.035); border-bottom: 1px solid rgba(255,255,255,0.08); }
+    #tip .acct-id { display: flex; align-items: center; gap: 8px; min-width: 0; }
+    #tip .acct-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; box-shadow: 0 0 0 3px rgba(255,255,255,0.06); }
+    #tip .acct-handle {
+      color: #fff; font-weight: 650; font-size: 15.5px; letter-spacing: -0.015em;
+      text-decoration: none; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    #tip .acct-handle:hover { text-decoration: underline; }
+    #tip .acct-meta { margin-top: 5px; color: #8b93a0; font-size: 11.5px; line-height: 1.35; }
+    #tip .acct-count { margin-top: 8px; color: #e4eaf2; font-size: 12.5px; font-weight: 650; }
+    #tip .acct-count span { color: #8b93a0; font-weight: 500; }
+    #tip .nb { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+    #tip .nb button {
+      border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.04);
+      color: #e7e2d6; border-radius: 999px; padding: 2px 7px; cursor: pointer; font-size: 11px; font-weight: 600;
+    }
+    #tip .nb button:hover { border-color: rgba(226,182,87,0.7); color: #fff; }
+    #tip .nb i { font-style: normal; color: #9a9386; font-weight: 500; margin-left: 4px; }
+    #tip .acct-scroll {
+      overflow: auto; max-height: min(460px, calc(100vh - 280px));
+      padding: 8px 10px 12px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.38) transparent;
+    }
+    #tip .ap {
+      margin: 6px 2px; padding: 12px 12px 10px; border-radius: 12px;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+    }
+    #tip .ap-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    #tip .ap-rank { color: #6e7784; font-size: 11px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    #tip .ap-type {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.055em; text-transform: uppercase;
+      padding: 3px 7px; border-radius: 999px;
+    }
+    #tip .t-original { color: #c6eb8e; background: rgba(115,192,0,0.16); }
+    #tip .t-reply { color: #b7ceff; background: rgba(37,99,235,0.24); }
+    #tip .t-quote { color: #ebceff; background: rgba(222,129,255,0.18); }
+    #tip time { color: #9aa3b2; font-size: 11.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    #tip .ap-open { margin-left: auto; color: #e2b657; font-size: 11.5px; font-weight: 650; text-decoration: none; }
+    #tip .ap-open:hover { color: #fff; }
+    #tip .ap-to { color: #9aa3b2; font-size: 12px; margin: 0 0 6px; }
+    #tip .ap-to a, #tip .ap-text a { color: #d5e2f5; text-decoration: none; }
+    #tip .ap-text { margin: 0 0 10px; color: #f4f7fb; font-size: 13.5px; line-height: 1.52; white-space: pre-wrap; overflow-wrap: anywhere; }
+    #tip .ap-eng {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px;
+      list-style: none; margin: 0; padding: 8px 0 0; border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    #tip .ap-eng li { display: flex; flex-direction: column; gap: 1px; }
+    #tip .ap-eng b { font-size: 13px; font-weight: 650; color: #fff; font-variant-numeric: tabular-nums; }
+    #tip .ap-eng span { font-size: 10px; color: #8b93a0; }
+    #tip .ap-eng li.zero b, #tip .ap-eng li.zero span { color: #5c6570; }
+    #tip .acct-empty { margin: 0; padding: 14px 16px 16px; color: #d5dde6; font-size: 13px; line-height: 1.5; }
     #comms h2 { font-family: Palatino, Georgia, serif; font-size: 18px; font-weight: 500; margin: 0 0 4px; }
     #comms .sub { color: var(--muted); font-size: 11.5px; line-height: 1.35; margin-bottom: 10px; }
     .com {
@@ -93,6 +152,7 @@
       border-radius: 999px; padding: 8px 12px; cursor: pointer; font-size: 12px; font-weight: 600;
     }
     #method.collapsed ~ #toggleMethod { width: auto; }
+    #status {
       position: fixed; left: 50%; top: 46%; transform: translate(-50%, -50%);
       z-index: 3; color: var(--muted); font-family: Helvetica, Arial, sans-serif; font-size: 14px;
     }
@@ -121,7 +181,7 @@
       <li><b>Le poids de Newman, amorti.</b> Chaque délai ajoute exp(−β × délai) / (n − 1). n est le nombre de comptes distincts qui ont fait ce geste. Un hashtag utilisé par beaucoup pèse peu. β grand ne garde que les actes très proches ; β nul garde toutes les répétitions, quelle que soit l’heure.</li>
       <li><b>β est choisi par les données.</b> Pour chaque couche, on cherche le β entre 0 et 10 qui donne la modularité la plus haute (Leiden, γ = 1). Le délai dans l’exponentielle est en jours, comme dans le code des auteurs : sinon cet intervalle n’a pas de sens.</li>
       <li><b>Les couches ne sont pas additionnées.</b> Un même découpage en groupes est cherché sur les quatre graphes à la fois, en sommant leurs modularités. Un groupe peut donc s’appuyer sur le retweet dans une couche et sur le hashtag dans une autre, sans que les poids, qui ne sont pas sur la même échelle, soient mélangés avant coup.</li>
-      <li><b>Le dessin n’est pas la méthode.</b> Les positions viennent d’un ForceAtlas2, pour lire le graphe. La partition, elle, vient de l’étape 5.</li>
+      <li><b>Le dessin n’est pas la méthode.</b> Les positions viennent d’un ForceAtlas2, pour lire le graphe. La partition, elle, vient de l’étape 5. Les noms apparaissent d’abord pour les comptes au poids le plus fort ; zoomer en révèle d’autres. Le survol éclaire les comptes liés et ouvre leurs publications.</li>
     </ol>
 
     <h2>La formule</h2>
@@ -201,14 +261,65 @@
     addEventListener("resize", resize);
 
     let shownNode = null;
+    let fitZoom = 1;
+    let maxStrength = 1;
+    let labelRank = [];
+    let adj = [];
+    let hover = null;
+    let hoverMask = null;
+    let tipPinned = false;
+    let tipTimer = null;
+    let lastX = 0;
+    let lastY = 0;
+    let seq = 0;
+    let postsPack;
+    let postsMode = "single";
+    let shardNames = null;
+    let shardDir = "posts";
+    const shardCache = new Map();
+    const shardInflight = new Map();
+    const POST_DATE = new Intl.DateTimeFormat("fr-FR", {
+      timeZone: "Europe/Paris",
+      day: "numeric", month: "short", year: "numeric",
+      hour: "2-digit", minute: "2-digit",
+    });
 
     function markShown() {
       shownNode = new Uint8Array(graph ? graph.nodes.length : 0);
+      maxStrength = 1;
+      labelRank = [];
       if (!graph) return;
       for (const e of graph.edges) {
         shownNode[e.s] = 1;
         shownNode[e.t] = 1;
       }
+      graph.nodes.forEach((n, i) => {
+        if (!shownNode[i]) return;
+        if ((n.s || 0) > maxStrength) maxStrength = n.s;
+        labelRank.push(i);
+      });
+      labelRank.sort((a, b) => (graph.nodes[b].s || 0) - (graph.nodes[a].s || 0));
+      if (labelRank.length > 640) labelRank.length = 640;
+      buildAdj();
+    }
+
+    function buildAdj() {
+      adj = graph ? Array.from({ length: graph.nodes.length }, () => []) : [];
+      if (!graph) return;
+      for (const e of graph.edges) {
+        if (!edgeOn(e)) continue;
+        const w = layer === "all" ? (e.w || 0) : (e[layer] || 0);
+        adj[e.s].push({ i: e.t, w, e });
+        adj[e.t].push({ i: e.s, w, e });
+      }
+      for (const list of adj) list.sort((a, b) => b.w - a.w);
+    }
+
+    function rebuildHover() {
+      if (hover == null || !graph) { hoverMask = null; return; }
+      hoverMask = new Uint8Array(graph.nodes.length);
+      hoverMask[hover] = 2;
+      for (const nb of adj[hover] || []) hoverMask[nb.i] = 1;
     }
 
     function fit() {
@@ -226,6 +337,7 @@
       if (!any) return;
       const span = Math.max(maxX - minX, maxY - minY, 1);
       view.zoom = Math.min(innerWidth, innerHeight) / span * 0.72;
+      fitZoom = view.zoom;
       view.x = -(minX + maxX) / 2;
       view.y = -(minY + maxY) / 2;
     }
@@ -242,39 +354,30 @@
       return (e[layer] || 0) > 0;
     }
 
-    function draw() {
-      ctx.setTransform(window.devicePixelRatio || 1, 0, 0, window.devicePixelRatio || 1, 0, 0);
-      ctx.clearRect(0, 0, innerWidth, innerHeight);
-      if (!graph) return;
-      ctx.save();
-      ctx.translate(innerWidth / 2, innerHeight / 2);
-      ctx.scale(view.zoom, view.zoom);
-      ctx.translate(view.x, view.y);
-      ctx.lineWidth = 1 / view.zoom;
-      ctx.globalAlpha = 0.55;
-      const buckets = new Map();
-      for (const e of graph.edges) {
-        if (!edgeOn(e)) continue;
-        const a = graph.nodes[e.s];
-        const b = graph.nodes[e.t];
-        if (focusCom != null && a.com !== focusCom && b.com !== focusCom) continue;
-        let key = "mix";
-        if (layer !== "all") key = layer;
-        else if (a.com === b.com) key = "c" + a.com;
-        else key = "cross";
-        if (!buckets.has(key)) buckets.set(key, []);
-        buckets.get(key).push(e);
-      }
+    function nodeR(n) {
+      return 0.6 + 2.4 * Math.sqrt((n.s || 0) / (maxStrength || 1));
+    }
+
+    function edgeKey(e, a, b) {
+      if (layer !== "all") return layer;
+      if (a.com === b.com) return "c" + a.com;
+      return "cross";
+    }
+
+    function bucketStyle(key) {
+      if (key === "cross") return "rgba(200,200,200,0.7)";
+      if (LAYER_COLOR[key]) return LAYER_COLOR[key];
+      const com = Number(key.slice(1));
+      const rgb = (graph.nodes.find((n) => n.com === com) || {}).c || [180, 180, 180];
+      return `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+    }
+
+    function paintEdges(buckets, alpha, width) {
+      ctx.globalAlpha = alpha;
+      ctx.lineWidth = width / view.zoom;
       for (const [key, edges] of buckets) {
         ctx.beginPath();
-        if (key === "cross") ctx.strokeStyle = "rgba(180,180,180,0.35)";
-        else if (LAYER_COLOR[key]) ctx.strokeStyle = LAYER_COLOR[key];
-        else {
-          const com = Number(key.slice(1));
-          const c = graph.nodes.find((n) => n.com === com);
-          const rgb = c ? c.c : [180, 180, 180];
-          ctx.strokeStyle = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
-        }
+        ctx.strokeStyle = bucketStyle(key);
         for (const e of edges) {
           const a = graph.nodes[e.s];
           const b = graph.nodes[e.t];
@@ -283,70 +386,463 @@
         }
         ctx.stroke();
       }
-      ctx.globalAlpha = 1;
-      let maxS = 0;
+    }
+
+    function screenOf(n) {
+      return {
+        x: (n.x + view.x) * view.zoom + innerWidth / 2,
+        y: (n.y + view.y) * view.zoom + innerHeight / 2,
+      };
+    }
+
+    function labelBudget() {
+      const pool = labelRank.length;
+      const overview = Math.min(40, pool);
+      if (!pool || !overview) return 0;
+      const rel = view.zoom / Math.max(fitZoom, 1e-6);
+      if (rel < 1) return Math.max(0, Math.min(pool, Math.round(overview * Math.max(0.4, rel))));
+      const t = Math.max(0, Math.min(1, Math.log2(rel) / 3));
+      return Math.min(pool, Math.round(overview + (pool - overview) * t));
+    }
+
+    function labelBox(cx, cy, boxW, boxH, ox, oy) {
+      const left = cx - boxW * 0.5 + ox;
+      const top = cy - boxH * 1.3 + oy;
+      return { left, top, right: left + boxW, bottom: top + boxH };
+    }
+
+    function boxesHit(a, b, pad) {
+      return !(a.right + pad <= b.left || a.left - pad >= b.right || a.bottom + pad <= b.top || a.top - pad >= b.bottom);
+    }
+
+    const LABEL_OFFSETS = [
+      [0, 0], [0, -0.45], [0, 0.55], [0.45, 0], [-0.45, 0],
+      [0.35, -0.4], [-0.35, -0.4], [0.35, 0.45], [-0.35, 0.45],
+    ];
+
+    function tryPlaceLabel(i, boxes, pad) {
+      const n = graph.nodes[i];
+      if (shownNode && !shownNode[i]) return false;
+      if (focusCom != null && n.com !== focusCom && !(hoverMask && hoverMask[i])) return false;
+      const p = screenOf(n);
+      if (p.x < -80 || p.x > innerWidth + 80 || p.y < -40 || p.y > innerHeight + 80) return false;
+      const u = Math.sqrt((n.s || 0) / (maxStrength || 1));
+      const font = Math.round(11 + 9 * Math.pow(u, 0.65));
+      const text = "@" + String(n.l || "").split("·")[0].replace(/^@+/, "");
+      const boxW = Math.max(28, text.length * font * 0.56 + 10);
+      const boxH = font * 1.35;
+      for (const [fx, fy] of LABEL_OFFSETS) {
+        const ox = fx * boxW;
+        const oy = fy * boxH;
+        const box = labelBox(p.x, p.y, boxW, boxH, ox, oy);
+        if (box.right < 4 || box.left > innerWidth - 4 || box.bottom < 4 || box.top > innerHeight - 4) continue;
+        if (boxes.some((b) => boxesHit(box, b, pad))) continue;
+        const dim = hoverMask && hoverMask[i] === 0;
+        ctx.globalAlpha = dim ? 0.08 : (hoverMask && hoverMask[i] === 2 ? 1 : 0.96);
+        ctx.font = `${u > 0.55 ? 700 : u > 0.22 ? 600 : 500} ${font}px "Helvetica Neue", Helvetica, Arial, sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "bottom";
+        ctx.shadowColor = "rgba(0,0,0,0.85)";
+        ctx.shadowBlur = 6;
+        ctx.fillStyle = `rgb(${n.c[0]},${n.c[1]},${n.c[2]})`;
+        ctx.fillText(text, p.x + ox, p.y + oy - font * 0.15);
+        ctx.shadowBlur = 0;
+        boxes.push(box);
+        return true;
+      }
+      return false;
+    }
+
+    function drawLabels() {
+      const budget = labelBudget();
+      const rel = view.zoom / Math.max(fitZoom, 1e-6);
+      const pad = rel >= 5 ? 3 : rel >= 2.2 ? 5 : 8;
+      const boxes = [];
+      const placed = new Set();
+      let shown = 0;
+      for (const i of labelRank) {
+        if (shown >= budget) break;
+        if (tryPlaceLabel(i, boxes, pad)) { placed.add(i); shown++; }
+      }
+      if (hover == null) return;
+      const extra = [hover];
+      for (const nb of (adj[hover] || []).slice(0, 12)) extra.push(nb.i);
+      for (const i of extra) {
+        if (placed.has(i)) continue;
+        if (tryPlaceLabel(i, boxes, pad)) placed.add(i);
+      }
+    }
+
+    function draw() {
+      ctx.setTransform(window.devicePixelRatio || 1, 0, 0, window.devicePixelRatio || 1, 0, 0);
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      if (!graph) return;
+      ctx.save();
+      ctx.translate(innerWidth / 2, innerHeight / 2);
+      ctx.scale(view.zoom, view.zoom);
+      ctx.translate(view.x, view.y);
+      const cold = new Map();
+      const hot = new Map();
+      for (const e of graph.edges) {
+        if (!edgeOn(e)) continue;
+        const a = graph.nodes[e.s];
+        const b = graph.nodes[e.t];
+        if (focusCom != null && a.com !== focusCom && b.com !== focusCom) continue;
+        const key = edgeKey(e, a, b);
+        const incident = hoverMask && (hoverMask[e.s] === 2 || hoverMask[e.t] === 2);
+        const dest = incident ? hot : cold;
+        if (!dest.has(key)) dest.set(key, []);
+        dest.get(key).push(e);
+      }
+      paintEdges(cold, hover == null ? 0.55 : 0.07, 1);
+      if (hover != null) paintEdges(hot, 0.95, 1.8);
       graph.nodes.forEach((n, i) => {
         if (shownNode && !shownNode[i]) return;
-        if (n.s > maxS) maxS = n.s;
-      });
-      graph.nodes.forEach((n, i) => {
-        if (shownNode && !shownNode[i]) return;
-        if (focusCom != null && n.com !== focusCom) ctx.globalAlpha = 0.15;
-        else ctx.globalAlpha = 0.95;
-        const r = (0.6 + 2.4 * Math.sqrt((n.s || 0) / (maxS || 1))) ;
+        const mark = hoverMask ? hoverMask[i] : 0;
+        let alpha = 0.95;
+        if (focusCom != null && n.com !== focusCom) alpha = 0.15;
+        if (hoverMask && mark === 0) alpha = Math.min(alpha, 0.05);
+        if (mark === 1) alpha = 1;
+        if (mark === 2) alpha = 1;
+        ctx.globalAlpha = alpha;
+        const r = nodeR(n);
         ctx.beginPath();
         ctx.fillStyle = `rgb(${n.c[0]},${n.c[1]},${n.c[2]})`;
-        ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+        const ring = Math.max(r, 5 / view.zoom);
+        ctx.arc(n.x, n.y, mark === 2 ? ring * 1.45 : r, 0, Math.PI * 2);
         ctx.fill();
+        if (mark > 0) {
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, mark === 2 ? ring * 2.1 : ring * 1.55, 0, Math.PI * 2);
+          ctx.lineWidth = (mark === 2 ? 2.4 : 1.5) / view.zoom;
+          ctx.strokeStyle = mark === 2 ? "#ffffff" : "rgba(255,255,255,0.92)";
+          ctx.stroke();
+        }
       });
       ctx.restore();
+      ctx.globalAlpha = 1;
+      drawLabels();
+      ctx.globalAlpha = 1;
     }
 
     function hit(px, py) {
       if (!graph) return null;
       const w = world(px, py);
       let best = null;
-      let bestD = 14 / view.zoom;
+      let bestD = Infinity;
+      const slack = 12 / view.zoom;
       graph.nodes.forEach((n, i) => {
         if (shownNode && !shownNode[i]) return;
         const d = Math.hypot(n.x - w.x, n.y - w.y);
-        if (d < bestD) { bestD = d; best = n; }
+        const reach = nodeR(n) + slack;
+        if (d <= reach && d < bestD) { bestD = d; best = i; }
       });
       return best;
     }
 
+    function escapeHtml(s) {
+      return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    function handleOf(label) {
+      return String(label || "").split("·")[0].replace(/^@+/, "").trim().toLowerCase();
+    }
+
+    function displayHandle(label) {
+      const h = String(label || "").split("·")[0].replace(/^@+/, "").trim();
+      return h ? "@" + h : "";
+    }
+
+    function richText(raw) {
+      const esc = escapeHtml(raw);
+      return esc.split(/(https?:\/\/[^\s<]+)/g).map((part, i) => {
+        if (i % 2 === 1) {
+          const clean = part.replace(/[),.]+$/g, "");
+          const trail = part.slice(clean.length);
+          return `<a href="${clean}" target="_blank" rel="noopener noreferrer">${clean}</a>${trail}`;
+        }
+        return part.replace(
+          /(^|[\s(])@([A-Za-z0-9_]{1,15})\b/g,
+          (m, pre, h) => `${pre}<a href="https://x.com/${encodeURIComponent(h)}" target="_blank" rel="noopener noreferrer">@${h}</a>`
+        );
+      }).join("");
+    }
+
+    function layerBits(e) {
+      const bits = [];
+      if (e.rt) bits.push("RT");
+      if (e.ha) bits.push("#");
+      if (e.me) bits.push("@");
+      if (e.ur) bits.push("URL");
+      return bits.join(" ");
+    }
+
+    function shardKey(handle) {
+      const ch = String(handle || "").charAt(0);
+      return /^[a-z]$/.test(ch) ? ch : "_";
+    }
+
+    function lookupAccount(handle) {
+      if (postsPack == null) return postsPack;
+      if (postsMode !== "shards") return postsPack.accounts?.[handle] || null;
+      const key = shardKey(handle);
+      if (shardNames && !shardNames.has(key)) return null;
+      if (!shardCache.has(key)) return undefined;
+      return shardCache.get(key)[handle] || null;
+    }
+
+    function ensureShard(handle, token) {
+      const key = shardKey(handle);
+      if (shardNames && !shardNames.has(key)) { shardCache.set(key, {}); return; }
+      if (shardCache.has(key) || shardInflight.has(key)) return;
+      const url = `../connectome/data/${encodeURIComponent(current)}/${shardDir}/${key}.json`;
+      const pending = fetch(url)
+        .then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.json(); })
+        .then((data) => {
+          if (token !== seq) return;
+          shardCache.set(key, data?.accounts || {});
+          shardInflight.delete(key);
+          if (hover != null && shardKey(handleOf(graph.nodes[hover].l)) === key) paintTip(hover, lastX, lastY, false);
+        })
+        .catch(() => {
+          if (token !== seq) return;
+          shardCache.set(key, {});
+          shardInflight.delete(key);
+        });
+      shardInflight.set(key, pending);
+    }
+
+    function loadPosts(id, token) {
+      postsPack = undefined;
+      postsMode = "single";
+      shardNames = null;
+      shardCache.clear();
+      shardInflight.clear();
+      const base = `../connectome/data/${encodeURIComponent(id)}/`;
+      fetch(base + "account_posts.json")
+        .then((r) => {
+          if (r.status === 404) return { missing: true };
+          if (!r.ok) throw new Error(String(r.status));
+          return r.json();
+        })
+        .then((data) => {
+          if (token !== seq) return null;
+          if (data?.missing) { postsPack = null; refreshTip(); return null; }
+          if (data?.accounts) { postsMode = "single"; postsPack = data; refreshTip(); return null; }
+          return fetch(base + "account_posts_index.json").then((r) => {
+            if (!r.ok) throw new Error(String(r.status));
+            return r.json();
+          });
+        })
+        .then((index) => {
+          if (token !== seq || !index) return;
+          postsMode = "shards";
+          shardDir = index.dir || "posts";
+          shardNames = new Set(index.shards || []);
+          postsPack = { accounts: {} };
+          if (hover != null) ensureShard(handleOf(graph.nodes[hover].l), token);
+        })
+        .catch(() => {
+          if (token !== seq) return;
+          postsPack = null;
+          refreshTip();
+        });
+    }
+
+    function postCard(p, handle, rank) {
+      const type = p.type === "reply" || p.type === "quote" ? p.type : "original";
+      const label = type === "reply" ? "Réponse" : type === "quote" ? "Citation" : "Original";
+      const when = p.at ? POST_DATE.format(new Date(p.at)).replace(",", " ·") : "";
+      const url = p.id ? `https://x.com/${encodeURIComponent(handle)}/status/${encodeURIComponent(p.id)}` : "";
+      const to = type === "reply" && p.to
+        ? `<p class="ap-to">en réponse à <a href="https://x.com/${encodeURIComponent(p.to)}" target="_blank" rel="noopener noreferrer">@${escapeHtml(p.to)}</a></p>`
+        : "";
+      const metrics = [["lk", "j’aime"], ["rt", "RT"], ["rp", "réponses"], ["qt", "citations"]].map(([key, name]) => {
+        const n = Number(p[key] || 0);
+        return `<li class="${n ? "" : "zero"}"><b>${n.toLocaleString("fr-FR")}</b><span>${name}</span></li>`;
+      }).join("");
+      return `<article class="ap">
+        <div class="ap-top">
+          <span class="ap-rank">${rank}</span>
+          <span class="ap-type t-${type}">${label}</span>
+          <time datetime="${escapeHtml(p.at || "")}">${escapeHtml(when)}</time>
+          ${url ? `<a class="ap-open" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">ouvrir</a>` : ""}
+        </div>
+        ${to}
+        <p class="ap-text">${richText(p.text || "")}</p>
+        <ul class="ap-eng">${metrics}</ul>
+      </article>`;
+    }
+
+    function placeTip(x, y) {
+      const margin = 12;
+      const gap = 18;
+      const w = tip.offsetWidth || 420;
+      const h = tip.offsetHeight || 280;
+      let left = x + gap;
+      let top = y + gap;
+      if (left + w > innerWidth - margin) left = Math.max(margin, x - w - gap);
+      if (top + h > innerHeight - margin) top = Math.max(margin, y - h - gap);
+      tip.style.left = Math.max(margin, left) + "px";
+      tip.style.top = Math.max(margin, top) + "px";
+    }
+
+    function paintTip(i, x, y, move) {
+      const n = graph.nodes[i];
+      const handle = handleOf(n.l);
+      const shown = displayHandle(n.l);
+      const color = `rgb(${n.c[0]},${n.c[1]},${n.c[2]})`;
+      const neighbors = adj[i] || [];
+      const chips = neighbors.slice(0, 8).map((nb) => {
+        const other = graph.nodes[nb.i];
+        const bits = layerBits(nb.e);
+        return `<button type="button" data-nb="${nb.i}">${escapeHtml(displayHandle(other.l))}${bits ? `<i>· ${escapeHtml(bits)}</i>` : ""}</button>`;
+      }).join("");
+      const profile = `https://x.com/${encodeURIComponent(handle)}`;
+      let count = "Chargement des publications…";
+      let body = `<p class="acct-empty">Chargement des publications…</p>`;
+      const rec = lookupAccount(handle);
+      if (postsMode === "shards" && rec === undefined) ensureShard(handle, seq);
+      if (postsPack === null) {
+        count = "Publications indisponibles";
+        body = `<p class="acct-empty">Le fichier des publications de ce corpus n’a pas pu être chargé.</p>`;
+      } else if (rec === undefined) {
+        /* fragment en cours */
+      } else if (!rec) {
+        count = "Aucune publication dans ce corpus";
+        body = `<p class="acct-empty">Ce compte n’a aucune publication propre dans l’export.</p>`;
+      } else {
+        const pubs = Number(rec.pubs || 0);
+        const rts = Number(rec.rts || 0);
+        const posts = Array.isArray(rec.posts) ? rec.posts : [];
+        const rtBit = rts ? ` <span>· ${rts.toLocaleString("fr-FR")} retweet${rts > 1 ? "s" : ""}</span>` : "";
+        if (pubs > posts.length) count = `${posts.length} publications les plus engageantes <span>· ${pubs.toLocaleString("fr-FR")} dans le corpus</span>${rtBit}`;
+        else if (pubs > 0) count = `${pubs.toLocaleString("fr-FR")} publication${pubs > 1 ? "s" : ""}${rtBit}`;
+        else count = "Aucune publication propre";
+        body = posts.length
+          ? `<div class="acct-scroll">${posts.map((p, k) => postCard(p, handle, k + 1)).join("")}</div>`
+          : `<p class="acct-empty">Aucune publication propre (original, réponse ou citation).${rts ? " Les retweets ne sont pas recopiés ici." : ""}</p>`;
+      }
+      tip.style.setProperty("--acct-accent", color);
+      tip.classList.add("acct");
+      tip.setAttribute("role", "region");
+      tip.setAttribute("aria-label", `Publications de ${shown}`);
+      tip.innerHTML = `<div class="acct-head">
+          <div class="acct-id"><i class="acct-dot" style="background:${color}"></i><a class="acct-handle" href="${profile}" target="_blank" rel="noopener noreferrer">${escapeHtml(shown)}</a></div>
+          <div class="acct-meta">Groupe ${n.com} · poids ${Number(n.s || 0).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} · ${neighbors.length.toLocaleString("fr-FR")} compte${neighbors.length > 1 ? "s" : ""} lié${neighbors.length > 1 ? "s" : ""}</div>
+          ${chips ? `<div class="nb">${chips}</div>` : ""}
+          <div class="acct-count">${count}</div>
+        </div>${body}`;
+      tip.style.display = "block";
+      if (move) placeTip(x, y);
+    }
+
+    function refreshTip() {
+      if (hover == null || tip.style.display === "none") return;
+      paintTip(hover, lastX, lastY, false);
+    }
+
+    function cancelHide() {
+      if (!tipTimer) return;
+      clearTimeout(tipTimer);
+      tipTimer = null;
+    }
+
+    function clearHover() {
+      cancelHide();
+      tipPinned = false;
+      hover = null;
+      hoverMask = null;
+      tip.style.display = "none";
+      tip.classList.remove("acct");
+      canvas.style.cursor = "grab";
+      draw();
+    }
+
+    function scheduleHide() {
+      if (tipTimer || tipPinned) return;
+      tipTimer = setTimeout(() => {
+        tipTimer = null;
+        if (tipPinned) return;
+        clearHover();
+      }, 420);
+    }
+
+    function setHover(i, x, y, move = true) {
+      cancelHide();
+      lastX = x;
+      lastY = y;
+      if (hover === i && tip.style.display !== "none") return;
+      hover = i;
+      rebuildHover();
+      paintTip(i, x, y, move);
+      canvas.style.cursor = "pointer";
+      draw();
+    }
+
     canvas.addEventListener("mousemove", (ev) => {
+      lastX = ev.clientX;
+      lastY = ev.clientY;
       if (drag) {
         view.x += (ev.clientX - drag.x) / view.zoom;
         view.y += (ev.clientY - drag.y) / view.zoom;
-        drag.x = ev.clientX; drag.y = ev.clientY;
+        drag.x = ev.clientX;
+        drag.y = ev.clientY;
+        drag.moved = true;
         draw();
         return;
       }
-      const n = hit(ev.clientX, ev.clientY);
-      if (!n) { tip.style.display = "none"; canvas.style.cursor = "grab"; return; }
-      canvas.style.cursor = "pointer";
-      tip.style.display = "block";
-      tip.style.left = (ev.clientX + 14) + "px";
-      tip.style.top = (ev.clientY + 14) + "px";
-      tip.innerHTML = `<b>@${n.l}</b><br>Groupe ${n.com} · poids ${n.s.toFixed(3)}`;
+      const i = hit(ev.clientX, ev.clientY);
+      if (i == null) {
+        canvas.style.cursor = "grab";
+        if (hover != null) scheduleHide();
+        return;
+      }
+      setHover(i, ev.clientX, ev.clientY);
+    });
+    canvas.addEventListener("mouseleave", () => {
+      if (!drag && hover != null) scheduleHide();
     });
     canvas.addEventListener("mousedown", (ev) => {
-      drag = { x: ev.clientX, y: ev.clientY, moved: false, t: Date.now() };
+      if (ev.button !== 0) return;
+      drag = { x: ev.clientX, y: ev.clientY, moved: false };
     });
     addEventListener("mouseup", (ev) => {
       if (!drag) return;
-      const moved = Math.hypot(ev.clientX - drag.x, ev.clientY - drag.y) > 4 || drag.moved;
-      const n = hit(ev.clientX, ev.clientY);
+      const moved = drag.moved || Math.hypot(ev.clientX - drag.x, ev.clientY - drag.y) > 4;
+      const i = hit(ev.clientX, ev.clientY);
       drag = null;
-      if (!moved && n) window.open("https://x.com/" + encodeURIComponent(n.l.split("·")[0]), "_blank", "noopener");
+      if (tip.contains(ev.target)) return;
+      if (moved) return;
+      if (i == null) { clearHover(); return; }
+      const n = graph.nodes[i];
+      window.open("https://x.com/" + encodeURIComponent(handleOf(n.l)), "_blank", "noopener");
     });
     canvas.addEventListener("wheel", (ev) => {
       ev.preventDefault();
       const factor = ev.deltaY < 0 ? 1.08 : 0.92;
-      view.zoom = Math.min(20, Math.max(0.02, view.zoom * factor));
+      const floor = Math.max(0.02, fitZoom * 0.35);
+      const next = Math.min(64, Math.max(floor, view.zoom * factor));
+      const wpt = world(ev.clientX, ev.clientY);
+      view.zoom = next;
+      view.x = (ev.clientX - innerWidth / 2) / view.zoom - wpt.x;
+      view.y = (ev.clientY - innerHeight / 2) / view.zoom - wpt.y;
       draw();
     }, { passive: false });
+    tip.addEventListener("pointerenter", () => { tipPinned = true; cancelHide(); });
+    tip.addEventListener("pointerleave", () => { tipPinned = false; scheduleHide(); });
+    tip.addEventListener("wheel", (ev) => ev.stopPropagation(), { passive: true });
+    tip.addEventListener("click", (ev) => {
+      const btn = ev.target.closest("[data-nb]");
+      if (!btn || !graph) return;
+      ev.preventDefault();
+      const i = Number(btn.getAttribute("data-nb"));
+      if (!Number.isInteger(i) || !graph.nodes[i]) return;
+      setHover(i, lastX, lastY, false);
+    });
+    addEventListener("keydown", (ev) => {
+      if (ev.key === "Escape") clearHover();
+    });
 
     function sparkline(curve, chosen) {
       if (!curve || !curve.length) return "";
@@ -449,17 +945,27 @@
       if (!btn) return;
       layer = btn.getAttribute("data-layer");
       document.querySelectorAll("#layers button").forEach((b) => b.classList.toggle("active", b === btn));
+      buildAdj();
+      rebuildHover();
+      refreshTip();
       draw();
     });
 
     async function load() {
       statusEl.style.display = "block";
       statusEl.textContent = "Chargement…";
+      seq += 1;
+      const token = seq;
       focusCom = null;
+      hover = null;
+      hoverMask = null;
+      tipPinned = false;
+      tip.style.display = "none";
       graph = null;
       method = null;
       renderCorpora();
       draw();
+      loadPosts(current, token);
       try {
         const [gRes, mRes] = await Promise.all([
           fetch(`data/${current}/graph.json`),
