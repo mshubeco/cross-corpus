@@ -7,14 +7,27 @@
   <link rel="stylesheet" href="../shared/method-help.css" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ui-chrome-top: 118px;
+      --ui-side-gap: 12px;
+      --ui-hud-w: 268px;
+    }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; color: #ccc;
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
     #c { position: fixed; inset: 0; }
     canvas { display: block; width: 100%; height: 100%; }
     #topnav {
-      position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 12;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 20;
       display: flex; flex-direction: column; align-items: center; gap: 6px;
-      max-width: min(920px, calc(100vw - 640px));
+      width: 100%; max-width: none; transform: none;
+      padding: 8px 12px 18px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.72) 68%, rgba(0,0,0,0) 100%);
+      pointer-events: none;
+    }
+    #topnav > * { pointer-events: auto; }
+    #toolRow {
+      display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;
+      width: min(100%, 1100px);
     }
     .pills {
       display: flex; gap: 2px; flex-wrap: wrap; justify-content: center;
@@ -33,10 +46,11 @@
       margin-left: 2px; padding-left: 12px; border-radius: 0 999px 999px 0;
     }
     #hud {
-      position: fixed; top: 12px; left: 12px; z-index: 5; width: 280px;
+      position: fixed; top: var(--ui-chrome-top); left: var(--ui-side-gap); z-index: 5;
+      width: var(--ui-hud-w);
       background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.08);
       border-radius: 10px; padding: 12px 14px; font-size: 11px; color: #8b93a0;
-      max-height: calc(100vh - 24px); overflow: auto;
+      max-height: calc(100vh - var(--ui-chrome-top) - 16px); overflow: auto;
     }
     #hud b.kicker {
       color: #c5ccd6; font-weight: 600; display: block; margin-bottom: 4px;
@@ -62,8 +76,8 @@
     #stats .layer-line { display: flex; justify-content: space-between; gap: 8px; }
     #stats .layer-line span { color: #8b93a0; }
     #commPanel {
-      position: fixed; top: 12px; right: 12px; z-index: 5;
-      width: min(340px, calc(100vw - 24px)); max-height: calc(100vh - 24px);
+      position: fixed; top: var(--ui-chrome-top); right: var(--ui-side-gap); z-index: 5;
+      width: min(320px, calc(100vw - 24px)); max-height: calc(100vh - var(--ui-chrome-top) - 16px);
       overflow: hidden; display: flex; flex-direction: column;
       background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.08);
       border-radius: 10px; padding: 12px 14px; font-size: 11px; color: #8b93a0;
@@ -180,7 +194,6 @@
     #tip .acct-empty { margin: 0; padding: 14px 16px 16px; color: #d5dde6; font-size: 13px; line-height: 1.5; }
     @media (max-width: 1100px) {
       #commPanel { display: none; }
-      #topnav { max-width: calc(100vw - 320px); }
     }
   </style>
 </head>
@@ -195,17 +208,21 @@
   <div id="tip" role="tooltip"></div>
   <div id="topnav">
     <nav id="corpusNav" class="pills" aria-label="Corpus"></nav>
-    <div id="layers" class="pills" role="group" aria-label="Couche affichée">
-      <button type="button" data-layer="all" class="active">Quatre couches</button>
-      <button type="button" data-layer="rt" title="Co-retweet dessiné à partir de 2 messages distincts en commun">Retweet</button>
-      <button type="button" data-layer="ha">Hashtag</button>
-      <button type="button" data-layer="me">Mention</button>
-      <button type="button" data-layer="ur">URL</button>
+    <div id="toolRow">
+      <div id="layers" class="pills" role="group" aria-label="Couche affichée">
+        <button type="button" data-layer="all" class="active">Quatre couches</button>
+        <button type="button" data-layer="rt" title="Co-retweet dessiné à partir de 2 messages distincts en commun">Retweet</button>
+        <button type="button" data-layer="ha">Hashtag</button>
+        <button type="button" data-layer="me">Mention</button>
+        <button type="button" data-layer="ur">URL</button>
+      </div>
+      <div id="viewLinks" class="pills" role="navigation" aria-label="Autres vues">
+        <a id="backConnectome" href="../connectome/">Connectome</a>
+        <a id="toCoord" href="../reseau-coordination/">Coordination</a>
+      </div>
     </div>
   </div>
   <aside id="hud">
-    <a class="hud-link" id="backConnectome" href="../connectome/">← Connectome</a>
-    <a class="hud-link" id="toCoord" href="../reseau-coordination/">Coordination</a>
     <div class="mh-title-row">
       <b class="kicker">Collaboration temporelle</b>
       <span id="methodHelpSlot"></span>
@@ -213,7 +230,7 @@
     <div id="corpusCoverage" class="coverage">—</div>
     <div class="method">Quatre couches · Newman amorti · Leiden multiplexe</div>
     <div id="stats">Les chiffres s’affichent avec le graphe.</div>
-    <div class="note">Positions : ForceAtlas2 à deux échelles. La partition vient du Leiden, pas du dessin. Survol → publications.</div>
+    <div class="note">Positions : ForceAtlas2 à deux échelles, groupes écartés sur le plan. La partition vient du Leiden, pas du dessin. Survol → publications.</div>
   </aside>
   <aside id="commPanel" aria-label="Groupes">
     <b class="kicker">Groupes</b>
@@ -224,7 +241,7 @@
   <script>
     const canvas = document.getElementById("c");
     const ctx = canvas.getContext("2d");
-    const ASSET_V = "20261104a";
+    const ASSET_V = "20261104b";
     const loadingEl = document.getElementById("loading");
     const statusEl = document.getElementById("ldMsg");
     const tip = document.getElementById("tip");
@@ -315,6 +332,7 @@
     let shownIds = [];
     let hitGrid = new Map();
     let edgeGroups = [];
+    let interMinW = -Infinity;
     let scenePaths = null;
     let sceneKey = "";
     const HIT_CELL = 32;
@@ -349,6 +367,14 @@
         (a.com === b.com ? g.intra : g.inter).push(e);
       }
       edgeGroups = [...groups.values()];
+      const interW = [];
+      for (const e of graph.edges) {
+        if (!edgeOn(e)) continue;
+        if (graph.nodes[e.s].com === graph.nodes[e.t].com) continue;
+        interW.push(e.w || 0);
+      }
+      interW.sort((a, b) => b - a);
+      interMinW = interW.length > 2400 ? interW[2399] : -Infinity;
     }
 
     function styleFor(key, sample) {
@@ -407,7 +433,7 @@
         if (!g) groups.set(n.com, g = []);
         g.push(n);
       }
-      const thr = Math.max(12, Math.floor(nodes.length * 0.008));
+      const thr = Math.max(400, Math.floor(nodes.length * 0.015));
       let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
       let used = 0;
       for (const g of groups.values()) {
@@ -417,7 +443,7 @@
         const cx = sx / g.length;
         const cy = sy / g.length;
         const rad = g.map((n) => Math.hypot(n.x - cx, n.y - cy)).sort((a, b) => a - b);
-        const reach = quantile(rad, 0.95);
+        const reach = quantile(rad, 0.82);
         minX = Math.min(minX, cx - reach);
         maxX = Math.max(maxX, cx + reach);
         minY = Math.min(minY, cy - reach);
@@ -437,22 +463,19 @@
         pts.push(n);
       });
       if (pts.length < 2) return;
-      let box = extentOf(pts, 0.08, 0.92);
-      if (comId == null && pts.length >= 1500) {
+      let box = extentOf(pts, 0.06, 0.94);
+      if (comId == null && pts.length >= 800) {
         const body = communityBodyBox(pts);
-        if (body) {
-          const core = Math.max(box.maxX - box.minX, box.maxY - box.minY, 1);
-          const wide = Math.max(body.maxX - body.minX, body.maxY - body.minY, 1);
-          if (wide > core && wide < core * 1.8) box = body;
-        }
+        if (body) box = body;
       }
       const minX = box.minX, maxX = box.maxX, minY = box.minY, maxY = box.maxY;
       const span = Math.max(maxX - minX, maxY - minY, 1);
-      view.zoom = Math.min(innerWidth, innerHeight) / span * 0.92;
+      const chrome = comId == null ? 108 : 0;
+      view.zoom = Math.min(innerWidth - 40, innerHeight - chrome) / span * 0.98;
       fitZoom = view.zoom;
       if (comId == null) overviewZoom = view.zoom;
       view.x = -(minX + maxX) / 2;
-      view.y = -(minY + maxY) / 2;
+      view.y = -(minY + maxY) / 2 + chrome / (2 * view.zoom);
     }
 
     function world(px, py) {
@@ -474,7 +497,7 @@
 
     function nodeR(n) {
       const rk = n.rk || 0;
-      const px = 1.7 + 8 * Math.pow(rk, 2.2);
+      const px = 0.7 + 2.6 * Math.pow(rk, 2.5);
       return px / Math.max(view.zoom, 1e-6);
     }
 
@@ -562,7 +585,8 @@
         ctx.textBaseline = "bottom";
         ctx.shadowColor = "rgba(0,0,0,0.85)";
         ctx.shadowBlur = 6;
-        ctx.fillStyle = "#fff";
+        const rgb = n.c || [255, 255, 255];
+        ctx.fillStyle = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
         ctx.fillText(text, p.x + ox, p.y + oy - font * 0.15);
         ctx.shadowBlur = 0;
         boxes.push(box);
@@ -610,6 +634,7 @@
           const a = graph.nodes[e.s];
           const b = graph.nodes[e.t];
           if (focus && a.com !== focusCom && b.com !== focusCom) continue;
+          if ((e.w || 0) < interMinW) continue;
           inter.moveTo(a.x, a.y);
           inter.lineTo(b.x, b.y);
           nInter++;
@@ -623,8 +648,8 @@
           intra.lineTo(b.x, b.y);
           nIntra++;
         }
-        if (nInter) edges.push({ style: group.style, path: inter, alpha: quiet ? 0.04 : 0.08, width: 1 });
-        if (nIntra) edges.push({ style: group.style, path: intra, alpha: quiet ? 0.12 : 0.72, width: 1 });
+        if (nInter) edges.push({ style: group.style, path: inter, alpha: quiet ? 0.02 : 0.045, width: 0.7 });
+        if (nIntra) edges.push({ style: group.style, path: intra, alpha: quiet ? 0.08 : 0.22, width: 0.8 });
       }
       let hot = null;
       if (hover != null) {
@@ -667,6 +692,7 @@
       ctx.translate(innerWidth / 2, innerHeight / 2);
       ctx.scale(view.zoom, view.zoom);
       ctx.translate(view.x, view.y);
+      ctx.globalCompositeOperation = "lighter";
       for (let i = 0; i < scene.edges.length; i++) {
         const e = scene.edges[i];
         ctx.globalAlpha = e.alpha;
@@ -680,6 +706,7 @@
         ctx.strokeStyle = "#f4efe2";
         ctx.stroke(scene.hot);
       }
+      ctx.globalCompositeOperation = "source-over";
       ctx.globalAlpha = scene.quiet ? 0.08 : 0.92;
       for (const [color, path] of scene.dim) {
         ctx.fillStyle = "rgb(" + color + ")";
@@ -1145,8 +1172,8 @@
       document.getElementById("backConnectome").href = `../connectome/?corpus=${encodeURIComponent(current)}`;
       document.getElementById("toCoord").href = `../reseau-coordination/?corpus=${encodeURIComponent(current)}`;
       nav.innerHTML = corpora.map((c) =>
-        `<a href="?corpus=${encodeURIComponent(c.id)}" class="${c.id === current ? "active" : ""}" data-id="${c.id}">${c.label.split("·")[0].trim()}</a>`
-      ).join("") + `<a class="back" href="../connectome/?corpus=${encodeURIComponent(current)}">Connectome</a>`;
+        `<a href="?corpus=${encodeURIComponent(c.id)}" class="${c.id === current ? "active" : ""}" data-id="${c.id}">${c.label}</a>`
+      ).join("");
       nav.querySelectorAll("a[data-id]").forEach((a) => {
         a.addEventListener("click", (ev) => {
           ev.preventDefault();
