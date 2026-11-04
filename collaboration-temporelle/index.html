@@ -230,7 +230,7 @@
     <div id="corpusCoverage" class="coverage">—</div>
     <div class="method">Quatre couches · Newman amorti · Leiden multiplexe</div>
     <div id="stats">Les chiffres s’affichent avec le graphe.</div>
-    <div class="note">Positions : ForceAtlas2 simple, le même réglage que le réseau de coordination. Les morceaux sans lien avec le réseau principal restent dans le nuage. Survol → publications.</div>
+    <div class="note">Positions : ForceAtlas2 du connectome, ouvert par les quatre couches. Survol → publications, le reste du graphe reste lisible.</div>
   </aside>
   <aside id="commPanel" aria-label="Groupes">
     <b class="kicker">Groupes</b>
@@ -241,7 +241,7 @@
   <script>
     const canvas = document.getElementById("c");
     const ctx = canvas.getContext("2d");
-    const ASSET_V = "20261104c";
+    const ASSET_V = "20261104d";
     const loadingEl = document.getElementById("loading");
     const statusEl = document.getElementById("ldMsg");
     const tip = document.getElementById("tip");
@@ -414,6 +414,45 @@
       };
     }
 
+    function largestComponent() {
+      const n = graph.nodes.length;
+      const parent = new Int32Array(n);
+      for (let i = 0; i < n; i++) parent[i] = i;
+      const find = (a) => {
+        let p = a;
+        while (parent[p] !== p) p = parent[p];
+        while (parent[a] !== p) {
+          const next = parent[a];
+          parent[a] = p;
+          a = next;
+        }
+        return p;
+      };
+      for (let k = 0; k < graph.edges.length; k++) {
+        const e = graph.edges[k];
+        if (!edgeOn(e)) continue;
+        const ra = find(e.s);
+        const rb = find(e.t);
+        if (ra !== rb) parent[rb] = ra;
+      }
+      const count = new Map();
+      for (let i = 0; i < n; i++) {
+        if (shownNode && !shownNode[i]) continue;
+        const r = find(i);
+        count.set(r, (count.get(r) || 0) + 1);
+      }
+      let best = -1;
+      let bestN = 0;
+      for (const [r, c] of count) if (c > bestN) { best = r; bestN = c; }
+      const out = [];
+      if (best < 0) return out;
+      for (let i = 0; i < n; i++) {
+        if (shownNode && !shownNode[i]) continue;
+        if (find(i) === best) out.push(graph.nodes[i]);
+      }
+      return out;
+    }
+
     function fit(comId) {
       if (!graph || !graph.nodes.length) return;
       const pts = [];
@@ -423,7 +462,8 @@
         pts.push(n);
       });
       if (pts.length < 2) return;
-      const box = extentOf(pts, 0.05, 0.95);
+      const framed = comId == null ? largestComponent() : pts;
+      const box = extentOf(framed.length > 20 ? framed : pts, 0.05, 0.95);
       const minX = box.minX, maxX = box.maxX, minY = box.minY, maxY = box.maxY;
       const span = Math.max(maxX - minX, maxY - minY, 1);
       const chrome = comId == null ? 108 : 0;
@@ -538,7 +578,7 @@
         if (box.right < 4 || box.left > innerWidth - 4 || box.bottom < 4 || box.top > innerHeight - 4) continue;
         if (boxes.some((b) => boxesHit(box, b, pad))) continue;
         const dim = hoverMask && hoverMask[i] === 0;
-        ctx.globalAlpha = dim ? 0.08 : (hoverMask && hoverMask[i] === 2 ? 1 : 0.96);
+        ctx.globalAlpha = dim ? 0.72 : (hoverMask && hoverMask[i] === 2 ? 1 : 0.96);
         ctx.font = `${u > 0.92 ? 700 : u > 0.8 ? 600 : 500} ${font}px "Helvetica Neue", Helvetica, Arial, sans-serif`;
         ctx.textAlign = "center";
         ctx.textBaseline = "bottom";
@@ -595,7 +635,8 @@
           path.lineTo(b.x, b.y);
           n++;
         }
-        if (n) edges.push({ style: group.style, path, alpha: quiet ? 0.08 : 0.42, width: 1.15 });
+        const alpha = focus ? 0.035 : 0.05;
+        if (n) edges.push({ style: group.style, path, alpha, width: 1 });
       }
       let hot = null;
       if (hover != null) {
@@ -615,7 +656,7 @@
         const i = shownIds[k];
         const n = graph.nodes[i];
         const mark = hovering ? hoverMask[i] : 0;
-        const faded = (focus && n.com !== focusCom) || (hovering && mark === 0);
+        const faded = focus && n.com !== focusCom;
         const bag = faded ? dim : lit;
         const color = n.c[0] + "," + n.c[1] + "," + n.c[2];
         let path = bag.get(color);
@@ -638,7 +679,7 @@
       ctx.translate(innerWidth / 2, innerHeight / 2);
       ctx.scale(view.zoom, view.zoom);
       ctx.translate(view.x, view.y);
-      ctx.globalCompositeOperation = "lighter";
+      ctx.globalCompositeOperation = "source-over";
       for (let i = 0; i < scene.edges.length; i++) {
         const e = scene.edges[i];
         ctx.globalAlpha = e.alpha;
@@ -652,12 +693,13 @@
         ctx.strokeStyle = "#f4efe2";
         ctx.stroke(scene.hot);
       }
-      ctx.globalAlpha = scene.quiet ? 0.08 : 0.22;
+      ctx.globalCompositeOperation = "source-over";
+      ctx.globalAlpha = focusCom != null ? 0.4 : 0.92;
       for (const [color, path] of scene.dim) {
         ctx.fillStyle = "rgb(" + color + ")";
         ctx.fill(path);
       }
-      ctx.globalAlpha = 0.72;
+      ctx.globalAlpha = 0.95;
       for (const [color, path] of scene.lit) {
         ctx.fillStyle = "rgb(" + color + ")";
         ctx.fill(path);

@@ -249,10 +249,11 @@ const TOPICS = {
       L’optimisation (Leiden multiplexe, poids de couche égaux, γ = 1) impose une seule appartenance, commune aux couches.</p>
 
       <h3>Le dessin</h3>
-      <p>Les positions sont un <strong>ForceAtlas2</strong> simple, le même appel que le réseau de coordination
-      (dissuasion des hubs, sans LinLog, 800 itérations, scalingRatio 2, gravité 1).
-      Chaque morceau relié est placé seul : sinon les milliers de paires sans lien avec le gros du réseau
-      sont repoussées sur un anneau. Ces paires restent dans le cadre du morceau principal.
+      <p>Les positions sont un <strong>ForceAtlas2</strong> du connectome
+      (dissuasion des hubs, sans LinLog, anti-chevauchement).
+      La répulsion monte et la gravité baisse avec la taille du morceau, pour ouvrir le plan.
+      Le poids dessiné est le log(1 + w) des quatre couches. Chaque morceau relié est placé seul,
+      sinon les paires isolées partent sur un anneau : elles restent autour du nuage, pas dedans.
       La partition Leiden n’écarte pas les groupes.</p>
       <p>Un co-retweet n’est tracé qu’à partir de 2 messages distincts en commun.
       Une seule reprise commune reste dans le calcul des groupes, elle n’est pas dessinée.
