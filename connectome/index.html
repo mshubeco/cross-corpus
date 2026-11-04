@@ -1204,7 +1204,7 @@
           <span>Discours du corpus</span>
         </div>
         <button type="button" class="color-btn" data-mode="discours" id="hudColorDiscours" hidden
-          title="Couleur selon ce qui est dit, pas selon la communauté. Corpus HMPV.">Cadrages discursifs</button>
+          title="Couleur selon ce qui est dit, pas selon la communauté.">Cadrages discursifs</button>
       </div>
       <div id="discourseLegend" aria-label="Légende des cadrages discursifs"></div>
       <div id="typoLegend" aria-label="Légende de la typologie des comptes"></div>
@@ -3253,7 +3253,7 @@ function updateGraphModeButtons() {
     : (edgeColorMode === 'typo_macro' || edgeColorMode === 'typo_cat' || edgeColorMode === 'discours' || edgeColorMode === 'pays' || edgeColorMode === 'age'
       ? edgeColorMode
       : 'community');
-  const discAvail = currentCorpusId === 'hmpv';
+  const discAvail = discourseFramesEnabled(currentCorpusId);
   document.getElementById('hudColorDiscours')?.toggleAttribute('hidden', !discAvail);
   document.getElementById('discourseHead')?.toggleAttribute('hidden', !discAvail);
   document.querySelectorAll('#colorModeBtns .color-btn').forEach((b) => {
@@ -3975,8 +3975,12 @@ function paintNodeColors(data) {
 const discourseFrameCache = new Map();
 const DISCOURSE_NONE_COLOR = '#3a4150';
 
+function discourseFramesEnabled(corpusId) {
+  return corpusId === 'hmpv' || corpusId === 'hmpv_fr';
+}
+
 function discourseActive() {
-  return graphMode === 'all' && edgeColorMode === 'discours' && currentCorpusId === 'hmpv';
+  return graphMode === 'all' && edgeColorMode === 'discours' && discourseFramesEnabled(currentCorpusId);
 }
 
 function discourseFrameColor(id, pack) {
@@ -3992,7 +3996,7 @@ function discourseFrameLabel(id, pack) {
 }
 
 async function ensureDiscourseFrames(corpusId) {
-  if (corpusId !== 'hmpv') {
+  if (!discourseFramesEnabled(corpusId)) {
     return { frames: [], a: new Map(), missing: true, method: '' };
   }
   if (discourseFrameCache.has(corpusId)) return discourseFrameCache.get(corpusId);
@@ -4008,6 +4012,7 @@ async function ensureDiscourseFrames(corpusId) {
       a: new Map(Object.entries(data.a || {})),
       method: data.method || '',
       mixed: Array.isArray(data.mixed) ? data.mixed : [],
+      mixedTitle: data.mixedTitle || '',
       nFromText: Number(data.nFromText) || 0,
       nFromRelay: Number(data.nFromRelay) || 0,
       nFromCommunity: Number(data.nFromCommunity) || 0,
@@ -4054,7 +4059,7 @@ function renderDiscourseLegend() {
     `<div class="leg-note">${escapeHtml(line)}</div>`
   ).join('');
   const mixedBlock = mixedRows
-    ? `<div class="leg-title">Communautés mêlées, même couleur refusée</div>${mixedRows}`
+    ? `<div class="leg-title">${escapeHtml(pack?.mixedTitle || 'Communautés mêlées, même couleur refusée')}</div>${mixedRows}`
     : '';
   const note = `<div class="leg-note" title="${escapeHtml(pack?.method || '')}">Même couleur = même propos, y compris dans deux communautés. Le gris n’est pas une communauté à part.</div>`;
   el.innerHTML = `<div class="leg-title">Légende · cadrages discursifs</div>${missing}${note}${rows}${gray}${mixedBlock}`;
@@ -6231,7 +6236,7 @@ async function loadCorpus(corp) {
   const isCurrent = () => seq === loadSeq;
   const corpusChanged = currentCorpusId !== corp.id;
   currentCorpusId = corp.id;
-  if (edgeColorMode === 'discours' && corp.id !== 'hmpv') edgeColorMode = 'community';
+  if (edgeColorMode === 'discours' && !discourseFramesEnabled(corp.id)) edgeColorMode = 'community';
   hideTipNow();
   loadAccountPosts(corp.id, seq);
   const covEl = document.getElementById('corpusCoverage');
