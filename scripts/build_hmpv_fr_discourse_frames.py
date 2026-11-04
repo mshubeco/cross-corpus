@@ -23,7 +23,7 @@ REVIEW = ROOT / "scripts" / "_hmpv_fr_frames_review.txt"
 FRAMES = (
     "depeche",
     "submersion",
-    "refus",
+    "antialarme",
     "mise_au_point",
     "notice",
     "bulletin",
@@ -46,9 +46,9 @@ FRAME_META = [
         "color": "#ff4d6a",
     },
     {
-        "id": "refus",
-        "label": "Refus",
-        "hint": "On ne recommence pas. La dépêche est citée pour être refusée.",
+        "id": "antialarme",
+        "label": "Anti-alarmisme",
+        "hint": "On cite la dépêche pour refuser l’alarme : ne vous alarmez pas, on ne recommence pas.",
         "color": "#f5e663",
     },
     {
@@ -142,20 +142,32 @@ SCENARIO = (
     "reconfiner", "nouveau confinement", "warp speed", "genocide", "génocide",
     " nwo", "#nwo",
 )
-REFUS = (
+# Le propos prime sur la dépêche citée : « ne vous alarmez pas » + hôpitaux
+# submergés reste un refus de l'alarme, pas une submersion.
+ANTIALARME = (
+    "ne vous alarmez pas",
     "ne recommencerons pas", "ne refaisons pas", "ne recommencons pas",
-    "inutile de paniquer", "allez vous faire foutre", "ne nous conformerons pas",
-    "nous ne nous conformerons pas", "ils pourront pas nous faire le coup",
+    "inutile de paniquer", "allez vous faire foutre",
+    "ne nous conformerons pas", "nous ne nous conformerons pas",
+    "ils pourront pas nous faire le coup", "pourront pas nous faire le coup",
     "periode liberticide", "période liberticide", "est devenu un jeu",
     "ne s'arreteront", "ne s'arrêteront", "aucun mot de cette histoire",
-    "je n'y crois pas", "je ne crois",
+    "je n'y crois pas", "je ne crois", "affoler les gens",
+    "prise no2", "prise 2", "fameuse prise",
+    "panique sanitaire",
+    "créer la peur", "creer la peur", "créer l'hystérie", "creer l'hysterie",
+    "plus c'est gros", "tour de manège", "tour de manege",
+    "pas lieu de s'affoler", "lieu de s'alarmer", "pas d'alarmisme",
+    "plus de peur que de mal", "rumeurs alarmistes",
+    "dans la peur", "ds la peur",
+    "rappelle t il quelque chose", "rappelle-t-il quelque chose",
 )
 MISE_FORT = (
     "n'a pas officiellement", "n'a pas declare", "n'a pas déclaré",
     "pas officiellement declare", "pas officiellement déclaré",
     "desintox", "désintox", "fake news", "info ou intox",
     "pas du tout ce que", "le cdc chinois a evoque", "le cdc chinois a évoqué",
-    "n'a rien de nouveau", "rien de nouveau", "anecdotique", "inquiète surtout",
+    "n'a rien de nouveau", "rien de nouveau", "n'est pas nouveau", "anecdotique", "inquiète surtout",
     "inquiete surtout", "voir clair",
     "pas un nouveau virus", "n'est pas un nouveau", "n'est pas un nouveau",
     "ce ne sera en tout cas pas", "torrent de desinformation",
@@ -164,7 +176,9 @@ MISE_FORT = (
 )
 MISE_FAIBLE = (
     "oms rassure", "pas de danger", "aucun cas", "vigilance sans panique",
-    "se veulent rassurant", "se veut rassurant", "aucune urgence officielle",
+    "se veulent rassurant", "se veut rassurant", "rassure quant",
+    "autorités rassurent", "autorites rassurent", "la santé rassure",
+    "la sante rassure", "aucune urgence officielle",
     "aucune urgence n", "appelle au calme", "sans tomber dans la panique",
     "faisons le point", "a dementi", "a démenti",
 )
@@ -199,12 +213,12 @@ def classify(raw: str) -> str:
         return "terrain"
     if has_any(n, INDE) and len(n) > 40:
         return "inde"
+    if has_any(n, ANTIALARME):
+        return "antialarme"
     if has_any(n, SCENARIO) or " nwo " in f" {n} ":
         return "scenario"
     if has_any(n, MISE_FORT):
         return "mise_au_point"
-    if has_any(n, REFUS):
-        return "refus"
     if has_any(n, SUBMERSION):
         return "submersion"
     if has_any(n, MISE_FAIBLE):
@@ -346,7 +360,7 @@ def main() -> None:
         "dated": "2026-11-04",
         "method": (
             "Chaque publication hors retweet est lue comme un propos : "
-            "dépêche Chine, submersion, refus, mise au point, notice, bulletin, "
+            "dépêche Chine, submersion, anti-alarmisme, mise au point, notice, bulletin, "
             "scénario, fait divers Inde, ou terrain. "
             "Un compte prend le propos de ses textes ; s’ils divergent, "
             "la couleur suit le texte le plus aimé et le compte est signalé comme mêlé. "
