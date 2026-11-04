@@ -5698,30 +5698,147 @@ function hidePortraitEls(keep) {
   }
 }
 
-function pumpAvatars() {
-  while (avatarInflight < 8 && avatarQueue.length) {
-    const job = avatarQueue.shift();
-    avatarInflight += 1;
+const AVATAR_STORE = 'cc-avatar-urls-v1';
+const avatarUrlMemo = new Map();
+let avatarUrlStoreLoaded = false;
+let avatarStoreTimer = 0;
+let avatarBackoffUntil = 0;
+let avatarPumpTimer = 0;
+
+function loadAvatarStore() {
+  if (avatarUrlStoreLoaded) return;
+  avatarUrlStoreLoaded = true;
+  try {
+    const raw = localStorage.getItem(AVATAR_STORE);
+    if (!raw) return;
+    const obj = JSON.parse(raw);
+    for (const [k, v] of Object.entries(obj)) {
+      if (v) avatarUrlMemo.set(k, v);
+    }
+  } catch (_) { /* quota ou JSON illisible */ }
+}
+
+function rememberAvatarUrl(handle, url) {
+  if (!handle || !url) return;
+  avatarUrlMemo.set(handle, url);
+  clearTimeout(avatarStoreTimer);
+  avatarStoreTimer = setTimeout(() => {
+    try {
+      const obj = {};
+      let n = 0;
+      for (const [k, v] of avatarUrlMemo) {
+        if (!v) continue;
+        obj[k] = v;
+        if (++n >= 2500) break;
+      }
+      localStorage.setItem(AVATAR_STORE, JSON.stringify(obj));
+    } catch (_) { /* quota */ }
+  }, 400);
+}
+
+function enlargeAvatarUrl(url) {
+  return String(url || '').replace(/_(normal|bigger|mini)(\.[a-z0-9]+)$/i, '_400x400$2');
+}
+
+function loadAvatarImage(url, cors) {
+  return new Promise((resolve) => {
     const img = new Image();
-    const cors = job.attempt === 0;
     if (cors) img.crossOrigin = 'anonymous';
     img.referrerPolicy = 'no-referrer';
     img.decoding = 'async';
     img.onload = () => {
-      avatarInflight -= 1;
-      if ((img.naturalWidth || 0) < 2) finishAvatar(job, null, false);
-      else finishAvatar(job, img, cors);
-      pumpAvatars();
+      if ((img.naturalWidth || 0) < 2) resolve(null);
+      else {
+        img._exportSafe = cors;
+        resolve(img);
+      }
     };
-    img.onerror = () => {
-      avatarInflight -= 1;
-      if (job.attempt < 1) {
-        job.attempt += 1;
-        avatarQueue.push(job);
-      } else finishAvatar(job, null, false);
-      pumpAvatars();
-    };
-    img.src = `https://unavatar.io/x/${encodeURIComponent(job.h)}?fallback=false`;
+    img.onerror = () => resolve(null);
+    img.src = url;
+  });
+}
+
+async function lookupAvatarUrl(handle) {
+  loadAvatarStore();
+  if (avatarUrlMemo.has(handle)) return avatarUrlMemo.get(handle);
+  const res = await fetch(`https://api.fxtwitter.com/${encodeURIComponent(handle)}`, {
+    headers: { Accept: 'application/json' },
+  });
+  if (res.status === 429 || res.status === 404 || !res.ok) {
+    const err = new Error(String(res.status));
+    err.code = res.status;
+    throw err;
+  }
+  const data = await res.json();
+  const url = String((data && data.user && data.user.avatar_url) || '').trim();
+  if (!url) {
+    avatarUrlMemo.set(handle, '');
+    return '';
+  }
+  rememberAvatarUrl(handle, url);
+  return url;
+}
+
+function scheduleAvatarPump(ms) {
+  if (avatarPumpTimer) return;
+  avatarPumpTimer = setTimeout(() => {
+    avatarPumpTimer = 0;
+    pumpAvatars();
+  }, Math.max(40, ms));
+}
+
+function pumpAvatars() {
+  const wait = avatarBackoffUntil - Date.now();
+  if (wait > 0) {
+    scheduleAvatarPump(wait);
+    return;
+  }
+  while (avatarInflight < 4 && avatarQueue.length) {
+    const job = avatarQueue.shift();
+    avatarInflight += 1;
+    resolveAvatarJob(job);
+  }
+}
+
+async function resolveAvatarJob(job) {
+  try {
+    const url = await lookupAvatarUrl(job.h);
+    if (!url) {
+      finishAvatar(job, null, false);
+      return;
+    }
+    const large = enlargeAvatarUrl(url);
+    let img = await loadAvatarImage(large, true);
+    if (!img && large !== url) img = await loadAvatarImage(url, true);
+    if (!img) img = await loadAvatarImage(url, false);
+    if (img) {
+      finishAvatar(job, img, !!img._exportSafe);
+      return;
+    }
+    job.imgAttempt = (job.imgAttempt || 0) + 1;
+    if (job.imgAttempt <= 2) {
+      avatarBackoffUntil = Date.now() + 400 * job.imgAttempt;
+      avatarQueue.push(job);
+      return;
+    }
+    finishAvatar(job, null, false);
+  } catch (err) {
+    const limited = err && err.code === 429;
+    const missing = err && err.code === 404;
+    const retry = missing ? false : limited ? job.attempt < 5 : job.attempt < 2;
+    if (retry) {
+      job.attempt += 1;
+      if (limited) {
+        avatarBackoffUntil = Date.now() + 700 * job.attempt;
+        avatarQueue.unshift(job);
+      } else avatarQueue.push(job);
+    } else {
+      if (missing) avatarUrlMemo.set(job.h, '');
+      finishAvatar(job, null, false);
+    }
+  } finally {
+    avatarInflight -= 1;
+    pumpAvatars();
   }
 }
 
