@@ -250,9 +250,10 @@ const TOPICS = {
 
       <h3>Le dessin</h3>
       <p>Les positions sont un <strong>ForceAtlas2</strong> simple, le même appel que le réseau de coordination
-      (dissuasion des hubs, sans LinLog, 800 itérations). Un seul passage sur le graphe dessiné.
-      Les poids de Newman sont ramenés à la même échelle qu’un co-retweet du backbone, sans changer leurs rapports.
-      La partition, elle, reste celle du Leiden multiplexe : le dessin ne l’écarte pas.</p>
+      (dissuasion des hubs, sans LinLog, 800 itérations, scalingRatio 2, gravité 1).
+      Chaque morceau relié est placé seul : sinon les milliers de paires sans lien avec le gros du réseau
+      sont repoussées sur un anneau. Ces paires restent dans le cadre du morceau principal.
+      La partition Leiden n’écarte pas les groupes.</p>
       <p>Un co-retweet n’est tracé qu’à partir de 2 messages distincts en commun.
       Une seule reprise commune reste dans le calcul des groupes, elle n’est pas dessinée.
       Si une couche a trop d’arêtes pour l’écran, le tracé garde les plus lourdes.
