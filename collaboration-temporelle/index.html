@@ -230,7 +230,7 @@
     <div id="corpusCoverage" class="coverage">—</div>
     <div class="method">Quatre couches · Newman amorti · Leiden multiplexe</div>
     <div id="stats">Les chiffres s’affichent avec le graphe.</div>
-    <div class="note">Positions : ForceAtlas2 à deux échelles, groupes écartés sur le plan. La partition vient du Leiden, pas du dessin. Survol → publications.</div>
+    <div class="note">Positions : ForceAtlas2 simple, le même réglage que le réseau de coordination. La partition vient du Leiden, pas du dessin. Survol → publications.</div>
   </aside>
   <aside id="commPanel" aria-label="Groupes">
     <b class="kicker">Groupes</b>
@@ -241,7 +241,7 @@
   <script>
     const canvas = document.getElementById("c");
     const ctx = canvas.getContext("2d");
-    const ASSET_V = "20261104b";
+    const ASSET_V = "20261104c";
     const loadingEl = document.getElementById("loading");
     const statusEl = document.getElementById("ldMsg");
     const tip = document.getElementById("tip");
@@ -332,7 +332,6 @@
     let shownIds = [];
     let hitGrid = new Map();
     let edgeGroups = [];
-    let interMinW = -Infinity;
     let scenePaths = null;
     let sceneKey = "";
     const HIT_CELL = 32;
@@ -361,25 +360,17 @@
         const key = edgeKey(e, a, b);
         let g = groups.get(key);
         if (!g) {
-          g = { style: styleFor(key, a), intra: [], inter: [] };
+          g = { style: styleFor(key, a), edges: [] };
           groups.set(key, g);
         }
-        (a.com === b.com ? g.intra : g.inter).push(e);
+        g.edges.push(e);
       }
       edgeGroups = [...groups.values()];
-      const interW = [];
-      for (const e of graph.edges) {
-        if (!edgeOn(e)) continue;
-        if (graph.nodes[e.s].com === graph.nodes[e.t].com) continue;
-        interW.push(e.w || 0);
-      }
-      interW.sort((a, b) => b - a);
-      interMinW = interW.length > 2400 ? interW[2399] : -Infinity;
     }
 
     function styleFor(key, sample) {
-      if (key === "cross") return "rgba(210,210,210,0.85)";
       if (LAYER_COLOR[key]) return LAYER_COLOR[key];
+      if (String(key).includes(",")) return "rgb(" + key + ")";
       const rgb = sample && sample.c ? sample.c : [180, 180, 180];
       return `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
     }
@@ -423,37 +414,6 @@
       };
     }
 
-    // Le cœur statistique (8e–92e) est dominé par les plus gros groupes.
-    // On l'élargit jusqu'au corps (rayon 95 %) des groupes encore conséquents,
-    // sans suivre les satellites isolés qui videraient le cadre.
-    function communityBodyBox(nodes) {
-      const groups = new Map();
-      for (const n of nodes) {
-        let g = groups.get(n.com);
-        if (!g) groups.set(n.com, g = []);
-        g.push(n);
-      }
-      const thr = Math.max(400, Math.floor(nodes.length * 0.015));
-      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-      let used = 0;
-      for (const g of groups.values()) {
-        if (g.length < thr) continue;
-        let sx = 0, sy = 0;
-        for (const n of g) { sx += n.x; sy += n.y; }
-        const cx = sx / g.length;
-        const cy = sy / g.length;
-        const rad = g.map((n) => Math.hypot(n.x - cx, n.y - cy)).sort((a, b) => a - b);
-        const reach = quantile(rad, 0.82);
-        minX = Math.min(minX, cx - reach);
-        maxX = Math.max(maxX, cx + reach);
-        minY = Math.min(minY, cy - reach);
-        maxY = Math.max(maxY, cy + reach);
-        used++;
-      }
-      if (used < 2 || !Number.isFinite(minX)) return null;
-      return { minX, maxX, minY, maxY };
-    }
-
     function fit(comId) {
       if (!graph || !graph.nodes.length) return;
       const pts = [];
@@ -463,15 +423,11 @@
         pts.push(n);
       });
       if (pts.length < 2) return;
-      let box = extentOf(pts, 0.06, 0.94);
-      if (comId == null && pts.length >= 800) {
-        const body = communityBodyBox(pts);
-        if (body) box = body;
-      }
+      const box = extentOf(pts, 0.05, 0.95);
       const minX = box.minX, maxX = box.maxX, minY = box.minY, maxY = box.maxY;
       const span = Math.max(maxX - minX, maxY - minY, 1);
       const chrome = comId == null ? 108 : 0;
-      view.zoom = Math.min(innerWidth - 40, innerHeight - chrome) / span * 0.98;
+      view.zoom = Math.min(innerWidth - 40, innerHeight - chrome) / (span * 1.45) * 0.98;
       fitZoom = view.zoom;
       if (comId == null) overviewZoom = view.zoom;
       view.x = -(minX + maxX) / 2;
@@ -496,8 +452,10 @@
     }
 
     function nodeR(n) {
-      const rk = n.rk || 0;
-      const px = 0.7 + 2.6 * Math.pow(rk, 2.5);
+      const nNodes = shownIds.length || (graph ? graph.nodes.length : 0);
+      const boost = nNodes < 2500 ? 5.5 : nNodes < 12000 ? 2.2 : 1;
+      const pr = Math.sqrt((n.s || 0) / Math.max(maxStrength, 1e-9));
+      const px = (0.4 + 2.2 * pr) * boost;
       return px / Math.max(view.zoom, 1e-6);
     }
 
@@ -509,8 +467,9 @@
 
     function edgeKey(e, a, b) {
       if (layer !== "all") return layer;
-      if (a.com === b.com) return "c" + a.com;
-      return "cross";
+      const ca = a.c || [180, 180, 180];
+      const cb = b.c || [180, 180, 180];
+      return ((ca[0] + cb[0]) >> 1) + "," + ((ca[1] + cb[1]) >> 1) + "," + ((ca[2] + cb[2]) >> 1);
     }
 
     function strokeEdges(list, alpha, width) {
@@ -625,31 +584,18 @@
       const edges = [];
       for (let g = 0; g < edgeGroups.length; g++) {
         const group = edgeGroups[g];
-        const inter = new Path2D();
-        const intra = new Path2D();
-        let nInter = 0;
-        let nIntra = 0;
-        for (let i = 0; i < group.inter.length; i++) {
-          const e = group.inter[i];
+        const path = new Path2D();
+        let n = 0;
+        for (let i = 0; i < group.edges.length; i++) {
+          const e = group.edges[i];
           const a = graph.nodes[e.s];
           const b = graph.nodes[e.t];
           if (focus && a.com !== focusCom && b.com !== focusCom) continue;
-          if ((e.w || 0) < interMinW) continue;
-          inter.moveTo(a.x, a.y);
-          inter.lineTo(b.x, b.y);
-          nInter++;
+          path.moveTo(a.x, a.y);
+          path.lineTo(b.x, b.y);
+          n++;
         }
-        for (let i = 0; i < group.intra.length; i++) {
-          const e = group.intra[i];
-          const a = graph.nodes[e.s];
-          const b = graph.nodes[e.t];
-          if (focus && a.com !== focusCom && b.com !== focusCom) continue;
-          intra.moveTo(a.x, a.y);
-          intra.lineTo(b.x, b.y);
-          nIntra++;
-        }
-        if (nInter) edges.push({ style: group.style, path: inter, alpha: quiet ? 0.02 : 0.045, width: 0.7 });
-        if (nIntra) edges.push({ style: group.style, path: intra, alpha: quiet ? 0.08 : 0.22, width: 0.8 });
+        if (n) edges.push({ style: group.style, path, alpha: quiet ? 0.08 : 0.42, width: 1.15 });
       }
       let hot = null;
       if (hover != null) {
@@ -706,17 +652,17 @@
         ctx.strokeStyle = "#f4efe2";
         ctx.stroke(scene.hot);
       }
-      ctx.globalCompositeOperation = "source-over";
-      ctx.globalAlpha = scene.quiet ? 0.08 : 0.92;
+      ctx.globalAlpha = scene.quiet ? 0.08 : 0.22;
       for (const [color, path] of scene.dim) {
         ctx.fillStyle = "rgb(" + color + ")";
         ctx.fill(path);
       }
-      ctx.globalAlpha = 0.96;
+      ctx.globalAlpha = 0.72;
       for (const [color, path] of scene.lit) {
         ctx.fillStyle = "rgb(" + color + ")";
         ctx.fill(path);
       }
+      ctx.globalCompositeOperation = "source-over";
       ctx.globalAlpha = 1;
       for (let k = 0; k < scene.rings.length; k++) {
         const i = scene.rings[k];

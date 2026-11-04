@@ -249,11 +249,10 @@ const TOPICS = {
       L’optimisation (Leiden multiplexe, poids de couche égaux, γ = 1) impose une seule appartenance, commune aux couches.</p>
 
       <h3>Le dessin</h3>
-      <p>Les positions sont un <strong>ForceAtlas2</strong> à deux échelles, le même moteur que le réseau de coordination
-      (dissuasion des hubs, sans LinLog). D’abord à l’intérieur de chaque groupe, puis entre les groupes,
-      avec un écart minimum pour qu’ils occupent le plan. Sur un grand corpus, les itérations sont plus longues
-      et l’écart entre groupes plus large. Le poids de Newman est passé au log(1 + w) pour le dessin seulement,
-      afin qu’une arête très lourde n’écrase pas l’espace. La partition, elle, reste celle du Leiden multiplexe.</p>
+      <p>Les positions sont un <strong>ForceAtlas2</strong> simple, le même appel que le réseau de coordination
+      (dissuasion des hubs, sans LinLog, 800 itérations). Un seul passage sur le graphe dessiné.
+      Les poids de Newman sont ramenés à la même échelle qu’un co-retweet du backbone, sans changer leurs rapports.
+      La partition, elle, reste celle du Leiden multiplexe : le dessin ne l’écarte pas.</p>
       <p>Un co-retweet n’est tracé qu’à partir de 2 messages distincts en commun.
       Une seule reprise commune reste dans le calcul des groupes, elle n’est pas dessinée.
       Si une couche a trop d’arêtes pour l’écran, le tracé garde les plus lourdes.

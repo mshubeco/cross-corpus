@@ -90,8 +90,8 @@ def open_corpus(corpus_id: str) -> None:
 
 
 if __name__ == "__main__":
-    import sys
-
-    names = sys.argv[1:] or sorted(p.name for p in ROOT.iterdir() if (p / "graph.json").is_file())
-    for name in names:
-        open_corpus(name)
+    raise SystemExit(
+        "Ce script écartait les groupes après le ForceAtlas2. "
+        "Le placement publié est le ForceAtlas2 simple : "
+        "pipelines/collaboration_temporelle/scripts/relayout_fa2_simple.py"
+    )
