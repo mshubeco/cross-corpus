@@ -5334,6 +5334,7 @@ function rebuildLabels() {
     labelItems.push({
       el,
       text,
+      i: item.i,
       nodeRef: node,
       x: node.x,
       y: node.y,
@@ -5566,11 +5567,12 @@ function rebuildPortraitRank() {
 
 function portraitBudget(rel) {
   const r = Math.max(0, rel);
-  if (r < 1.15) return Math.max(8, Math.round(16 * Math.max(0.55, r)));
-  if (r < 2) return Math.round(16 + 24 * ((r - 1.15) / 0.85));
-  if (r < 4) return Math.round(40 + 50 * ((r - 2) / 2));
-  if (r < 8) return Math.round(90 + 70 * ((r - 4) / 4));
-  return 160;
+  const labels = Math.max(36, Number(P?.nLabels) || 40);
+  if (r < 1.15) return Math.max(labels, 56);
+  if (r < 2) return Math.round(Math.max(labels, 56) + 40 * ((r - 1.15) / 0.85));
+  if (r < 4) return Math.round(96 + 80 * ((r - 2) / 2));
+  if (r < 8) return Math.round(176 + 80 * ((r - 4) / 4));
+  return 280;
 }
 
 function portraitDiameter(v, maxV, rel) {
@@ -5656,26 +5658,47 @@ function layoutPortraits(w, h, zoomForScale, cssW) {
   const rect = viewWorldRect();
   const candidates = selectPortraitCandidates(rect, rel, budget);
   const nodes = graphData.nodes;
+  const preferred = [];
+  const preferredSet = new Set();
+  for (let li = 0; li < labelItems.length; li++) {
+    const it = labelItems[li];
+    if (it.i == null || preferredSet.has(it.i)) continue;
+    const node = nodes[it.i];
+    if (!node || !portraitPassesFilter(node)) continue;
+    _proj.set(node.x, node.y, 0).project(camera);
+    if (_proj.z > 1) continue;
+    const sx = (_proj.x * 0.5 + 0.5) * w;
+    const sy = (-_proj.y * 0.5 + 0.5) * h;
+    if (sx < -80 || sx > w + 80 || sy < -80 || sy > h + 80) continue;
+    preferred.push(it.i);
+    preferredSet.add(it.i);
+  }
+  preferred.sort((a, b) => (nodes[b]._sizeMetric || 0) - (nodes[a]._sizeMetric || 0));
+  const ordered = preferred.concat(candidates.filter((i) => !preferredSet.has(i)));
+  const slotCap = Math.max(budget, Math.min(preferred.length, 96));
   const placed = [];
-  const pad = 4 * screenScale;
-  for (let k = 0; k < candidates.length && placed.length < budget; k++) {
-    const i = candidates[k];
+  const pad = 2 * screenScale;
+  for (let k = 0; k < ordered.length && placed.length < slotCap; k++) {
+    const i = ordered[k];
     const node = nodes[i];
     _proj.set(node.x, node.y, 0).project(camera);
     if (_proj.z > 1) continue;
     const cx = (_proj.x * 0.5 + 0.5) * w;
     const cy = (-_proj.y * 0.5 + 0.5) * h;
-    const d = portraitDiameter(node._sizeMetric || 0, portraitMaxCent, rel) * screenScale;
+    let d = portraitDiameter(node._sizeMetric || 0, portraitMaxCent, rel) * screenScale;
     if (cx < -d || cx > w + d || cy < -d || cy > h + d) continue;
-    let hit = false;
-    for (let p = 0; p < placed.length; p++) {
-      const o = placed[p];
-      const dx = cx - o.cx;
-      const dy = cy - o.cy;
-      const rr = (d + o.d) * 0.5 + pad;
-      if (dx * dx + dy * dy < rr * rr) { hit = true; break; }
-    }
-    if (hit) continue;
+    const fits = (diam) => {
+      for (let p = 0; p < placed.length; p++) {
+        const o = placed[p];
+        const dx = cx - o.cx;
+        const dy = cy - o.cy;
+        const rr = (diam + o.d) * 0.5 + pad;
+        if (dx * dx + dy * dy < rr * rr) return false;
+      }
+      return true;
+    };
+    if (!fits(d) && preferredSet.has(i)) d *= 0.68;
+    if (!fits(d) || d < 22 * screenScale) continue;
     const u = Math.sqrt(Math.max(0, node._sizeMetric || 0) / portraitMaxCent);
     placed.push({
       i,
@@ -5700,6 +5723,27 @@ function hidePortraitEls(keep) {
 
 const AVATAR_STORE = 'cc-avatar-urls-v1';
 const avatarUrlMemo = new Map();
+let corpusAvatars = new Map();
+let avatarPackPromise = Promise.resolve();
+
+function ensureAvatarPack(corpusId) {
+  corpusAvatars = new Map();
+  const url = new URL(`./data/${encodeURIComponent(corpusId)}/avatars.json`, import.meta.url);
+  url.searchParams.set('v', '20261104-avatars');
+  avatarPackPromise = fetch(url)
+    .then(async (r) => {
+      if (!r.ok) return;
+      const data = await r.json();
+      const accounts = data && data.accounts ? data.accounts : {};
+      const next = new Map();
+      for (const [h, v] of Object.entries(accounts)) {
+        if (v) next.set(String(h).toLowerCase(), String(v));
+      }
+      corpusAvatars = next;
+    })
+    .catch(() => { corpusAvatars = new Map(); });
+  return avatarPackPromise;
+}
 let avatarUrlStoreLoaded = false;
 let avatarStoreTimer = 0;
 let avatarBackoffUntil = 0;
@@ -5759,6 +5803,9 @@ function loadAvatarImage(url, cors) {
 }
 
 async function lookupAvatarUrl(handle) {
+  await avatarPackPromise;
+  const packed = corpusAvatars.get(handle);
+  if (packed) return packed;
   loadAvatarStore();
   if (avatarUrlMemo.has(handle)) return avatarUrlMemo.get(handle);
   const res = await fetch(`https://api.fxtwitter.com/${encodeURIComponent(handle)}`, {
@@ -5825,15 +5872,13 @@ async function resolveAvatarJob(job) {
   } catch (err) {
     const limited = err && err.code === 429;
     const missing = err && err.code === 404;
-    const retry = missing ? false : limited ? job.attempt < 5 : job.attempt < 2;
+    const retry = missing ? job.attempt < 3 : limited ? job.attempt < 6 : job.attempt < 3;
     if (retry) {
       job.attempt += 1;
-      if (limited) {
-        avatarBackoffUntil = Date.now() + 700 * job.attempt;
-        avatarQueue.unshift(job);
-      } else avatarQueue.push(job);
+      avatarBackoffUntil = Date.now() + (limited ? 900 : 450) * job.attempt;
+      if (limited) avatarQueue.unshift(job);
+      else avatarQueue.push(job);
     } else {
-      if (missing) avatarUrlMemo.set(job.h, '');
       finishAvatar(job, null, false);
     }
   } finally {
@@ -6356,6 +6401,7 @@ async function loadCorpus(corp) {
   if (edgeColorMode === 'discours' && !discourseFramesEnabled(corp.id)) edgeColorMode = 'community';
   hideTipNow();
   loadAccountPosts(corp.id, seq);
+  ensureAvatarPack(corp.id);
   const covEl = document.getElementById('corpusCoverage');
   if (covEl) covEl.textContent = corpusCoverageText(corp);
   renderPubTypesHud(corp);
