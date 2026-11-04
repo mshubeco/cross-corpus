@@ -4199,7 +4199,7 @@ function setEdgeColorFromHud(value) {
     return;
   }
   if (value === 'typo_macro' || value === 'typo_cat' || value === 'discours' || value === 'pays' || value === 'age') {
-    if (value === 'discours' && currentCorpusId !== 'hmpv') return;
+    if (value === 'discours' && !discourseFramesEnabled(currentCorpusId)) return;
     if (graphMode === 'all' && edgeColorMode === value) return;
     edgeColorMode = value;
     if (graphMode !== 'all') {
