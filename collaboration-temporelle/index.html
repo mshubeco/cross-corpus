@@ -3,73 +3,115 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Collaboration temporelle multiplexe</title>
+  <title>Collaboration temporelle — cross_corpus</title>
+  <link rel="stylesheet" href="../shared/method-help.css" />
   <style>
-    :root {
-      --bg: #090a0c;
-      --ink: #e7e2d6;
-      --muted: #9a9386;
-      --line: rgba(231, 226, 214, 0.14);
-      --gold: #e2b657;
-      --panel: rgba(12, 13, 16, 0.92);
-    }
-    * { box-sizing: border-box; }
-    html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink);
-      font-family: "Palatino Linotype", Palatino, "Iowan Old Style", Georgia, serif; }
-    button, select, a.pill { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #000; color: #ccc;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
     #c { position: fixed; inset: 0; }
     canvas { display: block; width: 100%; height: 100%; }
-    #method, #comms {
-      position: fixed; top: 12px; bottom: 12px; z-index: 4;
-      background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
-      overflow: auto; backdrop-filter: blur(8px);
+    #topnav {
+      position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 12;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      max-width: min(920px, calc(100vw - 640px));
     }
-    #method { left: 12px; width: min(400px, calc(100vw - 24px)); padding: 22px 22px 28px; bottom: 56px; }
-    #method.collapsed { display: none; }
-    #comms { right: 12px; width: min(280px, calc(100vw - 24px)); padding: 16px 14px 20px;
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
-    #method h1 { font-size: 26px; font-weight: 500; line-height: 1.15; margin: 8px 0 10px; letter-spacing: -0.02em; }
-    #method h2 { font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--gold); margin: 22px 0 8px; }
-    #method p, #method li { font-size: 15.5px; line-height: 1.45; margin: 0 0 10px; }
-    #method ol { margin: 0; padding-left: 1.15em; }
-    #method li { margin-bottom: 8px; }
-    #method .eyebrow { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
-    #method .lead { color: #f3efe4; }
-    #method .quiet { color: var(--muted); font-size: 13.5px; line-height: 1.4; }
-    #method a { color: var(--gold); }
-    .formula {
-      margin: 8px 0 12px; padding: 12px 14px; border-radius: 10px;
-      background: rgba(226, 182, 87, 0.08); border: 1px solid rgba(226, 182, 87, 0.28);
-      font-size: 15px; line-height: 1.45;
+    .pills {
+      display: flex; gap: 2px; flex-wrap: wrap; justify-content: center;
+      padding: 3px; background: rgba(8,10,14,0.82); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px;
     }
-    .formula small { display: block; margin-top: 6px; color: var(--muted); font-size: 13px; }
-    #run dl { display: grid; grid-template-columns: 92px 1fr; gap: 4px 10px; margin: 8px 0 0;
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 12.5px; }
-    #run dt { color: var(--muted); }
-    #run dd { margin: 0; font-variant-numeric: tabular-nums; }
-    .spark { display: block; margin-top: 6px; }
-    .spark text { fill: var(--muted); font-size: 10px; font-family: Helvetica, Arial, sans-serif; }
-    #topbar {
-      position: fixed; top: 12px; left: 430px; right: 308px; z-index: 5;
-      display: flex; flex-direction: column; gap: 8px; align-items: center; pointer-events: none;
-    }
-    #topbar > * { pointer-events: auto; }
-    .pills { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center;
-      padding: 4px; background: rgba(8,9,12,0.82); border: 1px solid var(--line); border-radius: 999px; }
     .pills a, .pills button {
-      border: 0; background: transparent; color: #c9c2b4; text-decoration: none;
-      font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 999px; cursor: pointer;
+      border: 0; background: transparent; color: #b7c0cc; font: inherit; font-size: 11.5px; font-weight: 600;
+      padding: 6px 11px; border-radius: 999px; cursor: pointer; text-decoration: none; white-space: nowrap;
     }
-    .pills a.active, .pills button.active { background: #e2b657; color: #1a1408; }
-    .pills a:hover, .pills button:hover { color: white; }
-    .pills a.active:hover, .pills button.active:hover { color: #1a1408; }
-    #hudmini {
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      font-size: 12px; color: #c9c2b4; background: rgba(8,9,12,0.72);
-      border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px;
+    .pills a:hover, .pills button:hover { color: #fff; background: rgba(255,255,255,0.08); }
+    .pills a.active, .pills button.active { color: #fff; background: #2563eb; }
+    .pills a.back {
+      color: #9aa3b0; font-weight: 550;
+      border-left: 1px solid rgba(255,255,255,0.14);
+      margin-left: 2px; padding-left: 12px; border-radius: 0 999px 999px 0;
     }
+    #hud {
+      position: fixed; top: 12px; left: 12px; z-index: 5; width: 280px;
+      background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; padding: 12px 14px; font-size: 11px; color: #8b93a0;
+      max-height: calc(100vh - 24px); overflow: auto;
+    }
+    #hud b.kicker {
+      color: #c5ccd6; font-weight: 600; display: block; margin-bottom: 4px;
+      font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    #hud .mh-title-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px;
+    }
+    #hud .mh-title-row b.kicker { margin-bottom: 0; }
+    #hud .coverage { margin: 2px 0 6px; color: #9aa3b0; font-size: 11px; font-weight: 600; line-height: 1.35; }
+    #hud .method { color: #9bb07a; font-size: 10.5px; line-height: 1.35; margin-bottom: 8px; }
+    #hud .note {
+      color: #6a7380; font-size: 10px; line-height: 1.4; margin-top: 8px;
+      border-top: 1px solid rgba(255,255,255,0.06); padding-top: 8px;
+    }
+    a.hud-link {
+      display: inline-flex; margin: 0 6px 8px 0; padding: 6px 10px; border-radius: 7px;
+      border: 1px solid rgba(255,255,255,0.12); background: rgba(37,99,235,0.14);
+      color: #c5d4f0; text-decoration: none; font-size: 11px; font-weight: 600;
+    }
+    a.hud-link:hover { background: rgba(37,99,235,0.28); color: #fff; }
+    #stats { color: #c5ccd6; font-variant-numeric: tabular-nums; line-height: 1.55; }
+    #stats .layer-line { display: flex; justify-content: space-between; gap: 8px; }
+    #stats .layer-line span { color: #8b93a0; }
+    #commPanel {
+      position: fixed; top: 12px; right: 12px; z-index: 5;
+      width: min(340px, calc(100vw - 24px)); max-height: calc(100vh - 24px);
+      overflow: hidden; display: flex; flex-direction: column;
+      background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; padding: 12px 14px; font-size: 11px; color: #8b93a0;
+    }
+    #commPanel b.kicker {
+      color: #c5ccd6; font-weight: 600; display: block; margin-bottom: 4px;
+      font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; flex-shrink: 0;
+    }
+    #commPanel .sub {
+      color: #6a7380; font-size: 10px; line-height: 1.35; margin-bottom: 8px; flex-shrink: 0;
+    }
+    #commList {
+      overflow-y: auto; flex: 1; margin-right: -6px; padding-right: 6px;
+      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.2) transparent;
+    }
+    button.comm-row {
+      display: grid; grid-template-columns: 10px 1fr; gap: 8px; width: 100%;
+      text-align: left; border: 0; background: transparent; color: inherit; font: inherit;
+      padding: 8px 4px; border-top: 1px solid rgba(255,255,255,0.06); cursor: pointer;
+    }
+    button.comm-row:first-of-type { border-top: 0; padding-top: 2px; }
+    button.comm-row.on { background: rgba(37,99,235,0.16); border-radius: 8px; }
+    .comm-swatch {
+      width: 10px; height: 10px; border-radius: 2px; margin-top: 3px;
+      box-shadow: 0 0 6px rgba(255,255,255,0.12);
+    }
+    .comm-head {
+      display: flex; justify-content: space-between; gap: 8px; align-items: baseline;
+      color: #c5ccd6; font-weight: 600; margin-bottom: 3px;
+    }
+    .comm-head .pct { color: #6a7380; font-weight: 500; font-variant-numeric: tabular-nums; }
+    .comm-brief { color: #9aa3b0; line-height: 1.45; margin-top: 3px; }
+    .comm-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+    .tag-chip {
+      border: 0; border-radius: 999px; padding: 2px 7px; font-size: 10px;
+      background: rgba(138,180,255,0.14); color: #c5d4f0;
+    }
+    #loading {
+      position: fixed; inset: 0; z-index: 20; display: grid; place-items: center;
+      background: #000; color: #9aa3b0; font-size: 12px;
+    }
+    #loading.hidden { display: none; }
+    #loadingCard {
+      min-width: min(340px, calc(100vw - 40px)); padding: 18px 20px;
+      border-radius: 14px; background: rgba(8,10,14,0.92);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    #loadingCard .t { color: #e8eef7; font-weight: 600; margin-bottom: 4px; }
     #tip {
       position: fixed; z-index: 8; display: none; pointer-events: none;
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: #e8eef7;
@@ -101,7 +143,7 @@
       border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.04);
       color: #e7e2d6; border-radius: 999px; padding: 2px 7px; cursor: pointer; font-size: 11px; font-weight: 600;
     }
-    #tip .nb button:hover { border-color: rgba(226,182,87,0.7); color: #fff; }
+    #tip .nb button:hover { border-color: rgba(138,180,255,0.7); color: #fff; }
     #tip .nb i { font-style: normal; color: #9a9386; font-weight: 500; margin-left: 4px; }
     #tip .acct-scroll {
       overflow: auto; max-height: min(460px, calc(100vh - 280px));
@@ -122,7 +164,7 @@
     #tip .t-quote { color: #ebceff; background: rgba(222,129,255,0.18); }
     #tip .t-retweet { color: #e2b657; background: rgba(226,182,87,0.16); }
     #tip time { color: #9aa3b2; font-size: 11.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
-    #tip .ap-open { margin-left: auto; color: #e2b657; font-size: 11.5px; font-weight: 650; text-decoration: none; }
+    #tip .ap-open { margin-left: auto; color: #8ab4ff; font-size: 11.5px; font-weight: 650; text-decoration: none; }
     #tip .ap-open:hover { color: #fff; }
     #tip .ap-to { color: #9aa3b2; font-size: 12px; margin: 0 0 6px; }
     #tip .ap-to a, #tip .ap-text a { color: #d5e2f5; text-decoration: none; }
@@ -136,76 +178,23 @@
     #tip .ap-eng span { font-size: 10px; color: #8b93a0; }
     #tip .ap-eng li.zero b, #tip .ap-eng li.zero span { color: #5c6570; }
     #tip .acct-empty { margin: 0; padding: 14px 16px 16px; color: #d5dde6; font-size: 13px; line-height: 1.5; }
-    #comms h2 { font-family: Palatino, Georgia, serif; font-size: 18px; font-weight: 500; margin: 0 0 4px; }
-    #comms .sub { color: var(--muted); font-size: 11.5px; line-height: 1.35; margin-bottom: 10px; }
-    .com {
-      display: grid; grid-template-columns: 10px 1fr; gap: 8px; width: 100%;
-      text-align: left; border: 0; border-top: 1px solid var(--line); background: transparent;
-      color: inherit; padding: 8px 2px; cursor: pointer;
-    }
-    .com.on { background: rgba(226, 182, 87, 0.08); }
-    .sw { width: 10px; height: 10px; border-radius: 50%; margin-top: 3px; }
-    .com b { font-weight: 650; font-size: 12px; }
-    .com span { display: block; color: var(--muted); font-size: 11px; line-height: 1.35; margin-top: 2px; }
-    #toggleMethod {
-      position: fixed; left: 12px; bottom: 12px; z-index: 7; width: min(400px, calc(100vw - 24px));
-      border: 1px solid var(--line); background: rgba(12,13,16,0.92); color: var(--ink);
-      border-radius: 999px; padding: 8px 12px; cursor: pointer; font-size: 12px; font-weight: 600;
-    }
-    #method.collapsed ~ #toggleMethod { width: auto; }
-    #status {
-      position: fixed; left: 50%; top: 46%; transform: translate(-50%, -50%);
-      z-index: 3; color: var(--muted); font-family: Helvetica, Arial, sans-serif; font-size: 14px;
-    }
     @media (max-width: 1100px) {
-      #method { width: min(360px, 92vw); }
-      #comms { display: none; }
-      #topbar { left: 12px; right: 12px; top: auto; bottom: 56px; }
+      #commPanel { display: none; }
+      #topnav { max-width: calc(100vw - 320px); }
     }
   </style>
 </head>
 <body>
-  <canvas id="c" aria-label="Graphe de collaboration temporelle"></canvas>
-  <div id="status">Chargement…</div>
-  <div id="tip" role="tooltip"></div>
-
-  <article id="method">
-    <div class="eyebrow">ICWSM 2026 · pages 1063–1082</div>
-    <h1>Ce qui se répète, au même moment, sur plusieurs gestes</h1>
-    <p class="lead">Cette page construit, pour le corpus affiché, le réseau de collaboration décrit par Iannucci, Muratore, Matakos et Kivelä. Deux comptes y sont proches lorsqu’ils font les mêmes gestes, à des instants voisins, et que ces gestes ne sont pas ceux de tout le monde.</p>
-    <p class="quiet">Un groupe obtenu ainsi est un signal de coordination. Il peut venir d’une campagne, d’un public qui réagit ensemble, ou d’un événement. Le papier le dit : un analyste doit encore lire ce que ces comptes disent.</p>
-
-    <h2>La méthode, pas à pas</h2>
-    <ol>
-      <li><b>Quatre couches, séparées.</b> Retweet d’un même message ; hashtag ; mention ; URL externe. Hashtags, mentions et URL sont lus sur les messages propres (original, réponse, citation). Le texte d’un retweet n’est pas recopié sur le retweeteur : ce geste est déjà dans la couche retweet.</li>
-      <li><b>Le délai, pas une fenêtre fixe.</b> Pour chaque contenu partagé, on mesure le temps entre un acte de l’un et le prochain acte identique de l’autre, dans les deux sens. Deux actes à la même minute comptent une fois, avec un délai nul.</li>
-      <li><b>Le poids de Newman, amorti.</b> Chaque délai ajoute exp(−β × délai) / (n − 1). n est le nombre de comptes distincts qui ont fait ce geste. Un hashtag utilisé par beaucoup pèse peu. β grand ne garde que les actes très proches ; β nul garde toutes les répétitions, quelle que soit l’heure.</li>
-      <li><b>β est choisi par les données.</b> Pour chaque couche, on cherche le β entre 0 et 10 qui donne la modularité la plus haute (Leiden, γ = 1). Le délai dans l’exponentielle est en jours, comme dans le code des auteurs : sinon cet intervalle n’a pas de sens.</li>
-      <li><b>Les couches ne sont pas additionnées.</b> Un même découpage en groupes est cherché sur les quatre graphes à la fois, en sommant leurs modularités. Un groupe peut donc s’appuyer sur le retweet dans une couche et sur le hashtag dans une autre, sans que les poids, qui ne sont pas sur la même échelle, soient mélangés avant coup.</li>
-      <li><b>Le dessin n’est pas la méthode.</b> Les positions sont un ForceAtlas2 simple : les comptes liés s’attirent, les autres se repoussent, et l’attraction suit la distance. Pas de LinLog, pas de dissuasion des hubs. La partition, elle, vient de l’étape 5. Un co-retweet n’est tracé qu’à partir de 2 messages distincts en commun. Une seule reprise commune reste dans le calcul des groupes, mais elle n’est pas dessinée. La taille et les noms suivent la force de collaboration, la somme des poids de Newman. Le survol éclaire les comptes liés et ouvre les publications.</li>
-    </ol>
-
-    <h2>La formule</h2>
-    <div class="formula">
-      w(u, v) = Σ<sub>contenus</sub> Σ<sub>délais</sub> exp(−β · Δt) / (n − 1)
-      <small>Δt en jours. n = comptes distincts sur ce contenu. Un délai au-delà de toute proximité tombe vers zéro quand β augmente.</small>
+  <div id="loading" aria-live="polite">
+    <div id="loadingCard">
+      <div class="t">Collaboration temporelle</div>
+      <div id="ldMsg">Préparation…</div>
     </div>
-
-    <h2>Ce calcul, sur ce corpus</h2>
-    <div id="run"><p class="quiet">Les chiffres s’affichent avec le graphe.</p></div>
-
-    <h2>Ce qui est tenu fixe, et pourquoi</h2>
-    <p>Le papier balaie β de 0 à 10 par pas de 0,01, avec un Leiden à chaque pas. Ici, une grille grosse puis fine classe les β avec 2 itérations de Leiden ; les trois meilleurs du dernier voisinage sont recalculés jusqu’à convergence. À qualité égale, le plus petit β est gardé.</p>
-    <p>Un contenu partagé par plus de 150 comptes est laissé hors de la somme. Sur un message retweeté des dizaines de milliers de fois, écrire toutes les paires est impossible, et chaque paire pèserait au plus 1/150. Le nombre de contenus écartés est indiqué ci-dessus.</p>
-        <p>Le papier cite la modularité multi-couches de Mucha et al. (2010), sans donner la force de couplage entre couches. On n’en invente pas une. L’optimisation utilisée (Leiden multiplexe, poids de couche égaux, γ = 1) impose une seule appartenance, commune aux couches, au lieu d’additionner les arêtes. La modularité peut aussi coller une grande part du corpus dans un seul groupe : c’est une limite que les auteurs signalent eux-mêmes.</p>
-    <p>Si une couche a trop d’arêtes pour l’écran, le tracé garde les plus lourdes. Les groupes, eux, sont ceux du graphe complet sous le plafond de 150 comptes. Le co-retweet affiché commence à 2 messages distincts partagés : en dessous, le lien existe pour la partition, il n’est pas dessiné.</p>
-
-    <h2>Référence</h2>
-    <p class="quiet">Iannucci, L., Muratore, E., Matakos, A., &amp; Kivelä, M. (2026). Detecting Coordinated Activities Through Temporal, Multiplex, and Collaborative Analysis. <i>Proceedings of the International AAAI Conference on Web and Social Media</i>, 20(1), 1063–1082. <a href="https://doi.org/10.1609/icwsm.v20i1.42682">doi:10.1609/icwsm.v20i1.42682</a> · code : <a href="https://github.com/letiziaia/time-aware-collaboration">letiziaia/time-aware-collaboration</a>. Newman (2001) pour le poids 1/(n−1) ; Mucha et al. (2010) pour la modularité multi-couches.</p>
-  </article>
-
-  <div id="topbar">
-    <nav id="corpora" class="pills" aria-label="Corpus"></nav>
+  </div>
+  <canvas id="c" aria-label="Graphe de collaboration temporelle"></canvas>
+  <div id="tip" role="tooltip"></div>
+  <div id="topnav">
+    <nav id="corpusNav" class="pills" aria-label="Corpus"></nav>
     <div id="layers" class="pills" role="group" aria-label="Couche affichée">
       <button type="button" data-layer="all" class="active">Quatre couches</button>
       <button type="button" data-layer="rt" title="Co-retweet dessiné à partir de 2 messages distincts en commun">Retweet</button>
@@ -213,21 +202,31 @@
       <button type="button" data-layer="me">Mention</button>
       <button type="button" data-layer="ur">URL</button>
     </div>
-    <div id="hudmini"></div>
   </div>
-
-  <aside id="comms" aria-label="Groupes">
-    <h2>Groupes</h2>
-    <div class="sub" id="commSub">Communautés du Leiden multiplexe, les plus peuplées. Le hashtag est une description, pas un critère du modèle.</div>
+  <aside id="hud">
+    <a class="hud-link" id="backConnectome" href="../connectome/">← Connectome</a>
+    <a class="hud-link" id="toCoord" href="../reseau-coordination/">Coordination</a>
+    <div class="mh-title-row">
+      <b class="kicker">Collaboration temporelle</b>
+      <span id="methodHelpSlot"></span>
+    </div>
+    <div id="corpusCoverage" class="coverage">—</div>
+    <div class="method">Quatre couches · Newman amorti · Leiden multiplexe</div>
+    <div id="stats">Les chiffres s’affichent avec le graphe.</div>
+    <div class="note">Positions : ForceAtlas2 à deux échelles. La partition vient du Leiden, pas du dessin. Survol → publications.</div>
+  </aside>
+  <aside id="commPanel" aria-label="Groupes">
+    <b class="kicker">Groupes</b>
+    <div class="sub" id="commSub">Communautés du Leiden multiplexe. Cliquer pour isoler. Les hashtags décrivent, ils ne fabriquent pas le groupe.</div>
     <div id="commList"></div>
   </aside>
-
-  <button type="button" id="toggleMethod" aria-controls="method" aria-expanded="true">Masquer le texte</button>
 
   <script>
     const canvas = document.getElementById("c");
     const ctx = canvas.getContext("2d");
-    const statusEl = document.getElementById("status");
+    const ASSET_V = "20261104a";
+    const loadingEl = document.getElementById("loading");
+    const statusEl = document.getElementById("ldMsg");
     const tip = document.getElementById("tip");
     const LAYER_COLOR = { rt: "#7eb6ff", ha: "#e2b657", me: "#f0a0c0", ur: "#7ddec8" };
     const LAYER_NAME = { rt: "Retweet", ha: "Hashtag", me: "Mention", ur: "URL" };
@@ -244,14 +243,13 @@
     const params = new URLSearchParams(location.search);
     if (params.get("corpus")) current = params.get("corpus");
 
-    document.getElementById("toggleMethod").addEventListener("click", () => {
-      const el = document.getElementById("method");
-      const hidden = el.classList.toggle("collapsed");
-      const btn = document.getElementById("toggleMethod");
-      btn.textContent = hidden ? "Lire la méthode" : "Masquer le texte";
-      btn.setAttribute("aria-expanded", String(!hidden));
-      document.getElementById("topbar").style.left = hidden ? "12px" : "";
-    });
+    function showLoading(text) {
+      loadingEl.classList.remove("hidden");
+      statusEl.textContent = text;
+    }
+    function hideLoading() {
+      loadingEl.classList.add("hidden");
+    }
 
     function resize() {
       const dpr = window.devicePixelRatio || 1;
@@ -264,6 +262,7 @@
 
     let shownNode = null;
     let fitZoom = 1;
+    let overviewZoom = 1;
     let maxStrength = 1;
     let labelRank = [];
     let adj = [];
@@ -378,22 +377,80 @@
       for (const nb of adj[hover] || []) hoverMask[nb.i] = 1;
     }
 
-    function fit() {
-      if (!graph || !graph.nodes.length) return;
+    function quantile(sorted, q) {
+      const i = (sorted.length - 1) * q;
+      const lo = Math.floor(i);
+      const hi = Math.min(sorted.length - 1, lo + 1);
+      const t = i - lo;
+      return sorted[lo] * (1 - t) + sorted[hi] * t;
+    }
+
+    function extentOf(nodes, qLo, qHi) {
+      const xs = [];
+      const ys = [];
+      for (const n of nodes) { xs.push(n.x); ys.push(n.y); }
+      xs.sort((a, b) => a - b);
+      ys.sort((a, b) => a - b);
+      return {
+        minX: quantile(xs, qLo), maxX: quantile(xs, qHi),
+        minY: quantile(ys, qLo), maxY: quantile(ys, qHi),
+      };
+    }
+
+    // Le cœur statistique (8e–92e) est dominé par les plus gros groupes.
+    // On l'élargit jusqu'au corps (rayon 95 %) des groupes encore conséquents,
+    // sans suivre les satellites isolés qui videraient le cadre.
+    function communityBodyBox(nodes) {
+      const groups = new Map();
+      for (const n of nodes) {
+        let g = groups.get(n.com);
+        if (!g) groups.set(n.com, g = []);
+        g.push(n);
+      }
+      const thr = Math.max(12, Math.floor(nodes.length * 0.008));
       let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-      let any = false;
+      let used = 0;
+      for (const g of groups.values()) {
+        if (g.length < thr) continue;
+        let sx = 0, sy = 0;
+        for (const n of g) { sx += n.x; sy += n.y; }
+        const cx = sx / g.length;
+        const cy = sy / g.length;
+        const rad = g.map((n) => Math.hypot(n.x - cx, n.y - cy)).sort((a, b) => a - b);
+        const reach = quantile(rad, 0.95);
+        minX = Math.min(minX, cx - reach);
+        maxX = Math.max(maxX, cx + reach);
+        minY = Math.min(minY, cy - reach);
+        maxY = Math.max(maxY, cy + reach);
+        used++;
+      }
+      if (used < 2 || !Number.isFinite(minX)) return null;
+      return { minX, maxX, minY, maxY };
+    }
+
+    function fit(comId) {
+      if (!graph || !graph.nodes.length) return;
+      const pts = [];
       graph.nodes.forEach((n, i) => {
         if (shownNode && !shownNode[i]) return;
-        any = true;
-        if (n.x < minX) minX = n.x;
-        if (n.x > maxX) maxX = n.x;
-        if (n.y < minY) minY = n.y;
-        if (n.y > maxY) maxY = n.y;
+        if (comId != null && n.com !== comId) return;
+        pts.push(n);
       });
-      if (!any) return;
+      if (pts.length < 2) return;
+      let box = extentOf(pts, 0.08, 0.92);
+      if (comId == null && pts.length >= 1500) {
+        const body = communityBodyBox(pts);
+        if (body) {
+          const core = Math.max(box.maxX - box.minX, box.maxY - box.minY, 1);
+          const wide = Math.max(body.maxX - body.minX, body.maxY - body.minY, 1);
+          if (wide > core && wide < core * 1.8) box = body;
+        }
+      }
+      const minX = box.minX, maxX = box.maxX, minY = box.minY, maxY = box.maxY;
       const span = Math.max(maxX - minX, maxY - minY, 1);
-      view.zoom = Math.min(innerWidth, innerHeight) / span * 0.72;
+      view.zoom = Math.min(innerWidth, innerHeight) / span * 0.92;
       fitZoom = view.zoom;
+      if (comId == null) overviewZoom = view.zoom;
       view.x = -(minX + maxX) / 2;
       view.y = -(minY + maxY) / 2;
     }
@@ -417,7 +474,8 @@
 
     function nodeR(n) {
       const rk = n.rk || 0;
-      return 0.42 + 5.4 * Math.pow(rk, 4);
+      const px = 1.7 + 8 * Math.pow(rk, 2.2);
+      return px / Math.max(view.zoom, 1e-6);
     }
 
     function centralityPlace(n) {
@@ -504,7 +562,7 @@
         ctx.textBaseline = "bottom";
         ctx.shadowColor = "rgba(0,0,0,0.85)";
         ctx.shadowBlur = 6;
-        ctx.fillStyle = `rgb(${n.c[0]},${n.c[1]},${n.c[2]})`;
+        ctx.fillStyle = "#fff";
         ctx.fillText(text, p.x + ox, p.y + oy - font * 0.15);
         ctx.shadowBlur = 0;
         boxes.push(box);
@@ -534,7 +592,7 @@
     }
 
     function ensureScenePaths() {
-      const key = layer + "|" + (focusCom ?? "-") + "|" + (hover ?? "-");
+      const key = layer + "|" + (focusCom ?? "-") + "|" + (hover ?? "-") + "|" + view.zoom.toFixed(3);
       if (scenePaths && sceneKey === key) return scenePaths;
       sceneKey = key;
       const quiet = hover != null;
@@ -565,7 +623,7 @@
           intra.lineTo(b.x, b.y);
           nIntra++;
         }
-        if (nInter) edges.push({ style: group.style, path: inter, alpha: quiet ? 0.045 : 0.16, width: 1 });
+        if (nInter) edges.push({ style: group.style, path: inter, alpha: quiet ? 0.04 : 0.08, width: 1 });
         if (nIntra) edges.push({ style: group.style, path: intra, alpha: quiet ? 0.12 : 0.72, width: 1 });
       }
       let hot = null;
@@ -994,7 +1052,7 @@
     canvas.addEventListener("wheel", (ev) => {
       ev.preventDefault();
       const factor = ev.deltaY < 0 ? 1.08 : 0.92;
-      const floor = Math.max(0.02, fitZoom * 0.35);
+      const floor = Math.max(0.02, (overviewZoom || fitZoom) * 0.35);
       const next = Math.min(64, Math.max(floor, view.zoom * factor));
       const wpt = world(ev.clientX, ev.clientY);
       view.zoom = next;
@@ -1017,60 +1075,33 @@
       if (ev.key === "Escape") clearHover();
     });
 
-    function sparkline(curve, chosen) {
-      if (!curve || !curve.length) return "";
-      const w = 320, h = 72, pad = 8;
-      const qs = curve.map((p) => p.Q);
-      const min = Math.min(...qs), max = Math.max(...qs, min + 1e-6);
-      const pts = curve.map((p, i) => {
-        const x = pad + (i / Math.max(curve.length - 1, 1)) * (w - 2 * pad);
-        const y = h - pad - ((p.Q - min) / (max - min)) * (h - 2 * pad);
-        return [x, y, p];
-      });
-      const d = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
-      const best = pts.find((p) => p[2].beta === chosen) || pts[pts.length - 1];
-      return `<svg class="spark" viewBox="0 0 ${w} ${h}" width="100%" height="72" role="img" aria-label="Modularité selon bêta">
-        <path d="${d}" fill="none" stroke="#e2b657" stroke-width="1.6"/>
-        <circle cx="${best[0].toFixed(1)}" cy="${best[1].toFixed(1)}" r="3.2" fill="#e2b657"/>
-        <text x="${pad}" y="${h - 1}">β ${curve[0].beta}</text>
-        <text x="${w - 28}" y="${h - 1}">${curve[curve.length - 1].beta}</text>
-      </svg>`;
-    }
-
     function fmt(x) {
       if (x == null || Number.isNaN(x)) return "—";
       return Number(x).toLocaleString("fr-FR", { maximumFractionDigits: 3 });
     }
 
     function renderMethod() {
-      const box = document.getElementById("run");
-      if (!method) { box.innerHTML = "<p class='quiet'>Pas encore calculé pour ce corpus.</p>"; return; }
-      const layers = method.layers || {};
-      let rows = "";
-      for (const key of ["rt", "ha", "me", "ur"]) {
-        const L = layers[key] || {};
-        rows += `<dt>${LAYER_NAME[key]}</dt><dd>β = ${fmt(L.beta)} · modularité ${fmt(L.Q)} · ${fmt(L.n_edges)} arêtes · ${fmt(L.n_contents_excluded)} contenus écartés</dd>`;
+      const stats = document.getElementById("stats");
+      const cov = document.getElementById("corpusCoverage");
+      if (!method) {
+        cov.textContent = "—";
+        stats.textContent = "Pas encore calculé pour ce corpus.";
+        return;
       }
-      const mx = method.multiplex || {};
-      const curves = ["rt", "ha", "me", "ur"].map((key) => {
-        const L = layers[key];
-        if (!L || !L.curve || !L.curve.length) return "";
-        const qs = L.curve.map((p) => p.Q);
-        const span = Math.max(...qs) - Math.min(...qs);
-        const flat = span < 0.02
-          ? " Sur cette fenêtre, la modularité bouge peu : la plupart des co-actions sont plus courtes que les échelles que β sépare."
-          : "";
-        return `<div style="margin-top:12px"><b style="font-family:Helvetica,Arial,sans-serif;font-size:12px">${LAYER_NAME[key]}</b>${sparkline(L.curve, L.beta)}<p class="quiet" style="margin:2px 0 0">Courbe de recherche (2 itérations). Le point marque le β retenu, confirmé jusqu’à convergence (modularité ${fmt(L.Q)}).${flat}</p></div>`;
+      cov.textContent = method.label || "—";
+      const layers = method.layers || {};
+      const lines = ["rt", "ha", "me", "ur"].map((key) => {
+        const L = layers[key] || {};
+        return `<div class="layer-line"><span>${LAYER_NAME[key]}</span><b>β ${fmt(L.beta)} · Q ${fmt(L.Q)}</b></div>`;
       }).join("");
+      const mx = method.multiplex || {};
       const disp = method.display || {};
-      box.innerHTML = `<dl>${rows}
-        <dt>Multiplexe</dt><dd>${fmt(mx.n_nodes)} comptes · ${fmt(mx.n_communities)} groupes · ${fmt(mx.n_singletons)} comptes seuls</dd>
-        <dt>Tracé</dt><dd>${fmt(disp.n_edges_drawn)} arêtes affichées${disp.edges_truncated ? " (les plus lourdes de chaque couche)" : ""}. Co-retweet dessiné à partir de ${CO_RT_MIN} messages distincts. Positions : ForceAtlas2 simple.</dd>
-      </dl>${curves}`;
-      const q = mx.Q_shared || {};
-      const bits = Object.entries(q).map(([k, v]) => `${LAYER_NAME[k] || k} ${fmt(v)}`);
-      document.getElementById("hudmini").textContent =
-        `${method.label} · ${fmt(mx.n_nodes)} comptes dans le multiplexe` + (bits.length ? ` · modularité partagée ${bits.join(" · ")}` : "") + ` · ForceAtlas2 simple · co-retweet à partir de ${CO_RT_MIN} messages`;
+      const bits = Object.entries(mx.Q_shared || {}).map(([k, v]) => `${LAYER_NAME[k] || k} ${fmt(v)}`).join(" · ");
+      const trunc = disp.edges_truncated ? " · tronqué" : "";
+      stats.innerHTML = `<div>${fmt(mx.n_nodes)} comptes · ${fmt(mx.n_communities)} groupes</div>
+        <div>${fmt(disp.n_edges_drawn)} arêtes${trunc}</div>
+        ${lines}
+        <div style="margin-top:6px;color:#8b93a0">Modularité partagée · ${bits}</div>`;
     }
 
     function renderComms() {
@@ -1079,30 +1110,43 @@
       document.getElementById("commSub").textContent = comms.length
         ? "Groupes d’au moins 3 comptes, par taille. Cliquer pour les isoler. Les hashtags décrivent les messages propres des membres ; ils ne servent pas à fabriquer le groupe."
         : "Aucun groupe d’au moins 3 comptes.";
+      const denom = (method && method.multiplex && method.multiplex.n_nodes) || totalOf(comms);
       list.innerHTML = comms.map((c) => {
-        const tags = (c.hashtags || []).slice(0, 4).map((h) => `#${h.tag}`).join(" ");
-        const handles = (c.handles || []).map((h) => "@" + h).join(" ");
-        return `<button type="button" class="com${focusCom === c.id ? " on" : ""}" data-com="${c.id}">
-          <i class="sw" style="background:rgb(${c.color.join(",")})"></i>
-          <div><b>Groupe ${c.id} · ${c.n} comptes</b>
-          <span>${handles}</span>
-          <span>${tags}</span></div></button>`;
+        const tags = (c.hashtags || []).slice(0, 4).map((h) => `<span class="tag-chip">#${escapeHtml(h.tag)}</span>`).join("");
+        const handles = (c.handles || []).slice(0, 3).map((h) => "@" + h).join(" · ");
+        const pct = denom ? Math.round(100 * c.n / denom) : 0;
+        return `<button type="button" class="comm-row${focusCom === c.id ? " on" : ""}" data-com="${c.id}">
+          <i class="comm-swatch" style="background:rgb(${c.color.join(",")})"></i>
+          <div>
+            <div class="comm-head"><span>Groupe ${c.id}</span><span class="pct">${fmt(c.n)} · ${pct}%</span></div>
+            <div class="comm-brief">${escapeHtml(handles)}</div>
+            ${tags ? `<div class="comm-tags">${tags}</div>` : ""}
+          </div></button>`;
       }).join("");
-      list.querySelectorAll(".com").forEach((btn) => {
+      list.querySelectorAll(".comm-row").forEach((btn) => {
         btn.addEventListener("click", () => {
           const id = Number(btn.getAttribute("data-com"));
           focusCom = focusCom === id ? null : id;
           renderComms();
+          fit(focusCom);
           draw();
         });
       });
     }
 
+    function totalOf(comms) {
+      return comms.reduce((sum, c) => sum + (c.n || 0), 0);
+    }
+
     function renderCorpora() {
-      const nav = document.getElementById("corpora");
+      const nav = document.getElementById("corpusNav");
+      const label = (corpora.find((c) => c.id === current) || {}).label || current;
+      document.title = "Collaboration · " + String(label).split("·")[0].trim();
+      document.getElementById("backConnectome").href = `../connectome/?corpus=${encodeURIComponent(current)}`;
+      document.getElementById("toCoord").href = `../reseau-coordination/?corpus=${encodeURIComponent(current)}`;
       nav.innerHTML = corpora.map((c) =>
         `<a href="?corpus=${encodeURIComponent(c.id)}" class="${c.id === current ? "active" : ""}" data-id="${c.id}">${c.label.split("·")[0].trim()}</a>`
-      ).join("") + `<a href="../connectome/?corpus=${encodeURIComponent(current)}">Connectome</a>`;
+      ).join("") + `<a class="back" href="../connectome/?corpus=${encodeURIComponent(current)}">Connectome</a>`;
       nav.querySelectorAll("a[data-id]").forEach((a) => {
         a.addEventListener("click", (ev) => {
           ev.preventDefault();
@@ -1118,16 +1162,15 @@
       if (!btn) return;
       layer = btn.getAttribute("data-layer");
       document.querySelectorAll("#layers button").forEach((b) => b.classList.toggle("active", b === btn));
-      buildAdj();
-      indexScene();
+      markShown();
+      fit(focusCom);
       rebuildHover();
       refreshTip();
       draw();
     });
 
     async function load() {
-      statusEl.style.display = "block";
-      statusEl.textContent = "Chargement…";
+      showLoading("Chargement…");
       seq += 1;
       const token = seq;
       focusCom = null;
@@ -1144,21 +1187,20 @@
       loadPosts(current, token);
       try {
         const [gRes, mRes] = await Promise.all([
-          fetch(`data/${current}/graph.json`),
-          fetch(`data/${current}/method.json`),
+          fetch(`data/${current}/graph.json?v=${ASSET_V}`),
+          fetch(`data/${current}/method.json?v=${ASSET_V}`),
         ]);
         if (!gRes.ok) throw new Error("absent");
         graph = await gRes.json();
         method = mRes.ok ? await mRes.json() : null;
-        statusEl.style.display = "none";
+        hideLoading();
         markShown();
         fit();
         renderMethod();
         renderComms();
         draw();
       } catch (err) {
-        statusEl.style.display = "block";
-        statusEl.textContent = "Ce corpus n’a pas encore de graphe calculé.";
+        showLoading("Ce corpus n’a pas encore de graphe calculé.");
         renderMethod();
         renderComms();
       }
@@ -1170,7 +1212,14 @@
       resize();
       load();
     }).catch(() => {
-      statusEl.textContent = "corpora.json introuvable. Servir cette page en HTTP.";
+      showLoading("corpora.json introuvable. Servir cette page en HTTP.");
+    });
+  </script>
+  <script type="module">
+    import { initMethodHelp } from "../shared/method-help.js";
+    initMethodHelp({
+      topic: "collaboration",
+      buttonParent: document.getElementById("methodHelpSlot"),
     });
   </script>
 </body>

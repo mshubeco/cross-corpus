@@ -213,6 +213,71 @@ const TOPICS = {
     `,
   },
 
+  collaboration: {
+    kicker: 'ICWSM 2026 · pages 1063–1082',
+    title: 'Ce qui se répète, au même moment, sur plusieurs gestes',
+    html: `
+      <h3>Objet</h3>
+      <p>Cette page construit, pour le corpus affiché, le réseau de collaboration décrit par Iannucci, Muratore, Matakos et Kivelä.
+      Deux comptes y sont proches lorsqu’ils font les mêmes gestes, à des instants voisins, et que ces gestes ne sont pas ceux de tout le monde.</p>
+      <p>Un groupe obtenu ainsi est un signal de coordination. Il peut venir d’une campagne, d’un public qui réagit ensemble, ou d’un événement.
+      Le papier le dit : un analyste doit encore lire ce que ces comptes disent.</p>
+
+      <h3>Quatre couches, séparées</h3>
+      <p>Retweet d’un même message ; hashtag ; mention ; URL externe.
+      Hashtags, mentions et URL sont lus sur les messages propres (original, réponse, citation).
+      Le texte d’un retweet n’est pas recopié sur le retweeteur : ce geste est déjà dans la couche retweet.</p>
+
+      <h3>Le délai, pas une fenêtre fixe</h3>
+      <p>Pour chaque contenu partagé, on mesure le temps entre un acte de l’un et le prochain acte identique de l’autre, dans les deux sens.
+      Deux actes à la même minute comptent une fois, avec un délai nul.</p>
+
+      <h3>Le poids de Newman, amorti</h3>
+      <div class="mh-formula">w(u, v) = Σ<sub>contenus</sub> Σ<sub>délais</sub> exp(−β · Δt) / (n − 1)</div>
+      <p>Δt est en jours. n est le nombre de comptes distincts qui ont fait ce geste.
+      Un hashtag utilisé par beaucoup pèse peu. β grand ne garde que les actes très proches ; β nul garde toutes les répétitions, quelle que soit l’heure.</p>
+
+      <h3>β est choisi par les données</h3>
+      <p>Pour chaque couche, on cherche le β entre 0 et 10 qui donne la modularité la plus haute (Leiden, γ = 1).
+      Le papier balaie β par pas de 0,01. Ici, une grille grosse puis fine classe les β avec 2 itérations de Leiden ;
+      les trois meilleurs du dernier voisinage sont recalculés jusqu’à convergence. À qualité égale, le plus petit β est gardé.</p>
+
+      <h3>Les couches ne sont pas additionnées</h3>
+      <p>Un même découpage en groupes est cherché sur les quatre graphes à la fois, en sommant leurs modularités.
+      Un groupe peut s’appuyer sur le retweet dans une couche et sur le hashtag dans une autre.
+      Le papier cite Mucha et al. (2010) sans donner la force de couplage entre couches : on n’en invente pas une.
+      L’optimisation (Leiden multiplexe, poids de couche égaux, γ = 1) impose une seule appartenance, commune aux couches.</p>
+
+      <h3>Le dessin</h3>
+      <p>Les positions sont un <strong>ForceAtlas2</strong> à deux échelles, le même moteur que le réseau de coordination
+      (dissuasion des hubs, sans LinLog). D’abord à l’intérieur de chaque groupe, puis entre les groupes,
+      avec un écart minimum pour qu’ils occupent le plan. Sur un grand corpus, les itérations sont plus longues
+      et l’écart entre groupes plus large. Le poids de Newman est passé au log(1 + w) pour le dessin seulement,
+      afin qu’une arête très lourde n’écrase pas l’espace. La partition, elle, reste celle du Leiden multiplexe.</p>
+      <p>Un co-retweet n’est tracé qu’à partir de 2 messages distincts en commun.
+      Une seule reprise commune reste dans le calcul des groupes, elle n’est pas dessinée.
+      Si une couche a trop d’arêtes pour l’écran, le tracé garde les plus lourdes.
+      La vue cadre le cœur du nuage, comme sur le réseau de coordination.</p>
+      <div class="mh-cite">Jacomy, M., Venturini, T., Heymann, S., &amp; Bastian, M. (2014).
+        ForceAtlas2, a continuous graph layout algorithm for handy network visualization. <em>PLOS ONE</em>.</div>
+
+      <h3>Ce qui est tenu fixe</h3>
+      <p>Un contenu partagé par plus de 150 comptes est laissé hors de la somme.
+      Sur un message retweeté des dizaines de milliers de fois, écrire toutes les paires est impossible,
+      et chaque paire pèserait au plus 1/150. Le nombre de contenus écartés est dans le panneau du corpus.</p>
+      <div class="mh-caveat"><strong>Limite.</strong> La modularité peut coller une grande part du corpus dans un seul groupe.
+      Les auteurs le signalent. Un groupe n’est pas une preuve d’inauthenticité.</div>
+
+      <h3>Référence</h3>
+      <div class="mh-cite">Iannucci, L., Muratore, E., Matakos, A., &amp; Kivelä, M. (2026).
+        Detecting Coordinated Activities Through Temporal, Multiplex, and Collaborative Analysis.
+        <em>Proceedings of the International AAAI Conference on Web and Social Media</em>, 20(1), 1063–1082.
+        <a href="https://doi.org/10.1609/icwsm.v20i1.42682" target="_blank" rel="noopener noreferrer">doi:10.1609/icwsm.v20i1.42682</a>
+        · code <a href="https://github.com/letiziaia/time-aware-collaboration" target="_blank" rel="noopener noreferrer">letiziaia/time-aware-collaboration</a>.
+        Newman (2001) pour le poids 1/(n−1) ; Mucha et al. (2010) pour la modularité multi-couches.</div>
+    `,
+  },
+
   coordination: {
     kicker: 'Réseau de coordination',
     title: 'Backbone co-RT · filtre de disparité Serrano',

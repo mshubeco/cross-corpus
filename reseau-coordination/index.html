@@ -7,6 +7,7 @@
   <meta name="coord-build" content="2026-10-22-default-base-colors" />
   <meta http-equiv="Cache-Control" content="no-cache" />
   <style>
+    :root { --ui-chrome-top: 72px; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #000; color: #ccc;
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
@@ -188,7 +189,7 @@
       text-transform: uppercase;
     }
     #tooltip .coHead .sum { color: #8ab4ff; font-variant-numeric: tabular-nums; text-transform: none; letter-spacing: 0; }
-    #tooltip .coList { margin-top: 4px; max-height: 180px; overflow: hidden; }
+    #tooltip .coList { margin-top: 4px; max-height: 180px; overflow: auto; }
     #tooltip .coRow {
       display: flex; justify-content: space-between; gap: 12px;
       font-size: 10.5px; line-height: 1.45; color: #d5dde8;
@@ -196,6 +197,125 @@
     #tooltip .coRow .h { color: #e8eef7; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     #tooltip .coRow .n { color: #8ab4ff; font-variant-numeric: tabular-nums; font-weight: 600; flex: 0 0 auto; }
     #tooltip .coMore { color: #6a7380; font-size: 10px; margin-top: 3px; }
+    #tooltip.acct {
+      z-index: 30; pointer-events: auto; user-select: text; cursor: default;
+      width: min(432px, calc(100vw - 20px));
+      max-width: min(432px, calc(100vw - 20px));
+      max-height: calc(100vh - var(--ui-chrome-top) - 12px);
+      padding: 0; overflow: hidden;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-top: 3px solid var(--acct-accent, #8b93a0);
+      background: rgba(12, 14, 18, 0.97);
+      box-shadow: 0 22px 56px rgba(0,0,0,0.58), 0 0 0 1px rgba(0,0,0,0.45);
+      font-size: 13.5px; line-height: 1.45; color: #e8eef7;
+    }
+    #tooltip.acct .acct-head {
+      padding: 13px 16px 12px;
+      background: rgba(255,255,255,0.035);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    #tooltip.acct .acct-id { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    #tooltip.acct .acct-avatar {
+      width: 46px; height: 46px; border-radius: 50%; object-fit: cover; flex: none;
+      background: rgba(255,255,255,0.06);
+      box-shadow: 0 0 0 2px var(--acct-ring, rgba(255,255,255,0.35));
+    }
+    #tooltip.acct .acct-who { min-width: 0; }
+    #tooltip.acct .acct-name {
+      margin-top: 1px; color: #9aa3b0; font-size: 12px; line-height: 1.3;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    #tooltip.acct .acct-dot {
+      width: 9px; height: 9px; border-radius: 50%; flex: none;
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.06);
+    }
+    #tooltip.acct .acct-bio {
+      margin-top: 8px; color: #e4eaf2; font-size: 12.5px; line-height: 1.45;
+      white-space: pre-wrap; overflow-wrap: anywhere;
+      max-height: 6.6em; overflow: auto;
+    }
+    #tooltip.acct .acct-ever {
+      margin-top: 6px; color: #e4eaf2; font-size: 12.5px; font-weight: 650;
+    }
+    #tooltip.acct .acct-ever span { color: #8b93a0; font-weight: 500; }
+    #tooltip.acct .acct-handle {
+      color: #fff; font-weight: 650; font-size: 15.5px; letter-spacing: -0.015em;
+      text-decoration: none; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    #tooltip.acct .acct-handle:hover { text-decoration: underline; }
+    #tooltip.acct .acct-meta { margin-top: 5px; color: #8b93a0; font-size: 11.5px; line-height: 1.35; }
+    #tooltip.acct .acct-co { margin-top: 8px; }
+    #tooltip.acct .acct-co .coHead { margin-top: 0; padding-top: 0; border-top: 0; }
+    #tooltip.acct .acct-co .coList { max-height: 148px; }
+    #tooltip.acct .acct-count { margin-top: 8px; color: #e4eaf2; font-size: 12.5px; font-weight: 650; }
+    #tooltip.acct .acct-count span { color: #8b93a0; font-weight: 500; }
+    #tooltip.acct .acct-scroll {
+      overflow: auto;
+      max-height: min(420px, calc(100vh - var(--ui-chrome-top) - 280px));
+      padding: 8px 10px 12px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.38) transparent;
+    }
+    #tooltip.acct .acct-scroll.can-scroll {
+      mask-image: linear-gradient(to bottom, #000 calc(100% - 36px), transparent);
+    }
+    #tooltip.acct .acct-scroll::-webkit-scrollbar { width: 8px; }
+    #tooltip.acct .acct-scroll::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.32); border-radius: 8px;
+    }
+    #tooltip.acct .acct-hint {
+      display: none; margin: 0; padding: 0 16px 10px;
+      text-align: center; font-size: 10.5px; font-weight: 650;
+      letter-spacing: 0.06em; text-transform: uppercase; color: #9aa3b0;
+    }
+    #tooltip.acct .ap {
+      margin: 6px 2px; padding: 12px 12px 10px; border-radius: 12px;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+    }
+    #tooltip.acct .ap-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    #tooltip.acct .ap-rank {
+      color: #6e7784; font-size: 11px; font-weight: 700;
+      font-variant-numeric: tabular-nums; min-width: 1ch;
+    }
+    #tooltip.acct .ap-type {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.055em;
+      text-transform: uppercase; padding: 3px 7px; border-radius: 999px; flex: none;
+    }
+    #tooltip.acct .t-original { color: #c6eb8e; background: rgba(115,192,0,0.16); }
+    #tooltip.acct .t-reply { color: #b7ceff; background: rgba(37,99,235,0.24); }
+    #tooltip.acct .t-quote { color: #ebceff; background: rgba(222,129,255,0.18); }
+    #tooltip.acct time {
+      color: #9aa3b2; font-size: 11.5px; font-variant-numeric: tabular-nums; white-space: nowrap;
+    }
+    #tooltip.acct .ap-open {
+      margin-left: auto; color: #9eb6d6; font-size: 11.5px; font-weight: 650;
+      text-decoration: none; flex: none;
+    }
+    #tooltip.acct .ap-open:hover { color: #fff; }
+    #tooltip.acct .ap-to { color: #9aa3b2; font-size: 12px; margin: 0 0 6px; }
+    #tooltip.acct .ap-to a, #tooltip.acct .ap-text a.mention { color: #d5e2f5; text-decoration: none; }
+    #tooltip.acct .ap-to a:hover, #tooltip.acct .ap-text a.mention:hover { text-decoration: underline; }
+    #tooltip.acct .ap-text {
+      margin: 0 0 10px; color: #f4f7fb; font-size: 13.5px; line-height: 1.52;
+      white-space: pre-wrap; overflow-wrap: anywhere;
+    }
+    #tooltip.acct .ap-text a { color: #8eb4ff; }
+    #tooltip.acct .ap-eng {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px; list-style: none; margin: 0; padding: 8px 0 0;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    #tooltip.acct .ap-eng li { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+    #tooltip.acct .ap-eng b {
+      font-size: 13px; font-weight: 650; color: #fff; font-variant-numeric: tabular-nums;
+    }
+    #tooltip.acct .ap-eng span { font-size: 10px; color: #8b93a0; letter-spacing: 0.01em; white-space: nowrap; }
+    #tooltip.acct .ap-eng li.zero b,
+    #tooltip.acct .ap-eng li.zero span { color: #5c6570; }
+    #tooltip.acct .acct-empty {
+      margin: 0; padding: 14px 16px 16px; color: #d5dde6; font-size: 13px; line-height: 1.5;
+    }
     #zRuler {
       position: fixed; right: 16px; bottom: 22px; z-index: 11;
       display: none; flex-direction: column; align-items: center; gap: 6px;
@@ -299,10 +419,10 @@
     <div class="row"><span>Opacité</span><input id="op" type="range" min="0" max="0.55" step="0.005" value="0.12"></div>
     <div class="row"><span>Labels</span><input id="nLabels" type="range" min="0" max="80" step="1" value="40"></div>
     <div class="nav-hint" id="labelHint">
-      Survol → co-RT par voisin · zoom → plus de labels · taille = PageRank
+      Survol → publications et co-RT · zoom → plus de labels · taille = PageRank
     </div>
     <div class="note">
-      Backbone Serrano (2009). Pas de lien vers X : lecture locale seulement.
+      Backbone Serrano (2009). Survol d’un compte : mêmes publications que le connectome, et le co-RT par voisin.
       Labels : taille ∝ PageRank pondéré sur le backbone.
     </div>
   </aside>
@@ -338,6 +458,24 @@ const zrTrackEl = document.getElementById('zrTrack');
 const loading = document.getElementById('loading');
 const ldMsg = document.getElementById('ldMsg');
 const tip = document.getElementById('tooltip');
+let viewDrag = false;
+let tipNodeIndex = -1;
+let tipPinned = false;
+let tipHideTimer = null;
+let postsSeq = 0;
+let postsPack;
+let profilesPack;
+let postsMode = 'single';
+let shardDir = 'posts';
+let shardNames = null;
+const shardCache = new Map();
+const shardInflight = new Map();
+const tipAnchor = { x: 0, y: 0 };
+const POST_DATE = new Intl.DateTimeFormat('fr-FR', {
+  timeZone: 'Europe/Paris',
+  day: 'numeric', month: 'short', year: 'numeric',
+  hour: '2-digit', minute: '2-digit',
+});
 const nav = document.getElementById('corpusNav');
 const statsEl = document.getElementById('stats');
 const backEl = document.getElementById('backConnectome');
@@ -812,6 +950,16 @@ function initThree() {
 
   window.addEventListener('resize', onResize);
   renderer.domElement.addEventListener('pointermove', onPointerMove);
+  renderer.domElement.addEventListener('pointerleave', () => {
+    if (usesAccountCard()) scheduleHideTip();
+    else hideTipNow();
+  });
+  controls.addEventListener('start', () => { viewDrag = true; hideTipNow(); });
+  controls.addEventListener('end', () => { viewDrag = false; });
+  tip.addEventListener('pointerenter', () => { tipPinned = true; cancelHideTip(); });
+  tip.addEventListener('pointerleave', () => { tipPinned = false; scheduleHideTip(); });
+  tip.addEventListener('wheel', (ev) => ev.stopPropagation(), { passive: true });
+  window.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') hideTipNow(); });
 
   function loop() {
     requestAnimationFrame(loop);
@@ -1117,6 +1265,413 @@ function buildAdjacency(nodeList, edgeList) {
   return a;
 }
 
+function escapeHtml(s) {
+  return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+function normalizeHandle(raw) {
+  return String(raw || '').trim().replace(/^@+/, '').toLowerCase();
+}
+function displayHandle(raw) {
+  const h = String(raw || '').trim().replace(/^@+/, '');
+  return h ? `@${h}` : '';
+}
+function usesAccountCard() {
+  return postsPack !== null;
+}
+function shardKey(handle) {
+  const ch = String(handle || '').charAt(0);
+  return /^[a-z]$/.test(ch) ? ch : '_';
+}
+function lookupAccount(handle) {
+  if (postsPack == null) return postsPack;
+  if (postsMode !== 'shards') return postsPack.accounts?.[handle] || null;
+  const key = shardKey(handle);
+  if (shardNames && !shardNames.has(key)) return null;
+  if (!shardCache.has(key)) return undefined;
+  return shardCache.get(key)[handle] || null;
+}
+function ensureAccountShard(handle, seq) {
+  const key = shardKey(handle);
+  if (shardNames && !shardNames.has(key)) {
+    shardCache.set(key, {});
+    return;
+  }
+  if (shardCache.has(key) || shardInflight.has(key)) return;
+  const url = `../connectome/data/${encodeURIComponent(currentId)}/${shardDir}/${key}.json?v=${ASSET_V}`;
+  const pending = fetch(url)
+    .then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.json(); })
+    .then((data) => {
+      if (seq !== postsSeq) return;
+      shardCache.set(key, data?.accounts || {});
+      shardInflight.delete(key);
+      if (tipNodeIndex >= 0 && shardKey(normalizeHandle(nodes[tipNodeIndex]?.l)) === key) {
+        paintTip(tipNodeIndex, false);
+      }
+    })
+    .catch(() => {
+      if (seq !== postsSeq) return;
+      shardCache.set(key, {});
+      shardInflight.delete(key);
+      if (tipNodeIndex >= 0 && shardKey(normalizeHandle(nodes[tipNodeIndex]?.l)) === key) {
+        paintTip(tipNodeIndex, false);
+      }
+    });
+  shardInflight.set(key, pending);
+}
+function loadAccountPosts(corpusId) {
+  const seq = ++postsSeq;
+  postsPack = undefined;
+  postsMode = 'single';
+  shardNames = null;
+  shardCache.clear();
+  shardInflight.clear();
+  const base = `../connectome/data/${encodeURIComponent(corpusId)}/`;
+  fetch(`${base}account_posts.json?v=${ASSET_V}`)
+    .then((r) => {
+      if (r.status === 404) return null;
+      if (!r.ok) throw new Error(String(r.status));
+      return r.json();
+    })
+    .then((data) => {
+      if (seq !== postsSeq) return null;
+      if (data?.accounts) { postsMode = 'single'; postsPack = data; refreshOpenTip(); return null; }
+      return fetch(`${base}account_posts_index.json?v=${ASSET_V}`).then((r) => {
+        if (r.status === 404) return null;
+        if (!r.ok) throw new Error(String(r.status));
+        return r.json();
+      });
+    })
+    .then((index) => {
+      if (seq !== postsSeq) return;
+      if (!index?.shards) {
+        if (postsPack === undefined) { postsPack = null; refreshOpenTip(); }
+        return;
+      }
+      postsMode = 'shards';
+      shardDir = index.dir || 'posts';
+      shardNames = new Set(index.shards || []);
+      postsPack = { accounts: {} };
+      refreshOpenTip();
+    })
+    .catch(() => {
+      if (seq !== postsSeq) return;
+      postsPack = null;
+      refreshOpenTip();
+    });
+}
+function refreshOpenTip() {
+  if (tipNodeIndex >= 0 && tip.style.display !== 'none') paintTip(tipNodeIndex, false);
+}
+function formatPostWhen(iso) {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
+  return POST_DATE.format(d).replace(',', ' ·');
+}
+function richText(raw) {
+  const esc = escapeHtml(raw);
+  return esc.split(/(https?:\/\/[^\s<]+)/g).map((part, i) => {
+    if (i % 2 === 1) {
+      const clean = part.replace(/[),.]+$/g, '');
+      const trail = part.slice(clean.length);
+      return `<a href="${clean}" target="_blank" rel="noopener noreferrer">${clean}</a>${trail}`;
+    }
+    return part.replace(
+      /(^|[\s(])@([A-Za-z0-9_]{1,15})\b/g,
+      (m, pre, h) => `${pre}<a class="mention" href="https://x.com/${encodeURIComponent(h)}" target="_blank" rel="noopener noreferrer">@${h}</a>`,
+    );
+  }).join('');
+}
+function engUnit(n, one, many) {
+  return Number(n) === 1 ? one : many;
+}
+function renderPostCard(p, handle, rank) {
+  const type = p.type === 'reply' || p.type === 'quote' ? p.type : 'original';
+  const label = type === 'reply' ? 'Réponse' : type === 'quote' ? 'Citation' : 'Original';
+  const when = formatPostWhen(p.at);
+  const url = p.id ? `https://x.com/${encodeURIComponent(handle)}/status/${encodeURIComponent(p.id)}` : '';
+  const to = type === 'reply' && p.to
+    ? `<p class="ap-to">en réponse à <a href="https://x.com/${encodeURIComponent(p.to)}" target="_blank" rel="noopener noreferrer">@${escapeHtml(p.to)}</a></p>`
+    : '';
+  const metrics = [
+    ['lk', 'j’aime', 'j’aime'],
+    ['rt', 'RT', 'RT'],
+    ['rp', 'réponse', 'réponses'],
+    ['qt', 'citation', 'citations'],
+  ].map(([key, one, many]) => {
+    const n = Number(p[key] || 0);
+    return `<li class="${n ? '' : 'zero'}"><b>${n.toLocaleString('fr-FR')}</b><span>${engUnit(n, one, many)}</span></li>`;
+  }).join('');
+  return `<article class="ap">
+    <div class="ap-top">
+      <span class="ap-rank">${rank}</span>
+      <span class="ap-type t-${type}">${label}</span>
+      <time datetime="${escapeHtml(p.at || '')}">${escapeHtml(when)}</time>
+      ${url ? `<a class="ap-open" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">ouvrir</a>` : ''}
+    </div>
+    ${to}
+    <p class="ap-text">${richText(p.text || '')}</p>
+    <ul class="ap-eng">${metrics}</ul>
+  </article>`;
+}
+function nodeHoverBits(i) {
+  const nd = nodes[i];
+  const comLabel = colorMode === 'base'
+    ? `Louvain connectome ${nd.com_base ?? '—'}`
+    : `Louvain coord ${nd.com ?? nd.com_coord ?? '—'}`;
+  const prBit = nd.pr != null ? `PageRank ${Number(nd.pr).toExponential(2)}` : '';
+  let zBit = '';
+  if (mode3d) {
+    if (zMode === 'cross') {
+      const nc = Number(nd.n_cross) || 0;
+      const others = Array.isArray(nd.cross_corpora) ? nd.cross_corpora : [];
+      const h = nc >= 3 ? 'haut Z' : nc >= 1 ? 'Z moyen' : 'bas Z (≈0)';
+      const list = others.length ? ` · ${others.join(', ')}` : '';
+      zBit = ` · ${nc} autre${nc > 1 ? 's' : ''} corpus${list} · ${h}`;
+    } else if (zMode === 'chrono' && nd.z_chrono != null) {
+      const zc = Number(nd.z_chrono) || 0;
+      const when = zc >= 0.66 ? 'tard (haut Z)' : zc <= 0.33 ? 'tôt (bas Z≈0)' : 'milieu de fenêtre';
+      zBit = ` · date ${zc.toFixed(2)} · ${when}`;
+    } else if (nd.dt_med != null) {
+      const sec = Math.round(nd.dt_med);
+      const zs = Number(nd.z_sync || 0);
+      const sync = zs >= 0.66 ? 'synchrone (haut Z)' : zs <= 0.33 ? 'décalé (bas Z≈0)' : 'sync moyenne';
+      const gap = sec < 60 ? `${sec}s` : sec < 3600 ? `${Math.round(sec / 60)} min` : `${Math.round(sec / 3600)} h`;
+      zBit = ` · Δt ~${gap} · ${sync}`;
+    }
+  }
+  const nNeigh = (adj[i] || []).length;
+  const degBit = nNeigh
+    ? `deg ${Number(nd.deg) || nNeigh} · ${nNeigh.toLocaleString('fr-FR')} voisin${nNeigh > 1 ? 's' : ''}`
+    : `deg ${nd.deg ?? 0}`;
+  return { comLabel, prBit, zBit, degBit };
+}
+function publicationBody(handle) {
+  let count = 'Publications du compte';
+  let body = '<p class="acct-empty">Chargement des publications…</p>';
+  const rec = lookupAccount(handle);
+  if (postsMode === 'shards' && rec === undefined) ensureAccountShard(handle, postsSeq);
+  if (postsPack === null) {
+    count = 'Publications indisponibles';
+    body = '<p class="acct-empty">Le fichier des publications de ce corpus n’a pas pu être chargé.</p>';
+  } else if (rec === undefined) {
+    /* fragment encore en cours de lecture */
+  } else if (postsPack && !rec) {
+    count = 'Aucune publication dans ce corpus';
+    body = '<p class="acct-empty">Ce compte n’a aucune publication dans l’export de ce corpus.</p>';
+  } else if (rec) {
+    const pubs = Number(rec.pubs || 0);
+    const rts = Number(rec.rts || 0);
+    const posts = Array.isArray(rec.posts) ? rec.posts : [];
+    const rtBit = rts
+      ? ` <span>· ${rts.toLocaleString('fr-FR')} retweet${rts > 1 ? 's' : ''}</span>`
+      : '';
+    if (pubs > posts.length) {
+      count = `${posts.length} publications les plus engageantes <span>· ${pubs.toLocaleString('fr-FR')} dans le corpus</span>${rtBit}`;
+    } else if (pubs > 0) {
+      count = `${pubs.toLocaleString('fr-FR')} publication${pubs > 1 ? 's' : ''}${rtBit}`;
+    } else {
+      count = 'Aucune publication propre';
+    }
+    if (!posts.length) {
+      const rtExplain = rts === 1
+        ? ' Il apparaît ici par 1 retweet. Son texte est tronqué dans l’export, il n’est donc pas affiché.'
+        : rts > 1
+          ? ` Il apparaît ici par ${rts.toLocaleString('fr-FR')} retweets. Leur texte est tronqué dans l’export, ils ne sont donc pas affichés.`
+          : '';
+      body = `<p class="acct-empty">Aucune publication propre dans ce corpus (tweet original, réponse ou citation).${rtExplain}</p>`;
+    } else {
+      body = `<div class="acct-scroll">${posts.map((p, k) => renderPostCard(p, handle, k + 1)).join('')}</div>`;
+    }
+  }
+  return { count, body };
+}
+function avatarSrc(url) {
+  return String(url || '').replace('_normal.', '_400x400.');
+}
+function profileOverview(handle, color) {
+  const dot = `<i class="acct-dot" style="background:${escapeHtml(color)}"></i>`;
+  if (profilesPack === undefined) {
+    return { media: dot, name: '', bio: '<div class="acct-bio">Chargement du profil…</div>', ever: '' };
+  }
+  if (profilesPack === null) {
+    return { media: dot, name: '', bio: '<div class="acct-bio">Profils non chargés.</div>', ever: '' };
+  }
+  const rec = profilesPack.accounts?.[handle];
+  if (!rec) {
+    return { media: dot, name: '', bio: '<div class="acct-bio">Profil introuvable.</div>', ever: '' };
+  }
+  const media = rec.avatar
+    ? `<img class="acct-avatar" alt="" src="${escapeHtml(avatarSrc(rec.avatar))}" data-fallback="${escapeHtml(rec.avatar)}" data-color="${escapeHtml(color)}">`
+    : dot;
+  const rawName = String(rec.name || '').trim();
+  const name = rawName && rawName.toLowerCase() !== handle
+    ? `<div class="acct-name">${escapeHtml(rawName)}</div>`
+    : '';
+  const bio = rec.bio
+    ? `<div class="acct-bio">${richText(rec.bio)}</div>`
+    : '<div class="acct-bio">Pas de bio.</div>';
+  const ever = rec.tweets == null
+    ? ''
+    : `<div class="acct-ever" title="Total des publications du compte sur X, pas seulement dans ce corpus.">${Number(rec.tweets).toLocaleString('fr-FR')} publications <span>· profil</span></div>`;
+  return { media, name, bio, ever };
+}
+function renderAccountCard(i) {
+  const nd = nodes[i];
+  const handle = normalizeHandle(nd.l);
+  const shown = displayHandle(nd.l);
+  const color = rgbCss(nodeRgb(nd));
+  const bits = nodeHoverBits(i);
+  const profile = handle ? `https://x.com/${encodeURIComponent(handle)}` : '';
+  const who = profile
+    ? `<a class="acct-handle" href="${escapeHtml(profile)}" target="_blank" rel="noopener noreferrer">${escapeHtml(shown)}</a>`
+    : `<span class="acct-handle">${escapeHtml(shown)}</span>`;
+  const { count, body } = publicationBody(handle);
+  const overview = profileOverview(handle, color);
+  const meta = [bits.degBit, bits.prBit, bits.comLabel].filter(Boolean).join(' · ') + bits.zBit;
+  tip.style.setProperty('--acct-accent', color);
+  tip.style.setProperty('--acct-ring', color);
+  return `<div class="acct-head">
+      <div class="acct-id">${overview.media}<div class="acct-who">${who}${overview.name}</div></div>
+      ${overview.bio}
+      ${overview.ever}
+      <div class="acct-meta">${escapeHtml(meta)}</div>
+      <div class="acct-co">${formatCoRtNeighbors(i)}</div>
+      <div class="acct-count" title="Classement : j’aime + retweets + réponses + citations. Texte intégral. Les retweets du compte ne sont pas listés.">${count}</div>
+    </div>
+    ${body}`;
+}
+function bindAvatarFallback() {
+  tip.querySelectorAll('img.acct-avatar').forEach((img) => {
+    img.addEventListener('error', () => {
+      const fallback = img.dataset.fallback;
+      if (fallback && img.getAttribute('src') !== fallback) {
+        img.src = fallback;
+        return;
+      }
+      const dot = document.createElement('i');
+      dot.className = 'acct-dot';
+      dot.style.background = img.dataset.color || '#8b93a0';
+      img.replaceWith(dot);
+    });
+  });
+}
+function bindAccountScroll(sc) {
+  if (!sc || sc.dataset.bound) return;
+  sc.dataset.bound = '1';
+  const hint = document.createElement('p');
+  hint.className = 'acct-hint';
+  hint.textContent = 'Défiler pour la suite';
+  sc.after(hint);
+  const update = () => {
+    const more = sc.scrollHeight > sc.clientHeight + 12;
+    const atEnd = sc.scrollTop + sc.clientHeight >= sc.scrollHeight - 12;
+    const on = more && !atEnd;
+    sc.classList.toggle('can-scroll', on);
+    hint.style.display = on ? 'block' : 'none';
+  };
+  update();
+  sc.addEventListener('scroll', update, { passive: true });
+}
+function placeAccountCard(x, y) {
+  const margin = 12;
+  const gap = 18;
+  const w = tip.offsetWidth;
+  const h = tip.offsetHeight;
+  const candidates = [
+    { left: x + gap, top: y + gap },
+    { left: x - w - gap, top: y + gap },
+    { left: x + gap, top: y - h - gap },
+    { left: x - w - gap, top: y - h - gap },
+  ];
+  const misses = (p) => p.left > x + 6 || p.left + w < x - 6 || p.top > y + 6 || p.top + h < y - 6;
+  const fits = (p) => misses(p)
+    && p.left >= margin && p.top >= margin
+    && p.left + w <= innerWidth - margin
+    && p.top + h <= innerHeight - margin;
+  let pos = candidates.find(fits);
+  if (!pos) {
+    pos = {
+      left: Math.max(margin, Math.min(x + gap, innerWidth - w - margin)),
+      top: Math.max(margin, Math.min(y + gap, innerHeight - h - margin)),
+    };
+  }
+  tip.style.left = `${Math.round(pos.left)}px`;
+  tip.style.top = `${Math.round(pos.top)}px`;
+}
+function paintTip(i, place) {
+  const prevScroll = tip.querySelector('.acct-scroll')?.scrollTop || 0;
+  if (!nodes[i]) return;
+  if (usesAccountCard()) {
+    tip.classList.add('acct');
+    tip.setAttribute('role', 'region');
+    tip.setAttribute('aria-label', `Publications de ${displayHandle(nodes[i].l)}`);
+    tip.innerHTML = renderAccountCard(i);
+    tip.style.display = 'block';
+    bindAvatarFallback();
+    const sc = tip.querySelector('.acct-scroll');
+    if (sc) {
+      sc.scrollTop = prevScroll;
+      bindAccountScroll(sc);
+    }
+    if (place) placeAccountCard(tipAnchor.x, tipAnchor.y);
+    return;
+  }
+  tip.classList.remove('acct');
+  tip.setAttribute('role', 'tooltip');
+  tip.removeAttribute('aria-label');
+  const bits = nodeHoverBits(i);
+  tip.innerHTML =
+    `<div>${escapeHtml(displayHandle(nodes[i].l))} · ${escapeHtml(bits.degBit)}</div>` +
+    `<div class="muted">${escapeHtml([bits.prBit, bits.comLabel].filter(Boolean).join(' · '))}${escapeHtml(bits.zBit)}</div>` +
+    formatCoRtNeighbors(i);
+  tip.style.display = 'block';
+  if (place) {
+    tip.style.left = `${tipAnchor.x + 12}px`;
+    tip.style.top = `${tipAnchor.y + 12}px`;
+    const rect = tip.getBoundingClientRect();
+    let left = tipAnchor.x + 12;
+    let top = tipAnchor.y + 12;
+    if (left + rect.width > innerWidth - 8) left = Math.max(8, tipAnchor.x - rect.width - 12);
+    if (top + rect.height > innerHeight - 8) top = Math.max(8, tipAnchor.y - rect.height - 12);
+    tip.style.left = `${left}px`;
+    tip.style.top = `${top}px`;
+  }
+}
+function hideTipNow() {
+  if (tipHideTimer) { clearTimeout(tipHideTimer); tipHideTimer = null; }
+  tipPinned = false;
+  tip.style.display = 'none';
+  tip.classList.remove('acct');
+  tipNodeIndex = -1;
+}
+function pointerOverTip(x, y) {
+  const under = document.elementFromPoint(x, y);
+  return !!(under && tip.contains(under));
+}
+function scheduleHideTip() {
+  if (tipHideTimer || tipPinned) return;
+  tipHideTimer = setTimeout(() => {
+    tipHideTimer = null;
+    if (tipPinned) return;
+    tip.style.display = 'none';
+    tip.classList.remove('acct');
+    tipNodeIndex = -1;
+  }, 640);
+}
+function cancelHideTip() {
+  if (!tipHideTimer) return;
+  clearTimeout(tipHideTimer);
+  tipHideTimer = null;
+}
+function showNodeTip(i, x, y) {
+  cancelHideTip();
+  tipAnchor.x = x;
+  tipAnchor.y = y;
+  if (tipNodeIndex === i && tip.style.display !== 'none') return;
+  tipNodeIndex = i;
+  paintTip(i, true);
+}
+
 function formatCoRtNeighbors(i) {
   const list = adj[i] || [];
   if (!list.length) {
@@ -1125,8 +1680,8 @@ function formatCoRtNeighbors(i) {
   const total = list.reduce((s, x) => s + x.w, 0);
   const maxShow = 12;
   const rows = list.slice(0, maxShow).map(({ j, w }) => {
-    const lab = nodes[j]?.l || `#${j}`;
-    return `<div class="coRow"><span class="h">@${lab}</span><span class="n">${w.toLocaleString('fr-FR')}</span></div>`;
+    const lab = displayHandle(nodes[j]?.l) || `#${j}`;
+    return `<div class="coRow"><span class="h">${escapeHtml(lab)}</span><span class="n">${w.toLocaleString('fr-FR')}</span></div>`;
   }).join('');
   const more = list.length > maxShow
     ? `<div class="coMore">+${(list.length - maxShow).toLocaleString('fr-FR')} autres voisins</div>`
@@ -1276,54 +1831,17 @@ function nearestNode(wx, wy) {
   return best;
 }
 function onPointerMove(ev) {
+  if (viewDrag) return;
+  if (tipPinned && pointerOverTip(ev.clientX, ev.clientY)) return;
   const w = worldFromClient(ev.clientX, ev.clientY);
   const i = nearestNode(w.x, w.y);
-  if (i < 0) { tip.style.display = 'none'; return; }
-  const nd = nodes[i];
-  const comLabel = colorMode === 'base'
-    ? `Louvain connectome ${nd.com_base ?? '—'}`
-    : `Louvain coord ${nd.com ?? nd.com_coord ?? '—'}`;
-  const prBit = nd.pr != null ? `PageRank ${Number(nd.pr).toExponential(2)}` : '';
-  let zBit = '';
-  if (mode3d) {
-    if (zMode === 'cross') {
-      const nc = Number(nd.n_cross) || 0;
-      const others = Array.isArray(nd.cross_corpora) ? nd.cross_corpora : [];
-      const h = nc >= 3 ? 'haut Z' : nc >= 1 ? 'Z moyen' : 'bas Z (≈0)';
-      const list = others.length ? ` · ${others.join(', ')}` : '';
-      zBit = ` · ${nc} autre${nc > 1 ? 's' : ''} corpus${list} · ${h}`;
-    } else if (zMode === 'chrono' && nd.z_chrono != null) {
-      const zc = Number(nd.z_chrono) || 0;
-      const when = zc >= 0.66 ? 'tard (haut Z)' : zc <= 0.33 ? 'tôt (bas Z≈0)' : 'milieu de fenêtre';
-      zBit = ` · date ${zc.toFixed(2)} · ${when}`;
-    } else if (nd.dt_med != null) {
-      const sec = Math.round(nd.dt_med);
-      const zs = Number(nd.z_sync || 0);
-      const sync = zs >= 0.66 ? 'synchrone (haut Z)' : zs <= 0.33 ? 'décalé (bas Z≈0)' : 'sync moyenne';
-      const gap = sec < 60 ? `${sec}s` : sec < 3600 ? `${Math.round(sec / 60)} min` : `${Math.round(sec / 3600)} h`;
-      zBit = ` · Δt ~${gap} · ${sync}`;
-    }
+  if (i < 0) {
+    if (usesAccountCard()) {
+      if (!pointerOverTip(ev.clientX, ev.clientY)) scheduleHideTip();
+    } else hideTipNow();
+    return;
   }
-  const nNeigh = (adj[i] || []).length;
-  const degBit = nNeigh
-    ? `deg ${Number(nd.deg) || nNeigh} · ${nNeigh.toLocaleString('fr-FR')} voisin${nNeigh > 1 ? 's' : ''}`
-    : `deg ${nd.deg ?? 0}`;
-  tip.style.display = 'block';
-  tip.style.left = `${ev.clientX + 12}px`;
-  tip.style.top = `${ev.clientY + 12}px`;
-  tip.innerHTML =
-    `<div>@${nd.l} · ${degBit}</div>` +
-    `<div class="muted">${prBit}${prBit ? ' · ' : ''}${comLabel}${zBit}</div>` +
-    formatCoRtNeighbors(i);
-
-  // Garde le tooltip dans le viewport
-  const rect = tip.getBoundingClientRect();
-  let left = ev.clientX + 12;
-  let top = ev.clientY + 12;
-  if (left + rect.width > innerWidth - 8) left = Math.max(8, ev.clientX - rect.width - 12);
-  if (top + rect.height > innerHeight - 8) top = Math.max(8, ev.clientY - rect.height - 12);
-  tip.style.left = `${left}px`;
-  tip.style.top = `${top}px`;
+  showNodeTip(i, ev.clientX, ev.clientY);
 }
 function setStats(meta) {
   const pre = meta.n_edges_pre_serrano != null ? meta.n_edges_pre_serrano.toLocaleString('fr-FR') : '—';
@@ -1342,7 +1860,7 @@ function setStats(meta) {
   ].join('');
   if (meta.labelCentralityDef && labelHintEl) {
     labelHintEl.textContent =
-      `Survol → infos · zoom → plus de labels · taille = ${meta.labelCentrality || 'PageRank'} (${meta.labelCentralityDef.split(';')[0]})`;
+      `Survol → publications et co-RT · zoom → plus de labels · taille = ${meta.labelCentrality || 'PageRank'} (${meta.labelCentralityDef.split(';')[0]})`;
   }
 }
 
@@ -1427,6 +1945,8 @@ async function loadCorpus(id) {
   const corp = corpora.find((c) => c.id === id) || corpora[0];
   if (!corp) { ldMsg.textContent = 'Aucun corpus dans corpora.json'; return; }
   currentId = corp.id;
+  hideTipNow();
+  loadAccountPosts(corp.id);
   loading.classList.remove('hidden');
   ldMsg.textContent = `Chargement · ${shortLabel(corp.label)}…`;
   const covEl = document.getElementById('corpusCoverage');
@@ -1494,8 +2014,25 @@ zModeRow?.querySelectorAll('button[data-z]').forEach((b) => {
   });
 });
 
+function loadProfiles() {
+  fetch(bust('data/profiles.json'), { cache: 'no-store' })
+    .then((r) => {
+      if (!r.ok) throw new Error(String(r.status));
+      return r.json();
+    })
+    .then((data) => {
+      profilesPack = data && data.accounts ? data : { accounts: {} };
+      refreshOpenTip();
+    })
+    .catch(() => {
+      profilesPack = null;
+      refreshOpenTip();
+    });
+}
+
 async function boot() {
   initThree();
+  loadProfiles();
   const res = await fetch(bust('corpora.json'), { cache: 'no-store' });
   corpora = await res.json();
   const q = new URLSearchParams(location.search).get('corpus');
