@@ -784,7 +784,7 @@
     { id: "poles", num: "2", label: "Portrait des pôles", desc: "Lexique, géo, amplification…" },
     { id: "top5", num: "3", label: "Top 5 par communauté", desc: "Comptes & publications" },
     { id: "daily", num: "4", label: "Top 5 par jour", desc: "Publications quotidiennes" },
-    { id: "rtdist", num: "5", label: "Retweets reçus", desc: "Distribution et médiane" },
+    { id: "rtdist", num: "5", label: "Circulation durable", desc: "Énoncés, temps et lieux" },
   ];
   let activeMacro = "overview";
 
@@ -847,7 +847,7 @@
       resizeVisiblePlots();
       if (id === "poles" && PP) renderProfiles();
       if (id === "top5") renderAccounts();
-      if (id === "rtdist" && RT) renderRtDist();
+      if (id === "rtdist" && CIRC) renderRtDist();
     });
   }
 
@@ -1014,7 +1014,7 @@
       </section>
 
       <section class="macro-panel" id="macro-panel-rtdist" role="tabpanel" aria-labelledby="macro-tab-rtdist" hidden>
-        ${rtDistSectionHtml()}
+        ${circSectionHtml()}
       </section>
 
       <p class="subtitle" style="margin-top:28px">
@@ -1861,223 +1861,659 @@
       </section>`;
   }
 
-  /* ---------- Retweets reçus (fichier <corpus>_rt_dist.json) ---------- */
-  const RT_BIN_COLORS = [
-    "#3a4254", "#5c6b82", "#3d7ea6", "#2a9d8f", "#7cb342",
-    "#e6c229", "#e09a3a", "#e06a3a", "#d64545", "#c43b6e", "#8e44ad",
-  ];
-  let RT = null;
-  let rtMode = "share";
-  let rtRendered = false;
+  /* ---------- Circulation durable (fichier <corpus>_circulation.json) ---------- */
+  let CIRC = null;
+  let circKind = "all";
+  let circId = null;
+  let circRendered = false;
+
+  const MONTHS_FR = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."];
 
   function fmtRt(n) {
     if (n == null || Number.isNaN(Number(n))) return "—";
-    return Number(n).toLocaleString("fr-FR", { maximumFractionDigits: 2 });
+    const rounded = Math.round(Number(n) * 10) / 10;
+    return rounded.toLocaleString("fr-FR", { maximumFractionDigits: 1 });
   }
 
-  function pct1(part, total) {
-    if (!total) return "—";
-    return `${(100 * part / total).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} %`;
+  function frDate(iso) {
+    if (!iso) return "—";
+    const parts = String(iso).split("-");
+    if (parts.length < 3) return String(iso);
+    const month = MONTHS_FR[Number(parts[1]) - 1] || parts[1];
+    return `${Number(parts[2])} ${month} ${parts[0]}`;
   }
 
-  function rtCommName(c) {
-    return c.hub ? `${c.label} · @${c.hub}` : (c.label || "Autres");
+  function medianOf(values) {
+    const nums = values.map(Number).filter((n) => Number.isFinite(n)).sort((a, b) => a - b);
+    if (!nums.length) return null;
+    const mid = Math.floor(nums.length / 2);
+    return nums.length % 2 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
   }
 
-  function rtDistSectionHtml() {
+  function circItems() {
+    const all = (CIRC && CIRC.statements) || [];
+    if (circKind === "relay") return all.filter((s) => s.kind === "relay");
+    if (circKind === "reprise") return all.filter((s) => s.kind === "reprise");
+    return all;
+  }
+
+  function circSelected() {
+    const items = circItems();
+    return items.find((s) => s.id === circId) || items[0] || null;
+  }
+
+  function poleName(p) {
+    if (!p) return "";
+    return p.hub ? `${p.label} · @${p.hub}` : p.label;
+  }
+
+  function kindLabel(kind) {
+    return kind === "reprise" ? "Reprise" : "Relais";
+  }
+
+  const CLASS_META = {
+    niche: { label: "Niche", color: "#e06a3a" },
+    mixte: { label: "Mixte", color: "#8b93a7" },
+    transverse: { label: "Transverse", color: "#4d8af0" },
+  };
+
+  function classOf(stmt) {
+    return CLASS_META[stmt.class] ? stmt.class : "mixte";
+  }
+
+  function fmtP(p) {
+    if (p == null || !Number.isFinite(Number(p))) return "non testé";
+    const x = Number(p);
+    if (x <= 0.004) return "p ≤ 0,003";
+    return `p = ${x.toLocaleString("fr-FR", { minimumFractionDigits: 3, maximumFractionDigits: 3 })}`;
+  }
+
+  function fmtPct(x) {
+    if (x == null || !Number.isFinite(Number(x))) return "—";
+    return `${Math.round(Number(x) * 100)} %`;
+  }
+
+  function circSectionHtml() {
     return `
-      <h2>Retweets reçus par publication</h2>
+      <h2>Circulation durable des énoncés</h2>
       <div class="howto-box">
-        <strong>Comment lire cet onglet</strong>
+        <strong>Méthode</strong>
         <ol>
-          <li>Chaque publication compte une fois : tweet <strong>original</strong>, <strong>réponse</strong> ou <strong>citation</strong>. Les retweets sont exclus, leur compteur recopie celui du tweet d’origine.</li>
-          <li>La valeur est le <strong>retweet_count</strong> plateforme, relevé à la collecte.</li>
-          <li>La communauté est celle de l’<strong>auteur</strong> (même partition Louvain que le connectome). <em>Autres</em> regroupe les auteurs hors des pôles affichés.</li>
-          <li>La <strong>médiane</strong> inclut les publications à 0 retweet : c’est le niveau tel qu’au moins la moitié des publications du pôle est à ce nombre ou en dessous.</li>
+          <li><strong>Unité</strong> : l’énoncé, pas l’identifiant du tweet. Liens et @ retirés, comparaison sur les 60 premiers caractères, textes d’au moins 40 caractères écartés. La demi-vie de portée d’un statut se compte en heures (Pfeffer, Matter et Sargsyan, ICWSM 2023). La persistance se lit sur les copies d’un même texte (Leskovec, Backstrom et Kleinberg, KDD 2009 ; Cheng, Adamic, Kleinberg et Leskovec, WWW 2016).</li>
+          <li><strong>Interaction</strong> : chaque publication du corpus qui porte l’énoncé, retweet compris. C’est l’acte observé. Le compteur <code>retweet_count</code> n’entre pas dans le calcul.</li>
+          <li><strong>Sélection</strong> : au moins 8 comptes, 7 jours actifs, et 21 jours de calendrier entre la première et la dernière occurrence. Le vivier est l’ensemble des textes déjà portés par 8 comptes, quelle que soit leur durée.</li>
+          <li><strong>Dominance</strong> : part des publications dont l’auteur est dans la communauté Louvain la plus représentée (Weng, Menczer et Ahn, Scientific Reports 2013). L’entropie mesure la dispersion sur toutes les communautés du corpus. Le nul attribue à chaque publication une communauté tirée selon la répartition du corpus (299 tirages, correction +1).</li>
+          <li><strong>Niche</strong> : dominance ≥ 0,5 et p &lt; 0,05 du côté concentré. <strong>Transverse</strong> : dominance &lt; 0,5 et p &lt; 0,05 du côté dispersé. <strong>Mixte</strong> : l’écart reste compatible avec le nul, ou la dominance est de l’autre côté du seuil 0,5.</li>
+          <li><strong>Lieux</strong> : <code>user_location</code> déclaré, graphies fusionnées. On coupe les publications localisées en deux moitiés dans l’ordre du temps (la première moitié des actes, puis la seconde), pas au milieu du calendrier : un pic suivi d’une traîne laisserait sinon la seconde moitié vide. La distance est la variation totale (0 = mêmes parts, 1 = lieux disjoints). Le test permute les lieux entre les deux moitiés. Il ne s’applique que si chaque moitié en compte au moins 8. Ce champ n’est pas un GPS.</li>
+          <li><strong>Rafales</strong> : un pic journalier dépasse max(4, deux fois la moyenne de la durée) et domine ±2 jours. Deux pics comptent pour deux rafales si la vallée qui les sépare descend sous la moitié du plus petit. L’indice de rafale compare l’écart-type et la moyenne des écarts entre jours actifs (Goh et Barabási, 2008) : positif = jours groupés, négatif = espacement régulier.</li>
         </ol>
       </div>
-      <p class="hint" id="rt-meta"></p>
-      <div class="hub-note" id="rt-median-note"></div>
-      <div class="kpi-row rt-kpis" id="rt-kpis"></div>
-      <div class="viz-box" id="rt-median-box" hidden>
-        <div class="viz-title">Médiane par communauté</div>
-        <div id="rt-median"></div>
+      <p class="hint" id="circ-meta"></p>
+      <div class="metric-tabs" id="circ-kind" role="tablist" aria-label="Type de circulation">
+        <button type="button" class="metric-tab active" role="tab" aria-selected="true" data-kind="all">Tous les énoncés</button>
+        <button type="button" class="metric-tab" role="tab" aria-selected="false" data-kind="relay">Relais</button>
+        <button type="button" class="metric-tab" role="tab" aria-selected="false" data-kind="reprise">Reprises</button>
       </div>
-      <div class="viz-box">
-        <div class="viz-title">Distribution du nombre de retweets reçus</div>
-        <div class="metric-tabs" id="rt-mode-tabs" role="tablist" aria-label="Échelle de la distribution">
-          <button type="button" class="metric-tab active" role="tab" aria-selected="true" data-rtmode="share">Part des publications</button>
-          <button type="button" class="metric-tab" role="tab" aria-selected="false" data-rtmode="count">Effectifs</button>
+      <div class="heatmap-duo">
+        <div class="viz-box">
+          <div class="viz-title">Trois lectures, après test</div>
+          <p class="hint">Niche = concentré au-delà du hasard. Transverse = dispersé au-delà du hasard. Mixte = le test ne tranche pas, ou la dominance est de l’autre côté du seuil 0,5.</p>
+          <div id="circ-class-bar" class="activity-chart"></div>
         </div>
-        <p class="hint" id="rt-stack-hint"></p>
-        <div id="rt-stack" class="activity-chart"></div>
+        <div class="viz-box">
+          <div class="viz-title">Communauté dominante</div>
+          <p class="hint">Chaque énoncé est compté une fois, dans la communauté qui porte la plus grande part de ses publications. Autres = une communauté Louvain hors des pôles affichés. Hors graphe = auteurs absents de la partition.</p>
+          <div id="circ-poles-bar" class="activity-chart"></div>
+        </div>
+      </div>
+      <div class="heatmap-duo">
+        <div class="viz-box">
+          <div class="viz-title">Durée × concentration communautaire</div>
+          <p class="hint">Horizontal : durée en jours. Vertical : dominance, de 0 à 1. Taille : nombre de comptes. La couleur est la classe issue du test, pas une moyenne. Ligne pointillée : médiane de durée des points affichés. Cliquer un point ouvre le détail.</p>
+          <div id="circ-scatter-comm"></div>
+        </div>
+        <div class="viz-box">
+          <div class="viz-title">Durée × déplacement des lieux</div>
+          <p class="hint">Vertical : variation totale entre la première et la seconde moitié des publications localisées, dans l’ordre du temps. Orange = déplacement plus fort que le nul (p &lt; 0,05). Bleu = écart compatible avec le nul. Les énoncés sans assez de lieux déclarés sont comptés sous le graphique.</p>
+          <div id="circ-scatter-place"></div>
+          <p class="hint" id="circ-place-note"></p>
+        </div>
       </div>
       <div class="viz-box">
-        <div class="viz-title">Médiane et résumé de la distribution</div>
-        <div class="heatmap-wrap" id="rt-table"></div>
+        <div class="viz-title">Trace temporelle, semaine par semaine</div>
+        <p class="hint">Jusqu’à 24 énoncés, les plus dominants dans chaque classe (N niche, M mixte, T transverse). Couleur logarithmique : 1, 10, 100, 1&nbsp;000 publications. Une case vide est une semaine sans occurrence. Cliquer une ligne ouvre le détail.</p>
+        <div id="circ-heat"></div>
+      </div>
+      <div class="viz-box" id="circ-detail">
+        <div class="viz-title">Un énoncé : durée, communautés, lieux</div>
+        <label class="hint" for="circ-pick">Choisir un énoncé</label>
+        <select id="circ-pick" class="circ-pick"></select>
+        <p class="hint" id="circ-kind-label"></p>
+        <blockquote class="circ-quote" id="circ-quote"></blockquote>
+        <div class="kpi-row circ-kpis" id="circ-kpis"></div>
+        <p class="hint" id="circ-shift"></p>
+        <div class="viz-title">Publications par semaine</div>
+        <p class="hint">Nombre de publications du corpus qui portent cet énoncé, retweets compris. Échelle logarithmique : une semaine de faible volume reste lisible à côté du pic.</p>
+        <div id="circ-week"></div>
+        <div class="heatmap-duo">
+          <div>
+            <div class="viz-title">Qui le porte, semaine par semaine</div>
+            <p class="hint">Chaque semaine est ramenée à 100&nbsp;%. On voit quelle communauté porte l’énoncé d’un bout à l’autre de sa durée, y compris quand le volume baisse. Le survol donne le nombre de publications.</p>
+            <div id="circ-stack"></div>
+          </div>
+          <div>
+            <div class="viz-title">Lieux déclarés, début contre suite</div>
+            <p class="hint">Première moitié des publications localisées, dans l’ordre du temps, contre la seconde moitié. Les effectifs sont donc comparables. Le test est indiqué au-dessus.</p>
+            <div id="circ-places"></div>
+          </div>
+        </div>
       </div>`;
   }
 
-  function rtMedianNote(data) {
-    const comms = data.communities || [];
-    const overall = data.overall || {};
-    const corpus = overall.n
-      ? ` Médiane du corpus : ${fmtRt(overall.median)} (${fmt(overall.n)} publications).`
-      : "";
-    const allZero = comms.length > 0 && comms.every((c) => Number(c.median) === 0);
-    if (allZero) {
-      return `Médiane = 0 dans chaque communauté : au moins la moitié des publications n’a reçu aucun retweet.${corpus} Les pôles se distinguent par la part sans retweet et par la queue (moyenne, P90, maximum).`;
-    }
-    return `La médiane est le nombre de retweets tel qu’au moins la moitié des publications du pôle est à ce niveau ou en dessous.${corpus}`;
+  function circHover(stmt) {
+    const cls = CLASS_META[classOf(stmt)];
+    const bursts = stmt.burstiness == null ? "—" : fmtRt(stmt.burstiness);
+    return `${stmt.label}<br>${kindLabel(stmt.kind)} · ${cls.label}`
+      + `<br>durée ${fmt(stmt.span)} j · ${fmt(stmt.active)} jours actifs`
+      + `<br>dominance ${fmtPct(stmt.dominance)} · ${fmtP(stmt.pNiche)} (côté concentré)`
+      + `<br>${stmt.dominantLabel || ""}`
+      + `<br>${fmt(stmt.nBursts)} rafales · indice ${bursts}`
+      + `<br>${fmt(stmt.accounts)} comptes`;
   }
 
-  function rtKpisHtml(comms) {
-    return comms.map((c) => `
-      <div class="kpi" style="border-top:3px solid ${esc(c.color || "#9aa3b5")}">
-        <div class="v">${fmtRt(c.median)}</div>
-        <div class="l">médiane · ${esc(c.hub ? `@${c.hub}` : c.label)}</div>
-        <p class="hint">${pct1(c.nZero, c.n)} sans RT · moyenne ${fmtRt(c.mean)}</p>
-      </div>`).join("");
+  function bindCircClick(el) {
+    el.on("plotly_click", (ev) => {
+      const id = ev.points && ev.points[0] && ev.points[0].customdata;
+      if (id) selectCirc(id, true);
+    });
   }
 
-  function rtTableHtml(comms) {
-    const rows = comms.map((c) => `
-      <tr>
-        <td class="rowhead"><span class="dot" style="background:${esc(c.color || "#9aa3b5")}"></span> ${esc(c.label)}${c.hub ? ` <span class="hub">@${esc(c.hub)}</span>` : ""}</td>
-        <td class="cell">${fmt(c.n)}</td>
-        <td class="cell median">${fmtRt(c.median)}</td>
-        <td class="cell">${fmtRt(c.mean)}</td>
-        <td class="cell">${fmtRt(c.p75)}</td>
-        <td class="cell">${fmtRt(c.p90)}</td>
-        <td class="cell">${fmtRt(c.p99)}</td>
-        <td class="cell">${fmt(c.max)}</td>
-        <td class="cell">${pct1(c.nZero, c.n)}</td>
-      </tr>`).join("");
-    return `<table class="heatmap-table rt-table">
-      <thead><tr>
-        <th>Communauté</th><th>Publications</th><th class="median">Médiane</th>
-        <th>Moyenne</th><th>P75</th><th>P90</th><th>P99</th><th>Max</th><th>Part à 0 RT</th>
-      </tr></thead>
-      <tbody>${rows}</tbody>
-    </table>`;
-  }
-
-  function plotRtMedians(el, comms) {
+  function plotCircClass(el, items) {
     if (!el) return;
-    const labels = comms.map(rtCommName);
+    if (!items.length) {
+      el.innerHTML = `<p class="hint">Aucun énoncé dans ce filtre.</p>`;
+      return;
+    }
+    const keys = ["niche", "transverse", "mixte"];
+    const counts = keys.map((k) => items.filter((s) => classOf(s) === k).length);
     Plotly.newPlot(el, [{
       type: "bar",
       orientation: "h",
-      y: labels,
-      x: comms.map((c) => Number(c.median) || 0),
-      marker: { color: comms.map((c) => c.color || "#9aa3b5") },
-      text: comms.map((c) => fmtRt(c.median)),
+      y: keys.map((k) => CLASS_META[k].label),
+      x: counts,
+      marker: { color: keys.map((k) => CLASS_META[k].color) },
+      text: counts.map((n) => fmt(n)),
       textposition: "outside",
       cliponaxis: false,
-      hovertemplate: "%{y}<br>médiane %{x}<extra></extra>",
+      hovertemplate: "%{y}<br>%{x} énoncés<extra></extra>",
     }], plotlyLayout({
-      height: Math.max(220, 42 * comms.length + 40),
-      margin: { t: 8, b: 40, l: 160, r: 48 },
-      xaxis: { gridcolor: "#2a3142", title: "retweets (médiane)", rangemode: "tozero" },
+      height: 220,
+      margin: { t: 8, b: 36, l: 90, r: 36 },
+      xaxis: { title: "énoncés", gridcolor: "#2a3142", rangemode: "tozero" },
+      yaxis: { autorange: "reversed" },
+    }), { responsive: true, displayModeBar: false });
+  }
+
+  function plotCircPoles(el, items) {
+    if (!el || !CIRC) return;
+    const poles = CIRC.poles || [];
+    const counts = poles.map((p) => items.filter((s) => s.dominantBucket === p.id).length);
+    Plotly.newPlot(el, [{
+      type: "bar",
+      orientation: "h",
+      y: poles.map(poleName),
+      x: counts,
+      marker: { color: poles.map((p) => p.color || "#9aa3b5") },
+      text: counts.map((n) => fmt(n)),
+      textposition: "outside",
+      cliponaxis: false,
+      hovertemplate: "%{y}<br>%{x} énoncés dont c’est la communauté dominante<extra></extra>",
+    }], plotlyLayout({
+      height: Math.max(280, 42 * poles.length + 30),
+      margin: { t: 8, b: 40, l: 150, r: 36 },
+      xaxis: { title: "énoncés", gridcolor: "#2a3142", rangemode: "tozero" },
       yaxis: { autorange: "reversed", gridcolor: "#2a3142" },
     }), { responsive: true, displayModeBar: false });
   }
 
-  function plotRtStack(el, data, mode) {
-    if (!el || !data) return;
-    const comms = data.communities || [];
-    const bins = data.bins || [];
-    const y = comms.map(rtCommName);
-    const share = mode !== "count";
-    const traces = bins.map((b, i) => {
-      const counts = comms.map((c) => Number((c.counts || [])[i]) || 0);
-      const x = share
-        ? comms.map((c, j) => (c.n ? 100 * counts[j] / c.n : 0))
-        : counts;
-      const customdata = counts.map((n, j) => {
-        const label = rtCommName(comms[j]);
-        return [label, fmt(n), pct1(n, comms[j].n)];
-      });
+  function plotClassScatter(el, items) {
+    if (!el) return;
+    if (!items.length) {
+      el.innerHTML = `<p class="hint">Aucun énoncé dans ce filtre.</p>`;
+      return;
+    }
+    const med = medianOf(items.map((s) => s.span));
+    const maxAcc = Math.max(...items.map((s) => s.accounts || 0), 1);
+    const traces = ["niche", "transverse", "mixte"].map((key) => {
+      const rows = items.filter((s) => classOf(s) === key);
       return {
-        type: "bar",
-        orientation: "h",
-        name: b.label,
-        y,
-        x,
-        marker: { color: RT_BIN_COLORS[i % RT_BIN_COLORS.length] },
-        customdata,
-        hovertemplate: "%{customdata[0]}<br>" + b.label + " retweet(s)<br>%{customdata[1]} publications · %{customdata[2]}<extra></extra>",
+        type: "scatter",
+        mode: "markers",
+        name: CLASS_META[key].label,
+        x: rows.map((s) => s.span),
+        y: rows.map((s) => s.dominance),
+        customdata: rows.map((s) => s.id),
+        text: rows.map(circHover),
+        hovertemplate: "%{text}<extra></extra>",
+        marker: {
+          color: CLASS_META[key].color,
+          size: rows.map((s) => 9 + 26 * Math.sqrt((s.accounts || 0) / maxAcc)),
+          line: { color: "rgba(255,255,255,0.35)", width: 0.6 },
+          opacity: 0.92,
+        },
       };
     });
     Plotly.newPlot(el, traces, plotlyLayout({
-      barmode: "stack",
-      height: Math.max(360, 48 * comms.length + 120),
-      margin: { t: 8, b: 88, l: 168, r: 16 },
+      height: 420,
+      margin: { t: 16, b: 72, l: 56, r: 16 },
       xaxis: {
+        title: med == null ? "durée (jours)" : `durée (jours) · médiane ${fmtRt(med)} j`,
         gridcolor: "#2a3142",
-        title: share ? "% des publications" : "publications",
         rangemode: "tozero",
       },
-      yaxis: { autorange: "reversed", gridcolor: "#2a3142" },
-      legend: { orientation: "h", y: -0.28, font: { size: 10 }, traceorder: "reversed" },
+      yaxis: {
+        title: "dominance",
+        gridcolor: "#2a3142",
+        range: [0, 1.05],
+      },
+      legend: { orientation: "h", y: -0.22, font: { size: 11 } },
+      shapes: med == null ? [] : [{
+        type: "line",
+        x0: med, x1: med, y0: 0, y1: 1,
+        line: { color: "#e8eaed", width: 1, dash: "dot" },
+      }],
     }), { responsive: true, displayModeBar: false });
-    const hint = document.getElementById("rt-stack-hint");
-    if (hint) {
-      hint.textContent = share
-        ? "Chaque barre fait 100 % des publications hors RT de la communauté. La classe 0 est la part sans aucun retweet."
-        : "Nombre de publications hors RT dans chaque classe de retweets reçus.";
+    bindCircClick(el);
+  }
+
+  function placeGroup(stmt) {
+    if (stmt.pPlace == null) return "skip";
+    return Number(stmt.pPlace) < 0.05 ? "sig" : "ns";
+  }
+
+  function plotPlaceScatter(el, items) {
+    if (!el) return;
+    if (!items.length) {
+      el.innerHTML = `<p class="hint">Aucun énoncé dans ce filtre.</p>`;
+      return;
+    }
+    const med = medianOf(items.map((s) => s.span));
+    const groups = [
+      { key: "sig", name: "Déplacement significatif", color: "#e09a3a" },
+      { key: "ns", name: "Écart non significatif", color: "#4d8af0" },
+    ];
+    const traces = groups.map((g) => {
+      const rows = items.filter((s) => placeGroup(s) === g.key);
+      return {
+        type: "scatter",
+        mode: "markers",
+        name: g.name,
+        x: rows.map((s) => s.span),
+        y: rows.map((s) => (s.placeTv == null ? 0 : s.placeTv)),
+        customdata: rows.map((s) => s.id),
+        text: rows.map((s) => (
+          `${s.label}<br>${fmtP(s.pPlace)}`
+          + `<br>variation totale ${s.placeTv == null ? "—" : fmtRt(s.placeTv)}`
+          + `<br>${fmt(s.nEarly)} publications au début · ${fmt(s.nLate)} à la fin`
+        )),
+        hovertemplate: "%{text}<extra></extra>",
+        marker: {
+          color: g.color,
+          size: 11,
+          line: { color: "rgba(255,255,255,0.35)", width: 0.6 },
+          opacity: 0.9,
+        },
+      };
+    });
+    Plotly.newPlot(el, traces, plotlyLayout({
+      height: 420,
+      margin: { t: 16, b: 88, l: 56, r: 16 },
+      xaxis: {
+        title: med == null ? "durée (jours)" : `durée (jours) · médiane ${fmtRt(med)} j`,
+        gridcolor: "#2a3142",
+        rangemode: "tozero",
+      },
+      yaxis: {
+        title: "variation totale",
+        gridcolor: "#2a3142",
+        range: [0, 1.05],
+      },
+      legend: { orientation: "h", y: -0.28, font: { size: 11 } },
+      shapes: med == null ? [] : [{
+        type: "line",
+        x0: med, x1: med, y0: 0, y1: 1,
+        line: { color: "#e8eaed", width: 1, dash: "dot" },
+      }],
+    }), { responsive: true, displayModeBar: false });
+    bindCircClick(el);
+    const note = document.getElementById("circ-place-note");
+    if (note) {
+      const nSkip = items.filter((s) => placeGroup(s) === "skip").length;
+      note.textContent = nSkip
+        ? `${fmt(nSkip)} énoncés ne figurent pas sur le graphique : une des deux moitiés a moins de 8 publications localisées.`
+        : "Tous les énoncés affichés ont assez de lieux déclarés pour le test.";
+    }
+  }
+
+  function plotCircHeat(el, items) {
+    if (!el || !CIRC) return;
+    const rank = { niche: 0, transverse: 1, mixte: 2 };
+    const rows = items.slice().sort((a, b) => (
+      rank[classOf(a)] - rank[classOf(b)]
+      || (Number(b.dominance) || 0) - (Number(a.dominance) || 0)
+    )).slice(0, 24);
+    if (!rows.length) {
+      el.innerHTML = `<p class="hint">Aucun énoncé dans ce filtre.</p>`;
+      return;
+    }
+    const weeks = CIRC.weeks || [];
+    const raw = rows.map((s) => weeks.map((_, i) => Number((s.weeks || [])[i]) || 0));
+    const z = raw.map((row) => row.map((v) => (v > 0 ? Math.log10(v) : null)));
+    const zmax = Math.max(1, ...z.flat().filter((v) => v != null));
+    const ticks = [0, 1, 2, 3, 4].filter((t) => t <= zmax + 0.01);
+    const ticktext = { 0: "1", 1: "10", 2: "100", 3: "1 000", 4: "10 000" };
+    Plotly.newPlot(el, [{
+      type: "heatmap",
+      x: weeks,
+      y: rows.map((s) => s.id),
+      z,
+      customdata: rows.map((s, i) => raw[i].map((v) => [s.label, v])),
+      colorscale: [[0, "#1d4e73"], [0.45, "#e6c229"], [1, "#e06a3a"]],
+      zmin: 0,
+      zmax,
+      hovertemplate: "%{customdata[0]}<br>semaine du %{x}<br>%{customdata[1]} publications<extra></extra>",
+      colorbar: {
+        title: { text: "publications", font: { size: 10, color: "#9aa3b5" } },
+        thickness: 12,
+        tickvals: ticks,
+        ticktext: ticks.map((t) => ticktext[t]),
+        tickfont: { size: 10, color: "#9aa3b5" },
+      },
+    }], plotlyLayout({
+      height: Math.max(420, 26 * rows.length + 80),
+      margin: { t: 8, b: 70, l: 280, r: 16 },
+      xaxis: { tickangle: -40, nticks: 10, gridcolor: "#2a3142" },
+      yaxis: {
+        autorange: "reversed",
+        tickvals: rows.map((s) => s.id),
+        ticktext: rows.map((s) => {
+          const tag = classOf(s) === "niche" ? "N" : (classOf(s) === "transverse" ? "T" : "M");
+          const body = s.label.length > 48 ? `${s.label.slice(0, 48)}…` : s.label;
+          return `${tag} · ${body}`;
+        }),
+        tickfont: { size: 10 },
+        automargin: false,
+      },
+    }), { responsive: true, displayModeBar: false });
+    el.on("plotly_click", (ev) => {
+      const id = ev.points && ev.points[0] && ev.points[0].y;
+      if (id) selectCirc(id, true);
+    });
+  }
+
+  function classSentence(stmt) {
+    const name = stmt.dominantLabel || "la communauté dominante";
+    const share = fmtPct(stmt.dominance);
+    const excess = (Number(stmt.dominance) || 0) - (Number(stmt.nullDominance) || 0);
+    const excessTxt = `${excess >= 0 ? "+" : "−"}${fmtPct(Math.abs(excess))} par rapport au nul (${fmtPct(stmt.nullDominance)})`;
+    if (classOf(stmt) === "niche") {
+      return `${name} porte ${share} des publications, ${excessTxt}. Le test est au-delà du hasard (${fmtP(stmt.pNiche)}).`;
+    }
+    if (classOf(stmt) === "transverse") {
+      return `La communauté la plus active, ${name}, ne porte que ${share}, ${excessTxt}. C’est plus dispersé que le corpus (${fmtP(stmt.pSpread)}).`;
+    }
+    if (Number(stmt.pNiche) < 0.05) {
+      return `${name} porte ${share}, ${excessTxt}. C’est plus concentré que le corpus (${fmtP(stmt.pNiche)}), sous le seuil de lecture de 50 %.`;
+    }
+    return `Dominance ${share} pour ${name}, ${excessTxt}. L’écart reste compatible avec la répartition du corpus (${fmtP(stmt.pNiche)}).`;
+  }
+
+  function placeSentence(stmt) {
+    const where = placeShift(stmt);
+    if (stmt.pPlace == null) {
+      return `${where} Test non fait : une des deux moitiés a moins de 8 publications localisées.`;
+    }
+    const distance = `Variation totale ${fmtRt(stmt.placeTv)} (${fmtP(stmt.pPlace)}, ${fmt(stmt.nEarly)} publications au début, ${fmt(stmt.nLate)} à la fin).`;
+    if (Number(stmt.pPlace) < 0.05) {
+      return `${distance} Le déplacement dépasse le nul qui permute les lieux entre les deux moitiés. ${where}`;
+    }
+    return `${distance} L’écart est compatible avec ce nul. ${where}`;
+  }
+
+  function placeShift(stmt) {
+    const rows = (stmt.placesTop || []).filter((p) => p.n > 0);
+    if (!rows.length) {
+      return "Aucun lieu déclaré sur les comptes qui portent cet énoncé.";
+    }
+    const earlyTop = rows.reduce((a, b) => (b.early > a.early ? b : a), rows[0]);
+    const lateTop = rows.reduce((a, b) => (b.late > a.late ? b : a), rows[0]);
+    if (!earlyTop.early && !lateTop.late) {
+      return "Des lieux sont déclarés, sans date exploitable dans les deux moitiés.";
+    }
+    if (earlyTop.t === lateTop.t) {
+      return `Le lieu le plus fréquent reste « ${earlyTop.t} » dans les deux moitiés des publications localisées.`;
+    }
+    return `Le lieu le plus fréquent passe de « ${earlyTop.t} » (première moitié des actes) à « ${lateTop.t} » (seconde moitié).`;
+  }
+
+  function renderCircDetail() {
+    const stmt = circSelected();
+    const quote = document.getElementById("circ-quote");
+    const kpis = document.getElementById("circ-kpis");
+    const shift = document.getElementById("circ-shift");
+    const kind = document.getElementById("circ-kind-label");
+    const pick = document.getElementById("circ-pick");
+    if (!stmt || !CIRC) {
+      if (quote) quote.textContent = "";
+      if (kpis) kpis.innerHTML = "";
+      return;
+    }
+    if (pick && pick.value !== stmt.id) pick.value = stmt.id;
+    if (kind) {
+      const own = stmt.nOwn || 0;
+      const rt = stmt.nRt || 0;
+      const ownTxt = `${fmt(own)} publication${own === 1 ? "" : "s"} propre${own === 1 ? "" : "s"}`;
+      const rtTxt = `${fmt(rt)} retweet${rt === 1 ? "" : "s"}`;
+      kind.textContent = stmt.kind === "reprise"
+        ? `Reprise · ${ownTxt} et ${rtTxt} portent ce texte.`
+        : `Relais · ${rtTxt} et ${ownTxt}. Le texte circule surtout parce qu’il est relayé.`;
+    }
+    if (quote) quote.textContent = stmt.text || stmt.label || "";
+    if (kpis) {
+      const share = stmt.span ? Math.round(100 * stmt.active / stmt.span) : 0;
+      const cls = CLASS_META[classOf(stmt)];
+      const burstTxt = stmt.burstiness == null
+        ? "indice non calculé"
+        : `indice ${fmtRt(stmt.burstiness)}`;
+      kpis.innerHTML = `
+        <div class="kpi"><div class="v">${fmt(stmt.span)}</div><div class="l">jours de durée</div><p class="hint">du ${frDate(stmt.first)} au ${frDate(stmt.last)} · ${share} % de jours actifs</p></div>
+        <div class="kpi"><div class="v">${fmtPct(stmt.dominance)}</div><div class="l">dominance</div><p class="hint">${esc(stmt.dominantLabel || "")}<br>${fmtP(stmt.pNiche)} côté concentré · entropie ${fmtRt(stmt.entropyNorm)}</p></div>
+        <div class="kpi"><div class="v">${cls.label}</div><div class="l">lecture du test</div><p class="hint">${fmtP(stmt.pSpread)} côté dispersé</p></div>
+        <div class="kpi"><div class="v">${fmt(stmt.nBursts)}</div><div class="l">rafales</div><p class="hint">${burstTxt}<br>le jour le plus chargé : ${fmtPct(stmt.peakShare)}</p></div>
+        <div class="kpi"><div class="v">${stmt.placeTv == null ? "—" : fmtRt(stmt.placeTv)}</div><div class="l">variation totale des lieux</div><p class="hint">${fmtP(stmt.pPlace)}<br>${fmt(stmt.nEarly)} pubs au début · ${fmt(stmt.nLate)} à la fin</p></div>
+        <div class="kpi"><div class="v">${fmt(stmt.accounts)}</div><div class="l">comptes distincts</div><p class="hint">${fmt(stmt.n)} publications · ${fmt(stmt.communities)} communautés</p></div>`;
+    }
+    if (shift) shift.textContent = `${classSentence(stmt)} ${placeSentence(stmt)}`;
+
+    const weeks = CIRC.weeks || [];
+    const weekEl = document.getElementById("circ-week");
+    if (weekEl) {
+      const counts = (stmt.weeks || []).map((v) => (v > 0 ? v : null));
+      const present = counts.filter((v) => v != null);
+      const ymax = present.length ? Math.max(...present) : 1;
+      const tickvals = [1, 10, 100, 1000, 10000].filter((t) => t <= ymax);
+      Plotly.newPlot(weekEl, [{
+        type: "bar",
+        x: weeks,
+        y: counts,
+        marker: { color: "#4d8af0" },
+        hovertemplate: "semaine du %{x}<br>%{y} publications<extra></extra>",
+      }], plotlyLayout({
+        height: 260,
+        margin: { t: 8, b: 60, l: 52, r: 12 },
+        xaxis: { tickangle: -40, nticks: 10, gridcolor: "#2a3142" },
+        yaxis: {
+          title: "publications",
+          type: "log",
+          gridcolor: "#2a3142",
+          tickvals,
+          ticktext: tickvals.map((t) => fmt(t)),
+          range: [0, Math.log10(ymax * 1.25)],
+        },
+      }), { responsive: true, displayModeBar: false });
+    }
+
+    const stackEl = document.getElementById("circ-stack");
+    if (stackEl) {
+      const traces = (CIRC.poles || []).map((p) => {
+        const series = (stmt.byPole && stmt.byPole[p.id]) || [];
+        return {
+          type: "bar",
+          name: poleName(p),
+          x: weeks,
+          y: series,
+          customdata: series,
+          marker: { color: p.color || "#9aa3b5" },
+          hovertemplate: `${poleName(p)}<br>semaine du %{x}<br>%{customdata} publications · %{y:.0f} % de la semaine<extra></extra>`,
+        };
+      });
+      Plotly.newPlot(stackEl, traces, plotlyLayout({
+        barmode: "stack",
+        barnorm: "percent",
+        height: 340,
+        margin: { t: 8, b: 80, l: 48, r: 12 },
+        xaxis: { tickangle: -40, nticks: 8, gridcolor: "#2a3142" },
+        yaxis: { title: "part de la semaine (%)", gridcolor: "#2a3142", range: [0, 100] },
+        legend: { orientation: "h", y: -0.45, font: { size: 10 } },
+      }), { responsive: true, displayModeBar: false });
+    }
+
+    const placeEl = document.getElementById("circ-places");
+    if (placeEl) {
+      const src = stmt.placesTop || [];
+      if (!src.length) {
+        placeEl.innerHTML = `<p class="hint">Pas de user_location pour cet énoncé.</p>`;
+      } else {
+        const earlySum = src.reduce((a, p) => a + (Number(p.early) || 0), 0);
+        const lateSum = src.reduce((a, p) => a + (Number(p.late) || 0), 0);
+        const pct = (v, sum) => (sum > 0 ? (100 * (Number(v) || 0)) / sum : 0);
+        const rows = src.slice().sort((a, b) => (
+          Math.max(pct(b.early, earlySum), pct(b.late, lateSum))
+          - Math.max(pct(a.early, earlySum), pct(a.late, lateSum))
+        ));
+        const labels = rows.map((p) => p.t);
+        Plotly.newPlot(placeEl, [
+          {
+            type: "bar", orientation: "h", name: "Première moitié",
+            y: labels,
+            x: rows.map((p) => pct(p.early, earlySum)),
+            customdata: rows.map((p) => p.early),
+            marker: { color: "#4d8af0" },
+            hovertemplate: "%{y}<br>%{customdata} publications · %{x:.0f} % de la première moitié<extra></extra>",
+          },
+          {
+            type: "bar", orientation: "h", name: "Seconde moitié",
+            y: labels,
+            x: rows.map((p) => pct(p.late, lateSum)),
+            customdata: rows.map((p) => p.late),
+            marker: { color: "#e09a3a" },
+            hovertemplate: "%{y}<br>%{customdata} publications · %{x:.0f} % de la seconde moitié<extra></extra>",
+          },
+        ], plotlyLayout({
+          barmode: "group",
+          height: Math.max(280, 36 * rows.length + 70),
+          margin: { t: 8, b: 48, l: 140, r: 12 },
+          xaxis: { title: "part de la moitié (%)", gridcolor: "#2a3142", rangemode: "tozero" },
+          yaxis: { autorange: "reversed", automargin: true },
+          legend: { orientation: "h", y: -0.22, font: { size: 10 } },
+        }), { responsive: true, displayModeBar: false });
+      }
+    }
+  }
+
+  function renderCircCharts() {
+    const items = circItems();
+    const meta = document.getElementById("circ-meta");
+    if (meta && CIRC) {
+      const o = CIRC.overview || {};
+      const rules = CIRC.rules || {};
+      const med = medianOf(items.map((s) => s.span));
+      const nNiche = items.filter((s) => classOf(s) === "niche").length;
+      const nTrans = items.filter((s) => classOf(s) === "transverse").length;
+      const nPlace = items.filter((s) => s.pPlace != null && Number(s.pPlace) < 0.05).length;
+      const tested = items.filter((s) => s.pPlace != null).length;
+      meta.textContent = `${fmt(items.length)} énoncés affichés`
+        + ` · durée médiane ${med == null ? "—" : `${fmtRt(med)} jours`}`
+        + ` · ${fmt(nNiche)} niches et ${fmt(nTrans)} transverses (p < 0,05)`
+        + ` · ${fmt(nPlace)} déplacements de lieux significatifs sur ${fmt(tested)} testés`
+        + ` · vivier : ${fmt(o.nPool)} textes portés par ≥ ${fmt(rules.minAccounts)} comptes`
+        + ` (médiane de durée ${fmt(o.poolMedianSpan)} jours, avant le seuil de durée)`
+        + ` · corpus du ${frDate(o.first)} au ${frDate(o.last)}`;
+    }
+    plotCircClass(document.getElementById("circ-class-bar"), items);
+    plotCircPoles(document.getElementById("circ-poles-bar"), items);
+    plotClassScatter(document.getElementById("circ-scatter-comm"), items);
+    plotPlaceScatter(document.getElementById("circ-scatter-place"), items);
+    plotCircHeat(document.getElementById("circ-heat"), items);
+    const pick = document.getElementById("circ-pick");
+    if (pick) {
+      pick.innerHTML = items.map((s) => (
+        `<option value="${esc(s.id)}">${esc(CLASS_META[classOf(s)].label)} · ${esc(kindLabel(s.kind))} · ${esc(s.label)}</option>`
+      )).join("");
+      const selected = circSelected();
+      if (selected) {
+        circId = selected.id;
+        pick.value = selected.id;
+      }
+    }
+    renderCircDetail();
+  }
+
+  function selectCirc(id, scroll) {
+    circId = id;
+    renderCircDetail();
+    if (scroll) {
+      const detail = document.getElementById("circ-detail");
+      if (detail) detail.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
   }
 
   function renderRtDist() {
-    if (!RT || rtRendered) return;
-    const comms = RT.communities || [];
-    if (!comms.length) return;
-    rtRendered = true;
-    const meta = document.getElementById("rt-meta");
-    if (meta) {
-      const o = RT.overall || {};
-      meta.textContent = o.n
-        ? `${fmt(o.n)} publications hors RT · ${pct1(o.nZero, o.n)} sans retweet · moyenne ${fmtRt(o.mean)}.`
-        : "";
-    }
-    const note = document.getElementById("rt-median-note");
-    if (note) note.textContent = rtMedianNote(RT);
-    const kpis = document.getElementById("rt-kpis");
-    if (kpis) kpis.innerHTML = rtKpisHtml(comms);
-    const box = document.getElementById("rt-median-box");
-    const allZero = comms.every((c) => Number(c.median) === 0);
-    if (box) box.hidden = allZero;
-    if (!allZero) plotRtMedians(document.getElementById("rt-median"), comms);
-    const table = document.getElementById("rt-table");
-    if (table) table.innerHTML = rtTableHtml(comms);
-    plotRtStack(document.getElementById("rt-stack"), RT, rtMode);
-    const tabs = document.getElementById("rt-mode-tabs");
-    if (tabs && !tabs.dataset.bound) {
-      tabs.dataset.bound = "1";
-      tabs.addEventListener("click", (ev) => {
-        const btn = ev.target.closest("[data-rtmode]");
+    if (!CIRC || circRendered) return;
+    if (!(CIRC.statements || []).length) return;
+    circRendered = true;
+    circId = CIRC.statements[0].id;
+    renderCircCharts();
+    const kindTabs = document.getElementById("circ-kind");
+    if (kindTabs && !kindTabs.dataset.bound) {
+      kindTabs.dataset.bound = "1";
+      kindTabs.addEventListener("click", (ev) => {
+        const btn = ev.target.closest("[data-kind]");
         if (!btn) return;
-        rtMode = btn.dataset.rtmode;
-        tabs.querySelectorAll(".metric-tab").forEach((b) => {
+        circKind = btn.dataset.kind;
+        kindTabs.querySelectorAll(".metric-tab").forEach((b) => {
           const on = b === btn;
           b.classList.toggle("active", on);
           b.setAttribute("aria-selected", on ? "true" : "false");
         });
-        plotRtStack(document.getElementById("rt-stack"), RT, rtMode);
+        renderCircCharts();
       });
+    }
+    const pick = document.getElementById("circ-pick");
+    if (pick && !pick.dataset.bound) {
+      pick.dataset.bound = "1";
+      pick.addEventListener("change", () => selectCirc(pick.value, false));
     }
   }
 
   function initRtDist(data) {
-    if (!data || !Array.isArray(data.communities) || !data.communities.length) return false;
-    RT = data;
+    if (!data || !Array.isArray(data.statements) || !data.statements.length) return false;
+    CIRC = data;
     const tab = document.getElementById("macro-tab-rtdist");
     if (tab) tab.hidden = false;
     if (activeMacro === "rtdist") renderRtDist();
     return true;
   }
-
   function tick() {
     return new Promise((r) => requestAnimationFrame(() => setTimeout(r, 0)));
   }
@@ -2100,7 +2536,7 @@
       // Prefetch heavy secondary payloads while the main pack downloads.
       const profilesP = fetchJsonQuiet(`./${encodeURIComponent(CORPUS)}_profiles.json`).catch(() => null);
       const dailyP = fetchJsonQuiet(`./${encodeURIComponent(CORPUS)}_daily_top.json`).catch(() => null);
-      const rtP = fetchJsonQuiet(`./${encodeURIComponent(CORPUS)}_rt_dist.json`).catch(() => null);
+      const rtP = fetchJsonQuiet(`./${encodeURIComponent(CORPUS)}_circulation.json`).catch(() => null);
       const pack = await fetchJsonQuiet(`./${encodeURIComponent(CORPUS)}.json`);
       document.title = `Flux intercommunautaires — ${pack.corpus?.label || CORPUS}`;
       PHASE = pack.phase;

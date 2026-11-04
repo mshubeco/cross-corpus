@@ -132,6 +132,22 @@ a.handle:hover, a.link:hover { text-decoration: underline; }
 .rt-kpis .v { font-size: 1.55rem; }
 .rt-kpis .kpi { min-width: 148px; }
 .rt-kpis .hint { margin: 6px 0 0; }
+.circ-kpis .v { font-size: 1.35rem; }
+.circ-kpis .kpi { min-width: 150px; }
+.circ-kpis .hint { margin: 6px 0 0; }
+.circ-pick {
+  display: block; width: 100%; max-width: 100%;
+  margin: 0 0 8px; padding: 8px 10px;
+  background: var(--surface2); color: var(--text);
+  border: 1px solid var(--border); border-radius: 6px;
+  font: inherit; font-size: 0.84rem;
+}
+.circ-quote {
+  margin: 8px 0 12px; padding: 10px 12px;
+  border-left: 3px solid var(--accent);
+  background: var(--surface2); border-radius: 0 6px 6px 0;
+  font-size: 0.92rem; line-height: 1.4;
+}
 .corpus-switch { display: none; } /* remplacé par .macro-tabs */
 .macro-tabs {
   display: grid;
