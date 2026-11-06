@@ -4,9 +4,7 @@
   <script>
     (function () {
       var t = (new URLSearchParams(location.search).get('theme') || '').toLowerCase();
-      if (t === 'degrade' || t === 'gradient' || t === 'grad') {
-        document.documentElement.classList.add('grad');
-      } else if (t === 'clair' || t === 'light' || t === 'paper' || t === '1') {
+      if (t === 'clair' || t === 'light' || t === 'paper' || t === '1') {
         document.documentElement.classList.add('paper');
       }
     })();
@@ -191,15 +189,6 @@
     html.paper .axis-lab.ax-x { color: #9f1239; border-color: rgba(159,18,57,0.4); }
     html.paper .axis-lab.ax-y { color: #166534; border-color: rgba(22,101,52,0.4); }
     html.paper .axis-lab.ax-z { color: #1d4ed8; border-color: rgba(29,78,216,0.4); }
-    html.grad, html.grad body {
-      background: linear-gradient(198deg, #0b0c10 0%, #cbc6bc 48%, #f4f1ea 100%);
-    }
-    html.grad #loading {
-      background: linear-gradient(198deg, #0b0c10 0%, #cbc6bc 48%, #f4f1ea 100%);
-      color: #1c1916;
-    }
-    html.grad #loadingCard { background: rgba(244,241,234,0.9); border-color: rgba(20,18,16,0.12); }
-    html.grad #loadingCard .t { color: #1a1917; }
     #paperModeBtns button { flex: 1; padding: 6px 4px; }
     #loadingCard {
       min-width: min(340px, calc(100vw - 40px)); padding: 18px 20px;
@@ -427,7 +416,6 @@
     <div class="mode3d-row" id="paperModeBtns" role="group" aria-label="Fond du graphe">
       <button type="button" data-theme="noir" title="Fond noir">Noir</button>
       <button type="button" data-theme="clair" title="Fond blanc">Clair</button>
-      <button type="button" data-theme="degrade" title="Du noir vers le blanc">Dégradé</button>
     </div>
     <div style="margin-top:10px;margin-bottom:2px;color:#c5ccd6;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;font-weight:600">Couleurs</div>
     <div class="color-modes" role="tablist" aria-label="Couleurs Louvain">
@@ -522,10 +510,7 @@ const labelHintEl = document.getElementById('labelHint');
 
 const P = { linkLight: 0.35, opacity: 0.12, nLabels: 40, bloom: 0.42 };
 const themeQ = (new URLSearchParams(location.search).get('theme') || '').toLowerCase();
-let gradMode = themeQ === 'degrade' || themeQ === 'gradient' || themeQ === 'grad';
-let paperMode = !gradMode && (themeQ === 'clair' || themeQ === 'light' || themeQ === 'paper' || themeQ === '1');
-const gradResolution = new THREE.Vector2(1, 1);
-let gradBg = null;
+let paperMode = themeQ === 'clair' || themeQ === 'light' || themeQ === 'paper' || themeQ === '1';
 let colorMode = 'base'; // défaut = mêmes couleurs Louvain que le connectome
 let mode3d = false;
 /** @type {'sync'|'chrono'|'cross'} */
@@ -571,7 +556,7 @@ function applyLinkLight(level = P.linkLight) {
   P.linkLight = Math.max(0, Math.min(1, Number(level) || 0));
   const slider = document.getElementById('linkLight');
   if (slider && slider.value !== String(P.linkLight)) slider.value = String(P.linkLight);
-  if (bloomPass && !paperMode && !gradMode) bloomPass.strength = 0.12 + P.linkLight * 0.65;
+  if (bloomPass && !paperMode) bloomPass.strength = 0.12 + P.linkLight * 0.65;
   if (!lineGeo || !lineColorsBase || !lineMat) return;
   const col = lineGeo.attributes.color.array;
   const k = P.linkLight;
@@ -581,53 +566,14 @@ function applyLinkLight(level = P.linkLight) {
   lineMat.visible = k > 0.0005;
 }
 
-const GRAD_GLSL = `
-vec3 coordBackdrop(vec2 frag, vec2 res) {
-  vec2 uv = frag / max(res, vec2(1.0));
-  float field = uv.y * 0.88 + uv.x * 0.12;
-  float g = smoothstep(0.16, 0.98, field);
-  vec3 paper = vec3(0.957, 0.945, 0.918);
-  vec3 stone = vec3(0.80, 0.775, 0.735);
-  vec3 night = vec3(0.043, 0.047, 0.062);
-  vec3 bg = mix(paper, stone, smoothstep(0.0, 0.45, g));
-  return mix(bg, night, smoothstep(0.30, 1.0, g));
-}
-float coordLuma(vec3 c) {
-  return dot(c, vec3(0.299, 0.587, 0.114));
-}
-`;
-
 function attachPaperLine(mat) {
   mat.onBeforeCompile = (shader) => {
     shader.uniforms.uPaper = { value: paperMode ? 1 : 0 };
-    shader.uniforms.uGrad = { value: gradMode ? 1 : 0 };
-    shader.uniforms.uResolution = { value: gradResolution };
     mat.userData.paperShader = shader;
     shader.fragmentShader = shader.fragmentShader
-      .replace('#include <common>', `#include <common>
-uniform float uPaper;
-uniform float uGrad;
-uniform vec2 uResolution;
-${GRAD_GLSL}
-`)
+      .replace('#include <common>', '#include <common>\nuniform float uPaper;\n')
       .replace('#include <color_fragment>', `#include <color_fragment>
-if (uGrad > 0.5) {
-  float pm = max(diffuseColor.r, max(diffuseColor.g, diffuseColor.b));
-  vec3 hue = clamp(diffuseColor.rgb / max(pm, 1e-4), 0.0, 1.0);
-  float hueL = dot(hue, vec3(0.299, 0.587, 0.114));
-  float hold = mix(1.0, 0.62, smoothstep(0.5, 0.88, hueL));
-  float w = smoothstep(0.04, 0.22, pm);
-  if (diffuseColor.a < 0.004) discard;
-  float baseA = diffuseColor.a / 0.042;
-  vec3 bg = coordBackdrop(gl_FragCoord.xy, uResolution);
-  float inkW = smoothstep(0.34, 0.78, coordLuma(bg));
-  vec3 ink = mix(vec3(0.07), hue, 0.52) * hold;
-  vec3 glow = hue * (0.95 + 0.40 * w);
-  float aInk = min(0.82, (0.18 + 0.48 * w) * baseA);
-  float aGlow = min(0.95, (0.42 + 0.50 * w) * baseA);
-  diffuseColor.rgb = mix(glow, ink, inkW);
-  diffuseColor.a = mix(aGlow, aInk, inkW);
-} else if (uPaper > 0.5) {
+if (uPaper > 0.5) {
   float pm = max(diffuseColor.r, max(diffuseColor.g, diffuseColor.b));
   vec3 hue = clamp(diffuseColor.rgb / max(pm, 1e-4), 0.0, 1.0);
   float luma = dot(hue, vec3(0.299, 0.587, 0.114));
@@ -640,82 +586,39 @@ if (uGrad > 0.5) {
 }
 `);
   };
-  mat.customProgramCacheKey = () => 'coord-paper-line-grad';
-}
-
-function updateGradResolution() {
-  if (!renderer) return;
-  renderer.getDrawingBufferSize(gradResolution);
-}
-
-function ensureGradBg() {
-  if (gradBg) return gradBg;
-  const geo = new THREE.BufferGeometry();
-  geo.setAttribute('position', new THREE.Float32BufferAttribute([-1, -1, 0, 3, -1, 0, -1, 3, 0], 3));
-  const mat = new THREE.ShaderMaterial({
-    depthTest: false,
-    depthWrite: false,
-    toneMapped: false,
-    uniforms: { uResolution: { value: gradResolution } },
-    vertexShader: `
-      void main() { gl_Position = vec4(position.xy, 0.0, 1.0); }
-    `,
-    fragmentShader: `
-      uniform vec2 uResolution;
-      ${GRAD_GLSL}
-      void main() {
-        gl_FragColor = vec4(coordBackdrop(gl_FragCoord.xy, uResolution), 1.0);
-      }
-    `,
-  });
-  gradBg = new THREE.Mesh(geo, mat);
-  gradBg.name = 'coordGradBg';
-  gradBg.frustumCulled = false;
-  gradBg.renderOrder = -10000;
-  return gradBg;
+  mat.customProgramCacheKey = () => 'coord-paper-line';
 }
 
 function syncPaperChrome() {
   document.documentElement.classList.toggle('paper', paperMode);
-  document.documentElement.classList.toggle('grad', gradMode);
-  const flat = paperMode || gradMode;
-  if (scene?.background?.isColor) {
-    scene.background.set(paperMode ? 0xffffff : (gradMode ? 0x0b0c10 : 0x000000));
-  }
-  if (gradBg) gradBg.visible = gradMode;
-  updateGradResolution();
+  document.documentElement.classList.remove('grad');
+  if (scene?.background?.isColor) scene.background.set(paperMode ? 0xffffff : 0x000000);
   if (renderer) {
-    renderer.toneMapping = flat ? THREE.NoToneMapping : THREE.ACESFilmicToneMapping;
+    renderer.toneMapping = paperMode ? THREE.NoToneMapping : THREE.ACESFilmicToneMapping;
   }
   if (bloomPass) {
-    bloomPass.strength = flat ? 0 : (0.12 + P.linkLight * 0.65);
-    bloomPass.threshold = flat ? 1 : 0.2;
+    bloomPass.strength = paperMode ? 0 : (0.12 + P.linkLight * 0.65);
+    bloomPass.threshold = paperMode ? 1 : 0.2;
   }
   if (lineMat) {
-    lineMat.blending = flat ? THREE.NormalBlending : THREE.AdditiveBlending;
+    lineMat.blending = paperMode ? THREE.NormalBlending : THREE.AdditiveBlending;
     const sh = lineMat.userData.paperShader;
     if (sh?.uniforms?.uPaper) sh.uniforms.uPaper.value = paperMode ? 1 : 0;
-    if (sh?.uniforms?.uGrad) sh.uniforms.uGrad.value = gradMode ? 1 : 0;
     lineMat.needsUpdate = true;
   }
   if (pointsMesh?.material) {
-    pointsMesh.material.blending = flat ? THREE.NormalBlending : THREE.AdditiveBlending;
+    pointsMesh.material.blending = paperMode ? THREE.NormalBlending : THREE.AdditiveBlending;
     if (pointsMesh.material.uniforms?.uPaper) {
       pointsMesh.material.uniforms.uPaper.value = paperMode ? 1 : 0;
     }
-    if (pointsMesh.material.uniforms?.uGrad) {
-      pointsMesh.material.uniforms.uGrad.value = gradMode ? 1 : 0;
-    }
     pointsMesh.material.needsUpdate = true;
   }
-  const themeName = gradMode ? 'degrade' : paperMode ? 'clair' : 'noir';
   document.querySelectorAll('#paperModeBtns button[data-theme]').forEach((b) => {
-    b.classList.toggle('active', b.dataset.theme === themeName);
+    b.classList.toggle('active', (b.dataset.theme === 'clair') === paperMode);
   });
 }
 
 function setTheme(mode, { syncUrl = true } = {}) {
-  gradMode = mode === 'degrade';
   paperMode = mode === 'clair';
   syncPaperChrome();
   if (nodes.length) rebuildLabels();
@@ -723,15 +626,14 @@ function setTheme(mode, { syncUrl = true } = {}) {
   refreshThemeLinks();
   if (!syncUrl) return;
   const url = new URL(location.href);
-  if (gradMode) url.searchParams.set('theme', 'degrade');
-  else if (paperMode) url.searchParams.set('theme', 'clair');
+  if (paperMode) url.searchParams.set('theme', 'clair');
   else url.searchParams.delete('theme');
   if (url.href !== location.href) history.replaceState(history.state, '', url);
 }
 
 function refreshThemeLinks() {
   const t = themeSuffix();
-  const backTheme = (paperMode || gradMode) ? '&theme=clair' : '';
+  const backTheme = paperMode ? '&theme=clair' : '';
   if (currentId && backEl) {
     backEl.href = `../connectome/?corpus=${encodeURIComponent(currentId)}${backTheme}`;
   }
@@ -760,40 +662,9 @@ function paperLabelCss(c) {
   return `rgb(${(c[0] / m * k) | 0},${(c[1] / m * k) | 0},${(c[2] / m * k) | 0})`;
 }
 function themeSuffix() {
-  if (gradMode) return '&theme=degrade';
-  if (paperMode) return '&theme=clair';
-  return '';
+  return paperMode ? '&theme=clair' : '';
 }
-function smooth01(e0, e1, x) {
-  const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0)));
-  return t * t * (3 - 2 * t);
-}
-function gradLuma(x, yCss) {
-  const uvx = x / Math.max(innerWidth, 1);
-  const uvy = 1 - (yCss / Math.max(innerHeight, 1));
-  const g = smooth01(0.16, 0.98, uvy * 0.88 + uvx * 0.12);
-  const s1 = smooth01(0, 0.45, g);
-  const s2 = smooth01(0.30, 1, g);
-  const paper = [0.957, 0.945, 0.918];
-  const stone = [0.80, 0.775, 0.735];
-  const night = [0.043, 0.047, 0.062];
-  let luma = 0;
-  const w = [0.299, 0.587, 0.114];
-  for (let i = 0; i < 3; i++) {
-    const mid = paper[i] * (1 - s1) + stone[i] * s1;
-    luma += (mid * (1 - s2) + night[i] * s2) * w[i];
-  }
-  return luma;
-}
-function paintName(el, rgb, x, y) {
-  if (gradMode) {
-    const onPaper = gradLuma(x, y) > 0.55;
-    el.style.color = onPaper ? paperLabelCss(rgb) : rgbCss(rgb);
-    el.style.textShadow = onPaper
-      ? '0 0 3px rgba(244,241,234,0.95), 0 0 1px rgba(244,241,234,0.95)'
-      : '0 0 6px rgba(0,0,0,0.85), 0 1px 2px rgba(0,0,0,0.75)';
-    return;
-  }
+function paintName(el, rgb) {
   el.style.color = paperMode ? paperLabelCss(rgb) : rgbCss(rgb);
   el.style.textShadow = paperMode
     ? '0 0 3px #fff, 0 0 1px #fff'
@@ -939,7 +810,7 @@ function rebuildAxes() {
   group.name = 'coordAxes';
 
   // Plan de référence Z=0 (grille légère)
-  const axCol = (paperMode || gradMode)
+  const axCol = paperMode
     ? { x: 0x9f1239, y: 0x166534, z: 0x1d4ed8, cone: 0x1e3a8a, g0: 0x64748b, g1: 0x334155, gOp: 0.45 }
     : { x: 0xf87171, y: 0x4ade80, z: 0x60a5fa, cone: 0x93c5fd, g0: 0x1e293b, g1: 0x111827, gOp: 0.22 };
   const grid = new THREE.GridHelper(Math.max(spanX, spanY) * 0.55, 4, axCol.g0, axCol.g1);
@@ -1028,11 +899,6 @@ function projectAxisLabels() {
     if (on) {
       it.el.style.left = `${x}px`;
       it.el.style.top = `${y}px`;
-      if (gradMode) {
-        const onPaper = gradLuma(x, y) > 0.55;
-        it.el.style.color = onPaper ? '#1a1917' : '#f4f1ea';
-        it.el.style.background = onPaper ? 'rgba(244,241,234,0.9)' : 'rgba(8,10,14,0.82)';
-      }
     }
   }
 }
@@ -1184,8 +1050,6 @@ function initThree() {
   renderer.toneMapping = paperMode ? THREE.NoToneMapping : THREE.ACESFilmicToneMapping;
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
   renderer.setSize(innerWidth, innerHeight);
-  updateGradResolution();
-  scene.add(ensureGradBg());
   wrap.appendChild(renderer.domElement);
 
   controls = new OrbitControls(camera, renderer.domElement);
@@ -1242,7 +1106,6 @@ function onResize() {
   camera.updateProjectionMatrix();
   renderer.setSize(innerWidth, innerHeight);
   composer.setSize(innerWidth, innerHeight);
-  updateGradResolution();
   lastLabelCamKey = '';
 }
 
@@ -1266,9 +1129,7 @@ function fitGraphToView(ns) {
 
 function clearScene() {
   disposeAxisGroup();
-  const keep = gradBg;
   while (scene.children.length) scene.remove(scene.children[0]);
-  if (keep) scene.add(keep);
   labelsEl.innerHTML = '';
   lineGeo = null;
   lineMat = null;
@@ -1433,15 +1294,14 @@ function rebuildLabels() {
     el.style.opacity = '0.94';
     el.style.display = 'none';
     const displayC = nodeRgb(node);
-    const rgb = [displayC[0], displayC[1], displayC[2]];
-    paintName(el, rgb, innerWidth * 0.5, innerHeight * 0.5);
+    paintName(el, displayC);
     const pr = node.pr != null ? Number(node.pr) : null;
     el.title = pr != null
       ? `${text} — PageRank ${pr.toExponential(2)} · deg ${node.deg}`
       : `${text} — deg ${node.deg}`;
     labelsEl.appendChild(el);
     labelItems.push({
-      el, text, nodeRef: node, rgb, x: node.x, y: node.y, z: nodeZ(node),
+      el, text, nodeRef: node, x: node.x, y: node.y, z: nodeZ(node),
       pr: node.pr, deg: item.deg, gephiSize: item.gephiSize, fontPx, t: mix,
       boxW: Math.max(28, text.length * fontPx * 0.55 + 12),
       boxH: fontPx * 1.35,
@@ -1507,7 +1367,6 @@ function projectLabels() {
     it.el.style.display = 'block';
     it.el.style.left = `${p.cx + p.ox}px`;
     it.el.style.top = `${p.cy + p.oy}px`;
-    if (gradMode && it.rgb) paintName(it.el, it.rgb, p.cx + p.ox, p.cy + p.oy);
   }
   for (const it of labelItems) {
     if (!shown.has(it) && it.visible) {
@@ -1982,7 +1841,7 @@ function buildScene(data) {
   lineGeo.setAttribute('color', new THREE.Float32BufferAttribute(new Float32Array(colors), 3));
   lineMat = new THREE.LineBasicMaterial({
     vertexColors: true, transparent: true, opacity: P.linkLight * P.opacity,
-    blending: (paperMode || gradMode) ? THREE.NormalBlending : THREE.AdditiveBlending, depthWrite: false,
+    blending: paperMode ? THREE.NormalBlending : THREE.AdditiveBlending, depthWrite: false,
   });
   attachPaperLine(lineMat);
   const lines = new THREE.LineSegments(lineGeo, lineMat);
@@ -2011,13 +1870,11 @@ function buildScene(data) {
   pGeo.setAttribute('size', new THREE.BufferAttribute(nSize, 1));
   const pMat = new THREE.ShaderMaterial({
     transparent: true, depthWrite: false,
-    blending: (paperMode || gradMode) ? THREE.NormalBlending : THREE.AdditiveBlending,
+    blending: paperMode ? THREE.NormalBlending : THREE.AdditiveBlending,
     uniforms: {
       uPR: { value: renderer.getPixelRatio() },
       uAlpha: { value: vis.pointAlpha },
       uPaper: { value: paperMode ? 1 : 0 },
-      uGrad: { value: gradMode ? 1 : 0 },
-      uResolution: { value: gradResolution },
     },
     vertexShader: `
       attribute float size; attribute vec3 color; varying vec3 vC;
@@ -2029,24 +1886,10 @@ function buildScene(data) {
         gl_Position = projectionMatrix * mv;
       }`,
     fragmentShader: `
-      varying vec3 vC; uniform float uAlpha; uniform float uPaper; uniform float uGrad; uniform vec2 uResolution;
-      ${GRAD_GLSL}
+      varying vec3 vC; uniform float uAlpha; uniform float uPaper;
       void main() {
         float d = length(gl_PointCoord - 0.5);
-        if (uGrad > 0.5) {
-          float disc = smoothstep(0.48, 0.18, d);
-          float pm = max(vC.r, max(vC.g, vC.b));
-          vec3 hue = clamp(vC / max(pm, 1e-4), 0.0, 1.0);
-          float hueL = dot(hue, vec3(0.299, 0.587, 0.114));
-          float hold = mix(1.0, 0.62, smoothstep(0.5, 0.88, hueL));
-          vec3 bg = coordBackdrop(gl_FragCoord.xy, uResolution);
-          float inkW = smoothstep(0.34, 0.78, coordLuma(bg));
-          vec3 ink = mix(vec3(0.07), hue, 0.55) * hold;
-          vec3 glow = hue * mix(1.05, 1.3, hold);
-          float a = disc * mix(0.9, 0.7, inkW);
-          if (a < 0.02) discard;
-          gl_FragColor = vec4(mix(glow, ink, inkW), a);
-        } else if (uPaper > 0.5) {
+        if (uPaper > 0.5) {
           float disc = smoothstep(0.48, 0.22, d);
           float pm = max(vC.r, max(vC.g, vC.b));
           vec3 hue = clamp(vC / max(pm, 1e-4), 0.0, 1.0);
@@ -2221,7 +2064,7 @@ function renderNav() {
   }
   const back = document.createElement('a');
   back.className = 'back';
-  back.href = `../connectome/?corpus=${encodeURIComponent(currentId || 'ebola')}${(paperMode || gradMode) ? '&theme=clair' : ''}`;
+  back.href = `../connectome/?corpus=${encodeURIComponent(currentId || 'ebola')}${paperMode ? '&theme=clair' : ''}`;
   back.textContent = 'Connectome';
   nav.appendChild(back);
 }
@@ -2252,7 +2095,7 @@ async function loadCorpus(id) {
   const covEl = document.getElementById('corpusCoverage');
   if (covEl) covEl.textContent = corpusCoverageText(corp) || 'Couverture · —';
   renderNav();
-  backEl.href = `../connectome/?corpus=${encodeURIComponent(currentId)}${(paperMode || gradMode) ? '&theme=clair' : ''}`;
+  backEl.href = `../connectome/?corpus=${encodeURIComponent(currentId)}${paperMode ? '&theme=clair' : ''}`;
   history.replaceState(
     { corpus: currentId },
     '',
