@@ -84,6 +84,20 @@
       pointer-events: auto; cursor: pointer;
     }
     .label:hover { filter: brightness(1.15); }
+    html.paper, html.paper body { background: #fff; }
+    html.paper #bootSplash { background: #f7f7f5; color: #666; }
+    html.paper .portrait {
+      box-shadow:
+        0 0 0 2.5px var(--ring, #222),
+        0 0 0 4.5px #fff,
+        0 6px 14px rgba(0,0,0,0.16);
+    }
+    html.paper .portrait:hover {
+      box-shadow:
+        0 0 0 2.5px #fff,
+        0 0 0 5px var(--ring, #222),
+        0 8px 18px rgba(0,0,0,0.22);
+    }
     /* Bandeau haut : toujours au-dessus des sidebars, jamais chevauché */
     #corpusNav {
       position: fixed;
@@ -287,6 +301,18 @@
       background: #111; color: #c5ccd6; border: 1px solid rgba(255,255,255,0.12);
       border-radius: 4px; padding: 3px 4px; font-size: 11px;
     }
+    #paperModeBtns {
+      flex: 1; display: flex; border-radius: 6px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.14);
+    }
+    #paperModeBtns button {
+      flex: 1; border: 0; background: transparent; color: #8b93a0;
+      font: inherit; font-size: 11px; font-weight: 700; padding: 4px 0; cursor: pointer;
+    }
+    #paperModeBtns button + button { border-left: 1px solid rgba(255,255,255,0.1); }
+    #paperModeBtns button.active[data-paper="0"] { color: #fff; background: #111; }
+    #paperModeBtns button.active[data-paper="1"] { color: #1c1c1c; background: #f7f4ee; }
+    #bloom:disabled { opacity: 0.35; cursor: not-allowed; }
     #colorModeBlock {
       margin: 10px 0 10px; padding: 9px 9px 8px;
       border: 1px solid rgba(255,170,70,0.55);
@@ -603,6 +629,29 @@
       margin-top: 8px; color: #e4eaf2; font-size: 12.5px; font-weight: 650;
     }
     #tooltip.acct .acct-count span { color: #8b93a0; font-weight: 500; }
+    #tooltip.acct .acct-tally-cap {
+      margin: 8px 0 0; color: #9aa3b0; font-size: 11px; font-weight: 650; line-height: 1.35;
+    }
+    #tooltip.acct .acct-tally-cap.rt-only { color: #ffb56a; }
+    #tooltip.acct .acct-tally {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px; list-style: none; margin: 6px 0 0; padding: 0;
+    }
+    #tooltip.acct .acct-tally li {
+      display: flex; flex-direction: column; gap: 1px; min-width: 0;
+      padding: 6px 7px; border-radius: 8px; background: rgba(255,255,255,0.04);
+    }
+    #tooltip.acct .acct-tally b {
+      font-size: 13px; font-weight: 650; color: #fff; font-variant-numeric: tabular-nums;
+    }
+    #tooltip.acct .acct-tally span {
+      font-size: 10px; color: #8b93a0; font-weight: 550; letter-spacing: 0.01em; white-space: nowrap;
+    }
+    #tooltip.acct .acct-tally li.zero b,
+    #tooltip.acct .acct-tally li.zero span { color: #5c6570; }
+    #tooltip.acct .acct-tally li.rt-only { background: rgba(255,154,60,0.14); }
+    #tooltip.acct .acct-tally li.rt-only b { color: #ffb56a; }
+    #tooltip.acct .acct-tally li.rt-only span { color: #e7c09a; }
     #tooltip.acct .acct-scroll {
       overflow: auto;
       max-height: min(520px, calc(100vh - var(--ui-chrome-top) - 220px));
@@ -1045,6 +1094,10 @@
   <script>
   (function () {
     var p = new URLSearchParams(location.search);
+    var theme = p.get('theme');
+    if (theme === 'clair' || theme === 'light' || theme === 'paper' || theme === '1') {
+      document.documentElement.classList.add('paper');
+    }
     var id = (p.get('corpus') || 'ebola').toLowerCase();
     var g = p.get('graph');
     var file = g === 'rt' ? 'graph_rt.json' : 'graph.json';
@@ -1165,6 +1218,13 @@
       </div>
     </div>
     <div id="stats">—</div>
+    <div class="row" title="Fond du graphe. Le choix suit Toutes interactions et RT.">
+      <span>Fond</span>
+      <div id="paperModeBtns" role="group" aria-label="Fond du graphe">
+        <button type="button" data-paper="0" class="active">Noir</button>
+        <button type="button" data-paper="1">Clair</button>
+      </div>
+    </div>
     <div id="colorModeBlock" title="v20261024a">
       <div class="cmlabel">Couleurs du réseau</div>
       <button type="button" id="hudPortraitBtn" aria-pressed="false"
@@ -1220,7 +1280,7 @@
       <div class="nav-hint" id="edgeColorHint">Liens colorés par communauté des nœuds</div>
     </div>
     <div class="row"><span>Lumière liens</span><input id="linkLight" type="range" min="0" max="1" step="0.01" value="0.28"></div>
-    <div class="row"><span>Bloom</span><input id="bloom" type="range" min="0" max="2.2" step="0.01" value="0.38"></div>
+    <div class="row"><span>Bloom</span><input id="bloom" type="range" min="0" max="2.2" step="0.01" value="0.38" title="Désactivé sur fond clair : le bloom n’éclaire qu’un fond noir."></div>
     <div class="row"><span>Opacité</span><input id="op" type="range" min="0" max="0.45" step="0.005" value="0.07"></div>
     <div class="row"><span>Labels</span><input id="nLabels" type="range" min="0" max="80" step="1" value="40"></div>
     <div id="compassBlock" hidden>
@@ -1374,6 +1434,10 @@ const _centParam = new URLSearchParams(location.search).get('cent');
 let centralityMode = CENTRALITY_IDS.has(_centParam) ? _centParam : 'w';
 /** Photos de profil à la place des nœuds les plus centraux (combinable avec les couleurs). */
 let portraitMode = new URLSearchParams(location.search).get('portraits') === '1';
+/** Fond blanc du graphe (Toutes interactions et RT). `?theme=clair`. */
+let paperMode = ['clair', 'light', 'paper', '1'].includes(
+  new URLSearchParams(location.search).get('theme') || ''
+);
 const CENTRALITY_LABELS = {
   in: 'Degré In',
   out: 'Degré Out',
@@ -1679,7 +1743,7 @@ let lexScope = 'targets'; // 'sources' | 'targets'
 /** En mode Lemme : unigrammes ou bigrammes. */
 let lemmaForm = 'uni'; // 'uni' | 'bi'
 /** Build id (console + vérif cache). */
-const CONNECTOME_UI = '20261030-age-all';
+const CONNECTOME_UI = '20261106-fond-clair';
 
 const PUB_TYPE_ORDER = [
   { key: 'original', label: 'Original', short: 'Orig.', color: '#8ecf4a' },
@@ -2024,13 +2088,13 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.setSize(innerWidth, innerHeight);
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMapping = paperMode ? THREE.NoToneMapping : THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = P.exposure;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 wrap.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x000000);
+scene.background = new THREE.Color(paperMode ? 0xffffff : 0x000000);
 
 const aspect = innerWidth / innerHeight;
 const frustum = 480;
@@ -2104,6 +2168,10 @@ const bloomPass = new UnrealBloomPass(
 );
 composer.addPass(bloomPass);
 composer.addPass(new OutputPass());
+if (paperMode) {
+  bloomPass.strength = 0;
+  bloomPass.threshold = 1;
+}
 
 let lineMat = null;
 let lineGeo = null;
@@ -4906,7 +4974,7 @@ function renderCompassDay() {
       opacity: 0.42 + 0.52 * t,
       depthWrite: false,
       side: THREE.DoubleSide,
-      blending: THREE.AdditiveBlending,
+      blending: paperMode ? THREE.NormalBlending : THREE.AdditiveBlending,
     });
     const ribbon = new THREE.Mesh(geo, mat);
     ribbon.frustumCulled = false;
@@ -5148,10 +5216,31 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
     vertexColors: true,
     transparent: true,
     opacity: 0,
-    blending: THREE.AdditiveBlending,
+    blending: paperMode ? THREE.NormalBlending : THREE.AdditiveBlending,
     depthWrite: false,
     depthTest: false,
   });
+  lineMat.onBeforeCompile = (shader) => {
+    shader.uniforms.uPaper = { value: paperMode ? 1 : 0 };
+    shader.fragmentShader = shader.fragmentShader
+      .replace(
+        '#include <common>',
+        '#include <common>\nuniform float uPaper;'
+      )
+      .replace(
+        '#include <color_fragment>',
+        `#include <color_fragment>
+        if (uPaper > 0.5) {
+          float pm = max(diffuseColor.r, max(diffuseColor.g, diffuseColor.b));
+          if (pm < 0.004) discard;
+          vec3 phue = clamp(diffuseColor.rgb / pm, 0.0, 1.0);
+          diffuseColor.rgb = mix(vec3(0.04), phue, 0.55);
+          float pw = clamp(pm / 0.42, 0.45, 1.0);
+          diffuseColor.a = min(0.62, diffuseColor.a * 14.0 * pw);
+        }`
+      );
+    lineMat.userData.paperShader = shader;
+  };
 
   const lines = new THREE.LineSegments(geo, lineMat);
   lines.frustumCulled = false;
@@ -5192,10 +5281,11 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   const pMat = new THREE.ShaderMaterial({
     transparent: true,
     depthWrite: false,
-    blending: THREE.AdditiveBlending,
+    blending: paperMode ? THREE.NormalBlending : THREE.AdditiveBlending,
     uniforms: {
       uPR: { value: renderer.getPixelRatio() },
       uAlpha: { value: vis.pointAlpha },
+      uPaper: { value: paperMode ? 1 : 0 },
     },
     vertexShader: `
       attribute float size; attribute vec3 color;
@@ -5210,11 +5300,25 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
     fragmentShader: `
       varying vec3 vC;
       uniform float uAlpha;
+      uniform float uPaper;
       void main() {
         float d = length(gl_PointCoord - 0.5);
-        float a = smoothstep(0.45, 0.0, d) * uAlpha;
-        gl_FragColor = vec4(vC, a);
-        if (a < 0.01) discard;
+        if (uPaper < 0.5) {
+          float a = smoothstep(0.45, 0.0, d) * uAlpha;
+          if (a < 0.01) discard;
+          gl_FragColor = vec4(vC, a);
+        } else {
+          float m = max(vC.r, max(vC.g, vC.b));
+          float a = smoothstep(0.5, 0.28, d);
+          if (a < 0.02) discard;
+          if (m < 0.12) {
+            gl_FragColor = vec4(vec3(0.82), a * 0.28);
+          } else {
+            vec3 hue = clamp(vC / max(m, 1e-4), 0.0, 1.0);
+            vec3 ink = mix(vec3(0.05), hue, 0.62);
+            gl_FragColor = vec4(ink, a);
+          }
+        }
       }`,
   });
   pointsMesh = new THREE.Points(pGeo, pMat);
@@ -5243,6 +5347,7 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
     `${modeLabel} · taille ${centLbl} · ${data.meta.n_nodes.toLocaleString('fr-FR')} nœuds · ${data.meta.n_edges.toLocaleString('fr-FR')} liens · ${P.strands}× hair`;
   fitGraphToView(nodes);
   renderCommPanel(data);
+  syncPaperChrome();
   rebuildLabels();
   updateCentralityButtons();
   renderTypoLegend();
@@ -5268,6 +5373,80 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   portraitRankDirty = true;
   lastPortraitKey = '';
   return true;
+}
+
+function labelInk(rgb) {
+  const base = rgb && rgb.length >= 3 ? rgb : [200, 200, 200];
+  if (!paperMode) {
+    return {
+      color: rgbCss(base),
+      shadow: '0 0 6px rgba(0,0,0,0.85), 0 1px 2px rgba(0,0,0,0.75)',
+    };
+  }
+  const m = Math.max(base[0], base[1], base[2], 1);
+  const k = 118;
+  return {
+    color: rgbCss([
+      (base[0] / m) * k,
+      (base[1] / m) * k,
+      (base[2] / m) * k,
+    ]),
+    shadow: '0 0 2px #fff, 0 0 5px #fff, 0 1px 0 #fff',
+  };
+}
+
+function refreshLabelInk() {
+  for (const it of labelItems) {
+    const ink = labelInk(it.rgb);
+    it.color = ink.color;
+    if (!it.el) continue;
+    it.el.style.color = ink.color;
+    it.el.style.textShadow = ink.shadow;
+  }
+}
+
+/** Fond, mélange et bloom. Le graphe Toutes interactions et le graphe RT partagent cette scène. */
+function syncPaperChrome() {
+  document.documentElement.classList.toggle('paper', paperMode);
+  scene.background.set(paperMode ? 0xffffff : 0x000000);
+  renderer.toneMapping = paperMode ? THREE.NoToneMapping : THREE.ACESFilmicToneMapping;
+  if (paperMode) {
+    bloomPass.strength = 0;
+    bloomPass.threshold = 1;
+  } else {
+    bloomPass.strength = P.bloom;
+    bloomPass.threshold = P.threshold;
+  }
+  const bloomEl = document.getElementById('bloom');
+  if (bloomEl) bloomEl.disabled = paperMode;
+  document.querySelectorAll('#paperModeBtns button[data-paper]').forEach((b) => {
+    b.classList.toggle('active', (b.dataset.paper === '1') === paperMode);
+  });
+  if (lineMat) {
+    lineMat.blending = paperMode ? THREE.NormalBlending : THREE.AdditiveBlending;
+    const sh = lineMat.userData.paperShader;
+    if (sh?.uniforms?.uPaper) sh.uniforms.uPaper.value = paperMode ? 1 : 0;
+    lineMat.needsUpdate = true;
+  }
+  if (pointsMesh?.material) {
+    pointsMesh.material.blending = paperMode ? THREE.NormalBlending : THREE.AdditiveBlending;
+    if (pointsMesh.material.uniforms?.uPaper) {
+      pointsMesh.material.uniforms.uPaper.value = paperMode ? 1 : 0;
+    }
+    pointsMesh.material.needsUpdate = true;
+  }
+}
+
+function setPaperMode(on, { syncUrl = true, rebuildCompass = false } = {}) {
+  paperMode = !!on;
+  syncPaperChrome();
+  refreshLabelInk();
+  if (rebuildCompass && compassEnabled) renderCompassDay();
+  if (!syncUrl) return;
+  const url = new URL(location.href);
+  if (paperMode) url.searchParams.set('theme', 'clair');
+  else url.searchParams.delete('theme');
+  if (url.href !== location.href) history.replaceState(history.state, '', url);
 }
 
 function rebuildLabels() {
@@ -5311,9 +5490,10 @@ function rebuildLabels() {
     el.style.opacity = '0.94';
     el.style.display = 'none';
     const displayC = node._displayC || node.c;
-    const labelColor = rgbCss(displayC);
+    const ink = labelInk(displayC);
+    const labelColor = ink.color;
     el.style.color = labelColor;
-    el.style.textShadow = '0 0 6px rgba(0,0,0,0.85), 0 1px 2px rgba(0,0,0,0.75)';
+    el.style.textShadow = ink.shadow;
     el.title = usesAccountCard()
       ? `${text} — survol : publications · clic : profil X`
       : `${text} — clic : profil X`;
@@ -6063,6 +6243,13 @@ function drawPortraitGlyph(ctx, cx, cy, d, color, letter, img) {
   ctx.strokeStyle = color;
   ctx.lineWidth = Math.max(2, d * 0.065);
   ctx.stroke();
+  if (paperMode) {
+    ctx.beginPath();
+    ctx.arc(cx, cy, r + ctx.lineWidth * 0.65, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(20,20,20,0.38)';
+    ctx.lineWidth = Math.max(1, d * 0.02);
+    ctx.stroke();
+  }
 }
 
 function drawPortraitsOnCtx(ctx, w, h, viewZoom, cssW) {
@@ -6093,7 +6280,16 @@ addEventListener('resize', () => {
 });
 
 document.getElementById('linkLight').oninput = (e) => { applyLinkLight(+e.target.value); };
-document.getElementById('bloom').oninput = (e) => { bloomPass.strength = +e.target.value; P.bloom = +e.target.value; };
+document.getElementById('bloom').oninput = (e) => {
+  P.bloom = +e.target.value;
+  if (!paperMode) bloomPass.strength = P.bloom;
+};
+document.getElementById('paperModeBtns')?.addEventListener('click', (ev) => {
+  const b = ev.target.closest('button[data-paper]');
+  if (!b) return;
+  setPaperMode(b.dataset.paper === '1', { rebuildCompass: true });
+});
+syncPaperChrome();
 document.getElementById('op').oninput = (e) => { P.opacity = +e.target.value; applyLinkLight(P.linkLight); };
 document.getElementById('nLabels').oninput = (e) => { P.nLabels = +e.target.value; rebuildLabels(); };
 
@@ -6159,8 +6355,8 @@ function drawLabelsOnCtx(ctx, w, h, scale) {
     const weight = (it.t || 0) > 0.7 ? '700' : (it.t || 0) > 0.4 ? '600' : '500';
     ctx.font = `${weight} ${fontPx}px "Helvetica Neue", Helvetica, Arial, sans-serif`;
     ctx.globalAlpha = 0.94;
-    ctx.shadowColor = 'rgba(0,0,0,0.85)';
-    ctx.shadowBlur = 6;
+    ctx.shadowColor = paperMode ? 'rgba(255,255,255,0.95)' : 'rgba(0,0,0,0.85)';
+    ctx.shadowBlur = paperMode ? 3 : 6;
     ctx.fillStyle = it.color || rgbCss(it.rgb) || '#ffffff';
     ctx.fillText(text, cx + ox, cy + oy - fontPx * 0.25);
     ctx.shadowBlur = 0;
@@ -6730,6 +6926,64 @@ function engUnit(n, one, many) {
   return Number(n) === 1 ? one : many;
 }
 
+function ownPostTypeCounts(posts) {
+  const counts = { original: 0, reply: 0, quote: 0, other: 0 };
+  for (const p of posts) {
+    const t = p && p.type;
+    if (t === 'original' || t === 'reply' || t === 'quote') counts[t] += 1;
+    else counts.other += 1;
+  }
+  return counts;
+}
+
+function tallyCell(n, one, many, scope, extraCls) {
+  const cls = [n ? '' : 'zero', extraCls || ''].filter(Boolean).join(' ');
+  return `<li class="${cls}" title="${escapeHtml(scope)}">`
+    + `<b>${Number(n).toLocaleString('fr-FR')}</b><span>${engUnit(n, one, many)}</span></li>`;
+}
+
+/** Décompte visible au survol : originaux, réponses, citations, retweets. */
+function renderPubTally(pubs, rts, posts) {
+  const listed = posts.length;
+  const rtOnly = pubs === 0 && rts > 0;
+  if (pubs > 0 && listed === 0) {
+    return `<p class="acct-tally-cap">Décompte des publications</p>`
+      + `<ul class="acct-tally" data-pubs="${pubs}" data-rts="${rts}">`
+      + tallyCell(pubs, 'publication propre', 'publications propres', 'Total des publications propres dans le corpus. Le détail par type n’est pas dans le fichier.', '')
+      + tallyCell(rts, 'retweet', 'retweets', 'Total des retweets dans le corpus. Leur texte n’est pas listé.', '')
+      + `</ul>`;
+  }
+  const counts = ownPostTypeCounts(posts);
+  const complete = listed === pubs;
+  const ownScope = complete
+    ? 'Publications propres listées dans la fiche. Leur somme égale le total du corpus.'
+    : 'Parmi les publications affichées, pas le total du corpus.';
+  const rtScope = 'Total des retweets dans le corpus. Leur texte n’est pas listé.';
+  const cells = [
+    tallyCell(counts.original, 'original', 'originaux', ownScope, ''),
+    tallyCell(counts.reply, 'réponse', 'réponses', ownScope, ''),
+    tallyCell(counts.quote, 'citation', 'citations', ownScope, ''),
+  ];
+  if (counts.other) {
+    cells.push(tallyCell(counts.other, 'autre', 'autres', ownScope, ''));
+  }
+  cells.push(tallyCell(rts, 'retweet', 'retweets', rtScope, rtOnly ? 'rt-only' : ''));
+  let cap = 'Décompte des publications';
+  let capCls = 'acct-tally-cap';
+  if (rtOnly) {
+    cap = 'Uniquement des retweets';
+    capCls += ' rt-only';
+  } else if (pubs === 0 && rts === 0) {
+    cap = 'Aucune publication dans le corpus';
+  } else if (listed > pubs) {
+    cap = `Écart : ${listed.toLocaleString('fr-FR')} publications listées pour ${pubs.toLocaleString('fr-FR')} annoncées`;
+  } else if (!complete) {
+    cap = `Types des ${listed.toLocaleString('fr-FR')} publications affichées · ${pubs.toLocaleString('fr-FR')} publications propres dans le corpus`;
+  }
+  return `<p class="${capCls}">${escapeHtml(cap)}</p>`
+    + `<ul class="acct-tally" data-pubs="${pubs}" data-rts="${rts}" data-listed="${listed}">${cells.join('')}</ul>`;
+}
+
 function renderPostCard(p, handle, rank) {
   const type = p.type === 'reply' || p.type === 'quote' ? p.type : 'original';
   const label = type === 'reply' ? 'Réponse' : type === 'quote' ? 'Citation' : 'Original';
@@ -6792,6 +7046,7 @@ function renderAccountCard(node) {
     : `<span class="acct-handle">${escapeHtml(shown)}</span>`;
   let count = 'Publications du compte';
   let body = '<p class="acct-empty">Chargement des publications…</p>';
+  let tally = '';
   const rec = lookupAccount(handle);
   if (accountPostsMode === 'shards' && rec === undefined) {
     ensureAccountShard(handle, loadSeq);
@@ -6808,6 +7063,7 @@ function renderAccountCard(node) {
     const pubs = Number(rec.pubs || 0);
     const rts = Number(rec.rts || 0);
     const posts = Array.isArray(rec.posts) ? rec.posts : [];
+    tally = renderPubTally(pubs, rts, posts);
     const rtBit = rts
       ? ` <span>· ${rts.toLocaleString('fr-FR')} retweet${rts > 1 ? 's' : ''}</span>`
       : '';
@@ -6835,6 +7091,7 @@ function renderAccountCard(node) {
       ${typoLine}
       <div class="acct-meta">${commBit}${escapeHtml(centLbl)} ${escapeHtml(centVal)}</div>
       <div class="acct-count" title="Classement : j’aime + retweets + réponses + citations. Texte intégral. Les retweets du compte ne sont pas listés.">${count}</div>
+      ${tally}
     </div>
     ${body}`;
 }
