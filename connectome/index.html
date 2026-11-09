@@ -133,6 +133,38 @@
     }
     .tab:hover { color: #fff; background: rgba(255,255,255,0.08); }
     .tab.active { color: #fff; background: #2563eb; }
+    .tab-split { position: relative; display: inline-flex; }
+    .tab-pop {
+      position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+      display: none; flex-direction: column; gap: 2px; min-width: 260px; padding: 6px;
+      background: rgba(8,10,14,0.97);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 14px;
+      box-shadow: 0 14px 32px rgba(0,0,0,0.5);
+      z-index: 40;
+    }
+    .tab-split.open .tab-pop { display: flex; }
+    .tab-pop button {
+      border: 0; background: transparent; color: #d5dde8;
+      font: inherit; font-size: 12.5px; font-weight: 650;
+      text-align: left; padding: 8px 10px; border-radius: 10px; cursor: pointer;
+    }
+    .tab-pop button small {
+      display: block; font-weight: 500; font-size: 11px; color: #8b97a8; margin-top: 2px;
+    }
+    .tab-pop button.active, .tab-pop button:hover { background: rgba(37,99,235,0.38); color: #fff; }
+    #levelMode[hidden] { display: none !important; }
+    #graphModeRt[hidden] { display: none !important; }
+    #levelMode {
+      display: inline-flex; gap: 0; padding: 2px; align-items: center;
+      background: rgba(8,10,14,0.88);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+    }
+    #levelMode .mode.lv.on[data-lv="1"] { color: #1a1408; background: #ffba48; }
+    #levelMode .mode.lv.on[data-lv="2"] { color: #07111f; background: #60a5fa; }
+    #levelMode .mode.lv.on[data-lv="3"] { color: #052014; background: #4ade80; }
     .tab.tab-ext {
       color: #a8b0bc; font-weight: 550;
       border-left: 1px solid rgba(255,255,255,0.12);
@@ -1156,6 +1188,11 @@
           <button type="button" class="mode mode-analyses" data-mode="analyses" data-lex="hash" id="hashModeBtn" title="Surligner par hashtag (mode Communautés uniquement)">#</button>
           <button type="button" class="mode mode-analyses" data-mode="analyses" data-lex="lemma" id="lemmaModeBtn" title="Surligner par lemme / terme distinctif (mode Communautés uniquement)">Lemme</button>
         </div>
+        <div id="levelMode" role="group" aria-label="Niveaux de la cascade HMPV FR 2" hidden>
+          <button type="button" class="mode lv on" data-lv="1" title="Réponses et citations des tweets du corpus français">Niveau 1</button>
+          <button type="button" class="mode lv on" data-lv="2" title="Réponses et citations des messages de niveau 1">Niveau 2</button>
+          <button type="button" class="mode lv on" data-lv="3" title="Réponses et citations des messages de niveau 2">Niveau 3</button>
+        </div>
         <div id="viewLinks" role="navigation" aria-label="Autres vues">
           <a id="analysesLink" class="mode mode-link" href="../analyses/ebola.html" title="Page analyses complète (nouvel onglet)" target="_blank" rel="noopener noreferrer">Analyses</a>
           <a id="fluxLink" class="mode mode-link" href="../flux-continu/?corpus=ebola" title="Flux continu (fenêtre 3j · FA2)">Flux continu</a>
@@ -1417,6 +1454,9 @@ let currentCorpusId = null;
 let corporaList = [];
 const _graphParam = new URLSearchParams(location.search).get('graph');
 let graphMode = (_graphParam === 'rt' || _graphParam === 'rt_classes') ? _graphParam : 'all';
+const LEVEL_RGB = { 1: [255, 186, 72], 2: [96, 165, 250], 3: [74, 222, 128] };
+const levelOn = new Set([1, 2, 3]);
+let cascadeSeq = 0;
 /** Coloration du graphe Toutes interactions : communauté, ou typologie des comptes. */
 const _typoParam = new URLSearchParams(location.search).get('typo');
 let edgeColorMode = _typoParam === 'macro' ? 'typo_macro'
@@ -1743,7 +1783,7 @@ let lexScope = 'targets'; // 'sources' | 'targets'
 /** En mode Lemme : unigrammes ou bigrammes. */
 let lemmaForm = 'uni'; // 'uni' | 'bi'
 /** Build id (console + vérif cache). */
-const CONNECTOME_UI = '20261106-fond-clair';
+const CONNECTOME_UI = '20261109-hmpv-fr-2';
 
 const PUB_TYPE_ORDER = [
   { key: 'original', label: 'Original', short: 'Orig.', color: '#8ecf4a' },
@@ -4346,7 +4386,7 @@ function syncCorpusSubTabs(corp) {
   }
   const coordLinkEl = document.getElementById('coordLink');
   if (coordLinkEl) {
-    coordLinkEl.href = `../reseau-coordination/?corpus=${encodeURIComponent(id)}`;
+    coordLinkEl.href = `../reseau-coordination/?corpus=${encodeURIComponent(id)}${paperMode ? '&theme=clair' : ''}`;
     coordLinkEl.title = `Réseau de coordination · ${short}`;
   }
   const collabLinkEl = document.getElementById('collabLink');
@@ -4458,7 +4498,8 @@ function renderCommPanel(data) {
   const discHint = discourseData ? ' · clic = fiche espace' : '';
   const pubHint = stats ? (rtMode ? ' · part = volume de RT' : ' · part = volume de publication') : '';
   const barTitle = rtMode ? 'Part du volume de RT' : 'Part du volume de publication du corpus';
-  sub.textContent = `${rows.length} communauté${rows.length > 1 ? 's' : ''} · ${coverage.toLocaleString('fr-FR')} % des nœuds${discHint}${pubHint}${scrollHint}`;
+  const levelHint = data?._levelView ? ' · liste calculée sur les trois niveaux' : '';
+  sub.textContent = `${rows.length} communauté${rows.length > 1 ? 's' : ''} · ${coverage.toLocaleString('fr-FR')} % des nœuds${levelHint}${discHint}${pubHint}${scrollHint}`;
   list.innerHTML = '';
   for (const row of rows) {
     const el = document.createElement('div');
@@ -5097,6 +5138,16 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
 
   const nodes = data.nodes;
   const edges = data.edges;
+  const levelView = !!data._levelView;
+  const visibleIdx = levelView ? new Uint8Array(nodes.length) : null;
+  if (visibleIdx) {
+    for (const e of edges) {
+      const s = e.s | 0;
+      const t = e.t | 0;
+      if (s >= 0 && s < nodes.length) visibleIdx[s] = 1;
+      if (t >= 0 && t < nodes.length) visibleIdx[t] = 1;
+    }
+  }
   const maxW = maxOf(edges, (e) => e.w || 0, 1);
   const useRtClasses = graphMode === 'rt_classes' && rtWeightByEdge;
 
@@ -5120,7 +5171,7 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   const drawV0 = [];
   const drawVCount = [];
   let seed = 1;
-  const core = coreBounds(nodes, 0.05, 0.95);
+  const core = levelView ? null : coreBounds(nodes, 0.05, 0.95);
   const CHUNK = edges.length > 100_000 ? 1800 : edges.length > 40_000 ? 2800 : 5000;
 
   // Ordre de dessin : RT (voile) → mixtes → interactions (devant).
@@ -5142,12 +5193,17 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
     const b = nodes[e.t];
     if (!a || !b) continue;
     // Skip long spokes to out-of-GEXF fallback nodes (they clip the viewport).
-    if (!inCoreBounds(a, core) || !inCoreBounds(b, core)) continue;
+    if (core && (!inCoreBounds(a, core) || !inCoreBounds(b, core))) continue;
 
     let ca, cb, bright;
     const wNorm = Math.pow(e.w / maxW, 0.45);
     const useTypoColors = typologyActive();
-    if (useRtClasses) {
+    const lvRgb = e.lv ? LEVEL_RGB[Number(e.lv)] : null;
+    if (lvRgb) {
+      ca = lift(lvRgb, 1.05);
+      cb = ca;
+      bright = 0.55 + 0.4 * wNorm;
+    } else if (useRtClasses) {
       const style = rtClassStyle(item.cls);
       ca = style.col;
       cb = style.col;
@@ -5161,7 +5217,7 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
       cb = lift(b.c, 1.18);
       bright = 0.28 + 0.55 * wNorm;
     }
-    const flatEdge = useRtClasses || useTypoColors;
+    const flatEdge = useRtClasses || useTypoColors || !!lvRgb;
 
     const vStart = positions.length / 3;
     for (let s = 0; s < P.strands; s++) {
@@ -5232,11 +5288,16 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
         `#include <color_fragment>
         if (uPaper > 0.5) {
           float pm = max(diffuseColor.r, max(diffuseColor.g, diffuseColor.b));
-          if (pm < 0.004) discard;
-          vec3 phue = clamp(diffuseColor.rgb / pm, 0.0, 1.0);
-          diffuseColor.rgb = mix(vec3(0.04), phue, 0.55);
-          float pw = clamp(pm / 0.42, 0.45, 1.0);
-          diffuseColor.a = min(0.62, diffuseColor.a * 14.0 * pw);
+          vec3 phue = clamp(diffuseColor.rgb / max(pm, 1e-4), 0.0, 1.0);
+          float luma = dot(phue, vec3(0.299, 0.587, 0.114));
+          // Queue forte seulement : le plancher de luminosité rendait les liens faibles aussi visibles que les arcs.
+          float w = smoothstep(0.072, 0.132, pm);
+          if (w < 0.16) discard;
+          float hold = mix(1.0, 0.72, smoothstep(0.5, 0.88, luma));
+          vec3 ink = mix(vec3(0.05), phue, 0.40);
+          diffuseColor.rgb = ink;
+          float gain = diffuseColor.a / 0.02;
+          diffuseColor.a = min(0.22, (0.05 + 0.14 * w) * hold * gain);
         }`
       );
     lineMat.userData.paperShader = shader;
@@ -5270,9 +5331,14 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
     nCol[i * 3 + 1] = c[1];
     nCol[i * 3 + 2] = c[2];
     const cv = nodeCentValue(nd);
+    nd._displayC = nd.c;
+    if (visibleIdx && !visibleIdx[i]) {
+      nd._sizeMetric = 0;
+      nSize[i] = 0;
+      continue;
+    }
     nd._sizeMetric = cv;
     nSize[i] = nodeRadiusForCent(cv, maxCent, vis);
-    nd._displayC = nd.c;
   }
   const pGeo = new THREE.BufferGeometry();
   pGeo.setAttribute('position', new THREE.BufferAttribute(nPos, 3));
@@ -5290,18 +5356,25 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
     vertexShader: `
       attribute float size; attribute vec3 color;
       varying vec3 vC;
+      varying float vS;
       uniform float uPR;
+      uniform float uPaper;
       void main() {
         vC = color;
+        vS = size;
         vec4 mv = modelViewMatrix * vec4(position,1.0);
-        gl_PointSize = size * uPR;
+        float s = size * uPR;
+        if (uPaper > 0.5) s *= 0.58;
+        gl_PointSize = size <= 0.0 ? 0.0 : max(s, 1.0);
         gl_Position = projectionMatrix * mv;
       }`,
     fragmentShader: `
       varying vec3 vC;
+      varying float vS;
       uniform float uAlpha;
       uniform float uPaper;
       void main() {
+        if (vS <= 0.0) discard;
         float d = length(gl_PointCoord - 0.5);
         if (uPaper < 0.5) {
           float a = smoothstep(0.45, 0.0, d) * uAlpha;
@@ -5309,14 +5382,16 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
           gl_FragColor = vec4(vC, a);
         } else {
           float m = max(vC.r, max(vC.g, vC.b));
-          float a = smoothstep(0.5, 0.28, d);
+          float a = smoothstep(0.48, 0.34, d);
           if (a < 0.02) discard;
           if (m < 0.12) {
-            gl_FragColor = vec4(vec3(0.82), a * 0.28);
+            gl_FragColor = vec4(vec3(0.76), a * 0.14);
           } else {
             vec3 hue = clamp(vC / max(m, 1e-4), 0.0, 1.0);
-            vec3 ink = mix(vec3(0.05), hue, 0.62);
-            gl_FragColor = vec4(ink, a);
+            float luma = dot(hue, vec3(0.299, 0.587, 0.114));
+            vec3 ink = mix(vec3(0.14), hue, mix(0.75, 0.48, smoothstep(0.42, 0.85, luma)));
+            float presence = smoothstep(0.5, 2.4, vS);
+            gl_FragColor = vec4(ink, a * mix(0.16, 0.72, presence));
           }
         }
       }`,
@@ -5343,9 +5418,14 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
     modeLabel = edgeColorMode === 'typo_macro' ? 'macro-classes d’utilisateurs' : 'type d’utilisateurs';
   }
   const centLbl = CENTRALITY_LABELS[centralityMode] || centralityMode;
+  const nShown = visibleIdx ? visibleIdx.reduce((sum, bit) => sum + bit, 0) : data.meta.n_nodes;
+  const lvBit = levelView
+    ? ` · niveaux ${[1, 2, 3].filter((lv) => levelOn.has(lv)).join(', ')}`
+    : '';
   document.getElementById('stats').textContent =
-    `${modeLabel} · taille ${centLbl} · ${data.meta.n_nodes.toLocaleString('fr-FR')} nœuds · ${data.meta.n_edges.toLocaleString('fr-FR')} liens · ${P.strands}× hair`;
-  fitGraphToView(nodes);
+    `${modeLabel} · taille ${centLbl} · ${nShown.toLocaleString('fr-FR')} nœuds · ${edges.length.toLocaleString('fr-FR')} liens${lvBit} · ${P.strands}× hair`;
+  const fitNodes = visibleIdx ? nodes.filter((_, i) => visibleIdx[i]) : nodes;
+  fitGraphToView(fitNodes.length ? fitNodes : nodes);
   renderCommPanel(data);
   syncPaperChrome();
   rebuildLabels();
@@ -5447,6 +5527,10 @@ function setPaperMode(on, { syncUrl = true, rebuildCompass = false } = {}) {
   if (paperMode) url.searchParams.set('theme', 'clair');
   else url.searchParams.delete('theme');
   if (url.href !== location.href) history.replaceState(history.state, '', url);
+  const coordLinkEl = document.getElementById('coordLink');
+  if (coordLinkEl && currentCorpusId) {
+    coordLinkEl.href = `../reseau-coordination/?corpus=${encodeURIComponent(currentCorpusId)}${paperMode ? '&theme=clair' : ''}`;
+  }
 }
 
 function rebuildLabels() {
@@ -6578,6 +6662,51 @@ exportBtn.addEventListener('click', () => { exportPng(); });
   projectLabels();
 })();
 
+function cascadeView(data) {
+  if (!data || currentCorpusId !== 'hmpv_fr_2') return data;
+  if (!data._allEdges) data._allEdges = data.edges || [];
+  const edges = data._allEdges.filter((e) => levelOn.has(Number(e.lv)));
+  return Object.assign({}, data, { edges, _centOk: false, _levelView: true });
+}
+
+function syncCascadeUi(data) {
+  const on = currentCorpusId === 'hmpv_fr_2';
+  const bar = document.getElementById('levelMode');
+  if (bar) {
+    bar.hidden = !on;
+    bar.querySelectorAll('button[data-lv]').forEach((btn) => {
+      const lv = Number(btn.dataset.lv);
+      btn.classList.toggle('on', levelOn.has(lv));
+      btn.setAttribute('aria-pressed', levelOn.has(lv) ? 'true' : 'false');
+      const info = data?.meta?.levelCounts?.[String(lv)];
+      const base = lv === 1
+        ? 'Niveau 1'
+        : lv === 2
+          ? 'Niveau 2'
+          : 'Niveau 3';
+      btn.textContent = info ? `${base} · ${Number(info.tweets).toLocaleString('fr-FR')}` : base;
+    });
+  }
+  const rtBtn = document.getElementById('graphModeRt');
+  if (rtBtn) rtBtn.hidden = on;
+  const allBtn = document.getElementById('graphModeAll');
+  if (allBtn && on) allBtn.textContent = 'Réponses et citations';
+  else if (allBtn && allBtn.textContent !== 'Toutes interactions') allBtn.textContent = 'Toutes interactions';
+}
+
+async function applyCascadeLevels() {
+  const seq = ++cascadeSeq;
+  const still = () => seq === cascadeSeq && currentCorpusId === 'hmpv_fr_2';
+  syncCascadeUi(graphData);
+  if (!still()) return;
+  const full = graphCache.get(cacheKeyFor('hmpv_fr_2', 'all'));
+  if (!full) return;
+  const view = cascadeView(full);
+  ensureNodeCentralities(view);
+  const ok = await buildGraph(view, { isCurrent: still });
+  if (still() && ok) hideGraphLoader();
+}
+
 function corpusCoverageText(corp) {
   if (!corp) return '';
   if (corp.coverageLabel) return `Couverture · ${corp.coverageLabel}`;
@@ -6590,10 +6719,12 @@ function corpusCoverageText(corp) {
 }
 
 async function loadCorpus(corp) {
+  cascadeSeq += 1;
   const seq = ++loadSeq;
   const isCurrent = () => seq === loadSeq;
   const corpusChanged = currentCorpusId !== corp.id;
   currentCorpusId = corp.id;
+  if (corp.id === 'hmpv_fr_2' && graphMode !== 'all') graphMode = 'all';
   if (edgeColorMode === 'discours' && !discourseFramesEnabled(corp.id)) edgeColorMode = 'community';
   hideTipNow();
   loadAccountPosts(corp.id, seq);
@@ -6610,6 +6741,7 @@ async function loadCorpus(corp) {
   // Défauts visuels uniquement à l’arrivée sur le corpus (pas à chaque bascule RT / mode).
   if (corpusChanged) applyCorpusVisualDefaults(corp, { forceColorMode: true });
   updateGraphModeButtons();
+  syncCascadeUi();
   syncCorpusUrl(corp.id);
   hideBootSplash();
   const modeBit = graphMode === 'rt' ? 'RT · '
@@ -6623,7 +6755,12 @@ async function loadCorpus(corp) {
   });
   setCommLoading(true, 'Chargement des communautés…');
   [...tabsEl.querySelectorAll('.tab')].forEach((b) => {
-    b.classList.toggle('active', b.dataset.id === corp.id);
+    const ids = (b.dataset.ids || b.dataset.id || '').split(/\s+/).filter(Boolean);
+    b.classList.toggle('active', ids.includes(corp.id));
+    if (b.dataset.ids) b.textContent = corp.id === 'hmpv_fr_2' ? 'HMPV FR 2' : 'HMPV FR';
+  });
+  tabsEl.querySelectorAll('.tab-pop button').forEach((item) => {
+    item.classList.toggle('active', item.dataset.id === corp.id);
   });
   syncCorpusSubTabs(corp);
   prefetchAnalysesAssets(corp.id);
@@ -6633,7 +6770,7 @@ async function loadCorpus(corp) {
     const prodPromise = ensureProducers(corp.id);
     const typoPromise = ensureTypology(corp.id);
     const fetchMode = graphMode === 'rt_classes' ? 'all' : graphMode;
-    const data = await ensureGraphData(corp, fetchMode, {
+    let data = await ensureGraphData(corp, fetchMode, {
       onProgress: (p, received, total) => {
         if (!isCurrent()) return;
         if (p == null) {
@@ -6696,6 +6833,8 @@ async function loadCorpus(corp) {
     }
     if (viewMode === 'analyses') openHashPanel();
     setCommLoading(false);
+    if (corp.id === 'hmpv_fr_2') data = cascadeView(data);
+    syncCascadeUi(data);
 
     const nE = (data.edges || []).length;
     if (!data._centOk) {
@@ -6987,12 +7126,13 @@ function renderPubTally(pubs, rts, posts) {
 function renderPostCard(p, handle, rank) {
   const type = p.type === 'reply' || p.type === 'quote' ? p.type : 'original';
   const label = type === 'reply' ? 'Réponse' : type === 'quote' ? 'Citation' : 'Original';
+  const lvBit = Number(p.lv) ? ` · niveau ${Number(p.lv)}` : '';
   const when = formatPostWhen(p.at);
   const url = p.id
     ? `https://x.com/${encodeURIComponent(handle)}/status/${encodeURIComponent(p.id)}`
     : '';
-  const to = type === 'reply' && p.to
-    ? `<p class="ap-to">en réponse à <a href="https://x.com/${encodeURIComponent(p.to)}" target="_blank" rel="noopener noreferrer">@${escapeHtml(p.to)}</a></p>`
+  const to = (type === 'reply' || type === 'quote') && p.to
+    ? `<p class="ap-to">${type === 'quote' ? 'cite' : 'en réponse à'} <a href="https://x.com/${encodeURIComponent(p.to)}" target="_blank" rel="noopener noreferrer">@${escapeHtml(p.to)}</a></p>`
     : '';
   const metrics = [
     ['lk', 'j’aime', 'j’aime'],
@@ -7006,7 +7146,7 @@ function renderPostCard(p, handle, rank) {
   return `<article class="ap">
     <div class="ap-top">
       <span class="ap-rank">${rank}</span>
-      <span class="ap-type t-${type}">${label}</span>
+      <span class="ap-type t-${type}">${label}${lvBit}</span>
       <time datetime="${escapeHtml(p.at || '')}">${escapeHtml(when)}</time>
       ${url ? `<a class="ap-open" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">ouvrir</a>` : ''}
     </div>
@@ -7062,7 +7202,10 @@ function renderAccountCard(node) {
   } else if (rec) {
     const pubs = Number(rec.pubs || 0);
     const rts = Number(rec.rts || 0);
-    const posts = Array.isArray(rec.posts) ? rec.posts : [];
+    const allPosts = Array.isArray(rec.posts) ? rec.posts : [];
+    const posts = currentCorpusId === 'hmpv_fr_2'
+      ? allPosts.filter((p) => levelOn.has(Number(p.lv)))
+      : allPosts;
     tally = renderPubTally(pubs, rts, posts);
     const rtBit = rts
       ? ` <span>· ${rts.toLocaleString('fr-FR')} retweet${rts > 1 ? 's' : ''}</span>`
@@ -7075,12 +7218,16 @@ function renderAccountCard(node) {
       count = 'Aucune publication propre';
     }
     if (!posts.length) {
+      if (currentCorpusId === 'hmpv_fr_2' && allPosts.length) {
+        body = '<p class="acct-empty">Aucune publication de ce compte dans les niveaux affichés.</p>';
+      } else {
       const rtExplain = rts === 1
         ? ' Il apparaît ici par 1 retweet. Son texte est tronqué dans l’export, il n’est donc pas affiché.'
         : rts > 1
           ? ` Il apparaît ici par ${rts.toLocaleString('fr-FR')} retweets. Leur texte est tronqué dans l’export, ils ne sont donc pas affichés.`
           : '';
       body = `<p class="acct-empty">Aucune publication propre dans ce corpus (tweet original, réponse ou citation).${rtExplain}</p>`;
+      }
     } else {
       body = `<div class="acct-scroll">${posts.map((p, i) => renderPostCard(p, handle, i + 1)).join('')}</div>`;
     }
@@ -7445,6 +7592,7 @@ async function boot() {
     { id: 'macron_nucleaire', label: 'Macron nucléaire', connectomeData: './data/macron_nucleaire/graph.json' },
     { id: 'hmpv', label: 'HMPV · 2025', connectomeData: './data/hmpv/graph.json' },
     { id: 'hmpv_fr', label: 'HMPV FR · 2025', connectomeData: './data/hmpv_fr/graph.json' },
+    { id: 'hmpv_fr_2', label: 'HMPV FR 2', menuParent: 'hmpv_fr', connectomeData: './data/hmpv_fr_2/graph.json' },
     { id: 'canicule', label: 'Canicule · mai–juin 2026', connectomeData: './data/canicule/graph.json' },
   ];
   try {
@@ -7483,21 +7631,75 @@ async function boot() {
   corporaList = corpora;
   const health3 = document.getElementById('health3Link');
   tabsEl.querySelectorAll('button.tab').forEach((b) => b.remove());
+  tabsEl.querySelectorAll('.tab-split').forEach((el) => el.remove());
   for (const corp of corpora) {
+    if (corp.menuParent) continue;
+    const choices = [corp, ...corpora.filter((item) => item.menuParent === corp.id)];
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'tab';
     b.dataset.id = corp.id;
-    b.textContent = corp.label;
-    b.addEventListener('click', () => loadCorpus(corp));
-    b.addEventListener('pointerenter', () => {
-      // Soft warm on hover: current mode only.
-      ensureGraphData(corp, graphMode).catch(() => {});
-      ensurePubStats(corp.id).catch(() => {});
-      prefetchAnalysesAssets(corp.id);
-    }, { passive: true });
-    tabsEl.insertBefore(b, health3);
+    b.textContent = choices.length > 1 ? 'HMPV FR' : corp.label;
+    const warm = (item) => {
+      ensureGraphData(item, item.id === 'hmpv_fr_2' ? 'all' : graphMode).catch(() => {});
+      ensurePubStats(item.id).catch(() => {});
+      prefetchAnalysesAssets(item.id);
+    };
+    if (choices.length === 1) {
+      b.addEventListener('click', () => loadCorpus(corp));
+      b.addEventListener('pointerenter', () => warm(corp), { passive: true });
+      tabsEl.insertBefore(b, health3);
+      continue;
+    }
+    b.dataset.ids = choices.map((item) => item.id).join(' ');
+    const wrap = document.createElement('div');
+    wrap.className = 'tab-split';
+    const pop = document.createElement('div');
+    pop.className = 'tab-pop';
+    pop.setAttribute('role', 'menu');
+    for (const choice of choices) {
+      const item = document.createElement('button');
+      item.type = 'button';
+      item.dataset.id = choice.id;
+      const name = document.createElement('span');
+      name.textContent = choice.id === 'hmpv_fr_2' ? 'HMPV FR 2' : 'HMPV FR';
+      const hint = document.createElement('small');
+      hint.textContent = choice.id === 'hmpv_fr_2'
+        ? 'Cascade · niveaux 1, 2 et 3'
+        : 'Corpus français · janvier–juin 2025';
+      item.append(name, hint);
+      item.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        wrap.classList.remove('open');
+        loadCorpus(choice);
+      });
+      pop.appendChild(item);
+    }
+    b.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      const willOpen = !wrap.classList.contains('open');
+      document.querySelectorAll('.tab-split.open').forEach((el) => el.classList.remove('open'));
+      if (willOpen) wrap.classList.add('open');
+    });
+    b.addEventListener('pointerenter', () => choices.forEach(warm), { passive: true });
+    wrap.append(b, pop);
+    tabsEl.insertBefore(wrap, health3);
   }
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.tab-split.open').forEach((el) => el.classList.remove('open'));
+  });
+  document.getElementById('levelMode')?.addEventListener('click', (ev) => {
+    const btn = ev.target.closest('button[data-lv]');
+    if (!btn || currentCorpusId !== 'hmpv_fr_2') return;
+    const lv = Number(btn.dataset.lv);
+    if (levelOn.has(lv)) {
+      if (levelOn.size === 1) return;
+      levelOn.delete(lv);
+    } else {
+      levelOn.add(lv);
+    }
+    applyCascadeLevels();
+  });
   // Deep-link: ?corpus=ebola&graph=rt&view=hash|lemma|analyses
   {
     const v0 = new URLSearchParams(location.search).get('view');

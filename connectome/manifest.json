@@ -45,6 +45,14 @@
       "connectomeData": "data/hmpv_fr/graph.json"
     },
     {
+      "id": "hmpv_fr_2",
+      "label": "HMPV FR 2",
+      "menuParent": "hmpv_fr",
+      "phaseLabel": "Cascade HMPV FR 2 (réponses et citations, niveaux 1, 2 et 3)",
+      "coverageLabel": "HMPV FR 2 · réponses et citations, niveaux 1 à 3",
+      "connectomeData": "data/hmpv_fr_2/graph.json"
+    },
+    {
       "id": "hmpv",
       "label": "HMPV · 2025",
       "phaseLabel": "Corpus entier · HMPV PADMEN (FR+EN, 1 janv. – 30 juin 2025)",
