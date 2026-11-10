@@ -760,6 +760,16 @@
     #tooltip.acct .acct-empty {
       margin: 0; padding: 14px 16px 16px; color: #d5dde6; font-size: 13px; line-height: 1.5;
     }
+    #tooltip.acct .acct-scroll .acct-empty { padding: 6px 6px 10px; }
+    #tooltip.acct .acct-targets {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      margin-top: 2px; padding-top: 8px;
+    }
+    #tooltip.acct .acct-sub {
+      margin: 0 0 6px; padding: 0 6px; color: #ffb56a;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.045em;
+      text-transform: uppercase;
+    }
     .comm-accounts a.handle {
       color: var(--acct-c, #d7dee8); text-decoration: none;
       border-bottom: 1px dotted color-mix(in srgb, var(--acct-c, #d7dee8) 55%, transparent);
@@ -1797,7 +1807,7 @@ let lexScope = 'targets'; // 'sources' | 'targets'
 /** En mode Lemme : unigrammes ou bigrammes. */
 let lemmaForm = 'uni'; // 'uni' | 'bi'
 /** Build id (console + vérif cache). */
-const CONNECTOME_UI = '20261110-hmpv-fr-2-niveaux';
+const CONNECTOME_UI = '20261110-hmpv-fr-2-cibles';
 
 const PUB_TYPE_ORDER = [
   { key: 'original', label: 'Original', short: 'Orig.', color: '#8ecf4a' },
@@ -7108,7 +7118,7 @@ function tallyCell(n, one, many, scope, extraCls) {
 }
 
 /** Décompte visible au survol : originaux, réponses, citations, retweets. */
-function renderPubTally(pubs, rts, posts) {
+function renderPubTally(pubs, rts, posts, capOverride) {
   const listed = posts.length;
   const rtOnly = pubs === 0 && rts > 0;
   if (pubs > 0 && listed === 0) {
@@ -7139,7 +7149,7 @@ function renderPubTally(pubs, rts, posts) {
     cap = 'Uniquement des retweets';
     capCls += ' rt-only';
   } else if (pubs === 0 && rts === 0) {
-    cap = 'Aucune publication dans le corpus';
+    cap = capOverride || 'Aucune publication dans le corpus';
   } else if (listed > pubs) {
     cap = `Écart : ${listed.toLocaleString('fr-FR')} publications listées pour ${pubs.toLocaleString('fr-FR')} annoncées`;
   } else if (!complete) {
@@ -7160,6 +7170,10 @@ function renderPostCard(p, handle, rank) {
   const to = (type === 'reply' || type === 'quote') && p.to
     ? `<p class="ap-to">${type === 'quote' ? 'cite' : 'en réponse à'} <a href="https://x.com/${encodeURIComponent(p.to)}" target="_blank" rel="noopener noreferrer">@${escapeHtml(p.to)}</a></p>`
     : '';
+  const kids = Number(p.kids || 0);
+  const kidsLine = kids > 0
+    ? `<p class="ap-to">${kids.toLocaleString('fr-FR')} ${kids > 1 ? 'comptes y répondent ou le citent' : 'compte y répond ou le cite'} dans cette cascade</p>`
+    : '';
   const metrics = [
     ['lk', 'j’aime', 'j’aime'],
     ['rt', 'RT', 'RT'],
@@ -7177,9 +7191,27 @@ function renderPostCard(p, handle, rank) {
       ${url ? `<a class="ap-open" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">ouvrir</a>` : ''}
     </div>
     ${to}
+    ${kidsLine}
     <p class="ap-text">${richText(p.text || '')}</p>
     <ul class="ap-eng">${metrics}</ul>
   </article>`;
+}
+
+function answeredPosts(rec) {
+  if (!rec || !Array.isArray(rec.targets)) return [];
+  return rec.targets.filter((p) => p && String(p.text || '').trim());
+}
+
+function renderAnsweredPosts(targets, handle) {
+  if (!targets.length) return '';
+  const title = targets.length > 1
+    ? 'Publications auxquelles les autres répondent'
+    : 'Publication à laquelle les autres répondent';
+  const cards = targets.map((p, i) => renderPostCard(p, handle, i + 1)).join('');
+  return `<section class="acct-targets">`
+    + `<h3 class="acct-sub">${title}</h3>`
+    + cards
+    + `</section>`;
 }
 
 function renderAccountCard(node) {
@@ -7232,7 +7264,15 @@ function renderAccountCard(node) {
     const posts = currentCorpusId === 'hmpv_fr_2'
       ? allPosts.filter((p) => levelOn.has(Number(p.lv)))
       : allPosts;
-    tally = renderPubTally(pubs, rts, posts);
+    const targets = currentCorpusId === 'hmpv_fr_2' && !posts.length
+      ? answeredPosts(rec)
+      : [];
+    tally = renderPubTally(
+      pubs,
+      rts,
+      posts,
+      targets.length ? 'Aucune réponse ni citation de ce compte' : '',
+    );
     const rtBit = rts
       ? ` <span>· ${rts.toLocaleString('fr-FR')} retweet${rts > 1 ? 's' : ''}</span>`
       : '';
@@ -7244,16 +7284,18 @@ function renderAccountCard(node) {
       count = 'Aucune publication propre';
     }
     if (!posts.length) {
-      if (currentCorpusId === 'hmpv_fr_2' && allPosts.length) {
-        body = '<p class="acct-empty">Aucune publication de ce compte dans les niveaux affichés.</p>';
-      } else {
+      const answered = renderAnsweredPosts(targets, handle);
       const rtExplain = rts === 1
         ? ' Il apparaît ici par 1 retweet. Son texte est tronqué dans l’export, il n’est donc pas affiché.'
         : rts > 1
           ? ` Il apparaît ici par ${rts.toLocaleString('fr-FR')} retweets. Leur texte est tronqué dans l’export, ils ne sont donc pas affichés.`
           : '';
-      body = `<p class="acct-empty">Aucune publication propre dans ce corpus (tweet original, réponse ou citation).${rtExplain}</p>`;
-      }
+      const message = currentCorpusId === 'hmpv_fr_2' && allPosts.length
+        ? 'Aucune publication de ce compte dans les niveaux affichés.'
+        : `Aucune publication propre dans ce corpus (tweet original, réponse ou citation).${rtExplain}`;
+      body = answered
+        ? `<div class="acct-scroll"><p class="acct-empty">${message}</p>${answered}</div>`
+        : `<p class="acct-empty">${message}</p>`;
     } else {
       body = `<div class="acct-scroll">${posts.map((p, i) => renderPostCard(p, handle, i + 1)).join('')}</div>`;
     }
