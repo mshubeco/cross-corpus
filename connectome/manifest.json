@@ -50,7 +50,13 @@
       "menuParent": "hmpv_fr",
       "phaseLabel": "Cascade HMPV FR 2 (réponses et citations, niveaux 1, 2 et 3)",
       "coverageLabel": "HMPV FR 2 · réponses et citations, niveaux 1 à 3",
-      "connectomeData": "data/hmpv_fr_2/graph.json"
+      "connectomeData": "data/hmpv_fr_2/graph.json",
+      "defaults": {
+        "linkLight": 0.9,
+        "opacity": 0.2,
+        "bloom": 0.38,
+        "labels": 40
+      }
     },
     {
       "id": "hmpv",

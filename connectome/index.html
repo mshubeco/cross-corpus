@@ -153,18 +153,7 @@
       display: block; font-weight: 500; font-size: 11px; color: #8b97a8; margin-top: 2px;
     }
     .tab-pop button.active, .tab-pop button:hover { background: rgba(37,99,235,0.38); color: #fff; }
-    #levelMode[hidden] { display: none !important; }
     #graphModeRt[hidden] { display: none !important; }
-    #levelMode {
-      display: inline-flex; gap: 0; padding: 2px; align-items: center;
-      background: rgba(8,10,14,0.88);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 999px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.35);
-    }
-    #levelMode .mode.lv.on[data-lv="1"] { color: #1a1408; background: #ffba48; }
-    #levelMode .mode.lv.on[data-lv="2"] { color: #07111f; background: #60a5fa; }
-    #levelMode .mode.lv.on[data-lv="3"] { color: #052014; background: #4ade80; }
     .tab.tab-ext {
       color: #a8b0bc; font-weight: 550;
       border-left: 1px solid rgba(255,255,255,0.12);
@@ -371,6 +360,10 @@
     #colorModeBtns .color-btn.active[data-mode="community"] {
       color: #e7f6cf; background: rgba(115,192,0,0.32); border-color: rgba(115,192,0,0.55);
     }
+    #colorModeBtns .color-btn.active[data-mode="cascade"] {
+      color: #fff6e4; background: rgba(255,186,72,0.28); border-color: rgba(255,186,72,0.8);
+    }
+    #hudColorCascade[hidden] { display: none !important; }
     #colorModeBtns .color-btn.active[data-mode="rt_classes"] {
       color: #fff8e8; background: rgba(255,140,40,0.4); border-color: rgba(255,180,80,0.7);
     }
@@ -564,6 +557,16 @@
     #rtColorLegend .sw.rt { background: #4d8aff; box-shadow: 0 0 10px rgba(77,138,255,0.5); }
     #rtColorLegend .leg-row b { color: #e8eef7; font-weight: 650; }
     #rtColorLegend .leg-row .thr { color: #7a8494; font-weight: 500; }
+    #cascadeLegend { display: none; margin: 2px 0 6px; }
+    #cascadeLegend.visible { display: block; }
+    #cascadeLegend .lv-key {
+      display: flex; flex-wrap: wrap; gap: 6px 10px;
+      color: #d5dde8; font-size: 10.5px; font-weight: 650;
+    }
+    #cascadeLegend .lv-key i {
+      display: inline-block; width: 8px; height: 8px; border-radius: 2px;
+      margin-right: 4px; vertical-align: baseline;
+    }
     #edgeColorHint { margin-top: 6px; margin-bottom: 0; }
     #edgeColorHint.hidden { display: none; }
     #exportBtn {
@@ -1188,11 +1191,6 @@
           <button type="button" class="mode mode-analyses" data-mode="analyses" data-lex="hash" id="hashModeBtn" title="Surligner par hashtag (mode Communautés uniquement)">#</button>
           <button type="button" class="mode mode-analyses" data-mode="analyses" data-lex="lemma" id="lemmaModeBtn" title="Surligner par lemme / terme distinctif (mode Communautés uniquement)">Lemme</button>
         </div>
-        <div id="levelMode" role="group" aria-label="Niveaux de la cascade HMPV FR 2" hidden>
-          <button type="button" class="mode lv on" data-lv="1" title="Réponses et citations des tweets du corpus français">Niveau 1</button>
-          <button type="button" class="mode lv on" data-lv="2" title="Réponses et citations des messages de niveau 1">Niveau 2</button>
-          <button type="button" class="mode lv on" data-lv="3" title="Réponses et citations des messages de niveau 2">Niveau 3</button>
-        </div>
         <div id="viewLinks" role="navigation" aria-label="Autres vues">
           <a id="analysesLink" class="mode mode-link" href="../analyses/ebola.html" title="Page analyses complète (nouvel onglet)" target="_blank" rel="noopener noreferrer">Analyses</a>
           <a id="fluxLink" class="mode mode-link" href="../flux-continu/?corpus=ebola" title="Flux continu (fenêtre 3j · FA2)">Flux continu</a>
@@ -1274,6 +1272,9 @@
       </div>
       <div id="colorModeBtns" role="group" aria-label="Couleurs des liens">
         <button type="button" class="color-btn active" data-mode="community" id="hudColorCommunity">Communautés</button>
+        <button type="button" class="color-btn" data-mode="cascade" id="hudColorCascade" hidden
+          title="Couleur des liens selon le saut : or = niveau 1, bleu = niveau 2, vert = niveau 3.">Niveaux de la cascade</button>
+        <div id="cascadeLegend" aria-label="Légende des niveaux de la cascade"></div>
         <button type="button" class="color-btn" data-mode="rt_classes" id="hudColorRtClasses"
           title="Coloration des liens du graphe Toutes interactions selon la part RT (ce n’est pas le graphe RT)">Distinction RT / interactions</button>
         <div class="typo-help-row">
@@ -1452,20 +1453,33 @@ const hashClearBtn = document.getElementById('hashClearBtn');
 const hashCloseBtn = document.getElementById('hashCloseBtn');
 let currentCorpusId = null;
 let corporaList = [];
-const _graphParam = new URLSearchParams(location.search).get('graph');
+const _bootParams = new URLSearchParams(location.search);
+const _graphParam = _bootParams.get('graph');
 let graphMode = (_graphParam === 'rt' || _graphParam === 'rt_classes') ? _graphParam : 'all';
 const LEVEL_RGB = { 1: [255, 186, 72], 2: [96, 165, 250], 3: [74, 222, 128] };
+const LEVEL_LABELS = {
+  1: ['Niveau 1', 'réponse ou citation d’un tweet du corpus'],
+  2: ['Niveau 2', 'réponse ou citation d’un niveau 1'],
+  3: ['Niveau 3', 'réponse ou citation d’un niveau 2'],
+};
 const levelOn = new Set([1, 2, 3]);
-let cascadeSeq = 0;
-/** Coloration du graphe Toutes interactions : communauté, ou typologie des comptes. */
-const _typoParam = new URLSearchParams(location.search).get('typo');
-let edgeColorMode = _typoParam === 'macro' ? 'typo_macro'
-  : _typoParam === 'cat' ? 'typo_cat'
-  : _typoParam === 'discours' ? 'discours'
-  : _typoParam === 'pays' ? 'pays'
-  : _typoParam === 'age' ? 'age'
-  : 'community';
-if ((edgeColorMode === 'typo_macro' || edgeColorMode === 'typo_cat' || edgeColorMode === 'discours' || edgeColorMode === 'pays' || edgeColorMode === 'age') && graphMode === 'rt_classes') {
+
+function edgeModeFromQuery(params, corpusId) {
+  const t = params.get('typo');
+  if (t === 'macro') return 'typo_macro';
+  if (t === 'cat') return 'typo_cat';
+  if (t === 'discours') return 'discours';
+  if (t === 'pays') return 'pays';
+  if (t === 'age') return 'age';
+  if (t === 'niveaux' || t === 'cascade') return 'cascade';
+  if (t === 'community') return 'community';
+  if (corpusId === 'hmpv_fr_2') return 'cascade';
+  return 'community';
+}
+
+/** Coloration du graphe Toutes interactions : communauté, typologie, ou niveaux de cascade. */
+let edgeColorMode = edgeModeFromQuery(_bootParams, _bootParams.get('corpus'));
+if ((edgeColorMode === 'typo_macro' || edgeColorMode === 'typo_cat' || edgeColorMode === 'discours' || edgeColorMode === 'pays' || edgeColorMode === 'age' || edgeColorMode === 'cascade') && graphMode === 'rt_classes') {
   graphMode = 'all';
 }
 /** Centralité → taille des nœuds (positions FA2 inchangées). */
@@ -1783,7 +1797,7 @@ let lexScope = 'targets'; // 'sources' | 'targets'
 /** En mode Lemme : unigrammes ou bigrammes. */
 let lemmaForm = 'uni'; // 'uni' | 'bi'
 /** Build id (console + vérif cache). */
-const CONNECTOME_UI = '20261109-hmpv-fr-2-fa2';
+const CONNECTOME_UI = '20261110-hmpv-fr-2-niveaux';
 
 const PUB_TYPE_ORDER = [
   { key: 'original', label: 'Original', short: 'Orig.', color: '#8ecf4a' },
@@ -3358,7 +3372,7 @@ function updateGraphModeButtons() {
   syncLexModeButtons();
   const modeKey = graphMode === 'rt_classes'
     ? 'rt_classes'
-    : (edgeColorMode === 'typo_macro' || edgeColorMode === 'typo_cat' || edgeColorMode === 'discours' || edgeColorMode === 'pays' || edgeColorMode === 'age'
+    : (edgeColorMode === 'typo_macro' || edgeColorMode === 'typo_cat' || edgeColorMode === 'discours' || edgeColorMode === 'pays' || edgeColorMode === 'age' || edgeColorMode === 'cascade'
       ? edgeColorMode
       : 'community');
   const discAvail = discourseFramesEnabled(currentCorpusId);
@@ -3380,14 +3394,16 @@ function updateGraphModeButtons() {
   const discOn = discourseActive();
   const geoOn = geoActive();
   const ageOn = ageActive();
+  const cascadeOn = edgeColorMode === 'cascade' && currentCorpusId === 'hmpv_fr_2';
   legend?.classList.toggle('visible', rtMode);
   renderTypoLegend();
   renderDiscourseLegend();
   renderGeoLegend();
   renderAgeLegend();
+  renderCascadeLegend();
   if (scopeHint) scopeHint.style.display = showColorHud ? '' : 'none';
   if (hint) {
-    hint.classList.toggle('hidden', rtMode || typoOn || geoOn);
+    hint.classList.toggle('hidden', rtMode || typoOn || geoOn || cascadeOn);
     hint.textContent = ageOn
       ? 'Dégradé = un compte ancien relié à un compte récent. Gris = date inconnue.'
       : discOn
@@ -4174,6 +4190,27 @@ function renderDiscourseLegend() {
   el.classList.add('visible');
 }
 
+function renderCascadeLegend() {
+  const el = document.getElementById('cascadeLegend');
+  if (!el) return;
+  const on = currentCorpusId === 'hmpv_fr_2' && edgeColorMode === 'cascade';
+  el.classList.toggle('visible', on);
+  if (!on) {
+    el.innerHTML = '';
+    return;
+  }
+  const counts = graphData?.meta?.levelCounts || {};
+  const chips = [1, 2, 3].map((lv) => {
+    const [label, hint] = LEVEL_LABELS[lv];
+    const info = counts[String(lv)] || {};
+    const n = Number(info.edges || 0);
+    const rgb = LEVEL_RGB[lv];
+    const count = n ? ` · ${n.toLocaleString('fr-FR')}` : '';
+    return `<span title="${hint}"><i style="background:rgb(${rgb.join(',')})"></i>${label.replace('Niveau ', '')}${count}</span>`;
+  }).join('');
+  el.innerHTML = `<div class="lv-key">${chips}</div>`;
+}
+
 function renderTypoLegend() {
   const el = document.getElementById('typoLegend');
   if (!el) return;
@@ -4306,7 +4343,8 @@ function setEdgeColorFromHud(value) {
     setGraphMode('rt_classes');
     return;
   }
-  if (value === 'typo_macro' || value === 'typo_cat' || value === 'discours' || value === 'pays' || value === 'age') {
+  if (value === 'cascade' || value === 'typo_macro' || value === 'typo_cat' || value === 'discours' || value === 'pays' || value === 'age') {
+    if (value === 'cascade' && currentCorpusId !== 'hmpv_fr_2') return;
     if (value === 'discours' && !discourseFramesEnabled(currentCorpusId)) return;
     if (graphMode === 'all' && edgeColorMode === value) return;
     edgeColorMode = value;
@@ -4336,7 +4374,8 @@ function syncCorpusUrl(corpusId) {
     : edgeColorMode === 'discours' ? 'discours'
     : edgeColorMode === 'pays' ? 'pays'
     : edgeColorMode === 'age' ? 'age'
-    : null;
+    : edgeColorMode === 'cascade' ? 'niveaux'
+    : (corpusId === 'hmpv_fr_2' ? 'community' : null);
   const sameCorpus = url.searchParams.get('corpus') === corpusId;
   const sameGraph = (url.searchParams.get('graph') || null) === nextGraph;
   const sameView = (url.searchParams.get('view') || null) === nextView;
@@ -4606,7 +4645,7 @@ function hash(i) {
 }
 
 /** Quadratic bezier samples for one hair strand. */
-function strandPoints(ax, ay, bx, by, segs, seed) {
+function strandPoints(ax, ay, bx, by, segs, seed, bias = 0) {
   const dx = bx - ax, dy = by - ay;
   const len = Math.hypot(dx, dy) || 1;
   const bulge = Math.min(42, len * (0.05 + 0.12 * hash(seed)));
@@ -4614,8 +4653,8 @@ function strandPoints(ax, ay, bx, by, segs, seed) {
   const px = -dy / len, py = dx / len;
   // lateral offset between strands (hair separation)
   const off = (hash(seed + 7) - 0.5) * Math.min(10, len * 0.05);
-  const cx = (ax + bx) * 0.5 + px * bulge * sign + px * off;
-  const cy = (ay + by) * 0.5 + py * bulge * sign + py * off;
+  const cx = (ax + bx) * 0.5 + px * bulge * sign + px * off + px * bias;
+  const cy = (ay + by) * 0.5 + py * bulge * sign + py * off + py * bias;
   // tiny endpoint jitter so strands don't share the exact same tip
   const j = Math.min(3.5, len * 0.012);
   const ax2 = ax + px * (hash(seed + 11) - 0.5) * j;
@@ -5182,6 +5221,8 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
       const cls = rtEdgeClass(edgeRtFrac(e, rtWeightByEdge));
       return { e, i, cls, r: rank[cls] };
     }).sort((a, b) => a.r - b.r || a.i - b.i);
+  } else if (edgeColorMode === 'cascade') {
+    edgeOrder = edges.slice().sort((a, b) => (Number(a.lv) || 0) - (Number(b.lv) || 0));
   }
 
   const nDraw = edgeOrder.length;
@@ -5198,11 +5239,11 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
     let ca, cb, bright;
     const wNorm = Math.pow(e.w / maxW, 0.45);
     const useTypoColors = typologyActive();
-    const lvRgb = e.lv ? LEVEL_RGB[Number(e.lv)] : null;
+    const lvRgb = edgeColorMode === 'cascade' && e.lv ? LEVEL_RGB[Number(e.lv)] : null;
     if (lvRgb) {
-      ca = lift(lvRgb, 1.05);
+      ca = lift(lvRgb, 1.12);
       cb = ca;
-      bright = 0.55 + 0.4 * wNorm;
+      bright = (Number(e.lv) === 1 ? 0.5 : 0.82) + 0.32 * wNorm;
     } else if (useRtClasses) {
       const style = rtClassStyle(item.cls);
       ca = style.col;
@@ -5219,11 +5260,13 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
     }
     const flatEdge = useRtClasses || useTypoColors || !!lvRgb;
 
+    const edgeLen = Math.hypot(b.x - a.x, b.y - a.y) || 1;
+    const levelBias = lvRgb ? (Number(e.lv) - 2) * Math.min(22, edgeLen * 0.08) : 0;
     const vStart = positions.length / 3;
     for (let s = 0; s < P.strands; s++) {
       // outer strands slightly dimmer
       const strandBright = bright * (1 - s * 0.12);
-      const pts = strandPoints(a.x, a.y, b.x, b.y, P.segments, seed++);
+      const pts = strandPoints(a.x, a.y, b.x, b.y, P.segments, seed++, levelBias);
       const n = pts.length / 3;
       for (let i = 0; i < n - 1; i++) {
         const t0 = i / (n - 1);
@@ -5419,9 +5462,7 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   }
   const centLbl = CENTRALITY_LABELS[centralityMode] || centralityMode;
   const nShown = visibleIdx ? visibleIdx.reduce((sum, bit) => sum + bit, 0) : data.meta.n_nodes;
-  const lvBit = levelView
-    ? ` · niveaux ${[1, 2, 3].filter((lv) => levelOn.has(lv)).join(', ')}`
-    : '';
+  const lvBit = levelView && edgeColorMode === 'cascade' ? ' · liens par niveau' : '';
   document.getElementById('stats').textContent =
     `${modeLabel} · taille ${centLbl} · ${nShown.toLocaleString('fr-FR')} nœuds · ${edges.length.toLocaleString('fr-FR')} liens${lvBit} · ${P.strands}× hair`;
   const fitNodes = visibleIdx ? nodes.filter((_, i) => visibleIdx[i]) : nodes;
@@ -5434,6 +5475,7 @@ async function buildGraph(data, { onProgress, isCurrent } = {}) {
   renderGeoLegend();
   renderAgeLegend();
   renderDiscourseLegend();
+  renderCascadeLegend();
   if (activeLexeme) {
     const accounts = accountsForLexeme(activeLexeme);
     const comms = communitiesForLexeme(activeLexeme);
@@ -6665,46 +6707,18 @@ exportBtn.addEventListener('click', () => { exportPng(); });
 function cascadeView(data) {
   if (!data || currentCorpusId !== 'hmpv_fr_2') return data;
   if (!data._allEdges) data._allEdges = data.edges || [];
-  const edges = data._allEdges.filter((e) => levelOn.has(Number(e.lv)));
-  return Object.assign({}, data, { edges, _centOk: false, _levelView: true });
+  return Object.assign({}, data, { edges: data._allEdges, _centOk: false, _levelView: true });
 }
 
-function syncCascadeUi(data) {
+function syncCascadeUi() {
   const on = currentCorpusId === 'hmpv_fr_2';
-  const bar = document.getElementById('levelMode');
-  if (bar) {
-    bar.hidden = !on;
-    bar.querySelectorAll('button[data-lv]').forEach((btn) => {
-      const lv = Number(btn.dataset.lv);
-      btn.classList.toggle('on', levelOn.has(lv));
-      btn.setAttribute('aria-pressed', levelOn.has(lv) ? 'true' : 'false');
-      const info = data?.meta?.levelCounts?.[String(lv)];
-      const base = lv === 1
-        ? 'Niveau 1'
-        : lv === 2
-          ? 'Niveau 2'
-          : 'Niveau 3';
-      btn.textContent = info ? `${base} · ${Number(info.tweets).toLocaleString('fr-FR')}` : base;
-    });
-  }
+  document.getElementById('hudColorCascade')?.toggleAttribute('hidden', !on);
   const rtBtn = document.getElementById('graphModeRt');
   if (rtBtn) rtBtn.hidden = on;
   const allBtn = document.getElementById('graphModeAll');
   if (allBtn && on) allBtn.textContent = 'Réponses et citations';
   else if (allBtn && allBtn.textContent !== 'Toutes interactions') allBtn.textContent = 'Toutes interactions';
-}
-
-async function applyCascadeLevels() {
-  const seq = ++cascadeSeq;
-  const still = () => seq === cascadeSeq && currentCorpusId === 'hmpv_fr_2';
-  syncCascadeUi(graphData);
-  if (!still()) return;
-  const full = graphCache.get(cacheKeyFor('hmpv_fr_2', 'all'));
-  if (!full) return;
-  const view = cascadeView(full);
-  ensureNodeCentralities(view);
-  const ok = await buildGraph(view, { isCurrent: still });
-  if (still() && ok) hideGraphLoader();
+  renderCascadeLegend();
 }
 
 function corpusCoverageText(corp) {
@@ -6719,13 +6733,25 @@ function corpusCoverageText(corp) {
 }
 
 async function loadCorpus(corp) {
-  cascadeSeq += 1;
   const seq = ++loadSeq;
   const isCurrent = () => seq === loadSeq;
   const corpusChanged = currentCorpusId !== corp.id;
   currentCorpusId = corp.id;
   if (corp.id === 'hmpv_fr_2' && graphMode !== 'all') graphMode = 'all';
   if (edgeColorMode === 'discours' && !discourseFramesEnabled(corp.id)) edgeColorMode = 'community';
+  if (corpusChanged && corp.id === 'hmpv_fr_2') {
+    const params = new URLSearchParams(location.search);
+    const staying = params.get('corpus') === 'hmpv_fr_2';
+    const requested = params.get('typo');
+    if (!staying || !requested || requested === 'niveaux' || requested === 'cascade') {
+      edgeColorMode = 'cascade';
+    } else {
+      edgeColorMode = edgeModeFromQuery(params, 'hmpv_fr_2');
+      if (edgeColorMode === 'discours' && !discourseFramesEnabled('hmpv_fr_2')) edgeColorMode = 'cascade';
+    }
+  } else if (corpusChanged && edgeColorMode === 'cascade') {
+    edgeColorMode = 'community';
+  }
   hideTipNow();
   loadAccountPosts(corp.id, seq);
   ensureAvatarPack(corp.id);
@@ -7688,18 +7714,6 @@ async function boot() {
   document.addEventListener('click', () => {
     document.querySelectorAll('.tab-split.open').forEach((el) => el.classList.remove('open'));
   });
-  document.getElementById('levelMode')?.addEventListener('click', (ev) => {
-    const btn = ev.target.closest('button[data-lv]');
-    if (!btn || currentCorpusId !== 'hmpv_fr_2') return;
-    const lv = Number(btn.dataset.lv);
-    if (levelOn.has(lv)) {
-      if (levelOn.size === 1) return;
-      levelOn.delete(lv);
-    } else {
-      levelOn.add(lv);
-    }
-    applyCascadeLevels();
-  });
   // Deep-link: ?corpus=ebola&graph=rt&view=hash|lemma|analyses
   {
     const v0 = new URLSearchParams(location.search).get('view');
@@ -7824,13 +7838,7 @@ window.addEventListener('popstate', () => {
   const modeChanged = nextMode !== graphMode;
   const viewChanged = nextView !== viewMode || (nextView === 'analyses' && nextLex !== lexKind);
   const centChanged = nextCent !== centralityMode;
-  const t = params.get('typo');
-  const nextEdge = t === 'macro' ? 'typo_macro'
-    : t === 'cat' ? 'typo_cat'
-    : t === 'discours' ? 'discours'
-    : t === 'pays' ? 'pays'
-    : t === 'age' ? 'age'
-    : 'community';
+  const nextEdge = edgeModeFromQuery(params, corp.id);
   const edgeChanged = nextEdge !== edgeColorMode;
   const nextPortraits = params.get('portraits') === '1';
   const portraitsChanged = nextPortraits !== portraitMode;
