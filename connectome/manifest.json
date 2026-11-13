@@ -60,8 +60,8 @@
     },
     {
       "id": "hmpv",
-      "label": "HMPV · 2025",
-      "phaseLabel": "Corpus entier · HMPV PADMEN (FR+EN, 1 janv. – 30 juin 2025)",
+      "label": "HMPV FR+EN · 2025",
+      "phaseLabel": "Corpus fusionné · HMPV français et anglais (1 janv. – 30 juin 2025)",
       "connectomeData": "data/hmpv/graph.json",
       "discourseData": "data/hmpv/discourse.json"
     }

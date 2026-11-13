@@ -160,6 +160,50 @@
       margin-left: 2px; padding-left: 12px; border-radius: 0 999px 999px 0;
     }
     .tab.tab-ext:hover { color: #e8eef7; background: rgba(255,255,255,0.06); }
+    #userSearch {
+      position: relative;
+      width: min(440px, 100%);
+    }
+    #userSearch[hidden] { display: none !important; }
+    #userSearch input {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(8,10,14,0.92);
+      color: #e8eef7;
+      font: inherit;
+      font-size: 13px;
+      border-radius: 999px;
+      padding: 8px 14px;
+      outline: none;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+    }
+    #userSearch input::placeholder { color: #8b97a8; }
+    #userSearch input:focus { border-color: #60a5fa; }
+    #userSearchResults {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0; right: 0;
+      max-height: min(320px, 46vh);
+      overflow: auto;
+      background: rgba(8,10,14,0.97);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 14px;
+      box-shadow: 0 14px 32px rgba(0,0,0,0.5);
+      z-index: 40;
+      padding: 6px;
+    }
+    #userSearchResults[hidden] { display: none !important; }
+    #userSearchResults button {
+      display: flex; width: 100%; justify-content: space-between; align-items: center; gap: 8px;
+      border: 0; background: transparent; color: #e8eef7;
+      font: inherit; font-size: 13px; font-weight: 650; text-align: left;
+      padding: 8px 10px; border-radius: 10px; cursor: pointer;
+    }
+    #userSearchResults button span { color: #8b97a8; font-size: 11px; font-weight: 550; }
+    #userSearchResults button:hover,
+    #userSearchResults button.active { background: rgba(37,99,235,0.38); color: #fff; }
+    #userSearchResults button:disabled { cursor: default; color: #8b97a8; }
     #navTools {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       gap: 5px; width: min(100%, 1100px);
@@ -654,6 +698,11 @@
       text-decoration: none; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
     #tooltip.acct .acct-handle:hover { text-decoration: underline; }
+    #tooltip.acct .acct-elsewhere {
+      display: inline-block; margin-top: 8px;
+      color: #9ec1ff; font-size: 12.5px; font-weight: 650; text-decoration: none;
+    }
+    #tooltip.acct .acct-elsewhere:hover { text-decoration: underline; color: #fff; }
     #tooltip.acct .acct-meta {
       margin-top: 5px; color: #8b93a0; font-size: 11.5px; line-height: 1.35;
     }
@@ -1193,6 +1242,10 @@
     <div id="tabs" role="tablist" aria-label="Corpus">
       <a id="health3Link" class="tab tab-ext" href="../analyses/health3_overlap.html" target="_blank" rel="noopener noreferrer" title="Intersection des auteurs des 3 corpus santé">∩ 3 santé</a>
     </div>
+    <form id="userSearch" role="search" hidden>
+      <input id="userSearchInput" type="search" placeholder="Chercher un compte HMPV" autocomplete="off" spellcheck="false" aria-label="Chercher un compte des corpus HMPV" />
+      <div id="userSearchResults" role="listbox" hidden></div>
+    </form>
     <div id="navTools">
       <div id="navToolsRow1">
         <div id="graphMode" role="tablist" aria-label="Modes du connectome">
@@ -1341,7 +1394,7 @@
         Épaisseur = intensité · contours = pôles · slider en bas
       </div>
     </div>
-    <div class="nav-hint">Clic nœud/label → profil X · zoom → plus de labels</div>
+    <div class="nav-hint" id="clickHint">Clic nœud/label → profil X · zoom → plus de labels</div>
     <div class="row"><span>Export</span>
       <select id="exportSize">
         <option value="3840x2160">4K · 3840×2160</option>
@@ -1807,7 +1860,7 @@ let lexScope = 'targets'; // 'sources' | 'targets'
 /** En mode Lemme : unigrammes ou bigrammes. */
 let lemmaForm = 'uni'; // 'uni' | 'bi'
 /** Build id (console + vérif cache). */
-const CONNECTOME_UI = '20261110-hmpv-fr-2-cibles';
+const CONNECTOME_UI = '20261113-hmpv-cross';
 
 const PUB_TYPE_ORDER = [
   { key: 'original', label: 'Original', short: 'Orig.', color: '#8ecf4a' },
@@ -4445,6 +4498,23 @@ function syncCorpusSubTabs(corp) {
   }
 }
 
+function hmpvCrossNav() {
+  return currentCorpusId === 'hmpv';
+}
+
+function clickDestinationPhrase() {
+  return hmpvCrossNav() ? 'publications dans les autres corpus' : 'profil X';
+}
+
+function comptePageUrl(raw) {
+  const h = normalizeHandle(raw);
+  if (!h) return null;
+  const url = new URL('./compte.html', import.meta.url);
+  url.searchParams.set('u', h);
+  url.searchParams.set('theme', paperMode ? 'clair' : 'noir');
+  return url.href;
+}
+
 function openXProfile(raw) {
   const url = xProfileUrl(raw);
   if (url) window.open(url, '_blank', 'noopener,noreferrer');
@@ -4452,7 +4522,177 @@ function openXProfile(raw) {
 
 function navigateFromNode(node) {
   if (!node?.l) return;
+  if (hmpvCrossNav()) {
+    const url = comptePageUrl(node.l);
+    if (url) {
+      location.assign(url);
+      return;
+    }
+  }
   openXProfile(node.l);
+}
+
+let hmpvHandleIndex = null;
+let hmpvHandleIndexPromise = null;
+let userSearchActive = -1;
+
+function ensureHmpvHandleIndex() {
+  if (hmpvHandleIndex) return Promise.resolve(hmpvHandleIndex);
+  if (!hmpvHandleIndexPromise) {
+    const url = new URL('./data/hmpv/user_index.json', import.meta.url);
+    url.searchParams.set('v', CONNECTOME_UI);
+    hmpvHandleIndexPromise = fetch(url)
+      .then((r) => {
+        if (!r.ok) throw new Error(String(r.status));
+        return r.json();
+      })
+      .then((list) => {
+        hmpvHandleIndex = Array.isArray(list) ? list : [];
+        return hmpvHandleIndex;
+      })
+      .catch((err) => {
+        hmpvHandleIndexPromise = null;
+        throw err;
+      });
+  }
+  return hmpvHandleIndexPromise;
+}
+
+function lowerBoundHandles(list, q) {
+  let lo = 0;
+  let hi = list.length;
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1;
+    if (list[mid] < q) lo = mid + 1;
+    else hi = mid;
+  }
+  return lo;
+}
+
+function searchHmpvHandles(raw) {
+  const query = String(raw || '').trim().replace(/^@+/, '').toLowerCase();
+  if (query.length < 2 || !hmpvHandleIndex) return [];
+  const out = [];
+  let i = lowerBoundHandles(hmpvHandleIndex, query);
+  for (; i < hmpvHandleIndex.length && out.length < 12; i++) {
+    if (!hmpvHandleIndex[i].startsWith(query)) break;
+    out.push(hmpvHandleIndex[i]);
+  }
+  if (out.length < 12) {
+    const seen = new Set(out);
+    for (const h of hmpvHandleIndex) {
+      if (out.length >= 12) break;
+      if (seen.has(h) || !h.includes(query)) continue;
+      out.push(h);
+      seen.add(h);
+    }
+  }
+  return out;
+}
+
+function paintUserSearch(list, message) {
+  const box = document.getElementById('userSearchResults');
+  if (!box) return;
+  if (message) {
+    box.hidden = false;
+    box.innerHTML = `<button type="button" disabled>${escapeHtml(message)}</button>`;
+    return;
+  }
+  if (!list?.length) {
+    box.hidden = true;
+    box.innerHTML = '';
+    userSearchActive = -1;
+    return;
+  }
+  box.hidden = false;
+  box.innerHTML = list.map((h, i) =>
+    `<button type="button" data-h="${escapeHtml(h)}" class="${i === userSearchActive ? 'active' : ''}">@${escapeHtml(h)}<span>publications</span></button>`
+  ).join('');
+}
+
+function openSearchedUser(raw) {
+  const url = comptePageUrl(raw);
+  if (url) location.assign(url);
+}
+
+function syncUserSearch() {
+  const form = document.getElementById('userSearch');
+  const hint = document.getElementById('clickHint');
+  if (form) form.hidden = !hmpvCrossNav();
+  if (hint) {
+    hint.textContent = hmpvCrossNav()
+      ? 'Clic sur un compte → ses publications dans les autres corpus · zoom → plus de labels'
+      : 'Clic nœud/label → profil X · zoom → plus de labels';
+  }
+  if (!hmpvCrossNav()) paintUserSearch([]);
+}
+
+function setupUserSearch() {
+  const form = document.getElementById('userSearch');
+  const input = document.getElementById('userSearchInput');
+  const box = document.getElementById('userSearchResults');
+  if (!form || !input || !box) return;
+  form.addEventListener('submit', (ev) => ev.preventDefault());
+  input.addEventListener('input', () => {
+    userSearchActive = -1;
+    const query = input.value.trim().replace(/^@+/, '');
+    if (query.length < 2) {
+      paintUserSearch([]);
+      return;
+    }
+    if (!hmpvHandleIndex) {
+      paintUserSearch([], 'Chargement des comptes HMPV…');
+      ensureHmpvHandleIndex()
+        .then(() => paintUserSearch(searchHmpvHandles(input.value)))
+        .catch(() => paintUserSearch([], 'Index des comptes indisponible'));
+      return;
+    }
+    paintUserSearch(searchHmpvHandles(query));
+  });
+  input.addEventListener('keydown', (ev) => {
+    const buttons = [...box.querySelectorAll('button[data-h]')];
+    if (ev.key === 'ArrowDown' || ev.key === 'ArrowUp') {
+      if (!buttons.length) return;
+      ev.preventDefault();
+      userSearchActive = ev.key === 'ArrowDown'
+        ? Math.min(buttons.length - 1, userSearchActive + 1)
+        : Math.max(0, userSearchActive - 1);
+      buttons.forEach((b, i) => b.classList.toggle('active', i === userSearchActive));
+      buttons[userSearchActive]?.scrollIntoView({ block: 'nearest' });
+    } else if (ev.key === 'Enter') {
+      const pick = buttons[userSearchActive] || buttons[0];
+      if (pick?.dataset.h) {
+        ev.preventDefault();
+        openSearchedUser(pick.dataset.h);
+      }
+    } else if (ev.key === 'Escape') {
+      paintUserSearch([]);
+      input.blur();
+    }
+  });
+  box.addEventListener('click', (ev) => {
+    const btn = ev.target.closest('button[data-h]');
+    if (btn?.dataset.h) openSearchedUser(btn.dataset.h);
+  });
+  document.addEventListener('click', (ev) => {
+    if (!ev.target.closest('#userSearch')) paintUserSearch([]);
+  });
+  syncUserSearch();
+}
+
+function focusHandleOnGraph(raw) {
+  const h = normalizeHandle(raw);
+  if (!h || !graphData?.nodes?.length) return false;
+  const node = graphData.nodes.find((n) => normalizeHandle(n.l) === h);
+  if (!node) return false;
+  const zoom = Math.min(controls.maxZoom, Math.max((fitZoom || 1) * 6, 0.8));
+  camera.position.set(node.x, node.y, 400);
+  controls.target.set(node.x, node.y, 0);
+  camera.zoom = zoom;
+  camera.updateProjectionMatrix();
+  controls.update();
+  showNodeTip(node, innerWidth * 0.5, innerHeight * 0.45);
+  return true;
 }
 
 function worldFromClient(clientX, clientY) {
@@ -5631,8 +5871,8 @@ function rebuildLabels() {
     el.style.color = labelColor;
     el.style.textShadow = ink.shadow;
     el.title = usesAccountCard()
-      ? `${text} — survol : publications · clic : profil X`
-      : `${text} — clic : profil X`;
+      ? `${text} — survol : publications · clic : ${clickDestinationPhrase()}`
+      : `${text} — clic : ${clickDestinationPhrase()}`;
     el.addEventListener('click', (ev) => {
       ev.preventDefault();
       ev.stopPropagation();
@@ -6314,7 +6554,7 @@ function projectPortraits(force = false) {
     rec.el.style.setProperty('--ring', p.color);
     rec.letter.style.fontSize = `${Math.max(11, Math.round(p.d * 0.38))}px`;
     rec.el.style.display = 'block';
-    rec.el.title = `@${handle} — clic : profil X`;
+    rec.el.title = `@${handle} — clic : ${clickDestinationPhrase()}`;
     bindAvatar(rec, handle);
   }
   hidePortraitEls(keep);
@@ -6747,6 +6987,7 @@ async function loadCorpus(corp) {
   const isCurrent = () => seq === loadSeq;
   const corpusChanged = currentCorpusId !== corp.id;
   currentCorpusId = corp.id;
+  syncUserSearch();
   if (corp.id === 'hmpv_fr_2' && graphMode !== 'all') graphMode = 'all';
   if (edgeColorMode === 'discours' && !discourseFramesEnabled(corp.id)) edgeColorMode = 'community';
   if (corpusChanged && corp.id === 'hmpv_fr_2') {
@@ -6934,6 +7175,8 @@ async function loadCorpus(corp) {
         ? `Connectome · Toutes interactions (Distinction RT/ix) — ${corp.label}`
         : `Connectome — ${corp.label}`;
     hideGraphLoader();
+    const focusHandle = new URLSearchParams(location.search).get('focus');
+    if (focusHandle && corp.id === 'hmpv') focusHandleOnGraph(focusHandle);
     idle(600).then(() => warmBackgroundCaches(corp.id));
   } catch (err) {
     if (!isCurrent()) return;
@@ -7307,6 +7550,7 @@ function renderAccountCard(node) {
       <div class="acct-meta">${commBit}${escapeHtml(centLbl)} ${escapeHtml(centVal)}</div>
       <div class="acct-count" title="Classement : j’aime + retweets + réponses + citations. Texte intégral. Les retweets du compte ne sont pas listés.">${count}</div>
       ${tally}
+      ${hmpvCrossNav() && comptePageUrl(node.l) ? `<a class="acct-elsewhere" href="${escapeHtml(comptePageUrl(node.l))}">Publications dans les autres corpus</a>` : ''}
     </div>
     ${body}`;
 }
@@ -7330,7 +7574,7 @@ function renderSimpleTip(node) {
     + `<div class="muted">comm. C${escapeHtml(String(node.com ?? ''))} · ${escapeHtml(centLbl)} ${escapeHtml(centVal)}`
     + ` · In ${Math.round(node._cin || 0)} · Out ${Math.round(node._cout || 0)}`
     + ` · PR ${(node._cpr != null ? node._cpr : node.pr || 0).toExponential(2)}</div>`
-    + `<div class="hint">Clic → profil X</div>`;
+    + `<div class="hint">Clic → ${escapeHtml(clickDestinationPhrase())}</div>`;
 }
 
 function placeSimpleTip(x, y) {
@@ -7649,6 +7893,7 @@ async function boot() {
   console.info('[connectome]', CONNECTOME_UI);
   try { window.__CONNECTOME_UI__ = CONNECTOME_UI; } catch (_) { /* ignore */ }
   setupTooltip();
+  setupUserSearch();
   setupMobileDrawers();
   setupUiChromeObserver();
   hideBootSplash();

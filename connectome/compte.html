@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Publications — autres corpus</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f5f2;
+      --ink: #1c1f26;
+      --muted: #5c6570;
+      --line: #e3e0d8;
+      --card: #fff;
+      --accent: #2563eb;
+      --chip: #eef2f7;
+    }
+    html.noir {
+      color-scheme: dark;
+      --bg: #0c0e12;
+      --ink: #e8eef7;
+      --muted: #8b93a0;
+      --line: rgba(255,255,255,0.12);
+      --card: #141820;
+      --accent: #7aa2ff;
+      --chip: rgba(255,255,255,0.06);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 15px/1.45 "Segoe UI", system-ui, sans-serif;
+    }
+    a { color: var(--accent); }
+    header {
+      position: sticky; top: 0; z-index: 5;
+      display: flex; flex-wrap: wrap; gap: 12px 18px; align-items: center;
+      padding: 14px 22px;
+      background: color-mix(in srgb, var(--bg) 92%, transparent);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(8px);
+    }
+    header a.back {
+      color: var(--ink); text-decoration: none; font-weight: 650; font-size: 13px;
+    }
+    header a.back:hover { color: var(--accent); }
+    form { position: relative; flex: 1 1 280px; max-width: 460px; margin-left: auto; }
+    input[type="search"] {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: var(--card);
+      color: var(--ink);
+      font: inherit;
+      border-radius: 999px;
+      padding: 8px 14px;
+    }
+    input[type="search"]:focus { outline: 2px solid var(--accent); border-color: transparent; }
+    #results {
+      position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+      background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+      max-height: 320px; overflow: auto; padding: 6px;
+    }
+    #results[hidden] { display: none !important; }
+    #results button {
+      display: block; width: 100%; text-align: left;
+      border: 0; background: transparent; color: var(--ink);
+      font: inherit; padding: 8px 10px; border-radius: 8px; cursor: pointer;
+    }
+    #results button:hover, #results button.active { background: var(--chip); }
+    main { width: min(880px, calc(100% - 32px)); margin: 22px auto 64px; }
+    h1 { font-size: 28px; letter-spacing: -0.03em; margin: 0 0 6px; }
+    .sub { color: var(--muted); margin: 0 0 18px; }
+    .sub a { font-weight: 650; }
+    .empty, .status {
+      background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+      padding: 16px 18px; color: var(--muted);
+    }
+    section {
+      background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+      padding: 16px 16px 8px; margin: 0 0 14px;
+    }
+    section h2 { font-size: 16px; margin: 0 0 4px; }
+    section .meta { color: var(--muted); font-size: 13px; margin: 0 0 12px; }
+    article.post {
+      border-top: 1px solid var(--line); padding: 12px 0 14px;
+    }
+    .post-top { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; font-size: 12.5px; color: var(--muted); }
+    .badge {
+      font-weight: 700; color: var(--ink); background: var(--chip);
+      border-radius: 999px; padding: 1px 8px;
+    }
+    .post p { margin: 8px 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .metrics { display: flex; gap: 12px; list-style: none; padding: 0; margin: 0; color: var(--muted); font-size: 12px; }
+    .metrics b { color: var(--ink); font-weight: 700; margin-right: 3px; }
+    .to { margin: 6px 0 0; font-size: 13px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="back" id="back" href="./?corpus=hmpv&amp;theme=clair">← Réseau HMPV FR+EN</a>
+    <form id="searchForm" role="search">
+      <input id="q" type="search" placeholder="Chercher un compte HMPV" autocomplete="off" spellcheck="false" aria-label="Chercher un compte des corpus HMPV" />
+      <div id="results" role="listbox" hidden></div>
+    </form>
+  </header>
+  <main id="main">
+    <p class="status">Chargement…</p>
+  </main>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const paper = !['noir', 'dark', '0'].includes(params.get('theme') || '');
+    document.documentElement.classList.toggle('noir', !paper);
+    const handle = String(params.get('u') || '').trim().replace(/^@+/, '').toLowerCase();
+
+    const TYPE_LABEL = { original: 'Original', reply: 'Réponse', quote: 'Citation' };
+    const DATE_FMT = new Intl.DateTimeFormat('fr-FR', {
+      timeZone: 'Europe/Paris', day: 'numeric', month: 'short', year: 'numeric',
+      hour: '2-digit', minute: '2-digit',
+    });
+
+    function esc(s) {
+      return String(s ?? '').replace(/[&<>"']/g, (c) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+      }[c]));
+    }
+    function shardKey(h) {
+      const ch = String(h || '').charAt(0);
+      return /^[a-z]$/.test(ch) ? ch : '_';
+    }
+    function rich(raw) {
+      const safe = esc(raw);
+      return safe
+        .replace(/(https?:\/\/[^\s<]+)/g, (url) => {
+          const clean = url.replace(/[),.]+$/g, '');
+          const trail = url.slice(clean.length);
+          return `<a href="${clean}" target="_blank" rel="noopener noreferrer">${clean}</a>${trail}`;
+        })
+        .replace(/(^|[\s(])@([A-Za-z0-9_]{1,15})\b/g, (m, pre, h) =>
+          `${pre}<a href="https://x.com/${encodeURIComponent(h)}" target="_blank" rel="noopener noreferrer">@${h}</a>`);
+    }
+    function when(value) {
+      const d = new Date(value);
+      if (Number.isNaN(d.getTime())) return '';
+      return DATE_FMT.format(d).replace(',', ' ·');
+    }
+    function pageUrl(h) {
+      const url = new URL('./compte.html', location.href);
+      url.searchParams.set('u', h);
+      url.searchParams.set('theme', paper ? 'clair' : 'noir');
+      return url.href;
+    }
+    function networkUrl(h) {
+      const url = new URL('./', location.href);
+      url.searchParams.set('corpus', 'hmpv');
+      url.searchParams.set('theme', paper ? 'clair' : 'noir');
+      if (h) url.searchParams.set('focus', h);
+      return url.href;
+    }
+
+    const back = document.getElementById('back');
+    back.href = networkUrl(handle);
+
+    let handles = null;
+    function ensureHandles() {
+      if (handles) return Promise.resolve(handles);
+      return fetch('./data/hmpv/user_index.json').then((r) => {
+        if (!r.ok) throw new Error(String(r.status));
+        return r.json();
+      }).then((list) => {
+        handles = Array.isArray(list) ? list : [];
+        return handles;
+      });
+    }
+    function lowerBound(list, q) {
+      let lo = 0;
+      let hi = list.length;
+      while (lo < hi) {
+        const mid = (lo + hi) >> 1;
+        if (list[mid] < q) lo = mid + 1;
+        else hi = mid;
+      }
+      return lo;
+    }
+    function matches(q) {
+      const query = q.trim().replace(/^@+/, '').toLowerCase();
+      if (query.length < 2 || !handles) return [];
+      const out = [];
+      let i = lowerBound(handles, query);
+      for (; i < handles.length && out.length < 12; i++) {
+        if (!handles[i].startsWith(query)) break;
+        out.push(handles[i]);
+      }
+      if (out.length < 12) {
+        for (const h of handles) {
+          if (out.length >= 12) break;
+          if (out.includes(h)) continue;
+          if (h.includes(query)) out.push(h);
+        }
+      }
+      return out;
+    }
+
+    const qInput = document.getElementById('q');
+    const results = document.getElementById('results');
+    let active = -1;
+    function paintResults(list, pending) {
+      if (pending) {
+        results.hidden = false;
+        results.innerHTML = '<button type="button" disabled>Chargement des comptes…</button>';
+        return;
+      }
+      if (!list.length) {
+        results.hidden = true;
+        results.innerHTML = '';
+        active = -1;
+        return;
+      }
+      results.hidden = false;
+      results.innerHTML = list.map((h, i) =>
+        `<button type="button" data-h="${esc(h)}" class="${i === active ? 'active' : ''}">@${esc(h)}</button>`
+      ).join('');
+    }
+    qInput.addEventListener('input', () => {
+      active = -1;
+      const query = qInput.value.trim();
+      if (query.replace(/^@+/, '').length < 2) {
+        paintResults([]);
+        return;
+      }
+      if (!handles) {
+        paintResults([], true);
+        ensureHandles().then(() => paintResults(matches(qInput.value))).catch(() => {
+          results.hidden = false;
+          results.innerHTML = '<button type="button" disabled>Index des comptes indisponible</button>';
+        });
+        return;
+      }
+      paintResults(matches(query));
+    });
+    qInput.addEventListener('keydown', (ev) => {
+      const buttons = [...results.querySelectorAll('button[data-h]')];
+      if (ev.key === 'ArrowDown' || ev.key === 'ArrowUp') {
+        if (!buttons.length) return;
+        ev.preventDefault();
+        active = ev.key === 'ArrowDown'
+          ? Math.min(buttons.length - 1, active + 1)
+          : Math.max(0, active - 1);
+        buttons.forEach((b, i) => b.classList.toggle('active', i === active));
+        buttons[active].scrollIntoView({ block: 'nearest' });
+      } else if (ev.key === 'Enter') {
+        const pick = buttons[active] || buttons[0];
+        if (pick) {
+          ev.preventDefault();
+          location.assign(pageUrl(pick.dataset.h));
+        }
+      } else if (ev.key === 'Escape') {
+        paintResults([]);
+      }
+    });
+    results.addEventListener('click', (ev) => {
+      const btn = ev.target.closest('button[data-h]');
+      if (btn) location.assign(pageUrl(btn.dataset.h));
+    });
+    document.addEventListener('click', (ev) => {
+      if (!ev.target.closest('#searchForm')) paintResults([]);
+    });
+
+    function metrics(post) {
+      const cells = [
+        ['lk', 'j’aime'],
+        ['rt', 'RT'],
+        ['rp', 'réponses'],
+        ['qt', 'citations'],
+      ];
+      const shown = cells.filter(([key]) => Number(post[key] || 0) > 0);
+      if (!shown.length) return '';
+      return `<ul class="metrics">${shown.map(([key, label]) =>
+        `<li><b>${Number(post[key]).toLocaleString('fr-FR')}</b>${label}</li>`
+      ).join('')}</ul>`;
+    }
+    function postCard(post, author) {
+      const type = TYPE_LABEL[post.type] ? post.type : 'original';
+      const url = post.id
+        ? `https://x.com/${encodeURIComponent(author)}/status/${encodeURIComponent(post.id)}`
+        : '';
+      const to = (type === 'reply' || type === 'quote') && post.to
+        ? `<p class="to">${type === 'quote' ? 'cite' : 'en réponse à'} <a href="https://x.com/${encodeURIComponent(post.to)}" target="_blank" rel="noopener noreferrer">@${esc(post.to)}</a></p>`
+        : '';
+      return `<article class="post">
+        <div class="post-top">
+          <span class="badge">${TYPE_LABEL[type]}</span>
+          <time datetime="${esc(post.at || '')}">${esc(when(post.at))}</time>
+          ${url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">ouvrir</a>` : ''}
+        </div>
+        ${to}
+        <p>${rich(post.text || '')}</p>
+        ${metrics(post)}
+      </article>`;
+    }
+    function counts(rec) {
+      const pubs = Number(rec.pubs || 0);
+      const rts = Number(rec.rts || 0);
+      const bits = [];
+      if (pubs) bits.push(`${pubs.toLocaleString('fr-FR')} publication${pubs > 1 ? 's' : ''} propre${pubs > 1 ? 's' : ''}`);
+      if (rts) bits.push(`${rts.toLocaleString('fr-FR')} retweet${rts > 1 ? 's' : ''}`);
+      const listed = (rec.posts || []).length;
+      if (listed && pubs > listed) bits.push(`${listed.toLocaleString('fr-FR')} texte${listed > 1 ? 's' : ''} affiché${listed > 1 ? 's' : ''}`);
+      return bits.join(' · ') || 'Aucune publication comptée';
+    }
+
+    async function render() {
+      const main = document.getElementById('main');
+      if (!handle) {
+        document.title = 'Chercher un compte HMPV';
+        main.innerHTML = `<h1>Comptes HMPV</h1>
+          <p class="sub">Cherchez un compte des corpus HMPV (français et anglais). La page liste ses publications dans les autres corpus.</p>`;
+        qInput.focus();
+        return;
+      }
+      document.title = `@${handle} — autres corpus`;
+      try {
+        const metaRes = await fetch('./data/hmpv/cross_meta.json');
+        if (!metaRes.ok) throw new Error('meta');
+        const meta = await metaRes.json();
+        const shard = shardKey(handle);
+        let rec = null;
+        if ((meta.shards || []).includes(shard)) {
+          const res = await fetch(`./data/hmpv/cross/${shard}.json`);
+          if (res.ok) {
+            const pack = await res.json();
+            rec = pack.accounts?.[handle] || null;
+          }
+        }
+        const corpora = meta.corpora || [];
+        const blocks = corpora.map((corp) => {
+          const row = rec?.[corp.id];
+          if (!row) return '';
+          const posts = Array.isArray(row.posts) ? row.posts : [];
+          const rank = corp.rank === 'recent'
+            ? 'Textes les plus récents. Les retweets sont comptés à part.'
+            : 'Textes les plus engageants (j’aime, retweets, réponses, citations).';
+          return `<section>
+            <h2>${esc(corp.label)}</h2>
+            <p class="meta">${esc(counts(row))}. ${esc(rank)}</p>
+            ${posts.length ? posts.map((p) => postCard(p, handle)).join('') : '<p class="meta">Pas de texte propre à afficher.</p>'}
+          </section>`;
+        }).filter(Boolean);
+        const names = corpora.map((c) => c.label).join(', ');
+        main.innerHTML = `<h1>@${esc(handle)}</h1>
+          <p class="sub">Publications de ce compte dans les autres corpus.
+            <a href="${esc(networkUrl(handle))}">Voir sur le réseau HMPV</a>
+            · <a href="https://x.com/${encodeURIComponent(handle)}" target="_blank" rel="noopener noreferrer">profil X</a>
+          </p>
+          ${blocks.length ? blocks.join('') : `<div class="empty">Aucune publication de @${esc(handle)} dans les corpus indexés (${esc(names)}).</div>`}`;
+      } catch (err) {
+        main.innerHTML = `<h1>@${esc(handle)}</h1><p class="empty">Les publications croisées n’ont pas pu être chargées.</p>`;
+      }
+    }
+    render();
+  </script>
+</body>
+</html>

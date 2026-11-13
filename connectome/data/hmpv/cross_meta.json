@@ -1,0 +1,81 @@
+{
+  "generatedAt": "2026-11-13T13:39:10.091010+00:00",
+  "sourceCorpus": "hmpv",
+  "nHandles": 99379,
+  "nWithElsewhere": 13248,
+  "postCap": 5,
+  "vaccinPostCap": 8,
+  "vaccin": {
+    "users": 6597,
+    "rows": 1625319,
+    "from": "2020-12-01T00:00:48+00:00",
+    "to": "2021-10-31T23:59:57+00:00"
+  },
+  "note": "Publications propres des comptes du réseau HMPV FR+EN dans les autres corpus. Jusqu’à 5 textes les plus engageants par corpus du connectome. Vaccin complot : jusqu’à 8 textes propres les plus récents. Les retweets sont comptés, leur texte n’est pas recopié.",
+  "shards": [
+    "_",
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "g",
+    "h",
+    "i",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "o",
+    "p",
+    "q",
+    "r",
+    "s",
+    "t",
+    "u",
+    "v",
+    "w",
+    "x",
+    "y",
+    "z"
+  ],
+  "corpora": [
+    {
+      "id": "ebola",
+      "label": "Ebola · mai 2026",
+      "rank": "engagement"
+    },
+    {
+      "id": "ebola_2_2026",
+      "label": "Ebola 2 · 2026",
+      "rank": "engagement"
+    },
+    {
+      "id": "hantavirus",
+      "label": "Hantavirus · mai 2026",
+      "rank": "engagement"
+    },
+    {
+      "id": "mpox",
+      "label": "Mpox · 2023–2026",
+      "rank": "engagement"
+    },
+    {
+      "id": "macron_nucleaire",
+      "label": "Macron nucléaire · mars 2026",
+      "rank": "engagement"
+    },
+    {
+      "id": "canicule",
+      "label": "Canicule · mai–juin 2026",
+      "rank": "engagement"
+    },
+    {
+      "id": "vaccin_complot",
+      "label": "Vaccin complot",
+      "rank": "recent"
+    }
+  ]
+}
