@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
-"""Page TikTok hMPV : frise, mésinformation, retranscriptions.
+"""Page TikTok hMPV : frise, ton, posture, retranscriptions.
 
 Les 545 vidéos viennent de l'export Research API
 Tiktok/data/exports/hmpv_2025h1/videos.jsonl.
 
-Le rouge marque une affirmation démentie sur l'épisode de janvier 2025 :
-état d'urgence déclaré, alerte maximale de l'OMS, confinement ou
-fermeture des écoles décidés, hôpitaux débordés, ou gravité supérieure
-au Covid. « Nouveau » ou « nouvelle vague » ne suffit pas : le mot peut
-désigner la vague saisonnière d'un virus connu. Un démenti reste gris.
+Le point de la frise est coloré par le ton du texte. La fiche ajoute la
+posture et la façon dont l'information est présentée. Aucun de ces trois
+axes ne tranche le vrai et le faux. « Nouveau » peut être une vague.
 """
 from __future__ import annotations
 
@@ -306,6 +304,131 @@ def asserted(text: str, needle: str, *, need_virus: bool = False, need_severe: b
     return False
 
 
+ALARM = (
+    "urgent", "urgence", "alerte", "breaking", "just in", "panique", "panic",
+    "danger", "dangereux", "dangereuse", "mortel", "mortelle", "protegez",
+    "be careful", "faites attention", "stay safe", "peur", "epidemie", "pandemie",
+    "debordes", "crematorium", "crematoire", "crematorio", "confinement",
+    "fermeture des ecoles", "pire que", "plus fort que", "plus mortel",
+    "plus dangereux", "catastrophe", "chaos", "terrifiant", "scary",
+    "etat d'urgence", "state of emergency", "estado de emergencia",
+    "عاجل", "طوارئ", "هلع", "خطير",
+)
+CALM = (
+    "pas de panique", "on panique pour rien", "rien d'inquietant", "pas inquietant",
+    "connu depuis", "pas un nouveau", "n'est pas un nouveau", "n'est pas nouveau",
+    "c'est faux", "fake news", "rumeurs sont", "aucune urgence", "pas de confinement",
+    "n'y aura pas", "benin", "rien de grave", "no need to panic", "not a threat",
+    "pas une menace", "rien a craindre",
+)
+PLAY = ("mdr", "ptdr", "lol", "blague", "freefire", "free fire", "unlocked", "pour rire")
+DEMENTI = (
+    "c'est faux", "fake news", "pas de confinement", "n'a pas declare",
+    "aucune annonce", "n'existe aucune", "rumeurs sont", "ce n'est pas",
+    "n'est pas un", "pas d'etat", "pas d etat", "did not declare", "no emergency",
+    "not a new virus", "n'est pas nouveau", "pas un nouveau", "on panique pour rien",
+)
+POSSIBLE = (
+    "pourrait", "possibilite", "risque de", "serait", "peut etre", "on craint",
+    "might", "could ", "possibly",
+)
+FACT = (
+    "declare", "decrete", "annonce", "fermeture", "se propage", "fait face",
+    "confinement", "etat d'urgence", "hopitaux", "outbreak", "spreading",
+)
+NEWS = (
+    "just in", "breaking", "vient d'annoncer", "vient d annoncer", "a annonce",
+    "ont annonce", "declare", "decrete", "les autorites", "selon l'oms",
+    "selon les", "urgent", "flash",
+)
+WARN = (
+    "protegez", "faites attention", "be careful", "prenez garde", "attention a vous",
+    "stay safe", "faites gaffe", "attention",
+)
+RELAY = ("selon", "rumeur", "rumeurs", "on dit que", "des videos", "des postes", "on raconte")
+SICK = (
+    "je suis malade", "j'ai la grippe", "j'ai de la fievre", "ma grippe",
+    "je suis cloitre", "j'suis", "i'm sick", "i have the flu",
+    "ca fait deux jours", "cloître",
+)
+
+
+def has_any(text: str, phrases: tuple[str, ...]) -> bool:
+    for phrase in phrases:
+        needle = plain(phrase)
+        if not needle:
+            continue
+        arabic = any("ARABIC" in unicodedata.name(ch, "") for ch in needle)
+        if arabic or " " in needle or len(needle) > 6:
+            if needle in text:
+                return True
+            continue
+        if any(True for _ in occurrences(text, needle)):
+            return True
+    return False
+
+
+def stance(desc: str, voice: str) -> dict:
+    """Ton, posture et présentation. Aucun de ces trois axes ne dit si c'est vrai."""
+    text = plain(f"{desc or ''}\n{voice or ''}")
+    prose = plain(" ".join(tok for tok in (desc or "").split() if not tok.startswith("#")))
+    speech = plain(voice or "")
+    words = [word for word in plain(f"{prose}\n{speech}").split() if word]
+    alarm = has_any(text, ALARM)
+    calm = has_any(text, CALM)
+    if alarm and calm and has_any(text, DEMENTI):
+        ton = "rassurant"
+    elif alarm:
+        ton = "alarmiste"
+    elif calm:
+        ton = "rassurant"
+    elif has_any(text, PLAY):
+        ton = "ludique"
+    else:
+        ton = "neutre"
+
+    correction = has_any(text, DEMENTI)
+    news = has_any(text, NEWS)
+    warn = has_any(text, WARN)
+    sick = has_any(text, SICK)
+    if correction:
+        posture = "correction"
+    elif sick and not news:
+        posture = "temoignage"
+    elif news and warn:
+        posture = "annonce-alerte"
+    elif news:
+        posture = "annonce"
+    elif warn:
+        posture = "alerte"
+    elif has_any(text, RELAY):
+        posture = "relais"
+    else:
+        posture = "commentaire"
+
+    fact = has_any(text, FACT)
+    possible = has_any(text, POSSIBLE)
+    question = "?" in text or "؟" in text
+    hard = has_any(text, ("decrete", "vient d'annoncer", "vient d annoncer", "a annonce", "a declare", "est declare"))
+    if has_any(text, DEMENTI):
+        pres = "dementi"
+    elif has_any(text, ("rumeur", "rumeurs")) and not hard:
+        pres = "rumeur"
+    elif possible and not hard:
+        pres = "possibilite"
+    elif sick and not news:
+        pres = "recit"
+    elif question and not fact:
+        pres = "question"
+    elif fact:
+        pres = "fait"
+    elif len(words) < 8:
+        pres = "mention"
+    else:
+        pres = "expose"
+    return {"ton": ton, "posture": posture, "pres": pres}
+
+
 def classify(desc: str, voice: str) -> list[str]:
     combined = plain(f"{desc or ''}\n{voice or ''}")
     if any(marker in combined for marker in CORRECTIONS):
@@ -388,7 +511,7 @@ def records() -> list[dict]:
         if not isinstance(tags, list):
             tags = []
         heard = voice
-        why = classify(raw.get("video_description") or "", heard)
+        read = stance(raw.get("video_description") or "", heard)
         rows.append(
             {
                 "id": str(raw.get("id")),
@@ -405,8 +528,9 @@ def records() -> list[dict]:
                 "vsrc": vsrc,
                 "lang": lang,
                 "fr": fr,
-                "mis": bool(why),
-                "why": why,
+                "ton": read["ton"],
+                "posture": read["posture"],
+                "pres": read["pres"],
             }
         )
     rows.sort(key=lambda row: row["at"])
@@ -414,39 +538,20 @@ def records() -> list[dict]:
 
 
 def selftest() -> None:
-    assert classify("nouvelle vague de hMPV en Chine", "") == []
-    assert classify("le nouveau virus en Chine", "") == []
-    assert classify("new virus unlocked #hmpv", "") == []
-    assert classify("فيروس جديد HMPV في الصين", "") == []
-    assert classify("Новый Virus из Китая", "") == []
-    assert classify("", "एक नया वाईरस HMPV") == []
-    assert any("urgence" in label for label in classify("le nouveau virus en Chine provoque l'état d'urgence", ""))
-    assert any("urgence" in label for label in classify("provoque l’état d’urgence", ""))
-    assert classify("connu depuis deux-mille-un, ce n'est pas un nouveau virus", "") == []
-    assert classify("Spoiler : ce n’est pas une menace réelle. On panique pour rien.", "nouveau virus") == []
-    assert classify("les rumeurs sont pour le moment fausses", "la chine aurait déclaré l'état d'urgence") == []
-    assert classify("Sauf que cette affirmation est fausse.", "les postes affirment qu'il s'agit d'un nouveau virus") == []
-    assert classify("une pneumonie dangereuse ressemblant à la grippe et sans traitement", "") == []
-    assert classify("morts sans traitement. la mortalite mondiale est elevee", "") == []
-    assert classify("il n’existe aucune annonce officielle de la mise en place d’un état d’urgence", "") == []
-    assert any("confinement" in label for label in classify(
-        "fermeture des écoles en France dès samedi face au virus hMPV",
-        "",
-    ))
-    assert classify("تصميمات العام الجديد #hmpv #فيروس", "") == []
-    assert classify("traitement de soutien, pas de remède spécifique", "") == []
-    assert classify("cette grippe est pire que le covid", "") == []
-    assert classify("#hmpv", "cette grippe est pire que le covid") == []
-    assert classify("#اخطر_فيروس_hmpv", "") == []
-    assert classify("virus mortal en china", "") == []
-    assert classify("alerta mundial por el hmpv", "") == []
-    assert classify("les simpson avaient predit une pandemie", "") == []
-    assert classify("عن التحالة الطوارئة", "") == []
-    assert classify("new virus?", "") == []
-    assert "dissimulation" not in " ".join(classify(
-        "On nous cache des choses ou c’est le début d’un nouveau chapitre ?", ""
-    ))
-    assert any("grave" in label for label in classify("ce virus est beaucoup plus fort que le covid", ""))
+    vague = stance("nouvelle vague de hMPV en Chine", "")
+    assert vague["ton"] == "neutre"
+    assert stance("le nouveau virus en Chine", "")["ton"] == "neutre"
+    assert stance("new virus unlocked #hmpv", "")["ton"] == "ludique"
+    urgent = stance("URGENT — fermeture des écoles en France dès samedi", "")
+    assert urgent["ton"] == "alarmiste" and urgent["pres"] == "fait"
+    possible = stance("Les autorités alertent sur la possibilité d'un confinement", "")
+    assert possible["ton"] == "alarmiste" and possible["pres"] == "possibilite"
+    calm = stance("Ce n'est pas un nouveau virus. Pas de confinement.", "")
+    assert calm["ton"] == "rassurant" and calm["posture"] == "correction" and calm["pres"] == "dementi"
+    story = stance("#grip", "cette grippe est pire que le covid ça fait deux jours que j'suis cloîtré")
+    assert story["posture"] == "temoignage" and story["pres"] == "recit"
+    ask = stance("On nous cache des choses ou c'est le début ?", "")
+    assert ask["pres"] == "question"
     print("selftest ok")
 
 
@@ -465,10 +570,11 @@ TEMPLATE = r"""<!DOCTYPE html>
     --card: #ffffff;
     --accent: #3d6fbe;
     --accent-bg: #f6f9ff;
-    --mis: #d23b4a;
-    --mis-bg: #fff1f2;
-    --mis-ink: #8d2433;
-    --other: #b7c2d1;
+    --alarm: #e07a3d;
+    --calm: #2f8f6b;
+    --play: #7a6bb5;
+    --flat: #9aa6b6;
+    --other: #9aa6b6;
   }
   * { box-sizing: border-box; }
   html, body { height: 100%; margin: 0; }
@@ -502,18 +608,13 @@ TEMPLATE = r"""<!DOCTYPE html>
     border-radius: 6px;
   }
   input { width: min(320px, 70vw); }
-  #misonly, #dayclear {
+  #dayclear {
     height: 36px;
     padding: 0 12px;
     background: var(--card);
     border: 1px solid var(--line);
     border-radius: 6px;
     cursor: pointer;
-  }
-  #misonly[aria-pressed="true"] {
-    background: var(--mis-bg);
-    border-color: #e7b4ba;
-    color: var(--mis-ink);
   }
   #frise {
     flex: none;
@@ -538,8 +639,10 @@ TEMPLATE = r"""<!DOCTYPE html>
     margin-right: 5px;
     vertical-align: 0;
   }
-  .swatch.mis { background: var(--mis); }
-  .swatch.other { background: var(--other); }
+  .swatch.alarm { background: var(--alarm); }
+  .swatch.flat { background: var(--flat); }
+  .swatch.calm { background: var(--calm); }
+  .swatch.play { background: var(--play); }
   .frise-scroll { overflow-x: auto; overflow-y: visible; margin-top: 4px; }
   #frise-plot { display: block; height: auto; }
   #frise-plot .dot, #frise-plot .slot { cursor: pointer; }
@@ -578,10 +681,15 @@ TEMPLATE = r"""<!DOCTYPE html>
     border-bottom: 1px solid #eef2f7;
     cursor: pointer;
   }
-  .row.mis { box-shadow: inset 3px 0 0 var(--mis); }
+  .row.tone-alarmiste { box-shadow: inset 3px 0 0 var(--alarm); }
+  .row.tone-neutre { box-shadow: inset 3px 0 0 var(--flat); }
+  .row.tone-rassurant { box-shadow: inset 3px 0 0 var(--calm); }
+  .row.tone-ludique { box-shadow: inset 3px 0 0 var(--play); }
   .row:hover { background: #f7f9fc; }
   .row.active { background: var(--accent-bg); }
-  .row.mis.active { background: var(--mis-bg); }
+  .row.tone-alarmiste.active { background: #fff6ef; }
+  .row.tone-rassurant.active { background: #f3faf6; }
+  .row.tone-ludique.active { background: #f6f4fc; }
   .row-top {
     display: flex;
     justify-content: space-between;
@@ -642,15 +750,16 @@ TEMPLATE = r"""<!DOCTYPE html>
     font-size: 13px;
     font-variant-numeric: tabular-nums;
   }
-  .flag {
-    margin: 0 0 12px;
-    padding: 8px 10px;
-    background: var(--mis-bg);
-    color: var(--mis-ink);
-    border-radius: 6px;
-    font-size: 13px;
-    line-height: 1.4;
+  .stance { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; }
+  .stance span {
+    font-size: 12px;
+    line-height: 1.35;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: #f3f5f9;
   }
+  .stance-note { margin: 0 0 12px; color: var(--muted); font-size: 12px; line-height: 1.4; }
+  .row-stance { margin: 3px 0 0; color: var(--muted); font-size: 11px; }
   .desc { margin: 0 0 12px; white-space: pre-wrap; line-height: 1.45; font-size: 15px; }
   .tags { margin: 0 0 14px; color: #5c6778; font-size: 13px; line-height: 1.4; }
   .transcript h3 {
@@ -687,22 +796,30 @@ TEMPLATE = r"""<!DOCTYPE html>
       <option value="views">Vues</option>
       <option value="likes">Likes</option>
     </select>
-    <button id="misonly" type="button" aria-pressed="false">Mésinformation seulement</button>
+    <select id="tone" aria-label="Ton">
+      <option value="">Tous les tons</option>
+      <option value="alarmiste">Ton alarmiste</option>
+      <option value="neutre">Ton neutre</option>
+      <option value="rassurant">Ton rassurant</option>
+      <option value="ludique">Ton ludique</option>
+    </select>
   </div>
 </header>
 <section id="frise" aria-label="Frise chronologique">
   <div class="frise-top">
     <p id="frise-title"></p>
     <div class="legend">
-      <span><i class="swatch mis"></i>Mésinformation</span>
-      <span><i class="swatch other"></i>Autre publication</span>
+      <span><i class="swatch alarm"></i>Ton alarmiste</span>
+      <span><i class="swatch flat"></i>Ton neutre</span>
+      <span><i class="swatch calm"></i>Ton rassurant</span>
+      <span><i class="swatch play"></i>Ton ludique</span>
       <button id="dayclear" type="button" hidden>Tout voir</button>
     </div>
   </div>
   <div class="frise-scroll">
     <svg id="frise-plot" role="img"></svg>
   </div>
-  <p class="frise-note">Chaque point est une publication, dans l’ordre du temps. Un jour en contient autant qu’il y a eu de vidéos : le nombre est écrit au-dessus du groupe, sans plafond. Sa taille suit les engagements (likes + commentaires + partages), sur une échelle logarithmique. Le rouge isole une affirmation démentie : état d’urgence déclaré, alerte maximale de l’OMS, confinement ou fermeture des écoles décidés, hôpitaux débordés, ou gravité supérieure au Covid. Dire qu’il s’agit d’un virus « nouveau » ou d’une nouvelle vague ne suffit pas. Une publication qui dément ces affirmations reste grise.</p>
+  <p class="frise-note">Chaque point est une publication, dans l’ordre du temps. Un jour en contient autant qu’il y a eu de vidéos : le nombre est écrit au-dessus du groupe, sans plafond. Sa taille suit les engagements (likes + commentaires + partages), sur une échelle logarithmique. La couleur est le ton du texte, pas un jugement sur le vrai et le faux. La fiche ajoute la posture de qui parle et la façon de présenter l’information. Dire « nouveau » peut désigner une vague : ce n’est pas, à soi seul, une manière de présenter un fait. La lecture reconnaît le français, l’anglais, l’espagnol et quelques mots arabes ; une autre langue sans ces mots reste au ton neutre.</p>
 </section>
 <div id="app">
   <aside>
@@ -741,7 +858,7 @@ const qEl = document.getElementById("q");
 const monthEl = document.getElementById("month");
 const dayEl = document.getElementById("day");
 const sortEl = document.getElementById("sort");
-const misBtn = document.getElementById("misonly");
+const toneEl = document.getElementById("tone");
 const dayClear = document.getElementById("dayclear");
 const listEl = document.getElementById("list");
 const countEl = document.getElementById("count");
@@ -764,8 +881,27 @@ let current = 0;
 let shown = [];
 let dayFilter = "";
 let friseAnchor = "";
-let misOnly = false;
-const misCount = DATA.filter((v) => v.mis).length;
+const TONE_COLOR = { alarmiste: "#e07a3d", neutre: "#9aa6b6", rassurant: "#2f8f6b", ludique: "#7a6bb5" };
+const TONE_LABEL = { alarmiste: "Alarmiste", neutre: "Neutre", rassurant: "Rassurant", ludique: "Ludique" };
+const POSTURE_LABEL = {
+  annonce: "Annonce",
+  "annonce-alerte": "Annonce adressée au public",
+  alerte: "Alerte au public",
+  correction: "Correction",
+  temoignage: "Témoignage",
+  relais: "Relais",
+  commentaire: "Commentaire"
+};
+const PRES_LABEL = {
+  fait: "Fait asserté",
+  possibilite: "Possibilité",
+  question: "Question",
+  dementi: "Démenti",
+  rumeur: "Rumeur rapportée",
+  recit: "Récit personnel",
+  mention: "Simple mention",
+  expose: "Exposé"
+};
 
 function when(iso) {
   const d = new Date(iso);
@@ -780,7 +916,7 @@ function visible() {
   const q = qEl.value.trim().toLowerCase();
   const month = monthEl.value;
   const rows = DATA.filter((v) => {
-    if (misOnly && !v.mis) return false;
+    if (toneEl.value && v.ton !== toneEl.value) return false;
     if (dayFilter && dayKey(v.at) !== dayFilter) return false;
     if (month && dayKey(v.at).slice(0, 7) !== month) return false;
     if (!q) return true;
@@ -798,15 +934,16 @@ function visible() {
 
 function renderList() {
   shown = visible();
-  const misHere = shown.filter((v) => v.mis).length;
-  countEl.textContent = shown.length + " / " + DATA.length + " · " + misHere + " en rouge";
+  const tones = shown.filter((v) => v.ton === "alarmiste").length;
+  countEl.textContent = shown.length + " / " + DATA.length + " · " + tones + " au ton alarmiste";
   listEl.innerHTML = shown.map((v, i) => `
-    <button type="button" class="row${v.mis ? " mis" : ""}${i === current ? " active" : ""}" data-i="${i}">
+    <button type="button" class="row tone-${v.ton}${i === current ? " active" : ""}" data-i="${i}">
       <div class="row-top">
         <span class="row-user">@${escapeHtml(v.user)}</span>
         <span>${nf.format(v.views)} vues</span>
       </div>
       <div class="row-top"><span>${when(v.at)}</span></div>
+      <p class="row-stance">${escapeHtml(TONE_LABEL[v.ton] || v.ton)} · ${escapeHtml(PRES_LABEL[v.pres] || v.pres)}</p>
       <p class="row-desc">${escapeHtml(v.desc || "(sans description)")}</p>
     </button>`).join("");
   const active = listEl.querySelector(".row.active");
@@ -885,13 +1022,11 @@ function show(index, scroll) {
   nextBtn.disabled = current === shown.length - 1;
   whoEl.innerHTML = "@" + escapeHtml(v.user) + " <span>" + when(v.at) + " · " + (current + 1) + " / " + shown.length + "</span>";
   const tags = v.tags.length ? `<p class="tags">${v.tags.map((t) => "#" + escapeHtml(t)).join(" ")}</p>` : "";
-  const flag = v.mis
-    ? `<p class="flag">Mésinformation — ${escapeHtml(v.why.join(" · "))}</p>`
-    : "";
+  const stance = `<p class="stance"><span>Ton · ${escapeHtml(TONE_LABEL[v.ton] || v.ton)}</span><span>Posture · ${escapeHtml(POSTURE_LABEL[v.posture] || v.posture)}</span><span>Présentation · ${escapeHtml(PRES_LABEL[v.pres] || v.pres)}</span></p><p class="stance-note">Lecture du texte : ton, posture, façon de présenter. Ce n’est pas un verdict sur le vrai et le faux.</p>`;
   const dur = v.dur ? `${v.dur} s` : "sans durée";
   metaEl.innerHTML = `
     <h2>@${escapeHtml(v.user)}</h2>
-    ${flag}
+    ${stance}
     <p class="stats">
       <span>${nf.format(v.views)} vues</span>
       <span>${nf.format(v.likes)} likes</span>
@@ -1019,11 +1154,14 @@ function renderFrise() {
       const cx = slot.x + pitch / 2 + col * pitch;
       const cy = stackTop + lane * pitch;
       const dim = shownIds.size && !shownIds.has(v.id) ? 0.22 : 1;
-      const fill = v.mis ? "#d23b4a" : "#b7c2d1";
+      const fill = TONE_COLOR[v.ton] || "#9aa6b6";
       const stroke = v.id === active ? ' stroke="#1c2434" stroke-width="1.4"' : "";
       const r = Math.min(dotRadius(v), pitch / 2 - 1.1).toFixed(2);
       const eng = engagement(v);
-      parts.push(`<circle class="dot" data-id="${v.id}" cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" fill-opacity="${dim}"${stroke}><title>@${escapeHtml(v.user)} · ${escapeHtml(when(v.at))} · ${nf.format(eng)} engagements${v.mis ? " · mésinformation" : ""}</title></circle>`);
+      const tone = TONE_LABEL[v.ton] || v.ton;
+      const posture = POSTURE_LABEL[v.posture] || v.posture;
+      const pres = PRES_LABEL[v.pres] || v.pres;
+      parts.push(`<circle class="dot" data-id="${v.id}" cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" fill-opacity="${dim}"${stroke}><title>@${escapeHtml(v.user)} · ${escapeHtml(when(v.at))} · ${nf.format(eng)} engagements · ${escapeHtml(tone)} · ${escapeHtml(posture)} · ${escapeHtml(pres)}</title></circle>`);
     });
   }
   plot.setAttribute("viewBox", `0 0 ${total} ${height}`);
@@ -1033,7 +1171,10 @@ function renderFrise() {
   const dayLabel = dayFilter
     ? " · " + dayFmt.format(new Date(dayFilter + "T12:00:00Z")) + " (" + (by.get(dayFilter) || []).length + ")"
     : "";
-  friseTitle.textContent = misCount + " publications en rouge sur " + DATA.length + dayLabel;
+  const toneCounts = ["alarmiste", "neutre", "rassurant", "ludique"].map((key) =>
+    DATA.filter((v) => v.ton === key).length + " " + TONE_LABEL[key].toLowerCase()
+  ).join(" · ");
+  friseTitle.textContent = toneCounts + dayLabel;
   dayClear.hidden = !dayFilter;
   if (dayFilter && dayFilter !== friseAnchor) {
     friseAnchor = dayFilter;
@@ -1055,10 +1196,7 @@ function refresh(keepId) {
 function openId(id) {
   const video = DATA.find((v) => v.id === id);
   if (!video) return;
-  if (misOnly && !video.mis) {
-    misOnly = false;
-    misBtn.setAttribute("aria-pressed", "false");
-  }
+  if (toneEl.value && video.ton !== toneEl.value) toneEl.value = "";
   const day = dayKey(video.at);
   let menu = false;
   if (dayFilter && day !== dayFilter) {
@@ -1107,11 +1245,7 @@ dayEl.addEventListener("change", () => {
   refresh();
 });
 sortEl.addEventListener("change", () => refresh());
-misBtn.addEventListener("click", () => {
-  misOnly = !misOnly;
-  misBtn.setAttribute("aria-pressed", misOnly ? "true" : "false");
-  refresh();
-});
+toneEl.addEventListener("change", () => refresh());
 dayClear.addEventListener("click", () => { dayFilter = ""; dayEl.value = ""; refresh(); });
 document.addEventListener("keydown", (event) => {
   if (event.target === qEl) return;
@@ -1136,17 +1270,10 @@ def write_html(rows: list[dict]) -> None:
 
 
 def review(rows: list[dict]) -> None:
-    flagged = [row for row in rows if row["mis"]]
-    print(f"n={len(rows)} flagged={len(flagged)}")
-    print(Counter(label for row in flagged for label in row["why"]))
-    flagged.sort(key=lambda row: -row["views"])
-    path = ROOT / "_misinfo_review.txt"
-    lines = []
-    for row in flagged:
-        desc = (row["desc"] or "").replace("\n", " ")[:180]
-        lines.append(f"{row['views']} @{row['user']} [{ ' · '.join(row['why']) }] {desc}")
-    path.write_text("\n".join(lines), encoding="utf-8")
-    print("review", path)
+    print(f"n={len(rows)}")
+    print("ton", Counter(row["ton"] for row in rows))
+    print("posture", Counter(row["posture"] for row in rows))
+    print("pres", Counter(row["pres"] for row in rows))
 
 
 def main() -> None:
@@ -1158,9 +1285,9 @@ def main() -> None:
         review(rows)
         return
     write_html(rows)
-    flagged = sum(1 for row in rows if row["mis"])
     voices = Counter(row["vsrc"] or "pending" for row in rows)
-    print(f"wrote {OUT} videos={len(rows)} misinfo={flagged} voices={dict(voices)}")
+    tones = Counter(row["ton"] for row in rows)
+    print(f"wrote {OUT} videos={len(rows)} tones={dict(tones)} voices={dict(voices)}")
 
 
 if __name__ == "__main__":

@@ -205,7 +205,6 @@ def build() -> dict:
         best = max(labels, key=lambda item: (labels[item], -TYPE_RANK[item[0]]))
         title = best[1]
         eng = sum(by_id[video_id]["likes"] + by_id[video_id]["comments"] + by_id[video_id]["shares"] for video_id in ids)
-        mis = sum(1 for video_id in ids if by_id[video_id]["mis"])
         record = {
             "id": root,
             "title": title,
@@ -214,7 +213,6 @@ def build() -> dict:
             "accounts": accounts,
             "ids": ids,
             "eng": eng,
-            "mis": mis,
         }
         if len(accounts) >= 2:
             components.append(record)
@@ -259,8 +257,9 @@ def build() -> dict:
             "likes": row["likes"],
             "comments": row["comments"],
             "shares": row["shares"],
-            "mis": row["mis"],
-            "why": row["why"],
+            "ton": row["ton"],
+            "posture": row["posture"],
+            "pres": row["pres"],
         }
 
     keep = drawn_ids | {video_id for pile in piles for video_id in pile["ids"]}
@@ -274,7 +273,6 @@ def build() -> dict:
             "piles": len(piles),
             "isolates": len(rows) - linked,
             "edges": len(edges),
-            "mis": sum(1 for row in rows if row["mis"]),
         },
         "nodes": nodes,
         "edges": edges,
@@ -375,7 +373,7 @@ TEMPLATE = r"""<!DOCTYPE html>
   #detail.open { display: block; }
   #detail h3 { margin: 0 0 4px; font-size: 16px; }
   .meta { display: flex; flex-wrap: wrap; gap: 8px 14px; color: var(--muted); font-size: 13px; }
-  .flag { display: inline-block; margin: 8px 0; padding: 6px 8px; background: var(--mis-bg); color: var(--mis-ink); border-radius: 6px; font-size: 13px; }
+  .flag { display: inline-block; margin: 8px 0; padding: 6px 8px; background: #f3f5f9; color: var(--ink); border-radius: 6px; font-size: 13px; }
   .desc, .said { margin: 8px 0 0; white-space: pre-wrap; line-height: 1.45; font-size: 14px; }
   .rels { margin: 8px 0 0; padding: 0; list-style: none; }
   .rels li { margin: 0 0 4px; font-size: 13px; color: #3c4656; }
@@ -396,7 +394,7 @@ TEMPLATE = r"""<!DOCTYPE html>
     <input id="q" type="search" placeholder="Compte, texte, parole" aria-label="Chercher dans la carte">
   </div>
 </header>
-<p class="note" style="padding: 8px 18px 0">Le trait relie deux vidéos qui ont le même son, le même texte une fois les hashtags retirés, la même parole, le même effet ou la même mention. La taille du point suit les engagements. Le rouge reprend les affirmations fausses de la frise. Un groupe d’un seul compte est listé à part.</p>
+<p class="note" style="padding: 8px 18px 0">Le trait relie deux vidéos qui ont le même son, le même texte une fois les hashtags retirés, la même parole, le même effet ou la même mention. La taille du point suit les engagements. La couleur est le ton du texte, le même que sur la frise. Un groupe d’un seul compte est listé à part.</p>
 <div class="filters" id="filters">
   <label><input type="checkbox" value="son-vague" checked><i class="swatch" style="background:#3d6fbe"></i>Son de la vague</label>
   <label><input type="checkbox" value="son-catalogue" checked><i class="swatch" style="background:#9bb0c9"></i>Musique de catalogue</label>
@@ -405,8 +403,10 @@ TEMPLATE = r"""<!DOCTYPE html>
   <label><input type="checkbox" value="effet" checked><i class="swatch" style="background:#c47b12"></i>Même effet</label>
   <label><input type="checkbox" value="mention" checked><i class="swatch" style="background:#5c6778"></i>Même mention</label>
   <label><input type="checkbox" value="liste" checked><i class="swatch" style="background:#8a6a4a"></i>Même playlist</label>
-  <span><i class="dotswatch" style="background:#d23b4a"></i> mésinformation</span>
-  <span><i class="dotswatch" style="background:#5c6b82"></i> autre</span>
+  <span><i class="dotswatch" style="background:#e07a3d"></i> ton alarmiste</span>
+  <span><i class="dotswatch" style="background:#9aa6b6"></i> ton neutre</span>
+  <span><i class="dotswatch" style="background:#2f8f6b"></i> ton rassurant</span>
+  <span><i class="dotswatch" style="background:#7a6bb5"></i> ton ludique</span>
 </div>
 <div id="app">
   <aside>
@@ -607,13 +607,13 @@ function renderList() {
   listEl.innerHTML = DATA.components.map((comp) => `
     <button type="button" class="comp${comp.id === activeComp ? " on" : ""}" data-comp="${comp.id}">
       <b>${escapeHtml(comp.title)}</b>
-      <span>${comp.accounts.length} comptes · ${comp.ids.length} vidéos · ${comp.types.map((type) => TYPE_NAME[type]).join(", ")}${comp.mis ? " · " + comp.mis + " en rouge" : ""} · ${nf.format(comp.eng)} engagements</span>
+      <span>${comp.accounts.length} comptes · ${comp.ids.length} vidéos · ${comp.types.map((type) => TYPE_NAME[type]).join(", ")} · ${nf.format(comp.eng)} engagements</span>
     </button>`).join("");
   pilesEl.innerHTML = DATA.piles.map((pile) => `
     <article class="comp pile">
       <b>@${escapeHtml(pile.accounts[0])} · ${pile.ids.length} vidéos</b>
       <span>${escapeHtml(pile.title)}</span>
-      <span>${pile.mis ? pile.mis + " en rouge · " : ""}${nf.format(pile.eng)} engagements</span>
+      <span>${nf.format(pile.eng)} engagements</span>
       ${pile.ids.map((id) => {
         const node = byId.get(id);
         return `<button type="button" data-id="${id}">${escapeHtml(when(node.at))} · ${nf.format(node.views)} vues</button>`;
@@ -671,7 +671,8 @@ function renderMap() {
       const visible = [...comp.ids].some((other) => other !== id && DATA.edges.some((edge) => edgeOn(edge, types) && ((edge.a === id && edge.b === other) || (edge.b === id && edge.a === other))));
       const hit = matches(node);
       const fade = (!visible || (query() && !hit)) ? 0.18 : 1;
-      const fill = node.mis ? "#d23b4a" : "#5c6b82";
+      const TONE_COLOR = { alarmiste: "#e07a3d", neutre: "#9aa6b6", rassurant: "#2f8f6b", ludique: "#7a6bb5" };
+      const fill = TONE_COLOR[node.ton] || "#9aa6b6";
       const stroke = id === activeId ? ' stroke="#1c2434" stroke-width="1.8"' : "";
       const r = radius(node).toFixed(1);
       parts.push(`<circle class="node" data-id="${id}" cx="${at.x.toFixed(1)}" cy="${at.y.toFixed(1)}" r="${r}" fill="${fill}" fill-opacity="${fade}"${stroke}><title>@${escapeHtml(node.user)} · ${escapeHtml(when(node.at))} · ${nf.format(engagement(node))} engagements</title></circle>`);
@@ -708,7 +709,10 @@ function showNode(id) {
   const rels = relations(id).map(({ other, edge }) =>
     `<li><b>${escapeHtml(edge.types.map((type) => TYPE_NAME[type]).join(", "))}</b> — @${escapeHtml(other.user)} · ${escapeHtml(edge.labels[0] || "")}</li>`
   ).join("");
-  const flag = node.mis ? `<p class="flag">${escapeHtml(node.why.join(" · "))}</p>` : "";
+  const TONE_LABEL = { alarmiste: "Alarmiste", neutre: "Neutre", rassurant: "Rassurant", ludique: "Ludique" };
+  const POSTURE_LABEL = { annonce: "Annonce", "annonce-alerte": "Annonce adressée au public", alerte: "Alerte au public", correction: "Correction", temoignage: "Témoignage", relais: "Relais", commentaire: "Commentaire" };
+  const PRES_LABEL = { fait: "Fait asserté", possibilite: "Possibilité", question: "Question", dementi: "Démenti", rumeur: "Rumeur rapportée", recit: "Récit personnel", mention: "Simple mention", expose: "Exposé" };
+  const flag = `<p class="flag">Ton · ${escapeHtml(TONE_LABEL[node.ton] || "")} · Posture · ${escapeHtml(POSTURE_LABEL[node.posture] || "")} · Présentation · ${escapeHtml(PRES_LABEL[node.pres] || "")}</p>`;
   const speech = node.voice
     ? `<p class="said">${escapeHtml(node.voice)}</p>` + (node.fr && node.fr !== node.voice ? `<p class="said"><b>Traduction.</b> ${escapeHtml(node.fr)}</p>` : "")
     : "";
