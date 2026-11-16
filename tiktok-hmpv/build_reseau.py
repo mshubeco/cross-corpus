@@ -258,6 +258,7 @@ def build() -> dict:
             "comments": row["comments"],
             "shares": row["shares"],
             "ton": row["ton"],
+            "tons": row.get("tons") or [row["ton"]],
             "posture": row["posture"],
             "pres": row["pres"],
         }
@@ -407,6 +408,7 @@ TEMPLATE = r"""<!DOCTYPE html>
   <span><i class="dotswatch" style="background:#9aa6b6"></i> ton neutre</span>
   <span><i class="dotswatch" style="background:#2f8f6b"></i> ton rassurant</span>
   <span><i class="dotswatch" style="background:#7a6bb5"></i> ton ludique</span>
+  <span><i class="dotswatch" style="background:#2c7da0"></i> ton pédagogique</span>
 </div>
 <div id="app">
   <aside>
@@ -671,7 +673,7 @@ function renderMap() {
       const visible = [...comp.ids].some((other) => other !== id && DATA.edges.some((edge) => edgeOn(edge, types) && ((edge.a === id && edge.b === other) || (edge.b === id && edge.a === other))));
       const hit = matches(node);
       const fade = (!visible || (query() && !hit)) ? 0.18 : 1;
-      const TONE_COLOR = { alarmiste: "#e07a3d", neutre: "#9aa6b6", rassurant: "#2f8f6b", ludique: "#7a6bb5" };
+      const TONE_COLOR = { alarmiste: "#e07a3d", neutre: "#9aa6b6", rassurant: "#2f8f6b", ludique: "#7a6bb5", pedagogique: "#2c7da0" };
       const fill = TONE_COLOR[node.ton] || "#9aa6b6";
       const stroke = id === activeId ? ' stroke="#1c2434" stroke-width="1.8"' : "";
       const r = radius(node).toFixed(1);
@@ -709,10 +711,12 @@ function showNode(id) {
   const rels = relations(id).map(({ other, edge }) =>
     `<li><b>${escapeHtml(edge.types.map((type) => TYPE_NAME[type]).join(", "))}</b> — @${escapeHtml(other.user)} · ${escapeHtml(edge.labels[0] || "")}</li>`
   ).join("");
-  const TONE_LABEL = { alarmiste: "Alarmiste", neutre: "Neutre", rassurant: "Rassurant", ludique: "Ludique" };
-  const POSTURE_LABEL = { annonce: "Annonce", "annonce-alerte": "Annonce adressée au public", alerte: "Alerte au public", correction: "Correction", temoignage: "Témoignage", relais: "Relais", commentaire: "Commentaire" };
+  const TONE_LABEL = { alarmiste: "Alarmiste", neutre: "Neutre", rassurant: "Rassurant", ludique: "Ludique", pedagogique: "Pédagogique" };
+  const POSTURE_LABEL = { annonce: "Annonce", "annonce-alerte": "Annonce adressée au public", alerte: "Alerte au public", correction: "Correction", decryptage: "Décryptage", detournement: "Détournement", plaidoyer: "Plaidoyer", temoignage: "Témoignage", relais: "Relais", commentaire: "Commentaire" };
   const PRES_LABEL = { fait: "Fait asserté", possibilite: "Possibilité", question: "Question", dementi: "Démenti", rumeur: "Rumeur rapportée", recit: "Récit personnel", mention: "Simple mention", expose: "Exposé" };
-  const flag = `<p class="flag">Ton · ${escapeHtml(TONE_LABEL[node.ton] || "")} · Posture · ${escapeHtml(POSTURE_LABEL[node.posture] || "")} · Présentation · ${escapeHtml(PRES_LABEL[node.pres] || "")}</p>`;
+  const toneKeys = node.tons && node.tons.length ? node.tons : [node.ton];
+  const tone = toneKeys.map((key) => TONE_LABEL[key] || key).join(" · ");
+  const flag = `<p class="flag">Ton · ${escapeHtml(tone)} · Posture · ${escapeHtml(POSTURE_LABEL[node.posture] || "")} · Présentation · ${escapeHtml(PRES_LABEL[node.pres] || "")}</p>`;
   const speech = node.voice
     ? `<p class="said">${escapeHtml(node.voice)}</p>` + (node.fr && node.fr !== node.voice ? `<p class="said"><b>Traduction.</b> ${escapeHtml(node.fr)}</p>` : "")
     : "";

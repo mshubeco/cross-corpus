@@ -304,129 +304,329 @@ def asserted(text: str, needle: str, *, need_virus: bool = False, need_severe: b
     return False
 
 
+# Menace prise en charge par celui qui parle. Les hashtags ne comptent pas.
 ALARM = (
-    "urgent", "urgence", "alerte", "breaking", "just in", "panique", "panic",
-    "danger", "dangereux", "dangereuse", "mortel", "mortelle", "protegez",
-    "be careful", "faites attention", "stay safe", "peur", "epidemie", "pandemie",
-    "debordes", "crematorium", "crematoire", "crematorio", "confinement",
-    "fermeture des ecoles", "pire que", "plus fort que", "plus mortel",
-    "plus dangereux", "catastrophe", "chaos", "terrifiant", "scary",
-    "etat d'urgence", "state of emergency", "estado de emergencia",
-    "عاجل", "طوارئ", "هلع", "خطير",
+    "urgent", "urgente", "alerte", "alerta", "breaking", "just in",
+    "panique", "panic", "panico", "protegez", "be careful", "faites attention",
+    "faire attention", "stay safe", "restez vigilant", "confinement", "reconfinement",
+    "fermeture des ecoles", "fermeture des ecole", "les ecoles seront fermees",
+    "pire que", "plus fort que", "plus mortel", "plus dangereux", "peor que",
+    "etat d'urgence", "etat d urgence", "state of emergency", "estado de emergencia",
+    "alerte rouge", "alerta roja", "vigilance rouge", "alerte maximale", "alerte sanitaire",
+    "hopitaux debordes", "hopitaux bondes", "hopitaux submerges", "hopitaux satures",
+    "sont satures", "sont submerges", "virus inconnu",
+    "lockdown", "lock down", "cuarentena", "карантин", "опасно", "смертель", "паник",
+    "عاجل", "طوارئ", "هلع", "خطير", "ذعر",
 )
-CALM = (
-    "pas de panique", "on panique pour rien", "rien d'inquietant", "pas inquietant",
-    "connu depuis", "pas un nouveau", "n'est pas un nouveau", "n'est pas nouveau",
-    "c'est faux", "fake news", "rumeurs sont", "aucune urgence", "pas de confinement",
-    "n'y aura pas", "benin", "rien de grave", "no need to panic", "not a threat",
-    "pas une menace", "rien a craindre",
+# Mot trop large pour colorer à lui seul : « après la pandémie », « peut être dangereux ».
+WEAK = (
+    "danger", "dangereux", "dangereuse", "peligro", "peligroso",
+    "mortel", "mortelle", "peur", "catastrophe",     "chaos", "terrifiant", "scary", "debordes", "urgence sanitaire",
 )
-PLAY = ("mdr", "ptdr", "lol", "blague", "freefire", "free fire", "unlocked", "pour rire")
-DEMENTI = (
-    "c'est faux", "fake news", "pas de confinement", "n'a pas declare",
-    "aucune annonce", "n'existe aucune", "rumeurs sont", "ce n'est pas",
-    "n'est pas un", "pas d'etat", "pas d etat", "did not declare", "no emergency",
-    "not a new virus", "n'est pas nouveau", "pas un nouveau", "on panique pour rien",
+# Baisse explicite de la menace. « Connu depuis 2001 » tout seul ne suffit pas :
+# ce rappel tient aussi dans une accroche qui fait peur.
+REASSURE = (
+    "pas vraiment", "pas de panique", "on panique pour rien", "no need to panic",
+    "pas de raison", "n'est pas inconnu", "n'est pas quelque chose de recent",
+    "pas de consequence grave", "pas de consequences graves", "n'a pas de consequence",
+    "pas grave pour", "pour la plupart", "la plupart des gens", "majorite des gens",
+    "benins pour", "benin pour", "symptomes sont benins",
+    "pas eu de declaration", "aucune declaration", "aucune annonce", "n'existe aucune",
+    "n'a pas declare", "no emergency", "no state of emergency", "not a new threat",
+    "not a new virus", "pas de confinement", "aucune mesure de confinement",
+    "ni la menace", "n'y aura pas", "n'y aurait pas", "c'est faux", "fake news",
+    "stop a la desinformation", "fausses informations", "et bien non",
+    "ont rassure", "a rassure", "rassure le public", "pic saisonnier",
+    "rien de grave", "rien d'inquietant", "virus courant", "common virus",
+    "n'importe quoi", "pas une menace", "ca rassure", "c'est rassurant",
+    "ليس بالخطير", "ليس خطيرا", "ليس جديدا", "تطمئن", "عدم تسجيل",
 )
-POSSIBLE = (
-    "pourrait", "possibilite", "risque de", "serait", "peut etre", "on craint",
-    "might", "could ", "possibly",
+DEBUNK = (
+    "c'est faux", "fake news", "stop a la desinformation", "fausses informations",
+    "aucune annonce", "n'existe aucune", "n'a pas declare", "pas eu de declaration",
+    "no emergency", "no state of emergency", "not a new threat", "et bien non",
+    "pas de confinement", "n'est pas un nouveau", "pas un nouveau virus", "not a new virus",
 )
-FACT = (
-    "declare", "decrete", "annonce", "fermeture", "se propage", "fait face",
-    "confinement", "etat d'urgence", "hopitaux", "outbreak", "spreading",
+# Décret présenté comme déjà pris. Une hypothèse ou une citation datée ne compte pas.
+DECREE = (
+    "decrete", "vient d'annoncer", "vient d annoncer", "a annonce",
+    "seront fermes", "seront fermees", "sera ferme", "sera fermee",
+    "declare l'etat", "declare l etat", "declarer l'etat", "declarer l etat",
+    "declenche l'etat", "declenche l etat", "declenche le plus",
+    "plus haut niveau d'alerte", "enonce un confinement", "annonce un reconfinement",
+    "annonce un confinement", "viens annoncer", "vient annoncer",
+    "fermeture des ecoles", "fermeture des ecole",
+)
+HYPOTHESIS = (
+    "pourrait", "possibilite", "risque de", "hypothese",
+    "pas une information confirmee", "datant de", "pourrait bien",
+    "might", "could", "possibly", "podria",
+)
+TEACH = (
+    "je vous explique", "je t'explique", "je t explique", "voici ce qu",
+    "voici pourquoi", "qu'est-ce que", "qu est ce que", "ce qu'il faut savoir",
+    "faut-il s'inquieter", "faut il s inquieter", "faut-il s inquieter",
+    "faut-il craindre", "faut il craindre", "qu'en est-il", "qu en est il",
+    "qu'en est il", "premierement", "everything you need to know",
+    "on vous explique", "qu'est-ce que le", "qu est ce que le", "qu'est-ce que ce",
+)
+PLAY = (
+    "mdr", "ptdr", "mdrr", "lol", "pour rire", "c'est une blague", "freefire", "free fire",
+    "unlocked", "t'es dans la merde", "tes dans la merde", "j'ai deja joue",
+    "happy halloween", "team pour", "team contre", "coming to the tree",
+    "run run run", "it is a joke", "it's a joke", "c'est une blague",
+)
+LIGHT = ("je vous explique", "je t'explique", "je t explique", "bon deja", "en tout cas pas vraiment")
+ADVOCACY = (
+    "help us", "ras-le-bol", "ras le bol", "nous ne nous tairons", "fight copd",
+    "help us fight",
+)
+WARN_ADDR = (
+    "protegez", "faites attention", "faire attention", "be careful", "stay safe",
+    "attention au", "attention a vous", "nous vous alertons", "alerte sanitaire",
+    "alerte rouge", "vigilance rouge",
 )
 NEWS = (
     "just in", "breaking", "vient d'annoncer", "vient d annoncer", "a annonce",
-    "ont annonce", "declare", "decrete", "les autorites", "selon l'oms",
-    "selon les", "urgent", "flash",
+    "ont annonce", "les autorites", "selon l'oms", "selon les", "flash",
 )
-WARN = (
-    "protegez", "faites attention", "be careful", "prenez garde", "attention a vous",
-    "stay safe", "faites gaffe", "attention",
-)
-RELAY = ("selon", "rumeur", "rumeurs", "on dit que", "des videos", "des postes", "on raconte")
 SICK = (
-    "je suis malade", "j'ai la grippe", "j'ai de la fievre", "ma grippe",
-    "je suis cloitre", "j'suis", "i'm sick", "i have the flu",
-    "ca fait deux jours", "cloître",
+    "je suis malade", "j'ai la grippe", "j'ai eu un virus", "j'ai de la fievre",
+    "je suis cloitre", "j'suis cloitre", "i'm sick", "i have the flu", "ca fait deux jours",
+    "je vais mieux",
 )
+SCRIPT = (
+    "jusqu'a nouvel ordre les creches", "jusqu a nouvel ordre les creches",
+    "jusqu'a nouvelle ordre", "macron enonce un confinement",
+    "pousse la chine a declarer", "pousser la chine a declarer",
+    "bayrou vient d'annoncer", "bayrou vient d annoncer",
+)
+RUMOR = ("des rumeurs", "rumeurs circulent", "une rumeur", "la rumeur", "on dit que", "il parait que")
+NEG_BEFORE = (
+    "pas de ", "pas d'", "pas un ", "pas eu", "n'a pas", "n'y a", "n'y aura",
+    "n'y aurait", "aucun", "aucune", "sans ", "ni ", "not ", "n't", " no ",
+    "without", "isn't", "did not", "ليس", "غير", "لا ",
+)
+
+
+def _scriptish(needle: str) -> bool:
+    return any("ARABIC" in unicodedata.name(ch, "") or "CYRILLIC" in unicodedata.name(ch, "") for ch in needle)
+
+
+def locate(text: str, phrase: str) -> list[int]:
+    """Index des vraies occurrences, pas des fragments ni des hashtags déjà retirés."""
+    needle = plain(phrase)
+    if not needle or not text:
+        return []
+    if _scriptish(needle):
+        found = []
+        start = 0
+        while True:
+            i = text.find(needle, start)
+            if i < 0:
+                return found
+            found.append(i)
+            start = i + len(needle)
+        return found
+    if " " in needle or "'" in needle:
+        return list(occurrences(text, needle))
+    found = []
+    for i in occurrences(text, needle):
+        found.append(i)
+    if found:
+        return found
+    start = 0
+    while True:
+        i = text.find(needle, start)
+        if i < 0:
+            return found
+        end = i + len(needle)
+        tok_end = end
+        while tok_end < len(text) and text[tok_end].isalnum():
+            tok_end += 1
+        tok_start = i
+        while tok_start > 0 and text[tok_start - 1].isalnum():
+            tok_start -= 1
+        extra_after = tok_end - end
+        extra_before = i - tok_start
+        if extra_before == 0 and extra_after <= 3:
+            found.append(i)
+        elif extra_after == 0 and extra_before <= 4 and len(needle) >= 8:
+            found.append(tok_start)
+        start = i + 1
+    return found
 
 
 def has_any(text: str, phrases: tuple[str, ...]) -> bool:
+    return any(locate(text, phrase) for phrase in phrases)
+
+
+def unnegated(text: str, phrases: tuple[str, ...]) -> bool:
     for phrase in phrases:
         needle = plain(phrase)
-        if not needle:
-            continue
-        arabic = any("ARABIC" in unicodedata.name(ch, "") for ch in needle)
-        if arabic or " " in needle or len(needle) > 6:
-            if needle in text:
-                return True
-            continue
-        if any(True for _ in occurrences(text, needle)):
+        for i in locate(text, phrase):
+            window = text[max(0, i - 55) : i]
+            if any(neg in window for neg in NEG_BEFORE):
+                continue
+            if needle and any(neg in text[max(0, i - 12) : i] for neg in ("ليس", "غير", "لا")):
+                continue
             return True
     return False
 
 
-def stance(desc: str, voice: str) -> dict:
-    """Ton, posture et présentation. Aucun de ces trois axes ne dit si c'est vrai."""
-    text = plain(f"{desc or ''}\n{voice or ''}")
-    prose = plain(" ".join(tok for tok in (desc or "").split() if not tok.startswith("#")))
-    speech = plain(voice or "")
-    words = [word for word in plain(f"{prose}\n{speech}").split() if word]
-    alarm = has_any(text, ALARM)
-    calm = has_any(text, CALM)
-    if alarm and calm and has_any(text, DEMENTI):
-        ton = "rassurant"
-    elif alarm:
-        ton = "alarmiste"
-    elif calm:
-        ton = "rassurant"
-    elif has_any(text, PLAY):
-        ton = "ludique"
-    else:
-        ton = "neutre"
+def has_reassure(text: str) -> bool:
+    """« Pas vraiment » répond à l'inquiétude. « N'avait pas vraiment d'amis » n'est pas un apaisement."""
+    for phrase in REASSURE:
+        if phrase == "pas vraiment":
+            continue
+        if locate(text, phrase):
+            return True
+    for i in locate(text, "pas vraiment"):
+        before = text[max(0, i - 28) : i]
+        if any(bad in before for bad in ("n'avait", "n'a ", "avais ", "avait ", "j'etais", "j etais", "je suis")):
+            continue
+        return True
+    return False
 
-    correction = has_any(text, DEMENTI)
-    news = has_any(text, NEWS)
-    warn = has_any(text, WARN)
-    sick = has_any(text, SICK)
-    if correction:
+
+def weak_hit(text: str) -> bool:
+    """Un mot large ne compte que collé au sujet du virus, pas dans une chanson ou un autre récit."""
+    for phrase in WEAK:
+        needle = plain(phrase)
+        for i in locate(text, phrase):
+            window = text[max(0, i - 55) : i]
+            if any(neg in window for neg in NEG_BEFORE):
+                continue
+            around = text[max(0, i - 40) : i + len(needle) + 40]
+            if any(stem in around for stem in ("virus", "hmpv", "confin", "chine", "covid", "malad", "grippe", "hopit", "pneumo")):
+                return True
+    return False
+
+
+def attention_warning(text: str) -> bool:
+    """« Attention » adresse un avertissement. « Attention car les vidéos… » commente les images."""
+    for i in locate(text, "attention"):
+        tail = text[i : i + 24]
+        if tail.startswith(("attention car", "attention les", "attention ce", "attention cette")):
+            continue
+        window = text[max(0, i - 55) : i]
+        if any(neg in window for neg in NEG_BEFORE):
+            continue
+        return True
+    return False
+
+
+def spoken(desc: str, voice: str) -> str:
+    """Texte de la légende hors hashtags et mentions, plus la parole."""
+    body = " ".join(
+        tok for tok in (desc or "").split()
+        if not tok.startswith("#") and not tok.startswith("@")
+    )
+    return plain(f"{body}\n{voice or ''}")
+
+
+def stance(desc: str, voice: str) -> dict:
+    """Ton, posture, présentation. Plusieurs tons peuvent coexister. Aucun ne dit le vrai."""
+    text = spoken(desc, voice)
+    words = [word for word in text.split() if word]
+    hypothesis = unnegated(text, HYPOTHESIS)
+    # « pourrait » nefface pas un décret. Seule une hypothèse affichée le suspend.
+    framed = has_any(text, ("hypothese", "pas une information confirmee", "datant de"))
+    decree = unnegated(text, DECREE) and not framed
+    reassure = has_reassure(text)
+    debunk = has_any(text, DEBUNK)
+    teach = has_any(text, TEACH)
+    play = has_any(text, PLAY)
+    alarm = unnegated(text, ALARM) or attention_warning(text) or (not reassure and weak_hit(text))
+    about = any(stem in text for stem in (
+        "hmpv", "virus", "covid", "confin", "chine", "china", "epidem", "pandem",
+        "oms", "lockdown", "quarant", "карантин", "طوار", "فيروس",
+    ))
+    if not about:
+        reassure = debunk = decree = False
+        alarm = False
+        teach = False
+    # Un démenti explicite l'emporte sur le décret qu'il cite.
+    if debunk:
+        alarm = False
+    elif decree:
+        alarm = True
+        reassure = False
+    elif reassure:
+        alarm = False
+    known = has_any(text, (
+        "first identified", "identifie pour la", "connu depuis", "decouvert en",
+        "deux mille un", "depuis 2001", "en 2001", "virus courant", "common virus",
+    ))
+    if alarm and teach and known and not unnegated(text, ALARM):
+        alarm = False
+    joke = play and not teach
+
+    tons: list[str] = []
+    if reassure or debunk:
+        tons.append("rassurant")
+    if alarm:
+        tons.append("alarmiste")
+    if teach:
+        tons.append("pedagogique")
+    light = has_any(text, LIGHT)
+    if play or (light and "alarmiste" not in tons):
+        if "rassurant" in tons or "pedagogique" in tons or joke:
+            tons.append("ludique")
+    if not tons:
+        tons.append("neutre")
+    order = (
+        ("rassurant", "ludique", "alarmiste", "pedagogique", "neutre")
+        if joke and not decree
+        else ("rassurant", "alarmiste", "ludique", "pedagogique", "neutre")
+    )
+    for key in order:
+        if key in tons:
+            ton = key
+            break
+
+    script = has_any(text, SCRIPT)
+    if joke and "pedagogique" not in tons and "rassurant" not in tons:
+        posture = "detournement"
+    elif debunk and not teach:
         posture = "correction"
-    elif sick and not news:
+    elif has_any(text, ADVOCACY):
+        posture = "plaidoyer"
+    elif teach or ("rassurant" in tons and len(words) > 40):
+        posture = "decryptage"
+    elif script:
+        posture = "relais"
+    elif has_any(text, SICK):
         posture = "temoignage"
-    elif news and warn:
-        posture = "annonce-alerte"
-    elif news:
-        posture = "annonce"
-    elif warn:
+    elif "alarmiste" in tons and has_any(text, WARN_ADDR):
         posture = "alerte"
-    elif has_any(text, RELAY):
+    elif decree or has_any(text, NEWS):
+        posture = "annonce"
+    elif has_any(text, RUMOR):
         posture = "relais"
     else:
         posture = "commentaire"
 
-    fact = has_any(text, FACT)
-    possible = has_any(text, POSSIBLE)
-    question = "?" in text or "؟" in text
-    hard = has_any(text, ("decrete", "vient d'annoncer", "vient d annoncer", "a annonce", "a declare", "est declare"))
-    if has_any(text, DEMENTI):
+    if debunk and not teach:
         pres = "dementi"
-    elif has_any(text, ("rumeur", "rumeurs")) and not hard:
-        pres = "rumeur"
-    elif possible and not hard:
-        pres = "possibilite"
-    elif sick and not news:
+    elif has_any(text, SICK) and posture == "temoignage":
         pres = "recit"
-    elif question and not fact:
+    elif ("?" in text or "؟" in text) and not decree and len(words) < 45:
         pres = "question"
-    elif fact:
+    elif hypothesis and not decree:
+        pres = "possibilite"
+    elif has_any(text, RUMOR) and posture not in ("decryptage", "correction") and "rassurant" not in tons:
+        pres = "rumeur"
+    elif decree or ("alarmiste" in tons and unnegated(text, (
+        "etat d'urgence", "etat d urgence", "state of emergency", "estado de emergencia",
+        "seront fermes", "seront fermees", "confinement", "reconfinement",
+    ))):
         pres = "fait"
-    elif len(words) < 8:
+    elif len(words) < 12 or (joke and not unnegated(text, ALARM)):
         pres = "mention"
     else:
         pres = "expose"
-    return {"ton": ton, "posture": posture, "pres": pres}
+    return {"ton": ton, "tons": [ton] + [item for item in tons if item != ton], "posture": posture, "pres": pres}
 
 
 def classify(desc: str, voice: str) -> list[str]:
@@ -529,6 +729,7 @@ def records() -> list[dict]:
                 "lang": lang,
                 "fr": fr,
                 "ton": read["ton"],
+                "tons": read["tons"],
                 "posture": read["posture"],
                 "pres": read["pres"],
             }
@@ -539,19 +740,35 @@ def records() -> list[dict]:
 
 def selftest() -> None:
     vague = stance("nouvelle vague de hMPV en Chine", "")
-    assert vague["ton"] == "neutre"
+    assert vague["ton"] == "neutre", vague
     assert stance("le nouveau virus en Chine", "")["ton"] == "neutre"
     assert stance("new virus unlocked #hmpv", "")["ton"] == "ludique"
-    urgent = stance("URGENT — fermeture des écoles en France dès samedi", "")
-    assert urgent["ton"] == "alarmiste" and urgent["pres"] == "fait"
+    assert stance("#virus #hmpv #confinement #alerte", "")["ton"] == "neutre"
+    urgent = stance("URGENT — fermeture des écoles en France dès samedi à cause du hMPV", "")
+    assert urgent["ton"] == "alarmiste" and urgent["pres"] == "fait", urgent
     possible = stance("Les autorités alertent sur la possibilité d'un confinement", "")
-    assert possible["ton"] == "alarmiste" and possible["pres"] == "possibilite"
+    assert possible["ton"] == "alarmiste" and possible["pres"] == "possibilite", possible
     calm = stance("Ce n'est pas un nouveau virus. Pas de confinement.", "")
-    assert calm["ton"] == "rassurant" and calm["posture"] == "correction" and calm["pres"] == "dementi"
-    story = stance("#grip", "cette grippe est pire que le covid ça fait deux jours que j'suis cloîtré")
-    assert story["posture"] == "temoignage" and story["pres"] == "recit"
+    assert calm["ton"] == "rassurant" and calm["pres"] == "dementi", calm
+    story = stance("#grippe", "cette grippe est pire que le covid ça fait deux jours que j'suis cloîtré")
+    assert story["posture"] == "temoignage" and story["pres"] == "recit", story
     ask = stance("On nous cache des choses ou c'est le début ?", "")
-    assert ask["pres"] == "question"
+    assert ask["pres"] == "question", ask
+    hugo = stance(
+        "Le HMPV n’a pas de conséquence grave pour la plupart des gens #sinformersurtiktok",
+        "Faut-il s'inquiéter du hmpv ? Et bien en France, pas vraiment. Je vous explique pourquoi. "
+        "Bon, déjà, il n'est pas inconnu, on le connaît depuis deux-mille-un. "
+        "Il n'y aurait pas de risque de propagation, ni la menace d'un confinement. "
+        "Ça fait suite à une rumeur comme quoi il y avait un état d'urgence. "
+        "Il n'y a pas eu de déclaration d'urgence.",
+    )
+    assert hugo["ton"] == "rassurant", hugo
+    assert "ludique" in hugo["tons"] and "pedagogique" in hugo["tons"], hugo
+    assert hugo["posture"] == "decryptage", hugo
+    assert hugo["pres"] == "expose", hugo
+    assert "alarmiste" not in hugo["tons"], hugo
+    joke = stance("Ceci n'est pas une blague #confinement", "Macron énonce un confinement préventif. Le HMPV déclenche l'état d'urgence.")
+    assert joke["ton"] == "alarmiste" and joke["posture"] != "correction", joke
     print("selftest ok")
 
 
@@ -573,6 +790,7 @@ TEMPLATE = r"""<!DOCTYPE html>
     --alarm: #e07a3d;
     --calm: #2f8f6b;
     --play: #7a6bb5;
+    --teach: #2c7da0;
     --flat: #9aa6b6;
     --other: #9aa6b6;
   }
@@ -643,6 +861,7 @@ TEMPLATE = r"""<!DOCTYPE html>
   .swatch.flat { background: var(--flat); }
   .swatch.calm { background: var(--calm); }
   .swatch.play { background: var(--play); }
+  .swatch.teach { background: var(--teach); }
   .frise-scroll { overflow-x: auto; overflow-y: visible; margin-top: 4px; }
   #frise-plot { display: block; height: auto; }
   #frise-plot .dot, #frise-plot .slot { cursor: pointer; }
@@ -685,11 +904,13 @@ TEMPLATE = r"""<!DOCTYPE html>
   .row.tone-neutre { box-shadow: inset 3px 0 0 var(--flat); }
   .row.tone-rassurant { box-shadow: inset 3px 0 0 var(--calm); }
   .row.tone-ludique { box-shadow: inset 3px 0 0 var(--play); }
+  .row.tone-pedagogique { box-shadow: inset 3px 0 0 var(--teach); }
   .row:hover { background: #f7f9fc; }
   .row.active { background: var(--accent-bg); }
   .row.tone-alarmiste.active { background: #fff6ef; }
   .row.tone-rassurant.active { background: #f3faf6; }
   .row.tone-ludique.active { background: #f6f4fc; }
+  .row.tone-pedagogique.active { background: #f2f8fb; }
   .row-top {
     display: flex;
     justify-content: space-between;
@@ -802,6 +1023,7 @@ TEMPLATE = r"""<!DOCTYPE html>
       <option value="neutre">Ton neutre</option>
       <option value="rassurant">Ton rassurant</option>
       <option value="ludique">Ton ludique</option>
+      <option value="pedagogique">Ton pédagogique</option>
     </select>
   </div>
 </header>
@@ -813,13 +1035,14 @@ TEMPLATE = r"""<!DOCTYPE html>
       <span><i class="swatch flat"></i>Ton neutre</span>
       <span><i class="swatch calm"></i>Ton rassurant</span>
       <span><i class="swatch play"></i>Ton ludique</span>
+      <span><i class="swatch teach"></i>Ton pédagogique</span>
       <button id="dayclear" type="button" hidden>Tout voir</button>
     </div>
   </div>
   <div class="frise-scroll">
     <svg id="frise-plot" role="img"></svg>
   </div>
-  <p class="frise-note">Chaque point est une publication, dans l’ordre du temps. Un jour en contient autant qu’il y a eu de vidéos : le nombre est écrit au-dessus du groupe, sans plafond. Sa taille suit les engagements (likes + commentaires + partages), sur une échelle logarithmique. La couleur est le ton du texte, pas un jugement sur le vrai et le faux. La fiche ajoute la posture de qui parle et la façon de présenter l’information. Dire « nouveau » peut désigner une vague : ce n’est pas, à soi seul, une manière de présenter un fait. La lecture reconnaît le français, l’anglais, l’espagnol et quelques mots arabes ; une autre langue sans ces mots reste au ton neutre.</p>
+  <p class="frise-note">Chaque point est une publication, dans l’ordre du temps. Un jour en contient autant qu’il y a eu de vidéos : le nombre est écrit au-dessus du groupe, sans plafond. Sa taille suit les engagements (likes + commentaires + partages), sur une échelle logarithmique. La couleur est le ton principal. La fiche peut en ajouter d’autres : une vulgarisation qui cite une rumeur pour la défaire est rassurante, pédagogique, et ludique si l’adresse l’est. L’alarmisme est la dramatisation, pas un verdict sur le vrai et le faux. Dire « nouveau » peut désigner une vague. La lecture couvre le français, l’anglais, l’espagnol, quelques mots arabes et quelques mots slaves.</p>
 </section>
 <div id="app">
   <aside>
@@ -881,13 +1104,16 @@ let current = 0;
 let shown = [];
 let dayFilter = "";
 let friseAnchor = "";
-const TONE_COLOR = { alarmiste: "#e07a3d", neutre: "#9aa6b6", rassurant: "#2f8f6b", ludique: "#7a6bb5" };
-const TONE_LABEL = { alarmiste: "Alarmiste", neutre: "Neutre", rassurant: "Rassurant", ludique: "Ludique" };
+const TONE_COLOR = { alarmiste: "#e07a3d", neutre: "#9aa6b6", rassurant: "#2f8f6b", ludique: "#7a6bb5", pedagogique: "#2c7da0" };
+const TONE_LABEL = { alarmiste: "Alarmiste", neutre: "Neutre", rassurant: "Rassurant", ludique: "Ludique", pedagogique: "Pédagogique" };
 const POSTURE_LABEL = {
   annonce: "Annonce",
   "annonce-alerte": "Annonce adressée au public",
   alerte: "Alerte au public",
   correction: "Correction",
+  decryptage: "Décryptage",
+  detournement: "Détournement",
+  plaidoyer: "Plaidoyer",
   temoignage: "Témoignage",
   relais: "Relais",
   commentaire: "Commentaire"
@@ -912,11 +1138,19 @@ function urlOf(v) {
   return "https://www.tiktok.com/@" + encodeURIComponent(v.user) + "/video/" + v.id;
 }
 
+function toneKeys(v) {
+  return v.tons && v.tons.length ? v.tons : [v.ton];
+}
+
+function toneText(v) {
+  return toneKeys(v).map((key) => TONE_LABEL[key] || key).join(" · ");
+}
+
 function visible() {
   const q = qEl.value.trim().toLowerCase();
   const month = monthEl.value;
   const rows = DATA.filter((v) => {
-    if (toneEl.value && v.ton !== toneEl.value) return false;
+    if (toneEl.value && !toneKeys(v).includes(toneEl.value)) return false;
     if (dayFilter && dayKey(v.at) !== dayFilter) return false;
     if (month && dayKey(v.at).slice(0, 7) !== month) return false;
     if (!q) return true;
@@ -934,7 +1168,7 @@ function visible() {
 
 function renderList() {
   shown = visible();
-  const tones = shown.filter((v) => v.ton === "alarmiste").length;
+  const tones = shown.filter((v) => toneKeys(v).includes("alarmiste")).length;
   countEl.textContent = shown.length + " / " + DATA.length + " · " + tones + " au ton alarmiste";
   listEl.innerHTML = shown.map((v, i) => `
     <button type="button" class="row tone-${v.ton}${i === current ? " active" : ""}" data-i="${i}">
@@ -943,7 +1177,7 @@ function renderList() {
         <span>${nf.format(v.views)} vues</span>
       </div>
       <div class="row-top"><span>${when(v.at)}</span></div>
-      <p class="row-stance">${escapeHtml(TONE_LABEL[v.ton] || v.ton)} · ${escapeHtml(PRES_LABEL[v.pres] || v.pres)}</p>
+      <p class="row-stance">${escapeHtml(toneText(v))} · ${escapeHtml(PRES_LABEL[v.pres] || v.pres)}</p>
       <p class="row-desc">${escapeHtml(v.desc || "(sans description)")}</p>
     </button>`).join("");
   const active = listEl.querySelector(".row.active");
@@ -1022,7 +1256,7 @@ function show(index, scroll) {
   nextBtn.disabled = current === shown.length - 1;
   whoEl.innerHTML = "@" + escapeHtml(v.user) + " <span>" + when(v.at) + " · " + (current + 1) + " / " + shown.length + "</span>";
   const tags = v.tags.length ? `<p class="tags">${v.tags.map((t) => "#" + escapeHtml(t)).join(" ")}</p>` : "";
-  const stance = `<p class="stance"><span>Ton · ${escapeHtml(TONE_LABEL[v.ton] || v.ton)}</span><span>Posture · ${escapeHtml(POSTURE_LABEL[v.posture] || v.posture)}</span><span>Présentation · ${escapeHtml(PRES_LABEL[v.pres] || v.pres)}</span></p><p class="stance-note">Lecture du texte : ton, posture, façon de présenter. Ce n’est pas un verdict sur le vrai et le faux.</p>`;
+  const stance = `<p class="stance"><span>Ton · ${escapeHtml(toneText(v))}</span><span>Posture · ${escapeHtml(POSTURE_LABEL[v.posture] || v.posture)}</span><span>Présentation · ${escapeHtml(PRES_LABEL[v.pres] || v.pres)}</span></p><p class="stance-note">Lecture du texte : ton, posture, façon de présenter. Ce n’est pas un verdict sur le vrai et le faux.</p>`;
   const dur = v.dur ? `${v.dur} s` : "sans durée";
   metaEl.innerHTML = `
     <h2>@${escapeHtml(v.user)}</h2>
@@ -1158,7 +1392,7 @@ function renderFrise() {
       const stroke = v.id === active ? ' stroke="#1c2434" stroke-width="1.4"' : "";
       const r = Math.min(dotRadius(v), pitch / 2 - 1.1).toFixed(2);
       const eng = engagement(v);
-      const tone = TONE_LABEL[v.ton] || v.ton;
+      const tone = toneText(v);
       const posture = POSTURE_LABEL[v.posture] || v.posture;
       const pres = PRES_LABEL[v.pres] || v.pres;
       parts.push(`<circle class="dot" data-id="${v.id}" cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" fill-opacity="${dim}"${stroke}><title>@${escapeHtml(v.user)} · ${escapeHtml(when(v.at))} · ${nf.format(eng)} engagements · ${escapeHtml(tone)} · ${escapeHtml(posture)} · ${escapeHtml(pres)}</title></circle>`);
@@ -1171,7 +1405,7 @@ function renderFrise() {
   const dayLabel = dayFilter
     ? " · " + dayFmt.format(new Date(dayFilter + "T12:00:00Z")) + " (" + (by.get(dayFilter) || []).length + ")"
     : "";
-  const toneCounts = ["alarmiste", "neutre", "rassurant", "ludique"].map((key) =>
+  const toneCounts = ["alarmiste", "neutre", "rassurant", "ludique", "pedagogique"].map((key) =>
     DATA.filter((v) => v.ton === key).length + " " + TONE_LABEL[key].toLowerCase()
   ).join(" · ");
   friseTitle.textContent = toneCounts + dayLabel;
@@ -1196,7 +1430,7 @@ function refresh(keepId) {
 function openId(id) {
   const video = DATA.find((v) => v.id === id);
   if (!video) return;
-  if (toneEl.value && video.ton !== toneEl.value) toneEl.value = "";
+  if (toneEl.value && !toneKeys(video).includes(toneEl.value)) toneEl.value = "";
   const day = dayKey(video.at);
   let menu = false;
   if (dayFilter && day !== dayFilter) {
