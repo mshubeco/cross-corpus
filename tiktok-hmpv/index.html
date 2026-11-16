@@ -64,6 +64,7 @@
     color: var(--mis-ink);
   }
   #frise {
+    flex: none;
     background: var(--card);
     border-bottom: 1px solid var(--line);
     padding: 8px 18px 8px;
@@ -87,8 +88,8 @@
   }
   .swatch.mis { background: var(--mis); }
   .swatch.other { background: var(--other); }
-  .frise-scroll { overflow-x: auto; overflow-y: hidden; margin-top: 4px; }
-  #frise-plot { display: block; height: 168px; }
+  .frise-scroll { overflow-x: auto; overflow-y: visible; margin-top: 4px; }
+  #frise-plot { display: block; height: auto; }
   #frise-plot .dot, #frise-plot .slot { cursor: pointer; }
   .frise-note { margin: 2px 0 0; color: var(--muted); font-size: 12px; line-height: 1.35; }
   #app {
@@ -228,6 +229,7 @@
   <div class="tools">
     <input id="q" type="search" placeholder="Description, compte, hashtag, transcription, traduction" aria-label="Filtrer">
     <select id="month" aria-label="Mois"></select>
+    <select id="day" aria-label="Jour"></select>
     <select id="sort" aria-label="Tri">
       <option value="date">Date</option>
       <option value="views">Vues</option>
@@ -248,7 +250,7 @@
   <div class="frise-scroll">
     <svg id="frise-plot" role="img"></svg>
   </div>
-  <p class="frise-note">Chaque point est une publication, dans l’ordre du temps. Sa taille suit les engagements (likes + commentaires + partages), sur une échelle logarithmique. Le rouge isole un texte qui affirme au moins une chose démentie en janvier 2025 : virus nouveau, état d’urgence, alerte maximale de l’OMS, confinement décidé, gravité supérieure au Covid, effondrement hospitalier, ou dissimulation. Un texte qui cite ces affirmations pour les démentir reste gris.</p>
+  <p class="frise-note">Chaque point est une publication, dans l’ordre du temps. Un jour en contient autant qu’il y a eu de vidéos : le nombre est écrit au-dessus du groupe, sans plafond. Sa taille suit les engagements (likes + commentaires + partages), sur une échelle logarithmique. Le rouge isole un texte qui affirme au moins une chose démentie en janvier 2025 : virus nouveau, état d’urgence, alerte maximale de l’OMS, confinement décidé, gravité supérieure au Covid, effondrement hospitalier, ou dissimulation. Un texte qui cite ces affirmations pour les démentir reste gris.</p>
 </section>
 <div id="app">
   <aside>
@@ -285,6 +287,7 @@ const monthShort = new Intl.DateTimeFormat("fr-FR", { month: "short", timeZone: 
 
 const qEl = document.getElementById("q");
 const monthEl = document.getElementById("month");
+const dayEl = document.getElementById("day");
 const sortEl = document.getElementById("sort");
 const misBtn = document.getElementById("misonly");
 const dayClear = document.getElementById("dayclear");
@@ -298,9 +301,9 @@ const nextBtn = document.getElementById("next");
 const plot = document.getElementById("frise-plot");
 const friseTitle = document.getElementById("frise-title");
 
-const months = [...new Set(DATA.map((v) => v.at.slice(0, 7)))].sort();
+const months = [...new Set(DATA.map((v) => dayKey(v.at).slice(0, 7)))].sort();
 monthEl.innerHTML = '<option value="">Tous les mois</option>' + months.map((m) => {
-  const n = DATA.filter((v) => v.at.slice(0, 7) === m).length;
+  const n = DATA.filter((v) => dayKey(v.at).slice(0, 7) === m).length;
   const label = monthFmt.format(new Date(m + "-15T12:00:00Z"));
   return `<option value="${m}">${label} (${n})</option>`;
 }).join("");
@@ -308,6 +311,7 @@ monthEl.innerHTML = '<option value="">Tous les mois</option>' + months.map((m) =
 let current = 0;
 let shown = [];
 let dayFilter = "";
+let friseAnchor = "";
 let misOnly = false;
 const misCount = DATA.filter((v) => v.mis).length;
 
@@ -326,7 +330,7 @@ function visible() {
   const rows = DATA.filter((v) => {
     if (misOnly && !v.mis) return false;
     if (dayFilter && dayKey(v.at) !== dayFilter) return false;
-    if (month && !v.at.startsWith(month)) return false;
+    if (month && dayKey(v.at).slice(0, 7) !== month) return false;
     if (!q) return true;
     const blob = (v.user + "\n" + v.desc + "\n" + v.tags.join(" ") + "\n" + v.voice + "\n" + (v.fr || "")).toLowerCase();
     return blob.includes(q);
@@ -481,6 +485,28 @@ function dotRadius(v) {
   return 2.1 + t * 5.2;
 }
 
+function lanesFor(n) {
+  if (n <= 3) return n;
+  return Math.min(14, Math.max(4, Math.ceil(Math.sqrt(n * 1.6))));
+}
+
+function fillDays() {
+  const month = monthEl.value;
+  const counts = new Map();
+  for (const v of DATA) {
+    const day = dayKey(v.at);
+    if (month && day.slice(0, 7) !== month) continue;
+    counts.set(day, (counts.get(day) || 0) + 1);
+  }
+  const days = [...counts.keys()].sort();
+  dayEl.innerHTML = '<option value="">Tous les jours</option>' + days.map((day) => {
+    const label = dayFmt.format(new Date(day + "T12:00:00Z")) + " · " + counts.get(day);
+    return `<option value="${day}">${label}</option>`;
+  }).join("");
+  dayEl.value = days.includes(dayFilter) ? dayFilter : "";
+  if (!dayEl.value) dayFilter = "";
+}
+
 function renderFrise() {
   const by = new Map();
   for (const v of DATA) {
@@ -489,26 +515,29 @@ function renderFrise() {
     by.get(day).push(v);
   }
   const days = [...by.keys()].sort();
-  const lanes = 6;
-  const lanePitch = 18;
-  const colPitch = 16;
+  const pitch = 17;
   const slots = [];
   let x = 16;
   let prev = null;
+  let maxLanes = 1;
   for (const day of days) {
     if (prev) {
       const gap = Math.round((Date.parse(day + "T12:00:00Z") - Date.parse(prev + "T12:00:00Z")) / 86400000);
-      if (gap > 1) x += Math.min(gap, 16) * 7;
+      if (gap > 1) x += Math.min(gap, 12) * 8;
     }
-    const items = by.get(day).slice().sort((a, b) => a.at.localeCompare(b.at));
-    const cols = Math.max(1, Math.ceil(items.length / lanes));
-    const width = Math.max(colPitch, cols * colPitch);
-    slots.push({ day, x, width, items });
-    x += width + 8;
+    const items = by.get(day).slice().sort((a, b) => a.at.localeCompare(b.at) || a.id.localeCompare(b.id));
+    const lanes = lanesFor(items.length);
+    const cols = Math.ceil(items.length / lanes);
+    const width = cols * pitch;
+    maxLanes = Math.max(maxLanes, lanes);
+    slots.push({ day, x, width, items, lanes });
+    x += width + 10;
     prev = day;
   }
   const total = Math.max(x + 16, plot.parentElement.clientWidth || 0);
-  const height = 168;
+  const top = 28;
+  const labelY = top + (maxLanes - 1) * pitch + 22;
+  const height = labelY + 8;
   const shownIds = new Set(shown.map((v) => v.id));
   const active = shown[current] && shown[current].id;
   const parts = [];
@@ -519,24 +548,28 @@ function renderFrise() {
     const showMonth = month !== lastMonth;
     lastMonth = month;
     const hot = dayFilter === slot.day;
-    parts.push(`<rect class="slot" data-day="${slot.day}" x="${slot.x - 3}" y="10" width="${slot.width + 6}" height="128" fill="${hot ? "#fff1f2" : "transparent"}"></rect>`);
-    if (showMonth || slot.x - labelX >= 46) {
+    const n = slot.items.length;
+    parts.push(`<rect class="slot" data-day="${slot.day}" data-n="${n}" x="${slot.x - 2}" y="4" width="${slot.width + 4}" height="${labelY - 6}" fill="${hot ? "#fff1f2" : "transparent"}"><title>${escapeHtml(dayFmt.format(new Date(slot.day + "T12:00:00Z")))} · ${n} publications</title></rect>`);
+    const base = labelY - 16;
+    const stackTop = base - (slot.lanes - 1) * pitch;
+    parts.push(`<text class="slot" data-day="${slot.day}" x="${slot.x}" y="${stackTop - 11}" fill="${hot ? "#8d2433" : "#7c8696"}" font-size="9" font-family="Aptos, Segoe UI, sans-serif">${n}</text>`);
+    if (showMonth || slot.x - labelX >= 28) {
       const dayNum = String(Number(slot.day.slice(8)));
       const caption = showMonth
         ? dayNum + " " + monthShort.format(new Date(slot.day + "T12:00:00Z"))
         : dayNum;
-      parts.push(`<text x="${slot.x}" y="156" fill="#7c8696" font-size="10" font-family="Aptos, Segoe UI, sans-serif">${escapeHtml(caption)}</text>`);
+      parts.push(`<text class="slot" data-day="${slot.day}" x="${slot.x}" y="${labelY}" fill="#7c8696" font-size="10" font-family="Aptos, Segoe UI, sans-serif">${escapeHtml(caption)}</text>`);
       labelX = slot.x;
     }
     slot.items.forEach((v, i) => {
-      const col = Math.floor(i / lanes);
-      const lane = i % lanes;
-      const cx = slot.x + colPitch / 2 + col * colPitch;
-      const cy = 20 + lane * lanePitch;
+      const col = Math.floor(i / slot.lanes);
+      const lane = i % slot.lanes;
+      const cx = slot.x + pitch / 2 + col * pitch;
+      const cy = stackTop + lane * pitch;
       const dim = shownIds.size && !shownIds.has(v.id) ? 0.22 : 1;
       const fill = v.mis ? "#d23b4a" : "#b7c2d1";
       const stroke = v.id === active ? ' stroke="#1c2434" stroke-width="1.4"' : "";
-      const r = dotRadius(v).toFixed(2);
+      const r = Math.min(dotRadius(v), pitch / 2 - 1.1).toFixed(2);
       const eng = engagement(v);
       parts.push(`<circle class="dot" data-id="${v.id}" cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" fill-opacity="${dim}"${stroke}><title>@${escapeHtml(v.user)} · ${escapeHtml(when(v.at))} · ${nf.format(eng)} engagements${v.mis ? " · mésinformation" : ""}</title></circle>`);
     });
@@ -546,10 +579,17 @@ function renderFrise() {
   plot.setAttribute("height", String(height));
   plot.innerHTML = parts.join("");
   const dayLabel = dayFilter
-    ? " · " + dayFmt.format(new Date(dayFilter + "T12:00:00Z"))
+    ? " · " + dayFmt.format(new Date(dayFilter + "T12:00:00Z")) + " (" + (by.get(dayFilter) || []).length + ")"
     : "";
   friseTitle.textContent = misCount + " publications en rouge sur " + DATA.length + dayLabel;
   dayClear.hidden = !dayFilter;
+  if (dayFilter && dayFilter !== friseAnchor) {
+    friseAnchor = dayFilter;
+    const slot = slots.find((s) => s.day === dayFilter);
+    if (slot) plot.parentElement.scrollLeft = Math.max(0, slot.x - 24);
+  } else if (!dayFilter) {
+    friseAnchor = "";
+  }
 }
 
 function refresh(keepId) {
@@ -567,10 +607,17 @@ function openId(id) {
     misOnly = false;
     misBtn.setAttribute("aria-pressed", "false");
   }
-  if (dayFilter && dayKey(video.at) !== dayFilter) {
+  const day = dayKey(video.at);
+  let menu = false;
+  if (dayFilter && day !== dayFilter) {
     dayFilter = "";
+    menu = true;
   }
-  if (monthEl.value && !video.at.startsWith(monthEl.value)) monthEl.value = "";
+  if (monthEl.value && day.slice(0, 7) !== monthEl.value) {
+    monthEl.value = "";
+    menu = true;
+  }
+  if (menu) fillDays();
   refresh(id);
 }
 
@@ -588,20 +635,32 @@ plot.addEventListener("click", (event) => {
   const slot = event.target.closest(".slot");
   if (!slot) return;
   const day = slot.getAttribute("data-day");
-  dayFilter = dayFilter === day ? "" : day;
+  if (dayFilter === day) {
+    dayFilter = "";
+  } else {
+    dayFilter = day;
+    monthEl.value = day.slice(0, 7);
+  }
+  fillDays();
   refresh();
 });
 prevBtn.addEventListener("click", () => show(current - 1, true));
 nextBtn.addEventListener("click", () => show(current + 1, true));
 qEl.addEventListener("input", () => refresh());
-monthEl.addEventListener("change", () => { dayFilter = ""; refresh(); });
+monthEl.addEventListener("change", () => { dayFilter = ""; fillDays(); refresh(); });
+dayEl.addEventListener("change", () => {
+  dayFilter = dayEl.value;
+  if (dayFilter) monthEl.value = dayFilter.slice(0, 7);
+  fillDays();
+  refresh();
+});
 sortEl.addEventListener("change", () => refresh());
 misBtn.addEventListener("click", () => {
   misOnly = !misOnly;
   misBtn.setAttribute("aria-pressed", misOnly ? "true" : "false");
   refresh();
 });
-dayClear.addEventListener("click", () => { dayFilter = ""; refresh(); });
+dayClear.addEventListener("click", () => { dayFilter = ""; dayEl.value = ""; refresh(); });
 document.addEventListener("keydown", (event) => {
   if (event.target === qEl) return;
   if (event.key === "ArrowLeft") show(current - 1, true);
@@ -609,6 +668,7 @@ document.addEventListener("keydown", (event) => {
 });
 
 const startId = location.hash.replace("#", "");
+fillDays();
 renderList();
 const start = shown.findIndex((v) => v.id === startId);
 show(start >= 0 ? start : 0, true);
