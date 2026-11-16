@@ -4,11 +4,11 @@
 Les 545 vidéos viennent de l'export Research API
 Tiktok/data/exports/hmpv_2025h1/videos.jsonl.
 
-Le rouge marque une affirmation fausse tenue dans la description ou la
-parole d'origine : virus nouveau, état d'urgence, alerte maximale de
-l'OMS, confinement décidé, gravité supérieure au Covid, effondrement
-hospitalier, dissimulation, ou pneumonie déclarée sans traitement.
-Une traduction automatique ne suffit pas. Un démenti reste gris.
+Le rouge marque une affirmation démentie sur l'épisode de janvier 2025 :
+état d'urgence déclaré, alerte maximale de l'OMS, confinement ou
+fermeture des écoles décidés, hôpitaux débordés, ou gravité supérieure
+au Covid. « Nouveau » ou « nouvelle vague » ne suffit pas : le mot peut
+désigner la vague saisonnière d'un virus connu. Un démenti reste gris.
 """
 from __future__ import annotations
 
@@ -150,26 +150,6 @@ VIRUS_NEAR = (
 
 CLAIMS = (
     (
-        "nouveau_virus",
-        "le virus est nouveau",
-        (
-            "nouveau virus",
-            "nouvel virus",
-            "virus nouveau",
-            "new virus",
-            "nuevo virus",
-            "virus nuevo",
-            "brand new virus",
-            "новый вирус",
-            "новый virus",
-            "taze wirus",
-            "taze virus",
-            "فيروس جديد",
-            "الفيروس الجديد",
-            "فايروس جديد",
-        ),
-    ),
-    (
         "etat_urgence",
         "état d’urgence déclaré",
         (
@@ -266,18 +246,7 @@ CLAIMS = (
             "cree en laboratoire",
         ),
     ),
-    (
-        "sans_traitement",
-        "pneumonie sans traitement",
-        (
-            "sans traitement",
-        ),
-    ),
 )
-
-ARABIC_NEW = re.compile(r"(?:فيروس|فايروس).{0,40}(?:الجديد|جديد)(?!ه)")
-ARABIC_NEW_REV = re.compile(r"(?:الجديد|جديد)(?!ه).{0,24}(?:فيروس|فايروس)")
-
 
 def plain(text: str) -> str:
     """Minuscules, apostrophes unifiées, accents latins retirés, symboles espacés."""
@@ -298,15 +267,6 @@ def plain(text: str) -> str:
         else:
             out.append(" ")
     return re.sub(r" {2,}", " ", "".join(out)).strip()
-
-
-NEW_PATTERNS = (
-    re.compile(r"нов\w{0,8}.{0,16}в[іи]рус"),
-    re.compile(r"नया.{0,12}वा"),
-    re.compile(r"(?:^|\s)noul virus(?:\s|$)"),
-    re.compile(r"(?:^|\s)virus nou(?:\s|$)"),
-    re.compile(r"(?:^|\s)(?:بيروس|ويروس|فيرس).{0,24}جديد"),
-)
 
 
 def occurrences(text: str, needle: str):
@@ -346,20 +306,6 @@ def asserted(text: str, needle: str, *, need_virus: bool = False, need_severe: b
     return False
 
 
-def pattern_asserted(text: str, cre: re.Pattern) -> bool:
-    for match in cre.finditer(text):
-        window = text[max(0, match.start() - 64) : match.start()]
-        if any(hedge in window for hedge in HEDGES):
-            continue
-        if any(neg in window for neg in LOCAL_NOT):
-            continue
-        tail = text[match.end() : match.end() + 24]
-        if "?" in tail or "؟" in tail:
-            continue
-        return True
-    return False
-
-
 def classify(desc: str, voice: str) -> list[str]:
     combined = plain(f"{desc or ''}\n{voice or ''}")
     if any(marker in combined for marker in CORRECTIONS):
@@ -369,10 +315,7 @@ def classify(desc: str, voice: str) -> list[str]:
     caption = plain(desc or "")
     labels: list[str] = []
     seen: set[str] = set()
-    new_label = ""
     for code, label, phrases in CLAIMS:
-        if code == "nouveau_virus":
-            new_label = label
         sources = (prose, speech) if code == "plus_fort_covid" else (caption, speech)
         matched = False
         for source in sources:
@@ -394,11 +337,6 @@ def classify(desc: str, voice: str) -> list[str]:
                     break
             if matched:
                 break
-    if "nouveau_virus" not in seen:
-        scrubbed = combined.replace("العام الجديد", " ")
-        patterns = (ARABIC_NEW, ARABIC_NEW_REV, *NEW_PATTERNS)
-        if any(pattern_asserted(scrubbed, cre) for cre in patterns):
-            labels.append(new_label or "le virus est nouveau")
     return labels
 
 
@@ -476,23 +414,23 @@ def records() -> list[dict]:
 
 
 def selftest() -> None:
-    assert classify("le nouveau virus en Chine provoque l'état d'urgence", "")
+    assert classify("nouvelle vague de hMPV en Chine", "") == []
+    assert classify("le nouveau virus en Chine", "") == []
+    assert classify("new virus unlocked #hmpv", "") == []
+    assert classify("فيروس جديد HMPV في الصين", "") == []
+    assert classify("Новый Virus из Китая", "") == []
+    assert classify("", "एक नया वाईरस HMPV") == []
+    assert any("urgence" in label for label in classify("le nouveau virus en Chine provoque l'état d'urgence", ""))
     assert any("urgence" in label for label in classify("provoque l’état d’urgence", ""))
     assert classify("connu depuis deux-mille-un, ce n'est pas un nouveau virus", "") == []
     assert classify("Spoiler : ce n’est pas une menace réelle. On panique pour rien.", "nouveau virus") == []
     assert classify("les rumeurs sont pour le moment fausses", "la chine aurait déclaré l'état d'urgence") == []
     assert classify("Sauf que cette affirmation est fausse.", "les postes affirment qu'il s'agit d'un nouveau virus") == []
-    assert any("nouveau" in label for label in classify("فيروس 🦠 صيني 🇨🇳جديد", ""))
-    assert any("nouveau" in label for label in classify("Новый Virus из Китая", ""))
-    assert any("nouveau" in label for label in classify("ýene bir täze wirus döredi", ""))
-    assert any("nouveau" in label for label in classify("нового вірусу в Китаї, HMPV", ""))
-    assert any("traitement" in label for label in classify(
-        "une pneumonie dangereuse ressemblant à la grippe et sans traitement", ""
-    ))
+    assert classify("une pneumonie dangereuse ressemblant à la grippe et sans traitement", "") == []
     assert classify("morts sans traitement. la mortalite mondiale est elevee", "") == []
     assert classify("il n’existe aucune annonce officielle de la mise en place d’un état d’urgence", "") == []
     assert any("confinement" in label for label in classify(
-        "confinement provisoire décrété. Abonnez-vous pour suivre la désinformation en temps réel",
+        "fermeture des écoles en France dès samedi face au virus hMPV",
         "",
     ))
     assert classify("تصميمات العام الجديد #hmpv #فيروس", "") == []
@@ -500,7 +438,6 @@ def selftest() -> None:
     assert classify("cette grippe est pire que le covid", "") == []
     assert classify("#hmpv", "cette grippe est pire que le covid") == []
     assert classify("#اخطر_فيروس_hmpv", "") == []
-    assert any("nouveau" in label for label in classify("", "एक नया वाईरस HMPV"))
     assert classify("virus mortal en china", "") == []
     assert classify("alerta mundial por el hmpv", "") == []
     assert classify("les simpson avaient predit une pandemie", "") == []
@@ -509,7 +446,6 @@ def selftest() -> None:
     assert "dissimulation" not in " ".join(classify(
         "On nous cache des choses ou c’est le début d’un nouveau chapitre ?", ""
     ))
-    assert any("nouveau" in label for label in classify("new virus unlocked #hmpv", ""))
     assert any("grave" in label for label in classify("ce virus est beaucoup plus fort que le covid", ""))
     print("selftest ok")
 
@@ -766,7 +702,7 @@ TEMPLATE = r"""<!DOCTYPE html>
   <div class="frise-scroll">
     <svg id="frise-plot" role="img"></svg>
   </div>
-  <p class="frise-note">Chaque point est une publication, dans l’ordre du temps. Un jour en contient autant qu’il y a eu de vidéos : le nombre est écrit au-dessus du groupe, sans plafond. Sa taille suit les engagements (likes + commentaires + partages), sur une échelle logarithmique. Le rouge isole une publication qui affirme une chose fausse : virus nouveau, état d’urgence déclaré, alerte maximale de l’OMS, confinement ou fermeture des écoles décidé, gravité supérieure au Covid, effondrement des hôpitaux, pneumonie sans traitement, ou dissimulation. Une publication qui dément ces affirmations reste grise.</p>
+  <p class="frise-note">Chaque point est une publication, dans l’ordre du temps. Un jour en contient autant qu’il y a eu de vidéos : le nombre est écrit au-dessus du groupe, sans plafond. Sa taille suit les engagements (likes + commentaires + partages), sur une échelle logarithmique. Le rouge isole une affirmation démentie : état d’urgence déclaré, alerte maximale de l’OMS, confinement ou fermeture des écoles décidés, hôpitaux débordés, ou gravité supérieure au Covid. Dire qu’il s’agit d’un virus « nouveau » ou d’une nouvelle vague ne suffit pas. Une publication qui dément ces affirmations reste grise.</p>
 </section>
 <div id="app">
   <aside>
