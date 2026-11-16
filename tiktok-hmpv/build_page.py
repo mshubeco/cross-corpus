@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
-"""Page TikTok hMPV : frise, mésinformation susceptible, retranscriptions.
+"""Page TikTok hMPV : frise, mésinformation, retranscriptions.
 
 Les 545 vidéos viennent de l'export Research API
 Tiktok/data/exports/hmpv_2025h1/videos.jsonl.
 
-Le rouge n'est pas une expertise vidéo par vidéo. Il marque un texte
-(description ou transcription) qui affirme au moins une chose démentie
-en janvier 2025. Un texte qui cite ces affirmations pour les démentir
-reste gris.
+Le rouge marque une affirmation fausse tenue dans la description ou la
+parole d'origine : virus nouveau, état d'urgence, alerte maximale de
+l'OMS, confinement décidé, gravité supérieure au Covid, effondrement
+hospitalier, dissimulation, ou pneumonie déclarée sans traitement.
+Une traduction automatique ne suffit pas. Un démenti reste gris.
 """
 from __future__ import annotations
 
@@ -98,6 +99,11 @@ CORRECTIONS = (
 
 HEDGES = (
     "aurait",
+    "serait",
+    "pourrait",
+    "possibilite",
+    "peut etre",
+    "on craint",
     "selon certains",
     "selon des",
     "des videos",
@@ -105,12 +111,47 @@ HEDGES = (
     "ces postes",
     "on dit que",
     "rumeur",
+    "non confirme",
+    "pas confirme",
+    "unconfirmed",
+    "speculation",
+    "on specule",
+)
+
+LOCAL_NOT = (
+    "n'est pas",
+    "nest pas",
+    "n est pas",
+    "pas un ",
+    "pas une ",
+    "pas le ",
+    "pas de ",
+    "not a ",
+    "not the ",
+    "isn't",
+    "isnt",
+    "is not",
+    "no es ",
+    "لم ",
+    "ليس ",
+)
+
+VIRUS_NEAR = (
+    "hmpv",
+    "hmpy",
+    "metapneumo",
+    "ce virus",
+    "le virus",
+    "un virus",
+    "this virus",
+    "the virus",
+    "el virus",
 )
 
 CLAIMS = (
     (
         "nouveau_virus",
-        "présenté comme un virus nouveau",
+        "le virus est nouveau",
         (
             "nouveau virus",
             "nouvel virus",
@@ -130,7 +171,7 @@ CLAIMS = (
     ),
     (
         "etat_urgence",
-        "état d’urgence",
+        "état d’urgence déclaré",
         (
             "etat d'urgence",
             "etat d urgence",
@@ -147,8 +188,6 @@ CLAIMS = (
             "urgence de sante publique",
             "plus haut niveau d'alerte",
             "plus haut niveau d alerte",
-            "alerte mondiale",
-            "alerta mundial",
             "highest level of alert",
             "public health emergency",
             "oms declenche",
@@ -159,7 +198,7 @@ CLAIMS = (
     ),
     (
         "confinement",
-        "confinement annoncé comme décidé",
+        "confinement ou fermeture décidés",
         (
             "confinement provisoire",
             "confinement a partir",
@@ -171,7 +210,7 @@ CLAIMS = (
     ),
     (
         "plus_fort_covid",
-        "présenté comme plus grave que le Covid",
+        "plus grave que le Covid",
         (
             "plus fort que le covid",
             "plus fort que corona",
@@ -185,7 +224,6 @@ CLAIMS = (
             "worse than covid",
             "mas letal que el covid",
             "peor que el covid",
-            "virus mortal",
             "أقوى من كورونا",
             "اقوى من كورونا",
             "اخطر من كورونا",
@@ -197,7 +235,7 @@ CLAIMS = (
     ),
     (
         "effondrement",
-        "effondrement hospitalier ou crématoriums",
+        "effondrement hospitalier",
         (
             "crematorium",
             "crematoire",
@@ -210,13 +248,11 @@ CLAIMS = (
             "hopitaux sont a nouveau debordes",
             "hospitals are overwhelmed",
             "hospitals overwhelmed",
-            "poumon blanc",
-            "white lung",
         ),
     ),
     (
         "dissimulation",
-        "dissimulation ou scénario organisé",
+        "dissimulation",
         (
             "on nous cache",
             "ils nous cachent",
@@ -224,9 +260,6 @@ CLAIMS = (
             "bioweapon",
             "deep state",
             "plandemic",
-            "les simpson avaient predit",
-            "les simpsons avaient predit",
-            "simpsons l'avaient",
             "conspiration de laboratoire",
             "sorti d'un laboratoire",
             "virus de laboratoire",
@@ -235,7 +268,7 @@ CLAIMS = (
     ),
     (
         "sans_traitement",
-        "pneumonie dangereuse et sans traitement",
+        "pneumonie sans traitement",
         (
             "sans traitement",
         ),
@@ -256,66 +289,117 @@ def plain(text: str) -> str:
             out.append(unicodedata.normalize("NFD", ch)[0])
             continue
         cat = unicodedata.category(ch)
-        if cat.startswith("L") or cat.startswith("N") or ch in " #'":
+        if cat in ("Mn", "Mc", "Me"):
+            if "DEVANAGARI" in unicodedata.name(ch, ""):
+                out.append(ch)
+            continue
+        if cat.startswith("L") or cat.startswith("N") or ch in " #'?؟":
             out.append(ch)
         else:
             out.append(" ")
     return re.sub(r" {2,}", " ", "".join(out)).strip()
 
 
-def hedged(text: str, phrase: str) -> bool:
-    """True si chaque occurrence est précédée d'un conditionnel ou d'un « on dit que »."""
-    start = 0
-    found = False
-    while True:
-        i = text.find(phrase, start)
-        if i < 0:
-            break
-        found = True
-        window = text[max(0, i - 56) : i]
-        if not any(hedge in window for hedge in HEDGES):
-            return False
-        start = i + len(phrase)
-    return found
+NEW_PATTERNS = (
+    re.compile(r"нов\w{0,8}.{0,16}в[іи]рус"),
+    re.compile(r"नया.{0,12}वा"),
+    re.compile(r"(?:^|\s)noul virus(?:\s|$)"),
+    re.compile(r"(?:^|\s)virus nou(?:\s|$)"),
+    re.compile(r"(?:^|\s)(?:بيروس|ويروس|فيرس).{0,24}جديد"),
+)
 
 
-def classify(desc: str, voice: str) -> list[str]:
-    text = plain(f"{desc or ''}\n{voice or ''}")
-    if any(marker in text for marker in CORRECTIONS):
-        return []
-    labels: list[str] = []
-    seen: set[str] = set()
-    for code, label, phrases in CLAIMS:
-        if code in seen:
-            continue
-        for phrase in phrases:
-            needle = plain(phrase)
-            if not needle or needle not in text or hedged(text, needle):
-                continue
-            if code == "sans_traitement" and not severe_near(text, needle):
-                continue
-            labels.append(label)
-            seen.add(code)
-            break
-    scrubbed = text.replace("العام الجديد", " ")
-    if "nouveau_virus" not in seen and (
-        ARABIC_NEW.search(scrubbed) or ARABIC_NEW_REV.search(scrubbed)
-    ):
-        labels.append("présenté comme un virus nouveau")
-    return labels
-
-
-def severe_near(text: str, needle: str) -> bool:
-    """« Sans traitement » ne compte que collé à une gravité affirmée."""
+def occurrences(text: str, needle: str):
+    """Positions où l'expression est un mot, pas un fragment d'un autre mot."""
     start = 0
     while True:
         i = text.find(needle, start)
         if i < 0:
-            return False
-        window = text[max(0, i - 90) : i + len(needle) + 90]
-        if any(word in window for word in ("dangereuse", "dangereux", "mortelle", "mortel")):
-            return True
-        start = i + len(needle)
+            return
+        before = text[i - 1] if i else " "
+        after_i = i + len(needle)
+        after = text[after_i] if after_i < len(text) else " "
+        if not before.isalnum() and not after.isalnum():
+            yield i
+        start = i + 1
+
+
+def asserted(text: str, needle: str, *, need_virus: bool = False, need_severe: bool = False) -> bool:
+    """Une occurrence indicative, non niée, non conditionnelle, pas une question."""
+    for i in occurrences(text, needle):
+        window = text[max(0, i - 64) : i]
+        if any(hedge in window for hedge in HEDGES):
+            continue
+        if any(neg in window for neg in LOCAL_NOT):
+            continue
+        tail = text[i + len(needle) : i + len(needle) + 40]
+        if "?" in tail or "؟" in tail:
+            continue
+        if needle in ("on nous cache", "ils nous cachent") and " ou " in tail:
+            continue
+        span = text[max(0, i - 90) : i + len(needle) + 90]
+        if need_virus and not any(tok in span for tok in VIRUS_NEAR):
+            continue
+        if need_severe and not any(word in span for word in ("dangereuse", "dangereux", "mortelle", "mortel")):
+            continue
+        return True
+    return False
+
+
+def pattern_asserted(text: str, cre: re.Pattern) -> bool:
+    for match in cre.finditer(text):
+        window = text[max(0, match.start() - 64) : match.start()]
+        if any(hedge in window for hedge in HEDGES):
+            continue
+        if any(neg in window for neg in LOCAL_NOT):
+            continue
+        tail = text[match.end() : match.end() + 24]
+        if "?" in tail or "؟" in tail:
+            continue
+        return True
+    return False
+
+
+def classify(desc: str, voice: str) -> list[str]:
+    combined = plain(f"{desc or ''}\n{voice or ''}")
+    if any(marker in combined for marker in CORRECTIONS):
+        return []
+    prose = plain(" ".join(tok for tok in (desc or "").split() if not tok.startswith("#")))
+    speech = plain(voice or "")
+    caption = plain(desc or "")
+    labels: list[str] = []
+    seen: set[str] = set()
+    new_label = ""
+    for code, label, phrases in CLAIMS:
+        if code == "nouveau_virus":
+            new_label = label
+        sources = (prose, speech) if code == "plus_fort_covid" else (caption, speech)
+        matched = False
+        for source in sources:
+            if not source:
+                continue
+            for phrase in phrases:
+                needle = plain(phrase)
+                if not needle:
+                    continue
+                if asserted(
+                    source,
+                    needle,
+                    need_virus=code == "plus_fort_covid",
+                    need_severe=code == "sans_traitement",
+                ):
+                    labels.append(label)
+                    seen.add(code)
+                    matched = True
+                    break
+            if matched:
+                break
+    if "nouveau_virus" not in seen:
+        scrubbed = combined.replace("العام الجديد", " ")
+        patterns = (ARABIC_NEW, ARABIC_NEW_REV, *NEW_PATTERNS)
+        if any(pattern_asserted(scrubbed, cre) for cre in patterns):
+            labels.append(new_label or "le virus est nouveau")
+    return labels
 
 
 def load_json(path: Path) -> dict:
@@ -365,7 +449,7 @@ def records() -> list[dict]:
         tags = raw.get("hashtag_names") or []
         if not isinstance(tags, list):
             tags = []
-        heard = voice if not fr or fr == voice else f"{voice}\n{fr}"
+        heard = voice
         why = classify(raw.get("video_description") or "", heard)
         rows.append(
             {
@@ -392,26 +476,41 @@ def records() -> list[dict]:
 
 
 def selftest() -> None:
-    assert classify("le nouveau virus en Chine provoque l'état d'urgence", "") 
-    assert "état d’urgence" in classify("provoque l’état d’urgence", "")
+    assert classify("le nouveau virus en Chine provoque l'état d'urgence", "")
+    assert any("urgence" in label for label in classify("provoque l’état d’urgence", ""))
     assert classify("connu depuis deux-mille-un, ce n'est pas un nouveau virus", "") == []
     assert classify("Spoiler : ce n’est pas une menace réelle. On panique pour rien.", "nouveau virus") == []
     assert classify("les rumeurs sont pour le moment fausses", "la chine aurait déclaré l'état d'urgence") == []
     assert classify("Sauf que cette affirmation est fausse.", "les postes affirment qu'il s'agit d'un nouveau virus") == []
-    assert "présenté comme un virus nouveau" in classify("فيروس 🦠 صيني 🇨🇳جديد", "")
-    assert "présenté comme un virus nouveau" in classify("Новый Virus из Китая", "")
-    assert "présenté comme un virus nouveau" in classify("ýene bir täze wirus döredi", "")
-    assert "pneumonie dangereuse et sans traitement" in classify(
+    assert any("nouveau" in label for label in classify("فيروس 🦠 صيني 🇨🇳جديد", ""))
+    assert any("nouveau" in label for label in classify("Новый Virus из Китая", ""))
+    assert any("nouveau" in label for label in classify("ýene bir täze wirus döredi", ""))
+    assert any("nouveau" in label for label in classify("нового вірусу в Китаї, HMPV", ""))
+    assert any("traitement" in label for label in classify(
         "une pneumonie dangereuse ressemblant à la grippe et sans traitement", ""
-    )
+    ))
     assert classify("morts sans traitement. la mortalite mondiale est elevee", "") == []
     assert classify("il n’existe aucune annonce officielle de la mise en place d’un état d’urgence", "") == []
-    assert "confinement annoncé comme décidé" in classify(
+    assert any("confinement" in label for label in classify(
         "confinement provisoire décrété. Abonnez-vous pour suivre la désinformation en temps réel",
         "",
-    )
+    ))
     assert classify("تصميمات العام الجديد #hmpv #فيروس", "") == []
     assert classify("traitement de soutien, pas de remède spécifique", "") == []
+    assert classify("cette grippe est pire que le covid", "") == []
+    assert classify("#hmpv", "cette grippe est pire que le covid") == []
+    assert classify("#اخطر_فيروس_hmpv", "") == []
+    assert any("nouveau" in label for label in classify("", "एक नया वाईरस HMPV"))
+    assert classify("virus mortal en china", "") == []
+    assert classify("alerta mundial por el hmpv", "") == []
+    assert classify("les simpson avaient predit une pandemie", "") == []
+    assert classify("عن التحالة الطوارئة", "") == []
+    assert classify("new virus?", "") == []
+    assert "dissimulation" not in " ".join(classify(
+        "On nous cache des choses ou c’est le début d’un nouveau chapitre ?", ""
+    ))
+    assert any("nouveau" in label for label in classify("new virus unlocked #hmpv", ""))
+    assert any("grave" in label for label in classify("ce virus est beaucoup plus fort que le covid", ""))
     print("selftest ok")
 
 
@@ -659,7 +758,7 @@ TEMPLATE = r"""<!DOCTYPE html>
   <div class="frise-top">
     <p id="frise-title"></p>
     <div class="legend">
-      <span><i class="swatch mis"></i>Mésinformation susceptible</span>
+      <span><i class="swatch mis"></i>Mésinformation</span>
       <span><i class="swatch other"></i>Autre publication</span>
       <button id="dayclear" type="button" hidden>Tout voir</button>
     </div>
@@ -667,7 +766,7 @@ TEMPLATE = r"""<!DOCTYPE html>
   <div class="frise-scroll">
     <svg id="frise-plot" role="img"></svg>
   </div>
-  <p class="frise-note">Chaque point est une publication, dans l’ordre du temps. Un jour en contient autant qu’il y a eu de vidéos : le nombre est écrit au-dessus du groupe, sans plafond. Sa taille suit les engagements (likes + commentaires + partages), sur une échelle logarithmique. Le rouge isole un texte qui affirme au moins une chose démentie en janvier 2025 : virus nouveau, état d’urgence, alerte maximale de l’OMS, confinement décidé, gravité supérieure au Covid, effondrement hospitalier, ou dissimulation. Un texte qui cite ces affirmations pour les démentir reste gris.</p>
+  <p class="frise-note">Chaque point est une publication, dans l’ordre du temps. Un jour en contient autant qu’il y a eu de vidéos : le nombre est écrit au-dessus du groupe, sans plafond. Sa taille suit les engagements (likes + commentaires + partages), sur une échelle logarithmique. Le rouge isole une publication qui affirme une chose fausse : virus nouveau, état d’urgence déclaré, alerte maximale de l’OMS, confinement ou fermeture des écoles décidé, gravité supérieure au Covid, effondrement des hôpitaux, pneumonie sans traitement, ou dissimulation. Une publication qui dément ces affirmations reste grise.</p>
 </section>
 <div id="app">
   <aside>
@@ -851,7 +950,7 @@ function show(index, scroll) {
   whoEl.innerHTML = "@" + escapeHtml(v.user) + " <span>" + when(v.at) + " · " + (current + 1) + " / " + shown.length + "</span>";
   const tags = v.tags.length ? `<p class="tags">${v.tags.map((t) => "#" + escapeHtml(t)).join(" ")}</p>` : "";
   const flag = v.mis
-    ? `<p class="flag">Susceptible d’être de la mésinformation — ${escapeHtml(v.why.join(" · "))}</p>`
+    ? `<p class="flag">Mésinformation — ${escapeHtml(v.why.join(" · "))}</p>`
     : "";
   const dur = v.dur ? `${v.dur} s` : "sans durée";
   metaEl.innerHTML = `

@@ -396,7 +396,7 @@ TEMPLATE = r"""<!DOCTYPE html>
     <input id="q" type="search" placeholder="Compte, texte, parole" aria-label="Chercher dans la carte">
   </div>
 </header>
-<p class="note" style="padding: 8px 18px 0">Le trait relie deux vidéos qui ont le même son, le même texte une fois les hashtags retirés, la même parole, le même effet ou la même mention. La taille du point suit les engagements. Le rouge reprend le filtre lexical de la frise. Un groupe d’un seul compte est listé à part.</p>
+<p class="note" style="padding: 8px 18px 0">Le trait relie deux vidéos qui ont le même son, le même texte une fois les hashtags retirés, la même parole, le même effet ou la même mention. La taille du point suit les engagements. Le rouge reprend les affirmations fausses de la frise. Un groupe d’un seul compte est listé à part.</p>
 <div class="filters" id="filters">
   <label><input type="checkbox" value="son-vague" checked><i class="swatch" style="background:#3d6fbe"></i>Son de la vague</label>
   <label><input type="checkbox" value="son-catalogue" checked><i class="swatch" style="background:#9bb0c9"></i>Musique de catalogue</label>
@@ -405,7 +405,7 @@ TEMPLATE = r"""<!DOCTYPE html>
   <label><input type="checkbox" value="effet" checked><i class="swatch" style="background:#c47b12"></i>Même effet</label>
   <label><input type="checkbox" value="mention" checked><i class="swatch" style="background:#5c6778"></i>Même mention</label>
   <label><input type="checkbox" value="liste" checked><i class="swatch" style="background:#8a6a4a"></i>Même playlist</label>
-  <span><i class="dotswatch" style="background:#d23b4a"></i> mésinformation susceptible</span>
+  <span><i class="dotswatch" style="background:#d23b4a"></i> mésinformation</span>
   <span><i class="dotswatch" style="background:#5c6b82"></i> autre</span>
 </div>
 <div id="app">
