@@ -22,6 +22,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 SRC = Path(r"c:\Users\th8992be\Desktop\Tiktok\data\exports\hmpv_2025h1\videos.jsonl")
 ASR = Path(r"c:\Users\th8992be\Desktop\Tiktok\data\exports\hmpv_2025h1\transcripts_asr.json")
+FR = Path(r"c:\Users\th8992be\Desktop\Tiktok\data\exports\hmpv_2025h1\transcripts_fr.json")
 OUT = ROOT / "index.html"
 
 APOSTROPHES = str.maketrans({
@@ -317,15 +318,20 @@ def severe_near(text: str, needle: str) -> bool:
         start = i + len(needle)
 
 
-def load_asr() -> dict:
-    if not ASR.exists():
+def load_json(path: Path) -> dict:
+    if not path.exists():
         return {}
-    data = json.loads(ASR.read_text(encoding="utf-8"))
+    data = json.loads(path.read_text(encoding="utf-8"))
     return data if isinstance(data, dict) else {}
+
+
+def load_asr() -> dict:
+    return load_json(ASR)
 
 
 def records() -> list[dict]:
     asr = load_asr()
+    french = load_json(FR)
     rows = []
     for line in SRC.read_text(encoding="utf-8").splitlines():
         if not line.strip():
@@ -335,8 +341,10 @@ def records() -> list[dict]:
         at = ""
         if isinstance(created, (int, float)):
             at = datetime.fromtimestamp(created, tz=timezone.utc).isoformat()
+        video_id = str(raw.get("id"))
         tiktok_voice = (raw.get("voice_to_text") or "").strip()
-        extra = asr.get(str(raw.get("id"))) or {}
+        extra = asr.get(video_id) or {}
+        translated = french.get(video_id) or {}
         asr_text = (extra.get("text") or "").strip()
         if tiktok_voice:
             voice, vsrc = tiktok_voice, "tiktok"
@@ -344,14 +352,21 @@ def records() -> list[dict]:
             voice, vsrc = asr_text, "whisper"
         elif extra.get("status") == "empty":
             voice, vsrc = "", "empty"
+        elif extra.get("status") == "noaudio":
+            voice, vsrc = "", "noaudio"
         elif extra.get("status") == "error":
             voice, vsrc = "", "error"
         else:
             voice, vsrc = "", ""
+        lang = (translated.get("lang") or extra.get("lang") or "").strip()
+        fr = (translated.get("fr") or "").strip()
+        if lang == "fr" and voice and not fr:
+            fr = voice
         tags = raw.get("hashtag_names") or []
         if not isinstance(tags, list):
             tags = []
-        why = classify(raw.get("video_description") or "", voice)
+        heard = voice if not fr or fr == voice else f"{voice}\n{fr}"
+        why = classify(raw.get("video_description") or "", heard)
         rows.append(
             {
                 "id": str(raw.get("id")),
@@ -366,6 +381,8 @@ def records() -> list[dict]:
                 "dur": int(raw.get("video_duration") or 0),
                 "voice": voice,
                 "vsrc": vsrc,
+                "lang": lang,
+                "fr": fr,
                 "mis": bool(why),
                 "why": why,
             }
@@ -488,7 +505,7 @@ TEMPLATE = r"""<!DOCTYPE html>
   .swatch.mis { background: var(--mis); }
   .swatch.other { background: var(--other); }
   .frise-scroll { overflow-x: auto; overflow-y: hidden; margin-top: 4px; }
-  #frise-plot { display: block; height: 132px; }
+  #frise-plot { display: block; height: 168px; }
   #frise-plot .dot, #frise-plot .slot { cursor: pointer; }
   .frise-note { margin: 2px 0 0; color: var(--muted); font-size: 12px; line-height: 1.35; }
   #app {
@@ -626,7 +643,7 @@ TEMPLATE = r"""<!DOCTYPE html>
     <p class="sub">545 vidéos publiques · comptes région FR · 3 janv. – 30 mai 2025</p>
   </div>
   <div class="tools">
-    <input id="q" type="search" placeholder="Description, compte, hashtag, transcription" aria-label="Filtrer">
+    <input id="q" type="search" placeholder="Description, compte, hashtag, transcription, traduction" aria-label="Filtrer">
     <select id="month" aria-label="Mois"></select>
     <select id="sort" aria-label="Tri">
       <option value="date">Date</option>
@@ -648,7 +665,7 @@ TEMPLATE = r"""<!DOCTYPE html>
   <div class="frise-scroll">
     <svg id="frise-plot" role="img"></svg>
   </div>
-  <p class="frise-note">Chaque point est une publication, dans l’ordre du temps. Le rouge isole un texte qui affirme au moins une chose démentie en janvier 2025 : virus nouveau, état d’urgence, alerte maximale de l’OMS, confinement décidé, gravité supérieure au Covid, effondrement hospitalier, ou dissimulation. Un texte qui cite ces affirmations pour les démentir reste gris.</p>
+  <p class="frise-note">Chaque point est une publication, dans l’ordre du temps. Sa taille suit les engagements (likes + commentaires + partages), sur une échelle logarithmique. Le rouge isole un texte qui affirme au moins une chose démentie en janvier 2025 : virus nouveau, état d’urgence, alerte maximale de l’OMS, confinement décidé, gravité supérieure au Covid, effondrement hospitalier, ou dissimulation. Un texte qui cite ces affirmations pour les démentir reste gris.</p>
 </section>
 <div id="app">
   <aside>
@@ -728,7 +745,7 @@ function visible() {
     if (dayFilter && dayKey(v.at) !== dayFilter) return false;
     if (month && !v.at.startsWith(month)) return false;
     if (!q) return true;
-    const blob = (v.user + "\n" + v.desc + "\n" + v.tags.join(" ") + "\n" + v.voice).toLowerCase();
+    const blob = (v.user + "\n" + v.desc + "\n" + v.tags.join(" ") + "\n" + v.voice + "\n" + (v.fr || "")).toLowerCase();
     return blob.includes(q);
   });
   const key = sortEl.value;
@@ -763,23 +780,53 @@ function escapeHtml(s) {
   }[ch]));
 }
 
+const LANG = {
+  ar: "arabe", de: "allemand", en: "anglais", es: "espagnol", fr: "français",
+  hi: "hindi", id: "indonésien", it: "italien", ja: "japonais", ko: "coréen",
+  nl: "néerlandais", pl: "polonais", pt: "portugais", ro: "roumain", ru: "russe",
+  tr: "turc", uk: "ukrainien", vi: "vietnamien", zh: "chinois", fa: "persan",
+  ur: "ourdou", bn: "bengali", ta: "tamoul", te: "télougou", ml: "malayalam",
+  mr: "marathi", gu: "gujarati", pa: "pendjabi", ne: "népalais", ps: "pachto",
+  he: "hébreu", el: "grec", th: "thaï", sv: "suédois", da: "danois", fi: "finnois",
+  cs: "tchèque", hu: "hongrois", bg: "bulgare", hr: "croate", sk: "slovaque",
+  sl: "slovène", lt: "lituanien", lv: "letton", et: "estonien", sq: "albanais",
+  mk: "macédonien", ka: "géorgien", hy: "arménien", az: "azéri", kk: "kazakh",
+  ms: "malais", sw: "swahili", am: "amharique", my: "birman", km: "khmer",
+  lo: "lao", si: "cingalais", tl: "tagalog", ca: "catalan", br: "breton"
+};
+
+function langLabel(code) {
+  if (!code) return "non identifiée";
+  return LANG[code] || code;
+}
+
 function transcriptBlock(v) {
-  if (v.voice && v.vsrc === "tiktok") {
-    return `<section class="transcript"><h3>Retranscription</h3><p class="tsrc">Fournie par TikTok, champ voice_to_text.</p><p class="voice">${escapeHtml(v.voice)}</p></section>`;
-  }
-  if (v.voice && v.vsrc === "whisper") {
-    return `<section class="transcript"><h3>Retranscription</h3><p class="tsrc">Calculée localement avec Whisper (modèle small) à partir de la piste audio. TikTok n’en avait pas fourni.</p><p class="voice">${escapeHtml(v.voice)}</p></section>`;
+  if (v.voice) {
+    const source = v.vsrc === "tiktok"
+      ? "Fournie par TikTok, champ voice_to_text."
+      : "Calculée avec Whisper (modèle small), quelle que soit la langue parlée.";
+    const french = (v.lang === "fr") || (v.fr && v.fr === v.voice);
+    if (french) {
+      return `<section class="transcript"><h3>Retranscription</h3><p class="tsrc">${source} Texte en français.</p><p class="voice">${escapeHtml(v.voice)}</p></section>`;
+    }
+    const translated = v.fr
+      ? `<h3>Traduction en français</h3><p class="voice">${escapeHtml(v.fr)}</p>`
+      : `<p class="tsrc">La traduction en français n’a pas pu être produite pour cette langue.</p>`;
+    return `<section class="transcript"><h3>Retranscription</h3><p class="tsrc">${source} Langue d’origine : ${escapeHtml(langLabel(v.lang))}.</p><p class="voice">${escapeHtml(v.voice)}</p>${translated}</section>`;
   }
   if (v.vsrc === "empty") {
-    return `<section class="transcript"><h3>Retranscription</h3><p class="tsrc">Piste audio lue : aucune parole détectée.</p></section>`;
+    return `<section class="transcript"><h3>Retranscription</h3><p class="tsrc">Piste audio lue, dans toutes les langues : aucune parole détectée.</p></section>`;
+  }
+  if (v.vsrc === "noaudio") {
+    return `<section class="transcript"><h3>Retranscription</h3><p class="tsrc">Publication image ou carrousel : aucune piste audio récupérable.</p></section>`;
   }
   if (v.vsrc === "error") {
     return `<section class="transcript"><h3>Retranscription</h3><p class="tsrc">TikTok a refusé la piste audio (vidéo restreinte, retirée, ou limite d’accès). La parole n’a pas pu être calculée. Le texte de la description reste affiché.</p></section>`;
   }
   if (!v.dur) {
-    return `<section class="transcript"><h3>Retranscription</h3><p class="tsrc">Publication sans piste vidéo (image ou carrousel). Il n’y a pas de parole à transcrire.</p></section>`;
+    return `<section class="transcript"><h3>Retranscription</h3><p class="tsrc">Publication sans durée vidéo enregistrée. La piste audio est encore en cours de lecture.</p></section>`;
   }
-  return `<section class="transcript"><h3>Retranscription</h3><p class="tsrc">TikTok n’a pas fourni de transcription pour cette vidéo.</p></section>`;
+  return `<section class="transcript"><h3>Retranscription</h3><p class="tsrc">La piste audio n’a pas encore été transcrite.</p></section>`;
 }
 
 function show(index, scroll) {
@@ -840,6 +887,17 @@ function dayKey(iso) {
   return parts;
 }
 
+function engagement(v) {
+  return (v.likes || 0) + (v.comments || 0) + (v.shares || 0);
+}
+
+const engMax = Math.max(1, ...DATA.map(engagement));
+
+function dotRadius(v) {
+  const t = Math.log1p(engagement(v)) / Math.log1p(engMax);
+  return 2.1 + t * 5.2;
+}
+
 function renderFrise() {
   const by = new Map();
   for (const v of DATA) {
@@ -849,6 +907,8 @@ function renderFrise() {
   }
   const days = [...by.keys()].sort();
   const lanes = 6;
+  const lanePitch = 18;
+  const colPitch = 16;
   const slots = [];
   let x = 16;
   let prev = null;
@@ -859,13 +919,13 @@ function renderFrise() {
     }
     const items = by.get(day).slice().sort((a, b) => a.at.localeCompare(b.at));
     const cols = Math.max(1, Math.ceil(items.length / lanes));
-    const width = Math.max(18, cols * 9);
+    const width = Math.max(colPitch, cols * colPitch);
     slots.push({ day, x, width, items });
     x += width + 8;
     prev = day;
   }
   const total = Math.max(x + 16, plot.parentElement.clientWidth || 0);
-  const height = 132;
+  const height = 168;
   const shownIds = new Set(shown.map((v) => v.id));
   const active = shown[current] && shown[current].id;
   const parts = [];
@@ -876,25 +936,26 @@ function renderFrise() {
     const showMonth = month !== lastMonth;
     lastMonth = month;
     const hot = dayFilter === slot.day;
-    parts.push(`<rect class="slot" data-day="${slot.day}" x="${slot.x - 3}" y="16" width="${slot.width + 6}" height="96" fill="${hot ? "#fff1f2" : "transparent"}"></rect>`);
+    parts.push(`<rect class="slot" data-day="${slot.day}" x="${slot.x - 3}" y="10" width="${slot.width + 6}" height="128" fill="${hot ? "#fff1f2" : "transparent"}"></rect>`);
     if (showMonth || slot.x - labelX >= 46) {
       const dayNum = String(Number(slot.day.slice(8)));
       const caption = showMonth
         ? dayNum + " " + monthShort.format(new Date(slot.day + "T12:00:00Z"))
         : dayNum;
-      parts.push(`<text x="${slot.x}" y="122" fill="#7c8696" font-size="10" font-family="Aptos, Segoe UI, sans-serif">${escapeHtml(caption)}</text>`);
+      parts.push(`<text x="${slot.x}" y="156" fill="#7c8696" font-size="10" font-family="Aptos, Segoe UI, sans-serif">${escapeHtml(caption)}</text>`);
       labelX = slot.x;
     }
     slot.items.forEach((v, i) => {
       const col = Math.floor(i / lanes);
       const lane = i % lanes;
-      const cx = slot.x + 4 + col * 9;
-      const cy = 24 + lane * 13;
+      const cx = slot.x + colPitch / 2 + col * colPitch;
+      const cy = 20 + lane * lanePitch;
       const dim = shownIds.size && !shownIds.has(v.id) ? 0.22 : 1;
       const fill = v.mis ? "#d23b4a" : "#b7c2d1";
-      const stroke = v.id === active ? ' stroke="#1c2434" stroke-width="1.6"' : "";
-      const r = v.id === active ? 4.2 : (v.mis ? 3.3 : 2.7);
-      parts.push(`<circle class="dot" data-id="${v.id}" cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" fill-opacity="${dim}"${stroke}><title>@${escapeHtml(v.user)} · ${escapeHtml(when(v.at))}${v.mis ? " · mésinformation" : ""}</title></circle>`);
+      const stroke = v.id === active ? ' stroke="#1c2434" stroke-width="1.4"' : "";
+      const r = dotRadius(v).toFixed(2);
+      const eng = engagement(v);
+      parts.push(`<circle class="dot" data-id="${v.id}" cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" fill-opacity="${dim}"${stroke}><title>@${escapeHtml(v.user)} · ${escapeHtml(when(v.at))} · ${nf.format(eng)} engagements${v.mis ? " · mésinformation" : ""}</title></circle>`);
     });
   }
   plot.setAttribute("viewBox", `0 0 ${total} ${height}`);
